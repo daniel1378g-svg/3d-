@@ -46,7 +46,9 @@ export class Chandelier {
     const loader = new GLTFLoader();
     loader.setMeshoptDecoder(MeshoptDecoder);
     const gltf = await new Promise((resolve, reject) => {
-      loader.load(`${base}models/chandelier.glb`, resolve, (e) => {
+      // hosts that can't serve .glb point to an embedded .gltf JSON copy via <meta name="nur:model">
+      const url = document.querySelector('meta[name="nur:model"]')?.content || `${base}models/chandelier.glb`;
+      loader.load(url, resolve, (e) => {
         if (e.total) onProgress?.(e.loaded / e.total);
       }, reject);
     });

@@ -875,7 +875,7 @@ body.cam-config .dock { right: auto; left: max(16px, env(safe-area-inset-left, 0
   position: fixed;
   z-index: 30;
   left: 50%;
-  bottom: calc(env(safe-area-inset-bottom, 0px) + 22vh);
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 104px);
   transform: translateX(-50%);
   display: inline-flex;
   align-items: center;
