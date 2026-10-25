@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Nur Atelier Chandeliers</title>
+  <meta name="claude:viewport-fit-sides" content="cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Handmade Turkish mosaic chandeliers with brass fittings, configured online and delivered across Switzerland. Prices in CHF." />
+  <meta name="theme-color" content="#0f0e0d" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..600&family=Instrument+Sans:wght@400..600&display=swap" />
+  <link rel="preload" as="image" href="./poster-desktop.webp" media="(min-aspect-ratio: 9/10)" />
+  <link rel="preload" as="image" href="./poster-mobile.webp" media="(max-aspect-ratio: 9/10)" />
+</head>
+<body>
+  <a class="skip-link" href="#main" data-i18n="a11y.skip">Skip to content</a>
+
+  <!-- The 3D stage sits behind the page. The poster shows at once; the live scene fades in over it. -->
+  <div class="stage" id="stage">
+    <picture class="stage-poster" id="poster">
+      <source media="(max-aspect-ratio: 9/10)" srcset="./poster-mobile.webp" />
+      <img src="./poster-desktop.webp" alt="Turkish mosaic chandelier with five glowing glass globes in an evening interior" data-i18n-attr="alt:a11y.poster" fetchpriority="high" decoding="async" />
+    </picture>
+    <canvas class="stage-canvas" id="scene" tabindex="0" role="application" aria-label="Interactive 3D chandelier. Drag or use the arrow keys to rotate, plus and minus to zoom, L to switch the light." data-i18n-attr="aria-label:a11y.stage"></canvas>
+    <div class="stage-shade" aria-hidden="true"></div>
+  </div>
+
+  <header class="site-header" id="header">
+    <div class="header-inner">
+      <a class="brand" href="#top" aria-label="Nur Atelier, back to top" data-i18n-attr="aria-label:a11y.home">
+        <svg class="brand-star" viewBox="0 0 40 40" aria-hidden="true"><rect x="9" y="9" width="22" height="22" /><rect x="9" y="9" width="22" height="22" transform="rotate(45 20 20)" /><circle cx="20" cy="20" r="3.2" /></svg>
+        <span class="brand-name">Nur <em>Atelier</em></span>
+      </a>
+      <nav class="main-nav" aria-label="Main">
+        <a href="#collection" data-i18n="nav.collection">Collection</a>
+        <a href="#craft" data-i18n="nav.craft">Craftsmanship</a>
+        <a href="#configurator" data-i18n="nav.configurator">Configurator</a>
+        <a href="#contact" data-i18n="nav.contact">Delivery &amp; contact</a>
+      </nav>
+      <div class="header-tools">
+        <div class="lang" id="lang">
+          <button class="lang-btn" id="lang-btn" type="button" aria-haspopup="listbox" aria-expanded="false" aria-controls="lang-list" aria-label="Choose language" data-i18n-attr="aria-label:a11y.lang">
+            <span data-code="en">EN</span><i>/</i><span data-code="fr">FR</span><i>/</i><span data-code="pt">PT</span><i>/</i><span data-code="de">DE</span><i>/</i><span data-code="it">IT</span>
+          </button>
+          <ul class="lang-list" id="lang-list" role="listbox" tabindex="-1" hidden></ul>
+        </div>
+        <button class="sound-btn" id="sound-btn" type="button" aria-pressed="false">
+          <span class="sound-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          <span class="sound-label" data-i18n="audio.off">Sound off</span>
+        </button>
+        <button class="menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="Open menu" data-i18n-attr="aria-label:a11y.menu"><span></span><span></span></button>
+      </div>
+    </div>
+    <nav class="mobile-nav" id="mobile-nav" aria-label="Main" hidden>
+      <a href="#collection" data-i18n="nav.collection">Collection</a>
+      <a href="#craft" data-i18n="nav.craft">Craftsmanship</a>
+      <a href="#configurator" data-i18n="nav.configurator">Configurator</a>
+      <a href="#contact" data-i18n="nav.contact">Delivery &amp; contact</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <!-- Hero -->
+    <section class="hero wrap" id="top" aria-labelledby="hero-title">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow" data-i18n="hero.eyebrow" data-intro="1">Hand-set mosaic glass · Swiss showroom</p>
+          <h1 class="hero-title" id="hero-title" data-intro="2" data-split>
+            <span data-i18n="hero.title">Light shaped by tradition.</span>
+          </h1>
+          <p class="hero-sub" data-i18n="hero.sub" data-intro="3">Turkish mosaic artistry, illuminating homes across Switzerland.</p>
+          <div class="hero-actions" data-intro="4">
+            <a class="btn btn-primary" href="#collection" data-magnetic><span class="btn-beam" aria-hidden="true"></span><span data-i18n="hero.explore">Explore the Collection</span></a>
+            <a class="btn btn-ghost" href="#configurator" data-magnetic><span data-i18n="hero.create">Create Your Chandelier</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Scroll story: the camera moves to the glass, then the metal -->
+    <section class="story wrap" id="glass" data-cam="glass" aria-labelledby="glass-title">
+      <div class="container story-grid">
+        <div class="story-card">
+          <p class="eyebrow" data-i18n="story.glass.k">The glass</p>
+          <h2 id="glass-title" data-split data-i18n="story.glass.t">Thousands of pieces, set by hand.</h2>
+          <p data-i18n="story.glass.p" data-reveal>Coloured glass is cut into small tesserae and placed one at a time.</p>
+          <dl class="story-facts" data-reveal>
+            <div><dt data-i18n="globe.pieces">Glass pieces</dt><dd data-i18n="globe.piecesVal">≈ 3,000</dd></div>
+            <div><dt data-i18n="globe.diam">Diameter</dt><dd>16 cm</dd></div>
+          </dl>
+        </div>
+      </div>
+    </section>
+    <section class="story wrap" id="metal" data-cam="metal" aria-labelledby="metal-title">
+      <div class="container story-grid">
+        <div class="story-card">
+          <p class="eyebrow" data-i18n="story.metal.k">The metal</p>
+          <h2 id="metal-title" data-split data-i18n="story.metal.t">Brass that ages gracefully.</h2>
+          <p data-i18n="story.metal.p" data-reveal>Every cap, finial and chain link is pressed and finished by hand.</p>
+          <dl class="story-facts" data-reveal>
+            <div><dt data-i18n="config.finish">Brass finish</dt><dd data-i18n="finish.antique">Antique brass</dd></div>
+            <div><dt data-i18n="globe.socket">Socket</dt><dd>E14 · 230 V</dd></div>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <!-- Collection -->
+    <section class="panel collection wrap" id="collection" aria-labelledby="collection-title">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow" data-i18n="collection.k">The collection</p>
+          <h2 id="collection-title" data-split data-i18n="collection.t">Six chandeliers, one tradition.</h2>
+          <p class="section-lede" data-i18n="collection.p" data-reveal>Each design is available in every palette and finish. Prices include 8.1% Swiss VAT.</p>
+        </div>
+        <div class="cards" id="cards"></div>
+      </div>
+    </section>
+
+    <!-- Craftsmanship -->
+    <section class="panel craft wrap" id="craft" aria-labelledby="craft-title">
+      <div class="container craft-grid">
+        <figure class="craft-figure" data-reveal>
+          <img src="./photos/craft-glass.webp" alt="" loading="lazy" decoding="async" width="1200" height="800" />
+        </figure>
+        <div class="craft-intro">
+          <p class="eyebrow" data-i18n="craft.k">Craftsmanship</p>
+          <h2 id="craft-title" data-split data-i18n="craft.t">Made the way it has been made for generations.</h2>
+          <p data-i18n="craft.p" data-reveal>Mosaic lamps belong to a living Turkish craft.</p>
+          <dl class="stats" data-reveal>
+            <div><dt data-i18n="craft.stat1">pieces per globe</dt><dd><span data-count="3000">3,000</span></dd></div>
+            <div><dt data-i18n="craft.stat2">hours of handwork per chandelier</dt><dd class="placeholder" data-business="handHours">[40]</dd></div>
+            <div><dt data-i18n="craft.stat3">Swiss cantons delivered</dt><dd><span data-count="26">26</span></dd></div>
+          </dl>
+        </div>
+        <ol class="steps">
+          <li data-reveal><span class="step-n">01</span><h3 data-i18n="craft.s1.t">Cutting the glass</h3><p data-i18n="craft.s1.p"></p></li>
+          <li data-reveal><span class="step-n">02</span><h3 data-i18n="craft.s2.t">Setting the mosaic</h3><p data-i18n="craft.s2.p"></p></li>
+          <li data-reveal><span class="step-n">03</span><h3 data-i18n="craft.s3.t">Grouting and polishing</h3><p data-i18n="craft.s3.p"></p></li>
+          <li data-reveal><span class="step-n">04</span><h3 data-i18n="craft.s4.t">Brass and assembly</h3><p data-i18n="craft.s4.p"></p></li>
+        </ol>
+      </div>
+      <div class="marquee" aria-hidden="true">
+        <div class="marquee-track">
+          <span>Cam</span><i>✦</i><span>Glass</span><i>✦</i><span>Verre</span><i>✦</i><span>Vidro</span><i>✦</i><span>Glas</span><i>✦</i><span>Vetro</span><i>✦</i><span>Pirinç</span><i>✦</i><span>Laiton</span><i>✦</i><span>Latão</span><i>✦</i><span>Messing</span><i>✦</i><span>Ottone</span><i>✦</i>
+          <span>Cam</span><i>✦</i><span>Glass</span><i>✦</i><span>Verre</span><i>✦</i><span>Vidro</span><i>✦</i><span>Glas</span><i>✦</i><span>Vetro</span><i>✦</i><span>Pirinç</span><i>✦</i><span>Laiton</span><i>✦</i><span>Latão</span><i>✦</i><span>Messing</span><i>✦</i><span>Ottone</span><i>✦</i>
+        </div>
+      </div>
+    </section>
+
+    <!-- Configurator: the live chandelier on the left, controls on the right -->
+    <section class="config wrap" id="configurator" data-cam="config" aria-labelledby="config-title">
+      <div class="container config-grid">
+        <form class="config-panel" id="config-form" aria-labelledby="config-title">
+          <p class="eyebrow" data-i18n="config.k">Configurator</p>
+          <h2 id="config-title" data-i18n="config.t">Create your chandelier.</h2>
+          <p class="config-lede" data-i18n="config.p">Choose the glass, the metal and the arrangement.</p>
+
+          <fieldset class="opt opt-palette">
+            <legend data-i18n="config.palette">Glass palette</legend>
+            <div class="opt-row" id="opt-palette"></div>
+          </fieldset>
+          <fieldset class="opt opt-finish">
+            <legend data-i18n="config.finish">Brass finish</legend>
+            <div class="opt-row" id="opt-finish"></div>
+          </fieldset>
+          <fieldset class="opt opt-globes">
+            <legend data-i18n="config.globes">Arrangement</legend>
+            <div class="opt-row seg" id="opt-globes"></div>
+          </fieldset>
+
+          <div class="config-summary">
+            <div>
+              <span class="summary-label" data-i18n="config.price">Your chandelier</span>
+              <span class="summary-name" id="summary-name"></span>
+            </div>
+            <output class="price" id="price" for="opt-palette opt-finish opt-globes" aria-live="polite">CHF 1’890</output>
+          </div>
+          <p class="vat" data-i18n="config.vat">incl. 8.1% Swiss VAT · free delivery in Switzerland</p>
+          <div class="config-actions">
+            <a class="btn btn-primary" href="#contact" id="request-btn" data-magnetic><span class="btn-beam" aria-hidden="true"></span><span data-i18n="config.request">Request this chandelier</span></a>
+            <button class="btn-text" type="button" id="share-btn"><span data-i18n="config.share">Copy link to this design</span></button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- Delivery & contact -->
+    <section class="panel contact wrap" id="contact" aria-labelledby="contact-title">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow" data-i18n="delivery.k">Delivery &amp; contact</p>
+          <h2 id="contact-title" data-split data-i18n="delivery.t">Delivered across Switzerland.</h2>
+        </div>
+        <ul class="facts">
+          <li data-reveal><h3 data-i18n="delivery.ship.t">Delivery</h3><p data-i18n="delivery.ship.p"></p></li>
+          <li data-reveal><h3 data-i18n="delivery.install.t">Installation</h3><p data-i18n="delivery.install.p"></p></li>
+          <li data-reveal><h3 data-i18n="delivery.spec.t">Electrical</h3><p data-i18n="delivery.spec.p"></p></li>
+          <li data-reveal><h3 data-i18n="delivery.care.t">Care</h3><p data-i18n="delivery.care.p"></p></li>
+        </ul>
+
+        <div class="contact-grid">
+          <div class="showroom">
+            <h3 class="contact-title" data-i18n="contact.t">Visit the showroom or write to us.</h3>
+            <dl class="showroom-list">
+              <div>
+                <dt data-i18n="contact.showroom">Showroom</dt>
+                <dd>
+                  <span data-business="brand">Nur Atelier</span><br />
+                  <span class="placeholder" data-business="street">[Street and number]</span><br />
+                  <span class="placeholder" data-business="city">[Postcode] [City]</span><br />
+                  <span data-business="country">Switzerland</span>
+                </dd>
+              </div>
+              <div>
+                <dt data-i18n="contact.hours">Opening hours</dt>
+                <dd class="placeholder" data-business="showroomHours">[Tue–Sat, 10:00–18:00]</dd>
+              </div>
+              <div>
+                <dt data-i18n="contact.reach">Phone &amp; email</dt>
+                <dd class="copy-rows">
+                  <span class="copy-row"><span class="placeholder" data-business="phone" id="biz-phone">+41 [00 000 00 00]</span><button type="button" class="copy-btn" data-copy="biz-phone" data-i18n="contact.copy">Copy</button></span>
+                  <span class="copy-row"><span class="placeholder" data-business="email" id="biz-email">hello@[your-domain].ch</span><button type="button" class="copy-btn" data-copy="biz-email" data-i18n="contact.copy">Copy</button></span>
+                </dd>
+              </div>
+            </dl>
+          </div>
+
+          <form class="contact-form" id="contact-form" novalidate>
+            <div class="field">
+              <label for="f-name" data-i18n="form.name">Full name</label>
+              <input id="f-name" name="name" type="text" autocomplete="name" required />
+              <p class="field-error" id="f-name-err" hidden></p>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="f-email" data-i18n="form.email">Email</label>
+                <input id="f-email" name="email" type="email" autocomplete="email" required />
+                <p class="field-error" id="f-email-err" hidden></p>
+              </div>
+              <div class="field">
+                <label for="f-phone" data-i18n="form.phone">Phone (optional)</label>
+                <input id="f-phone" name="phone" type="tel" autocomplete="tel" />
+              </div>
+            </div>
+            <div class="field">
+              <label for="f-canton" data-i18n="form.canton">Canton</label>
+              <select id="f-canton" name="canton" required></select>
+              <p class="field-error" id="f-canton-err" hidden></p>
+            </div>
+            <div class="field">
+              <label for="f-design" data-i18n="form.design">Selected design</label>
+              <input id="f-design" name="design" type="text" readonly />
+            </div>
+            <div class="field">
+              <label for="f-message" data-i18n="form.message">Message</label>
+              <textarea id="f-message" name="message" rows="4" data-i18n-attr="placeholder:form.messagePh"></textarea>
+            </div>
+            <div class="field check">
+              <input id="f-consent" name="consent" type="checkbox" required />
+              <label for="f-consent" data-i18n="form.consent">I agree that my details are used to answer my request.</label>
+              <p class="field-error" id="f-consent-err" hidden></p>
+            </div>
+            <button class="btn btn-primary" type="submit"><span class="btn-beam" aria-hidden="true"></span><span data-i18n="form.submit">Send request</span></button>
+            <p class="form-done" id="form-done" role="status" hidden></p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer wrap">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <span class="brand-name">Nur <em>Atelier</em></span>
+        <p data-i18n="footer.made">Handmade in Türkiye · Showroom in Switzerland</p>
+      </div>
+      <p class="footer-note" data-i18n="footer.note">Details shown in [brackets] are placeholders.</p>
+      <div class="footer-meta">
+        <a href="#contact" data-i18n="footer.legal">Legal notice</a>
+        <a href="#contact" data-i18n="footer.privacy">Privacy policy</a>
+        <span class="placeholder" data-business="uid">CHE-[000.000.000]</span>
+        <span>© <span id="year">2026</span> <span data-business="brand">Nur Atelier</span></span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scene controls, shown while the chandelier is on stage -->
+  <div class="dock" id="dock" role="toolbar" aria-label="Chandelier controls" hidden>
+    <button class="dock-switch" id="light-switch" type="button" role="switch" aria-checked="true">
+      <span class="switch-track" aria-hidden="true"><span class="switch-thumb"></span></span>
+      <span class="dock-label"><span data-i18n="ctrl.light">Light</span> <b id="light-state" data-i18n="ctrl.on">On</b></span>
+    </button>
+    <label class="dimmer">
+      <span class="dock-label" data-i18n="ctrl.dimmer">Dimmer</span>
+      <input type="range" id="dimmer" min="10" max="100" step="1" value="85" />
+    </label>
+    <div class="dock-group" role="group">
+      <button class="dock-icon" id="zoom-out" type="button" aria-label="Zoom out" data-i18n-attr="aria-label:ctrl.zoomOut;title:ctrl.zoomOut"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10h10" /></svg></button>
+      <button class="dock-icon" id="zoom-in" type="button" aria-label="Zoom in" data-i18n-attr="aria-label:ctrl.zoomIn;title:ctrl.zoomIn"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10h10M10 5v10" /></svg></button>
+      <button class="dock-icon" id="reset-view" type="button" aria-label="Reset view" data-i18n-attr="aria-label:ctrl.reset;title:ctrl.reset"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4.5 10a5.5 5.5 0 1 0 1.7-4M4.5 4.5V8h3.5" /></svg></button>
+    </div>
+    <div class="dock-globes" role="group" aria-label="Inspect a globe" data-i18n-attr="aria-label:ctrl.inspect">
+      <span class="dock-label" data-i18n="ctrl.inspect">Inspect a globe</span>
+      <div class="globe-btns" id="globe-btns"></div>
+    </div>
+  </div>
+
+  <div class="drag-hint" id="drag-hint" aria-hidden="true" hidden>
+    <svg viewBox="0 0 48 24"><path d="M8 12h32M8 12l5-5M8 12l5 5M40 12l-5-5M40 12l-5 5" /></svg>
+    <span data-i18n="stage.hint">Drag to explore</span>
+  </div>
+
+  <aside class="globe-card" id="globe-card" aria-labelledby="globe-card-title" hidden>
+    <p class="eyebrow" id="globe-card-palette"></p>
+    <h2 id="globe-card-title"></h2>
+    <p data-i18n="globe.body">Each globe carries around 3,000 pieces of cut glass.</p>
+    <dl class="globe-specs">
+      <div><dt data-i18n="globe.diam">Diameter</dt><dd>16 cm</dd></div>
+      <div><dt data-i18n="globe.pieces">Glass pieces</dt><dd data-i18n="globe.piecesVal">≈ 3,000</dd></div>
+      <div><dt data-i18n="globe.socket">Socket</dt><dd>E14</dd></div>
+    </dl>
+    <button class="btn btn-ghost btn-small" type="button" id="globe-back"><span data-i18n="globe.back">Back to the chandelier</span></button>
+  </aside>
+
+  <div class="loader" id="loader" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Loading the 3D chandelier" data-i18n-attr="aria-label:a11y.loading">
+    <span class="loader-bar" id="loader-bar"></span>
+  </div>
+  <button class="skip-intro" id="skip-intro" type="button" hidden><span data-i18n="intro.skip">Skip intro</span></button>
+  <p class="sr-only" id="live" aria-live="polite"></p>
+  <noscript><style>.loader{display:none}</style></noscript>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>

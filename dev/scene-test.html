@@ -1,0 +1,23 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><style>html,body{margin:0;height:100%;background:#000;overflow:hidden}canvas{width:100vw;height:100vh;display:block}</style></head>
+<body><canvas id="c"></canvas>
+<script type="module">
+import { Stage, detectQuality } from '../src/scene/stage.js';
+const q = new URLSearchParams(location.search);
+const quality = { ...detectQuality(), tier: 'high', msaa: 4, mosaicSize: Number(q.get('mosaic') || 1024), dprMax: 1, bloomScale: 0.5 };
+const stage = new Stage(document.getElementById('c'), { quality, reducedMotion: true, photo: true });
+window.stage = stage;
+try {
+  await stage.load((p) => console.log('progress', p.toFixed(2)));
+  stage.setup({ palette: q.get('palette') || 'iznik', finish: q.get('finish') || 'antique', globes: Number(q.get('globes') || 5) });
+  const cam = q.get('cam') || 'hero';
+  stage.setScrollCamera(cam, cam, 1);
+  stage.light.on = q.get('light') !== 'off';
+  stage.light.dimmer = Number(q.get('dim') || 0.85);
+  stage.light.value = stage.light.on ? stage.light.dimmer : 0;
+  if (q.get('yaw')) stage.yaw = Number(q.get('yaw'));
+  if (q.get('focus')) stage.focusGlobe(Number(q.get('focus')));
+  for (let i = 0; i < 3; i++) stage.renderOnce();
+  window.__ready = true;
+} catch (e) { console.error('ERR', e.stack || e); window.__err = String(e); }
+</script></body></html>
