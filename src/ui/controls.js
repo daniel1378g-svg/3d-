@@ -30,6 +30,7 @@ export function initControls(stage, { isInteractive, announce, onFirstUse }) {
   let pinchDist = 0;
   canvas.addEventListener('pointerdown', (e) => {
     if (!isInteractive()) return;
+    stage.markInput();
     canvas.setPointerCapture(e.pointerId);
     pointers.set(e.pointerId, { x: e.clientX, y: e.clientY, t: e.timeStamp });
     if (pointers.size === 1) {
@@ -145,6 +146,12 @@ export function initControls(stage, { isInteractive, announce, onFirstUse }) {
   document.getElementById('zoom-in').addEventListener('click', () => stage.zoomBy(0.85));
   document.getElementById('zoom-out').addEventListener('click', () => stage.zoomBy(1.18));
   document.getElementById('reset-view').addEventListener('click', () => { stage.resetView(); blurGlobe(); });
+  const motionBtn = document.getElementById('motion-btn');
+  motionBtn.addEventListener('click', () => {
+    stage.motionPaused = !stage.motionPaused;
+    motionBtn.setAttribute('aria-pressed', String(stage.motionPaused));
+    document.body.classList.toggle('motion-paused', stage.motionPaused);
+  });
 
   function renderGlobeButtons(n) {
     globeBtns.innerHTML = '';
@@ -171,6 +178,7 @@ export function initControls(stage, { isInteractive, announce, onFirstUse }) {
 
   function focusGlobe(i) {
     if (i < 0 || i >= stage.chandelier.globes.length) return;
+    stage.markInput();
     stage.focusGlobe(i);
     card.hidden = false;
     document.body.classList.add('is-focus');

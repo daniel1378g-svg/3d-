@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
+import { gunzipSync } from 'three/addons/libs/fflate.module.js';
 import { createGlassMaterial, createBrassMaterial, kelvinToColor } from './materials.js';
 import { makeLightPattern, drawLightPattern } from './mosaic.js';
 import { FINISHES, PALETTES } from '../config.js';
@@ -10,6 +10,75 @@ const base = import.meta.env.BASE_URL;
 const SCALE = 1.15; // model units → metres (globe Ø ≈ 16 cm, overall height ≈ 94 cm)
 const MAX_GLOBES = 7;
 const deg = (d) => (d * Math.PI) / 180;
+
+// ── Model delivery ───────────────────────────────────────────────
+// 1. models/chandelier.glb: Meshopt-compressed, smallest, but its decoder needs WebAssembly.
+// 2. models/chandelier-q.glb.gz: quantized and gzipped; inflates in plain JavaScript, so it also
+//    works where a Content-Security-Policy blocks WebAssembly or data: URLs (embedded viewers).
+// A page can name its own source with <meta name="nur:model" content="…"> (.glb, .gz or a
+// .json file holding {"data": base64}).
+async function fetchBytes(url, onProgress) {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`${url}: HTTP ${res.status}`);
+  const total = Number(res.headers.get('content-length')) || 0;
+  if (!res.body || !total) {
+    const b = new Uint8Array(await res.arrayBuffer());
+    onProgress?.(1);
+    return b;
+  }
+  const reader = res.body.getReader();
+  const chunks = [];
+  let got = 0;
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    chunks.push(value);
+    got += value.length;
+    onProgress?.(Math.min(1, got / total));
+  }
+  const out = new Uint8Array(got);
+  let o = 0;
+  for (const c of chunks) { out.set(c, o); o += c.length; }
+  return out;
+}
+
+function fromBase64(s) {
+  const bin = atob(s);
+  const out = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+  return out;
+}
+
+async function loadGLTF(url, onProgress) {
+  let bytes = await fetchBytes(url, onProgress);
+  if (/\.json($|\?)/.test(url)) bytes = fromBase64(JSON.parse(new TextDecoder().decode(bytes)).data);
+  if (bytes[0] === 0x1f && bytes[1] === 0x8b) bytes = gunzipSync(bytes); // some hosts already inflate .gz
+  const jsonLength = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength).getUint32(12, true);
+  const header = new TextDecoder().decode(bytes.subarray(20, 20 + jsonLength));
+  const loader = new GLTFLoader();
+  if (header.includes('EXT_meshopt_compression')) {
+    const { MeshoptDecoder } = await import('three/addons/libs/meshopt_decoder.module.js');
+    await MeshoptDecoder.ready; // rejects when WebAssembly is blocked → next source
+    loader.setMeshoptDecoder(MeshoptDecoder);
+  }
+  const buffer = bytes.byteOffset === 0 && bytes.byteLength === bytes.buffer.byteLength ? bytes.buffer : bytes.slice().buffer;
+  return new Promise((resolve, reject) => loader.parse(buffer, '', resolve, reject));
+}
+
+async function loadChandelierModel(onProgress) {
+  const own = document.querySelector('meta[name="nur:model"]')?.content;
+  const sources = own ? [own] : [`${base}models/chandelier.glb`, `${base}models/chandelier-q.glb.gz`];
+  let lastError;
+  for (const src of sources) {
+    try {
+      return await loadGLTF(src, onProgress);
+    } catch (err) {
+      lastError = err;
+      console.warn(`Chandelier model: ${src} could not be used, trying the next source.`, err);
+    }
+  }
+  throw lastError;
+}
 
 // Arrangements in model space. `a` follows atan2(z, x) around the chandelier axis (90° faces
 // the viewer); `links` lowers a pendant by that many chain links (even counts keep the
@@ -43,15 +112,7 @@ export class Chandelier {
 
   // Load the GLB and rebuild it into pendants that can be re-arranged.
   async load(onProgress) {
-    const loader = new GLTFLoader();
-    loader.setMeshoptDecoder(MeshoptDecoder);
-    const gltf = await new Promise((resolve, reject) => {
-      // hosts that can't serve .glb point to an embedded .gltf JSON copy via <meta name="nur:model">
-      const url = document.querySelector('meta[name="nur:model"]')?.content || `${base}models/chandelier.glb`;
-      loader.load(url, resolve, (e) => {
-        if (e.total) onProgress?.(e.loaded / e.total);
-      }, reject);
-    });
+    const gltf = await loadChandelierModel(onProgress);
     const src = gltf.scene;
     src.updateMatrixWorld(true);
 
@@ -126,6 +187,12 @@ export class Chandelier {
     const res = this.quality.tier === 'high' ? 512 : 256;
     this.patternCeil = makeLightPattern(this.palette, res);
     this.patternWall = makeLightPattern(this.palette, res);
+    // the wall pattern is redrawn from this source, turned with the chandelier
+    this.wallSource = document.createElement('canvas');
+    this.wallSource.width = this.wallSource.height = res;
+    drawLightPattern(this.wallSource, this.palette);
+    this.wallAngle = 0;
+    this.wallDrawn = 0;
     const crownY = ROOM.ceiling - (this.top - this.crownBottom) * SCALE;
     // Light through the glass paints the ceiling: an additive projection that turns with the
     // chandelier. Unlike a spotlight it can't overexpose the brass just above the globes.
@@ -317,7 +384,8 @@ export class Chandelier {
     this.tint.setRGB(1, 1, 1).lerp(acc, 0.3);
     this.tint.multiplyScalar(1 / Math.max(this.tint.r, this.tint.g, this.tint.b));
     drawLightPattern(this.patternCeil.image, key);
-    drawLightPattern(this.patternWall.image, key);
+    drawLightPattern(this.wallSource, key);
+    this.drawWall(this.wallAngle);
     this.patternCeil.needsUpdate = true;
     this.patternWall.needsUpdate = true;
     this.mosaic.trim([key, prevKey]);
@@ -333,6 +401,23 @@ export class Chandelier {
       this.brass.roughness = f.rough;
       this.brass.clearcoat = this.finishTarget.clearcoat;
     }
+  }
+
+  // Turning the chandelier turns the light it throws onto the back wall
+  drawWall(angle) {
+    const c = this.patternWall.image;
+    const ctx = c.getContext('2d');
+    const w = c.width;
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.fillStyle = '#000';
+    ctx.fillRect(0, 0, w, w);
+    ctx.translate(w / 2, w / 2);
+    ctx.rotate(angle);
+    ctx.drawImage(this.wallSource, -w / 2, -w / 2);
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    this.patternWall.needsUpdate = true;
+    this.wallAngle = angle;
+    this.wallDrawn = performance.now();
   }
 
   globeWorld(p, target = new THREE.Vector3()) {
@@ -425,6 +510,8 @@ export class Chandelier {
     this.ceilGlow.material.color.copy(this.bulbColor).multiplyScalar(0.42 * brightness * total);
     this.wallSpot.color.copy(this.bulbColor);
     this.wallSpot.intensity = 20 * brightness * total;
+    const yaw = this.root.rotation.y;
+    if (Math.abs(yaw - this.wallAngle) > 0.012 && performance.now() - this.wallDrawn > 66 && brightness > 0.01) this.drawWall(yaw);
   }
 
   pickables() {

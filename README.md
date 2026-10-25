@@ -12,6 +12,10 @@ onto an Alpine lake at dusk) and stays the centrepiece from the intro to the con
 - **Intro**: the poster frame appears at once. When the model has loaded, the canvas fades in
   over it, the globes light one after another with a short filament flicker, and the camera eases
   in. The intro is skippable (button, scroll, key, drag) and plays only once per session.
+- **A living scene**: at rest the chandelier turns slowly like a showroom turntable, sweeping
+  its coloured light across the ceiling and wall. The camera drifts slightly and dust catches the
+  light. All of this pauses while you interact, stops with the pause button in the dock, and is
+  off with `prefers-reduced-motion`.
 - **Interaction**: drag to rotate with inertia (spinning swings the globes outwards), pinch or
   ctrl/⌘ + wheel to zoom, tap a globe for a close-up with its details. The dock has a light
   switch, a dimmer (the light gets warmer as it dims), zoom, reset and globe buttons. On the
@@ -53,7 +57,8 @@ npm run build:artifact    # also writes dist/artifact.html + dist/artifact-files
 
 | Asset | Source |
 | --- | --- |
-| `public/models/chandelier.glb` | The supplied `turkish.FBX` (FBX 6.1 binary), converted with FBX2glTF and compressed with glTF-Transform (Meshopt, UVs kept). 221k triangles, 0.85 MB. |
+| `public/models/chandelier.glb` | The supplied `turkish.FBX` (FBX 6.1 binary), converted with FBX2glTF. The chain links are simplified (221k → 123k triangles) and the file is Meshopt-compressed (0.98 MB). |
+| `public/models/chandelier-q.glb.gz` | The same model, quantized and gzipped (1.2 MB). It is loaded automatically when the Meshopt decoder can't run, for example when a Content-Security-Policy blocks WebAssembly. It inflates in plain JavaScript. |
 | Mosaic glass | Generated at load time (`src/scene/mosaicGen.js`) in a Web Worker. Each tessera is its own cell with a grout line, a slight tilt (normal map) and its own colour variation. |
 | Brass, plaster, travertine, dusk view | Baked with `npm run textures` (`scripts/bake_textures.py`, needs numpy and Pillow) |
 | Poster and product photos | Rendered from the same scene with `npm run photos` while the dev server runs (needs Playwright). |
@@ -61,11 +66,14 @@ npm run build:artifact    # also writes dist/artifact.html + dist/artifact-files
 The original `.max`/`.FBX` sources are not committed. To re-export the model:
 
 ```bash
-npx fbx2gltf --binary -i turkish.FBX -o chandelier
-npx @gltf-transform/cli optimize chandelier.glb public/models/chandelier.glb \
-  --compress meshopt --simplify false --instance false --join false --palette false \
-  --texture-compress false --prune-attributes false
+npx fbx2gltf --binary -i turkish.FBX -o source
+npm i --no-save @gltf-transform/core @gltf-transform/extensions @gltf-transform/functions meshoptimizer
+node scripts/prepare-model.mjs source.glb public/models
 ```
+
+The shareable artifact build (`npm run build:artifact`) points the page at
+`models/chandelier-q.json` (the gzipped model as base64), because the artifact viewer serves
+neither `.glb` nor `.gz` files and blocks WebAssembly.
 
 ## Structure
 

@@ -90,9 +90,12 @@ function site() {
     } catch { return false; }
   })();
 
+  let currentSection = 'hero';
   function onSection(section) {
+    currentSection = section;
     const stageSection = section === 'hero' || section === 'config';
     interactive = stageSection;
+    if (stage) stage.autoSpin = stageSection && introDone;
     if (!controls) return;
     controls.showDock(stageSection && introDone);
     if (!stageSection) {
@@ -143,6 +146,7 @@ function site() {
 
   if (!webgl) {
     loader.classList.add('is-done');
+    document.getElementById('stage-note').hidden = false;
     scroll = initScroll({ setScrollCamera() {}, visible: true }, { reduced, onSection: () => {} });
     return;
   }
@@ -173,8 +177,10 @@ function site() {
     runIntro();
     scroll.update();
   }).catch((err) => {
-    console.error(err);
+    // keep the photograph and say so, rather than leave a frozen stage
+    console.error('The 3D view could not start:', err);
     loader.classList.add('is-done');
+    document.getElementById('stage-note').hidden = false;
   });
 
   let skipIntro = null;
@@ -190,9 +196,10 @@ function site() {
       stage.chandelier.setGlobeLevels(globes.map(() => 1));
       document.getElementById('skip-intro').hidden = true;
       try { sessionStorage.setItem('nur.intro', '1'); } catch { /* ignore */ }
-      const section = document.body.className.match(/cam-(\w+)/)?.[1] || 'hero';
-      controls.showDock(section === 'hero' || section === 'config');
-      if (section === 'hero') setTimeout(() => controls.showHint(), 400);
+      const onStage = currentSection === 'hero' || currentSection === 'config';
+      stage.autoSpin = onStage;
+      controls.showDock(onStage);
+      if (currentSection === 'hero') setTimeout(() => controls.showHint(), 400);
       removeSkipListeners();
     };
     const removeSkipListeners = () => {

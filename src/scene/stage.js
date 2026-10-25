@@ -7,6 +7,7 @@ import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
 import { buildRoom, buildEnvironment } from './room.js';
 import { Chandelier } from './chandelier.js';
 import { MosaicTextures } from './mosaic.js';
+import { createDust } from './dust.js';
 
 const clamp = THREE.MathUtils.clamp;
 const damp = (a, b, lambda, dt) => a + (b - a) * (1 - Math.exp(-lambda * dt));
@@ -65,6 +66,8 @@ export class Stage {
     this.scene.environment = buildEnvironment(this.renderer);
     this.scene.environmentIntensity = 0.55;
     this.chandelier = new Chandelier(this.scene, { quality });
+    this.dust = createDust(quality.tier === 'high' ? 420 : 180);
+    this.scene.add(this.dust);
     this.mosaic = new MosaicTextures();
 
     // post-processing
@@ -92,6 +95,12 @@ export class Stage {
     this.hover = null;
     this.visible = true;
     this.lastTime = performance.now();
+    // the scene stays alive at rest: a slow showroom turn and a breathing camera,
+    // paused while someone interacts, with the motion toggle, or with reduced motion
+    this.autoSpin = false;
+    this.motionPaused = false;
+    this.lastInput = 0;
+    this.motionTime = 0;
     this.frameTimes = [];
     this.raycaster = new THREE.Raycaster();
     this.pointer = new THREE.Vector2();
@@ -184,7 +193,10 @@ export class Stage {
   }
 
   // ── interaction ─────────────────────────────────────────────
+  markInput() { this.lastInput = performance.now(); }
+
   dragBy(dx, dy, dtMs = 16) {
+    this.markInput();
     if (this.focus.target > 0.5) {
       this.orbit.azT = clamp(this.orbit.azT - dx * 0.006, -1.1, 1.1);
       this.orbit.elT = clamp(this.orbit.elT + dy * 0.004, -0.5, 0.6);
@@ -200,6 +212,7 @@ export class Stage {
   }
 
   nudge(dyaw, del = 0) {
+    this.markInput();
     if (this.focus.target > 0.5) {
       this.orbit.azT = clamp(this.orbit.azT + dyaw, -1.1, 1.1);
     } else {
@@ -208,7 +221,7 @@ export class Stage {
     this.orbit.elT = clamp(this.orbit.elT + del, -0.32, 0.42);
   }
 
-  zoomBy(f) { this.zoomT = clamp(this.zoomT * f, 0.42, 1.3); }
+  zoomBy(f) { this.markInput(); this.zoomT = clamp(this.zoomT * f, 0.42, 1.3); }
 
   resetView() {
     this.zoomT = 1; this.orbit.azT = 0; this.orbit.elT = 0;
@@ -283,9 +296,11 @@ export class Stage {
       this.yawVel = (this.yaw - prev) / Math.max(dt, 1e-3);
       if (Math.abs(this.yaw - this.yawGoal) < 1e-3) { this.yaw = this.yawGoal; this.yawGoal = undefined; }
     } else if (!this.dragging) {
+      const idle = this.autoSpin && !reduced && !this.motionPaused && this.focus.target === 0 && performance.now() - this.lastInput > 4000;
+      const spin = idle ? 0.075 : 0; // one turn in about 80 s
+      this.yawVel += (spin - this.yawVel) * (1 - Math.exp(-dt * (idle ? 0.4 : 2.4)));
       this.yaw += this.yawVel * dt * (reduced ? 0 : 1);
-      this.yawVel *= Math.exp(-dt * 2.4);
-      if (Math.abs(this.yawVel) < 0.002) this.yawVel = 0;
+      if (!idle && Math.abs(this.yawVel) < 0.002) this.yawVel = 0;
     }
     this.yawAcc = (this.yawVel - this.prevYawVel) / Math.max(dt, 1e-3);
     this.prevYawVel = this.yawVel;
@@ -344,6 +359,13 @@ export class Stage {
     _sph.setFromVector3(_rel);
     _sph.theta += this.orbit.az;
     _sph.phi = clamp(_sph.phi - this.orbit.el, 0.35, 2.6);
+    if (!reduced && !this.motionPaused) {
+      // a slow, handheld-like drift that keeps the parallax between chandelier and room alive
+      this.motionTime += dt;
+      const calm = 1 - fb;
+      _sph.theta += Math.sin(this.motionTime * 0.16) * 0.045 * calm;
+      _sph.phi += Math.sin(this.motionTime * 0.12 + 1.3) * 0.014 * calm;
+    }
     _sph.radius *= this.zoom;
     _rel.setFromSpherical(_sph);
     const fp = _tmp.copy(_tgt).add(_rel);
@@ -360,6 +382,10 @@ export class Stage {
 
     // exposure follows the light a little, like a camera would
     const lv = this.light.value;
+    const du = this.dust.material.uniforms;
+    if (!reduced && !this.motionPaused) du.uTime.value += dt;
+    du.uLight.value = lv;
+    du.uScale.value = (this.height * this.dpr) / (2 * Math.tan(THREE.MathUtils.degToRad(this.camera.fov / 2)));
     this.renderer.toneMappingExposure = 0.92 + (1 - lv) * 0.45;
     // light bouncing off walls and floor, approximated by a warm ambient that follows the dimmer
     this.room.hemi.intensity = 0.1 + 0.55 * lv * (this.chandelier.globes.length / 5);

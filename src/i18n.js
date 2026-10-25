@@ -147,6 +147,8 @@ const en = {
   'a11y.dock': 'Chandelier controls',
   'a11y.focused': 'Globe {n} of {total}',
   'a11y.config': '{palette}, {finish}, {globes}: {price}',
+  'ctrl.motion': 'Pause motion',
+  'stage.unavailable': 'The 3D view could not start in this browser, so a photograph of the chandelier is shown instead.',
 };
 
 const fr = {
@@ -287,6 +289,8 @@ const fr = {
   'a11y.dock': 'Commandes du lustre',
   'a11y.focused': 'Globe {n} sur {total}',
   'a11y.config': '{palette}, {finish}, {globes} : {price}',
+  'ctrl.motion': 'Mettre l’animation en pause',
+  'stage.unavailable': 'La vue 3D n’a pas pu démarrer dans ce navigateur ; une photographie du lustre est affichée à la place.',
 };
 
 const pt = {
@@ -427,6 +431,8 @@ const pt = {
   'a11y.dock': 'Controlos do candeeiro',
   'a11y.focused': 'Globo {n} de {total}',
   'a11y.config': '{palette}, {finish}, {globes}: {price}',
+  'ctrl.motion': 'Pausar a animação',
+  'stage.unavailable': 'Não foi possível iniciar a vista 3D neste navegador, por isso é mostrada uma fotografia do candeeiro.',
 };
 
 const de = {
@@ -567,6 +573,8 @@ const de = {
   'a11y.dock': 'Bedienelemente des Leuchters',
   'a11y.focused': 'Kugel {n} von {total}',
   'a11y.config': '{palette}, {finish}, {globes}: {price}',
+  'ctrl.motion': 'Bewegung anhalten',
+  'stage.unavailable': 'Die 3D-Ansicht konnte in diesem Browser nicht starten, deshalb wird ein Foto des Leuchters gezeigt.',
 };
 
 const it = {
@@ -707,6 +715,8 @@ const it = {
   'a11y.dock': 'Comandi del lampadario',
   'a11y.focused': 'Globo {n} di {total}',
   'a11y.config': '{palette}, {finish}, {globes}: {price}',
+  'ctrl.motion': 'Metti in pausa l’animazione',
+  'stage.unavailable': 'La vista 3D non è potuta partire in questo browser, quindi viene mostrata una fotografia del lampadario.',
 };
 
 export const DICT = { en, fr, pt, de, it };

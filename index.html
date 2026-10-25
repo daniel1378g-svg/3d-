@@ -300,12 +300,15 @@
       <button class="dock-icon" id="zoom-out" type="button" aria-label="Zoom out" data-i18n-attr="aria-label:ctrl.zoomOut;title:ctrl.zoomOut"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10h10" /></svg></button>
       <button class="dock-icon" id="zoom-in" type="button" aria-label="Zoom in" data-i18n-attr="aria-label:ctrl.zoomIn;title:ctrl.zoomIn"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10h10M10 5v10" /></svg></button>
       <button class="dock-icon" id="reset-view" type="button" aria-label="Reset view" data-i18n-attr="aria-label:ctrl.reset;title:ctrl.reset"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4.5 10a5.5 5.5 0 1 0 1.7-4M4.5 4.5V8h3.5" /></svg></button>
+      <button class="dock-icon motion-btn" id="motion-btn" type="button" aria-pressed="false" aria-label="Pause motion" data-i18n-attr="aria-label:ctrl.motion;title:ctrl.motion"><svg class="i-pause" viewBox="0 0 20 20" aria-hidden="true"><path d="M7.5 5v10M12.5 5v10" /></svg><svg class="i-play" viewBox="0 0 20 20" aria-hidden="true"><path d="M7 5.5v9l7.5-4.5z" /></svg></button>
     </div>
     <div class="dock-globes" role="group" aria-label="Inspect a globe" data-i18n-attr="aria-label:ctrl.inspect">
       <span class="dock-label" data-i18n="ctrl.inspect">Inspect a globe</span>
       <div class="globe-btns" id="globe-btns"></div>
     </div>
   </div>
+
+  <p class="stage-note" id="stage-note" role="status" data-i18n="stage.unavailable" hidden>The 3D view could not start in this browser, so a photograph of the chandelier is shown instead.</p>
 
   <div class="drag-hint" id="drag-hint" aria-hidden="true" hidden>
     <svg viewBox="0 0 48 24"><path d="M8 12h32M8 12l5-5M8 12l5 5M40 12l-5-5M40 12l-5 5" /></svg>
