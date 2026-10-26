@@ -1,3 +1,4 @@
+import { IS_ARTIFACT } from "@/lib/artifact";
 import { images, largest, srcSet, type ImageId } from "@/lib/images";
 
 type Props = {
@@ -16,7 +17,7 @@ export function Photo({ id, sizes, className, imgClassName, priority, alt, posit
   const info = images[id];
   return (
     <picture className={["photo", className].filter(Boolean).join(" ")} style={style}>
-      <source type="image/avif" srcSet={srcSet(info, "avif")} sizes={sizes} />
+      {!IS_ARTIFACT && <source type="image/avif" srcSet={srcSet(info, "avif")} sizes={sizes} />}
       <source type="image/webp" srcSet={srcSet(info, "webp")} sizes={sizes} />
       <img
         className={["photo__img", imgClassName].filter(Boolean).join(" ")}

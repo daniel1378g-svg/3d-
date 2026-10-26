@@ -5,6 +5,7 @@ import { brand, filmChapters } from "@/content/site";
 import type { DrawnTitle as DrawnTitleData } from "@/lib/drawnTitles";
 import { FrameSequence, SEQUENCE, type SequenceSize } from "@/lib/frameSequence";
 import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
+import { IS_ARTIFACT } from "@/lib/artifact";
 import { useReducedMotion } from "@/lib/motion";
 import { CHAPTER_WINDOWS, DURATION, FRAME_COUNT, progressToTime, timeToFrame } from "@/lib/videoTimeline";
 import { DrawnTitle } from "./DrawnTitle";
@@ -325,9 +326,13 @@ export function Film({ headline }: { headline: DrawnTitleData }) {
           <div className="film__window" ref={windowEl}>
             <div className="film__media" ref={media}>
               <picture>
-                <source media="(prefers-reduced-motion: reduce)" type="image/avif" srcSet="/videos/poster/final-960.avif 960w, /videos/poster/final-1280.avif 1280w, /videos/poster/final-1920.avif 1920w" sizes="(max-width: 899px) 100vw, 94vw" />
+                {!IS_ARTIFACT && (
+  <source media="(prefers-reduced-motion: reduce)" type="image/avif" srcSet="/videos/poster/final-960.avif 960w, /videos/poster/final-1280.avif 1280w, /videos/poster/final-1920.avif 1920w" sizes="(max-width: 899px) 100vw, 94vw" />
+                )}
                 <source media="(prefers-reduced-motion: reduce)" type="image/webp" srcSet="/videos/poster/final-960.webp 960w, /videos/poster/final-1280.webp 1280w, /videos/poster/final-1920.webp 1920w" sizes="(max-width: 899px) 100vw, 94vw" />
-                <source type="image/avif" srcSet="/videos/poster/cover-960.avif 960w, /videos/poster/cover-1280.avif 1280w, /videos/poster/cover-1920.avif 1920w" sizes="(max-width: 899px) 100vw, 94vw" />
+                {!IS_ARTIFACT && (
+  <source type="image/avif" srcSet="/videos/poster/cover-960.avif 960w, /videos/poster/cover-1280.avif 1280w, /videos/poster/cover-1920.avif 1920w" sizes="(max-width: 899px) 100vw, 94vw" />
+                )}
                 <source type="image/webp" srcSet="/videos/poster/cover-960.webp 960w, /videos/poster/cover-1280.webp 1280w, /videos/poster/cover-1920.webp 1920w" sizes="(max-width: 899px) 100vw, 94vw" />
                 <img
                   className="film__cover"

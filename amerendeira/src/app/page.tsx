@@ -1,10 +1,5 @@
-import { Film } from "@/components/Film";
-import { Gallery } from "@/components/Gallery";
-import { Intro, introScript } from "@/components/Intro";
-import { Menus } from "@/components/Menus";
-import { ScrollEffects } from "@/components/ScrollEffects";
-import { Ambience, Fire, Flavour, Footer, Press, Stores, Tradition, Welcome } from "@/components/Sections";
-import { SiteHeader } from "@/components/SiteHeader";
+import { introScript } from "@/components/Intro";
+import { Site } from "@/components/Site";
 import { brand, contact, stores } from "@/content/site";
 import { drawnTitle } from "@/lib/drawnTitles";
 
@@ -33,25 +28,7 @@ export default function Home() {
   };
   return (
     <>
-      <a className="skip-link" href="#conteudo">
-        Saltar para o conteúdo
-      </a>
-      <SiteHeader />
-      <Intro />
-      <main id="conteudo">
-        <Film headline={titles.hero} />
-        <Tradition />
-        <Stores />
-        <Ambience />
-        <Flavour />
-        <Fire title={titles.menus} />
-        <Menus />
-        <Press />
-        <Welcome />
-        <Gallery />
-      </main>
-      <Footer title={titles.contact} />
-      <ScrollEffects />
+      <Site titles={titles} />
       {/* Runs while the HTML is parsed, before the app bundle: see Intro.tsx */}
       <script dangerouslySetInnerHTML={{ __html: introScript }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />

@@ -902,3 +902,36 @@ address { font-style: normal; }
   *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
   .fire__loaf { display: none; }
 }
+
+/* ——— Artifact preview only: permanent "design proposal" label ——— */
+:root { --label-h: 0px; }
+:root:has(.proposal-label) { --label-h: 28px; }
+.proposal-label {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 300;
+  height: var(--label-h);
+  margin: 0;
+  display: grid;
+  place-items: center;
+  padding: 0 16px;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  pointer-events: none;
+}
+@media (max-width: 480px) { .proposal-label { font-size: 9.5px; letter-spacing: 0.04em; } }
+html { scroll-padding-top: calc(var(--header-h) + var(--label-h)); }
+.site-header { top: var(--label-h); }
+.menu-panel { padding-top: var(--label-h); }
+.menus__visual { top: calc(var(--header-h) + var(--label-h) + 4svh); }
+.flavour__intro { top: calc(var(--header-h) + var(--label-h) + 32px); }
+@media (max-width: 899px), (max-aspect-ratio: 1/1) {
+  .film__stage { padding-top: calc(var(--header-h) + var(--label-h) + 8px); }
+}

@@ -5,7 +5,10 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { nav } from "@/content/site";
 import { Logo } from "./Logo";
 
-const MenuPanel = dynamic(() => import("./MenuPanel"), { ssr: false });
+import { IS_ARTIFACT } from "@/lib/artifact";
+import EagerMenuPanel from "./MenuPanel";
+
+const MenuPanel = IS_ARTIFACT ? EagerMenuPanel : dynamic(() => import("./MenuPanel"), { ssr: false });
 const preloadPanel = () => import("./MenuPanel");
 
 export function scrollToHash(hash: string) {
