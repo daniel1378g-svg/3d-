@@ -33,14 +33,14 @@ Caixa do produto (incluindo sombra), em fração do frame: no início x 0,10–0
 fim x 0,025–0,965 / y 0,19–0,885. No fim o pão ocupa quase toda a largura, por isso o frame nunca é
 recortado (nada de `object-fit: cover`): o texto vive nas faixas acima e abaixo do produto.
 
-Fundo: cinzento neutro com vinheta (topo `#a8a8a9`, base `#dad9da`, cantos superiores mais
-escuros). É simples, por isso o site prolonga-o: para cada frame, o pão é removido (convolução
-normalizada sobre os píxeis de croma baixa) e fica uma “placa” de 128×72 px com o fundo real, cujas
-linhas e colunas exteriores repetem o valor onde o frame fica opaco. A página estende essa placa
-para lá das margens do frame (num canvas a 1/6 da resolução, com um blur ligeiro), funde as zonas
-mais afastadas na cor média da aresta respetiva, e o frame entra por cima com as margens esbatidas
-(2 % nos lados, 9 % em cima, 6 % em baixo). O esbatimento lateral nunca toca no pão (que começa a
-2,5 % da margem). Não há remoção de fundo no pão do vídeo.
+Fundo: o clip foi filmado num cinzento neutro com vinheta (topo `#a8a8a9`, base `#dad9da`, cantos
+superiores mais escuros). No site o hero é branco limpo: cada frame é “reiluminado” para branco.
+O fundo de estúdio é estimado longe do pão (convolução normalizada sobre os píxeis de croma baixa,
+com o pão, a sombra e o vapor excluídos por uma margem larga), suavizado no tempo para nunca
+cintilar, e cada píxel é dividido por ele. Os píxeis coloridos (o pão) recebem só 20 % dessa
+correção, de forma suave, por isso a cor e o sombreado do pão ficam como foram filmados; o fundo
+fica branco puro e a sombra de contacto e o vapor mantêm-se, apenas mais claros. O frame encontra o
+palco branco sem qualquer aresta, sem máscaras nem placas de fundo.
 
 ## Segmento e mapeamento
 
@@ -50,10 +50,16 @@ dedicado a cada fase seja proporcional à ação (`src/lib/videoTimeline.ts`):
 
 | Progresso da secção | Tempo do vídeo | Fase |
 | --- | --- | --- |
-| 0–14 % | 0,0–1,6 s | Entrada: massa, os textos do hero saem |
-| 14–64 % | 1,6–4,3 s | Desenvolvimento: crescimento, cortes, chouriço, crosta dourada |
-| 64–94 % | 4,3–8,04 s | Conclusão: vapor |
-| 94–100 % | 8,04 s (último frame) | O pão fica parado em destaque antes da secção seguinte |
+| 0–4 % | 0,0 s (primeiro frame) | Repouso: os textos do hero saem |
+| 4–13 % | 0,0–1,0 s | O primeiro segundo do clip (massa quase parada) |
+| 13–60 % | 1,0–4,3 s | Desenvolvimento: crescimento, cortes, chouriço, crosta dourada |
+| 60–88 % | 4,3–7,04 s | Vapor |
+| 88–96 % | 7,04–8,04 s | O último segundo do clip (pão pronto) |
+| 96–100 % | 8,04 s (último frame) | Repouso no pão acabado antes da secção seguinte |
+
+O scroll da secção é 230 % da altura do ecrã (200 % em telemóveis). Os frames seguem o scroll com
+uma suavização curta e independente da taxa de atualização (constante de tempo de 55 ms), nos dois
+sentidos.
 
 Cada frame é mostrado tal como foi filmado: não há interpolação nem frames inventados.
 
@@ -76,8 +82,9 @@ quando o índice muda.
 
 Memória e rede:
 
-- 193 frames, sem passar disso. Desktop 1280×720 (7,3 MB no total), ecrãs < 900 px ou Save-Data
-  960×540 (4,6 MB). WebP com alfa só nas margens. Placas de fundo: um sprite de 2048×936 px.
+- 193 frames, sem passar disso, em WebP opaco sobre branco. 1920×1080 (resolução da fonte) quando
+  o filme ocupa mais de ~1500 píxeis do ecrã (ecrãs grandes ou de alta densidade); 1280×720 nos
+  restantes casos e sempre com Save-Data.
 - Carregamento progressivo: primeiro 1 frame em cada 16, depois 1 em 8, 4, 2 e todos. O scroll
   funciona desde cedo com a granularidade disponível e mostra sempre o frame carregado mais próximo.
 - O carregamento começa depois da imagem de capa e do conteúdo essencial (`requestIdleCallback`),
@@ -87,15 +94,15 @@ Memória e rede:
 
 ## Ficheiros gerados (`npm run video`)
 
-- `public/videos/sequence/{desktop,mobile}/f_000…192.webp` + `plates.webp` + `manifest.json`
+- `public/videos/sequence/{desktop,mobile}/f_000…192.webp` (1920 e 1280 px) + `manifest.json`
 - `public/videos/poster/cover-{1920,1280,960}.{avif,webp,jpg}`: frame 0 (intro, hero, alternativa)
 - `public/videos/poster/final-{1920,1280,960}.{avif,webp,jpg}`: último frame (conclusão)
-- `public/videos/pao-com-chourico-720p.mp4`: H.264 sem áudio, keyframe a cada 4 frames. Só é
+- `public/videos/pao-com-chourico-720p.mp4`: H.264 sem áudio, sobre branco, keyframe a cada 4 frames. Só é
   usado no botão “Ver o vídeo” do modo de movimento reduzido (reprodução inline com controlos,
   nunca em autoplay).
 - `public/images/cutouts/pao-com-chourico{,-960}.webp`: recorte limpo do pão dourado (frame 101,
-  4,2 s) por chave de croma, sem a sombra de contacto. Usado num único movimento lateral, sobre a
-  fotografia do lume. PNG sem perdas em `media/derived/`.
+  4,2 s) por chave de croma, sem a sombra de contacto. Entra pela esquerda sobre a fotografia do lume
+  e assenta no chão do forno, com luz quente por trás e uma sombra de contacto desenhada em CSS. PNG sem perdas em `media/derived/`.
 - `public/og/a-merendeira.jpg`: imagem de partilha (frame final + logótipo), gerada por
   `scripts/make_og.cjs`.
 
@@ -104,6 +111,6 @@ Memória e rede:
 - `prefers-reduced-motion`: sem scrub; mostra o frame final em grande com a capa ao lado e um
   botão para ver o vídeo inline com controlos.
 - Falha ou lentidão dos frames: a capa (frame 0) está no HTML desde o primeiro byte; se os frames
-  não chegarem, a capa fica e os textos continuam a avançar. Se a capa também falhar, o fundo de
-  estúdio em CSS mantém a composição.
+  não chegarem, a capa fica e os textos continuam a avançar. Se a capa também falhar, o palco
+  branco mantém a composição.
 - Sem JavaScript: a capa estática e todo o conteúdo continuam acessíveis.

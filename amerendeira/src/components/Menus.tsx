@@ -6,31 +6,96 @@ import type { ImageId } from "@/lib/images";
 import { Photo } from "./Photo";
 import { scrollToHash } from "./SiteHeader";
 
+const BOWL = "/images/bowls";
+
 export function Menus() {
   const { menus, menusIntro, ui } = useContent();
   const [active, setActive] = useState(0);
   const list = useRef<HTMLOListElement>(null);
+  // While a quick link scrolls the page, the clicked menu stays selected (the menus passed on
+  // the way must not flash through the pill, photograph and counter).
+  const lockUntil = useRef(0);
 
-  // The menu whose block crosses the middle of the screen is the active one: its photograph
-  // shows in the sticky frame (desktop) and its quick link is marked.
+  // The selected menu is the one whose name and description are closest to the middle of the
+  // screen: the same text the visitor is reading. Pill, photograph, caption, counter and the
+  // full-strength description all follow it.
   useEffect(() => {
     const items = [...(list.current?.querySelectorAll<HTMLElement>(".menu-item") ?? [])];
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (e.isIntersecting) setActive(items.indexOf(e.target as HTMLElement));
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      if (performance.now() < lockUntil.current) return;
+      const mid = window.innerHeight / 2;
+      let best = 0;
+      let bestDistance = Infinity;
+      items.forEach((el, i) => {
+        const name = el.querySelector(".menu-item__name")!.getBoundingClientRect();
+        const text = el.querySelector(".menu-item__text")!.getBoundingClientRect();
+        const d = Math.abs((name.top + text.bottom) / 2 - mid);
+        if (d < bestDistance) {
+          bestDistance = d;
+          best = i;
         }
-      },
-      { rootMargin: "-48% 0px -48% 0px" },
-    );
-    items.forEach((el) => io.observe(el));
-    return () => io.disconnect();
+      });
+      setActive(best);
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+    const onScrollEnd = () => {
+      lockUntil.current = 0;
+      onScroll();
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    window.addEventListener("scrollend", onScrollEnd);
+    update();
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      window.removeEventListener("scrollend", onScrollEnd);
+    };
   }, []);
+
+  const select = (i: number, id: string) => {
+    setActive(i);
+    lockUntil.current = performance.now() + 1400;
+    scrollToHash(`#${id}`);
+  };
 
   const current = menus[active];
 
   return (
     <section id="menus" className="menus section on-dark" aria-labelledby="menus-title">
+      {/* Caldo verde and arroz doce, seen from above, slide in from either side as the section
+          enters and settle around its title (src/components/ScrollEffects.tsx). */}
+      <div className="menus__bowls" aria-hidden="true">
+        <img
+          className="bowl bowl--caldo"
+          data-bowl="-1"
+          src={`${BOWL}/taca-caldo-verde-720.webp`}
+          srcSet={`${BOWL}/taca-caldo-verde-360.webp 360w, ${BOWL}/taca-caldo-verde-720.webp 720w`}
+          sizes="(max-width: 699px) 36vw, 26vw"
+          width={720}
+          height={720}
+          alt=""
+          loading="lazy"
+          decoding="async"
+        />
+        <img
+          className="bowl bowl--arroz"
+          data-bowl="1"
+          src={`${BOWL}/taca-arroz-doce-720.webp`}
+          srcSet={`${BOWL}/taca-arroz-doce-360.webp 360w, ${BOWL}/taca-arroz-doce-720.webp 720w`}
+          sizes="(max-width: 699px) 32vw, 22vw"
+          width={720}
+          height={720}
+          alt=""
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
       <div className="wrap">
         <div className="menus__head" data-lines>
           <div style={{ gridColumn: "1 / span 7" }}>
@@ -55,7 +120,7 @@ export function Menus() {
               aria-current={i === active ? "true" : undefined}
               onClick={(e) => {
                 e.preventDefault();
-                scrollToHash(`#${m.id}`);
+                select(i, m.id);
               }}
             >
               <span>{m.number}</span>
@@ -93,7 +158,6 @@ export function Menus() {
                 key={m.id}
                 id={m.id}
                 className={`menu-item${i === active ? " is-active" : ""}`}
-                onMouseEnter={() => setActive(i)}
                 onFocus={() => setActive(i)}
               >
                 <div className="menu-item__photo">

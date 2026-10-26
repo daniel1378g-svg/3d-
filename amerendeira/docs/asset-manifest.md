@@ -47,6 +47,24 @@ Os originais são guardados sem alterações. As versões otimizadas (AVIF e Web
 
 Versões otimizadas: `public/images/optimized/<nome>-<largura>.{avif,webp}`.
 
+## Imagens geradas (não são fotografias da Merendeira)
+
+Nenhuma fotografia do site original mostra as taças vistas de cima, por isso as duas taças que
+deslizam na entrada de “Os nossos menus” foram geradas com IA (Figma, modelo
+gemini-3.1-flash-image, 26/10/2026), ao estilo da loiça de barro vermelho com flor branca que
+aparece nas fotografias dos menus. São ilustrações da proposta de design: antes de publicar o site
+devem ser substituídas por fotografias reais das taças da Merendeira.
+
+| Ficheiro | Origem | Uso |
+| --- | --- | --- |
+| `media/generated/taca-caldo-verde.png` (1024×1024) → `public/images/bowls/taca-caldo-verde-{360,720}.webp` | gerada (IA), recortada por `scripts/prepare_bowls.py` | Caldo verde, entra pela esquerda |
+| `media/generated/taca-arroz-doce.png` (1024×1024) → `public/images/bowls/taca-arroz-doce-{360,720}.webp` | gerada (IA), recortada por `scripts/prepare_bowls.py` | Arroz doce, entra pela direita |
+
+Resolução das fotografias: as imagens publicadas no site original são as maiores que existem
+(menus 500×333, espaço 660×394, galeria ~525–741 px). Onde aparecem grandes, o zoom de entrada foi
+reduzido para não as ampliar mais do que o necessário; para nitidez total em ecrãs retina são
+precisos os ficheiros originais da sessão fotográfica.
+
 ## Duplicados
 
 - `68b1966201b9ca6eb202841b_8.png` = `sabor-pao-caldo`. Mesma fotografia (diferença média de píxeis ≈ 2,6/255). Usada uma vez no novo site; o original fica guardado.
