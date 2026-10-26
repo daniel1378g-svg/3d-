@@ -1,0 +1,271 @@
+{
+ "hero-detalhe": {
+  "base": "/images/optimized/pao-com-chourico-detalhe",
+  "width": 1920,
+  "height": 959,
+  "widths": [
+   480,
+   800,
+   1200,
+   1600,
+   1920
+  ],
+  "alt": "Pão com chouriço acabado de sair do forno, em grande plano, com a massa aberta e o chouriço à vista",
+  "lqip": "data:image/webp;base64,UklGRroAAABXRUJQVlA4IK4AAACQBACdASoYAAwAPu1iqU2ppaOiMAgBMB2JbACdMoAlsxihf8b0paSX+k87/4AA/t4hi7vPnOFyMoOrkZ/C/6uaesxDSZI+VueEw7H5JwKnJWpuPsMLp8UGFrKueRrx+RrG9U/c5UdUlLSCvNdxqfMRUmS3a9zUb0xYKbH349PAylJwWfp1E8WWYwMOfPtHA/77QWZHG/0JU/AVoUjzLgyodXMM4KDPWpg17fLYAAA="
+ },
+ "chourico-massa": {
+  "base": "/images/optimized/chourico-sobre-a-massa",
+  "width": 1908,
+  "height": 1193,
+  "widths": [
+   480,
+   800,
+   1200,
+   1600,
+   1908
+  ],
+  "alt": "Rodelas de chouriço sobre a massa enfarinhada, com uma mão a prepará-las",
+  "lqip": "data:image/webp;base64,UklGRrAAAABXRUJQVlA4IKQAAACwBACdASoYAA8APu1iqU2ppaOiMAgBMB2JbACdMoAlwBfffVlG/G15zN2KjqAAAP7WWi8oJbdYR99zogrTVlkMnbAxxtv/2hVUdKGx7CV3mIruYWs+TLcgV+uCUVtyoEqA0gKDDpleec5o1VIseL7/IdxV9UIOxeHfS+lXTa6nDHsEXkJBL7DILiyjeIsV91tgi9KjiA7OgjjdWVrBVhZJioAAAA=="
+ },
+ "lume": {
+  "base": "/images/optimized/lume-do-forno-a-lenha",
+  "width": 1920,
+  "height": 800,
+  "widths": [
+   480,
+   800,
+   1200,
+   1600,
+   1920
+  ],
+  "alt": "Chamas do forno a lenha",
+  "lqip": "data:image/webp;base64,UklGRsQAAABXRUJQVlA4ILgAAACwBACdASoYAAoAPu1iqU2ppaOiMAgBMB2JbACdMoRwAdAc22/7811jEm16wgAAAP7qR/V3jC8tx95K1stT31Q4a/+sXixGlOlDc7PB6NiKnLoIGX9NEPEmFALYAxgoHKPBrW8ZTGoYrWwJ7cfgU192v3t/l2mjBFgXj98yGkX98k0jmFzLpNZ9aBiSl+JBpyc+yZ+nszOihmyz86CqVtOc22t3N+mrC+0qYfOPym8LZblelftwAAAA"
+ },
+ "servico": {
+  "base": "/images/optimized/pao-entregue-ao-balcao",
+  "width": 1908,
+  "height": 1193,
+  "widths": [
+   480,
+   800,
+   1200,
+   1600,
+   1908
+  ],
+  "alt": "Colaboradora sorridente entrega um pão com chouriço a um cliente",
+  "lqip": "data:image/webp;base64,UklGRtQAAABXRUJQVlA4IMgAAACwBACdASoYAA8APu1iqU2ppaOiMAgBMB2JZACdIMgguxWcvx3o45SrfoS6RLIAAP70ksXSGhWBhLB0kcMLkl87xXnTY1b5pZ8aW4GwAQoI11XW/Hda+delYEQM2vCXvTknBuPdidIr3N7jEM1u7RVn01BqdpYPsdc25kouyx5K4JMGzyCe4QPN1Z01v/MKFPeKW3w7/HcIvumtpLyP/+f/RvJQNFt3WdsBawi+QO9VKC+tcHo/0w5zZgxxb7t/End9RJc3uSQAAA=="
+ },
+ "loja-lisboa": {
+  "base": "/images/optimized/loja-lisboa",
+  "width": 1536,
+  "height": 1452,
+  "widths": [
+   480,
+   800,
+   1200,
+   1536
+  ],
+  "alt": "Vista aérea do edifício da loja de Lisboa na Avenida 24 de Julho",
+  "lqip": "data:image/webp;base64,UklGRtwAAABXRUJQVlA4INAAAAAwBQCdASoYABcAPu1urlKppiQiqAgBMB2JYwDE3AgAi0WcUMNMzDnOjl8xV7vhP/CA+AD9Kmlplg9r+Mu8+rFisd+tz6ezVUxtrJ5lEx5MZcix5WufIwhL5lLimdzoISQGQzwHaM4N9oicyD3FIe1EqjwKGbj0eTaiQH8QhCbkW0bQWagk+PCdJfapt3uimoUEHz4wOxPKAONvwguawH+r78jzhNJ90dfME+XaRBHK6cq2P9+blVJ/MY/oGNDuTI3mCb5/UQ7IaZPkJCWAJ4AA"
+ },
+ "loja-caparica": {
+  "base": "/images/optimized/loja-costa-da-caparica",
+  "width": 1536,
+  "height": 1452,
+  "widths": [
+   480,
+   800,
+   1200,
+   1536
+  ],
+  "alt": "Sala da loja da Costa da Caparica, com mesas, azulejos e candeeiro de ferro",
+  "lqip": "data:image/webp;base64,UklGRgoBAABXRUJQVlA4IP4AAACwBQCdASoYABcAPu1grFAppSQisBgIATAdiWIAnTKAJcYLGArf0QJjXsauyZQ071BJiaZgcMAA/rIfTDbkkc8bLz535zdO/kNnEqt7SA6/k72roeFxoB2d/KFqLAOaAjorC48sZr3CnRai8oi2metpNIbm0m4umjGyvj0LyBuXB3lbeYueC1Q/WsmKhCtk73rzCHNNXojN9LIFB+xCFg/5kDgeDLCju4LKYwIymKJPszHwm8Jpc5yiwIHN4o4N3LI46gVL7ttzcT15hikAvnKQSfcU/7zt/7PnBF99H18KzWMwROxNxV+PUTIed5pGJJe6+CEYwpJpbyGBAAAAAA=="
+ },
+ "sabor-pao-caldo": {
+  "base": "/images/optimized/pao-com-chourico-e-caldo-verde",
+  "width": 740,
+  "height": 740,
+  "widths": [
+   480,
+   740
+  ],
+  "alt": "Pão com chouriço sobre tábua de madeira, com uma tigela de caldo verde",
+  "lqip": "data:image/webp;base64,UklGRgABAABXRUJQVlA4IPQAAACQBgCdASoYABgAPu1wsFIppiSiqAgBMB2JbAC2+oMYOHdb5gtjY4P5JLXR9r/uyIQyrXbK3HVCkc+roDwAAP7w0VnVIYYrYlt511vOXF5EGpoRPzPqmpr+nJRGSGSp7gJq3Ku7Zt8YD8nunp6raKkhqk3RDU6H/sRDI0Ea/wv4SuGAVLBn6kjBtDAUMc7kRVAplzydusnLQ4Bb6smYKKb0pNGsqDFjGjjBeh/U9vehGfiZL2RFuXqGRmHlluJy680+OyAvMfgcZNILuYrqU9Gam+SW1edwxeojrqFoJMSebTcfYsfLHsn611gcYmts1wIoaAAA"
+ },
+ "sabor-maos-massa": {
+  "base": "/images/optimized/maos-chourico-na-massa",
+  "width": 524,
+  "height": 740,
+  "widths": [
+   480,
+   524
+  ],
+  "alt": "Mãos a colocar rodelas de chouriço sobre a massa, entre bolas de massa enfarinhadas",
+  "lqip": "data:image/webp;base64,UklGRtoAAABXRUJQVlA4IM4AAAAwBgCdASoYACIAPu1mqE2ppaOiNVQIATAdiUAW33FEuOTNFsTOxg15Htq70Ish2ocMwxE/CL9DakYAAP7hd+SzzrAkfXqeU+GUiLODg/aOTC591p4N4ZJ1Tav0ePWFJJnlHk168CLK41UMBvinc0d7RxqMXl2u90rWtV2+e6D1LtOZaLwKKSnt2mDSYsfojhljdVaZA0vxbAl8cfQPBrERZGGHLRDnrgnJRecwpM1NwfTcxOLBh4AJSKBUN5bAGzlK3IxxbzL2ZRIovLi4AA=="
+ },
+ "sabor-cliente": {
+  "base": "/images/optimized/cliente-a-mesa",
+  "width": 524,
+  "height": 740,
+  "widths": [
+   480,
+   524
+  ],
+  "alt": "Mulher sorridente à mesa, com um sumo de laranja e uma tigela de barro",
+  "lqip": "data:image/webp;base64,UklGRigBAABXRUJQVlA4IBwBAAAQBwCdASoYACIAPu1ksFEppSSiqrgKATAdiWwAsR8l/53QAuJC9aIbg6uiDiIBfjEXsFLEjrYPDjgMNuAYX9d4AAD+S/kuFVS3VVa/FjtjC4RmRfRT+NSkxGs5Ii9G+TpQ/B2eU94SBh8lt0NrtfregPSlx/YntdyAIRV/e7ila4ejz0AstEfMH+TbNS9zepD774o/8EbV1h2Sw4gaylSc7mG8Qvo9dBLZv28Ixe0Oc1nWoHcNjOEsyqwMXhmCXiUcCcIpAw919o5vus9xBEgXWS1pmo/a04qeoNXMm58Fune6G1yW1s3FxbNkgQYOOwel4cpkRly0f8UNPvIYVXhHj+kz2kwFZca59a/Jl94d1K8HZYS+DNGk0AAAAA=="
+ },
+ "menu-bebida": {
+  "base": "/images/optimized/menu-bebida",
+  "width": 500,
+  "height": 333,
+  "widths": [
+   480,
+   500
+  ],
+  "alt": "Menu Bebida: pão com chouriço sobre tábua com um copo de bebida",
+  "lqip": "data:image/webp;base64,UklGRpQAAABXRUJQVlA4IIgAAAAwBACdASoYABAAPu1iqU2ppaOiMAgBMB2JbACdMoADJ5+JE5w7s+hnIYAA/uyAsxAKtBkzqDS35DISez0KXmymZgok3PxSZsyuEsHtY3Jl5KzciUkqhmBJtJ8n8w6d30AP0NMjGLVSCxwXZPLU8i00ibSCnVQC678wospqGp1nTNrFlSO15mAA"
+ },
+ "menu-duo": {
+  "base": "/images/optimized/menu-duo",
+  "width": 500,
+  "height": 333,
+  "widths": [
+   480,
+   500
+  ],
+  "alt": "Menu Duo: pão com chouriço, caldo verde e sumo de laranja",
+  "lqip": "data:image/webp;base64,UklGRqIAAABXRUJQVlA4IJYAAABwBACdASoYABAAPu1iqU2ppaOiMAgBMB2JbACdMoR3ACn+QDKWPPlnBuo2RAD+7I1hdCLAUGN7ImmZBZ/UhvPwnLRJQD5TSa6B05s27vlFvJK+10fGgvJfL5Uc9Bw5T1bHd62yCR9GvSAPd7QbokBfwdG7w6q/MSrRJbIi1D7WJMANllNQ1OmmCvHtdxW9nsG+uA+AAAA="
+ },
+ "menu-merendeira": {
+  "base": "/images/optimized/menu-merendeira",
+  "width": 500,
+  "height": 333,
+  "widths": [
+   480,
+   500
+  ],
+  "alt": "Menu Merendeira: pão com chouriço, caldo verde, arroz doce, café expresso e uma cerveja",
+  "lqip": "data:image/webp;base64,UklGRrYAAABXRUJQVlA4IKoAAABQBACdASoYABAAPu1iqU2ppaOiMAgBMB2JbACdMoR3ABC0d/fmklzYz+AAAP7sjSFyZGKxcTFFHWgRfdNxj3E8uC7ud7bDVtO27n5mx6GIbxrX2ldxUhOFmEWI4Z3vuoMuNaNO+BEFups2USxAvmrnA3KkmjvcM5F/V2H7rzFiPAeaap/B5CFMW58VldacC9PL0OTAg357T8zxCNnm7gkdfxlLFKlpUzBAAA=="
+ },
+ "menu-sopa": {
+  "base": "/images/optimized/menu-sopa",
+  "width": 500,
+  "height": 333,
+  "widths": [
+   480,
+   500
+  ],
+  "alt": "Menu Sopa: pão estaladiço sobre tábua com uma tigela de sopa",
+  "lqip": "data:image/webp;base64,UklGRpwAAABXRUJQVlA4IJAAAAAwBACdASoYABAAPu1iqU2ppaOiMAgBMB2JbACdACIJvOIMNxEsTvDY3AAA/uyNYXQiwFBvTdxbzSJldXFLqTk47bz7J73I6loyUCTLMjsz+8fiM+1eOYgu/PQh+C4Vm+aYl+dfI06J01tgWP7jZ+eQH8eF2vHRQdtoJt1yd09Rm28hs8iSz0IeWXEAHkAAAAA="
+ },
+ "espaco-forno": {
+  "base": "/images/optimized/espaco-paes-no-forno",
+  "width": 660,
+  "height": 394,
+  "widths": [
+   480,
+   660
+  ],
+  "alt": "Pães com chouriço a cozer no forno a lenha",
+  "lqip": "data:image/webp;base64,UklGRqYAAABXRUJQVlA4IJoAAACwBACdASoYAA4APu1iqU2ppaOiMAgBMB2JZgCdMoRwAdCVF2kRLW8UfxYvGrK6AP7tFtgkxlhflRH4mZ4koMOeEIvDtA2W9PQMCV6idNGqG9xSU6PzTQI9NoO0M1kq1y7hy+3m78X5Z9CTG1p0GZ91MxbuhEeCj1oO0h9cbMRMw4VyZgum2OLqQWMN8kAPVkVYvkOOJR81QAAA"
+ },
+ "espaco-balcao": {
+  "base": "/images/optimized/espaco-balcao-e-fornos",
+  "width": 660,
+  "height": 394,
+  "widths": [
+   480,
+   660
+  ],
+  "alt": "Balcão com pães e loiça de barro, com os fornos a lenha ao fundo",
+  "lqip": "data:image/webp;base64,UklGRswAAABXRUJQVlA4IMAAAACwBACdASoYAA4APu1iqU2ppaOiMAgBMB2JQBOgMX/Z2v0mLL+S8pizIt4XOEIAAPurrPVFIbieU2UL9xBg9fXvi34yD03HH8Cz9VzlByDRUFAq8fILzFti37ovE/FVHniuSnl5WxzleX8b4OAi9BhkbAQ/IBV4pBJ8D3zhPMKR546sOqhhXvKb0tiMTj4Srb869q4OXWxwRDdncW2b3XzWSBxpx/j4P8/w8bT/KMgDAgNL4K4ZhtbVBLMLBmW6QAA="
+ },
+ "espaco-arcadas": {
+  "base": "/images/optimized/espaco-sala-arcadas",
+  "width": 660,
+  "height": 394,
+  "widths": [
+   480,
+   660
+  ],
+  "alt": "Sala com arcadas, mesas de madeira e mezanino",
+  "lqip": "data:image/webp;base64,UklGRq4AAABXRUJQVlA4IKIAAABQBACdASoYAA4APu1iqU2ppaOiMAgBMB2JaACdMoAC/xKzuqqGwZTcw1wAAM42krWsWnewBIaVBz3KYXLjG2kdh7u0nCvIE5mJ8qnpnByteBAlk4uNRQDW62D6SuAcK5CxnMAR6hSsc+L1Wzf5/kGWv0tiO4j8WIe6RGxa83UEncdwmeOXd7NjpqT10L186HTO8KlPj8u4F2sqZHVNAKJMAAA="
+ },
+ "espaco-arcos": {
+  "base": "/images/optimized/espaco-sala-arcos",
+  "width": 660,
+  "height": 394,
+  "widths": [
+   480,
+   660
+  ],
+  "alt": "Sala de refeições sob arcos de pedra, com o forno ao fundo",
+  "lqip": "data:image/webp;base64,UklGRsYAAABXRUJQVlA4ILoAAABwBACdASoYAA4APu1iqU2ppaOiMAgBMB2JQBOkGQhwNqqVxYRh4wTevSAFgAD9/z2P9gFzHg1CY55IpvjWtpZeLRp1UxJiRRgZ/CXTMCKEETKWImCE2G0yuJXyaW/C0NN3L79/I71tNIX7LJPtoYTgzDYOdf/yhYcam5t9LV8rhT1mWmCNr8VHSfiOpyxMoeK5Dqn/ICpfFuc3iL7o/02bNs+idQDqCo0coy2RQUE0rmv/sGbs/AGAAAA="
+ },
+ "mesa-composta": {
+  "base": "/images/optimized/mesa-pao-caldo-arroz-doce",
+  "width": 660,
+  "height": 394,
+  "widths": [
+   480,
+   660
+  ],
+  "alt": "Pão com chouriço com caldo verde, arroz doce, café e uma caneca",
+  "lqip": "data:image/webp;base64,UklGRqYAAABXRUJQVlA4IJoAAABwBACdASoYAA4APu1iqU2ppaOiMAgBMB2JbACdMoACoPELjWBVp0Nae83QAADK8J6c5yXOXnV7Byl7N6g8mssgv1tFsDkg8XnnjtQbeh+gOFt/dXdyYL7Kl+efq3X3kicpsGhEjttSE1G5w8cNLgx5H+WPYctawIGyv4W8geir4cfagn6UcWbG3XCO6jYesBMM8RzRBArduQAA"
+ },
+ "galeria-letreiro": {
+  "base": "/images/optimized/letreiro-e-brinde",
+  "width": 740,
+  "height": 740,
+  "widths": [
+   480,
+   740
+  ],
+  "alt": "Duas pessoas brindam por baixo do letreiro amarelo “a Merendeira”",
+  "lqip": "data:image/webp;base64,UklGRvQAAABXRUJQVlA4IOgAAACQBQCdASoYABgAPu1qrVEppaQiqAqpMB2JZAC+SYxicKs93OTba/lSdImXAgfCp6ZHAwzCAAD+7U4N8Zu1Ad+qzGSoKj6xWnMQbHXe0tAcwpo3v6gD4GAxz8eHkepzVkMMyTfz0AENNw7rHoAwrkla7GUprnKXa4d32BOU8ZRYUgkoZ6rsXGvlM7eXV6LmH5uldjD0WQMwLTURMF89AD40IBSNv73GGAzFpNYdBcBe8psqrzLTfrYb9MH4oFFeThGuzzen3KQ2Vzh0FxcH33WdS06Z0pWuYYhFNtv2iZmuIy7kws28AAAA"
+ },
+ "galeria-maos-paes": {
+  "base": "/images/optimized/paes-servidos-no-prato",
+  "width": 524,
+  "height": 740,
+  "widths": [
+   480,
+   524
+  ],
+  "alt": "Colaboradora segura um prato de barro com quatro pães com chouriço",
+  "lqip": "data:image/webp;base64,UklGRiIBAABXRUJQVlA4IBYBAABQBwCdASoYACIAPu1iolEppKKisBVRMB2JZACuTzL3osgBEjQA9+zYSNimwbR4r6S7+p/ViiWsLLn2lngiUnmdfCYAAP6xdcn2u1OrAqx4aoUv1MdLIsYAtk3CH+CFBmjOY0DmLVZV0ezIB7e5O/gvJMSu7jd/u5BgYzk20DDvrttEYKQXYUnmuWupJLbECgeDnB4xTYFn59frIF+wh+oxUR7et+2yrtDf5ZwvLniW4ZdjQ8zEqeO9r0eorYbJgcgxVKOf/c2pho3rl+THWpfUV+++jcSECPM6Yke9XNZwfX21V2AjiGSktamCHeCX52fXw9CHgG0dTPj6s4lKGl0GCkBIgUoZILA6KvK59f+uezEZ/0nAAA=="
+ },
+ "galeria-caldo": {
+  "base": "/images/optimized/caldo-verde-a-servir",
+  "width": 524,
+  "height": 740,
+  "widths": [
+   480,
+   524
+  ],
+  "alt": "Caldo verde com chouriço a ser servido numa tigela de barro, com o forno aceso ao fundo",
+  "lqip": "data:image/webp;base64,UklGRkgBAABXRUJQVlA4IDwBAACQBwCdASoYACIAPu1qqE8ppiOiKqwBMB2JbACdMsMixHoNoUKYjyEBTP/2+dczZtOwSrFT6y8dpP4uHBVyF8tN3ylfVAAA/d9WWSyTjipVbCtIzhDLR2gTehtiYG/hsQx0UOzDSY1YPF4dK5e0lTsjc5nEYYGG88K2KAWdY5G+T/WR8nzzqCGoRnOFAnWSwu976lG+GYOA4nQl7L1IPTD3ZYuSH0yBNL1V9eW2s4RPJmuZny5IMAYluR5l5LSb/godGTnWPil5VBvPM4utQmz3+39c26y/5ct3ZLipG2pZDdvX9tvCOi6gg4cNz9YpZ66l7G9R4dQK9zL8rem3Avvbbv/ApQ+RBzwemFn/R9SNFCCphayo7GkvVYzy93MBesSSINK/Vj9TZSNNa8KV8oWPY9y2AC7Vp/gDAAAA"
+ },
+ "galeria-preparacao": {
+  "base": "/images/optimized/preparacao-na-bancada",
+  "width": 524,
+  "height": 739,
+  "widths": [
+   480,
+   524
+  ],
+  "alt": "Colaboradora com fita e avental aos quadrados amarelos a trabalhar na bancada da massa",
+  "lqip": "data:image/webp;base64,UklGRggBAABXRUJQVlA4IPwAAAAQBwCdASoYACIAPu1mqk4ppaQiKrgN+TAdiWQAwrNyZb84NMJ/ZmABYGq+VdTYseEu36FOSp7CgC/Bune1HNIQAAD+VGeH4udljrZmJ84eD8fRVi47zOM/8b9YrO/BZ/9XeefFrJKTAFOvXDAxKHmEkmr8HhZl9Rz1byoV+w6AfpCZ1COoDnEN5ZU0sw2jT94xM/xA9pWO1+mg8EY3HJ/4PfvyIgknquzTmSBFcqnkQbqIE/Kz88APrIwFbU6cgUsu2ZQwsNVAqILZDzUzTyj7ZAcL78DVBMwxQq6yrK/I3Hco1Fo9L7dOI+vOVvVTTqHEkXMgv26xCdgAAAA="
+ },
+ "galeria-forno": {
+  "base": "/images/optimized/pao-no-forno-a-lenha",
+  "width": 520,
+  "height": 736,
+  "widths": [
+   480,
+   520
+  ],
+  "alt": "Pães com chouriço dentro do forno a lenha, com a chama ao fundo",
+  "lqip": "data:image/webp;base64,UklGRigBAABXRUJQVlA4IBwBAADQBgCdASoYACIAPu1qrlAppaQipWzJMB2JbACdM3JFwHdvuTQwCsCjMbNB0WHW4mPrSXrtfEMVk5hXlhIeaMgA/uxb67FbdXVdHZyFJVT8us/FiecjVZxEBnY6/SrkJsfcUVYJGLvUZ5X/RT1RhElloNDxM7w871/Wv1ykQKf1bRGPw/5/T3wsqtNSL9ZCqBHjZbMMDjR3ts/DOpNsND9pKRQ2S6eHFEV4LEqJmduRl/MP5PNQggc1npspgcS+PZxbNMzT0M9BvflSzXDlfcCtu150B2155KyfltpTAIQzgX4gcrvzz8JPxMqRgTv+qUTUcpLUI116BZRTmHysxHxEEvFax1VT+DiJ+kXXngX3NWzzJkQgZZElJIAAAA=="
+ }
+}

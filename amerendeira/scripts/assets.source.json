@@ -1,0 +1,303 @@
+{
+  "cdn": "https://cdn.prod.website-files.com/68b006d7c9bdcd71b755261d/",
+  "surveyed": "2026-10-26, https://amerendeira.pt/ (Chromium/Playwright, 1440×900 e 390×844, scroll completo, menu aberto)",
+  "brand": [
+    {
+      "id": "logo",
+      "file": "68b1bf4db7fc6ab7516a2311_A_Merendeira_Logo.svg",
+      "local": "brand/logo-a-merendeira.svg",
+      "description": "Logótipo “A MERENDEIRA” (vetorial, viewBox 136.2×26, cor #221F20)",
+      "section": "Navegação (link “home”)",
+      "use": "Intro, navegação, rodapé"
+    },
+    {
+      "id": "icon",
+      "file": "69aa07742e80cf36e76973ee_Merendeira_Icon.png",
+      "local": "brand/icon-m-256.png",
+      "description": "Monograma “m” sublinhado (256×256)",
+      "section": "<link rel=apple-touch-icon>",
+      "use": "apple-touch-icon, ícone da app"
+    },
+    {
+      "id": "favicon",
+      "file": "68b1c03095edcb7ce5fe705c_A_Merendeira_Favicon.png",
+      "local": "brand/favicon-32.png",
+      "description": "Monograma “m” (32×32)",
+      "section": "<link rel=shortcut icon>",
+      "use": "favicon"
+    },
+    {
+      "id": "title-boa-nas-horas",
+      "file": "68b1c61bc65390a06e619da7_BoaNasHoras.svg",
+      "local": "brand/titulo-e-boa-nas-horas.svg",
+      "description": "Título desenhado “é boa nas horas” (texto em vetor)",
+      "section": "Hero (#Top)",
+      "use": "Hero, sobre o vídeo"
+    },
+    {
+      "id": "title-os-nossos-menus",
+      "file": "68b1c8b9fbd5bf83c4e5e1f8_OsNossosMeenus-04.svg",
+      "local": "brand/titulo-os-nossos-menus.svg",
+      "description": "Título desenhado “os nossos menus” (texto em vetor)",
+      "section": "Antes de #menus, sobre a fotografia do lume",
+      "use": "Abertura da secção Menus"
+    },
+    {
+      "id": "title-fala-connosco",
+      "file": "68b1db1f414165d9ffa6f56e_FalaConnosco.svg",
+      "local": "brand/titulo-fala-connosco.svg",
+      "description": "Título desenhado “fala connosco” (texto em vetor)",
+      "section": "Rodapé (#contact)",
+      "use": "Contactos / rodapé"
+    },
+    {
+      "id": "icon-instagram",
+      "file": "68b006d8c9bdcd71b75526b0_instagram-icon.svg",
+      "local": "brand/icon-instagram.svg",
+      "description": "Ícone Instagram (contorno claro)",
+      "section": "Menu de navegação aberto",
+      "use": "Referência; o novo site usa o mesmo desenho inline para herdar a cor"
+    },
+    {
+      "id": "icon-arrow",
+      "file": "68b006d8c9bdcd71b7552691_dark-arrow.svg",
+      "local": "brand/icon-arrow.svg",
+      "description": "Seta dos botões",
+      "section": "Botões “Menus”, “Ver no mapa”, “Conhece os menus”",
+      "use": "Referência; o novo site usa o mesmo traço inline"
+    }
+  ],
+  "photos": [
+    {
+      "id": "hero-detalhe",
+      "file": "68b191bdc601d6801ada1d70_Container.png",
+      "local": "pao-com-chourico-detalhe",
+      "alt": "Pão com chouriço acabado de sair do forno, em grande plano, com a massa aberta e o chouriço à vista",
+      "description": "Grande plano de pães com chouriço, tons quentes",
+      "section": "Imagem de largura total a seguir ao hero",
+      "use": "Tradição — imagem principal com revelação por máscara"
+    },
+    {
+      "id": "chourico-massa",
+      "file": "68b1923e1fdc9b320ad70cca_Section.png",
+      "local": "chourico-sobre-a-massa",
+      "alt": "Rodelas de chouriço sobre a massa enfarinhada, com uma mão a prepará-las",
+      "description": "Rodelas de chouriço sobre massa, mão enfarinhada",
+      "section": "Experiência e ambiente",
+      "use": "Experiência e ambiente — imagem de abertura"
+    },
+    {
+      "id": "lume",
+      "file": "68b1931149d940874bb4abf0_Section2.png",
+      "local": "lume-do-forno-a-lenha",
+      "alt": "Chamas do forno a lenha",
+      "description": "Lume e brasas no forno a lenha",
+      "section": "Por baixo do título “os nossos menus”",
+      "use": "Abertura da secção Menus"
+    },
+    {
+      "id": "servico",
+      "file": "68b1940a6eb7e64763a67137_Section3.png",
+      "local": "pao-entregue-ao-balcao",
+      "alt": "Colaboradora sorridente entrega um pão com chouriço a um cliente",
+      "description": "Colaboradora com fita aos quadrados entrega pão a um cliente",
+      "section": "Entre Imprensa e Galeria de sabores",
+      "use": "Hospitalidade — imagem de largura total"
+    },
+    {
+      "id": "loja-lisboa",
+      "file": "68c14bc76fa8f13b05aa1939_M_Lisboa.png",
+      "local": "loja-lisboa",
+      "alt": "Vista aérea do edifício da loja de Lisboa na Avenida 24 de Julho",
+      "description": "Vista aérea do edifício da Av. 24 de Julho",
+      "section": "Lojas — Lisboa",
+      "use": "Lojas — Lisboa"
+    },
+    {
+      "id": "loja-caparica",
+      "file": "68c14bc7c8a47b1cb647fbea_M_Caparica.png",
+      "local": "loja-costa-da-caparica",
+      "alt": "Sala da loja da Costa da Caparica, com mesas, azulejos e candeeiro de ferro",
+      "description": "Interior da loja da Costa da Caparica",
+      "section": "Lojas — Costa da Caparica",
+      "use": "Lojas — Costa da Caparica"
+    },
+    {
+      "id": "sabor-pao-caldo",
+      "file": "68b192b5b12876dd25277935_64ae6970e0e50719c3de204c_bilal-mansuri-pzffomQ8nSI-unsplash-p-2000.webp.png",
+      "local": "pao-com-chourico-e-caldo-verde",
+      "alt": "Pão com chouriço sobre tábua de madeira, com uma tigela de caldo verde",
+      "description": "Pão com chouriço em tábua com caldo verde em tigela de barro (nome do ficheiro herdado do template; conteúdo é da Merendeira)",
+      "section": "O sabor em imagens (1.ª) e Galeria de sabores (6.ª, ficheiro 8.png, mesma fotografia)",
+      "use": "O sabor em imagens"
+    },
+    {
+      "id": "sabor-maos-massa",
+      "file": "68b192b5d58aa6595fe24a47_64ae69700ad0f3afba5cf9cb_bilal-mansuri-9t_g-Wwpxww-unsplash.webp.png",
+      "local": "maos-chourico-na-massa",
+      "alt": "Mãos a colocar rodelas de chouriço sobre a massa, entre bolas de massa enfarinhadas",
+      "description": "Mãos a colocar chouriço na massa (nome herdado do template)",
+      "section": "O sabor em imagens (2.ª)",
+      "use": "O sabor em imagens"
+    },
+    {
+      "id": "sabor-cliente",
+      "file": "68b192b55b9199da8dd15d06_64ae6970e0e50719c3de20e3_bilal-mansuri-yf8X5_FkIUY-unsplash.webp.png",
+      "local": "cliente-a-mesa",
+      "alt": "Mulher sorridente à mesa, com um sumo de laranja e uma tigela de barro",
+      "description": "Pessoa sorridente à mesa (nome do ficheiro herdado do template)",
+      "section": "O sabor em imagens (3.ª)",
+      "use": "O sabor em imagens"
+    },
+    {
+      "id": "menu-bebida",
+      "file": "68b19361144cdf76ed4b7fa3_ME101.JPG",
+      "local": "menu-bebida",
+      "alt": "Menu Bebida: pão com chouriço sobre tábua com um copo de bebida",
+      "description": "Pão com chouriço + bebida escura em copo",
+      "section": "Menus — 01. Menu Bebida",
+      "use": "Menus — Menu Bebida"
+    },
+    {
+      "id": "menu-duo",
+      "file": "68b19361f8898e0d162d9ad0_ME106.JPG",
+      "local": "menu-duo",
+      "alt": "Menu Duo: pão com chouriço, caldo verde e sumo de laranja",
+      "description": "Pão com chouriço + caldo verde + sumo",
+      "section": "Menus — 02. Menu Duo",
+      "use": "Menus — Menu Duo"
+    },
+    {
+      "id": "menu-merendeira",
+      "file": "68b19361cc1c695aa0fdb06c_ME112%20%281%29.JPG",
+      "local": "menu-merendeira",
+      "alt": "Menu Merendeira: pão com chouriço, caldo verde, arroz doce, café expresso e uma cerveja",
+      "description": "Pão com chouriço + caldo verde + arroz doce + café + cerveja",
+      "section": "Menus — 03. Menu Merendeira",
+      "use": "Menus — Menu Merendeira"
+    },
+    {
+      "id": "menu-sopa",
+      "file": "691128b33ccf0b33ceff1a61_ME107.png",
+      "local": "menu-sopa",
+      "alt": "Menu Sopa: pão estaladiço sobre tábua com uma tigela de sopa",
+      "description": "Pão + sopa em tigela de barro",
+      "section": "Menus — 04. Menu Sopa",
+      "use": "Menus — Menu Sopa"
+    },
+    {
+      "id": "espaco-forno",
+      "file": "68b1cede967b1e8d253813b9_NIT.png",
+      "local": "espaco-paes-no-forno",
+      "alt": "Pães com chouriço a cozer no forno a lenha",
+      "description": "Fornada de pães dentro do forno a lenha (no site original aparece ao passar sobre “NiT”)",
+      "section": "Imprensa — linha NiT (imagem de hover)",
+      "use": "Experiência e ambiente — tira de fotografias do espaço"
+    },
+    {
+      "id": "espaco-balcao",
+      "file": "68b1cedebd248ce579d4f6d2_Tripadvisor.png",
+      "local": "espaco-balcao-e-fornos",
+      "alt": "Balcão com pães e loiça de barro, com os fornos a lenha ao fundo",
+      "description": "Balcão e fornos (no site original está na linha “El País” — imagens trocadas)",
+      "section": "Imprensa — linha El País (imagem de hover, nome Tripadvisor)",
+      "use": "Experiência e ambiente — tira de fotografias do espaço"
+    },
+    {
+      "id": "espaco-arcadas",
+      "file": "68b1cede3b5eba5cef80db9e_ElPais.png",
+      "local": "espaco-sala-arcadas",
+      "alt": "Sala com arcadas, mesas de madeira e mezanino",
+      "description": "Sala com arcadas e mezanino (no site original está na linha “Tripadvisor” — imagens trocadas)",
+      "section": "Imprensa — linha Tripadvisor (imagem de hover, nome ElPais)",
+      "use": "Experiência e ambiente — tira de fotografias do espaço"
+    },
+    {
+      "id": "espaco-arcos",
+      "file": "68b1cede232a83ce024b2730_Yelp.png",
+      "local": "espaco-sala-arcos",
+      "alt": "Sala de refeições sob arcos de pedra, com o forno ao fundo",
+      "description": "Sala sob arcos (imagem de hover da linha Yelp)",
+      "section": "Imprensa — linha Yelp (imagem de hover)",
+      "use": "Experiência e ambiente — tira de fotografias do espaço"
+    },
+    {
+      "id": "mesa-composta",
+      "file": "68b1cede6c8afd212a5e6709_Cidade.png",
+      "local": "mesa-pao-caldo-arroz-doce",
+      "alt": "Pão com chouriço com caldo verde, arroz doce, café e uma caneca",
+      "description": "Composição de mesa com pão, caldo verde, arroz doce e café (hover da linha Guia da Cidade)",
+      "section": "Imprensa — linha Guia da Cidade (imagem de hover)",
+      "use": "Galeria de sabores"
+    },
+    {
+      "id": "galeria-letreiro",
+      "file": "68b1963e1f4a43ed53fd9299_9.png",
+      "local": "letreiro-e-brinde",
+      "alt": "Duas pessoas brindam por baixo do letreiro amarelo “a Merendeira”",
+      "description": "Letreiro amarelo “aMerendeira” e brinde",
+      "section": "Galeria de sabores (1.ª)",
+      "use": "Galeria de sabores"
+    },
+    {
+      "id": "galeria-maos-paes",
+      "file": "68b195be4a87d23847d67681_5.png",
+      "local": "paes-servidos-no-prato",
+      "alt": "Colaboradora segura um prato de barro com quatro pães com chouriço",
+      "description": "Prato com quatro pães com chouriço, avental aos quadrados",
+      "section": "Galeria de sabores (2.ª)",
+      "use": "Galeria de sabores"
+    },
+    {
+      "id": "galeria-caldo",
+      "file": "68b195be3850a8f057cc0b3a_3.png",
+      "local": "caldo-verde-a-servir",
+      "alt": "Caldo verde com chouriço a ser servido numa tigela de barro, com o forno aceso ao fundo",
+      "description": "Servir caldo verde, forno aceso ao fundo",
+      "section": "Galeria de sabores (3.ª)",
+      "use": "Galeria de sabores"
+    },
+    {
+      "id": "galeria-preparacao",
+      "file": "68b195bec889b6fb18d6cc66_7.png",
+      "local": "preparacao-na-bancada",
+      "alt": "Colaboradora com fita e avental aos quadrados amarelos a trabalhar na bancada da massa",
+      "description": "Colaboradora na bancada de preparação",
+      "section": "Galeria de sabores (4.ª)",
+      "use": "Galeria de sabores"
+    },
+    {
+      "id": "galeria-forno",
+      "file": "68b195be17f3f31a5a7921d2_64ae69700ad0f3afba5cf9cbw_bilal-mansuri-9t_g-Wwpxww-unsplash.webp.png",
+      "local": "pao-no-forno-a-lenha",
+      "alt": "Pães com chouriço dentro do forno a lenha, com a chama ao fundo",
+      "description": "Pão no forno a lenha (nome herdado do template)",
+      "section": "Galeria de sabores (5.ª)",
+      "use": "Galeria de sabores"
+    }
+  ],
+  "duplicates": [
+    {
+      "file": "68b1966201b9ca6eb202841b_8.png",
+      "sameAs": "sabor-pao-caldo",
+      "note": "Mesma fotografia (diferença média de píxeis ≈ 2,6/255). Usada uma vez no novo site; o original fica guardado."
+    }
+  ],
+  "excluded": [
+    {
+      "file": "68b006d8c9bdcd71b755269c_dada_design-YmtlGsmTcgk-unsplash.webp",
+      "dims": "1920×1029",
+      "reason": "Fotografia de uma cama (resto do template Webflow de mobiliário, classe “is-bed”), carregada na secção Lojas. Não pertence à Merendeira: descarregada para verificação e não usada."
+    },
+    {
+      "file": "68b006d8c9bdcd71b755269d_hemant-kanojiya-gFq5pVpXzf8-unsplash.webp",
+      "dims": "1779×939",
+      "reason": "Fotografia de uma cama (resto do template Webflow de mobiliário, classe “is-bed”). Não usada."
+    },
+    {
+      "file": "69b7d66c0ea7e05b5a210bfe_Screenshot%202026-03-16%20at%2010.07.10.png",
+      "dims": "3024×1576",
+      "reason": "og:image: captura de ecrã do site antigo, não é fotografia. Substituída por uma imagem de partilha feita com o frame final do vídeo e o logótipo."
+    }
+  ]
+}
