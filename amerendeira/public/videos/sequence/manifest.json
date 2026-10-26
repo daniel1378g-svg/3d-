@@ -10,19 +10,32 @@
  },
  "sizes": {
   "desktop": {
-   "width": 1920,
-   "height": 1080,
+   "width": 1280,
+   "height": 720,
    "path": "/videos/sequence/desktop/f_{i}.webp"
   },
   "mobile": {
-   "width": 1280,
-   "height": 720,
+   "width": 960,
+   "height": 540,
    "path": "/videos/sequence/mobile/f_{i}.webp"
   }
  },
- "background": "#ffffff",
+ "feather": {
+  "left": 0.02,
+  "right": 0.02,
+  "top": 0.09,
+  "bottom": 0.06
+ },
+ "plates": {
+  "path": "/videos/sequence/plates.webp",
+  "tile": [
+   128,
+   72
+  ],
+  "cols": 16
+ },
  "bytes": {
-  "desktop": 15910676,
-  "mobile": 8552948
+  "desktop": 7314756,
+  "mobile": 4606754
  }
 }

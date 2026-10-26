@@ -81,7 +81,6 @@ const walk = (dir, keep) => {
 walk("videos/poster", (f) => f.endsWith(".webp") || f.endsWith("cover-1280.jpg"));
 walk("images/optimized", (f) => f.endsWith(".webp"));
 walk("images/cutouts", (f) => f.endsWith(".webp"));
-walk("images/bowls", (f) => f.endsWith(".webp"));
 add("videos/pao-com-chourico-720p.mp4");
 walk("videos/sequence", (f) => f.endsWith(".webp"));
 

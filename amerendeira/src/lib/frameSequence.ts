@@ -5,11 +5,10 @@
 
 export type SequenceSize = "desktop" | "mobile";
 
-// Every frame is on a clean white backdrop (scripts/prepare_video.py), so it meets the white
-// stage with no edge. "desktop" is the source resolution, for large or dense screens.
 export const SEQUENCE = {
-  desktop: { width: 1920, height: 1080 },
-  mobile: { width: 1280, height: 720 },
+  desktop: { width: 1280, height: 720 },
+  mobile: { width: 960, height: 540 },
+  plate: { src: "/videos/sequence/plates.webp", tile: [128, 72] as const, cols: 16 },
 };
 
 const CONCURRENCY = 6;
@@ -35,6 +34,9 @@ function progressiveOrder(count: number) {
 
 export class FrameSequence {
   readonly frames: (HTMLImageElement | undefined)[];
+  readonly plates: (ImageBitmap | HTMLCanvasElement | undefined)[];
+  /** Mean colour of each plate's top and bottom rows: the far margins fade to these. */
+  readonly edgeMeans: ({ top: string; bottom: string } | undefined)[];
   private order: number[];
   private cursor = 0;
   private inFlight = 0;
@@ -47,12 +49,16 @@ export class FrameSequence {
     readonly size: SequenceSize,
     readonly count: number,
     private onLoad: (i: number) => void,
+    private onPlates: () => void,
   ) {
     this.frames = new Array(count);
+    this.plates = new Array(count);
+    this.edgeMeans = new Array(count);
     this.order = progressiveOrder(count);
   }
 
   start() {
+    this.loadPlates();
     for (let k = 0; k < CONCURRENCY; k++) this.next();
   }
 
@@ -136,5 +142,48 @@ export class FrameSequence {
     img.onload = () => done(true);
     img.onerror = () => done(false);
     img.src = frameUrl(this.size, i);
+  }
+
+  private loadPlates() {
+    const sprite = new Image();
+    sprite.decoding = "async";
+    sprite.onload = async () => {
+      if (this.disposed) return;
+      const [tw, th] = SEQUENCE.plate.tile;
+      const cols = SEQUENCE.plate.cols;
+      const all = document.createElement("canvas");
+      all.width = sprite.naturalWidth;
+      all.height = sprite.naturalHeight;
+      const actx = all.getContext("2d", { willReadFrequently: true })!;
+      actx.drawImage(sprite, 0, 0);
+      const px = actx.getImageData(0, 0, all.width, all.height).data;
+      const rowMean = (x0: number, y: number) => {
+        let r = 0, g = 0, b = 0;
+        for (let x = x0; x < x0 + tw; x++) {
+          const o = (y * all.width + x) * 4;
+          r += px[o];
+          g += px[o + 1];
+          b += px[o + 2];
+        }
+        return `${Math.round(r / tw)}, ${Math.round(g / tw)}, ${Math.round(b / tw)}`;
+      };
+      for (let i = 0; i < this.count; i++) {
+        const sx = (i % cols) * tw;
+        const sy = Math.floor(i / cols) * th;
+        this.edgeMeans[i] = { top: rowMean(sx, sy), bottom: rowMean(sx, sy + th - 1) };
+        // One small bitmap per frame, so edge sampling never bleeds into the next tile.
+        if (typeof createImageBitmap === "function") {
+          this.plates[i] = await createImageBitmap(sprite, sx, sy, tw, th);
+        } else {
+          const c = document.createElement("canvas");
+          c.width = tw;
+          c.height = th;
+          c.getContext("2d")!.drawImage(sprite, sx, sy, tw, th, 0, 0, tw, th);
+          this.plates[i] = c;
+        }
+      }
+      this.onPlates();
+    };
+    sprite.src = SEQUENCE.plate.src;
   }
 }

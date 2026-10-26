@@ -12,14 +12,15 @@ import { DrawnTitle } from "./DrawnTitle";
 import { ArrowRight } from "./Icons";
 import { scrollToHash } from "./SiteHeader";
 
-// The frames follow the scroll with a short, frame-rate independent ease (time constant in ms):
-// quick enough to feel attached to the finger, long enough to hide the steps of a wheel.
-const EASE_MS = 55;
+const PLATE_SCALE = 6; // the background plate canvas is drawn at 1/6 of the stage size
+const SMOOTHING = 0.2; // share of the remaining distance covered per animation frame
 
 function smoothstep(t: number) {
   const x = Math.min(1, Math.max(0, t));
   return x * x * (3 - 2 * x);
 }
+
+type Rect = { x: number; y: number; w: number; h: number };
 
 export function Film({ headline }: { headline: DrawnTitleData }) {
   const reduced = useReducedMotion();
@@ -30,6 +31,7 @@ export function Film({ headline }: { headline: DrawnTitleData }) {
   const stage = useRef<HTMLDivElement>(null);
   const windowEl = useRef<HTMLDivElement>(null);
   const media = useRef<HTMLDivElement>(null);
+  const plateCanvas = useRef<HTMLCanvasElement>(null);
   const frameCanvas = useRef<HTMLCanvasElement>(null);
   const [playing, setPlaying] = useState(false);
 
@@ -40,16 +42,19 @@ export function Film({ headline }: { headline: DrawnTitleData }) {
     const stageEl = stage.current!;
     const windowNode = windowEl.current!;
     const mediaEl = media.current!;
+    const pc = plateCanvas.current!;
     const fc = frameCanvas.current!;
-    // Frames are opaque (white backdrop), so the canvas needs no alpha channel.
-    const fctx = fc.getContext("2d", { alpha: false })!;
-    fctx.imageSmoothingQuality = "high";
+    const pctx = pc.getContext("2d", { alpha: false })!;
+    // The plate is composed off-screen, then copied with a small blur that hides the steps of
+    // the stretched rows (cheap: the canvas is 1/6 of the stage). Without canvas filters
+    // (older Safari) it is copied as is.
+    const scratch = document.createElement("canvas");
+    const sctx = scratch.getContext("2d", { alpha: false })!;
+    const canFilter = "filter" in pctx;
+    const fctx = fc.getContext("2d")!;
 
-    // Source-resolution frames when the film is shown wider than ~1500 device pixels (large or
-    // dense screens); 1280 px frames otherwise, and always with Save-Data.
     const conn = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
-    const devicePx = windowNode.getBoundingClientRect().width * Math.min(window.devicePixelRatio || 1, 2);
-    const size: SequenceSize = devicePx > 1500 && !conn?.saveData ? "desktop" : "mobile";
+    const size: SequenceSize = window.innerWidth < 900 || conn?.saveData ? "mobile" : "desktop";
     const zoomed = window.innerWidth < 700;
     fc.width = SEQUENCE[size].width;
     fc.height = SEQUENCE[size].height;
@@ -57,8 +62,8 @@ export function Film({ headline }: { headline: DrawnTitleData }) {
     let target = 0;
     let current = 0;
     let drawnFrame = -1;
+    let drawnPlate = -1;
     let drawnZoom = -1;
-    let last = 0;
     let wanted = 0;
     // Hero copy, captions and the progress rail follow the same smoothed progress as the frames
     // (one source of truth, so two captions can never be on screen together).
@@ -70,6 +75,9 @@ export function Film({ headline }: { headline: DrawnTitleData }) {
     let visible = true;
     let live = false;
     let fallback: HTMLImageElement | null = null;
+    let base: Rect = { x: 0, y: 0, w: 1, h: 1 };
+    let stageW = 1;
+    let stageH = 1;
 
     const seq = new FrameSequence(
       size,
@@ -79,13 +87,80 @@ export function Film({ headline }: { headline: DrawnTitleData }) {
       (i) => {
         if (drawnFrame < 0 || Math.abs(i - wanted) < Math.abs(drawnFrame - wanted)) kick(true);
       },
+      () => kick(true),
     );
+
+    function measure() {
+      const s = stageEl.getBoundingClientRect();
+      const w = windowNode.getBoundingClientRect();
+      stageW = s.width;
+      stageH = s.height;
+      base = { x: w.left - s.left, y: w.top - s.top, w: w.width, h: w.height };
+      pc.width = scratch.width = Math.max(2, Math.ceil(stageW / PLATE_SCALE));
+      pc.height = scratch.height = Math.max(2, Math.ceil(stageH / PLATE_SCALE));
+      sctx.imageSmoothingQuality = "high";
+      drawnPlate = -1;
+    }
 
     function zoomFor(time: number) {
       // On phones the frame spans the full width; while the dough is still small (first 2.6 s)
       // it is shown slightly larger, settling to 1 before the loaf reaches the edges.
       if (!zoomed) return 1;
       return 1.12 - 0.12 * smoothstep((time - 1) / 1.6);
+    }
+
+    function drawPlate(i: number, rect: Rect) {
+      const tile = seq.plates[i];
+      if (!tile) return;
+      const [tw, th] = SEQUENCE.plate.tile;
+      const W = pc.width;
+      const H = pc.height;
+      const k = 1 / PLATE_SCALE;
+      const x = rect.x * k;
+      const y = rect.y * k;
+      const w = rect.w * k;
+      const h = rect.h * k;
+      const r = x + w;
+      const b = y + h;
+      // The plate is the real studio background of this frame with the bread removed; its edge
+      // rows and columns are stretched outwards so the frame continues into the page.
+      sctx.drawImage(tile, 0, 0, tw, th, x, y, w, h);
+      sctx.drawImage(tile, 0, 0, 1, th, 0, y, x, h);
+      sctx.drawImage(tile, tw - 1, 0, 1, th, r, y, W - r, h);
+      sctx.drawImage(tile, 0, 0, tw, 1, x, 0, w, y);
+      sctx.drawImage(tile, 0, th - 1, tw, 1, x, b, w, H - b);
+      sctx.drawImage(tile, 0, 0, 1, 1, 0, 0, x, y);
+      sctx.drawImage(tile, tw - 1, 0, 1, 1, r, 0, W - r, y);
+      sctx.drawImage(tile, 0, th - 1, 1, 1, 0, b, x, H - b);
+      sctx.drawImage(tile, tw - 1, th - 1, 1, 1, r, b, W - r, H - b);
+      // Above and below the frame the stretched rows would read as blurred streaks (steam on the
+      // top edge), so they fade within ~30 px into the flat mean colour of that edge.
+      const means = seq.edgeMeans[i];
+      if (means) {
+        if (y > 1) {
+          const g = sctx.createLinearGradient(0, y, 0, Math.max(0, y - Math.min(y, 5)));
+          g.addColorStop(0, `rgba(${means.top}, 0)`);
+          g.addColorStop(1, `rgba(${means.top}, 1)`);
+          sctx.fillStyle = g;
+          sctx.fillRect(0, 0, W, y);
+        }
+        if (H - b > 1) {
+          const g = sctx.createLinearGradient(0, b, 0, b + Math.min(H - b, 5));
+          g.addColorStop(0, `rgba(${means.bottom}, 0)`);
+          g.addColorStop(1, `rgba(${means.bottom}, 1)`);
+          sctx.fillStyle = g;
+          sctx.fillRect(0, b, W, H - b);
+        }
+      }
+      if (!rootEl.classList.contains("has-plate")) rootEl.classList.add("has-plate");
+      // Blit with a small blur; draw the scratch once without filter first so the blurred
+      // copy never lets transparent edges in.
+      pctx.drawImage(scratch, 0, 0);
+      if (canFilter) {
+        pctx.filter = "blur(1.6px)";
+        pctx.drawImage(scratch, 0, 0);
+        pctx.filter = "none";
+      }
     }
 
     function render(force = false) {
@@ -97,7 +172,7 @@ export function Film({ headline }: { headline: DrawnTitleData }) {
         shownChapter = chapter;
         rootEl.dataset.chapter = String(chapter);
       }
-      const isPlaying = current > 0.035;
+      const isPlaying = current > 0.06;
       if (isPlaying !== playing) {
         playing = isPlaying;
         rootEl.classList.toggle("is-playing", isPlaying);
@@ -122,13 +197,14 @@ export function Film({ headline }: { headline: DrawnTitleData }) {
           fallback.className = "film__final";
           fallback.alt = "";
           fallback.setAttribute("aria-hidden", "true");
-          fallback.src = `/videos/poster/final-${size === "desktop" ? 1920 : 1280}.webp`;
+          fallback.src = `/videos/poster/final-${size === "desktop" ? 1280 : 960}.webp`;
           mediaEl.insertBefore(fallback, fc);
         }
         fallback.style.opacity = String(smoothstep((current - 0.3) / 0.3));
       }
       const idx = seq.nearest(want);
       if (idx >= 0 && (idx !== drawnFrame || force)) {
+        fctx.clearRect(0, 0, fc.width, fc.height);
         fctx.drawImage(seq.source(idx)!, 0, 0, fc.width, fc.height);
         drawnFrame = idx;
         rootEl.dataset.frame = String(idx); // read by the QA scripts
@@ -137,17 +213,28 @@ export function Film({ headline }: { headline: DrawnTitleData }) {
           rootEl.classList.add("is-live");
         }
       }
+      if (want !== drawnPlate || force) {
+        const ox = 0.5 * base.w;
+        const oy = 0.59 * base.h;
+        const rect = {
+          x: base.x + ox - ox * zoom,
+          y: base.y + oy - oy * zoom,
+          w: base.w * zoom,
+          h: base.h * zoom,
+        };
+        if (seq.plates[want]) {
+          drawPlate(want, rect);
+          drawnPlate = want;
+        }
+      }
     }
 
-    function tick(now: number) {
+    function tick() {
       raf = 0;
-      const dt = last ? Math.min(64, now - last) : 16;
-      last = now;
       const delta = target - current;
-      current = Math.abs(delta) < 0.0004 ? target : current + delta * (1 - Math.exp(-dt / EASE_MS));
+      current = Math.abs(delta) < 0.0004 ? target : current + delta * SMOOTHING;
       render();
       if (current !== target && visible) raf = requestAnimationFrame(tick);
-      else last = 0;
     }
 
     function kick(force = false) {
@@ -155,7 +242,11 @@ export function Film({ headline }: { headline: DrawnTitleData }) {
       if (!raf && visible) raf = requestAnimationFrame(tick);
     }
 
-    const ro = new ResizeObserver(() => render(true));
+    measure();
+    const ro = new ResizeObserver(() => {
+      measure();
+      render(true);
+    });
     ro.observe(stageEl);
 
     const io = new IntersectionObserver(
@@ -198,7 +289,7 @@ export function Film({ headline }: { headline: DrawnTitleData }) {
       if (w.cancelIdleCallback) w.cancelIdleCallback(idleId);
       else window.clearTimeout(idleId);
       seq.dispose();
-      rootEl.classList.remove("is-live", "is-playing");
+      rootEl.classList.remove("is-live", "has-plate", "is-playing");
       delete rootEl.dataset.chapter;
       fallback?.remove();
     };
@@ -213,6 +304,8 @@ export function Film({ headline }: { headline: DrawnTitleData }) {
     <section id="Top" ref={root} className={`film${reduced ? " film--still" : ""}`} aria-labelledby="film-title">
       <div className="film__track" ref={track}>
         <div className="film__stage" ref={stage} data-intro="stage">
+          <canvas className="film__plate" ref={plateCanvas} aria-hidden="true" />
+
           <div className="film__headline">
             <DrawnTitle as="h1" id="film-title" data={headline} className="drawn-title--hero" text={lang === "en" ? drawnText.hero : undefined} />
           </div>
