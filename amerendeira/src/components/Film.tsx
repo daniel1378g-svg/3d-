@@ -1,13 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { brand, filmChapters } from "@/content/site";
+import { useContent, useLang } from "@/content/i18n";
 import type { DrawnTitle as DrawnTitleData } from "@/lib/drawnTitles";
 import { FrameSequence, SEQUENCE, type SequenceSize } from "@/lib/frameSequence";
-import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
+import { ScrollTrigger } from "@/lib/gsap";
 import { IS_ARTIFACT } from "@/lib/artifact";
 import { useReducedMotion } from "@/lib/motion";
-import { CHAPTER_WINDOWS, DURATION, FRAME_COUNT, progressToTime, timeToFrame } from "@/lib/videoTimeline";
+import { CHAPTER_WINDOWS, FRAME_COUNT, progressToTime, timeToFrame } from "@/lib/videoTimeline";
 import { DrawnTitle } from "./DrawnTitle";
 import { ArrowRight } from "./Icons";
 import { scrollToHash } from "./SiteHeader";
@@ -24,6 +24,8 @@ type Rect = { x: number; y: number; w: number; h: number };
 
 export function Film({ headline }: { headline: DrawnTitleData }) {
   const reduced = useReducedMotion();
+  const { brand, drawnText, filmChapters, ui } = useContent();
+  const { lang } = useLang();
   const root = useRef<HTMLElement>(null);
   const track = useRef<HTMLDivElement>(null);
   const stage = useRef<HTMLDivElement>(null);
@@ -63,6 +65,12 @@ export function Film({ headline }: { headline: DrawnTitleData }) {
     let drawnPlate = -1;
     let drawnZoom = -1;
     let wanted = 0;
+    // Hero copy, captions and the progress rail follow the same smoothed progress as the frames
+    // (one source of truth, so two captions can never be on screen together).
+    let shownChapter = -2;
+    let playing: boolean | null = null;
+    let railShown = -1;
+    const railFill = rootEl.querySelector<HTMLElement>(".film__rail-fill");
     let raf = 0;
     let visible = true;
     let live = false;
@@ -125,19 +133,19 @@ export function Film({ headline }: { headline: DrawnTitleData }) {
       sctx.drawImage(tile, tw - 1, 0, 1, 1, r, 0, W - r, y);
       sctx.drawImage(tile, 0, th - 1, 1, 1, 0, b, x, H - b);
       sctx.drawImage(tile, tw - 1, th - 1, 1, 1, r, b, W - r, H - b);
-      // Far from the frame, the stretched rows would read as streaks on tall screens: fade them
-      // into the mean colour of the frame's own top and bottom edges.
+      // Above and below the frame the stretched rows would read as blurred streaks (steam on the
+      // top edge), so they fade within ~30 px into the flat mean colour of that edge.
       const means = seq.edgeMeans[i];
       if (means) {
         if (y > 1) {
-          const g = sctx.createLinearGradient(0, y, 0, Math.max(0, y - Math.max(6, y * 0.85)));
+          const g = sctx.createLinearGradient(0, y, 0, Math.max(0, y - Math.min(y, 5)));
           g.addColorStop(0, `rgba(${means.top}, 0)`);
           g.addColorStop(1, `rgba(${means.top}, 1)`);
           sctx.fillStyle = g;
           sctx.fillRect(0, 0, W, y);
         }
         if (H - b > 1) {
-          const g = sctx.createLinearGradient(0, b, 0, b + Math.max(6, (H - b) * 0.85));
+          const g = sctx.createLinearGradient(0, b, 0, b + Math.min(H - b, 5));
           g.addColorStop(0, `rgba(${means.bottom}, 0)`);
           g.addColorStop(1, `rgba(${means.bottom}, 1)`);
           sctx.fillStyle = g;
@@ -159,6 +167,21 @@ export function Film({ headline }: { headline: DrawnTitleData }) {
       const time = progressToTime(current);
       const want = timeToFrame(time);
       wanted = want;
+      const chapter = CHAPTER_WINDOWS.findIndex(([a, b]) => current >= a && current < b);
+      if (chapter !== shownChapter) {
+        shownChapter = chapter;
+        rootEl.dataset.chapter = String(chapter);
+      }
+      const isPlaying = current > 0.06;
+      if (isPlaying !== playing) {
+        playing = isPlaying;
+        rootEl.classList.toggle("is-playing", isPlaying);
+      }
+      const rail = Math.round(Math.min(1, Math.max(0, (current - 0.1) / 0.88)) * 200) / 200;
+      if (rail !== railShown && railFill) {
+        railShown = rail;
+        railFill.style.transform = `scaleX(${rail})`;
+      }
       seq.focus(want);
       const zoom = zoomFor(time);
       if (zoom !== drawnZoom) {
@@ -266,47 +289,11 @@ export function Film({ headline }: { headline: DrawnTitleData }) {
       if (w.cancelIdleCallback) w.cancelIdleCallback(idleId);
       else window.clearTimeout(idleId);
       seq.dispose();
-      rootEl.classList.remove("is-live", "has-plate");
+      rootEl.classList.remove("is-live", "has-plate", "is-playing");
+      delete rootEl.dataset.chapter;
       fallback?.remove();
     };
   }, [reduced]);
-
-  // ——— Text choreography tied to the same scroll range ———
-  useGSAP(
-    () => {
-      if (reduced) return;
-      const mm = gsap.matchMedia();
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
-        const q = gsap.utils.selector(root);
-        const tl = gsap.timeline({
-          defaults: { ease: "none" },
-          scrollTrigger: { trigger: track.current, start: "top top", end: "bottom bottom", scrub: 0.5 },
-        });
-        tl.set({}, {}, 1); // timeline length = 1 = whole scroll range
-
-        // Entrance → the hero copy makes room for the action.
-        tl.fromTo(q(".film__headline"), { autoAlpha: 1, y: 0 }, { autoAlpha: 0, y: -40, duration: 0.09, ease: "power1.in", immediateRender: false }, 0.015);
-        tl.fromTo(q(".film__intro > *"), { autoAlpha: 1, y: 0 }, { autoAlpha: 0, y: -26, duration: 0.07, stagger: 0.012, ease: "power1.in", immediateRender: false }, 0.01);
-        tl.fromTo(q(".film__cue"), { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.03, immediateRender: false }, 0);
-        tl.fromTo(q(".film__rail"), { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.04, immediateRender: false }, 0.06);
-        tl.fromTo(q(".film__rail-fill"), { scaleX: 0 }, { scaleX: 1, duration: 0.88, immediateRender: false }, 0.1);
-
-        // Development and conclusion: one caption per visible phase of the clip.
-        q(".chapter").forEach((el, i) => {
-          const [a, b] = CHAPTER_WINDOWS[i];
-          const text = el.querySelector(".chapter__text > span");
-          tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.02, immediateRender: false }, a);
-          tl.fromTo(text, { yPercent: 105 }, { yPercent: 0, duration: 0.05, ease: "power2.out", immediateRender: false }, a);
-          if (b < 1) {
-            tl.to(text, { yPercent: -105, duration: 0.04, ease: "power2.in" }, b - 0.04);
-            tl.to(el, { autoAlpha: 0, duration: 0.015 }, b - 0.015);
-          }
-        });
-      });
-      return () => mm.revert();
-    },
-    { scope: root, dependencies: [reduced] },
-  );
 
   const onAnchor = (e: React.MouseEvent<HTMLAnchorElement>, hash: string) => {
     e.preventDefault();
@@ -320,7 +307,7 @@ export function Film({ headline }: { headline: DrawnTitleData }) {
           <canvas className="film__plate" ref={plateCanvas} aria-hidden="true" />
 
           <div className="film__headline">
-            <DrawnTitle as="h1" id="film-title" data={headline} className="drawn-title--hero" />
+            <DrawnTitle as="h1" id="film-title" data={headline} className="drawn-title--hero" text={lang === "en" ? drawnText.hero : undefined} />
           </div>
 
           <div className="film__window" ref={windowEl}>
@@ -339,7 +326,7 @@ export function Film({ headline }: { headline: DrawnTitleData }) {
                   src="/videos/poster/cover-1280.jpg"
                   width={1280}
                   height={720}
-                  alt={reduced ? "Pão com chouriço acabado de cozer, dourado, com o chouriço à vista e vapor a subir" : "Massa de pão crua sobre fundo claro, antes de ir ao forno"}
+                  alt={reduced ? ui.finalAlt : ui.coverAlt}
                   fetchPriority="high"
                   decoding="async"
                 />
@@ -348,7 +335,7 @@ export function Film({ headline }: { headline: DrawnTitleData }) {
                 className="film__frame"
                 ref={frameCanvas}
                 role="img"
-                aria-label="Vídeo controlado pelo scroll: a massa cresce, abre-se e mostra o chouriço, a crosta doura e o pão sai a fumegar."
+                aria-label={ui.filmAria}
               />
               {playing && (
                 <video
@@ -368,20 +355,22 @@ export function Film({ headline }: { headline: DrawnTitleData }) {
           <div className="film__band">
             <div className="film__intro">
               <p className="film__lede">
-                <span className="line" data-intro="line"><span>Pão com chouriço feito à moda antiga.</span></span>
-                <span className="line" data-intro="line"><span>Com forno a lenha e alma portuguesa.</span></span>
-                <span className="line" data-intro="line"><span>Milhares de clientes felizes.</span></span>
+                {brand.tagline.split(/(?<=\.) /).map((sentence) => (
+                  <span key={sentence} className="line" data-intro="line">
+                    <span>{sentence}</span>
+                  </span>
+                ))}
               </p>
               <div className="film__ctas" data-intro="fade">
                 <a className="btn btn--solid" href="#menus" onClick={(e) => onAnchor(e, "#menus")}>
-                  Ver menus <ArrowRight />
+                  {ui.seeMenus} <ArrowRight />
                 </a>
                 <a className="btn" href="#Lojas" onClick={(e) => onAnchor(e, "#Lojas")}>
-                  Encontrar uma loja <ArrowRight />
+                  {ui.findShop} <ArrowRight />
                 </a>
                 {reduced && (
                   <button type="button" className="btn film__still-actions" onClick={() => setPlaying((p) => !p)} aria-pressed={playing}>
-                    {playing ? "Fechar o vídeo" : `Ver o vídeo (${Math.round(DURATION)} s, sem som)`}
+                    {playing ? ui.closeVideo : ui.watchVideo}
                   </button>
                 )}
               </div>
@@ -418,9 +407,9 @@ export function Film({ headline }: { headline: DrawnTitleData }) {
                 <span>04</span>
               </div>
               <a className="film__cue" href="#tradicao" onClick={(e) => onAnchor(e, "#tradicao")} data-intro="fade">
-                Desce
+                {ui.scroll}
                 <span className="film__cue-line" aria-hidden="true" />
-                <span className="sr-only">para a história da Merendeira</span>
+                <span className="sr-only">{ui.scrollSr}</span>
               </a>
             </>
           )}

@@ -1,12 +1,13 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { gallery } from "@/content/site";
+import { useContent } from "@/content/i18n";
 import { images, type ImageId } from "@/lib/images";
 import { Chevron, Close } from "./Icons";
 import { Photo } from "./Photo";
 
 export function Gallery() {
+  const { gallery, ui } = useContent();
   const dialog = useRef<HTMLDialogElement>(null);
   const opener = useRef<HTMLButtonElement | null>(null);
   const [index, setIndex] = useState<number | null>(null);
@@ -76,7 +77,7 @@ export function Gallery() {
                   className="gallery__item"
                   style={{ aspectRatio: `${info.width} / ${info.height}` }}
                   onClick={(e) => open(i, e.currentTarget)}
-                  aria-label={`Ver em grande: ${info.alt}`}
+                  aria-label={`${ui.galleryOpen}${info.alt}`}
                 >
                   <span className="gallery__inner" data-parallax={i % 2 ? 4 : 2}>
                     <Photo id={id} sizes="(max-width: 699px) 46vw, 40vw" alt="" />
@@ -88,14 +89,14 @@ export function Gallery() {
         </ul>
       </div>
 
-      <dialog ref={dialog} className="lightbox" aria-label="Fotografia em grande">
+      <dialog ref={dialog} className="lightbox" aria-label={ui.galleryDialog}>
         {currentId && (
           <div className="lightbox__inner">
             <div className="lightbox__bar">
               <span className="caps">
                 {String(index! + 1).padStart(2, "0")} / {String(all.length).padStart(2, "0")}
               </span>
-              <button type="button" className="icon-btn" onClick={close} aria-label="Fechar">
+              <button type="button" className="icon-btn" onClick={close} aria-label={ui.close}>
                 <Close />
               </button>
             </div>
@@ -105,10 +106,10 @@ export function Gallery() {
             <div className="lightbox__caption">
               <p>{images[currentId].alt}</p>
               <div className="lightbox__nav">
-                <button type="button" className="icon-btn" onClick={() => step(-1)} aria-label="Fotografia anterior">
+                <button type="button" className="icon-btn" onClick={() => step(-1)} aria-label={ui.galleryPrev}>
                   <Chevron dir="left" />
                 </button>
-                <button type="button" className="icon-btn" onClick={() => step(1)} aria-label="Fotografia seguinte">
+                <button type="button" className="icon-btn" onClick={() => step(1)} aria-label={ui.galleryNext}>
                   <Chevron />
                 </button>
               </div>

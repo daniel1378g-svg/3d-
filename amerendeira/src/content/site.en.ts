@@ -1,0 +1,123 @@
+// English version of src/content/site.ts: a translation of the original site's text, nothing
+// added. Product names (Menu Bebida…), shop addresses and article titles stay as they are.
+import { contact, gallery as galleryPt, menus as menusPt, press as pressPt, stores, type Content } from "./site";
+
+export const en: Content = {
+  brand: {
+    name: "A Merendeira",
+    tagline: "Pão com chouriço made the old-fashioned way. With a wood-fired oven and a Portuguese soul. Thousands of happy customers.",
+    sideNote: ["Pão com chouriço", "is king and tradition", "is served hot."],
+    statement:
+      "A Merendeira celebrates Portuguese tradition with authentic pão com chouriço, baked in wood-fired ovens. With a focus on quality and food culture, we preserve the taste of tradition for people's enjoyment and the richness of our heritage.",
+    stats: [
+      { value: "2", label: "Locations" },
+      { value: "36", label: "Years serving" },
+    ],
+  },
+  filmChapters: [
+    { id: "massa", label: "Dough", text: "Made the old-fashioned way." },
+    { id: "chourico", label: "Chouriço", text: "Pão com chouriço is king." },
+    { id: "forno", label: "Oven", text: "Baked in a wood-fired oven." },
+    { id: "quente", label: "Hot", text: "And tradition is served hot." },
+  ],
+  nav: [
+    { label: "Shops", href: "#Lojas" },
+    { label: "Menus", href: "#menus" },
+    { label: "News", href: "#Media" },
+    { label: "Contact", href: "#contact" },
+  ],
+  contact,
+  stores,
+  experience: {
+    title: ["Experience", "and atmosphere"],
+    text: "More than a meal, visiting A Merendeira is a celebration of the Portuguese table. From the crackle of the wood in the oven to the unmistakable smell of freshly baked bread, everything invites you to slow down and savour.",
+  },
+  flavour: {
+    title: ["Flavour", "in pictures"],
+    text: "Get to know our space, our dishes and the special moments shared around the table. Every picture, a story of flavour.",
+    cta: { label: "See the menus", href: "#menus" },
+  },
+  menusIntro: {
+    eyebrow: "Products",
+    title: "Our menus",
+    note: "All our products are made from the original 1972 recipe",
+  },
+  menus: [
+    {
+      ...menusPt[0],
+      text: "Simple, direct and delicious. A crispy pão com chouriço, baked in our wood-fired oven, served with your favourite drink, whether a cold beer, a soft drink or water. Ideal for a quick break with a homemade taste.",
+    },
+    {
+      ...menusPt[1],
+      text: "Two classics that speak for themselves. Our pão com chouriço meets caldo verde, with that touch of chouriço that warms you up. A drink to refresh and you're done: simple, Portuguese and comforting.",
+    },
+    {
+      ...menusPt[2],
+      text: "A full menu for those who want to taste it all. Pão com chouriço baked in a wood-fired oven, old-fashioned caldo verde, a bowl of arroz doce, an espresso and a drink of your choice. Perfect for lunches or dinners full of flavour and memory.",
+    },
+    {
+      ...menusPt[3],
+      text: "A lighter option. Crispy bread baked in the wood-fired oven, served with a soup of your choice. Simple, nourishing and full of flavour. Ideal for those who prefer more complete alternatives.",
+    },
+  ],
+  press: {
+    title: "What they say about us",
+    groups: [
+      { ...pressPt.groups[0], label: "In the press", items: pressPt.groups[0].items.map((i) => ({ ...i, type: "News" })) },
+      { ...pressPt.groups[1], label: "Recommendations", items: pressPt.groups[1].items.map((i) => ({ ...i, type: "Recommendation" })) },
+    ],
+  },
+  gallery: { ...galleryPt, eyebrow: "Gallery", title: ["Gallery", "of flavours"], hint: "Open a photo to see it larger." },
+  footer: {
+    links: [
+      { label: "Shops", href: "#Lojas" },
+      { label: "Menus", href: "#menus" },
+      { label: "Media", href: "#Media" },
+    ],
+    copyright: "©A Merendeira",
+    privacy: "Privacy policy",
+    credit: { label: "Original site by Flowwwzy", href: "https://www.lukas-rudrof.de" },
+  },
+  ui: {
+    skip: "Skip to content",
+    logoAria: "A Merendeira — back to top",
+    navAria: "Main",
+    menu: "Menu",
+    close: "Close",
+    langSwitch: "PT",
+    langSwitchAria: "Ver o site em português",
+    contacts: "Contact",
+    shops: "Shops",
+    mapNewTab: " — see on the map (opens in a new tab)",
+    newTab: " (opens in a new tab)",
+    seeMenus: "See the menus",
+    findShop: "Find a shop",
+    scroll: "Scroll",
+    scrollSr: "to the story of A Merendeira",
+    coverAlt: "Raw bread dough on a light background, before baking",
+    finalAlt: "Freshly baked pão com chouriço, golden, with the chouriço showing and steam rising",
+    filmAria: "Video driven by scrolling: the dough rises, opens to show the chouriço, the crust turns golden and the bread comes out steaming.",
+    watchVideo: "Watch the video (8 s, no sound)",
+    closeVideo: "Close the video",
+    whereWeAre: "Where we are",
+    ourShops: ["Our", "shops"],
+    mapShortcuts: "Map shortcuts",
+    seeOnMap: "See on the map",
+    flavourEyebrow: "The flavour",
+    pressEyebrow: "News",
+    welcomeAria: "Hospitality",
+    welcome: ["Thousands of", "happy customers."],
+    footerAria: "Footer",
+    footerSite: "Site",
+    footerSocial: "Social",
+    footerBack: "Back",
+    backToTop: "Back to top",
+    jumpAria: "Go to a menu",
+    galleryOpen: "View larger: ",
+    galleryDialog: "Enlarged photo",
+    galleryPrev: "Previous photo",
+    galleryNext: "Next photo",
+    proposal: "Design proposal · not the official A Merendeira website",
+  },
+  drawnText: { hero: "good at any hour", menus: "our menus", contact: "talk to us" },
+};

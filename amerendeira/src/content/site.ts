@@ -179,3 +179,54 @@ export const footer = {
   privacy: "Política de Privacidade",
   credit: { label: "Site original por Flowwwzy", href: "https://www.lukas-rudrof.de" },
 } as const;
+
+// Interface text (Portuguese). The English version of everything lives in site.en.ts.
+export const ui = {
+  skip: "Saltar para o conteúdo",
+  logoAria: "A Merendeira — voltar ao início",
+  navAria: "Principal",
+  menu: "Menu",
+  close: "Fechar",
+  langSwitch: "EN",
+  langSwitchAria: "Ver o site em inglês",
+  contacts: "Contactos",
+  shops: "Lojas",
+  mapNewTab: " — ver no mapa (abre num novo separador)",
+  newTab: " (abre num novo separador)",
+  seeMenus: "Ver menus",
+  findShop: "Encontrar uma loja",
+  scroll: "Desce",
+  scrollSr: "para a história da Merendeira",
+  coverAlt: "Massa de pão crua sobre fundo claro, antes de ir ao forno",
+  finalAlt: "Pão com chouriço acabado de cozer, dourado, com o chouriço à vista e vapor a subir",
+  filmAria: "Vídeo controlado pelo scroll: a massa cresce, abre-se e mostra o chouriço, a crosta doura e o pão sai a fumegar.",
+  watchVideo: "Ver o vídeo (8 s, sem som)",
+  closeVideo: "Fechar o vídeo",
+  whereWeAre: "Onde estamos",
+  ourShops: ["As nossas", "lojas"],
+  mapShortcuts: "Atalhos para os mapas",
+  seeOnMap: "Ver no mapa",
+  flavourEyebrow: "O sabor",
+  pressEyebrow: "Notícias",
+  welcomeAria: "Hospitalidade",
+  welcome: ["Milhares de", "clientes felizes."],
+  footerAria: "Rodapé",
+  footerSite: "Site",
+  footerSocial: "Redes sociais",
+  footerBack: "Voltar",
+  backToTop: "Voltar ao topo",
+  jumpAria: "Ir para um menu",
+  galleryOpen: "Ver em grande: ",
+  galleryDialog: "Fotografia em grande",
+  galleryPrev: "Fotografia anterior",
+  galleryNext: "Fotografia seguinte",
+  proposal: "Proposta de design · não é o site oficial da A Merendeira",
+};
+
+// The drawn titles are Portuguese drawings; in English they are set as text.
+export const drawnText = { hero: "é boa nas horas", menus: "os nossos menus", contact: "fala connosco" };
+
+export const pt = { brand, filmChapters, nav, contact, stores, experience, flavour, menusIntro, menus, press, gallery, footer, ui, drawnText };
+
+type Widen<T> = T extends string ? string : T extends readonly (infer U)[] ? readonly Widen<U>[] : T extends object ? { readonly [K in keyof T]: Widen<T[K]> } : T;
+export type Content = Widen<typeof pt>;

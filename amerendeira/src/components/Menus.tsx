@@ -1,11 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { menus, menusIntro } from "@/content/site";
+import { useContent } from "@/content/i18n";
+import type { ImageId } from "@/lib/images";
 import { Photo } from "./Photo";
 import { scrollToHash } from "./SiteHeader";
 
 export function Menus() {
+  const { menus, menusIntro, ui } = useContent();
   const [active, setActive] = useState(0);
   const list = useRef<HTMLOListElement>(null);
 
@@ -45,7 +47,7 @@ export function Menus() {
           </p>
         </div>
 
-        <nav className="menus__jump" aria-label="Ir para um menu">
+        <nav className="menus__jump" aria-label={ui.jumpAria}>
           {menus.map((m, i) => (
             <a
               key={m.id}
@@ -68,7 +70,7 @@ export function Menus() {
               {menus.map((m, i) => (
                 <Photo
                   key={m.id}
-                  id={m.image}
+                  id={m.image as ImageId}
                   sizes="(max-width: 899px) 100vw, 640px"
                   className={i === active ? "is-active" : undefined}
                   alt=""
@@ -95,7 +97,7 @@ export function Menus() {
                 onFocus={() => setActive(i)}
               >
                 <div className="menu-item__photo">
-                  <Photo id={m.image} sizes="(max-width: 899px) 92vw, 1px" />
+                  <Photo id={m.image as ImageId} sizes="(max-width: 899px) 92vw, 1px" />
                 </div>
                 <p className="menu-item__num">{m.number}.</p>
                 <h3 className="menu-item__name">{m.name}</h3>

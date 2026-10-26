@@ -1,3 +1,6 @@
+"use client";
+
+import { LangProvider, useContent } from "@/content/i18n";
 import type { DrawnTitle } from "@/lib/drawnTitles";
 import { IS_ARTIFACT } from "@/lib/artifact";
 import { Film } from "./Film";
@@ -14,14 +17,23 @@ export type SiteTitles = { hero: DrawnTitle; menus: DrawnTitle; contact: DrawnTi
 // (src/artifact/*), so both render exactly the same markup.
 export function Site({ titles }: { titles: SiteTitles }) {
   return (
+    <LangProvider>
+      <Page titles={titles} />
+    </LangProvider>
+  );
+}
+
+function Page({ titles }: { titles: SiteTitles }) {
+  const { ui } = useContent();
+  return (
     <>
       {IS_ARTIFACT && (
         <p className="proposal-label" role="note">
-          Proposta de design · não é o site oficial da A Merendeira
+          {ui.proposal}
         </p>
       )}
       <a className="skip-link" href="#conteudo">
-        Saltar para o conteúdo
+        {ui.skip}
       </a>
       <SiteHeader />
       <Intro />

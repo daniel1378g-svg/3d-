@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { nav } from "@/content/site";
+import { useContent, useLang } from "@/content/i18n";
 import { Logo } from "./Logo";
 
 import { IS_ARTIFACT } from "@/lib/artifact";
@@ -23,7 +23,24 @@ export function scrollToHash(hash: string) {
 }
 
 export function SiteHeader() {
+  const { nav, ui } = useContent();
+  const { lang, setLang } = useLang();
+  const logoRef = useRef<HTMLAnchorElement>(null);
+  const firstLang = useRef(true);
   const [open, setOpen] = useState(false);
+
+  // The logotype slides off to the right and back in whenever the language changes.
+  useEffect(() => {
+    if (firstLang.current) {
+      firstLang.current = false;
+      return;
+    }
+    const el = logoRef.current;
+    if (!el) return;
+    el.classList.remove("is-switching");
+    void el.offsetWidth; // restart the animation
+    el.classList.add("is-switching");
+  }, [lang]);
   const [solid, setSolid] = useState(false);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const [panelWanted, setPanelWanted] = useState(false);
@@ -75,16 +92,34 @@ export function SiteHeader() {
     <>
       <header id="hero" className={`site-header${solid ? " is-solid" : ""}`} data-intro="header">
         <div className="site-header__inner">
-          <a href="#Top" className="logo-link" aria-label="A Merendeira — voltar ao início" data-intro="nav-logo">
+          <a
+            ref={logoRef}
+            href="#Top"
+            className="logo-link"
+            aria-label={ui.logoAria}
+            data-intro="nav-logo"
+            onAnimationEnd={(e) => e.currentTarget.classList.remove("is-switching")}
+          >
             <Logo decorative />
           </a>
-          <nav className="site-nav" aria-label="Principal">
+          <nav className="site-nav" aria-label={ui.navAria}>
             {nav.map((item) => (
               <a key={item.href} href={item.href}>
                 {item.label}
               </a>
             ))}
           </nav>
+          <button
+            type="button"
+            className="lang-toggle"
+            onClick={() => setLang(lang === "pt" ? "en" : "pt")}
+            aria-label={ui.langSwitchAria}
+            lang={lang === "pt" ? "en" : "pt-PT"}
+          >
+            <span className={lang === "pt" ? "is-on" : undefined}>PT</span>
+            <span aria-hidden="true">/</span>
+            <span className={lang === "en" ? "is-on" : undefined}>EN</span>
+          </button>
           <button
             ref={toggleRef}
             type="button"
@@ -98,7 +133,7 @@ export function SiteHeader() {
               setOpen(true);
             }}
           >
-            Menu <span className="menu-toggle__lines" aria-hidden="true" />
+            {ui.menu} <span className="menu-toggle__lines" aria-hidden="true" />
           </button>
         </div>
       </header>

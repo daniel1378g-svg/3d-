@@ -1,4 +1,7 @@
-import { brand, contact, experience, flavour, footer, nav, press, stores } from "@/content/site";
+"use client";
+
+import { useContent, useLang } from "@/content/i18n";
+import type { ImageId } from "@/lib/images";
 import type { DrawnTitle as DrawnTitleData } from "@/lib/drawnTitles";
 import { DrawnTitle } from "./DrawnTitle";
 import { ArrowRight, ArrowUp, ArrowUpRight } from "./Icons";
@@ -35,6 +38,7 @@ const external = { target: "_blank", rel: "noopener noreferrer" } as const;
 
 /* ——— Tradição: the brand statement after the film ——— */
 export function Tradition() {
+  const { brand } = useContent();
   return (
     <section id="tradicao" className="tradition" aria-labelledby="tradition-title">
       <div className="wrap tradition__head">
@@ -72,21 +76,22 @@ export function Tradition() {
 
 /* ——— Lojas ——— */
 export function Stores() {
+  const { stores, ui } = useContent();
   return (
     <section id="Lojas" className="stores section" aria-labelledby="stores-title">
       <div className="wrap">
         <div className="stores__head" data-lines>
           <div>
-            <p className="eyebrow">Onde estamos</p>
+            <p className="eyebrow">{ui.whereWeAre}</p>
             <h2 id="stores-title" className="display">
-              <Lines lines={["As nossas", "lojas"]} />
+              <Lines lines={ui.ourShops} />
             </h2>
           </div>
-          <div className="stores__quick" aria-label="Atalhos para os mapas">
+          <div className="stores__quick" aria-label={ui.mapShortcuts}>
             {stores.map((s) => (
               <a key={s.id} className="btn btn--external" href={s.map} {...external}>
                 {s.city} <ArrowUpRight />
-                <span className="sr-only"> — ver no mapa (abre num novo separador)</span>
+                <span className="sr-only">{ui.mapNewTab}</span>
               </a>
             ))}
           </div>
@@ -95,7 +100,7 @@ export function Stores() {
           {stores.map((s, i) => (
             <li key={s.id} className="store" id={`loja-${s.id}`}>
               <div className="store__media arch-frame">
-                <Photo id={s.image} sizes="(max-width: 799px) 92vw, 46vw" />
+                <Photo id={s.image as ImageId} sizes="(max-width: 799px) 92vw, 46vw" />
               </div>
               <div className="store__body">
                 <span className="store__num" aria-hidden="true">
@@ -111,8 +116,11 @@ export function Stores() {
                     ))}
                   </address>
                   <a className="btn btn--external" href={s.map} {...external}>
-                    Ver no mapa <ArrowUpRight />
-                    <span className="sr-only"> — {s.city} (abre num novo separador)</span>
+                    {ui.seeOnMap} <ArrowUpRight />
+                    <span className="sr-only">
+                      {" "}— {s.city}
+                      {ui.newTab}
+                    </span>
                   </a>
                 </div>
               </div>
@@ -128,6 +136,7 @@ export function Stores() {
 const SPACE_PHOTOS = ["espaco-forno", "espaco-balcao", "espaco-arcadas", "espaco-arcos"] as const;
 
 export function Ambience() {
+  const { experience } = useContent();
   return (
     <section id="ambiente" className="ambience section" aria-labelledby="ambience-title">
       <div className="wrap">
@@ -158,12 +167,13 @@ export function Ambience() {
 
 /* ——— O sabor em imagens ——— */
 export function Flavour() {
+  const { flavour, ui } = useContent();
   return (
     <section className="flavour section" aria-labelledby="flavour-title">
       <div className="wrap">
         <div className="flavour__grid">
           <div className="flavour__intro" data-lines>
-            <p className="eyebrow">O sabor</p>
+            <p className="eyebrow">{ui.flavourEyebrow}</p>
             <h2 id="flavour-title" className="display-2">
               <Lines lines={flavour.title} />
             </h2>
@@ -191,10 +201,12 @@ export function Flavour() {
 
 /* ——— Opening of the menus: drawn title over the wood-fire ——— */
 export function Fire({ title }: { title: DrawnTitleData }) {
+  const { drawnText } = useContent();
+  const { lang } = useLang();
   return (
     <section className="fire" aria-labelledby="fire-title">
       <div className="fire__title">
-        <DrawnTitle data={title} as="p" id="fire-title" />
+        <DrawnTitle data={title} as="p" id="fire-title" text={lang === "en" ? drawnText.menus : undefined} />
       </div>
       <div className="fire__stage">
         <div className="fire__bloom" data-bloom="0.4">
@@ -212,12 +224,13 @@ export function Fire({ title }: { title: DrawnTitleData }) {
 
 /* ——— Imprensa e recomendações ——— */
 export function Press() {
+  const { press, ui } = useContent();
   return (
     <section id="Media" className="press section" aria-labelledby="press-title">
       <div className="wrap">
         <div className="press__head" data-lines>
           <div style={{ gridColumn: "1 / span 9" }}>
-            <p className="eyebrow">Notícias</p>
+            <p className="eyebrow">{ui.pressEyebrow}</p>
             <h2 id="press-title" className="display-2">
               <Lines lines={[press.title]} />
             </h2>
@@ -242,7 +255,7 @@ export function Press() {
                     <span className="press__arrow" aria-hidden="true">
                       <ArrowUpRight className="" />
                     </span>
-                    <span className="sr-only"> (abre num novo separador)</span>
+                    <span className="sr-only">{ui.newTab}</span>
                   </a>
                 </li>
               ))}
@@ -256,13 +269,14 @@ export function Press() {
 
 /* ——— Hospitalidade ——— */
 export function Welcome() {
+  const { ui } = useContent();
   return (
-    <section className="welcome" aria-label="Hospitalidade">
+    <section className="welcome" aria-label={ui.welcomeAria}>
       <div className="bloom" data-bloom="0.42">
         <Photo id="servico" sizes="100vw" position="50% 40%" />
       </div>
       <p className="welcome__caption display-2" data-lines>
-        <Lines lines={["Milhares de", "clientes felizes."]} />
+        <Lines lines={ui.welcome} />
       </p>
     </section>
   );
@@ -270,12 +284,14 @@ export function Welcome() {
 
 /* ——— Rodapé e contactos ——— */
 export function Footer({ title }: { title: DrawnTitleData }) {
+  const { contact, drawnText, footer, nav, stores, ui } = useContent();
+  const { lang } = useLang();
   return (
     <footer id="contact" className="footer" aria-labelledby="contact-title">
       <div className="wrap">
         <div className="footer__top">
           <div className="footer__title">
-            <DrawnTitle data={title} as="h2" id="contact-title" />
+            <DrawnTitle data={title} as="h2" id="contact-title" text={lang === "en" ? drawnText.contact : undefined} />
           </div>
           <address className="footer__contact">
             <a className="text-link" href={contact.phone.href}>
@@ -287,8 +303,8 @@ export function Footer({ title }: { title: DrawnTitleData }) {
           </address>
         </div>
         <div className="footer__cols">
-          <nav aria-label="Rodapé">
-            <h3>Site</h3>
+          <nav aria-label={ui.footerAria}>
+            <h3>{ui.footerSite}</h3>
             <ul>
               {footer.links.map((l) => (
                 <li key={l.href}>
@@ -305,7 +321,7 @@ export function Footer({ title }: { title: DrawnTitleData }) {
             </ul>
           </nav>
           <div>
-            <h3>Redes sociais</h3>
+            <h3>{ui.footerSocial}</h3>
             <ul>
               <li>
                 <a className="text-link" href={contact.instagram.href} {...external}>
@@ -320,7 +336,7 @@ export function Footer({ title }: { title: DrawnTitleData }) {
             </ul>
           </div>
           <div className="footer__stores">
-            <h3>Lojas</h3>
+            <h3>{ui.shops}</h3>
             {stores.map((s) => (
               <p key={s.id}>
                 <a className="text-link" href={s.map} {...external}>
@@ -332,9 +348,9 @@ export function Footer({ title }: { title: DrawnTitleData }) {
             ))}
           </div>
           <div>
-            <h3>Voltar</h3>
+            <h3>{ui.footerBack}</h3>
             <a className="btn" href="#Top">
-              Voltar ao topo <ArrowUp />
+              {ui.backToTop} <ArrowUp />
             </a>
           </div>
         </div>

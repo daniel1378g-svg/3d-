@@ -935,3 +935,84 @@ html { scroll-padding-top: calc(var(--header-h) + var(--label-h)); }
 @media (max-width: 899px), (max-aspect-ratio: 1/1) {
   .film__stage { padding-top: calc(var(--header-h) + var(--label-h) + 8px); }
 }
+
+/* ——— Film state, driven by the frame renderer (.is-playing, data-chapter) ——— */
+.film__headline, .film__intro > *, .film__cue {
+  transition: opacity 0.5s var(--ease), translate 0.7s var(--ease-expo), visibility 0s;
+}
+.film.is-playing .film__headline,
+.film.is-playing .film__intro > *,
+.film.is-playing .film__cue {
+  opacity: 0;
+  translate: 0 -28px;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.35s var(--ease), translate 0.5s var(--ease), visibility 0s 0.35s;
+}
+.film__rail { transition: opacity 0.4s var(--ease); }
+.film.is-playing .film__rail { opacity: 1; }
+.film__rail-fill { transition: transform 0.15s linear; }
+
+.chapter {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s var(--ease), visibility 0s 0.25s;
+}
+.chapter__text > span { translate: 0 105%; transition: translate 0.25s var(--ease); }
+.film[data-chapter="0"] .chapter:nth-child(1),
+.film[data-chapter="1"] .chapter:nth-child(2),
+.film[data-chapter="2"] .chapter:nth-child(3),
+.film[data-chapter="3"] .chapter:nth-child(4) {
+  opacity: 1;
+  visibility: visible;
+  /* the outgoing caption is gone before the next one comes in: they never overlap */
+  transition: opacity 0.4s var(--ease) 0.25s, visibility 0s 0.25s;
+}
+.film[data-chapter="0"] .chapter:nth-child(1) .chapter__text > span,
+.film[data-chapter="1"] .chapter:nth-child(2) .chapter__text > span,
+.film[data-chapter="2"] .chapter:nth-child(3) .chapter__text > span,
+.film[data-chapter="3"] .chapter:nth-child(4) .chapter__text > span {
+  translate: 0 0;
+  transition: translate 0.8s var(--ease-expo) 0.25s;
+}
+
+/* ——— Language switch ——— */
+.lang-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 44px;
+  padding: 0 6px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+}
+.lang-toggle span { opacity: 0.45; transition: opacity 0.3s var(--ease); }
+.lang-toggle span.is-on { opacity: 1; }
+.lang-toggle:hover span { opacity: 1; }
+
+/* The logotype slides out to the right and back in when the language changes. */
+.logo-link { overflow: hidden; }
+.logo-link.is-switching .logo { animation: logo-slide 0.9s var(--ease-expo); }
+@keyframes logo-slide {
+  0% { transform: translateX(0); opacity: 1; }
+  42% { transform: translateX(105%); opacity: 0; }
+  43% { transform: translateX(-60%); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) { .logo-link.is-switching .logo { animation: none; } }
+
+/* Drawn titles set as text (English) */
+.drawn-title--text { container-type: inline-size; line-height: 1; }
+.drawn-title__text {
+  display: block;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 12cqi;
+  line-height: 0.95;
+  letter-spacing: -0.035em;
+  white-space: nowrap;
+}
+.drawn-title--hero.drawn-title--text .drawn-title__text { font-size: 12.5cqi; text-align: center; }
+.fire__title .drawn-title__text { font-size: 17cqi; }
+.footer__title .drawn-title__text { font-size: 15cqi; }

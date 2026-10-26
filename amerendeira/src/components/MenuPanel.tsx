@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef } from "react";
-import { contact, nav, stores } from "@/content/site";
+import { useContent } from "@/content/i18n";
 import { Facebook, Instagram } from "./Icons";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -16,6 +16,7 @@ type Props = {
 // The yellow navigation panel (the colour of the original menu). Loaded on demand: Motion is
 // only fetched when the visitor is about to open it.
 export default function MenuPanel({ open, close, onExitComplete }: Props) {
+  const { contact, nav, stores, ui } = useContent();
   const panelRef = useRef<HTMLDivElement>(null);
 
   // Lock page scroll, trap focus and close on Escape while the panel is open.
@@ -73,7 +74,7 @@ export default function MenuPanel({ open, close, onExitComplete }: Props) {
               className="menu-panel"
               role="dialog"
               aria-modal="true"
-              aria-label="Menu"
+              aria-label={ui.menu}
               initial={{ clipPath: "inset(0 0 100% 0)" }}
               animate={{ clipPath: "inset(0 0 0% 0)" }}
               exit={{ clipPath: "inset(0 0 100% 0)" }}
@@ -81,7 +82,7 @@ export default function MenuPanel({ open, close, onExitComplete }: Props) {
             >
               <div className="menu-panel__top">
                 <button type="button" className="menu-close" onClick={() => close()}>
-                  Fechar <span className="menu-close__x" aria-hidden="true" />
+                  {ui.close} <span className="menu-close__x" aria-hidden="true" />
                 </button>
               </div>
               <nav className="menu-panel__nav" aria-label="Menu">
@@ -109,7 +110,7 @@ export default function MenuPanel({ open, close, onExitComplete }: Props) {
                 transition={{ duration: 0.6, delay: 0.45 }}
               >
                 <div>
-                  <p className="caps">Contactos</p>
+                  <p className="caps">{ui.contacts}</p>
                   <p>
                     <a className="text-link" href={contact.email.href}>
                       {contact.email.label}
@@ -122,21 +123,21 @@ export default function MenuPanel({ open, close, onExitComplete }: Props) {
                   </p>
                 </div>
                 <div>
-                  <p className="caps">Lojas</p>
+                  <p className="caps">{ui.shops}</p>
                   {stores.map((s) => (
                     <p key={s.id}>
                       <a className="text-link" href={s.map} target="_blank" rel="noopener noreferrer">
                         {s.city}
-                        <span className="sr-only"> — ver no mapa (abre num novo separador)</span>
+                        <span className="sr-only">{ui.mapNewTab}</span>
                       </a>
                     </p>
                   ))}
                 </div>
                 <div className="menu-panel__social">
-                  <a className="icon-btn" href={contact.instagram.href} target="_blank" rel="noopener noreferrer" aria-label="Instagram (abre num novo separador)">
+                  <a className="icon-btn" href={contact.instagram.href} target="_blank" rel="noopener noreferrer" aria-label={`Instagram${ui.newTab}`}>
                     <Instagram />
                   </a>
-                  <a className="icon-btn" href={contact.facebook.href} target="_blank" rel="noopener noreferrer" aria-label="Facebook (abre num novo separador)">
+                  <a className="icon-btn" href={contact.facebook.href} target="_blank" rel="noopener noreferrer" aria-label={`Facebook${ui.newTab}`}>
                     <Facebook />
                   </a>
                 </div>
