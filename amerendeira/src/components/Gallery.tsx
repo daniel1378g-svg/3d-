@@ -7,7 +7,7 @@ import { Chevron, Close } from "./Icons";
 import { Photo } from "./Photo";
 
 export function Gallery() {
-  const { gallery, ui } = useContent();
+  const { gallery, ui, imageAlt } = useContent();
   const dialog = useRef<HTMLDialogElement>(null);
   const opener = useRef<HTMLButtonElement | null>(null);
   const [index, setIndex] = useState<number | null>(null);
@@ -77,7 +77,7 @@ export function Gallery() {
                   className="gallery__item"
                   style={{ aspectRatio: `${info.width} / ${info.height}` }}
                   onClick={(e) => open(i, e.currentTarget)}
-                  aria-label={`${ui.galleryOpen}${info.alt}`}
+                  aria-label={`${ui.galleryOpen}${imageAlt[id]}`}
                 >
                   <span className="gallery__inner" data-parallax={i % 2 ? 4 : 2}>
                     <Photo id={id} sizes="(max-width: 699px) 46vw, 40vw" alt="" />
@@ -104,7 +104,7 @@ export function Gallery() {
               <Photo key={currentId} id={currentId} sizes="92vw" />
             </figure>
             <div className="lightbox__caption">
-              <p>{images[currentId].alt}</p>
+              <p>{imageAlt[currentId]}</p>
               <div className="lightbox__nav">
                 <button type="button" className="icon-btn" onClick={() => step(-1)} aria-label={ui.galleryPrev}>
                   <Chevron dir="left" />

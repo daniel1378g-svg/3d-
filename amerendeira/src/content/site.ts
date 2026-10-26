@@ -1,3 +1,5 @@
+import images from "@/data/images.generated.json";
+
 // Every text and link below comes from https://amerendeira.pt/ (survey of 26/10/2026, see
 // docs/content-inventory.md). Nothing here is invented: no prices, hours, reviews or services.
 // The only editorial changes are listed in the inventory (stray "t" in Menu Bebida, wrong
@@ -220,13 +222,20 @@ export const ui = {
   galleryDialog: "Fotografia em grande",
   galleryPrev: "Fotografia anterior",
   galleryNext: "Fotografia seguinte",
+  skipIntro: "Saltar intro",
   proposal: "Proposta de design · não é o site oficial da A Merendeira",
 };
+
+// Alternative texts of the photographs (Portuguese originals from the image manifest).
+export const imageAlt = Object.fromEntries(Object.entries(images).map(([id, info]) => [id, info.alt])) as Record<
+  keyof typeof images,
+  string
+>;
 
 // The drawn titles are Portuguese drawings; in English they are set as text.
 export const drawnText = { hero: "é boa nas horas", menus: "os nossos menus", contact: "fala connosco" };
 
-export const pt = { brand, filmChapters, nav, contact, stores, experience, flavour, menusIntro, menus, press, gallery, footer, ui, drawnText };
+export const pt = { brand, filmChapters, nav, contact, stores, experience, flavour, menusIntro, menus, press, gallery, footer, ui, drawnText, imageAlt };
 
 type Widen<T> = T extends string ? string : T extends readonly (infer U)[] ? readonly Widen<U>[] : T extends object ? { readonly [K in keyof T]: Widen<T[K]> } : T;
 export type Content = Widen<typeof pt>;

@@ -1,3 +1,4 @@
+import { useContent } from "@/content/i18n";
 import { Logo } from "./Logo";
 
 // Opening (~2.8 s), played once per session and never with reduced motion (decided before
@@ -11,13 +12,14 @@ import { Logo } from "./Logo";
 // it starts as soon as the HTML is parsed instead of waiting for the application bundle.
 // Scrolling, a key press, a click or "Saltar intro" end it at once; nothing waits for it.
 export function Intro() {
+  const { ui } = useContent();
   return (
     <div className="intro">
       <div className="intro__logo" aria-hidden="true">
         <Logo decorative />
       </div>
       <button type="button" className="intro__skip">
-        Saltar intro
+        {ui.skipIntro}
       </button>
     </div>
   );

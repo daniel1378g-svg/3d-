@@ -1,3 +1,6 @@
+"use client";
+
+import { useContent } from "@/content/i18n";
 import { IS_ARTIFACT } from "@/lib/artifact";
 import { images, largest, srcSet, type ImageId } from "@/lib/images";
 
@@ -15,6 +18,7 @@ type Props = {
 // Original photograph with AVIF/WebP sources, reserved dimensions and a tiny blurred placeholder.
 export function Photo({ id, sizes, className, imgClassName, priority, alt, position, style }: Props) {
   const info = images[id];
+  const { imageAlt } = useContent();
   return (
     <picture className={["photo", className].filter(Boolean).join(" ")} style={style}>
       {!IS_ARTIFACT && <source type="image/avif" srcSet={srcSet(info, "avif")} sizes={sizes} />}
@@ -24,7 +28,7 @@ export function Photo({ id, sizes, className, imgClassName, priority, alt, posit
         src={largest(info)}
         width={info.width}
         height={info.height}
-        alt={alt ?? info.alt}
+        alt={alt ?? imageAlt[id]}
         loading={priority ? "eager" : "lazy"}
         fetchPriority={priority ? "high" : undefined}
         decoding="async"
