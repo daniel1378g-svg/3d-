@@ -6,7 +6,7 @@
 export type SequenceSize = "desktop" | "mobile";
 
 export const SEQUENCE = {
-  desktop: { width: 1280, height: 720 },
+  desktop: { width: 1248, height: 702 },
   mobile: { width: 960, height: 540 },
   plate: { src: "/videos/sequence/plates.webp", tile: [128, 72] as const, cols: 16 },
 };

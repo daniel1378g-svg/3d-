@@ -1,0 +1,28 @@
+{
+ "source": "media/original/caldo-verde-carvao.mov",
+ "fps": 24,
+ "frames": 124,
+ "sourceFrames": [
+  21,
+  144
+ ],
+ "crop": {
+  "x": 110,
+  "y": 0,
+  "width": 1000,
+  "height": 704
+ },
+ "fade": {
+  "left": 0.12,
+  "right": 0.12,
+  "top": 0.1,
+  "bottom": 0.1
+ },
+ "sheets": {
+  "count": 31,
+  "cols": 2,
+  "rows": 2,
+  "path": "/videos/caldo/sheet_{ii}.webp"
+ },
+ "bytes": 3602792
+}

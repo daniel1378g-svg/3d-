@@ -1,8 +1,8 @@
 /* A Merendeira — dark identity (redesign, 27/10/2026)
    Charcoal base, ivory text and logotype, #242424 surfaces, warm yellow only for primary buttons,
-   active states, numbers and stars (charcoal text on yellow). The light studio of the two food
-   videos is kept as a framed light area inside the dark page. Titles: Space Grotesk. Text,
-   navigation and buttons: Manrope. */
+   active states, numbers and stars (charcoal text on yellow). The two food animations (bread and
+   caldo verde) are filmed on a charcoal studio that melts into the page, with no frame around
+   them. Titles: Space Grotesk. Text, navigation and buttons: Manrope. */
 
 :root {
   --bg: #191919;
@@ -14,9 +14,6 @@
   --ink: #191919;
   --yellow: #ffc629;
   --line: rgb(247 246 241 / 0.14);
-  --studio-top: #a9a9aa;
-  --studio-mid: #c9c8c9;
-  --studio-bottom: #d9d8d9;
 
   --display: "Space Grotesk Variable", "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
   --sans: "Manrope Variable", Manrope, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -174,8 +171,6 @@ address { font-style: normal; }
 .btn--primary:hover, .btn--primary:focus-visible { background: #ffd65f; }
 .btn--ghost { border-color: rgb(247 246 241 / 0.36); color: var(--ivory); }
 .btn--ghost:hover, .btn--ghost:focus-visible { border-color: var(--yellow); color: var(--yellow); }
-/* Buttons that sit on the light studio panel */
-.on-light .btn--ghost { border-color: rgb(25 25 25 / 0.4); color: var(--ink); }
 
 .link {
   background: linear-gradient(currentColor, currentColor) 0 100% / 0 1.5px no-repeat;
@@ -387,7 +382,8 @@ address { font-style: normal; }
 /* ——— Film (hero + scroll video) ———
    PROTECTED: the scroll path (track height, sticky stage), the 16:9 window's size and position
    and the media rules below are those of the reference version (reference/bread-animation). The
-   redesign only changes colours, the studio panel and the text around the window. */
+   redesign only changes colours and the text around the window. The frames now come from the
+   charcoal clip: their backdrop continues into the page through the plate, with no panel. */
 
 .film { position: relative; z-index: 1; }
 .film { --film-scroll: 300svh; }
@@ -401,27 +397,17 @@ address { font-style: normal; }
   background: var(--bg);
   --win-w: min(94vw, calc(84svh * 16 / 9));
   --win-h: calc(var(--win-w) * 9 / 16);
+  /* text anchors around the window: its top (never under the header), its sides, and the line
+     under the loaf (the product never goes below 88 % of the frame's height) */
+  --pt: max(calc(var(--header-h) + var(--label-h) + 12px), calc(50% - var(--win-h) / 2));
+  --px: calc((100% - var(--win-w)) / 2);
+  --pb: calc(50% - var(--win-h) * 0.415);
 }
 .js .film__stage { position: sticky; top: 0; }
 /* The plate is drawn at 1/6 resolution (blurred inside the canvas) and scaled up. */
 .film__plate { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 0.5s linear; }
 .film.has-plate .film__plate { opacity: 1; }
 
-/* Studio panel: the frames' own light background, framed inside the dark page. The panel element
-   paints the studio greys until the plate (the real background, frame by frame) is drawn; plate
-   and window are clipped to the same rounded rectangle. Geometry comes from Film.tsx (--pt, --pb,
-   --px, --pr; --wt, --wb, --wx for the window); the fallbacks match the landscape layout. */
-.film__panel {
-  position: absolute;
-  top: var(--pt, max(calc(var(--header-h) + var(--label-h) + 12px), calc(50% - var(--win-h) / 2)));
-  bottom: var(--pb, calc(50% - var(--win-h) * 0.415));
-  left: var(--px, calc((100% - var(--win-w)) / 2));
-  right: var(--px, calc((100% - var(--win-w)) / 2));
-  border-radius: var(--pr, 28px);
-  background: linear-gradient(180deg, var(--studio-top) 0%, var(--studio-mid) 48%, var(--studio-bottom) 100%);
-}
-.film__plate { clip-path: inset(var(--pt, 0px) var(--px, 0px) var(--pb, 0px) var(--px, 0px) round var(--pr, 0px)); }
-.film__stage[data-panel="card"] .film__window { clip-path: inset(var(--wt) var(--wx) var(--wb) var(--wx) round var(--pr)); }
 .film__window {
   position: absolute;
   left: 50%;
@@ -431,6 +417,19 @@ address { font-style: normal; }
   transform: translate(-50%, -50%);
 }
 .film__media { position: absolute; inset: 0; transform-origin: 50% 59%; }
+/* The floor of the charcoal studio is lighter than the page: under the loaf it fades into the page
+   colour, so the stage ends without an edge and the text below sits on the page's own charcoal.
+   It starts at 88 % of the frame, below the loaf and its shadow, and never reaches the bread. */
+.film__window::after {
+  content: "";
+  position: absolute;
+  top: 88%;
+  left: -100vw;
+  right: -100vw;
+  height: max(60svh, 320px);
+  background: linear-gradient(180deg, rgb(25 25 25 / 0) 0, rgb(25 25 25 / 0.72) 9%, var(--bg) 22%);
+  pointer-events: none;
+}
 .film__media > * { position: absolute; inset: 0; width: 100%; height: 100%; }
 .film__media picture img { width: 100%; height: 100%; }
 .film__cover {
@@ -442,7 +441,7 @@ address { font-style: normal; }
   transition: opacity 0.4s linear;
 }
 .film__final { opacity: 0; object-fit: contain; }
-.film__final, .film__player {
+.film__final {
   -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 2%, #000 98%, transparent 100%), linear-gradient(180deg, transparent 0, #000 9%, #000 94%, transparent 100%);
   -webkit-mask-composite: source-in;
   mask-image: linear-gradient(90deg, transparent 0, #000 2%, #000 98%, transparent 100%), linear-gradient(180deg, transparent 0, #000 9%, #000 94%, transparent 100%);
@@ -453,14 +452,14 @@ address { font-style: normal; }
    goes only once the canvas is confirmed to hold the frame (Film.tsx). */
 .film.is-live .film__cover { opacity: 0; }
 
-/* The title, in real text, sits in the top-left corner of the light panel (charcoal on studio
-   grey), above the dough; it leaves as soon as the transformation starts (.is-playing). */
+/* The title, in real text, sits in the top-left corner of the frame, on the dark studio above the
+   dough; it leaves as soon as the transformation starts (.is-playing). */
 .film__headline {
   position: absolute;
-  left: calc(var(--px, 3vw) + clamp(20px, 2.2vw, 36px));
-  top: calc(var(--pt, 84px) + clamp(14px, 1.8vw, 28px));
+  left: calc(var(--px) + clamp(20px, 2.2vw, 36px));
+  top: calc(var(--pt) + clamp(14px, 1.8vw, 28px));
   z-index: 2;
-  color: var(--ink);
+  color: var(--ivory);
 }
 .hero-title {
   font-family: var(--display);
@@ -472,22 +471,22 @@ address { font-style: normal; }
 .hero-title .line:nth-child(2) { padding-left: 0.9em; }
 .film__eyebrow {
   position: absolute;
-  right: calc(var(--px, 3vw) + clamp(20px, 2.2vw, 36px));
-  top: calc(var(--pt, 84px) + clamp(18px, 2vw, 32px));
+  right: calc(var(--px) + clamp(20px, 2.2vw, 36px));
+  top: calc(var(--pt) + clamp(18px, 2vw, 32px));
   z-index: 2;
-  max-width: 22ch;
+  white-space: nowrap;
   text-align: right;
   font-size: 14px;
   font-weight: 700;
   line-height: 1.35;
-  color: var(--ink);
+  color: var(--ivory-2);
 }
 
-/* Below the panel, on the dark page: text, buttons, and the captions during the transformation. */
+/* Under the loaf, on the page's charcoal: text, buttons, and the captions during the transformation. */
 .film__band {
   position: absolute;
   left: 0; right: 0;
-  top: calc(100% - var(--pb, calc(50% - var(--win-h) * 0.415)) + 14px);
+  top: calc(100% - var(--pb) + 14px);
   bottom: 0;
   z-index: 2;
   max-width: var(--max);
@@ -578,13 +577,11 @@ address { font-style: normal; }
     position: relative;
     left: auto; top: auto;
     width: min(88vw, 640px);
-    margin: 0 auto 2svh;
+    margin: 0 auto 22px;
     color: var(--ivory);
   }
   .hero-title { font-size: clamp(40px, 11vw, 72px); }
   .film__eyebrow { display: none; }
-  .film__stage[data-panel="band"] .film__headline { margin-bottom: 22px; }
-  .film__stage[data-panel="band"] .film__band { margin-top: 18px; }
   .film__window {
     position: relative;
     left: auto; top: auto;
@@ -596,7 +593,7 @@ address { font-style: normal; }
     position: relative;
     top: auto; bottom: auto;
     width: 100%;
-    margin-top: 1svh;
+    margin-top: 18px;
     padding-bottom: 0;
   }
   .film__intro { grid-template-columns: 1fr; gap: 16px; justify-items: start; }
@@ -622,9 +619,8 @@ address { font-style: normal; }
 }
 .film--still .film__track { height: auto; }
 .film--still .film__stage { position: relative; }
-
-.film__player { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; background: transparent; z-index: 2; }
-.film__still-actions { color: var(--ivory); }
+.film__surround { display: none; }
+.film--still .film__surround { display: block; position: absolute; inset: -25%; width: 150%; height: 150%; max-width: none; }
 
 
 /* ——— Photographs ——— */
@@ -692,61 +688,89 @@ address { font-style: normal; }
 .menu-card__text { grid-column: 2; margin-top: 12px; color: var(--ivory-2); max-width: 44ch; }
 .menu-card:target .menu-card__media, .menu-card:focus .menu-card__media { box-shadow: 0 0 0 3px var(--yellow); }
 
-/* Caldo verde: the supplied video in its own light studio, with text and actions beside it */
+/* Caldo verde, poured by the scroll (CaldoVerde.tsx). Its own track: the bowl stays on screen
+   (sticky) only while it fills, then the page carries on. Wide screens: text on the left, also
+   held during the pour, bowl on the right. Narrow screens: text first, then the bowl alone,
+   centred. Text and buttons never sit on the bowl. The frames' edges are already blended into
+   the page colour, so there is no frame, radius or shadow around the animation. */
 .soup {
-  margin-top: clamp(80px, 10vw, 160px);
+  --soup-scroll: 130svh;
+  margin-top: clamp(96px, 11vw, 180px);
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
   column-gap: clamp(16px, 2vw, 32px);
-  row-gap: 28px;
-  align-items: center;
   scroll-margin-top: calc(var(--header-h) + var(--label-h) + 24px);
 }
-.soup__media {
-  grid-column: 1 / span 8;
-  position: relative;
-  aspect-ratio: 16 / 9;
-  border-radius: 28px;
+.soup__intro { grid-column: 1 / span 4; align-self: start; }
+.soup__track { grid-column: 5 / -1; position: relative; }
+.soup__stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  place-items: center;
+  min-height: 420px;
   overflow: hidden;
-  background: #d8d7d8;
 }
-.soup__video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.soup__text { grid-column: 9 / span 4; }
+.soup__media {
+  position: relative;
+  width: min(100%, calc((100svh - var(--header-h) - var(--label-h) - 40px) * 1000 / 704));
+  aspect-ratio: 1000 / 704;
+}
+.soup__media > picture, .soup__still, .soup__canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.soup__still { object-fit: cover; }
+.soup__still--full { opacity: 0; }
+.soup.is-fallback .soup__still--full { transition: opacity 0.2s linear; }
 .soup__text .h-lg { margin-top: 16px; }
 .soup__copy { margin: 18px 0 28px; color: var(--ivory-2); max-width: 36ch; }
 .soup__ctas { display: flex; flex-wrap: wrap; gap: 10px; }
-.soup__control {
-  position: absolute;
-  right: 14px; bottom: 14px;
-  display: inline-flex; align-items: center; gap: 8px;
-  min-height: 44px;
-  padding: 0 16px 0 13px;
-  border-radius: 12px;
-  background: rgb(25 25 25 / 0.8);
-  color: var(--ivory);
-  font-size: 14px;
-  font-weight: 700;
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  transition: background-color 0.3s var(--ease), color 0.3s var(--ease), transform 0.3s var(--ease-out);
+.soup__hint { display: flex; align-items: center; gap: 12px; margin-top: 32px; font-size: 14px; font-weight: 600; color: var(--ivory-3); }
+.soup__hint-line { width: 2px; height: 30px; border-radius: 2px; background: rgb(247 246 241 / 0.2); position: relative; overflow: hidden; flex: none; }
+.soup__hint-line::after { content: ""; position: absolute; left: 0; top: -40%; width: 100%; height: 40%; background: var(--yellow); animation: cue 2.2s var(--ease) infinite; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .js .soup__track { height: calc(100svh + var(--soup-scroll)); }
+  .js .soup__stage {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    padding-top: calc(var(--header-h) + var(--label-h));
+  }
+  .js .soup__intro {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    display: flex;
+    align-items: center;
+    padding-top: calc(var(--header-h) + var(--label-h));
+  }
 }
-.soup__control svg { width: 15px; height: 15px; }
-.soup__control:hover, .soup__control:focus-visible { background: var(--yellow); color: var(--ink); }
-.soup__control:active { transform: scale(0.96); }
-.soup__big-play {
-  position: absolute;
-  left: 50%; top: 50%;
-  width: 84px; height: 84px;
-  margin: -42px 0 0 -42px;
-  display: grid; place-items: center;
-  border-radius: 999px;
-  background: var(--yellow);
-  color: var(--ink);
-  box-shadow: 0 10px 30px rgb(0 0 0 / 0.25);
-  transition: transform 0.35s var(--ease-out);
+/* Reduced motion (and no script): the full bowl as a still, no long path, no hint. */
+@media (prefers-reduced-motion: reduce) {
+  .soup__still--full { opacity: 1; }
+  .soup__canvas, .soup__hint { display: none; }
+  .soup { align-items: center; }
 }
-.soup__big-play svg { width: 30px; height: 30px; margin-left: 4px; }
-.soup__big-play:hover, .soup__big-play:focus-visible { transform: scale(1.06); }
+html:not(.js) .soup__still--full { opacity: 1; }
+html:not(.js) .soup__hint { display: none; }
+
+@media (max-width: 899px), (max-aspect-ratio: 1/1) {
+  .soup { --soup-scroll: 120svh; }
+  .soup__intro, .soup__track { grid-column: 1 / -1; }
+  .soup__track { margin: 0 calc(var(--gutter) * -1); }
+  .soup__media { width: min(100%, calc((100svh - var(--header-h) - var(--label-h) - 40px) * 1000 / 704)); }
+  .js .soup__intro { position: static; height: auto; display: block; padding-top: 0; }
+  .soup__hint { margin-top: 28px; }
+  @media (prefers-reduced-motion: reduce) { .soup__track { margin-top: 32px; } }
+}
+/* Phones: the bowl and saucer fill the width; only empty studio is cut at the sides (the bowl
+   spans 72 % of the frame), the falling stream keeps its full height. */
+@media (max-width: 699px) {
+  .soup__media {
+    width: min(124vw, calc((100svh - var(--header-h) - var(--label-h) - 40px) * 1000 / 704));
+    justify-self: start;
+    left: 50%;
+    translate: -50% 0;
+  }
+}
 
 /* ——— Story and experience ——— */
 
@@ -976,8 +1000,6 @@ address { font-style: normal; }
   .menu-card--2 { grid-column: 8 / span 5; }
   .menu-card--3 { grid-column: 1 / span 5; margin-top: 0; }
   .menu-card--4 { grid-column: 6 / span 7; }
-  .soup__media { grid-column: 1 / -1; }
-  .soup__text { grid-column: 1 / span 9; }
   .places__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .place--1, .place--2 { grid-column: auto; }
   .contact-card { grid-column: 1 / -1; }
@@ -1002,7 +1024,6 @@ address { font-style: normal; }
   .menus__grid { grid-template-columns: 1fr; row-gap: 48px; }
   .menu-card--1, .menu-card--2, .menu-card--3, .menu-card--4 { grid-column: 1 / -1; margin-top: 0; }
   .menu-card--2 .menu-card__media, .menu-card--3 .menu-card__media { aspect-ratio: 3 / 2; }
-  .soup__text { grid-column: 1 / -1; }
   .slide { height: auto; width: 80vw; }
   .slideshow__caption { flex-wrap: wrap; }
   .slideshow__alt { white-space: normal; }

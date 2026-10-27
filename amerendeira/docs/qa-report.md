@@ -104,3 +104,43 @@ que o texto oculto das estrelas alargava a página).
 
 **Movimento reduzido**: sem intro, filme em composição estática com o pão acabado, sem scroll preso,
 todas as fotografias e cartões visíveis sem animação, transições do slideshow instantâneas.
+
+## Segunda iteração — pão carvão e caldo verde pelo scroll (27/10/2026)
+
+Chromium/Playwright, na build Next (`out/`) e na simulação do Artifact (página dentro de um documento
+alheio, caminhos relativos, faixa “Proposta de design”). Não testado em Safari/iPhone reais, Firefox,
+nem com leitores de ecrã reais.
+
+**Pão** (`reference/bread-animation/baseline-carvao.json`): percurso igual à versão anterior
+(3600 / 2880 / 4096 / 3376 px), janela igual (desktop 48,72,1344,756 e 102,58,1075,605; 768 px y=265;
+390 px y=255; no Artifact 279 e 269, como antes). Frames a 0/10/25/50/75/90/100 %: 0, 24, 47, 77,
+130, 180, 192, e os mesmos no regresso (130, 77, 47, 24, 0). Efeito de desenho idêntico byte a byte
+ao da referência. Com a sopa na página, o percurso do pão não muda (medido antes e depois de passar
+pela sopa e depois de redimensionar).
+
+**Caldo verde** (1440×900, 1280×720, 768×1024, 390×844, 844×390): taça vazia antes de o bloco fixar
+e no início (frame 0), 25 % → 28, 50 % → 63, 75 % → 98, 100 % → 123 (cheia) e cheia depois; a subir,
+os mesmos frames ao contrário até à taça vazia. Parado 1,2 s em cada ponto, o frame não muda. Nenhum
+ficheiro da sopa é pedido antes de o bloco estar a ~1,5 ecrãs. Texto e botões nunca se sobrepõem à
+taça; sem scroll horizontal. Sem `<video>` em toda a página.
+
+**Redimensionar e rodar**: 1440→1280 e 390×844↔844×390 — alturas dos percursos recalculadas (pão
+2880 / 1560 / 3376; sopa 1656 / 858 / 1857) e os frames voltam a corresponder à posição (pão
+47/77/130, sopa 63). Depois de um salto longo de volta ao pão, o frame correto chega em menos de 2 s
+(a suavização do renderizador protegido).
+
+**Falha dos recursos** (frames e folhas bloqueados): o pão passa da massa ao pão acabado com as duas
+imagens reais; a taça passa de vazia a cheia (0 → 0,5 → 1 → 0,5 → 0 de opacidade, ida e volta).
+
+**Movimento reduzido**: sem intro, sem percursos longos (pão 900 px, sopa 620 px em 1440×900), pão
+acabado com o fundo prolongado (sem retângulo visível), taça cheia como imagem com texto alternativo,
+sem canvas nem indicação de scroll, nenhum frame ou folha descarregado, sem leitor de vídeo.
+
+**Avaliações e idioma**: cinco cartões, “5 de 5 estrelas”, “Excerto de avaliação no Google” /
+“Google review excerpt”; PT com tradução identificada e “Ver o original” (aria-expanded alterna);
+EN com os originais; nenhuma média, total, data ou nota global. Legendas do pão em EN: Dough > Oven >
+Chouriço > Hot.
+
+**Teclado e axe**: 44 paragens de Tab em desktop e 40 em telemóvel, todas com anel de foco e nome;
+depois do scroll suave e da revelação, todos os elementos focados estão visíveis e não tapados.
+axe-core (WCAG 2 A/AA): sem violações em desktop e telemóvel.

@@ -48,7 +48,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           rel="preload"
           as="image"
           type="image/avif"
-          imageSrcSet="/videos/poster/cover-960.avif 960w, /videos/poster/cover-1280.avif 1280w, /videos/poster/cover-1920.avif 1920w"
+          imageSrcSet="/videos/poster/cover-960.avif 960w, /videos/poster/cover-1280.avif 1280w"
           imageSizes="(max-width: 899px) 100vw, 94vw"
           fetchPriority="high"
         />

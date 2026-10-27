@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useContent } from "@/content/i18n";
 import { FrameSequence, SEQUENCE, type SequenceSize } from "@/lib/frameSequence";
 import { ScrollTrigger } from "@/lib/gsap";
@@ -30,7 +30,6 @@ export function Film() {
   const media = useRef<HTMLDivElement>(null);
   const plateCanvas = useRef<HTMLCanvasElement>(null);
   const frameCanvas = useRef<HTMLCanvasElement>(null);
-  const [playing, setPlaying] = useState(false);
 
   // ——— Frame renderer (canvas 2D) ———
   useEffect(() => {
@@ -339,57 +338,6 @@ export function Film() {
     };
   }, [reduced]);
 
-  // ——— Studio panel (dark redesign) ———
-  // The frames carry their own light studio background. On the dark page it is shown inside a
-  // framed panel: the plate canvas and the frame window are clipped to the same rounded rectangle.
-  // This only writes CSS variables from the window's measured position; the frame renderer above,
-  // the scroll path and the window's size and position are untouched.
-  useEffect(() => {
-    const stageEl = stage.current!;
-    const win = windowEl.current!;
-    const header = document.querySelector<HTMLElement>(".site-header");
-    const stacked = window.matchMedia("(max-width: 899px), (max-aspect-ratio: 1/1)");
-    const px = (n: number) => `${Math.round(n * 10) / 10}px`;
-    const update = () => {
-      const s = stageEl.getBoundingClientRect();
-      const w = win.getBoundingClientRect();
-      const top = w.top - s.top;
-      const left = w.left - s.left;
-      const v = stageEl.style;
-      if (stacked.matches) {
-        // Phones and portrait screens: a full-width light band around the 16:9 window.
-        v.setProperty("--pt", px(Math.max(0, top - 10)));
-        v.setProperty("--pb", px(Math.max(0, s.height - (top + w.height) - 8)));
-        v.setProperty("--px", "0px");
-        v.setProperty("--pr", "0px");
-        stageEl.dataset.panel = "band";
-      } else {
-        // Landscape: a rounded panel inside the window, below the header, ending under the loaf
-        // and its shadow (the product never goes below 88.5 % of the frame's height).
-        const headerBottom = header ? header.getBoundingClientRect().bottom : 0;
-        const pt = Math.max(top, headerBottom + 12);
-        const inset = w.width * 0.012;
-        v.setProperty("--pt", px(pt));
-        v.setProperty("--pb", px(s.height - (top + w.height * 0.915)));
-        v.setProperty("--px", px(left + inset));
-        v.setProperty("--pr", "28px");
-        v.setProperty("--wt", px(pt - top));
-        v.setProperty("--wb", px(w.height * 0.085));
-        v.setProperty("--wx", px(inset));
-        stageEl.dataset.panel = "card";
-      }
-    };
-    update();
-    const ro = new ResizeObserver(update);
-    ro.observe(stageEl);
-    ro.observe(win);
-    stacked.addEventListener("change", update);
-    return () => {
-      ro.disconnect();
-      stacked.removeEventListener("change", update);
-    };
-  }, []);
-
   const onAnchor = (e: React.MouseEvent<HTMLAnchorElement>, hash: string) => {
     e.preventDefault();
     scrollToHash(hash);
@@ -399,7 +347,6 @@ export function Film() {
     <section id="Top" ref={root} className={`film${reduced ? " film--still" : ""}`} aria-labelledby="film-title">
       <div className="film__track" ref={track}>
         <div className="film__stage" ref={stage} data-intro="stage">
-          <div className="film__panel" aria-hidden="true" />
           <canvas className="film__plate" ref={plateCanvas} aria-hidden="true" />
 
           <div className="film__headline">
@@ -416,16 +363,19 @@ export function Film() {
           </p>
 
           <div className="film__window" ref={windowEl}>
+            {/* Reduced motion only (CSS): the still's own background, wider and fading into the
+                page, so the still has no edge where the plate canvas would otherwise be. */}
+            <img className="film__surround" src="/videos/poster/final-surround.webp" alt="" aria-hidden="true" loading="lazy" decoding="async" />
             <div className="film__media" ref={media}>
               <picture>
                 {!IS_ARTIFACT && (
-  <source media="(prefers-reduced-motion: reduce)" type="image/avif" srcSet="/videos/poster/final-960.avif 960w, /videos/poster/final-1280.avif 1280w, /videos/poster/final-1920.avif 1920w" sizes="(max-width: 899px) 100vw, 94vw" />
+  <source media="(prefers-reduced-motion: reduce)" type="image/avif" srcSet="/videos/poster/final-960.avif 960w, /videos/poster/final-1280.avif 1280w" sizes="(max-width: 899px) 100vw, 94vw" />
                 )}
-                <source media="(prefers-reduced-motion: reduce)" type="image/webp" srcSet="/videos/poster/final-960.webp 960w, /videos/poster/final-1280.webp 1280w, /videos/poster/final-1920.webp 1920w" sizes="(max-width: 899px) 100vw, 94vw" />
+                <source media="(prefers-reduced-motion: reduce)" type="image/webp" srcSet="/videos/poster/final-960.webp 960w, /videos/poster/final-1280.webp 1280w" sizes="(max-width: 899px) 100vw, 94vw" />
                 {!IS_ARTIFACT && (
-  <source type="image/avif" srcSet="/videos/poster/cover-960.avif 960w, /videos/poster/cover-1280.avif 1280w, /videos/poster/cover-1920.avif 1920w" sizes="(max-width: 899px) 100vw, 94vw" />
+  <source type="image/avif" srcSet="/videos/poster/cover-960.avif 960w, /videos/poster/cover-1280.avif 1280w" sizes="(max-width: 899px) 100vw, 94vw" />
                 )}
-                <source type="image/webp" srcSet="/videos/poster/cover-960.webp 960w, /videos/poster/cover-1280.webp 1280w, /videos/poster/cover-1920.webp 1920w" sizes="(max-width: 899px) 100vw, 94vw" />
+                <source type="image/webp" srcSet="/videos/poster/cover-960.webp 960w, /videos/poster/cover-1280.webp 1280w" sizes="(max-width: 899px) 100vw, 94vw" />
                 <img
                   className="film__cover"
                   src="/videos/poster/cover-1280.jpg"
@@ -442,18 +392,6 @@ export function Film() {
                 role="img"
                 aria-label={ui.filmAria}
               />
-              {playing && (
-                <video
-                  className="film__player"
-                  src="/videos/pao-com-chourico-720p.mp4"
-                  poster="/videos/poster/cover-1280.jpg"
-                  controls
-                  playsInline
-                  muted
-                  autoPlay
-                  onEnded={() => setPlaying(false)}
-                />
-              )}
             </div>
           </div>
 
@@ -473,11 +411,6 @@ export function Film() {
                 <a className="btn btn--ghost" href="#Lojas" onClick={(e) => onAnchor(e, "#Lojas")}>
                   {ui.findShop} <ArrowRight />
                 </a>
-                {reduced && (
-                  <button type="button" className="btn btn--ghost film__still-actions" onClick={() => setPlaying((p) => !p)} aria-pressed={playing}>
-                    {playing ? ui.closeVideo : ui.watchVideo}
-                  </button>
-                )}
               </div>
               <p className="film__note" data-intro="fade">
                 {brand.sideNote.map((l) => (

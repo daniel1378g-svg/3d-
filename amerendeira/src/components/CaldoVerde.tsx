@@ -1,120 +1,149 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useContent } from "@/content/i18n";
+import { ScrollTrigger } from "@/lib/gsap";
 import { useReducedMotion } from "@/lib/motion";
+import { SOUP, SheetSequence, frameRect, soupFrame } from "@/lib/soupSequence";
 import { ArrowRight } from "./Icons";
 import { scrollToHash } from "./SiteHeader";
 
-// The supplied caldo verde video (8 s: an empty clay bowl fills with soup, greens and chouriço),
-// independent of the bread film. It is fetched only when the block comes near the screen, plays
-// once, muted and inline, when at least half of it is visible, and stops on the full bowl.
-// It pauses when it leaves the screen or the page goes to the background; a pause by the visitor
-// is respected (no automatic restart). If the browser refuses autoplay, or with reduced motion,
-// the full bowl is shown with a play button.
-type State = "idle" | "playing" | "paused" | "ended" | "blocked";
+const SMOOTHING = 0.2; // share of the remaining distance covered per animation frame (as the bread)
 
-const VIDEO = "/videos/caldo-verde";
-const POSTER = "/videos/poster/caldo";
+function smoothstep(t: number) {
+  const x = Math.min(1, Math.max(0, t));
+  return x * x * (3 - 2 * x);
+}
 
+// The caldo verde, poured by the scroll. When the block settles the clay bowl is empty; scrolling
+// down pours the soup and fills it, stopping the scroll freezes it, scrolling up empties it again.
+// Same principle as the bread film, with its own track, ScrollTrigger and loader: it neither reads
+// nor changes the bread's. The bowl stays on screen (sticky) only for its own path; the scroll is
+// the browser's own, nothing is captured or forced. No player, controls or autoplay.
+// Sheets are fetched only when the block is near, so they never compete with the bread.
+// Reduced motion: the full bowl as a still, no long path. If the sheets cannot be loaded, the empty
+// and the full bowl stills crossfade with the scroll.
 export function CaldoVerde() {
   const { soup, ui } = useContent();
   const reduced = useReducedMotion();
-  const box = useRef<HTMLDivElement>(null);
-  const video = useRef<HTMLVideoElement>(null);
-  const userPaused = useRef(false);
-  const inView = useRef(false);
-  const [state, setState] = useState<State>("idle");
-  const [width, setWidth] = useState(1280);
-
-  const source = (el: HTMLElement) => (el.getBoundingClientRect().width * Math.min(window.devicePixelRatio || 1, 2) > 1300 ? 1920 : 1280);
-
-  const load = () => {
-    const v = video.current!;
-    if (v.getAttribute("src")) return;
-    v.src = `${VIDEO}-${source(box.current!)}.mp4`;
-    v.load();
-  };
-
-  const play = () => {
-    const v = video.current!;
-    load();
-    const p = v.play();
-    if (p) p.catch((err: DOMException) => setState(err?.name === "AbortError" ? "paused" : "blocked"));
-  };
+  const root = useRef<HTMLElement>(null);
+  const track = useRef<HTMLDivElement>(null);
+  const stage = useRef<HTMLDivElement>(null);
+  const canvas = useRef<HTMLCanvasElement>(null);
+  const full = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
-    const el = box.current!;
-    const v = video.current!;
-    setWidth(source(el));
+    if (reduced) return;
+    const rootEl = root.current!;
+    const stageEl = stage.current!;
+    const fullEl = full.current!;
+    const cv = canvas.current!;
+    const ctx = cv.getContext("2d")!; // transparent until the first frame: the empty-bowl still shows through
+    cv.width = SOUP.width;
+    cv.height = SOUP.height;
 
-    // Read live: on the first render the React state does not know the preference yet.
-    const reducedNow = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const tryAutoplay = () => {
-      if (reducedNow() || userPaused.current || v.ended || !inView.current || document.hidden) return;
-      play();
-    };
+    let target = 0;
+    let current = 0;
+    let drawn = -1;
+    let raf = 0;
+    let visible = false;
+    let live = false;
+    let disposed = false;
 
-    // Fetch a little before the block arrives, so it does not compete with the bread frames.
-    // With reduced motion nothing is fetched until the visitor presses play.
+    const seq = new SheetSequence(() => kick(true));
+
+    function render(force = false) {
+      const want = soupFrame(current);
+      seq.focus(want);
+      if (!live && seq.failed >= 3) {
+        rootEl.classList.add("is-fallback");
+        fullEl.style.opacity = String(smoothstep((current - 0.25) / 0.5));
+        return;
+      }
+      const f = seq.nearest(want);
+      if (f < 0 || (f === drawn && !force)) return;
+      const { sheet, sx, sy } = frameRect(f);
+      ctx.drawImage(seq.sheets[sheet]!, sx, sy, SOUP.width, SOUP.height, 0, 0, SOUP.width, SOUP.height);
+      drawn = f;
+      rootEl.dataset.frame = String(f); // read by the QA scripts
+      if (!live) {
+        // The empty-bowl still stays under the canvas until a frame is really on it (see Film.tsx).
+        requestAnimationFrame(() => {
+          if (disposed || live) return;
+          live = true;
+          rootEl.classList.add("is-live");
+        });
+      }
+    }
+
+    function tick() {
+      raf = 0;
+      const delta = target - current;
+      current = Math.abs(delta) < 0.0004 ? target : current + delta * SMOOTHING;
+      render();
+      if (current !== target && visible) raf = requestAnimationFrame(tick);
+    }
+
+    function kick(force = false) {
+      if (force && visible) render(true);
+      if (!raf && visible) raf = requestAnimationFrame(tick);
+    }
+
+    // Fetch when the block is about a screen and a half away (the bread is long done by then).
     const near = new IntersectionObserver(
       ([e]) => {
-        if (e.isIntersecting && !reducedNow()) load();
+        if (!e.isIntersecting) return;
+        seq.start();
+        near.disconnect();
       },
-      { rootMargin: "50% 0px" },
+      { rootMargin: "150% 0px" },
     );
-    const seen = new IntersectionObserver(
+    near.observe(rootEl);
+
+    const io = new IntersectionObserver(
       ([e]) => {
-        inView.current = e.intersectionRatio >= 0.5;
-        if (inView.current) tryAutoplay();
-        else if (!v.paused) v.pause();
+        visible = e.isIntersecting;
+        if (visible) kick(true);
+        else if (raf) {
+          cancelAnimationFrame(raf);
+          raf = 0;
+        }
       },
-      { threshold: [0, 0.5] },
+      { rootMargin: "100px 0px" },
     );
-    near.observe(el);
-    seen.observe(el);
+    io.observe(stageEl);
 
-    const onVisibility = () => {
-      if (document.hidden) {
-        if (!v.paused) v.pause();
-      } else tryAutoplay();
+    const st = ScrollTrigger.create({
+      trigger: track.current!,
+      start: "top top",
+      end: "bottom bottom",
+      onUpdate: (self) => {
+        target = self.progress;
+        kick();
+      },
+    });
+    target = current = st.progress;
+
+    const redraw = () => {
+      if (document.visibilityState === "visible") render(true);
     };
-    const onPlay = () => setState("playing");
-    const onPause = () => {
-      if (!v.ended) setState((s) => (s === "blocked" ? s : "paused"));
-    };
-    const onEnded = () => setState("ended");
-    document.addEventListener("visibilitychange", onVisibility);
-    v.addEventListener("play", onPlay);
-    v.addEventListener("pause", onPause);
-    v.addEventListener("ended", onEnded);
+    document.addEventListener("visibilitychange", redraw);
+    window.addEventListener("pageshow", redraw);
+
     return () => {
+      disposed = true;
+      document.removeEventListener("visibilitychange", redraw);
+      window.removeEventListener("pageshow", redraw);
       near.disconnect();
-      seen.disconnect();
-      document.removeEventListener("visibilitychange", onVisibility);
-      v.removeEventListener("play", onPlay);
-      v.removeEventListener("pause", onPause);
-      v.removeEventListener("ended", onEnded);
+      io.disconnect();
+      st.kill();
+      cancelAnimationFrame(raf);
+      seq.dispose();
+      rootEl.classList.remove("is-live", "is-fallback");
+      fullEl.style.opacity = "";
+      delete rootEl.dataset.frame;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reduced]);
-
-  const toggle = () => {
-    const v = video.current!;
-    if (state === "playing") {
-      userPaused.current = true;
-      v.pause();
-      return;
-    }
-    userPaused.current = false;
-    if (state === "ended") v.currentTime = 0;
-    play();
-  };
-
-  const full = reduced || state === "blocked";
-  const poster = `${POSTER}-${full ? "last" : "first"}-${width}.webp`;
-  const label = state === "playing" ? ui.soupPause : state === "ended" ? ui.soupReplay : ui.soupPlay;
-  const aria = state === "playing" ? ui.soupPauseAria : state === "ended" ? ui.soupReplayAria : ui.soupPlayAria;
 
   const goTo = (e: React.MouseEvent<HTMLAnchorElement>, hash: string) => {
     e.preventDefault();
@@ -122,69 +151,55 @@ export function CaldoVerde() {
   };
 
   return (
-    <article id="caldo-verde" className="soup" aria-labelledby="soup-title">
-      <div className="soup__media" ref={box} data-state={state} data-reveal>
-        <video
-          ref={video}
-          className="soup__video"
-          muted
-          playsInline
-          preload="none"
-          poster={poster}
-          disablePictureInPicture
-          aria-label={ui.soupVideoLabel}
-        />
-        {full && state !== "playing" && (
-          <button type="button" className="soup__big-play" onClick={toggle} aria-label={ui.soupPlayAria}>
-            <PlayIcon />
-          </button>
-        )}
-        <button type="button" className="soup__control" onClick={toggle} aria-label={aria}>
-          {state === "playing" ? <PauseIcon /> : state === "ended" ? <ReplayIcon /> : <PlayIcon />}
-          <span aria-hidden="true">{label}</span>
-        </button>
+    <article id="caldo-verde" ref={root} className="soup" aria-labelledby="soup-title">
+      <div className="soup__intro">
+        <div className="soup__text" data-reveal>
+          <p className="kicker">{ui.soupEyebrow}</p>
+          <h3 id="soup-title" className="h-lg">
+            <span>{ui.soupTitle[0]}</span>
+            <span className="h-soft">{ui.soupTitle[1]}</span>
+          </h3>
+          <p className="soup__copy">{soup.text}</p>
+          <div className="soup__ctas">
+            <a className="btn btn--primary" href="#menu-duo" onClick={(e) => goTo(e, "#menu-duo")}>
+              {soup.ctaDuo} <ArrowRight />
+            </a>
+            <a className="btn btn--ghost" href="#menu-merendeira" onClick={(e) => goTo(e, "#menu-merendeira")}>
+              {soup.ctaMerendeira} <ArrowRight />
+            </a>
+          </div>
+          <p className="soup__hint" aria-hidden="true">
+            <span className="soup__hint-line" />
+            {ui.soupHint}
+          </p>
+        </div>
       </div>
-      <div className="soup__text" data-reveal style={{ ["--d" as string]: "140ms" }}>
-        <p className="kicker">{ui.soupEyebrow}</p>
-        <h3 id="soup-title" className="h-lg">
-          <span>{ui.soupTitle[0]}</span>
-          <span className="h-soft">{ui.soupTitle[1]}</span>
-        </h3>
-        <p className="soup__copy">{soup.text}</p>
-        <div className="soup__ctas">
-          <a className="btn btn--primary" href="#menu-duo" onClick={(e) => goTo(e, "#menu-duo")}>
-            {soup.ctaDuo} <ArrowRight />
-          </a>
-          <a className="btn btn--ghost" href="#menu-merendeira" onClick={(e) => goTo(e, "#menu-merendeira")}>
-            {soup.ctaMerendeira} <ArrowRight />
-          </a>
+
+      <div className="soup__track" ref={track}>
+        <div className="soup__stage" ref={stage}>
+          <div className="soup__media">
+            <picture>
+              <source type="image/webp" srcSet={`${SOUP.empty}.webp`} />
+              <img className="soup__still soup__still--empty" src={`${SOUP.empty}.jpg`} width={SOUP.width} height={SOUP.height} alt="" aria-hidden="true" loading="lazy" decoding="async" />
+            </picture>
+            <picture>
+              <source type="image/webp" srcSet={`${SOUP.full}.webp`} />
+              <img
+                ref={full}
+                className="soup__still soup__still--full"
+                src={`${SOUP.full}.jpg`}
+                width={SOUP.width}
+                height={SOUP.height}
+                alt={reduced ? ui.soupFullAlt : ""}
+                aria-hidden={reduced ? undefined : true}
+                loading="lazy"
+                decoding="async"
+              />
+            </picture>
+            {!reduced && <canvas className="soup__canvas" ref={canvas} role="img" aria-label={ui.soupAnimLabel} />}
+          </div>
         </div>
       </div>
     </article>
-  );
-}
-
-function PlayIcon() {
-  return (
-    <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-      <path d="M4.5 2.8v10.4L13 8z" fill="currentColor" />
-    </svg>
-  );
-}
-
-function PauseIcon() {
-  return (
-    <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-      <path d="M4 3h2.8v10H4zM9.2 3H12v10H9.2z" fill="currentColor" />
-    </svg>
-  );
-}
-
-function ReplayIcon() {
-  return (
-    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true" focusable="false">
-      <path d="M3.2 8a4.8 4.8 0 1 0 1.5-3.5" strokeLinecap="round" />
-      <path d="M3.4 2.2v2.9h2.9" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
   );
 }

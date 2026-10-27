@@ -35,3 +35,32 @@ Comparação feita a 27/10/2026 entre https://amerendeira.pt/ e a proposta publi
 - **Sem linhas divisórias** entre linhas de conteúdo: cartões e superfícies `#242424`.
 - **Botões**: retangulares com cantos de 12 px, Manrope em caixa normal, amarelo sólido para a ação
   principal e contorno marfim para a secundária.
+
+## Segunda iteração — animações do pão e da sopa controladas pelo scroll (27/10/2026)
+
+### Comparação antes de alterar (original vs proposta publicada, v9)
+
+| Elemento | Original | Proposta v9 | Semelhança que restava |
+| --- | --- | --- | --- |
+| Cores | Creme `#F7F6F1` dominante, texto `#191919`, amarelo só no menu | Página carvão, mas o hero mostrava o estúdio cinzento-claro dos frames num painel claro e o caldo verde numa caixa clara `#d8d7d8` | Duas áreas claras grandes repetiam a luminosidade do original e pareciam vídeos retangulares |
+| Tipografia | Inter em caixa alta + lettering SVG | Space Grotesk / Manrope, texto real | Nenhuma relevante |
+| Composição do hero | Título centrado, faixa de três colunas (texto, botão, nota) | Título em cima à esquerda; por baixo do pão, texto + botões + nota numa faixa | A faixa inferior ainda lê como uma fila de três blocos (mantida: a altura disponível por baixo da janela protegida não permite empilhar sem tapar o pão) |
+| Escala dos títulos | Lettering à largura do ecrã | Títulos grandes em texto real, alinhados à esquerda | Nenhuma relevante |
+| Sequência | Hero → números → lojas → … → contactos | Pão → menus e caldo verde → história → galeria → avaliações → lojas e contactos → imprensa e rodapé | Nenhuma |
+| Espaçamentos | Grandes vazios, linhas de 1 px | Cartões e superfícies, sem linhas | Nenhuma |
+| Botões | Pílula com contorno, caixa alta | Retângulo 12 px, caixa normal, amarelo sólido / contorno marfim | Nenhuma |
+| Vídeos | — | Caldo verde num leitor com reprodução automática e botões | Lia-se como um vídeo incorporado, não como parte da página |
+
+### O que mudou nesta iteração
+
+- **Pão**: os frames passam a vir do vídeo com fundo carvão (`media/original/pao-com-chourico-carvao.mov`).
+  O painel claro foi retirado: a placa de fundo (o próprio fundo de cada frame, já existente no
+  renderizador) prolonga o estúdio carvão até às margens do ecrã e, por baixo do pão, o chão funde-se
+  na cor da página. O título “é boa nas horas” é marfim sobre o carvão do frame.
+- **Caldo verde**: deixa de ser um vídeo com leitor. É uma sequência de frames controlada pelo scroll,
+  com percurso, ScrollTrigger e carregamento próprios: a taça vazia enche-se ao descer, congela quando
+  se para e esvazia ao subir. O fundo do vídeo é nivelado à cor da página só nos píxeis de fundo, por
+  isso não há retângulo à volta da taça.
+- **Movimento reduzido**: o pão acabado e a taça cheia como imagens fixas, sem percursos longos; sem
+  leitor de vídeo em nenhum caso.
+- **Avaliações**: rótulo “Excerto de avaliação no Google” (EN “Google review excerpt”).

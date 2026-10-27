@@ -1,17 +1,20 @@
 """Prepare the supplied pão com chouriço video for the scroll-driven hero.
 
-Input : media/original/pao-com-chourico.mp4 (1920×1080, 24 fps, 193 frames, H.264 with a
-        single keyframe, AAC audio)
+Input : media/original/pao-com-chourico-carvao.mov (1248×704, 24 fps, 193 frames, charcoal
+        backdrop). The previous light-grey clip (pao-com-chourico.mp4) is kept for reference.
 Output: public/videos/...
   sequence/{desktop,mobile}/f_000.webp  every frame of the clip, alpha-feathered edges
   sequence/plates.webp                  per-frame background plate sprite (bread removed)
   sequence/manifest.json                frame count, fps, layout, plate geometry
   poster/cover-*.{avif,webp,jpg}        first frame (intro, hero LCP, static fallback)
-  poster/final-*.{avif,webp,jpg}        last frame (conclusion, reduced-motion fallback)
-  pao-com-chourico-720p.mp4             silent H.264, keyframe every 4 frames (inline player)
-  ../images/cutouts/pao-com-chourico.webp  clean cut-out of the baked loaf (chroma key)
+  poster/final-*.{avif,webp,jpg}        last frame (conclusion, reduced-motion still)
+  poster/final-surround.webp            the last frame's background, 25 % wider on every side
+                                        and fading into the page colour: with reduced motion
+                                        (no plate canvas) it sits under the still, so the still
+                                        has no visible edge
 
-The background of the clip is a neutral studio grey, so the "plate" is the frame with the
+The clip is cropped to 16:9 (1248×702, one row off the top and bottom) so the frames keep the
+window's proportions. The backdrop is a neutral charcoal, so the "plate" is the frame with the
 bread removed (normalised convolution over low-chroma pixels). The page extends that real
 background beyond the frame edges, so the frame has no visible border.
 """
@@ -24,16 +27,17 @@ from pathlib import Path
 
 import numpy as np
 from PIL import Image, ImageFilter
-from scipy.ndimage import binary_closing, binary_fill_holes, binary_opening, gaussian_filter, label
+from scipy.ndimage import gaussian_filter
 
 ROOT = Path(__file__).resolve().parent.parent
-SRC = ROOT / "media/original/pao-com-chourico.mp4"
+SRC = ROOT / "media/original/pao-com-chourico-carvao.mov"
 OUT = ROOT / "public/videos"
 SEQ = OUT / "sequence"
 POSTER = OUT / "poster"
-CUT = ROOT / "public/images/cutouts"
 
-SIZES = {"desktop": 1280, "mobile": 960}
+SIZES = {"desktop": 1248, "mobile": 960}
+CROP = "crop=1248:702:0:1"           # 1248×704 → 16:9
+POSTERS = [1280, 960]              # names used by the page (1280 is the frame, slightly enlarged)
 FEATHER = {"left": 0.02, "right": 0.02, "top": 0.09, "bottom": 0.06}
 PLATE_W, PLATE_H = 128, 72         # background tile per frame
 CHROMA_BG = 14                     # max(rgb) - min(rgb) below this is studio background
@@ -93,37 +97,20 @@ def background_plate(rgb: np.ndarray) -> np.ndarray:
     return np.clip(tile, 0, 255).astype(np.uint8)
 
 
-def cutout(rgb: np.ndarray) -> Image.Image:
-    """Chroma-key the loaf from the neutral backdrop; drop the neutral shadow and steam."""
-    f = rgb.astype(np.float32)
-    chroma = f.max(2) - f.min(2)
-    # Crust edge chroma >= 58, contact shadow 13-36, studio backdrop < 14.
-    core = chroma > 42
-    core = binary_closing(core, iterations=6)
-    core = binary_fill_holes(core)
-    lab, n = label(core)
-    if n > 1:
-        sizes = np.bincount(lab.ravel())
-        sizes[0] = 0
-        core = lab == sizes.argmax()
-    # Near the base, the warm contact shadow can still pass the chroma test as a thin strip.
-    # A morphological opening restricted to the bottom band removes it without touching the
-    # cuts and crust flaps above.
-    ys_core = np.where(core.any(1))[0]
-    band = int(ys_core.max() - 0.14 * (ys_core.max() - ys_core.min()))
-    yy, xx = np.mgrid[-9:10, -9:10]
-    disk = (xx * xx + yy * yy) <= 81
-    opened = binary_opening(core, structure=disk)
-    core[band:] = opened[band:]
-    soft =gaussian_filter(core.astype(np.float32), 1.6)
-    edge = smooth((chroma - 12) / 24)
-    alpha = np.clip(np.minimum(soft * 1.25, np.maximum(edge, (soft > 0.97))), 0, 1)
-    alpha = np.where(core, np.maximum(alpha, gaussian_filter(core.astype(np.float32), 0.8)), alpha)
-    ys, xs = np.where(alpha > 0.02)
-    pad = 12
-    box = (max(xs.min() - pad, 0), max(ys.min() - pad, 0), min(xs.max() + pad, f.shape[1]), min(ys.max() + pad, f.shape[0]))
-    rgba = np.dstack([rgb, (alpha * 255).astype(np.uint8)])
-    return Image.fromarray(rgba, "RGBA").crop(box)
+def surround(tile: np.ndarray) -> Image.Image:
+    """Background plate extended by 25 % on each side, fading into the page colour outwards."""
+    a = np.asarray(Image.fromarray(tile).resize((640, 360), Image.BICUBIC), np.float32)
+    px, py = 160, 90
+    ext = np.pad(a, ((py, py), (px, px), (0, 0)), mode="edge")
+    hh, ww = ext.shape[:2]
+    y = np.arange(hh) + 0.5
+    x = np.arange(ww) + 0.5
+    wy = smooth(1 + np.minimum(np.minimum(y - py, hh - py - y), 0) / py)
+    wx = smooth(1 + np.minimum(np.minimum(x - px, ww - px - x), 0) / px)
+    w = (wy[:, None] * wx[None, :])[..., None]
+    page = np.array([25, 25, 25], np.float32)
+    ext = gaussian_filter(ext * w + page * (1 - w), (4, 4, 0))
+    return Image.fromarray(np.clip(ext + 0.5, 0, 255).astype(np.uint8))
 
 
 def save_set(img: Image.Image, base: Path, widths):
@@ -137,10 +124,12 @@ def save_set(img: Image.Image, base: Path, widths):
 def main():
     if not SRC.exists():
         sys.exit(f"missing {SRC}")
-    for d in (SEQ / "desktop", SEQ / "mobile", POSTER, CUT):
-        if d.exists() and d != CUT:
-            shutil.rmtree(d)
-        d.mkdir(parents=True, exist_ok=True)
+    for d in (SEQ / "desktop", SEQ / "mobile"):
+        shutil.rmtree(d, ignore_errors=True)
+        d.mkdir(parents=True)
+    POSTER.mkdir(parents=True, exist_ok=True)
+    for old in [*POSTER.glob("cover-*"), *POSTER.glob("final-*")]:
+        old.unlink()  # the caldo verde posters in the same folder are left alone
 
     probe = json.loads(subprocess.run(
         ["ffprobe", "-v", "error", "-select_streams", "v", "-count_frames", "-show_entries",
@@ -150,7 +139,7 @@ def main():
     fps = num / den
 
     with tempfile.TemporaryDirectory() as tmp:
-        subprocess.run(["ffmpeg", "-v", "error", "-i", str(SRC), "-vsync", "0", f"{tmp}/%04d.png"], check=True)
+        subprocess.run(["ffmpeg", "-v", "error", "-i", str(SRC), "-vf", CROP, "-vsync", "0", f"{tmp}/%04d.png"], check=True)
         frames = sorted(Path(tmp).glob("*.png"))
         n = len(frames)
         cols = 16
@@ -168,27 +157,16 @@ def main():
                           alpha_quality=70, method=5)
             sprite.paste(Image.fromarray(background_plate(rgb)), ((i % cols) * PLATE_W, (i // cols) * PLATE_H))
             if i == 0:
-                save_set(im, POSTER / "cover", [1920, 1280, 960])
-                Image.fromarray(background_plate(rgb)).save(POSTER / "cover-plate.png")
+                save_set(im, POSTER / "cover", POSTERS)
             if i == n - 1:
-                save_set(im, POSTER / "final", [1920, 1280, 960])
-            if i == round(4.2 * fps):
-                cut = cutout(rgb)
-                cut.save(ROOT / "media/derived/pao-com-chourico.png", optimize=True)
-                cut.resize((cut.width // 2, cut.height // 2), Image.LANCZOS).save(
-                    CUT / "pao-com-chourico-960.webp", quality=86, alpha_quality=90, method=6)
-                cut.save(CUT / "pao-com-chourico.webp", quality=86, alpha_quality=90, method=6)
+                save_set(im, POSTER / "final", POSTERS)
+                surround(background_plate(rgb)).save(POSTER / "final-surround.webp", quality=86, method=6)
             if i % 24 == 0:
                 print(f"frame {i}/{n}", flush=True)
         sprite.save(SEQ / "plates.webp", quality=88, method=6)
 
-    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(SRC), "-an", "-vf", "scale=1280:-2",
-                    "-c:v", "libx264", "-preset", "slow", "-crf", "22", "-g", "4", "-keyint_min", "4",
-                    "-sc_threshold", "0", "-pix_fmt", "yuv420p", "-movflags", "+faststart",
-                    str(OUT / "pao-com-chourico-720p.mp4")], check=True)
-
     manifest = {
-        "source": "media/original/pao-com-chourico.mp4",
+        "source": "media/original/pao-com-chourico-carvao.mov", "crop": CROP,
         "fps": fps, "frames": n, "duration": n / fps,
         "segment": {"start": 0, "end": n / fps, "note": "clip inteiro; mapeamento por troços em src/lib/videoTimeline.ts"},
         "sizes": {k: {"width": w, "height": round(w * 9 / 16), "path": f"/videos/sequence/{k}/f_{{i}}.webp"} for k, w in SIZES.items()},

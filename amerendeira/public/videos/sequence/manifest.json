@@ -1,5 +1,6 @@
 {
- "source": "media/original/pao-com-chourico.mp4",
+ "source": "media/original/pao-com-chourico-carvao.mov",
+ "crop": "crop=1248:702:0:1",
  "fps": 24.0,
  "frames": 193,
  "duration": 8.041666666666666,
@@ -10,8 +11,8 @@
  },
  "sizes": {
   "desktop": {
-   "width": 1280,
-   "height": 720,
+   "width": 1248,
+   "height": 702,
    "path": "/videos/sequence/desktop/f_{i}.webp"
   },
   "mobile": {
@@ -35,7 +36,7 @@
   "cols": 16
  },
  "bytes": {
-  "desktop": 7314756,
-  "mobile": 4606754
+  "desktop": 6473570,
+  "mobile": 4425378
  }
 }

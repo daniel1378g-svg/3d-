@@ -79,11 +79,8 @@ const walk = (dir, keep) => {
 };
 walk("videos/poster", (f) => f.endsWith(".webp") || f.endsWith("cover-1280.jpg"));
 walk("images/optimized", (f) => f.endsWith(".webp"));
-walk("images/cutouts", (f) => f.endsWith(".webp"));
-add("videos/caldo-verde-1280.mp4");
-add("videos/caldo-verde-1920.mp4");
-add("videos/pao-com-chourico-720p.mp4");
 walk("videos/sequence", (f) => f.endsWith(".webp"));
+walk("videos/caldo", (f) => f.endsWith(".webp"));
 
 writeFileSync(join(dest, "files.json"), JSON.stringify(files, null, 1));
 const bytes = Object.keys(files).reduce((n, f) => n + statSync(join(dest, f)).size, 0);
