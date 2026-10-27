@@ -67,3 +67,40 @@ Seek do vídeo original (antes da conversão): 395 ms por posição (só tem um 
 - Desempenho com GPU e em telemóveis de gama baixa (CPU sem limitação nos testes).
 - Conteúdo das páginas do Tripadvisor e do Yelp (403 para browsers automatizados).
 - Lighthouse (não disponível neste ambiente).
+
+## Redesign escuro (27/10/2026)
+
+Chromium/Playwright em 1440×900, 1280×720, 768×1024 e 390×844, na build Next e na simulação do
+Artifact (página dentro de um documento alheio, caminhos relativos). Não testado em Safari/iPhone
+reais nem com leitores de ecrã reais.
+
+**Animação do pão** (`reference/bread-animation/baseline.json` vs `after-redesign.json`): mesmo
+percurso de scroll (3600 / 2880 / 4096 / 3376 px), mesmos frames a 0, 10, 25, 50, 75, 90 e 100 % e
+no regresso (0, 27, 53, 85, 136, 181, 192 / 136, 85, 53, 27, 0), canvas com píxeis desenhados em
+todos os pontos. Em desktop a janela 16:9 fica exatamente no mesmo sítio; em 768 e 390 px tem o
+mesmo tamanho mas desce 27 e 47 px, porque o título por cima passou a texto em duas linhas. O efeito
+que desenha os frames é idêntico, byte a byte, ao da versão de referência.
+
+**Vídeo do caldo verde**: não é pedido no topo da página; começa a carregar perto da secção; com 30 %
+visível não toca; com 50 % toca; pausa ao sair do ecrã e retoma ao voltar; a pausa do utilizador é
+respeitada (sair e voltar não reinicia); termina aos 8,04 s com a taça cheia e não recomeça
+sozinho; “Ver outra vez” recomeça; pausa com a página em segundo plano; se a reprodução automática
+for recusada mostra a taça cheia e um botão grande de reprodução, que funciona; com movimento
+reduzido não descarrega o vídeo, mostra a taça cheia e só toca quando se carrega no botão.
+
+**Avaliações e idioma**: cinco cartões com nome, “5 de 5 estrelas” (texto para leitores de ecrã),
+“Avaliação no Google · excerto”; em português, tradução identificada e botão “Ver o original”
+(aria-expanded alterna e o original aparece/desaparece); em inglês, só o original. Nenhuma média,
+total, data ou nota global no texto da secção. Troca PT/EN atualiza títulos, vídeo e avaliações.
+
+**Galeria e carrosséis**: setas, indicador (01/09…), swipe por toque e teclas ← → na galeria;
+setas e indicador no carrossel de avaliações em telemóvel; sem rotação automática.
+
+**Teclado e acessibilidade**: 45 paragens de Tab em desktop e 41 em telemóvel, todas com anel de
+foco visível e nome acessível; axe-core (WCAG 2 A/AA) sem violações em desktop e telemóvel depois das
+correções (contraste dos rótulos secundários e do seletor de idioma, estrutura da galeria). Sem
+scroll horizontal em 390, 768 e 1440 px, incluindo com movimento reduzido (foi corrigido um caso em
+que o texto oculto das estrelas alargava a página).
+
+**Movimento reduzido**: sem intro, filme em composição estática com o pão acabado, sem scroll preso,
+todas as fotografias e cartões visíveis sem animação, transições do slideshow instantâneas.

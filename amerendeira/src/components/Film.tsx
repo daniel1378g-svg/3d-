@@ -1,14 +1,12 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useContent, useLang } from "@/content/i18n";
-import type { DrawnTitle as DrawnTitleData } from "@/lib/drawnTitles";
+import { useContent } from "@/content/i18n";
 import { FrameSequence, SEQUENCE, type SequenceSize } from "@/lib/frameSequence";
 import { ScrollTrigger } from "@/lib/gsap";
 import { IS_ARTIFACT } from "@/lib/artifact";
 import { useReducedMotion } from "@/lib/motion";
 import { CHAPTER_WINDOWS, FRAME_COUNT, progressToTime, timeToFrame } from "@/lib/videoTimeline";
-import { DrawnTitle } from "./DrawnTitle";
 import { ArrowRight } from "./Icons";
 import { scrollToHash } from "./SiteHeader";
 
@@ -22,10 +20,9 @@ function smoothstep(t: number) {
 
 type Rect = { x: number; y: number; w: number; h: number };
 
-export function Film({ headline }: { headline: DrawnTitleData }) {
+export function Film() {
   const reduced = useReducedMotion();
-  const { brand, drawnText, filmChapters, ui } = useContent();
-  const { lang } = useLang();
+  const { brand, filmChapters, ui } = useContent();
   const root = useRef<HTMLElement>(null);
   const track = useRef<HTMLDivElement>(null);
   const stage = useRef<HTMLDivElement>(null);
@@ -342,6 +339,57 @@ export function Film({ headline }: { headline: DrawnTitleData }) {
     };
   }, [reduced]);
 
+  // ——— Studio panel (dark redesign) ———
+  // The frames carry their own light studio background. On the dark page it is shown inside a
+  // framed panel: the plate canvas and the frame window are clipped to the same rounded rectangle.
+  // This only writes CSS variables from the window's measured position; the frame renderer above,
+  // the scroll path and the window's size and position are untouched.
+  useEffect(() => {
+    const stageEl = stage.current!;
+    const win = windowEl.current!;
+    const header = document.querySelector<HTMLElement>(".site-header");
+    const stacked = window.matchMedia("(max-width: 899px), (max-aspect-ratio: 1/1)");
+    const px = (n: number) => `${Math.round(n * 10) / 10}px`;
+    const update = () => {
+      const s = stageEl.getBoundingClientRect();
+      const w = win.getBoundingClientRect();
+      const top = w.top - s.top;
+      const left = w.left - s.left;
+      const v = stageEl.style;
+      if (stacked.matches) {
+        // Phones and portrait screens: a full-width light band around the 16:9 window.
+        v.setProperty("--pt", px(Math.max(0, top - 10)));
+        v.setProperty("--pb", px(Math.max(0, s.height - (top + w.height) - 8)));
+        v.setProperty("--px", "0px");
+        v.setProperty("--pr", "0px");
+        stageEl.dataset.panel = "band";
+      } else {
+        // Landscape: a rounded panel inside the window, below the header, ending under the loaf
+        // and its shadow (the product never goes below 88.5 % of the frame's height).
+        const headerBottom = header ? header.getBoundingClientRect().bottom : 0;
+        const pt = Math.max(top, headerBottom + 12);
+        const inset = w.width * 0.012;
+        v.setProperty("--pt", px(pt));
+        v.setProperty("--pb", px(s.height - (top + w.height * 0.915)));
+        v.setProperty("--px", px(left + inset));
+        v.setProperty("--pr", "28px");
+        v.setProperty("--wt", px(pt - top));
+        v.setProperty("--wb", px(w.height * 0.085));
+        v.setProperty("--wx", px(inset));
+        stageEl.dataset.panel = "card";
+      }
+    };
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(stageEl);
+    ro.observe(win);
+    stacked.addEventListener("change", update);
+    return () => {
+      ro.disconnect();
+      stacked.removeEventListener("change", update);
+    };
+  }, []);
+
   const onAnchor = (e: React.MouseEvent<HTMLAnchorElement>, hash: string) => {
     e.preventDefault();
     scrollToHash(hash);
@@ -351,11 +399,21 @@ export function Film({ headline }: { headline: DrawnTitleData }) {
     <section id="Top" ref={root} className={`film${reduced ? " film--still" : ""}`} aria-labelledby="film-title">
       <div className="film__track" ref={track}>
         <div className="film__stage" ref={stage} data-intro="stage">
+          <div className="film__panel" aria-hidden="true" />
           <canvas className="film__plate" ref={plateCanvas} aria-hidden="true" />
 
           <div className="film__headline">
-            <DrawnTitle as="h1" id="film-title" data={headline} className="drawn-title--hero" text={lang === "en" ? drawnText.hero : undefined} />
+            <h1 id="film-title" className="hero-title">
+              {ui.heroTitle.map((l) => (
+                <span key={l} className="line" data-intro="line">
+                  <span>{l}</span>
+                </span>
+              ))}
+            </h1>
           </div>
+          <p className="film__eyebrow" data-intro="fade">
+            {ui.heroEyebrow}
+          </p>
 
           <div className="film__window" ref={windowEl}>
             <div className="film__media" ref={media}>
@@ -409,14 +467,14 @@ export function Film({ headline }: { headline: DrawnTitleData }) {
                 ))}
               </p>
               <div className="film__ctas" data-intro="fade">
-                <a className="btn btn--solid" href="#menus" onClick={(e) => onAnchor(e, "#menus")}>
+                <a className="btn btn--primary" href="#menus" onClick={(e) => onAnchor(e, "#menus")}>
                   {ui.seeMenus} <ArrowRight />
                 </a>
-                <a className="btn" href="#Lojas" onClick={(e) => onAnchor(e, "#Lojas")}>
+                <a className="btn btn--ghost" href="#Lojas" onClick={(e) => onAnchor(e, "#Lojas")}>
                   {ui.findShop} <ArrowRight />
                 </a>
                 {reduced && (
-                  <button type="button" className="btn film__still-actions" onClick={() => setPlaying((p) => !p)} aria-pressed={playing}>
+                  <button type="button" className="btn btn--ghost film__still-actions" onClick={() => setPlaying((p) => !p)} aria-pressed={playing}>
                     {playing ? ui.closeVideo : ui.watchVideo}
                   </button>
                 )}
@@ -453,7 +511,7 @@ export function Film({ headline }: { headline: DrawnTitleData }) {
                 </span>
                 <span>04</span>
               </div>
-              <a className="film__cue" href="#tradicao" onClick={(e) => onAnchor(e, "#tradicao")} data-intro="fade">
+              <a className="film__cue" href="#menus" onClick={(e) => onAnchor(e, "#menus")} data-intro="fade">
                 {ui.scroll}
                 <span className="film__cue-line" aria-hidden="true" />
                 <span className="sr-only">{ui.scrollSr}</span>

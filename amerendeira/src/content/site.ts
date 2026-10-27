@@ -224,7 +224,77 @@ export const ui = {
   galleryNext: "Fotografia seguinte",
   skipIntro: "Saltar intro",
   proposal: "Proposta de design · não é o site oficial da A Merendeira",
+  // Redesign (dark identity)
+  heroEyebrow: "Pão com chouriço · forno a lenha",
+  heroTitle: ["é boa", "nas horas"],
+  historyEyebrow: "A nossa história",
+  soupEyebrow: "Em destaque",
+  soupTitle: ["Caldo verde", "à moda antiga"],
+  soupVideoLabel: "Vídeo sem som: uma taça de barro vazia enche-se de caldo verde, com couve e rodelas de chouriço.",
+  soupPosterAlt: "Taça de barro cheia de caldo verde, com couve e rodelas de chouriço",
+  soupPlay: "Reproduzir",
+  soupPause: "Pausar",
+  soupReplay: "Ver outra vez",
+  soupPlayAria: "Reproduzir o vídeo do caldo verde",
+  soupPauseAria: "Pausar o vídeo do caldo verde",
+  soupReplayAria: "Ver outra vez o vídeo do caldo verde",
+  galleryEyebrow: "Galeria",
+  galleryLabel: "Galeria de fotografias",
+  galleryPosition: "Fotografia",
+  of: "de",
+  reviewsEyebrow: "Avaliações",
+  reviewsTitle: ["À mesa, nas palavras", "de quem nos visita"],
+  reviewsLabel: "Avaliações de clientes",
+  reviewSource: "Avaliação no Google · excerto",
+  reviewTranslated: "Tradução do original em inglês",
+  reviewShowOriginal: "Ver o original",
+  reviewHideOriginal: "Ocultar o original",
+  reviewStars: "5 de 5 estrelas",
+  reviewsPrev: "Avaliação anterior",
+  reviewsNext: "Avaliação seguinte",
+  reviewPosition: "Avaliação",
+  storesTitle: ["Lojas", "e contactos"],
+  contactTitle: "Fala connosco",
+  phone: "Telefone",
+  email: "Email",
 };
+
+// The caldo verde feature of the menus (text from Menu Duo and Menu Merendeira on the original site).
+export const soup = {
+  text: "Dois clássicos que falam por si. O nosso pão com chouriço junta-se ao caldo verde, com aquele toque de chouriço que aquece.",
+  ctaDuo: "Ver Menu Duo",
+  ctaMerendeira: "Ver Menu Merendeira",
+};
+
+// Five Google reviews supplied by A Merendeira (author names and excerpts as given; five stars
+// each). Portuguese: our translation, with the original one click away. English: the original.
+export const reviews = [
+  {
+    author: "Silvia G",
+    quote: "A comida é preparada na hora e é deliciosa! O menu é simples, mas eficaz.",
+    original: "Food is freshly prepared and delicious! Menu is simple, yet efficient.",
+  },
+  {
+    author: "Bernardo Fiedler",
+    quote: "O pão sai a escaldar do forno a lenha! Provem a sopa, o caldo verde, e o pão com chouriço juntos — façam isso mesmo!!",
+    original: "The bread comes scorching out of wood oven! Try the soup, caldo verde, and the chouriço bread together, just do it!!",
+  },
+  {
+    author: "David Miguel",
+    quote: "É simples, barato e rápido.",
+    original: "It’s simple, cheap and fast.",
+  },
+  {
+    author: "Oguzhan Ozturk",
+    quote: "Adoramos o conceito e os menus estavam mesmo bons. Recomendamos vivamente o restaurante.",
+    original: "We love the concept and the menus were really good. Highly recommend the restaurant.",
+  },
+  {
+    author: "Amir N",
+    quote: "O pão fresco do forno a lenha estava incrível, a sopa tradicional era saborosa e reconfortante, e a sobremesa foi a forma perfeita de terminar a refeição.",
+    original: "The fresh wood-fired bread was amazing, the traditional soup was flavorful and comforting, and the dessert was a perfect way to finish the meal.",
+  },
+];
 
 // Alternative texts of the photographs (Portuguese originals from the image manifest).
 export const imageAlt = Object.fromEntries(Object.entries(images).map(([id, info]) => [id, info.alt])) as Record<
@@ -235,7 +305,7 @@ export const imageAlt = Object.fromEntries(Object.entries(images).map(([id, info
 // The drawn titles are Portuguese drawings; in English they are set as text.
 export const drawnText = { hero: "é boa nas horas", menus: "os nossos menus", contact: "fala connosco" };
 
-export const pt = { brand, filmChapters, nav, contact, stores, experience, flavour, menusIntro, menus, press, gallery, footer, ui, drawnText, imageAlt };
+export const pt = { brand, filmChapters, nav, contact, stores, experience, flavour, menusIntro, menus, press, gallery, footer, ui, drawnText, imageAlt, soup, reviews };
 
 type Widen<T> = T extends string ? string : T extends readonly (infer U)[] ? readonly Widen<U>[] : T extends object ? { readonly [K in keyof T]: Widen<T[K]> } : T;
 export type Content = Widen<typeof pt>;

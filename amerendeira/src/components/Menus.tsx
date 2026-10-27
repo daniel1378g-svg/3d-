@@ -1,111 +1,51 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import { useContent } from "@/content/i18n";
 import type { ImageId } from "@/lib/images";
+import { CaldoVerde } from "./CaldoVerde";
 import { Photo } from "./Photo";
-import { scrollToHash } from "./SiteHeader";
 
+// Menus first, right after the bread: four cards in an asymmetric grid (large and small photos
+// alternate), then the caldo verde video.
 export function Menus() {
-  const { menus, menusIntro, ui } = useContent();
-  const [active, setActive] = useState(0);
-  const list = useRef<HTMLOListElement>(null);
-
-  // The menu whose block crosses the middle of the screen is the active one: its photograph
-  // shows in the sticky frame (desktop) and its quick link is marked.
-  useEffect(() => {
-    const items = [...(list.current?.querySelectorAll<HTMLElement>(".menu-item") ?? [])];
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (e.isIntersecting) setActive(items.indexOf(e.target as HTMLElement));
-        }
-      },
-      { rootMargin: "-48% 0px -48% 0px" },
-    );
-    items.forEach((el) => io.observe(el));
-    return () => io.disconnect();
-  }, []);
-
-  const current = menus[active];
-
+  const { menus, menusIntro } = useContent();
   return (
-    <section id="menus" className="menus section on-dark" aria-labelledby="menus-title">
+    <section id="menus" className="menus" aria-labelledby="menus-title">
       <div className="wrap">
-        <div className="menus__head" data-lines>
-          <div style={{ gridColumn: "1 / span 7" }}>
-            <p className="eyebrow">{menusIntro.eyebrow}</p>
-            <h2 id="menus-title" className="display">
-              <span className="line">
-                <span>{menusIntro.title}</span>
-              </span>
-            </h2>
-          </div>
+        <header className="menus__head">
+          <p className="kicker">{menusIntro.eyebrow}</p>
+          <h2 id="menus-title" className="h-xl" data-lines>
+            <span className="line">
+              <span>{menusIntro.title}</span>
+            </span>
+          </h2>
           <p className="menus__note">
-            <strong aria-hidden="true">1972</strong>
-            {menusIntro.note}
+            <strong>1972</strong>
+            <span>{menusIntro.note}</span>
           </p>
-        </div>
+        </header>
 
-        <nav className="menus__jump" aria-label={ui.jumpAria}>
-          {menus.map((m, i) => (
-            <a
-              key={m.id}
-              href={`#${m.id}`}
-              aria-current={i === active ? "true" : undefined}
-              onClick={(e) => {
-                e.preventDefault();
-                scrollToHash(`#${m.id}`);
-              }}
-            >
-              <span>{m.number}</span>
-              {m.name}
-            </a>
-          ))}
-        </nav>
-
-        <div className="menus__body">
-          <div className="menus__visual" aria-hidden="true">
-            <div className="menus__frame">
-              {menus.map((m, i) => (
-                <Photo
-                  key={m.id}
-                  id={m.image as ImageId}
-                  sizes="(max-width: 899px) 100vw, 640px"
-                  className={i === active ? "is-active" : undefined}
-                  alt=""
-                />
-              ))}
-            </div>
-            <p className="menus__caption">
-              <span>
-                {current.number} — {current.name}
-              </span>
-              <span>
-                {active + 1} / {menus.length}
-              </span>
-            </p>
-          </div>
-
-          <ol className="menus__list" ref={list}>
-            {menus.map((m, i) => (
-              <li
-                key={m.id}
-                id={m.id}
-                className={`menu-item${i === active ? " is-active" : ""}`}
-                onMouseEnter={() => setActive(i)}
-                onFocus={() => setActive(i)}
-              >
-                <div className="menu-item__photo">
-                  <Photo id={m.image as ImageId} sizes="(max-width: 899px) 92vw, 1px" />
+        <ol className="menus__grid">
+          {menus.map((m, i) => {
+            const [first, ...rest] = m.name.split(" ");
+            return (
+              <li key={m.id} id={m.id} className={`menu-card menu-card--${i + 1}`}>
+                <div className="menu-card__media" data-reveal>
+                  <Photo id={m.image as ImageId} sizes="(max-width: 699px) 92vw, (max-width: 1099px) 46vw, 560px" />
                 </div>
-                <p className="menu-item__num">{m.number}.</p>
-                <h3 className="menu-item__name">{m.name}</h3>
-                <p className="menu-item__text">{m.text}</p>
+                <div className="menu-card__body" data-reveal style={{ ["--d" as string]: "120ms" }}>
+                  <p className="menu-card__num">{m.number}</p>
+                  <h3 className="menu-card__name">
+                    <span className="menu-card__kind">{first}</span> {rest.join(" ")}
+                  </h3>
+                  <p className="menu-card__text">{m.text}</p>
+                </div>
               </li>
-            ))}
-          </ol>
-        </div>
+            );
+          })}
+        </ol>
+
+        <CaldoVerde />
       </div>
     </section>
   );

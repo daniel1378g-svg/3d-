@@ -1,0 +1,379 @@
+/* Rules of src/styles/globals.css that position and size the bread film (copied before the dark redesign). */
+
+/* A Merendeira — design system
+   Palette taken from the original site (CSS variables --white-smoke, --black, --light-grey,
+   --dark-grey, --color, and #FFC629 of the menu panel), plus the studio greys of the film. */
+
+:root {
+  --paper: #f7f6f1;
+  --paper-2: #f1f0ec;
+  --ink: #191919;
+  --ink-logo: #221f20;
+  --ink-2: #55554d;
+  --stone: #afafaf;
+  --line: rgb(25 25 25 / 0.16);
+  --line-strong: rgb(25 25 25 / 0.32);
+  --yellow: #ffc629;
+  --night: #191919;
+  --night-line: rgb(247 246 241 / 0.18);
+  --studio-top: #a9a9aa;
+  --studio-mid: #c9c8c9;
+  --studio-bottom: #d9d8d9;
+
+  --serif: "Playfair Display Variable", "Playfair Display", Georgia, "Times New Roman", serif;
+  --sans: "Inter Variable", Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --gutter: clamp(16px, 3.6vw, 56px);
+  --header-h: 72px;
+  --max: 1680px;
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --fs-display: clamp(46px, 7.6vw, 132px);
+  --fs-display-2: clamp(38px, 5.4vw, 92px);
+  --fs-statement: clamp(25px, 3.05vw, 50px);
+  --fs-lead: clamp(18px, 1.35vw, 22px);
+  --fs-body: clamp(16px, 1.05vw, 17px);
+  --fs-small: 13px;
+  --fs-eyebrow: 12px;
+}
+
+/* ——— Intro ——— */
+
+.intro { position: fixed; inset: 0; z-index: 90; pointer-events: none; display: none; }
+
+.has-intro .intro { display: block; }
+
+.intro__logo {
+  position: absolute;
+  left: 50%; top: 50%;
+  width: min(64vw, 560px);
+  transform: translate(-50%, -50%);
+  color: var(--ink-logo);
+  transform-origin: 0 0;
+}
+
+.intro__logo .logo { overflow: hidden; }
+
+/* The logotype rises letter by letter from the very first paint (no JavaScript needed). */
+.has-intro .intro__logo .logo__glyph { animation: intro-rise 0.9s var(--ease-expo) both; animation-delay: calc(var(--i) * 34ms + 60ms); }
+
+.has-intro .intro__logo .logo__bar { animation: intro-rise 0.9s var(--ease-expo) both; animation-delay: 140ms; }
+
+.intro__skip {
+  position: absolute;
+  right: calc(var(--gutter) + env(safe-area-inset-right));
+  bottom: calc(24px + env(safe-area-inset-bottom));
+  pointer-events: auto;
+  min-height: 44px;
+  padding: 0 20px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: rgb(247 246 241 / 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.intro__skip:hover { background: var(--yellow); border-color: var(--ink); }
+
+.has-intro .site-header { opacity: 0; }
+
+.has-intro [data-intro="stage"] { clip-path: inset(50% 50% 50% 50%); }
+
+.has-intro [data-intro="line"] > span { transform: translateY(110%); }
+
+.has-intro [data-intro="fade"] { opacity: 0; }
+
+.has-intro .drawn-title--hero .drawn-title__svg { overflow: hidden; }
+
+.has-intro .drawn-title--hero .drawn-title__glyph { transform: translateY(120%); }
+
+/* ——— Film (hero + scroll video) ——— */
+
+.film { position: relative; z-index: 1; }
+
+.film { --film-scroll: 300svh; }
+
+.film__track { position: relative; }
+
+.js .film__track { height: calc(100svh + var(--film-scroll)); }
+
+.film__stage {
+  position: relative;
+  height: 100svh;
+  min-height: 520px;
+  overflow: hidden;
+  background: linear-gradient(180deg, var(--studio-top) 0%, var(--studio-mid) 48%, var(--studio-bottom) 100%);
+  --win-w: min(94vw, calc(84svh * 16 / 9));
+  --win-h: calc(var(--win-w) * 9 / 16);
+}
+
+.js .film__stage { position: sticky; top: 0; }
+
+/* The plate is drawn at 1/6 resolution (blurred inside the canvas) and scaled up. */
+.film__plate { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 0.5s linear; }
+
+.film.has-plate .film__plate { opacity: 1; }
+
+.film__window {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--win-w);
+  aspect-ratio: 16 / 9;
+  transform: translate(-50%, -50%);
+}
+
+.film__media { position: absolute; inset: 0; transform-origin: 50% 59%; }
+
+.film__media > * { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+.film__media picture img { width: 100%; height: 100%; }
+
+.film__cover {
+  object-fit: contain;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 2%, #000 98%, transparent 100%), linear-gradient(180deg, transparent 0, #000 9%, #000 94%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(90deg, transparent 0, #000 2%, #000 98%, transparent 100%), linear-gradient(180deg, transparent 0, #000 9%, #000 94%, transparent 100%);
+  mask-composite: intersect;
+  transition: opacity 0.4s linear;
+}
+
+.film__final { opacity: 0; object-fit: contain; }
+
+.film__final, .film__player {
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 2%, #000 98%, transparent 100%), linear-gradient(180deg, transparent 0, #000 9%, #000 94%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(90deg, transparent 0, #000 2%, #000 98%, transparent 100%), linear-gradient(180deg, transparent 0, #000 9%, #000 94%, transparent 100%);
+  mask-composite: intersect;
+}
+
+/* The canvas is always visible: it is transparent until it holds a frame, so the cover underneath
+   shows through, and it is never drawn while hidden (Safari may then fail to show it). The cover
+   goes only once the canvas is confirmed to hold the frame (Film.tsx). */
+.film.is-live .film__cover { opacity: 0; }
+
+.film__headline {
+  position: absolute;
+  left: 50%;
+  top: calc(50% - var(--win-h) / 2 + var(--win-h) * 0.05);
+  width: min(calc(var(--win-w) * 0.78), 1180px);
+  transform: translateX(-50%);
+  color: var(--ink);
+  z-index: 2;
+}
+
+.film__headline .drawn-title__glyph { will-change: transform; }
+
+.film__band {
+  position: absolute;
+  left: 0; right: 0;
+  top: calc(50% + var(--win-h) / 2 - var(--win-h) * 0.12);
+  bottom: 0;
+  z-index: 2;
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 var(--gutter) max(20px, 3svh);
+}
+
+.film__intro {
+  height: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) auto minmax(0, 1fr);
+  align-items: start;
+  gap: 32px;
+}
+
+.film__lede { font-size: clamp(16px, 1.2vw, 19px); line-height: 1.5; max-width: 34ch; }
+
+.film__ctas { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+
+.film__note { justify-self: end; text-align: right; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; line-height: 1.55; }
+
+.film__chapters { position: absolute; inset: 0 var(--gutter) max(20px, 3svh); pointer-events: none; }
+
+.chapter {
+  position: absolute;
+  left: 0; top: 0;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 18px;
+  align-items: baseline;
+  visibility: hidden;
+}
+
+.chapter__num { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; }
+
+.chapter__label { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.7; }
+
+.chapter__text {
+  grid-column: 1 / -1;
+  margin-top: 8px;
+  font-family: var(--serif);
+  font-size: clamp(30px, 3.4vw, 58px);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.film__rail {
+  position: absolute;
+  right: var(--gutter);
+  bottom: max(24px, 3.4svh);
+  z-index: 3;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0;
+}
+
+.film__rail-bar { position: relative; width: 120px; height: 1px; background: rgb(25 25 25 / 0.22); overflow: hidden; }
+
+.film__rail-fill { position: absolute; inset: 0; background: var(--ink); transform-origin: left; transform: scaleX(0); }
+
+.film__cue {
+  position: absolute;
+  left: 50%;
+  bottom: max(16px, 2.4svh);
+  transform: translateX(-50%);
+  z-index: 3;
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.film__cue-line { width: 1px; height: 34px; background: rgb(25 25 25 / 0.25); position: relative; overflow: hidden; }
+
+.film__cue-line::after { content: ""; position: absolute; left: 0; top: -40%; width: 100%; height: 40%; background: var(--ink); animation: cue 2.2s var(--ease) infinite; }
+
+.film__cue-line::after { animation: none; top: 30%; }
+
+.film__stage {
+    --win-w: min(100vw, calc(100svh * 0.62 * 16 / 9));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: calc(var(--header-h) + 8px) 0 max(56px, 7svh);
+  }
+
+.film__headline {
+    position: relative;
+    left: auto; top: auto;
+    transform: none;
+    width: min(88vw, 640px);
+    margin: 0 auto 2svh;
+  }
+
+.film__window {
+    position: relative;
+    left: auto; top: auto;
+    transform: none;
+    margin: 0 auto;
+    flex: none;
+  }
+
+.film__band {
+    position: relative;
+    top: auto; bottom: auto;
+    width: 100%;
+    margin-top: 1svh;
+    padding-bottom: 0;
+  }
+
+.film__intro { grid-template-columns: 1fr; gap: 18px; justify-items: start; }
+
+.film__ctas { justify-content: flex-start; }
+
+.film__note { justify-self: start; text-align: left; }
+
+.film__chapters { inset: 0 var(--gutter); }
+
+.film__rail { left: var(--gutter); right: auto; }
+
+.film__cue { display: none; }
+
+.film__lede { font-size: 16px; }
+
+.film__ctas .btn { padding: 0 16px 0 18px; font-size: 12px; gap: 10px; }
+
+.chapter__text { font-size: clamp(30px, 9vw, 44px); }
+
+.film__note { display: none; }
+
+.js .film__track { height: auto; }
+
+.js .film__stage { position: relative; }
+
+.film--still .film__track { height: auto; }
+
+.film--still .film__stage { position: relative; }
+
+.film__player { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; background: transparent; z-index: 2; }
+
+.flavour__intro { grid-column: 1 / span 4; position: sticky; top: calc(var(--header-h) + 32px); }
+
+.flavour__intro .display-2 { margin: 18px 0 28px; }
+
+.flavour__intro p { max-width: 36ch; margin-bottom: 32px; }
+
+.flavour__intro { grid-column: 1 / -1; position: static; }
+
+.flavour__intro { top: calc(var(--header-h) + var(--label-h) + 32px); }
+
+.film__stage { padding-top: calc(var(--header-h) + var(--label-h) + 8px); }
+
+/* ——— Film state, driven by the frame renderer (.is-playing, data-chapter) ——— */
+.film__headline, .film__intro > *, .film__cue {
+  transition: opacity 0.5s var(--ease), translate 0.7s var(--ease-expo), visibility 0s;
+}
+
+.film.is-playing .film__headline,
+.film.is-playing .film__intro > *,
+.film.is-playing .film__cue {
+  opacity: 0;
+  translate: 0 -28px;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.35s var(--ease), translate 0.5s var(--ease), visibility 0s 0.35s;
+}
+
+.film__rail { transition: opacity 0.4s var(--ease); }
+
+.film.is-playing .film__rail { opacity: 1; }
+
+.film__rail-fill { transition: transform 0.15s linear; }
+
+.chapter {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s var(--ease), visibility 0s 0.25s;
+}
+
+.chapter__text > span { translate: 0 105%; transition: translate 0.25s var(--ease); }
+
+.film[data-chapter="0"] .chapter:nth-child(1),
+.film[data-chapter="1"] .chapter:nth-child(2),
+.film[data-chapter="2"] .chapter:nth-child(3),
+.film[data-chapter="3"] .chapter:nth-child(4) {
+  opacity: 1;
+  visibility: visible;
+  /* the outgoing caption is gone before the next one comes in: they never overlap */
+  transition: opacity 0.4s var(--ease) 0.25s, visibility 0s 0.25s;
+}
+
+.film[data-chapter="0"] .chapter:nth-child(1) .chapter__text > span,
+.film[data-chapter="1"] .chapter:nth-child(2) .chapter__text > span,
+.film[data-chapter="2"] .chapter:nth-child(3) .chapter__text > span,
+.film[data-chapter="3"] .chapter:nth-child(4) .chapter__text > span {
+  translate: 0 0;
+  transition: translate 0.8s var(--ease-expo) 0.25s;
+}

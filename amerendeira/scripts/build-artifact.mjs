@@ -36,7 +36,7 @@ const shared = {
 await build({ ...shared, entryPoints: [join(root, "src/artifact/server.tsx")], platform: "node", format: "cjs", outfile: join(tmp, "server.cjs") });
 const require = createRequire(import.meta.url);
 const { render } = require(join(tmp, "server.cjs"));
-const { markup, titles, introScript } = render();
+const { markup, introScript } = render();
 
 // 2. Client bundle.
 await build({ ...shared, entryPoints: [join(root, "src/artifact/client.tsx")], platform: "browser", format: "iife", target: "es2020", minify: true, outfile: join(tmp, "app.js") });
@@ -51,11 +51,10 @@ const page = [
   "<title>Proposta de design A Merendeira</title>",
   '<meta name="robots" content="noindex" />',
   '<link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />',
-  '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&family=Playfair+Display:wght@400..700&display=swap" />',
+  '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@300..800&family=Space+Grotesk:wght@300..700&display=swap" />',
   `<style>${css}</style>`,
   `<script>${bootScript}</script>`,
   `<div id="mrd-app">${relativise(markup)}</div>`,
-  `<script type="application/json" id="mrd-titles">${JSON.stringify(titles).replace(/</g, "\\u003c")}</script>`,
   `<script>${introScript}</script>`,
   '<script src="app.js"></script>',
 ].join("\n");
@@ -81,6 +80,8 @@ const walk = (dir, keep) => {
 walk("videos/poster", (f) => f.endsWith(".webp") || f.endsWith("cover-1280.jpg"));
 walk("images/optimized", (f) => f.endsWith(".webp"));
 walk("images/cutouts", (f) => f.endsWith(".webp"));
+add("videos/caldo-verde-1280.mp4");
+add("videos/caldo-verde-1920.mp4");
 add("videos/pao-com-chourico-720p.mp4");
 walk("videos/sequence", (f) => f.endsWith(".webp"));
 

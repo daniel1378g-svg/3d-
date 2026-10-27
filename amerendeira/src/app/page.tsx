@@ -1,7 +1,6 @@
 import { introScript } from "@/components/Intro";
 import { Site } from "@/components/Site";
 import { brand, contact, stores } from "@/content/site";
-import { drawnTitle } from "@/lib/drawnTitles";
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -21,14 +20,9 @@ const jsonLd = {
 };
 
 export default function Home() {
-  const titles = {
-    hero: drawnTitle("boaNasHoras"),
-    menus: drawnTitle("osNossosMenus"),
-    contact: drawnTitle("falaConnosco"),
-  };
   return (
     <>
-      <Site titles={titles} />
+      <Site />
       {/* Runs while the HTML is parsed, before the app bundle: see Intro.tsx */}
       <script dangerouslySetInnerHTML={{ __html: introScript }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />

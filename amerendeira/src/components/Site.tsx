@@ -1,29 +1,29 @@
 "use client";
 
 import { LangProvider, useContent } from "@/content/i18n";
-import type { DrawnTitle } from "@/lib/drawnTitles";
 import { IS_ARTIFACT } from "@/lib/artifact";
 import { Film } from "./Film";
 import { Gallery } from "./Gallery";
 import { Intro } from "./Intro";
 import { Menus } from "./Menus";
+import { Reviews } from "./Reviews";
 import { ScrollEffects } from "./ScrollEffects";
-import { Ambience, Fire, Flavour, Footer, Press, Stores, Tradition, Welcome } from "./Sections";
+import { Footer, Places, Press, Story } from "./Sections";
 import { SiteHeader } from "./SiteHeader";
-
-export type SiteTitles = { hero: DrawnTitle; menus: DrawnTitle; contact: DrawnTitle };
 
 // The whole page, shared by the Next.js route (src/app/page.tsx) and the Artifact preview
 // (src/artifact/*), so both render exactly the same markup.
-export function Site({ titles }: { titles: SiteTitles }) {
+export function Site() {
   return (
     <LangProvider>
-      <Page titles={titles} />
+      <Page />
     </LangProvider>
   );
 }
 
-function Page({ titles }: { titles: SiteTitles }) {
+// Order after the bread film: menus (with the caldo verde video) → story and experience →
+// gallery → reviews → shops and contact → press and footer.
+function Page() {
   const { ui } = useContent();
   return (
     <>
@@ -38,18 +38,15 @@ function Page({ titles }: { titles: SiteTitles }) {
       <SiteHeader />
       <Intro />
       <main id="conteudo">
-        <Film headline={titles.hero} />
-        <Tradition />
-        <Stores />
-        <Ambience />
-        <Flavour />
-        <Fire title={titles.menus} />
+        <Film />
         <Menus />
-        <Press />
-        <Welcome />
+        <Story />
         <Gallery />
+        <Reviews />
+        <Places />
+        <Press />
       </main>
-      <Footer title={titles.contact} />
+      <Footer />
       <ScrollEffects />
     </>
   );

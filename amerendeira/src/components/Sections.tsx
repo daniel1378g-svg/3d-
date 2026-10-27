@@ -1,24 +1,10 @@
 "use client";
 
-import { useContent, useLang } from "@/content/i18n";
+import { useContent } from "@/content/i18n";
 import type { ImageId } from "@/lib/images";
-import type { DrawnTitle as DrawnTitleData } from "@/lib/drawnTitles";
-import { DrawnTitle } from "./DrawnTitle";
-import { ArrowRight, ArrowUp, ArrowUpRight } from "./Icons";
+import { ArrowUp, ArrowUpRight, Facebook, Instagram } from "./Icons";
 import { Logo } from "./Logo";
 import { Photo } from "./Photo";
-
-function Lines({ lines }: { lines: readonly string[] }) {
-  return (
-    <>
-      {lines.map((l) => (
-        <span key={l} className="line">
-          <span>{l}</span>
-        </span>
-      ))}
-    </>
-  );
-}
 
 function Words({ text }: { text: string }) {
   const words = text.split(" ");
@@ -35,128 +21,65 @@ function Words({ text }: { text: string }) {
 }
 
 const external = { target: "_blank", rel: "noopener noreferrer" } as const;
-
-/* ——— Tradição: the brand statement after the film ——— */
-export function Tradition() {
-  const { brand } = useContent();
-  return (
-    <section id="tradicao" className="tradition" aria-labelledby="tradition-title">
-      <div className="wrap tradition__head">
-        <div className="grid-12">
-          <div className="tradition__meta">
-            <p className="eyebrow" id="tradition-title">
-              A Merendeira
-            </p>
-          </div>
-          <p className="tradition__statement statement" data-words>
-            <Words text={brand.statement} />
-          </p>
-          <dl className="stats">
-            {brand.stats.map((s) => (
-              <div key={s.label} className="stat" data-lines>
-                <dt className="stat__label caps">{s.label}</dt>
-                <dd className="stat__value" style={{ margin: 0, order: -1 }}>
-                  <span className="line">
-                    <span>{s.value}</span>
-                  </span>
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </div>
-      </div>
-      <div className="tradition__visual">
-        <div className="bloom" data-bloom="0.34">
-          <Photo id="hero-detalhe" sizes="100vw" />
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ——— Lojas ——— */
-export function Stores() {
-  const { stores, ui } = useContent();
-  return (
-    <section id="Lojas" className="stores section" aria-labelledby="stores-title">
-      <div className="wrap">
-        <div className="stores__head" data-lines>
-          <div>
-            <p className="eyebrow">{ui.whereWeAre}</p>
-            <h2 id="stores-title" className="display">
-              <Lines lines={ui.ourShops} />
-            </h2>
-          </div>
-          <div className="stores__quick" aria-label={ui.mapShortcuts}>
-            {stores.map((s) => (
-              <a key={s.id} className="btn btn--external" href={s.map} {...external}>
-                {s.city} <ArrowUpRight />
-                <span className="sr-only">{ui.mapNewTab}</span>
-              </a>
-            ))}
-          </div>
-        </div>
-        <ol className="stores__list">
-          {stores.map((s, i) => (
-            <li key={s.id} className="store" id={`loja-${s.id}`}>
-              <div className="store__media arch-frame">
-                <Photo id={s.image as ImageId} sizes="(max-width: 799px) 92vw, 46vw" />
-              </div>
-              <div className="store__body">
-                <span className="store__num" aria-hidden="true">
-                  0{i + 1}
-                </span>
-                <div>
-                  <h3 className="store__city">{s.city}</h3>
-                  <address className="store__address">
-                    {s.address.map((l) => (
-                      <span key={l} style={{ display: "block" }}>
-                        {l}
-                      </span>
-                    ))}
-                  </address>
-                  <a className="btn btn--external" href={s.map} {...external}>
-                    {ui.seeOnMap} <ArrowUpRight />
-                    <span className="sr-only">
-                      {" "}— {s.city}
-                      {ui.newTab}
-                    </span>
-                  </a>
-                </div>
-              </div>
-            </li>
-          ))}
-        </ol>
-      </div>
-    </section>
-  );
-}
-
-/* ——— Experiência e ambiente ——— */
 const SPACE_PHOTOS = ["espaco-forno", "espaco-balcao", "espaco-arcadas", "espaco-arcos"] as const;
 
-export function Ambience() {
-  const { experience } = useContent();
+/* ——— História e experiência: statement, numbers, and the photographs of the place ——— */
+export function Story() {
+  const { brand, experience, ui } = useContent();
   return (
-    <section id="ambiente" className="ambience section" aria-labelledby="ambience-title">
-      <div className="wrap">
-        <div className="grid-12 ambience__head">
-          <h2 id="ambience-title" className="display" data-lines>
-            <Lines lines={experience.title} />
-          </h2>
-          <p className="ambience__text lead">{experience.text}</p>
-        </div>
+    <section id="historia" className="story" aria-labelledby="story-title">
+      <div className="wrap story__intro">
+        <h2 id="story-title" className="kicker">
+          {ui.historyEyebrow}
+        </h2>
+        <p className="story__statement" data-words>
+          <Words text={brand.statement} />
+        </p>
+        <dl className="story__stats">
+          {brand.stats.map((s, i) => (
+            <div key={s.label} className="stat" data-reveal style={{ ["--d" as string]: `${i * 120}ms` }}>
+              <dt className="stat__label">{s.label}</dt>
+              <dd className="stat__value">{s.value}</dd>
+            </div>
+          ))}
+        </dl>
       </div>
-      <div className="ambience__hero">
-        <div className="bloom" data-bloom="0.3" style={{ position: "absolute", inset: 0, overflow: "hidden" }}>
-          <Photo id="chourico-massa" sizes="100vw" />
+
+      <div className="wrap story__mosaic">
+        <figure className="tile tile--bread" data-reveal>
+          <Photo id="hero-detalhe" sizes="(max-width: 899px) 92vw, 62vw" />
+        </figure>
+        <figure className="tile tile--fire" data-reveal style={{ ["--d" as string]: "140ms" }}>
+          <Photo id="lume" sizes="(max-width: 899px) 92vw, 30vw" position="40% 50%" />
+        </figure>
+        <div className="story__experience" data-reveal>
+          <h3 className="h-lg">
+            {experience.title.map((l, i) => (
+              <span key={l} className={i ? "h-soft" : undefined}>
+                {l}
+              </span>
+            ))}
+          </h3>
+          <p>{experience.text}</p>
         </div>
+        <figure className="tile tile--dough" data-reveal style={{ ["--d" as string]: "100ms" }}>
+          <Photo id="chourico-massa" sizes="(max-width: 899px) 92vw, 54vw" />
+        </figure>
+        <figure className="tile tile--service" data-reveal>
+          <Photo id="servico" sizes="(max-width: 899px) 92vw, 84vw" position="50% 35%" />
+          <figcaption className="tile__caption">
+            {ui.welcome.map((l) => (
+              <span key={l}>{l}</span>
+            ))}
+          </figcaption>
+        </figure>
       </div>
-      <div className="ambience__strip">
-        <ul className="ambience__track" data-drift="-1">
+
+      <div className="story__strip">
+        <ul className="story__track" data-drift="-1">
           {SPACE_PHOTOS.map((id) => (
             <li key={id}>
-              <Photo id={id} sizes="(max-width: 699px) 80vw, 34vw" />
+              <Photo id={id} sizes="(max-width: 699px) 72vw, 30vw" />
             </li>
           ))}
         </ul>
@@ -165,58 +88,86 @@ export function Ambience() {
   );
 }
 
-/* ——— O sabor em imagens ——— */
-export function Flavour() {
-  const { flavour, ui } = useContent();
+/* ——— Lojas e contactos ——— */
+export function Places() {
+  const { stores, contact, ui } = useContent();
   return (
-    <section className="flavour section" aria-labelledby="flavour-title">
+    <section id="Lojas" className="places" aria-labelledby="places-title">
       <div className="wrap">
-        <div className="flavour__grid">
-          <div className="flavour__intro" data-lines>
-            <p className="eyebrow">{ui.flavourEyebrow}</p>
-            <h2 id="flavour-title" className="display-2">
-              <Lines lines={flavour.title} />
-            </h2>
-            <p>{flavour.text}</p>
-            <a className="btn" href={flavour.cta.href}>
-              {flavour.cta.label} <ArrowRight />
-            </a>
-          </div>
-          <div className="flavour__a" style={{ overflow: "hidden" }}>
-            <div data-parallax="5" style={{ height: "112%", marginTop: "-6%" }}>
-              <Photo id="sabor-pao-caldo" sizes="(max-width: 899px) 92vw, 54vw" style={{ height: "100%" }} />
-            </div>
-          </div>
-          <div className="flavour__b arch-frame">
-            <Photo id="sabor-maos-massa" sizes="(max-width: 899px) 46vw, 23vw" style={{ height: "100%" }} />
-          </div>
-          <div className="flavour__c" style={{ overflow: "hidden" }}>
-            <Photo id="sabor-cliente" sizes="(max-width: 899px) 46vw, 23vw" style={{ height: "100%" }} />
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
+        <header className="places__head">
+          <p className="kicker">{ui.whereWeAre}</p>
+          <h2 id="places-title" className="h-xl" data-lines>
+            {ui.storesTitle.map((l) => (
+              <span key={l} className="line">
+                <span>{l}</span>
+              </span>
+            ))}
+          </h2>
+        </header>
+        <div className="places__grid">
+          {stores.map((s, i) => (
+            <article key={s.id} id={`loja-${s.id}`} className={`place place--${i + 1}`} aria-labelledby={`loja-${s.id}-title`}>
+              <div className="place__media" data-reveal>
+                <Photo id={s.image as ImageId} sizes="(max-width: 899px) 92vw, 34vw" />
+              </div>
+              <div className="place__body" data-reveal style={{ ["--d" as string]: "120ms" }}>
+                <h3 id={`loja-${s.id}-title`} className="place__city">
+                  {s.city}
+                </h3>
+                <address className="place__address">
+                  {s.address.map((l) => (
+                    <span key={l}>{l}</span>
+                  ))}
+                </address>
+                <a className="btn btn--ghost" href={s.map} {...external}>
+                  {ui.seeOnMap} <ArrowUpRight />
+                  <span className="sr-only">
+                    {" "}— {s.city}
+                    {ui.newTab}
+                  </span>
+                </a>
+              </div>
+            </article>
+          ))}
 
-/* ——— Opening of the menus: drawn title over the wood-fire ——— */
-export function Fire({ title }: { title: DrawnTitleData }) {
-  const { drawnText } = useContent();
-  const { lang } = useLang();
-  return (
-    <section className="fire" aria-labelledby="fire-title">
-      <div className="fire__title">
-        <DrawnTitle data={title} as="p" id="fire-title" text={lang === "en" ? drawnText.menus : undefined} />
-      </div>
-      <div className="fire__stage">
-        <div className="fire__bloom" data-bloom="0.4">
-          <Photo id="lume" sizes="100vw" />
+          <aside id="contact" className="contact-card" aria-labelledby="contact-title" data-reveal style={{ ["--d" as string]: "200ms" }}>
+            <h3 id="contact-title" className="h-lg">
+              {ui.contactTitle}
+            </h3>
+            <dl className="contact-card__list">
+              <div>
+                <dt>{ui.phone}</dt>
+                <dd>
+                  <a className="link" href={contact.phone.href}>
+                    {contact.phone.label}
+                  </a>
+                </dd>
+              </div>
+              <div>
+                <dt>{ui.email}</dt>
+                <dd>
+                  <a className="link" href={contact.email.href}>
+                    {contact.email.label}
+                  </a>
+                </dd>
+              </div>
+            </dl>
+            <ul className="contact-card__social">
+              <li>
+                <a className="btn btn--ghost" href={contact.instagram.href} {...external}>
+                  <Instagram className="btn__icon" /> Instagram
+                  <span className="sr-only">{ui.newTab}</span>
+                </a>
+              </li>
+              <li>
+                <a className="btn btn--ghost" href={contact.facebook.href} {...external}>
+                  <Facebook className="btn__icon" /> Facebook
+                  <span className="sr-only">{ui.newTab}</span>
+                </a>
+              </li>
+            </ul>
+          </aside>
         </div>
-        {/* Real cut-out of the baked loaf from the supplied video (frame at 4.2 s). */}
-        <picture className="fire__loaf" data-loaf aria-hidden="true">
-          <source media="(max-width: 699px)" srcSet="/images/cutouts/pao-com-chourico-960.webp" />
-          <img src="/images/cutouts/pao-com-chourico.webp" alt="" width={1835} height={756} loading="lazy" decoding="async" />
-        </picture>
       </div>
     </section>
   );
@@ -225,131 +176,77 @@ export function Fire({ title }: { title: DrawnTitleData }) {
 /* ——— Imprensa e recomendações ——— */
 export function Press() {
   const { press, ui } = useContent();
+  const items = press.groups.flatMap((g) => g.items.map((it) => ({ ...it, group: g.label })));
   return (
-    <section id="Media" className="press section" aria-labelledby="press-title">
+    <section id="Media" className="press" aria-labelledby="press-title">
       <div className="wrap">
-        <div className="press__head" data-lines>
-          <div style={{ gridColumn: "1 / span 9" }}>
-            <p className="eyebrow">{ui.pressEyebrow}</p>
-            <h2 id="press-title" className="display-2">
-              <Lines lines={[press.title]} />
-            </h2>
-          </div>
-        </div>
-        {press.groups.map((g) => (
-          <div key={g.id} className="press__group">
-            <h3 className="press__group-label caps">
-              <span>{g.label}</span>
-              <span aria-hidden="true">{String(g.items.length).padStart(2, "0")}</span>
-            </h3>
-            <ul>
-              {g.items.map((it) => (
-                <li key={it.name}>
-                  <a className="press__row" href={it.href} {...external}>
-                    <span className="press__num">{it.number}</span>
-                    <span className="press__type">{it.type}</span>
-                    <span className="press__name">
-                      {it.name}
-                      {it.detail && <span className="press__detail">“{it.detail}”</span>}
-                    </span>
-                    <span className="press__arrow" aria-hidden="true">
-                      <ArrowUpRight className="" />
-                    </span>
-                    <span className="sr-only">{ui.newTab}</span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+        <header className="press__head">
+          <p className="kicker">{ui.pressEyebrow}</p>
+          <h2 id="press-title" className="h-xl" data-lines>
+            <span className="line">
+              <span>{press.title}</span>
+            </span>
+          </h2>
+        </header>
+        <ul className="press__grid">
+          {items.map((it, i) => (
+            <li key={it.name} className={`press-card${it.detail ? " press-card--article" : ""}`} data-reveal style={{ ["--d" as string]: `${(i % 3) * 80}ms` }}>
+              <a href={it.href} {...external}>
+                <span className="press-card__type">{it.type}</span>
+                <span className="press-card__name">{it.name}</span>
+                {it.detail && <span className="press-card__detail">“{it.detail}”</span>}
+                <span className="press-card__arrow" aria-hidden="true">
+                  <ArrowUpRight className="" />
+                </span>
+                <span className="sr-only">{ui.newTab}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );
 }
 
-/* ——— Hospitalidade ——— */
-export function Welcome() {
-  const { ui } = useContent();
+/* ——— Rodapé ——— */
+export function Footer() {
+  const { contact, footer, nav, ui } = useContent();
   return (
-    <section className="welcome" aria-label={ui.welcomeAria}>
-      <div className="bloom" data-bloom="0.42">
-        <Photo id="servico" sizes="100vw" position="50% 40%" />
-      </div>
-      <p className="welcome__caption display-2" data-lines>
-        <Lines lines={ui.welcome} />
-      </p>
-    </section>
-  );
-}
-
-/* ——— Rodapé e contactos ——— */
-export function Footer({ title }: { title: DrawnTitleData }) {
-  const { contact, drawnText, footer, nav, stores, ui } = useContent();
-  const { lang } = useLang();
-  return (
-    <footer id="contact" className="footer" aria-labelledby="contact-title">
+    <footer className="footer" aria-label={ui.footerAria}>
       <div className="wrap">
-        <div className="footer__top">
-          <div className="footer__title">
-            <DrawnTitle data={title} as="h2" id="contact-title" text={lang === "en" ? drawnText.contact : undefined} />
-          </div>
-          <address className="footer__contact">
-            <a className="text-link" href={contact.phone.href}>
-              {contact.phone.label}
-            </a>
-            <a className="text-link" href={contact.email.href}>
-              {contact.email.label.toUpperCase()}
-            </a>
-          </address>
+        <div className="footer__mark">
+          <Logo decorative />
         </div>
         <div className="footer__cols">
-          <nav aria-label={ui.footerAria}>
-            <h3>{ui.footerSite}</h3>
+          <nav aria-label={ui.footerSite}>
+            <h2 className="footer__label">{ui.footerSite}</h2>
             <ul>
-              {footer.links.map((l) => (
+              {nav.map((l) => (
                 <li key={l.href}>
-                  <a className="text-link" href={l.href}>
+                  <a className="link" href={l.href}>
                     {l.label}
                   </a>
                 </li>
               ))}
-              <li>
-                <a className="text-link" href={nav[3].href}>
-                  {nav[3].label}
-                </a>
-              </li>
             </ul>
           </nav>
           <div>
-            <h3>{ui.footerSocial}</h3>
+            <h2 className="footer__label">{ui.footerSocial}</h2>
             <ul>
               <li>
-                <a className="text-link" href={contact.instagram.href} {...external}>
-                  Instagram
+                <a className="link" href={contact.instagram.href} {...external}>
+                  Instagram<span className="sr-only">{ui.newTab}</span>
                 </a>
               </li>
               <li>
-                <a className="text-link" href={contact.facebook.href} {...external}>
-                  Facebook
+                <a className="link" href={contact.facebook.href} {...external}>
+                  Facebook<span className="sr-only">{ui.newTab}</span>
                 </a>
               </li>
             </ul>
           </div>
-          <div className="footer__stores">
-            <h3>{ui.shops}</h3>
-            {stores.map((s) => (
-              <p key={s.id}>
-                <a className="text-link" href={s.map} {...external}>
-                  {s.city}
-                </a>
-                <br />
-                {s.address.join(" ")}
-              </p>
-            ))}
-          </div>
-          <div>
-            <h3>{ui.footerBack}</h3>
-            <a className="btn" href="#Top">
+          <div className="footer__back">
+            <a className="btn btn--primary" href="#Top">
               {ui.backToTop} <ArrowUp />
             </a>
           </div>
@@ -357,14 +254,13 @@ export function Footer({ title }: { title: DrawnTitleData }) {
         <div className="footer__legal">
           <span>{footer.copyright}</span>
           <span>{footer.privacy}</span>
-          <a className="text-link" href={footer.credit.href} {...external}>
+          <a className="link" href={footer.credit.href} {...external}>
             {footer.credit.label}
+            <span className="sr-only">{ui.newTab}</span>
           </a>
         </div>
-      </div>
-      <div className="footer__mark" aria-hidden="true">
-        <Logo decorative />
       </div>
     </footer>
   );
 }
+

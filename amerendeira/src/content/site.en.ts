@@ -1,6 +1,6 @@
 // English version of src/content/site.ts: a translation of the original site's text, nothing
 // added. Product names (Menu Bebida…), shop addresses and article titles stay as they are.
-import { contact, gallery as galleryPt, menus as menusPt, press as pressPt, stores, type Content } from "./site";
+import { contact, gallery as galleryPt, menus as menusPt, press as pressPt, reviews, stores, type Content } from "./site";
 
 export const en: Content = {
   brand: {
@@ -119,8 +119,47 @@ export const en: Content = {
     galleryNext: "Next photo",
     skipIntro: "Skip intro",
     proposal: "Design proposal · not the official A Merendeira website",
+    heroEyebrow: "Pão com chouriço · wood-fired oven",
+    heroTitle: ["good at", "any hour"],
+    historyEyebrow: "Our story",
+    soupEyebrow: "Featured",
+    soupTitle: ["Caldo verde", "the old-fashioned way"],
+    soupVideoLabel: "Silent video: an empty clay bowl fills with caldo verde, with greens and slices of chouriço.",
+    soupPosterAlt: "Clay bowl full of caldo verde, with greens and slices of chouriço",
+    soupPlay: "Play",
+    soupPause: "Pause",
+    soupReplay: "Watch again",
+    soupPlayAria: "Play the caldo verde video",
+    soupPauseAria: "Pause the caldo verde video",
+    soupReplayAria: "Watch the caldo verde video again",
+    galleryEyebrow: "Gallery",
+    galleryLabel: "Photo gallery",
+    galleryPosition: "Photo",
+    of: "of",
+    reviewsEyebrow: "Reviews",
+    reviewsTitle: ["At the table,", "in our guests’ words"],
+    reviewsLabel: "Customer reviews",
+    reviewSource: "Google review · excerpt",
+    reviewTranslated: "",
+    reviewShowOriginal: "",
+    reviewHideOriginal: "",
+    reviewStars: "5 out of 5 stars",
+    reviewsPrev: "Previous review",
+    reviewsNext: "Next review",
+    reviewPosition: "Review",
+    storesTitle: ["Shops", "and contact"],
+    contactTitle: "Talk to us",
+    phone: "Phone",
+    email: "Email",
   },
   drawnText: { hero: "good at any hour", menus: "our menus", contact: "talk to us" },
+  soup: {
+    text: "Two classics that speak for themselves. Our pão com chouriço meets caldo verde, with that touch of chouriço that warms you up.",
+    ctaDuo: "See Menu Duo",
+    ctaMerendeira: "See Menu Merendeira",
+  },
+  // The reviews were written in English: shown as written, with no translation.
+  reviews: reviews.map((r) => ({ author: r.author, quote: r.original, original: "" })),
   imageAlt: {
     "hero-detalhe": "Close-up of a pão com chouriço fresh from the oven, the dough split open and the chouriço showing",
     "chourico-massa": "Slices of chouriço on floured dough, with a hand arranging them",
