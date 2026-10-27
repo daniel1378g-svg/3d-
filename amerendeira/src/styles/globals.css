@@ -459,9 +459,10 @@ address { font-style: normal; }
   mask-image: linear-gradient(90deg, transparent 0, #000 2%, #000 98%, transparent 100%), linear-gradient(180deg, transparent 0, #000 9%, #000 94%, transparent 100%);
   mask-composite: intersect;
 }
+/* The canvas is always visible: it is transparent until it holds a frame, so the cover underneath
+   shows through, and it is never drawn while hidden (Safari may then fail to show it). The cover
+   goes only once the canvas is confirmed to hold the frame (Film.tsx). */
 .film.is-live .film__cover { opacity: 0; }
-.film__frame { opacity: 0; }
-.film.is-live .film__frame { opacity: 1; }
 
 .film__headline {
   position: absolute;

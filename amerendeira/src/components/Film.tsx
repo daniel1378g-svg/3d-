@@ -74,6 +74,8 @@ export function Film({ headline }: { headline: DrawnTitleData }) {
     let raf = 0;
     let visible = true;
     let live = false;
+    let confirming = false;
+    let disposed = false;
     let fallback: HTMLImageElement | null = null;
     let base: Rect = { x: 0, y: 0, w: 1, h: 1 };
     let stageW = 1;
@@ -163,6 +165,43 @@ export function Film({ headline }: { headline: DrawnTitleData }) {
       }
     }
 
+    // The cover (first frame as a plain image) stays under the canvas until the canvas really
+    // holds a frame. Safari can paint nothing for a frame drawn before it is decoded, which left
+    // the stage empty until the first scroll asked for another frame. So the first frame is
+    // decoded, drawn again on the next screen refresh, and one pixel is read back before the
+    // cover goes; until then the cover keeps the bread on screen.
+    function canvasHoldsFrame() {
+      try {
+        return fctx.getImageData(fc.width >> 1, fc.height >> 1, 1, 1).data[3] > 0;
+      } catch {
+        return true; // pixels cannot be read back (cross-origin): trust the draw
+      }
+    }
+
+    function confirmLive() {
+      if (confirming || live) return;
+      confirming = true;
+      const img = seq.frames[drawnFrame];
+      const decoded = img?.decode ? img.decode().catch(() => undefined) : Promise.resolve();
+      let tries = 0;
+      const check = () => {
+        if (disposed || live) return;
+        render(true);
+        requestAnimationFrame(() => {
+          if (disposed || live) return;
+          if (canvasHoldsFrame()) {
+            live = true;
+            rootEl.classList.add("is-live");
+          } else if (++tries < 60) {
+            check();
+          } else {
+            confirming = false; // the next frame drawn tries again
+          }
+        });
+      };
+      decoded.then(() => requestAnimationFrame(check));
+    }
+
     function render(force = false) {
       const time = progressToTime(current);
       const want = timeToFrame(time);
@@ -208,10 +247,7 @@ export function Film({ headline }: { headline: DrawnTitleData }) {
         fctx.drawImage(seq.source(idx)!, 0, 0, fc.width, fc.height);
         drawnFrame = idx;
         rootEl.dataset.frame = String(idx); // read by the QA scripts
-        if (!live) {
-          live = true;
-          rootEl.classList.add("is-live");
-        }
+        if (!live) confirmLive();
       }
       if (want !== drawnPlate || force) {
         const ox = 0.5 * base.w;
@@ -281,7 +317,18 @@ export function Film({ headline }: { headline: DrawnTitleData }) {
     const begin = () => seq.start();
     const idleId = w.requestIdleCallback ? w.requestIdleCallback(begin, { timeout: 1200 }) : window.setTimeout(begin, 300);
 
+    // iOS can drop a canvas's pixels while the page is in the background or in the back/forward
+    // cache: draw the current frame again whenever the page is shown.
+    const redraw = () => {
+      if (document.visibilityState === "visible") render(true);
+    };
+    document.addEventListener("visibilitychange", redraw);
+    window.addEventListener("pageshow", redraw);
+
     return () => {
+      disposed = true;
+      document.removeEventListener("visibilitychange", redraw);
+      window.removeEventListener("pageshow", redraw);
       ro.disconnect();
       io.disconnect();
       st.kill();
