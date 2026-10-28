@@ -45,7 +45,7 @@ export function TeaRoom() {
           <div className="overflow-hidden rounded-[32px] shadow-lift">
             <Photo id="shop" sizes="(min-width: 1024px) 640px, 92vw" className="aspect-[4/3] w-full" />
           </div>
-          <div className="absolute -bottom-8 -right-2 rounded-full bg-flour p-3 text-wheat shadow-lift md:-right-8">
+          <div className="absolute -bottom-6 right-3 rounded-full bg-flour p-3 text-wheat shadow-lift md:-left-8 md:right-auto">
             <SteamingCup size={150} />
           </div>
         </Reveal>

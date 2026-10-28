@@ -21,20 +21,25 @@ function Item({ p, lang, compact = false }: { p: Product; lang: Lang; compact?: 
   const Icon = PRODUCT_ICONS[p.icon] ?? PRODUCT_ICONS.cake;
   const body = (
     <div className="flex h-full flex-col items-center text-center">
-      <div className={cn("relative grid shrink-0 place-items-center rounded-full", compact ? "h-14 w-14" : "h-[clamp(56px,9cqw,104px)] w-[clamp(56px,9cqw,104px)]")}>
+      <div className={cn("relative grid shrink-0 place-items-center rounded-full", compact ? "h-12 w-12" : "h-[clamp(56px,8cqw,96px)] w-[clamp(56px,8cqw,96px)]")}>
         {p.photo ? (
           <Photo id={p.photo} sizes="120px" className="h-full w-full rounded-full shadow-set ring-4 ring-white/80" />
         ) : (
           <span className="grid h-full w-full place-items-center rounded-full border-2 border-dashed border-caramel/45 bg-white/50 text-caramel" title={fill(UI.photoSlot[lang], { name: p.name[lang] })}>
             <Icon size={compact ? 30 : 44} className="h-[56%] w-[56%]" />
+            <span className="sr-only">{fill(UI.photoSlot[lang], { name: p.name[lang] })}</span>
+            {!compact && (
+              <span aria-hidden="true" className="absolute -bottom-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-caramel px-2 py-px text-[12px] font-semibold leading-tight text-flour">
+                {UI.photoSlotNote[lang]}
+              </span>
+            )}
           </span>
         )}
       </div>
-      <span className={cn("display mt-2 leading-tight text-cocoa", compact ? "text-[15px]" : "text-[clamp(14px,1.7cqw,19px)]")}>
+      <span className={cn("display mt-3 leading-tight text-cocoa", compact ? "text-[13.5px]" : "text-[clamp(14px,1.7cqw,19px)]")}>
         {p.name[lang]}
       </span>
-      {(gloss || note) && <span className="mt-0.5 text-[12px] leading-snug text-espresso/75">{[gloss, note].filter(Boolean).join(" · ")}</span>}
-      {!p.photo && !compact && <span className="mt-1 hidden text-[12px] font-semibold uppercase tracking-wide text-caramel @[560px]:block">{fill(UI.photoSlot[lang], { name: p.name[lang] })}</span>}
+      {(gloss || note) && !compact && <span className="mt-0.5 text-[12px] leading-snug text-espresso/75">{[gloss, note].filter(Boolean).join(" · ")}</span>}
     </div>
   );
   if (p.id === "natas")
@@ -61,7 +66,7 @@ function Side({ side, split, lang, vertical }: { side: "pt" | "ch"; split: Motio
   return (
     <motion.div className={cn("absolute inset-0", pt ? "tiles bg-[#e9eff9]" : "dust bg-[#fbf2e6]")} style={{ clipPath: clip }}>
       <motion.div
-        className={cn("absolute flex flex-col justify-center gap-4 p-4 md:p-6", vertical ? (pt ? "inset-x-0 top-0 h-1/2" : "inset-x-0 bottom-0 h-1/2") : pt ? "inset-y-0 left-0 w-1/2" : "inset-y-0 right-0 w-1/2")}
+        className={cn("absolute flex flex-col justify-center gap-3 px-3 pb-4 pt-11 md:gap-4 md:p-6 md:pt-14", vertical ? (pt ? "inset-x-0 top-0 h-1/2" : "inset-x-0 bottom-0 h-1/2") : pt ? "inset-y-0 left-0 w-1/2" : "inset-y-0 right-0 w-1/2")}
         style={vertical ? { y: shift, scale, opacity } : { x: shift, scale, opacity }}
       >
         <span className={cn("absolute top-3 rounded-full px-3 py-1 text-[12px] font-bold uppercase tracking-[0.16em] text-flour md:top-5", pt ? "left-3 bg-azulejo md:left-5" : "right-3 bg-swiss-text md:right-5")}>
@@ -95,12 +100,13 @@ export function Vitrine() {
   const caseRef = useRef<HTMLDivElement>(null);
   const split = useMotionValue(0.5);
   const [value, setValue] = useState(50);
-  const [vertical, setVertical] = useState(false);
+  const [vertical, setVertical] = useState(() => typeof window !== "undefined" && window.innerWidth < 700);
   const dragging = useRef(false);
   useMotionValueEvent(split, "change", (v) => setValue(Math.round(v * 100)));
 
   useEffect(() => {
-    const el = caseRef.current;
+    // Measured on the column, not on the case: the case's own width follows its aspect ratio and min-height.
+    const el = caseRef.current?.parentElement;
     if (!el) return;
     const ro = new ResizeObserver(() => setVertical(el.clientWidth < 640));
     ro.observe(el);
@@ -183,7 +189,7 @@ export function Vitrine() {
         ) : (
           <div
             ref={caseRef}
-            className={cn("@container relative mt-6 select-none overflow-hidden rounded-[32px] shadow-lift ring-1 ring-espresso/10", vertical ? "h-[740px]" : "aspect-[16/8.4] min-h-[480px]")}
+            className={cn("@container relative mt-6 w-full select-none overflow-hidden rounded-[32px] shadow-lift ring-1 ring-espresso/10", vertical ? "h-[1000px]" : "aspect-[16/9.6] min-h-[560px]")}
           >
             <Side side="pt" split={split} lang={lang} vertical={vertical} />
             <Side side="ch" split={split} lang={lang} vertical={vertical} />

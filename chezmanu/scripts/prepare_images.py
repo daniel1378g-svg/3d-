@@ -56,7 +56,7 @@ for y in range(logo.height):
         r, g, b, a = px[x, y]
         lo = min(r, g, b)
         if lo > 200 and max(r, g, b) - lo < 40:
-            px[x, y] = (r, g, b, int(a * max(0, 255 - lo) / 55))
+            px[x, y] = (r, g, b, int(a * min(1, max(0, 248 - lo) / 48)))
 bbox = logo.getbbox()
 logo = logo.crop(bbox)
 logo.save(pub / "brand" / "logo.webp", "WEBP", quality=92, method=6)

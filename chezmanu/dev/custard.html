@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Custard (dev)</title>
+    <style>html, body { margin: 0; height: 100%; background: #f2c14e; } #host { position: fixed; inset: 0; } canvas { width: 100%; height: 100%; display: block; }</style>
+  </head>
+  <body>
+    <!-- The hero's custard alone, for tuning and for scripts/render-poster.mjs (?t=<seconds> freezes the time). -->
+    <div id="host"><canvas id="c"></canvas></div>
+    <script type="module">
+      import { mountCustard } from "/src/three/custard.ts";
+      const h = mountCustard(document.getElementById("host"), document.getElementById("c"), () => (window.__ready = true));
+      window.__custard = h;
+    </script>
+  </body>
+</html>

@@ -175,8 +175,8 @@ export function Carte() {
               </div>
             </div>
 
-            <div className="mt-10 grid gap-10 lg:grid-cols-[1fr_260px]">
-              <div>
+            <div className="mt-10 grid gap-10 lg:grid-cols-[minmax(0,1fr)_260px]">
+              <div className="min-w-0">
                 {results ? (
                   <div>
                     <p role="status" className="chalk mb-4 text-2xl text-chalk-gold">

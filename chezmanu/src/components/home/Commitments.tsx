@@ -12,7 +12,7 @@ import { TRAY_ITEMS } from "../Illustrations";
 
 function Card({ icon, title, body, className, children, delay = 0 }: { icon: IconName; title: string; body: string; className?: string; children?: React.ReactNode; delay?: number }) {
   return (
-    <Reveal delay={delay} className={className}>
+    <Reveal delay={delay} className={`min-w-0 ${className ?? ""}`}>
       <Tilt className="group h-full rounded-[28px] bg-flour p-7 shadow-set ring-1 ring-espresso/5 md:p-9">
         <span className="grid h-16 w-16 place-items-center rounded-2xl bg-custard/35">
           <LottieIcon name={icon} size={46} mode="hover" />
@@ -60,7 +60,7 @@ export function Commitments() {
                 ))}
               </span>
               <span className="display price text-3xl text-caramel">{chf("12.00")}</span>
-              <SiteLink page="offer" section="petit-dejeuner" className="btn btn-custard ml-auto">
+              <SiteLink page="offer" section="petit-dejeuner" className="btn btn-custard h-auto whitespace-normal py-3 text-center sm:ml-auto">
                 {UI.breakfastTeaser[lang]} <ArrowGlyph />
               </SiteLink>
             </div>

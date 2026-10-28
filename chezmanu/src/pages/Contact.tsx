@@ -18,7 +18,7 @@ export function Contact() {
     <>
       <section className="dust gutter bg-custard pb-16 pt-[calc(var(--header-h)+var(--label-h)+56px)] md:pb-20">
         <div className="wrap">
-          <h1 className="display max-w-[22ch] text-[clamp(2.3rem,5.6vw,4.8rem)] leading-[1.02] text-cocoa">
+          <h1 className="display max-w-[22ch] text-[clamp(2rem,5.6vw,4.8rem)] leading-[1.02] text-cocoa">
             <SplitLetters text={TEXT.contactTitle[lang]} lang={HTML_LANG[lang]} />
           </h1>
           <p className="mt-6 max-w-[64ch] text-[clamp(1.05rem,1.6vw,1.25rem)] font-medium">{TEXT.contactText[lang]}</p>

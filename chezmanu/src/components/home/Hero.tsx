@@ -38,7 +38,12 @@ function Custard({ host }: { host: React.RefObject<HTMLElement | null> }) {
   }, [host]);
   return (
     <div aria-hidden="true" className="absolute inset-0 -z-10 overflow-hidden bg-custard">
-      <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${asset("images/custard-poster.webp")})` }} />
+      <picture>
+        {!__ARTIFACT__ && <source media="(max-aspect-ratio: 4/5)" type="image/avif" srcSet={asset("images/custard-poster-portrait.avif")} />}
+        <source media="(max-aspect-ratio: 4/5)" type="image/webp" srcSet={asset("images/custard-poster-portrait.webp")} />
+        {!__ARTIFACT__ && <source type="image/avif" srcSet={asset("images/custard-poster.avif")} />}
+        <img src={asset("images/custard-poster.webp")} alt="" width={1600} height={1000} fetchPriority="high" className="absolute inset-0 h-full w-full object-cover" />
+      </picture>
       <canvas ref={canvas} className="absolute inset-0 h-full w-full transition-opacity duration-1000" style={{ opacity: live ? 1 : 0 }} />
       {/* A soft custard veil behind the words keeps the caramel spots faint there. */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_62%_70%_at_24%_58%,rgb(247_214_138/0.82),rgb(247_214_138/0.35)_55%,transparent_80%)] max-md:bg-[radial-gradient(ellipse_120%_60%_at_50%_70%,rgb(247_214_138/0.85),rgb(247_214_138/0.4)_60%,transparent_85%)]" />

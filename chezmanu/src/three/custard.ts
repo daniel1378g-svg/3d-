@@ -59,10 +59,10 @@ const fragmentShader = /* glsl */ `
     heat = trailAt(uv);
     float base = fbm(p * 1.6 + vec2(t * 0.02, -t * 0.015)) * 0.35;
     // Caramel blisters, like the spots of a nata fresh from a hot oven; heat grows them.
-    float spots = fbm(p * 2.6 + 11.0);
-    float speck = noise(p * 9.0 + 3.0);
-    caramel = smoothstep(0.6 - 0.25 * heat, 0.78 - 0.2 * heat, spots + 0.12 * speck);
-    caramel = max(caramel, heat * smoothstep(0.35, 0.75, spots + 0.3 * speck));
+    float spots = fbm(p * 3.4 + 11.0);
+    float speck = noise(p * 11.0 + 3.0);
+    caramel = smoothstep(0.64 - 0.24 * heat, 0.8 - 0.2 * heat, spots + 0.14 * speck);
+    caramel = max(caramel, heat * smoothstep(0.3, 0.72, spots + 0.35 * speck));
     float b = bubbles(p * 2.2, t, heat) * 0.9;
     return base + b + caramel * 0.12;
   }
@@ -79,15 +79,18 @@ const fragmentShader = /* glsl */ `
     float hy = heightAt(p + e.yx, vUv + vec2(0.0, e.x / 2.2), t, car2, heat2);
     vec3 n = normalize(vec3((h - hx) / e.x, (h - hy) / e.x, 2.4));
 
-    // Custard: pale where it swells, deeper gold in the hollows; caramel from amber to burnt.
-    vec3 custardLight = vec3(0.98, 0.84, 0.48);
-    vec3 custardDeep = vec3(0.90, 0.62, 0.18);
+    // Custard (sRGB values, linearised below): pale gold where it swells, deeper in the hollows. Caramel goes
+    // from an amber halo at the edge of each blister to a burnt, almost black centre, like a nata from a hot oven.
+    vec3 custardLight = vec3(0.98, 0.83, 0.42);
+    vec3 custardDeep = vec3(0.93, 0.66, 0.2);
     vec3 col = mix(custardDeep, custardLight, smoothstep(0.0, 0.55, h + 0.1));
-    vec3 amber = vec3(0.70, 0.36, 0.09);
-    vec3 burnt = vec3(0.22, 0.09, 0.03);
     float roast = smoothstep(0.0, 1.0, car);
-    vec3 caramelCol = mix(amber, burnt, smoothstep(0.35, 1.0, roast + 0.35 * heat));
-    col = mix(col, caramelCol, roast * 0.92);
+    vec3 amber = vec3(0.78, 0.42, 0.1);
+    vec3 brown = vec3(0.42, 0.18, 0.05);
+    vec3 burnt = vec3(0.16, 0.06, 0.02);
+    vec3 caramelCol = mix(amber, brown, smoothstep(0.25, 0.65, roast + 0.2 * heat));
+    caramelCol = mix(caramelCol, burnt, smoothstep(0.82, 1.0, roast + 0.25 * heat) * 0.85);
+    col = mix(col, caramelCol, smoothstep(0.0, 0.35, roast) * 0.96);
 
     // Light from the morning window, top left: soft diffuse, a sharp glossy highlight, a little rim.
     vec3 L = normalize(vec3(-0.45, 0.55, 0.7));
@@ -103,7 +106,7 @@ const fragmentShader = /* glsl */ `
     float vign = smoothstep(1.25, 0.25, length((vUv - vec2(0.55, 0.5)) * vec2(aspect, 1.0) * 0.8));
     col *= 0.86 + 0.14 * vign;
 
-    gl_FragColor = vec4(col, 1.0);
+    gl_FragColor = vec4(pow(col, vec3(2.2)), 1.0);
     #include <tonemapping_fragment>
     #include <colorspace_fragment>
   }
@@ -194,7 +197,7 @@ export function mountCustard(host: HTMLElement, canvas: HTMLCanvasElement, onFir
   let raf = 0;
   let first = true;
   let prev = performance.now();
-  let t = 8 + Math.random() * 20;
+  let t = Number(new URLSearchParams(location.search).get("t")) || 8 + Math.random() * 20;
   const io = new IntersectionObserver(([entry]) => {
     visible = entry.isIntersecting;
     if (visible && !raf) loop();
