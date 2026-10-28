@@ -42,7 +42,7 @@ export function ContactForm() {
     ev.preventDefault();
     const e = validate();
     setErrors(e);
-    if (Object.keys(e).length) {
+    if (FIELDS.some((f) => e[f])) {
       requestAnimationFrame(() => summary.current?.focus());
       return;
     }
@@ -71,7 +71,7 @@ export function ContactForm() {
       </div>
     );
 
-  const errorCount = Object.keys(errors).length;
+  const errorCount = FIELDS.filter((f) => errors[f]).length;
   return (
     <form id="formulaire" name="contact" onSubmit={submit} noValidate className="rounded-[26px] bg-flour p-6 shadow-set ring-1 ring-espresso/10 md:p-9">
       <h2 className="display text-3xl text-cocoa">{TEXT.contactUs[lang]}</h2>
@@ -107,8 +107,13 @@ export function ContactForm() {
             "aria-required": true,
             "aria-invalid": errors[f] ? true : undefined,
             "aria-describedby": errors[f] ? `${id}-${f}-err` : undefined,
-            onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setValues((v) => ({ ...v, [f]: e.target.value })),
-            onBlur: () => errors[f] && setErrors((er) => ({ ...er, [f]: validate()[f] })),
+            // A field already marked wrong is re-checked as it is typed (not on blur, which would move the
+            // Send button under the pointer as the messages disappear).
+            onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+              const next = { ...values, [f]: e.target.value };
+              setValues(next);
+              if (errors[f]) setErrors((er) => ({ ...er, [f]: validate(next)[f] }));
+            },
             className: cn("w-full rounded-xl bg-white px-4 text-[16px] ring-1 focus:outline-none focus:ring-2 focus:ring-azulejo", errors[f] ? "ring-swiss" : "ring-espresso/20"),
           };
           return (
