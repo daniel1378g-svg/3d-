@@ -1,0 +1,26 @@
+{
+  "_comment": "Google reviews of Restaurant Oliveira, supplied by the client and quoted exactly as written (English; the first one is Google's translation from Russian). `yearsAgo` is relative to when they were copied (October 2026).",
+  "reviews": [
+    {
+      "author": "Natalia Surovtseva", "rating": 5, "yearsAgo": 4, "localGuide": true, "count": 18, "translatedFrom": "ru", "reactions": 3,
+      "text": "A cozy restaurant with delicious Portuguese and Swiss cuisine. The staff is very friendly, the prices are reasonable, and the portions are generous. You feel right at home here. A personal thank you to every single restaurant employee—you're the best! A special thanks to the owner, Arlindo, who greets guests personally and pays attention to each one. Wishing you prosperity!! I highly recommend!"
+    },
+    {
+      "author": "DR NOW", "rating": 5, "yearsAgo": 2, "localGuide": false, "count": 7,
+      "text": "Hidden gem", "scores": { "food": 5, "service": 5, "atmosphere": 5 }
+    },
+    {
+      "author": "siraj berry", "rating": 5, "yearsAgo": 4, "localGuide": true, "count": 18, "reactions": 1,
+      "text": "Super food, super service.. Definitely will recommend to try the Portuguese Authentic dishes and Port wine 😋😋"
+    },
+    {
+      "author": "Maria Galani", "rating": 5, "yearsAgo": 2, "localGuide": false, "count": 13, "countIn": "Winterthur", "visit": "dineInLunch",
+      "text": "Very good and authentic Portuguese restaurant.\nGreat for lunch and dinner.\nI love their octopus dish, half chicken and grilled shrimps. It's a must visit.",
+      "scores": { "food": 5, "service": 5, "atmosphere": 5 }
+    },
+    {
+      "author": "HYEJUNG (Lucia)", "rating": 5, "yearsAgo": 1, "localGuide": false, "count": 7, "reactions": 3,
+      "text": "So delicious. The service was excellent.", "scores": { "food": 5, "service": 5, "atmosphere": 5 }
+    }
+  ]
+}

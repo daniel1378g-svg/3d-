@@ -154,11 +154,6 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .flap::after { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: rgb(0 0 0 / 0.7); z-index: 3; }
 .flap-shade { position: absolute; inset: 50% 0 0 0; background: rgb(0 0 0 / 0.0); pointer-events: none; z-index: 1; border-radius: 0 0 5px 5px; }
 
-/* Azulejo tiles in the gallery wall: glazed slabs with an edge and a moving highlight. */
-.tile { position: relative; transform-style: preserve-3d; }
-.tile-face { position: absolute; inset: 0; backface-visibility: hidden; border-radius: 6px; overflow: hidden; }
-.tile-face.back { transform: rotateY(180deg); }
-.tile-glaze { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(circle at var(--gx, 30%) var(--gy, 20%), rgb(255 255 255 / 0.65), rgb(255 255 255 / 0) 42%); mix-blend-mode: soft-light; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
@@ -177,3 +172,11 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   mix-blend-mode: multiply;
 }
 @keyframes leaf-drift { from { transform: translate3d(-1.5%, 0, 0) scale(1); } to { transform: translate3d(1.5%, -1%, 0) scale(1.04); } }
+
+/* The gallery track lines its first photo up with the page's content column and lets the last one reach it. */
+.gallery-track {
+  --edge: max(32px, env(safe-area-inset-left, 0px), calc((100vw - 1280px) / 2));
+  padding-inline: var(--edge);
+  scroll-padding-inline: var(--edge);
+}
+@media (max-width: 767px) { .gallery-track { --edge: max(16px, env(safe-area-inset-left, 0px)); } }

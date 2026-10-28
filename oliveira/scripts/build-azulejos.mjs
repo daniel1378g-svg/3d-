@@ -1,9 +1,8 @@
-// Writes public/images/azulejos.svg (a 4 × 4 panel of hand-painted-looking Portuguese tiles, cobalt #1E4FA3
-// and light blue #8FA9D9 on white, used as a faint texture) and public/images/tiles/tile-<n>.svg (the same 16
-// tiles one by one, the faces of the gallery wall). Adapted from donduarte/scripts/build-azulejos.mjs.
+// Writes public/images/azulejos.svg: a 4 × 4 panel of hand-painted-looking Portuguese tiles (cobalt #1E4FA3
+// and light blue #8FA9D9 on white), used as a faint texture. Adapted from donduarte/scripts/build-azulejos.mjs.
 // Every tile is different; each stroke and fill is nudged off true and varies a little in intensity,
 // and a light displacement filter wobbles the edges like a brush. Seeded, so the output is stable.
-import { mkdirSync, writeFileSync } from "node:fs";
+import { writeFileSync } from "node:fs";
 
 const C = "#1E4FA3", L = "#8FA9D9", T = 140; // tile size in SVG units
 let seed = 1988;
@@ -60,19 +59,14 @@ const grid = [
   ["sparse", "rosette", "volute", "lattice"],
 ];
 const glaze = ["#FFFFFF", "#FCFDFF", "#F8FAFE", "#FDFDFB"];
-const faces = [];
 const tiles = grid.flatMap((row, y) =>
   row.map((name, x) => {
     const g = glaze[Math.floor(rnd() * glaze.length)];
     const wash = rnd() < 0.5 ? `<circle cx="${f(30 + rnd() * 80)}" cy="${f(30 + rnd() * 80)}" r="${f(40 + rnd() * 30)}" fill="${L}" fill-opacity="${f(0.04 + rnd() * 0.05)}"/>` : "";
     const body = `<rect x="1" y="1" width="${T - 2}" height="${T - 2}" rx="1.5" fill="${g}"/>${wash}<g filter="url(#brush)" opacity="${op(0.86)}">${motifs[name]()}</g>`;
-    faces.push(body);
     return `<g transform="translate(${x * T} ${y * T})">${body}</g>`;
   }),
 );
 const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${T * 4}" height="${T * 4}" viewBox="0 0 ${T * 4} ${T * 4}"><defs><filter id="brush" x="-4%" y="-4%" width="108%" height="108%"><feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="2" seed="7"/><feDisplacementMap in="SourceGraphic" scale="2.2"/></filter></defs><rect width="${T * 4}" height="${T * 4}" fill="#D9DEE6"/>${tiles.join("")}</svg>`;
 writeFileSync(new URL("../public/images/azulejos.svg", import.meta.url), svg);
-const defs = `<defs><filter id="brush" x="-4%" y="-4%" width="108%" height="108%"><feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="2" seed="7"/><feDisplacementMap in="SourceGraphic" scale="2.2"/></filter></defs>`;
-mkdirSync(new URL("../public/images/tiles/", import.meta.url), { recursive: true });
-faces.forEach((body, i) => writeFileSync(new URL(`../public/images/tiles/tile-${i}.svg`, import.meta.url), `<svg xmlns="http://www.w3.org/2000/svg" width="${T}" height="${T}" viewBox="0 0 ${T} ${T}">${defs}<rect width="${T}" height="${T}" fill="#D9DEE6"/>${body}</svg>`));
 console.log(`azulejos.svg ${(svg.length / 1024).toFixed(1)} KB`);

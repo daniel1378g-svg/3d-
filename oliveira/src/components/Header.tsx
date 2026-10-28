@@ -47,8 +47,8 @@ export function Header() {
         )}
       >
         <div className="wrap flex items-center justify-between gap-4 transition-[height] duration-300" style={{ height: scrolled ? 64 : "var(--header-h)" }}>
-          <SiteLink page="home" className="group relative flex items-center gap-3">
-            <span className="relative block h-11 w-12 shrink-0">
+          <SiteLink page="home" className="group relative flex min-w-0 items-center gap-2 sm:gap-3">
+            <span className="relative block h-10 w-11 shrink-0 sm:h-11 sm:w-12">
               <img
                 src={asset("brand/tree.webp")}
                 alt=""
@@ -62,13 +62,13 @@ export function Header() {
                 alt=""
                 width={40}
                 height={40}
-                className="absolute inset-[3px] h-[38px] w-[38px] object-contain transition-[opacity,transform] duration-500 ease-[var(--ease-out-expo)]"
+                className="absolute inset-[3px] h-[34px] w-[34px] object-contain sm:h-[38px] sm:w-[38px] transition-[opacity,transform] duration-500 ease-[var(--ease-out-expo)]"
                 style={{ opacity: scrolled ? 1 : 0, transform: scrolled ? "none" : "scale(1.6) rotate(40deg)" }}
               />
             </span>
             <span className="leading-none">
-              <span className="block text-[10px] font-semibold uppercase tracking-[0.32em] text-bark/80">Restaurante</span>
-              <span className="display block text-[26px] font-semibold tracking-[0.04em] text-leaf"> OLIVEIRA</span>
+              <span className="block text-[9px] font-semibold uppercase tracking-[0.3em] text-bark/80 sm:text-[10px] sm:tracking-[0.32em]">Restaurante</span>
+              <span className="display block text-[22px] font-semibold tracking-[0.04em] text-leaf sm:text-[26px]"> OLIVEIRA</span>
               <span className="sr-only"> – {UI.home[lang]}</span>
             </span>
           </SiteLink>
@@ -79,10 +79,8 @@ export function Header() {
             ))}
           </nav>
 
-          <div className="flex items-center gap-2">
-            <div className="hidden sm:block">
-              <LanguageSwitcher />
-            </div>
+          <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
+            <LanguageSwitcher compact />
             <Magnetic>
               <a href={CONTACT.phoneHref} className="btn btn-dark hidden min-h-11 md:inline-flex" data-cursor="call">
                 <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.6a1 1 0 0 1-.25 1z" /></svg>
@@ -91,7 +89,7 @@ export function Header() {
             </Magnetic>
             <button
               type="button"
-              className="inline-flex h-11 items-center gap-2 rounded-full bg-charcoal px-4 text-sm font-semibold text-linen lg:hidden"
+              className="inline-flex h-10 items-center gap-2 rounded-full bg-charcoal px-3.5 text-sm font-semibold text-linen sm:h-11 sm:px-4 lg:hidden"
               aria-expanded={open}
               aria-controls="mobile-nav"
               onClick={() => setOpen((v) => !v)}
@@ -101,7 +99,7 @@ export function Header() {
                 <span className={cn("absolute left-0 top-[5px] h-0.5 w-4 bg-current transition-opacity", open && "opacity-0")} />
                 <span className={cn("absolute left-0 top-[10px] h-0.5 w-4 bg-current transition-transform", open && "-translate-y-[5px] -rotate-45")} />
               </span>
-              {open ? UI.closeMenu[lang] : UI.menu[lang]}
+              <span className={open ? "sr-only sm:not-sr-only" : undefined}>{open ? UI.closeMenu[lang] : UI.menu[lang]}</span>
             </button>
           </div>
         </div>

@@ -16,7 +16,7 @@ export function Footer() {
     <footer className="charcoal on-dark gutter pb-10 pt-16">
       <div className="wrap grid gap-12 md:grid-cols-[1.2fr_1fr_1fr]">
         <div>
-          <img src={asset("brand/logo-dark.webp")} alt="Restaurante Oliveira – Portugiesische & Schweizer Küche" width={220} height={233} className="w-[200px]" loading="lazy" />
+          <img src={asset("brand/logo-dark.webp")} alt={`Restaurante Oliveira – ${UI.cuisineLine[lang]}`} width={220} height={233} className="w-[200px]" loading="lazy" />
           <address className="mt-6 not-italic leading-relaxed text-linen/85">
             {CONTACT.street}
             <br />

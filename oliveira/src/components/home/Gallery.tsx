@@ -1,234 +1,160 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { AnimatePresence, animate, motion, useMotionValue, useReducedMotion, type PanInfo } from "motion/react";
+import { AnimatePresence, motion, useReducedMotion, type PanInfo } from "motion/react";
 import { UI, fill } from "@/i18n";
 import { PHOTOS } from "@/content";
 import { useSite } from "@/site";
-import { asset, cn } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { Photo } from "../Photo";
 import { Reveal } from "../Reveal";
 
 const mod = (a: number, n: number) => ((a % n) + n) % n;
-const hash = (x: number, y: number) => {
-  let h = Math.imul(x, 374761393) ^ Math.imul(y, 668265263);
-  h = Math.imul(h ^ (h >>> 13), 1274126177);
-  return (h ^ (h >>> 16)) >>> 0;
-};
 
 /**
- * An endless wall of glazed azulejo tiles. Drag it in any direction (it glides on with inertia); a tile
- * flips on its edge to show one of the 27 photos (hover, focus or tap); a click opens the lightbox.
- * Keyboard: arrows move the wall a tile, Enter opens the tile in the middle. "Als Raster" lists them all.
+ * A sliding gallery of all 27 photos: swipe on touch, drag with the mouse, or use the arrows. Each photo
+ * snaps into place with the next one peeking in; a tap opens it full screen.
  */
 export function Gallery() {
   const { lang } = useSite();
-  const reduce = useReducedMotion();
-  const [grid, setGrid] = useState(() => Boolean(reduce));
   const [open, setOpen] = useState<number | null>(null);
   return (
-    <section aria-labelledby="gallery-title" className="charcoal on-dark gutter py-24 md:py-32">
-      <div className="wrap">
-        <Reveal className="flex flex-wrap items-end justify-between gap-6">
-          <div>
-            <h2 id="gallery-title" className="display text-[clamp(2.4rem,5.6vw,4.8rem)] font-semibold leading-none">{UI.gallery[lang]}</h2>
-            {!grid && <p className="mt-3 text-linen/75">{UI.galleryHint[lang]}</p>}
-          </div>
-          <button type="button" aria-pressed={grid} onClick={() => setGrid((g) => !g)} className="btn btn-ghost">
-            {grid ? UI.asWall[lang] : UI.asGrid[lang]}
-          </button>
+    <section aria-labelledby="gallery-title" className="charcoal on-dark py-24 md:py-32">
+      <div className="gutter">
+        <Reveal className="wrap">
+          <h2 id="gallery-title" className="display text-[clamp(2.4rem,5.6vw,4.8rem)] font-semibold leading-none">{UI.gallery[lang]}</h2>
         </Reveal>
-        <div className="mt-10">{grid ? <PhotoGrid onOpen={setOpen} /> : <TileWall onOpen={setOpen} />}</div>
       </div>
+      <Slider onOpen={setOpen} />
       <Lightbox index={open} onClose={() => setOpen(null)} onIndex={setOpen} />
     </section>
   );
 }
 
-function PhotoGrid({ onOpen }: { onOpen: (i: number) => void }) {
+function Slider({ onOpen }: { onOpen: (i: number) => void }) {
   const { lang } = useSite();
-  return (
-    <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
-      {PHOTOS.map((p, i) => (
-        <li key={p.id}>
-          <button type="button" onClick={() => onOpen(i)} className="block w-full overflow-hidden rounded-xl ring-1 ring-linen/10" aria-label={`${UI.open[lang]}: ${p.alt[lang]}`}>
-            <Photo id={p.id} className="aspect-square w-full" sizes="(min-width: 1024px) 240px, 45vw" decorative />
-          </button>
-        </li>
-      ))}
-    </ul>
-  );
-}
+  const reduce = useReducedMotion();
+  const track = useRef<HTMLUListElement>(null);
+  const [index, setIndex] = useState(0);
+  const drag = useRef({ on: false, x: 0, left: 0, moved: 0, id: 0 });
 
-function TileWall({ onOpen }: { onOpen: (i: number) => void }) {
-  const { lang } = useSite();
-  const box = useRef<HTMLDivElement>(null);
-  const tiles = useRef<(HTMLDivElement | null)[]>([]);
-  const ox = useMotionValue(0);
-  const oy = useMotionValue(0);
-  const [dims, setDims] = useState({ cols: 10, rows: 5, size: 170 });
-  const [flipped, setFlipped] = useState<string | null>(null);
-  const [cells, setCells] = useState<{ key: string; vc: number; vr: number }[]>([]);
-  const moved = useRef(0);
-
+  // Which photo sits at the start of the track (the counter follows swipes, drags and arrows alike).
   useEffect(() => {
-    const measure = () => {
-      const r = box.current!.getBoundingClientRect();
-      const size = r.width < 640 ? 128 : 172;
-      setDims({ cols: Math.ceil(r.width / size) + 2, rows: Math.ceil(r.height / size) + 2, size });
+    const el = track.current!;
+    const onScroll = () => {
+      const items = [...el.children] as HTMLElement[];
+      const start = el.getBoundingClientRect().left + parseFloat(getComputedStyle(el).paddingLeft);
+      let best = 0;
+      let bestD = Infinity;
+      items.forEach((it, i) => {
+        const d = Math.abs(it.getBoundingClientRect().left - start);
+        if (d < bestD) {
+          bestD = d;
+          best = i;
+        }
+      });
+      setIndex(best);
     };
-    measure();
-    const ro = new ResizeObserver(measure);
-    ro.observe(box.current!);
-    return () => ro.disconnect();
+    el.addEventListener("scroll", onScroll, { passive: true });
+    return () => el.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Place every tile from the wall's offset, wrapping round; tiles that wrap take a new photo and pattern.
-  const layout = useCallback(() => {
-    const { cols, rows, size } = dims;
-    const W = cols * size;
-    const H = rows * size;
-    const x = ox.get();
-    const y = oy.get();
-    const next: { key: string; vc: number; vr: number }[] = [];
-    let changed = false;
-    for (let r = 0; r < rows; r++)
-      for (let c = 0; c < cols; c++) {
-        const i = r * cols + c;
-        const px = mod(c * size + x, W) - size;
-        const py = mod(r * size + y, H) - size;
-        const vc = Math.round((px - x) / size);
-        const vr = Math.round((py - y) / size);
-        const el = tiles.current[i];
-        if (el) el.style.transform = `translate3d(${px}px, ${py}px, 0)`;
-        next.push({ key: `${vc}:${vr}`, vc, vr });
-        if (!cells[i] || cells[i].key !== `${vc}:${vr}`) changed = true;
-      }
-    if (changed) setCells(next);
-  }, [dims, ox, oy, cells]);
-  useEffect(() => {
-    layout();
-    const a = ox.on("change", layout);
-    const b = oy.on("change", layout);
-    return () => {
-      a();
-      b();
-    };
-  }, [layout, ox, oy]);
+  const goTo = (i: number) => {
+    const el = track.current!;
+    const item = el.children[Math.max(0, Math.min(PHOTOS.length - 1, i))] as HTMLElement;
+    el.scrollTo({ left: item.offsetLeft - el.offsetLeft - parseFloat(getComputedStyle(el).paddingLeft), behavior: reduce ? "auto" : "smooth" });
+  };
 
-  const photoAt = (vc: number, vr: number) => hash(vc + 1000, vr + 1000) % PHOTOS.length;
-  const patternAt = (vc: number, vr: number) => hash(vr + 77, vc + 31) % 16;
-
-  // Drag with inertia.
-  const drag = useRef({ on: false, x: 0, y: 0, t: 0, vx: 0, vy: 0 });
+  // Mouse drag; touch keeps the browser's own swipe with snapping.
   const down = (e: React.PointerEvent) => {
-    if (e.pointerType !== "mouse" && e.pointerType !== "pen" && e.pointerType !== "touch") return;
-    drag.current = { on: true, x: e.clientX, y: e.clientY, t: performance.now(), vx: 0, vy: 0 };
-    moved.current = 0;
-    ox.stop();
-    oy.stop();
+    if (e.pointerType !== "mouse" || e.button !== 0) return;
+    const el = track.current!;
+    drag.current = { on: true, x: e.clientX, left: el.scrollLeft, moved: 0, id: e.pointerId };
+    el.style.scrollSnapType = "none";
+    el.style.scrollBehavior = "auto";
   };
   const move = (e: React.PointerEvent) => {
     const d = drag.current;
-    const r = box.current!.getBoundingClientRect();
-    box.current!.style.setProperty("--gx", `${e.clientX - r.left}px`);
-    box.current!.style.setProperty("--gy", `${e.clientY - r.top}px`);
     if (!d.on) return;
-    const now = performance.now();
     const dx = e.clientX - d.x;
-    const dy = e.pointerType === "touch" ? 0 : e.clientY - d.y; // on touch, vertical drags scroll the page
-    const dt = Math.max(1, now - d.t);
-    d.vx = d.vx * 0.5 + (dx / dt) * 1000 * 0.5;
-    d.vy = d.vy * 0.5 + (dy / dt) * 1000 * 0.5;
-    d.x = e.clientX;
-    d.y = e.clientY;
-    d.t = now;
-    moved.current += Math.abs(dx) + Math.abs(dy);
-    if (moved.current > 6) (e.currentTarget as HTMLElement).setPointerCapture?.(e.pointerId);
-    ox.set(ox.get() + dx);
-    oy.set(oy.get() + dy);
+    d.moved = Math.max(d.moved, Math.abs(dx));
+    if (d.moved > 6) track.current!.setPointerCapture?.(d.id);
+    track.current!.scrollLeft = d.left - dx;
   };
   const up = () => {
     const d = drag.current;
     if (!d.on) return;
     d.on = false;
-    if (moved.current > 6) {
-      animate(ox, ox.get(), { type: "inertia", velocity: d.vx, power: 0.35, timeConstant: 420 });
-      animate(oy, oy.get(), { type: "inertia", velocity: d.vy, power: 0.35, timeConstant: 420 });
-    }
-  };
-  const key = (e: React.KeyboardEvent) => {
-    const s = dims.size;
-    const step: Record<string, [number, number]> = { ArrowLeft: [s, 0], ArrowRight: [-s, 0], ArrowUp: [0, s], ArrowDown: [0, -s] };
-    if (step[e.key]) {
-      e.preventDefault();
-      animate(ox, ox.get() + step[e.key][0], { type: "spring", stiffness: 260, damping: 30 });
-      animate(oy, oy.get() + step[e.key][1], { type: "spring", stiffness: 260, damping: 30 });
-    }
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      const r = box.current!.getBoundingClientRect();
-      const vc = Math.floor((r.width / 2 - ox.get()) / s);
-      const vr = Math.floor((r.height / 2 - oy.get()) / s);
-      onOpen(photoAt(vc, vr));
-    }
+    const el = track.current!;
+    el.style.scrollSnapType = "";
+    el.style.scrollBehavior = "";
+    // Settle on the nearest photo, a step further in the drag's direction when it was a flick.
+    const dx = el.scrollLeft - d.left;
+    goTo(index + (Math.abs(dx) > 40 && Math.abs(dx) < 260 ? Math.sign(dx) : 0));
   };
 
+  const arrow = "grid h-12 w-12 place-items-center rounded-full bg-linen text-charcoal shadow-lift transition-opacity hover:bg-white disabled:opacity-35";
   return (
-    <div
-      ref={box}
-      tabIndex={0}
-      role="group"
-      aria-label={`${UI.gallery[lang]}. ${UI.galleryHint[lang]}`}
-      onPointerDown={down}
-      onPointerMove={move}
-      onPointerUp={up}
-      onPointerCancel={up}
-      onKeyDown={key}
-      data-cursor="drag"
-      className="relative h-[clamp(420px,68vh,700px)] touch-pan-y select-none overflow-hidden rounded-[28px] bg-[#cfd6e0] ring-1 ring-linen/10"
-      style={{ perspective: 1200 }}
-    >
-      {Array.from({ length: dims.cols * dims.rows }, (_, i) => {
-        const cell = cells[i];
-        const vc = cell?.vc ?? 0;
-        const vr = cell?.vr ?? 0;
-        const pi = photoAt(vc, vr);
-        const id = cell?.key ?? String(i);
-        const isFlipped = flipped === id;
-        return (
-          <div
-            key={i}
-            ref={(el) => {
-              tiles.current[i] = el;
-            }}
-            className="absolute left-0 top-0 p-[5px]"
-            style={{ width: dims.size, height: dims.size }}
-          >
+    <div className="mt-10">
+      <ul
+        ref={track}
+        aria-label={UI.galleryLabel[lang]}
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === "ArrowRight") {
+            e.preventDefault();
+            goTo(index + 1);
+          }
+          if (e.key === "ArrowLeft") {
+            e.preventDefault();
+            goTo(index - 1);
+          }
+        }}
+        onPointerDown={down}
+        onPointerMove={move}
+        onPointerUp={up}
+        onPointerCancel={up}
+        onPointerLeave={up}
+        data-cursor="drag"
+        className="gallery-track no-scrollbar relative flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-2 outline-offset-4 md:gap-6"
+      >
+        {PHOTOS.map((p, i) => (
+          <li key={p.id} className="w-[82%] shrink-0 snap-start sm:w-[58%] lg:w-[40%]">
             <button
               type="button"
-              tabIndex={-1}
-              aria-label={`${UI.open[lang]}: ${PHOTOS[pi].alt[lang]}`}
-              onPointerEnter={(e) => e.pointerType === "mouse" && setFlipped(id)}
-              onPointerLeave={(e) => e.pointerType === "mouse" && setFlipped((f) => (f === id ? null : f))}
               onClick={(e) => {
-                if (moved.current > 6) return e.preventDefault();
-                if ((e.nativeEvent as PointerEvent).pointerType === "touch" && !isFlipped) return setFlipped(id);
-                onOpen(pi);
+                if (drag.current.moved > 6) return e.preventDefault();
+                onOpen(i);
               }}
-              className="tile block h-full w-full rounded-[6px] shadow-[0_2px_0_rgb(120_130_150),0_8px_14px_-6px_rgb(20_30_50/0.5)] transition-transform duration-700 ease-[cubic-bezier(.2,.8,.2,1.15)]"
-              style={{ transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)" }}
+              data-cursor="view"
+              className="group relative block w-full overflow-hidden rounded-[22px] text-left"
             >
-              <span className="tile-face" style={{ backgroundImage: `url(${asset(`images/tiles/tile-${patternAt(vc, vr)}.svg`)})`, backgroundSize: "cover" }}>
-                <span className="tile-glaze" />
-              </span>
-              <span className="tile-face back">
-                {isFlipped ? <Photo id={PHOTOS[pi].id} className="h-full w-full" sizes="180px" decorative label={false} /> : <span className="block h-full w-full" style={{ backgroundImage: `url(${PHOTOS[pi].lqip})`, backgroundSize: "cover" }} />}
-              </span>
+              <span className="sr-only">{UI.galleryOpen[lang]}: </span>
+              <Photo id={p.id} className="aspect-[4/3] w-full transition-transform duration-700 group-hover:scale-[1.03]" sizes="(min-width: 1024px) 520px, (min-width: 640px) 58vw, 82vw" />
+            </button>
+            <p aria-hidden="true" className="mt-3 line-clamp-2 text-[15px] text-linen/75">{p.alt[lang]}</p>
+          </li>
+        ))}
+      </ul>
+      <div className="gutter mt-6">
+        <div className="wrap flex items-center justify-between gap-4">
+          <p className="text-sm font-semibold tabular-nums text-linen/80" aria-live="polite">
+            <span className="sr-only">{fill(UI.photoOf[lang], { n: index + 1, total: PHOTOS.length })}</span>
+            <span aria-hidden="true">{index + 1} / {PHOTOS.length}</span>
+          </p>
+          <div className="flex gap-3">
+            <button type="button" className={arrow} onClick={() => goTo(index - 1)} disabled={index === 0} aria-label={UI.prevPhoto[lang]}>
+              <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
+            </button>
+            <button type="button" className={arrow} onClick={() => goTo(index + 1)} disabled={index === PHOTOS.length - 1} aria-label={UI.nextPhoto[lang]}>
+              <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
             </button>
           </div>
-        );
-      })}
-      {/* The glaze: one soft highlight that follows the pointer across all the tiles. */}
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0 mix-blend-soft-light" style={{ background: "radial-gradient(260px circle at var(--gx, 60%) var(--gy, 30%), rgb(255 255 255 / 0.75), transparent 70%)" }} />
+        </div>
+      </div>
+      <div className="gutter mt-4" aria-hidden="true">
+        <div className="wrap h-1 overflow-hidden rounded-full bg-linen/15">
+          <div className={cn("h-full rounded-full bg-leaf-light", !reduce && "transition-[width] duration-500 ease-out")} style={{ width: `${((index + 1) / PHOTOS.length) * 100}%` }} />
+        </div>
+      </div>
     </div>
   );
 }

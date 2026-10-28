@@ -17,20 +17,21 @@ photos and texts belong to Restaurante Oliveira; the live WordPress site was not
 |---|---|
 | Hero: lunch under a procedural olive tree, lit by the real sun over Winterthur (day, golden hour, night with a lantern); pointer gusts flip leaves silver; Wind and pause buttons; tap an olive and it falls | `src/three/oliveTree.ts`, `src/three/sun.ts`, `src/components/home/Hero.tsx` (`?sun=2026-06-21T20:45` previews a time) |
 | Living photos: depth parallax (Depth Anything V2 maps), rising steam, glisten, heat shimmer on the grill, device tilt | `src/three/living.ts`, `src/components/Photo.tsx`, `content/photos.json` (`living` ellipses) |
-| Portugal \| Schweiz divider (Bacalhau / Käseschnitte «Walliser Art»), throws with momentum, snaps to 0 / 50 / 100 %, keyboard slider | `src/components/home/Divider.tsx` |
+| "Portugal → Winterthur" route that draws itself on scroll, with an olive-branch badge riding the line (fully drawn with reduced motion) | `src/components/home/Route.tsx` |
 | Welcome slide on every language change, intro on the first visit (prerendered, so it paints before the app runs) | `src/components/WelcomeSlide.tsx`, `scripts/postbuild-routes.mjs` |
-| Home-page language chooser, header and footer switchers | `src/components/LanguageChooser.tsx`, `LanguageSwitcher.tsx` |
+| Compact language pill (DE ▾) in the header next to Menu on every width; list in the footer and mobile menu | `src/components/LanguageSwitcher.tsx` |
 | Split-flap story: OLD PULLMANN → KAFI FROSCH → OLIVEIRA, words light up, the signature writes itself, the tree grows out of the "O" | `src/components/home/Story.tsx`, `src/components/SplitFlap.tsx` |
 | "Served" dish cards with tilt and glare; the photo morphs into the detail | `src/components/Dishes.tsx` |
 | Küche page: Portugal / Schweiz / Alle, instant search, Tagesmenü strip, no prices | `src/pages/Kitchen.tsx`, `content/dishes.json` |
-| Azulejo wall (16 generated tiles, drag with inertia, flip to the 27 photos), lightbox, "Als Raster" | `src/components/home/Gallery.tsx`, `scripts/build-azulejos.mjs` |
+| Photo slider of all 27 photos: swipe, mouse drag, arrows, snap with a peek, counter; tap for the full-screen lightbox | `src/components/home/Gallery.tsx` |
+| Five Google reviews, quoted as written (labels and dates follow the language) | `src/components/home/Reviews.tsx`, `content/reviews.json` |
 | MyLocalina in a drawer (bottom sheet you can drag down on phones), magnetic buttons, copy e-mail | `src/components/BookingDrawer.tsx`, `src/components/home/Reserve.tsx` |
 | Live open/closed badge in Winterthur time, provisional hours, palette map with a dropping pin, OpenStreetMap on click | `src/components/OpenBadge.tsx`, `src/components/home/Contact.tsx`, `content/hours.json` |
 | Logo strip that follows scroll speed and direction; Lottie icons; film grain; cursor follower; optional sound | `src/components/home/LogoStrip.tsx`, `src/lottie/`, `src/components/CursorFollower.tsx`, `src/lib/sound.ts` |
 | Impressum (German verbatim, courtesy translations) and a draft privacy notice | `src/legal.ts`, `src/pages/Legal.tsx` |
 
 Reduced motion: no smooth scroll, no parallax or steam, still poster instead of the tree, crossfades instead of
-slides, no grain, grid instead of the tile wall. Every drag has a keyboard way (slider, arrow keys, buttons).
+slides, no grain, the route drawn in full. Every drag has a keyboard way (slider, arrow keys, buttons).
 
 ## Commands
 
