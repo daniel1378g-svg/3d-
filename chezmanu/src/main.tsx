@@ -1,3 +1,4 @@
+import "./lib/shell";
 import { StrictMode, startTransition, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, MemoryRouter, Navigate, Route, Routes, useLocation, useNavigate } from "react-router";

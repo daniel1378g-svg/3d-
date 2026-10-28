@@ -506,7 +506,7 @@ export const UI = {
   footerTagline: L("Boulangerie • Pâtisserie • Tea-Room", "Bakery • Pastry • Tea room", "Padaria • Pastelaria • Salão de chá", "Panetteria • Pasticceria • Tea room", "Bäckerei • Konditorei • Tea-Room"),
 };
 
-/** Titles and descriptions per page (French from the live site; «Sips Corner» in the live legal title fixed). */
+/** Titles and descriptions per page (French from the live site; the legal page's title and description, which name another business left over from the template, now name Chez Manu). */
 export const SEO: Record<PageKey, { title: Localized; description: Localized }> = {
   home: {
     title: L("Pâtissier portugais | Lausanne | Chez Manu", "Portuguese pastry shop | Lausanne | Chez Manu", "Pastelaria portuguesa | Lausana | Chez Manu", "Pasticceria portoghese | Losanna | Chez Manu", "Portugiesische Konditorei | Lausanne | Chez Manu"),

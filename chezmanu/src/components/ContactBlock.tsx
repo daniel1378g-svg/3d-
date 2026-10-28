@@ -44,50 +44,50 @@ export function ContactBlock({ lead }: { lead: "home" | "offer" }) {
             </Magnetic>
           </div>
           <OpenBadge terrace className="mt-8" />
-          <dl className="mt-10 grid gap-6 sm:grid-cols-2">
-            <div className="group flex gap-4">
+          <ul className="mt-10 grid gap-6 sm:grid-cols-2">
+            <li className="group flex gap-4">
               <LottieIcon name="clock" size={40} mode="hover" />
               <div>
-                <dt className="kicker">{TEXT.hoursTitle[lang]}</dt>
-                <dd className="mt-1">
+                <p className="kicker">{TEXT.hoursTitle[lang]}</p>
+                <p className="mt-1">
                   {HOURS_ROWS.map((r) => (
                     <span key={r.key} className="block">
                       <span className="font-semibold">{TEXT[r.key][lang]}</span> <span className="price">{hm(r.open)} – {hm(r.close)}</span>
                     </span>
                   ))}
-                </dd>
+                </p>
               </div>
-            </div>
-            <div className="group flex gap-4">
+            </li>
+            <li className="group flex gap-4">
               <LottieIcon name="pin" size={40} mode="hover" />
               <div>
-                <dt className="kicker">{UI.address[lang]}</dt>
-                <dd className="mt-1">
+                <p className="kicker">{UI.address[lang]}</p>
+                <p className="mt-1">
                   {CONTACT.street}
                   <br />
                   {CONTACT.zip} {CONTACT.city}
-                </dd>
+                </p>
               </div>
-            </div>
-            <div className="group flex gap-4">
+            </li>
+            <li className="group flex gap-4">
               <LottieIcon name="phone" size={40} mode="hover" />
               <div>
-                <dt className="kicker">{UI.phone[lang]}</dt>
-                <dd className="mt-1">
+                <p className="kicker">{UI.phone[lang]}</p>
+                <p className="mt-1">
                   <a href={CONTACT.phoneHref} className="font-semibold underline decoration-wheat decoration-2 underline-offset-4" data-cursor="call">{CONTACT.phone}</a>
-                </dd>
+                </p>
               </div>
-            </div>
-            <div className="group flex gap-4">
+            </li>
+            <li className="group flex gap-4">
               <LottieIcon name="mail" size={40} mode="hover" />
               <div className="min-w-0">
-                <dt className="kicker">{UI.email[lang]}</dt>
-                <dd className="mt-1 break-all">
+                <p className="kicker">{UI.email[lang]}</p>
+                <p className="mt-1 break-all">
                   <a href={`mailto:${CONTACT.email}`} className="font-semibold underline decoration-wheat decoration-2 underline-offset-4">{CONTACT.email}</a>
-                </dd>
+                </p>
               </div>
-            </div>
-          </dl>
+            </li>
+          </ul>
           <div className="mt-8 flex items-center gap-3">
             <span className="kicker">{UI.follow[lang]}</span>
             <a href={CONTACT.facebook} target="_blank" rel="noopener noreferrer" className="grid h-11 w-11 place-items-center rounded-full bg-espresso text-flour hover:bg-cocoa">

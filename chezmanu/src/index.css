@@ -146,3 +146,11 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 
 @keyframes hero-progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 @keyframes flat-spin { from { transform: perspective(700px) rotateY(0deg); } to { transform: perspective(700px) rotateY(360deg); } }
+
+/* The static first-visit intro (scripts/postbuild-routes.mjs) plays its own entrance until the app takes over. */
+@keyframes shell-logo { from { transform: translateX(-35vw) rotate(-6deg); } 70% { transform: translateX(1vw) rotate(0.5deg); } to { transform: none; } }
+@keyframes shell-rise { from { transform: translateY(110%); } to { transform: none; } }
+@keyframes shell-line { from { opacity: 0; transform: translateY(12px); } to { opacity: 0.85; transform: none; } }
+.shell-logo { animation: shell-logo 0.6s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.shell-word > span { display: inline-block; animation: shell-rise 0.35s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.shell-line { animation: shell-line 0.4s 0.3s both; }

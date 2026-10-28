@@ -5,8 +5,15 @@ import { motion, useReducedMotion } from "motion/react";
  * Text that enters letter by letter (opacity + rise, transform only). Words break only after a hyphen; screen readers
  * get the plain text once. The whole entrance stays under ~0.7 s whatever the length.
  */
-export function SplitLetters({ text, lang, className, delay = 0 }: { text: string; lang?: string; className?: string; delay?: number }) {
+export function SplitLetters({ text, lang, className, delay = 0, still = false }: { text: string; lang?: string; className?: string; delay?: number; still?: boolean }) {
   const reduce = useReducedMotion();
+  // Taking over the static first paint (scripts/postbuild-routes.mjs): the same plain text, nothing moves.
+  if (still)
+    return (
+      <span className={className} lang={lang}>
+        {text}
+      </span>
+    );
   const letters = [...text].length;
   const step = Math.min(0.03, 0.55 / Math.max(letters, 1));
   let n = 0;

@@ -12,10 +12,10 @@ import { Footer } from "./components/Footer";
 import { WelcomeSlide } from "./components/WelcomeSlide";
 import { CursorFollower } from "./components/CursorFollower";
 import { Home } from "./pages/Home";
+import { Offer } from "./pages/Offer";
+import { Contact } from "./pages/Contact";
 
 const PROPOSAL = import.meta.env.VITE_PROPOSAL !== "0";
-const Offer = lazy(() => import("./pages/Offer").then((m) => ({ default: m.Offer })));
-const Contact = lazy(() => import("./pages/Contact").then((m) => ({ default: m.Contact })));
 const Legal = lazy(() => import("./pages/Legal").then((m) => ({ default: m.Legal })));
 
 /** Scrolls to a section once it exists: smoothly on the same page, at once after a page change. */
@@ -76,6 +76,8 @@ export function Shell({ lang }: { lang: Lang }) {
     };
   }, []);
 
+  // The static first paint's proposal band gives way to the app's own copy (same place, same text).
+  useEffect(() => document.getElementById("shell-label")?.remove(), []);
   useEffect(() => {
     document.documentElement.lang = HTML_LANG[lang];
     storage("local").set("chezmanu-lang", lang);
@@ -162,9 +164,9 @@ export function Shell({ lang }: { lang: Lang }) {
       <Header />
       <main id="main" tabIndex={-1} className="outline-none">
         {page === "home" && <Home />}
+        {page === "offer" && <Offer />}
+        {page === "contact" && <Contact />}
         <Suspense fallback={<div className="min-h-[100svh]" />}>
-          {page === "offer" && <Offer />}
-          {page === "contact" && <Contact />}
           {(page === "privacy" || page === "legal") && <Legal page={page} />}
         </Suspense>
       </main>

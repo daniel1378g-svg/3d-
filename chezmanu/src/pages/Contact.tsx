@@ -1,4 +1,6 @@
+import { useEffect, useRef, useState } from "react";
 import { HTML_LANG, TEXT, UI } from "@/i18n";
+import { SHELL } from "@/lib/shell";
 import { CONTACT } from "@/content";
 import { HOURS_ROWS, hm } from "@/hours";
 import { useSite } from "@/site";
@@ -14,12 +16,19 @@ import { PhoneGlyph } from "@/components/Glyphs";
 /** Contact: the live headings and text, the form, the address, phone, e-mail, hours and the map. */
 export function Contact() {
   const { lang } = useSite();
+  // Taking over the static first paint: the title already in place.
+  const [still, setStill] = useState(SHELL.contact);
+  const mounted = useRef(false);
+  useEffect(() => {
+    if (mounted.current) setStill(false);
+    mounted.current = true;
+  }, [lang]);
   return (
     <>
-      <section className="dust gutter bg-custard pb-16 pt-[calc(var(--header-h)+var(--label-h)+56px)] md:pb-20">
+      <section className="gutter bg-custard pb-16 pt-[calc(var(--header-h)+var(--label-h)+56px)] md:pb-20">
         <div className="wrap">
           <h1 className="display max-w-[22ch] text-[clamp(2rem,5.6vw,4.8rem)] leading-[1.02] text-cocoa">
-            <SplitLetters text={TEXT.contactTitle[lang]} lang={HTML_LANG[lang]} />
+            <SplitLetters text={TEXT.contactTitle[lang]} lang={HTML_LANG[lang]} still={still} />
           </h1>
           <p className="mt-6 max-w-[64ch] text-[clamp(1.05rem,1.6vw,1.25rem)] font-medium">{TEXT.contactText[lang]}</p>
           <OpenBadge terrace className="mt-8" />

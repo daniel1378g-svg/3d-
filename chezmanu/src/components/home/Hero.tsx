@@ -5,6 +5,7 @@ import { CONTACT, chf } from "@/content";
 import { HOURS_ROWS, hm } from "@/hours";
 import { useSite } from "@/site";
 import { asset, cn, lowPower, prefersReducedMotion, webglAvailable } from "@/lib/utils";
+import { SHELL, adopt } from "@/lib/shell";
 import { Photo } from "../Photo";
 import { SplitLetters } from "../SplitLetters";
 import { Magnetic } from "../Magnetic";
@@ -14,6 +15,9 @@ import { ArrowGlyph, PhoneGlyph, PlayPause } from "../Glyphs";
 import { TRAY_ITEMS } from "../Illustrations";
 
 const SLIDE_MS = 6000;
+// The built home pages paint this hero (first slide) as static HTML before the app runs; the app then takes
+// it over in its final state instead of replaying the entrance.
+// Its photo plate is adopted as is (the very same <img>), so the browser doesn't paint the picture twice.
 
 /** The custard surface: a still poster first, the live shader after first paint when the device can afford it. */
 function Custard({ host }: { host: React.RefObject<HTMLElement | null> }) {
@@ -72,6 +76,12 @@ export function Hero() {
   const [paused, setPaused] = useState(() => prefersReducedMotion()); // reduced motion: no auto-advance
   const [hold, setHold] = useState(false); // hover or focus inside
   const [onScreen, setOnScreen] = useState(true);
+  const [still, setStill] = useState(SHELL.hero);
+  const mounted = useRef(false);
+  useEffect(() => {
+    if (mounted.current) setStill(false);
+    mounted.current = true;
+  }, [index, lang]);
 
   const offerFirst = TEXT.offerLead[lang].split(/(?<=\.)\s/)[0];
   const slides: Slide[] = [
@@ -87,13 +97,13 @@ export function Hero() {
       ),
       cta: (
         <SiteLink page="home" section="histoire" className="btn btn-dark">
-          {TEXT.learnMore[lang]} <ArrowGlyph />
+          {TEXT.learnMore[lang]}<span className="sr-only"> – {TEXT.introTitle[lang]}</span> <ArrowGlyph />
         </SiteLink>
       ),
       visual: (
         <div className="relative">
           <Plate>
-            <Photo id="natas" sizes="(min-width: 1024px) 460px, 70vw" priority className="h-full w-full" />
+            <Photo id="natas" sizes="(min-width: 1024px) 440px, (min-width: 768px) 38vw, min(64vw, 300px)" priority className="h-full w-full" />
           </Plate>
           <div className="absolute -bottom-6 -left-6 w-[58%] rounded-[24px] bg-flour px-4 py-3 shadow-lift md:-left-10">
             <img src={asset("brand/logo-300.webp")} alt="" width={284} height={145} className="h-auto w-full" />
@@ -108,7 +118,7 @@ export function Hero() {
       body: <p>{offerFirst}</p>,
       cta: (
         <SiteLink page="offer" className="btn btn-dark">
-          {TEXT.learnMore[lang]} <ArrowGlyph />
+          {TEXT.learnMore[lang]}<span className="sr-only"> – {UI.offer[lang]}</span> <ArrowGlyph />
         </SiteLink>
       ),
       visual: (
@@ -153,7 +163,7 @@ export function Hero() {
       body: <p>{TEXT.teaRoomSeats[lang]}</p>,
       cta: (
         <SiteLink page="home" section="tea-room" className="btn btn-dark">
-          {TEXT.learnMore[lang]} <ArrowGlyph />
+          {TEXT.learnMore[lang]}<span className="sr-only"> – {TEXT.universeTea[lang]}</span> <ArrowGlyph />
         </SiteLink>
       ),
       visual: (
@@ -191,7 +201,7 @@ export function Hero() {
       visual: (
         <div className="relative">
           <Plate>
-            <Photo id="counter" sizes="(min-width: 1024px) 460px, 70vw" className="h-full w-full" position="35% 50%" />
+            <Photo id="counter" sizes="(min-width: 1024px) 440px, (min-width: 768px) 38vw, min(64vw, 300px)" className="h-full w-full" position="35% 50%" />
           </Plate>
           <Sticker className="-left-3 -top-3 h-32 w-32 -rotate-6 md:h-36 md:w-36">
             <span>
@@ -272,18 +282,22 @@ export function Hero() {
               <div className="order-2 max-w-[640px] md:order-1">
                 <p className="kicker mb-4 inline-flex rounded-full bg-flour/80 px-3 py-1.5 !text-cocoa">{s.kicker}</p>
                 <p className="display text-[clamp(2.4rem,6.4vw,5.4rem)] leading-[0.98] text-cocoa" aria-hidden={index === 0 ? "true" : undefined}>
-                  <SplitLetters text={s.title} lang={HTML_LANG[lang]} />
+                  <SplitLetters text={s.title} lang={HTML_LANG[lang]} still={still} />
                 </p>
                 <div className="mt-5 max-w-[46ch] text-[clamp(1.02rem,1.5vw,1.2rem)] font-medium leading-relaxed">{s.body}</div>
                 <div className="mt-7 flex flex-wrap gap-3">{s.cta}</div>
               </div>
               <div className="order-1 mx-auto w-[min(64vw,300px)] md:order-2 md:w-full md:max-w-[440px]">
                 <motion.div
-                  initial={reduce ? false : { transform: "scale(0.9) rotate(-5deg)" }}
+                  initial={reduce || still ? false : { transform: "scale(0.9) rotate(-5deg)" }}
                   animate={{ transform: "scale(1) rotate(0deg)" }}
                   transition={{ type: "spring", bounce: 0.3, duration: 0.8, delay: 0.1 }}
                 >
-                  {s.visual}
+                  {still && index === 0 && SHELL.heroVisual ? (
+                    <div ref={adopt(SHELL.heroVisual)} />
+                  ) : (
+                    s.visual
+                  )}
                 </motion.div>
               </div>
             </motion.div>
@@ -304,7 +318,7 @@ export function Hero() {
                   type="button"
                   onClick={() => go(i)}
                   aria-current={i === index ? "true" : undefined}
-                  className="group grid h-11 place-items-center px-1"
+                  className="group grid h-11 min-w-6 place-items-center px-1"
                 >
                   <span className={cn("relative block h-2 overflow-hidden rounded-full bg-espresso/25 transition-[width] duration-300", i === index ? "w-12" : "w-2 group-hover:bg-espresso/45")}>
                     {i === index && (
