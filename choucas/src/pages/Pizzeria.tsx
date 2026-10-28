@@ -10,6 +10,7 @@ import { HoursList } from "@/components/Contact";
 import { SiteLink } from "@/components/SiteLink";
 import { ParallaxPhoto } from "@/components/Parallax";
 import { SmartImage } from "@/components/SmartImage";
+import { Reviews } from "@/components/Reviews";
 import { ArrowRight, ExternalIcon, PhoneIcon } from "@/components/icons";
 
 export function Pizzeria() {
@@ -76,6 +77,8 @@ export function Pizzeria() {
           <MenuBoard only="pizzeria" compact />
         </div>
       </section>
+
+      <Reviews id="bewertungen" tone="cream" />
 
       {/* hours and take-away */}
       <section aria-labelledby="pizzeria-hours" className="on-dark gutter bg-ink py-20 text-snow md:py-24">

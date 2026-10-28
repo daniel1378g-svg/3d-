@@ -9,6 +9,7 @@ import { LiveBadge } from "@/components/LiveBadge";
 import { Band, Heading, Reveal, WordRise } from "@/components/Reveal";
 import { SiteLink } from "@/components/SiteLink";
 import { Gallery } from "@/components/Gallery";
+import { Reviews } from "@/components/Reviews";
 import { ContactSection } from "@/components/Contact";
 import { Magnetic } from "@/components/Magnetic";
 import { LightFollow, ParallaxPhoto } from "@/components/Parallax";
@@ -29,6 +30,7 @@ export function HomeBelow() {
         <OasisVenue />
         <ChoucalinoVenue />
       </div>
+      <Reviews />
       <Awards />
       <Gallery />
       <BookOrder />

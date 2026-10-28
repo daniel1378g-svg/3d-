@@ -8,8 +8,7 @@
     "de": "Vorspeisen",
     "fr": "Entrées",
     "it": "Antipasti",
-    "en": "Starters",
-    "pt": "Entradas"
+    "en": "Starters"
    },
    "items": [
     {
@@ -19,8 +18,7 @@
       "de": "",
       "fr": "Soupe du jour maison",
       "it": "Zuppa del giorno fatta in casa",
-      "en": "Homemade soup of the day",
-      "pt": "Sopa do dia caseira"
+      "en": "Homemade soup of the day"
      }
     },
     {
@@ -30,8 +28,7 @@
       "de": "",
       "fr": "Salade verte (servie)",
       "it": "Insalata verde (servita)",
-      "en": "Green salad (served)",
-      "pt": "Salada verde (servida)"
+      "en": "Green salad (served)"
      }
     },
     {
@@ -41,8 +38,7 @@
       "de": "",
       "fr": "Salade mélée (servie)",
       "it": "Insalata mista (servita)",
-      "en": "Mixed salad (served)",
-      "pt": "Salada mista (servida)"
+      "en": "Mixed salad (served)"
      }
     },
     {
@@ -52,8 +48,7 @@
       "de": "Leicht angebratenes Black Angus Rindfleisch mit Sesamkruste, Wasabi, Soja, Ingwer und Limetten",
       "fr": "Viande de boeuf black angus en crôute de sésame avec wasabi soja, gingembre et limette",
       "it": "Manzo Black Angus appena scottato in crosta di sesamo, con wasabi, soia, zenzero e lime",
-      "en": "Lightly seared Black Angus beef in a sesame crust, with wasabi, soy, ginger and lime",
-      "pt": "Carne de vaca Black Angus levemente selada em crosta de sésamo, com wasabi, soja, gengibre e lima"
+      "en": "Lightly seared Black Angus beef in a sesame crust, with wasabi, soy, ginger and lime"
      },
      "sizes": [
       {
@@ -61,8 +56,7 @@
         "de": "Lady Size (Vorspeise / Entrée)",
         "fr": "Lady Size (Vorspeise / Entrée)",
         "it": "Lady Size (antipasto)",
-        "en": "Lady Size (starter)",
-        "pt": "Lady Size (entrada)"
+        "en": "Lady Size (starter)"
        },
        "price": "21.50"
       },
@@ -71,8 +65,7 @@
         "de": "Regular Size",
         "fr": "Regular Size",
         "it": "Regular Size",
-        "en": "Regular Size",
-        "pt": "Regular Size"
+        "en": "Regular Size"
        },
        "price": "35.50"
       }
@@ -86,8 +79,7 @@
       "de": "Tortilla Chips mit Cheddar überbacken und mit Guacomole, Sauerrahm und Hot Chunky Salsa serviert",
       "fr": "Tortilla Chips gratinés au fromage cheddar et servi avec de la guacamole, crème fraîche et sauce chili",
       "it": "Tortilla chips gratinate al cheddar, servite con guacamole, panna acida e Hot Chunky Salsa",
-      "en": "Tortilla chips baked with cheddar, served with guacamole, sour cream and hot chunky salsa",
-      "pt": "Tortilla chips gratinadas com cheddar, servidas com guacamole, natas azedas e Hot Chunky Salsa"
+      "en": "Tortilla chips baked with cheddar, served with guacamole, sour cream and hot chunky salsa"
      }
     }
    ],
@@ -100,8 +92,7 @@
     "de": "Beilagen",
     "fr": "Accompagnements",
     "it": "Contorni",
-    "en": "Sides",
-    "pt": "Acompanhamentos"
+    "en": "Sides"
    },
    "items": [
     {
@@ -111,8 +102,7 @@
       "de": "",
       "fr": "Légumes méditerranéens grillées",
       "it": "Verdure mediterranee grigliate",
-      "en": "Grilled Mediterranean vegetables",
-      "pt": "Legumes mediterrânicos grelhados"
+      "en": "Grilled Mediterranean vegetables"
      }
     },
     {
@@ -122,8 +112,7 @@
       "de": "",
       "fr": "Frites",
       "it": "Patatine fritte",
-      "en": "French fries",
-      "pt": "Batatas fritas"
+      "en": "French fries"
      }
     },
     {
@@ -133,8 +122,7 @@
       "de": "",
       "fr": "Country cut",
       "it": "Patate country cut",
-      "en": "Country-cut potatoes",
-      "pt": "Batatas country cut"
+      "en": "Country-cut potatoes"
      }
     },
     {
@@ -144,8 +132,7 @@
       "de": "",
       "fr": "Risotto classique",
       "it": "Risotto classico",
-      "en": "Classic risotto",
-      "pt": "Risotto clássico"
+      "en": "Classic risotto"
      }
     }
    ],
@@ -158,15 +145,13 @@
     "de": "Klassische Pizzen",
     "fr": "Pizzas classiques",
     "it": "Le pizze classiche",
-    "en": "Classic pizzas",
-    "pt": "Pizzas clássicas"
+    "en": "Classic pizzas"
    },
    "note": {
     "de": "Pimp my pizza: mit Rucola-Salat CHF 2.50",
     "fr": "Pimp my pizza : avec salade de roquettes CHF 2.50",
     "it": "Pimp my pizza: con insalata di rucola CHF 2.50",
-    "en": "Pimp my pizza: with rocket salad CHF 2.50",
-    "pt": "Pimp my pizza: com salada de rúcula CHF 2.50"
+    "en": "Pimp my pizza: with rocket salad CHF 2.50"
    },
    "photos": [
     "a3x7699",
@@ -180,8 +165,7 @@
       "de": "Tomaten, Mozzarella, Schinken, Oregano",
       "fr": "Tomates, mozzarella, jambon, origan",
       "it": "Pomodoro, mozzarella, prosciutto cotto, origano",
-      "en": "Tomato, mozzarella, ham, oregano",
-      "pt": "Tomate, mozzarella, fiambre, orégãos"
+      "en": "Tomato, mozzarella, ham, oregano"
      }
     },
     {
@@ -191,8 +175,7 @@
       "de": "Tomaten, Mozzarella, Oregano",
       "fr": "Tomates, mozzarella, origan",
       "it": "Pomodoro, mozzarella, origano",
-      "en": "Tomato, mozzarella, oregano",
-      "pt": "Tomate, mozzarella, orégãos"
+      "en": "Tomato, mozzarella, oregano"
      }
     },
     {
@@ -202,8 +185,7 @@
       "de": "Tomaten, Mozzarella, Kapern, Sardellen, Gemüse, Oliven, Oregano",
       "fr": "Tomates, mozzarella, câpres, anchois, légumes méditerranéens, olives, origan",
       "it": "Pomodoro, mozzarella, capperi, acciughe, verdure, olive, origano",
-      "en": "Tomato, mozzarella, capers, anchovies, vegetables, olives, oregano",
-      "pt": "Tomate, mozzarella, alcaparras, anchovas, legumes, azeitonas, orégãos"
+      "en": "Tomato, mozzarella, capers, anchovies, vegetables, olives, oregano"
      }
     },
     {
@@ -213,8 +195,7 @@
       "de": "Tomaten, Mozzarella, Schinken, frische Pilze, Oregano",
       "fr": "Tomates, mozzarella, jambon, champignons frais, origan",
       "it": "Pomodoro, mozzarella, prosciutto cotto, funghi freschi, origano",
-      "en": "Tomato, mozzarella, ham, fresh mushrooms, oregano",
-      "pt": "Tomate, mozzarella, fiambre, cogumelos frescos, orégãos"
+      "en": "Tomato, mozzarella, ham, fresh mushrooms, oregano"
      }
     },
     {
@@ -224,8 +205,7 @@
       "de": "Tomaten, Mozzarella, Padano, Gorgonzola, Ziegenkäse, Oregano",
       "fr": "Tomates, mozzarella, padano, gorgonzola, fromage de chèvre, origan",
       "it": "Pomodoro, mozzarella, Padano, gorgonzola, formaggio di capra, origano",
-      "en": "Tomato, mozzarella, Padano, gorgonzola, goat’s cheese, oregano",
-      "pt": "Tomate, mozzarella, Padano, gorgonzola, queijo de cabra, orégãos"
+      "en": "Tomato, mozzarella, Padano, gorgonzola, goat’s cheese, oregano"
      }
     },
     {
@@ -235,8 +215,7 @@
       "de": "Tomaten, Mozzarella, Gorgonzola, Speck, Zwiebeln, Oregano",
       "fr": "Tomates, mozzarella, gorgonzola, lard, oignons, origan",
       "it": "Pomodoro, mozzarella, gorgonzola, speck, cipolle, origano",
-      "en": "Tomato, mozzarella, gorgonzola, bacon, onions, oregano",
-      "pt": "Tomate, mozzarella, gorgonzola, bacon, cebola, orégãos"
+      "en": "Tomato, mozzarella, gorgonzola, bacon, onions, oregano"
      }
     },
     {
@@ -246,8 +225,7 @@
       "de": "Tomaten, Mozzarella, Ananas, Schinken, Oregano",
       "fr": "Tomates, mozzarella, ananas, jambon, origan",
       "it": "Pomodoro, mozzarella, ananas, prosciutto cotto, origano",
-      "en": "Tomato, mozzarella, pineapple, ham, oregano",
-      "pt": "Tomate, mozzarella, ananás, fiambre, orégãos"
+      "en": "Tomato, mozzarella, pineapple, ham, oregano"
      }
     },
     {
@@ -257,8 +235,7 @@
       "de": "Tomaten, Mozzarella, diverses frisches Gemüse, Oregano",
       "fr": "Tomates, mozzarella, légumes divers frais, origan",
       "it": "Pomodoro, mozzarella, verdure fresche miste, origano",
-      "en": "Tomato, mozzarella, assorted fresh vegetables, oregano",
-      "pt": "Tomate, mozzarella, legumes frescos variados, orégãos"
+      "en": "Tomato, mozzarella, assorted fresh vegetables, oregano"
      }
     },
     {
@@ -268,8 +245,7 @@
       "de": "Tomaten, Mozzarella, Paprika Schinken, Oliven, frische Pilze, Oregano",
       "fr": "Tomates, mozzarella, poivrons, jambon, champignons frais, olives, origan",
       "it": "Pomodoro, mozzarella, peperoni, prosciutto cotto, olive, funghi freschi, origano",
-      "en": "Tomato, mozzarella, peppers, ham, olives, fresh mushrooms, oregano",
-      "pt": "Tomate, mozzarella, pimento, fiambre, azeitonas, cogumelos frescos, orégãos"
+      "en": "Tomato, mozzarella, peppers, ham, olives, fresh mushrooms, oregano"
      }
     },
     {
@@ -279,8 +255,7 @@
       "de": "Tomaten, Mozzarella, italienischer Rohschinken, Rucola, Oregano",
       "fr": "Tomates, mozzarella, jambon cru, salade de roquettes, origan",
       "it": "Pomodoro, mozzarella, prosciutto crudo italiano, rucola, origano",
-      "en": "Tomato, mozzarella, Italian cured ham, rocket, oregano",
-      "pt": "Tomate, mozzarella, presunto cru italiano, rúcula, orégãos"
+      "en": "Tomato, mozzarella, Italian cured ham, rocket, oregano"
      }
     },
     {
@@ -291,8 +266,7 @@
       "de": "Tomaten, Mozzarella, mediterranes Gemüse, Chorizo, Jalapenos.... und ein Schuss Tequila direkt auf der Pizza ... olé",
       "fr": "Tomates, mozzarella, légumes méditerranéens, chorizo, jalapenos... et un coup de Tequila directement sur la pizza .. olé",
       "it": "Pomodoro, mozzarella, verdure mediterranee, chorizo, jalapeños… e uno spruzzo di tequila direttamente sulla pizza… olé",
-      "en": "Tomato, mozzarella, Mediterranean vegetables, chorizo, jalapeños… and a shot of tequila right on the pizza… olé",
-      "pt": "Tomate, mozzarella, legumes mediterrânicos, chouriço, jalapeños… e um golpe de tequila diretamente na pizza… olé"
+      "en": "Tomato, mozzarella, Mediterranean vegetables, chorizo, jalapeños… and a shot of tequila right on the pizza… olé"
      }
     }
    ],
@@ -305,8 +279,7 @@
     "de": "Pasta",
     "fr": "Pâtes",
     "it": "Pasta",
-    "en": "Pasta",
-    "pt": "Massas"
+    "en": "Pasta"
    },
    "items": [
     {
@@ -316,8 +289,7 @@
       "de": "Hackfleisch, Tomaten",
       "fr": "Viande hachée, tomates",
       "it": "Carne macinata, pomodoro",
-      "en": "Minced meat, tomato",
-      "pt": "Carne picada, tomate"
+      "en": "Minced meat, tomato"
      }
     },
     {
@@ -327,8 +299,7 @@
       "de": "Speck, Ei, Zwiebeln, Rahm",
       "fr": "Lardons, oeuf, oignons, crème",
       "it": "Speck, uovo, cipolle, panna",
-      "en": "Bacon, egg, onions, cream",
-      "pt": "Bacon, ovo, cebola, natas"
+      "en": "Bacon, egg, onions, cream"
      }
     },
     {
@@ -339,8 +310,7 @@
       "de": "Chili, Knoblauch, Cherry Tomaten, Chorizo und Spinat",
       "fr": "Chili, ail, tomates cocktails, chorizo et épinards",
       "it": "Peperoncino, aglio, pomodorini, chorizo e spinaci",
-      "en": "Chilli, garlic, cherry tomatoes, chorizo and spinach",
-      "pt": "Malagueta, alho, tomate cereja, chouriço e espinafres"
+      "en": "Chilli, garlic, cherry tomatoes, chorizo and spinach"
      }
     },
     {
@@ -350,8 +320,7 @@
       "de": "Waldpilze mit Cognac, Schinken, Rahm und Estragon",
       "fr": "Champignons, crème, jambon et estragon",
       "it": "Funghi di bosco al cognac, prosciutto cotto, panna e dragoncello",
-      "en": "Wild mushrooms with cognac, ham, cream and tarragon",
-      "pt": "Cogumelos silvestres com conhaque, fiambre, natas e estragão"
+      "en": "Wild mushrooms with cognac, ham, cream and tarragon"
      }
     }
    ],
@@ -365,8 +334,7 @@
     "de": "Risotto",
     "fr": "Risottos",
     "it": "Risotti",
-    "en": "Risotto",
-    "pt": "Risotos"
+    "en": "Risotto"
    },
    "items": [
     {
@@ -376,8 +344,7 @@
       "de": "Cremiges Risotto verfeinert mit Grana Padano – ein zeitloser Genuss.",
       "fr": "Un risotto crémeux sublimé par le Grana Padano – une valeur sûre intemporelle",
       "it": "Risotto cremoso mantecato con Grana Padano – un piacere senza tempo.",
-      "en": "Creamy risotto finished with Grana Padano – a timeless pleasure.",
-      "pt": "Risotto cremoso apurado com Grana Padano – um prazer intemporal."
+      "en": "Creamy risotto finished with Grana Padano – a timeless pleasure."
      }
     },
     {
@@ -387,8 +354,7 @@
       "de": "Risotto mit saftigen Riesencrevetten, abgerundet durch einen edlen Hummerjus.",
       "fr": "Risotto aux gambas, relevé par un jus de homard raffiné",
       "it": "Risotto con succosi gamberoni, completato da un raffinato fondo di astice.",
-      "en": "Risotto with juicy king prawns, finished with a fine lobster jus.",
-      "pt": "Risotto com gambas suculentas, finalizado com um requintado molho de lavagante."
+      "en": "Risotto with juicy king prawns, finished with a fine lobster jus."
      }
     },
     {
@@ -398,8 +364,7 @@
       "de": "Ein harmonisches Zusammenspiel von frischem Gemüse und Kokosnussmilch – leicht und aromatisch.",
       "fr": "Un mélange harmonieux de légumes frais et de lait de coco – léger et savoureux",
       "it": "Un armonioso incontro di verdure fresche e latte di cocco – leggero e aromatico.",
-      "en": "A harmonious blend of fresh vegetables and coconut milk – light and aromatic.",
-      "pt": "Uma combinação harmoniosa de legumes frescos e leite de coco – leve e aromática."
+      "en": "A harmonious blend of fresh vegetables and coconut milk – light and aromatic."
      }
     },
     {
@@ -409,8 +374,7 @@
       "de": "Herbstliches Risotto mit gemischten Waldpilzen, veredelt mit einer feinen Cognac-Sauce",
       "fr": "Risotto automnal aux champignons des bois, sublimé par une sauce au cognac.",
       "it": "Risotto autunnale con funghi di bosco misti, impreziosito da una delicata salsa al cognac",
-      "en": "Autumn risotto with mixed wild mushrooms, refined with a delicate cognac sauce",
-      "pt": "Risotto de outono com cogumelos silvestres variados, apurado com um delicado molho de conhaque"
+      "en": "Autumn risotto with mixed wild mushrooms, refined with a delicate cognac sauce"
      }
     }
    ],
@@ -423,8 +387,7 @@
     "de": "Spezialität des Chefs",
     "fr": "Spécialité du chef",
     "it": "Specialità dello chef",
-    "en": "Chef’s special",
-    "pt": "Especialidade do chef"
+    "en": "Chef’s special"
    },
    "photos": [
     "parilladaweb"
@@ -437,15 +400,13 @@
       "de": "Eine exquisite Auswahl an verschiedensten Fleischsorten, perfekt gegrillt nach argentinischer Tradition. Serviert mit zwei Beilagen nach Wahl für ein authentisches und geselliges Geschmackserlebnis.",
       "fr": "Un assortiment exquis de différentes viandes grillées à la perfection selon la tradition argentine. Servi avec deux accompagnements au choix pour une expérience gustative authentique et conviviale.",
       "it": "Una squisita selezione di carni diverse, grigliate alla perfezione secondo la tradizione argentina. Servita con due contorni a scelta per un’esperienza di gusto autentica e conviviale.",
-      "en": "An exquisite selection of different meats, grilled to perfection in the Argentine tradition. Served with two sides of your choice for an authentic and convivial taste experience.",
-      "pt": "Uma seleção requintada de carnes variadas, grelhadas na perfeição segundo a tradição argentina. Servida com dois acompanhamentos à escolha, para uma experiência de sabor autêntica e convivial."
+      "en": "An exquisite selection of different meats, grilled to perfection in the Argentine tradition. Served with two sides of your choice for an authentic and convivial taste experience."
      },
      "extra": {
       "de": "Beilagenoptionen: Pommes Frites, Country Potatoes, gegrilltes Gemüse oder Risotto. Serviert mit einer hausgemachten Guasacaca-Sauce.",
       "fr": "Choix des accompagnements : Frites, pommes de terre campagnardes, légumes grillés ou risotto. Servie avec une sauce Guasacaca maison.",
       "it": "Contorni a scelta: patatine fritte, Country Potatoes, verdure grigliate o risotto. Servita con una salsa Guasacaca fatta in casa.",
-      "en": "Choice of sides: French fries, country potatoes, grilled vegetables or risotto. Served with a homemade guasacaca sauce.",
-      "pt": "Acompanhamentos à escolha: batatas fritas, Country Potatoes, legumes grelhados ou risotto. Servida com um molho guasacaca caseiro."
+      "en": "Choice of sides: French fries, country potatoes, grilled vegetables or risotto. Served with a homemade guasacaca sauce."
      },
      "sizes": [
       {
@@ -453,8 +414,7 @@
         "de": "Grillplatte für 2 Personen (inkl. 2 Beilagen)",
         "fr": "Pour 2 personnes (2 accompagnements inclus)",
         "it": "Grigliata per 2 persone (2 contorni inclusi)",
-        "en": "Grill platter for 2 people (2 sides included)",
-        "pt": "Grelhada para 2 pessoas (2 acompanhamentos incluídos)"
+        "en": "Grill platter for 2 people (2 sides included)"
        },
        "price": "81.50"
       },
@@ -463,8 +423,7 @@
         "de": "Grillplatte für 4 Personen (inkl. 2 Beilagen)",
         "fr": "Pour 4 personnes (2 accompagnements inclus)",
         "it": "Grigliata per 4 persone (2 contorni inclusi)",
-        "en": "Grill platter for 4 people (2 sides included)",
-        "pt": "Grelhada para 4 pessoas (2 acompanhamentos incluídos)"
+        "en": "Grill platter for 4 people (2 sides included)"
        },
        "price": "159.50"
       }
@@ -481,8 +440,7 @@
     "de": "Oasis-Spezialitäten",
     "fr": "Spécialités de l’Oasis",
     "it": "Specialità dell’Oasis",
-    "en": "Oasis signature dishes",
-    "pt": "Especialidades do Oasis"
+    "en": "Oasis signature dishes"
    },
    "photos": [
     "ribsweb",
@@ -496,8 +454,7 @@
       "de": "Unsere Piraten Ribs mit unserer legendären Guinness-Sauce, in unserem Smoker geräuchert, dann knusprig gebraten",
       "fr": "Nos ribs pirates marinées avec notre sauce guinness, fumées dans notre smoker et grillées aux herbes fraîches",
       "it": "Le nostre Pirate Ribs con la nostra leggendaria salsa alla Guinness, affumicate nel nostro smoker e poi rosolate fino a renderle croccanti",
-      "en": "Our pirate ribs with our legendary Guinness sauce, smoked in our smoker, then roasted until crisp",
-      "pt": "As nossas Pirate Ribs com o nosso lendário molho Guinness, fumadas no nosso smoker e depois assadas até ficarem estaladiças"
+      "en": "Our pirate ribs with our legendary Guinness sauce, smoked in our smoker, then roasted until crisp"
      },
      "sizes": [
       {
@@ -505,8 +462,7 @@
         "de": "Regular Size 480gr",
         "fr": "Regular Size 480gr",
         "it": "Regular Size 480 g",
-        "en": "Regular Size 480 g",
-        "pt": "Regular Size 480 g"
+        "en": "Regular Size 480 g"
        },
        "price": "33.50"
       },
@@ -515,8 +471,7 @@
         "de": "Lady Size 250gr",
         "fr": "Lady Size 250gr",
         "it": "Lady Size 250 g",
-        "en": "Lady Size 250 g",
-        "pt": "Lady Size 250 g"
+        "en": "Lady Size 250 g"
        },
        "price": "25.50"
       }
@@ -531,8 +486,7 @@
       "de": "mit hausgemachtem Brötchen, Cheddar, Coleslaw-Salat, Zwiebeln, Tomaten,feinstem CH-Rindfleisch, Ranch-Sauce, grilliertem Speck (inkl. Pommes Frites)",
       "fr": "avec pain à burger maison, fromage, salade, tomates, viande de boeuf CH, sauce Ranch, lard grillé et oignons (incl. Frites)",
       "it": "con panino fatto in casa, cheddar, insalata coleslaw, cipolle, pomodori, finissimo manzo svizzero, salsa ranch, speck grigliato (patatine fritte incluse)",
-      "en": "with a homemade bun, cheddar, coleslaw, onions, tomatoes, the finest Swiss beef, ranch sauce and grilled bacon (French fries included)",
-      "pt": "com pão caseiro, cheddar, salada coleslaw, cebola, tomate, a melhor carne de vaca suíça, molho ranch e bacon grelhado (batatas fritas incluídas)"
+      "en": "with a homemade bun, cheddar, coleslaw, onions, tomatoes, the finest Swiss beef, ranch sauce and grilled bacon (French fries included)"
      }
     },
     {
@@ -542,8 +496,7 @@
       "de": "Chicken Wings (Pouletflügeli) grilliert mit hausgemachter BBQ-Sauce",
       "fr": "Ailerons de poulet grillés avec sauce BBQ fait maison",
       "it": "Ali di pollo grigliate con salsa BBQ fatta in casa",
-      "en": "Chicken wings grilled with homemade BBQ sauce",
-      "pt": "Asas de frango grelhadas com molho BBQ caseiro"
+      "en": "Chicken wings grilled with homemade BBQ sauce"
      },
      "sizes": [
       {
@@ -551,8 +504,7 @@
         "de": "Regular Size 6 Stück",
         "fr": "Regular Size 6 pièces",
         "it": "Regular Size 6 pezzi",
-        "en": "Regular Size 6 pieces",
-        "pt": "Regular Size 6 unidades"
+        "en": "Regular Size 6 pieces"
        },
        "price": "23.50"
       }

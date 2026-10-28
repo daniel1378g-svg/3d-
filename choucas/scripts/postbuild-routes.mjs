@@ -74,6 +74,8 @@ const redirects = [
   ["/index.php  section=gallery", "/de/#bilder", 301],
   ["/index.php  section=imprint", "/de/impressum", 301],
   ["/index.php", "/de/", 301],
+  // Portuguese was dropped from the site
+  ["/pt/*", "/de/", 301],
 ];
 writeFileSync(join(dist, "_redirects"), redirects.map((r) => r.join("  ")).join("\n") + "\n");
 writeFileSync(join(dist, "robots.txt"), `User-agent: *\nAllow: /\n\nSitemap: ${ORIGIN}/sitemap.xml\n`);

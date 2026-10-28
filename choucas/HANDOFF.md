@@ -5,6 +5,16 @@
 
 This is a proposal. The live site at choucas.ch was not touched. The logo, photos and texts belong to The Choucas Connection, so the new site goes live only with the owner's OK. Until then every page carries the fixed band "Proposta de design · não é o site oficial" (the repository's rule in CLAUDE.md). `VITE_PROPOSAL=0` removes it.
 
+## Round 3: Google reviews, Portuguese removed
+
+- **Reviews.** The six Google reviews of Pizzeria Choucas you supplied (screenshots, October 2026) are on the home page after the three places, and on the Pizzeria page.
+  - Each text stays word for word in its own language (German, English, Italian, French), typos and emoji included. A small line says which language the original is in.
+  - The reviewer's own extra notes (kid-friendliness) are kept as written. Google's labels and option values (meal, noise level, seating, group size) are translated.
+  - The summary shows 5.0 with stars and "6 reviews of Pizzeria Choucas on Google", a link to the Google listing, and "As of October 2026", because "8 months ago" ages.
+  - On a phone the cards swipe sideways with arrow buttons; on desktop they sit in two columns beside a sticky summary. Reviews of several paragraphs fold open.
+  - Data: `src/reviews.ts`. There is no rating markup in the JSON-LD: Google does not show a business's own reviews as rich results.
+- **Portuguese removed.** The site now has German, French, Italian and English: 28 pages, and four rows in the language menu. All Portuguese strings, slugs and menu texts were removed from the code. `/pt/*` redirects to `/de/` (`dist/_redirects`). Everything below that still mentions Portuguese describes rounds 1 and 2.
+
 ## Round 2: editorial redesign, fluid hero, sharper photos
 
 Two briefs were combined: "more fluid, more alive, sharper photos" and "premium Alpine Mediterranean redesign". Where they pulled in different directions, the second one won: one clear hero instead of a crowded one, restrained effects, nothing overlapping.
