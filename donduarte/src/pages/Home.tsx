@@ -8,6 +8,7 @@ import { TerreEtMer } from "@/components/home/TerreEtMer";
 import { WineSection } from "@/components/home/WineSection";
 import { DessertsSlider } from "@/components/home/DessertsSlider";
 import { HoursContact } from "@/components/home/HoursContact";
+import { Reviews } from "@/components/home/Reviews";
 import { prefersReducedMotion } from "@/lib/utils";
 import { useSite } from "@/site";
 
@@ -44,6 +45,7 @@ export function Home() {
       <TerreEtMer />
       <WineSection />
       <DessertsSlider />
+      <Reviews />
       <HoursContact />
     </>
   );

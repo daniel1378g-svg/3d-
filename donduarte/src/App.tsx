@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { Suspense, lazy, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Navigate, useLocation, useNavigate, useParams } from "react-router";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -10,10 +10,10 @@ import { Header } from "./components/Header";
 import { Footer } from "./components/Footer";
 import { WelcomeSlide } from "./components/WelcomeSlide";
 import { Home } from "./pages/Home";
-import { MenuPage } from "./pages/MenuPage";
 import { DESSERTS, PLATS, VINS } from "./content";
 
 const PROPOSAL = import.meta.env.VITE_PROPOSAL !== "0";
+const MenuPage = lazy(() => import("./pages/MenuPage").then((m) => ({ default: m.MenuPage })));
 
 /** Scrolls to a section once it exists: smoothly on the same page, at once after a page change. */
 function scrollToSection(id: string, smooth = false) {
@@ -118,7 +118,7 @@ export function Shell({ lang }: { lang: Lang }) {
           {UI.proposal}
         </p>
       )}
-      <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-12 focus:z-[500] focus:rounded-full focus:bg-night focus:px-4 focus:py-2 focus:text-tile">
+      <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-12 focus:z-[500] focus:rounded-full focus:bg-green focus:px-4 focus:py-2 focus:text-white">
         {UI.skip[lang]}
       </a>
       <Header />
@@ -133,9 +133,11 @@ export function Shell({ lang }: { lang: Lang }) {
           transition={{ duration: 0.18, ease: "easeOut" }}
         >
           {page === "home" && <Home />}
-          {page === "plats" && <MenuPage page="plats" menu={PLATS} />}
-          {page === "vins" && <MenuPage page="vins" menu={VINS} />}
-          {page === "desserts" && <MenuPage page="desserts" menu={DESSERTS} />}
+          <Suspense fallback={<div className="min-h-[80svh]" />}>
+            {page === "plats" && <MenuPage page="plats" menu={PLATS} />}
+            {page === "vins" && <MenuPage page="vins" menu={VINS} />}
+            {page === "desserts" && <MenuPage page="desserts" menu={DESSERTS} />}
+          </Suspense>
         </motion.main>
       </AnimatePresence>
       <Footer />

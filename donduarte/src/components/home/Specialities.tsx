@@ -54,34 +54,35 @@ export function Specialities() {
   }, [lang]);
 
   return (
-    <section ref={section} id="specialites" className="tile-texture overflow-hidden bg-tile py-16 lg:flex lg:min-h-[calc(100svh-var(--label-h)-var(--header-h))] lg:flex-col lg:justify-center lg:py-10">
-      <div className="gutter">
-        <div className="wrap mb-8 flex flex-wrap items-end justify-between gap-4">
+    <section ref={section} id="specialites" className="gutter py-3 md:py-5 lg:flex lg:min-h-[calc(100svh-var(--label-h)-var(--header-h))] lg:flex-col lg:justify-center">
+      <div className="wrap panel overflow-hidden py-12 lg:py-10">
+      <div className="px-6 md:px-12">
+        <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="mb-2 text-sm font-bold uppercase tracking-[0.2em] text-red">Don Duarte · 1988</p>
-            <h2 className="font-display text-[clamp(2.4rem,5vw,4.2rem)] font-semibold leading-none tracking-[-0.02em] text-night">{UI.specialities[lang]}</h2>
+            <h2 className="font-display text-[clamp(2.4rem,5vw,4.2rem)] font-semibold leading-none tracking-[-0.02em] text-green">{UI.specialities[lang]}</h2>
           </div>
           <p className="max-w-sm text-ink-soft">{UI.specialitiesHint[lang]}</p>
         </div>
       </div>
-      <div className="gutter overflow-x-auto no-scrollbar snap-x snap-mandatory lg:overflow-visible">
-        <div className="wrap">
+      <div className="no-scrollbar snap-x snap-mandatory overflow-x-auto px-6 md:px-12 lg:overflow-visible">
+        <div>
           <div ref={rail} className="flex w-max gap-5 pb-4">
             {SPECIALITIES.map((s, i) => (
               <SiteLink
                 key={s.id}
                 page={s.page}
                 section={s.group}
-                className="group relative flex w-[78vw] max-w-[340px] shrink-0 snap-start flex-col overflow-hidden rounded-[26px] bg-night text-tile shadow-[0_26px_50px_-34px_rgba(15,27,45,0.9)] sm:w-[320px] lg:w-[340px]"
+                className="group relative flex w-[78vw] max-w-[340px] shrink-0 snap-start flex-col overflow-hidden rounded-[26px] on-dark bg-green text-white shadow-[0_26px_50px_-34px_rgba(0,40,0,0.9)] sm:w-[320px] lg:w-[340px]"
               >
                 <div className="relative aspect-[4/3] overflow-hidden">
                   <img src={img(s.photo)} alt="" loading="lazy" className="h-full w-[112%] max-w-none -translate-x-[6%] object-cover transition-transform duration-700 ease-out-expo group-hover:scale-[1.04]" />
-                  <span className="absolute left-4 top-4 rounded-full bg-night/75 px-2.5 py-1 font-display text-sm font-semibold tabular-nums text-tile">{String(i + 1).padStart(2, "0")} / 08</span>
+                  <span className="absolute left-4 top-4 rounded-full bg-green-deep/85 px-2.5 py-1 font-display text-sm font-semibold tabular-nums text-white">{String(i + 1).padStart(2, "0")} / 08</span>
                 </div>
                 <div className="flex flex-1 flex-col gap-4 p-5">
                   <div className="flex items-start gap-3">
-                    <span className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-tile">
-                      <LottieIcon name={s.icon as IconName} size={40} color="#1d4e9e" accent="#b80601" />
+                    <span className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-green-deep">
+                      <LottieIcon name={s.icon as IconName} size={40} color="#ffcc00" accent="#ffffff" />
                     </span>
                     <h3 className="font-display text-[1.4rem] font-semibold leading-tight">{s.title[lang]}</h3>
                   </div>
@@ -94,6 +95,7 @@ export function Specialities() {
             ))}
           </div>
         </div>
+      </div>
       </div>
     </section>
   );

@@ -17,7 +17,8 @@ const dest = join(root, "artifact");
 rmSync(dest, { recursive: true, force: true });
 mkdirSync(dest, { recursive: true });
 
-const css = readdirSync(out).filter((f) => f.endsWith(".css")).map((f) => readFileSync(join(out, f), "utf8")).join("\n");
+// The tile background is referenced from the CSS; inline, it must resolve next to the page.
+const css = readdirSync(out).filter((f) => f.endsWith(".css")).map((f) => readFileSync(join(out, f), "utf8")).join("\n").replace(/url\((["']?)\.?\/images\//g, "url($1images/");
 const page = [
   "<title>Proposta de design Don Duarte</title>",
   '<meta name="claude:viewport-fit-sides" content="cover">',
@@ -34,7 +35,7 @@ const files = { "app.js": "app.js" };
 cpSync(join(out, "app.js"), join(dest, "app.js"));
 for (const dir of ["images", "brand"]) {
   for (const name of readdirSync(join(root, "public", dir)).sort()) {
-    if (!name.endsWith(".webp")) continue;
+    if (!name.endsWith(".webp") && !name.endsWith(".svg")) continue;
     mkdirSync(join(dest, dir), { recursive: true });
     cpSync(join(root, "public", dir, name), join(dest, dir, name));
     files[`${dir}/${name}`] = `${dir}/${name}`;

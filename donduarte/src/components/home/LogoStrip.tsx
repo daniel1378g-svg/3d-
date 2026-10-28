@@ -75,7 +75,8 @@ export function LogoStrip() {
   );
 
   return (
-    <section aria-label={UI.stripLabel[lang]} className="relative border-y border-tile/10 bg-azulejo text-tile">
+    <section aria-label={UI.stripLabel[lang]} className="gutter py-3 md:py-5">
+      <div className="on-dark wrap relative overflow-hidden rounded-[28px] bg-green text-white shadow-[0_22px_44px_-26px_rgba(14,35,80,0.5)]">
       <div
         ref={box}
         className="overflow-hidden py-5"
@@ -92,7 +93,7 @@ export function LogoStrip() {
           type="button"
           onClick={() => setPaused((p) => !p)}
           aria-pressed={paused}
-          className="absolute bottom-2 right-[max(12px,env(safe-area-inset-right,0px))] grid h-9 w-9 place-items-center rounded-full bg-night/70 text-tile ring-1 ring-tile/30 hover:bg-night"
+          className="absolute bottom-2 right-3 grid h-9 w-9 place-items-center rounded-full bg-green-deep/80 text-white ring-1 ring-white/30 hover:bg-red"
         >
           <span className="sr-only">{paused ? UI.play[lang] : UI.pause[lang]}</span>
           {paused ? (
@@ -102,6 +103,7 @@ export function LogoStrip() {
           )}
         </button>
       )}
+      </div>
     </section>
   );
 }

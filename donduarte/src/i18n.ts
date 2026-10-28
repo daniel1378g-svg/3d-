@@ -122,6 +122,9 @@ export const UI = {
   otherMenus: L("Les autres cartes", "The other menus", "As outras cartas", "Gli altri menù", "Die anderen Karten"),
   photoSlot: L("Photo : {x}", "Photo: {x}", "Fotografia: {x}", "Foto: {x}", "Foto: {x}"),
   copyright: "Copyrights Don Duarte / Tous droits réservés - Created by Axel Ducraux & Claudia Duarte",
+  reviewsTitle: L("Ce que disent nos clients", "What our customers say", "O que dizem os nossos clientes", "Cosa dicono i nostri clienti", "Was unsere Gäste sagen"),
+  googleReview: L("Avis Google", "Google review", "Avaliação Google", "Recensione Google", "Google-Bewertung"),
+  fiveStars: L("5 étoiles sur 5", "5 out of 5 stars", "5 de 5 estrelas", "5 stelle su 5", "5 von 5 Sternen"),
   welcomeSkip: L("Cliquez ou appuyez sur Échap pour passer", "Click or press Esc to skip", "Clique ou prima Esc para saltar", "Clicca o premi Esc per saltare", "Klicken oder Esc drücken zum Überspringen"),
 };
 

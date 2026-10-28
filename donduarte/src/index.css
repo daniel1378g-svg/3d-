@@ -1,23 +1,20 @@
 @import "tailwindcss";
 
-/* Azulejo nights in the Pâquis: full-bleed bands alternate tile white and night blue; the logo's red,
-   gold and green carry the calls to action, the prices and the "open" signal. One look in every theme. */
+/* Portugal: a wall of blue-and-white azulejos behind white panels. Green leads (header, section titles,
+   links), red marks the calls to action and the hover states, gold is kept for small accents (stars,
+   icons, dividers). Text is near-black on white and white on green or red, all at WCAG AA or better. */
 @theme {
-  --color-azulejo: #1d4e9e;
-  --color-azulejo-deep: #163c7a;
-  --color-azulejo-soft: #dbe5f4;
-  --color-night: #0f1b2d;
-  --color-night-2: #16263d;
-  --color-tile: #f7f2e8;
-  --color-tile-2: #efe7d6;
-  --color-ink: #13202f;
-  --color-ink-soft: #4a5566;
-  --color-red: #b80601;
-  --color-red-deep: #8f0501;
-  --color-wine: #6e1e2e;
-  --color-gold: #c9b23d;
-  --color-gold-ink: #6f6210;
-  --color-green: #289227;
+  --color-green: #006600;
+  --color-green-deep: #004d00;
+  --color-green-soft: #e6f0e6;
+  --color-red: #da291c;
+  --color-red-deep: #b3211a;
+  --color-gold: #ffcc00;
+  --color-ink: #1f1f1f;
+  --color-ink-soft: #4d4d4d;
+  --color-mist: #efefef;
+  --color-cobalt: #1e4fa3;
+  --color-cobalt-soft: #8fa9d9;
   --font-display: "Fraunces", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
   --font-sans: "Manrope", "Segoe UI", system-ui, -apple-system, sans-serif;
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -28,16 +25,22 @@
   color-scheme: light;
   --label-h: 0px;
   --header-h: 72px;
-  --tile-line: rgba(29, 78, 158, 0.05);
+  /* 4 × 4 tiles of 140 px on wide screens, 90 px on phones; one small SVG, repeated. */
+  --azulejos: url("/images/azulejos.svg");
+  --azulejos-size: 360px;
 }
 :root:has(.proposal-label) { --label-h: 28px; }
+@media (min-width: 768px) { :root { --azulejos-size: 560px; } }
 @media (min-width: 1024px) { :root { --header-h: 84px; } }
 
 @layer base {
 html { scroll-padding-top: calc(var(--header-h) + var(--label-h) + 64px); -webkit-text-size-adjust: 100%; }
 body {
   margin: 0;
-  background: var(--color-tile);
+  background-color: #ffffff;
+  background-image: var(--azulejos);
+  background-size: var(--azulejos-size) var(--azulejos-size);
+  background-repeat: repeat;
   color: var(--color-ink);
   font-family: var(--font-sans);
   font-size: 16px;
@@ -46,27 +49,30 @@ body {
   text-rendering: optimizeLegibility;
 }
 h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; font-optical-sizing: auto; }
-:focus-visible { outline: 3px solid var(--color-gold); outline-offset: 3px; border-radius: 4px; }
-::selection { background: var(--color-azulejo); color: var(--color-tile); }
+/* Red rings on white, gold rings on green: both above 3:1 against what they sit on. */
+:focus-visible { outline: 3px solid var(--color-red); outline-offset: 3px; border-radius: 4px; }
+.on-dark :focus-visible { outline-color: var(--color-gold); }
+.on-light :focus-visible { outline-color: var(--color-red); }
+::selection { background: var(--color-green); color: #ffffff; }
 }
 
 .gutter { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
 @media (min-width: 768px) { .gutter { padding-left: max(32px, env(safe-area-inset-left, 0px)); padding-right: max(32px, env(safe-area-inset-right, 0px)); } }
 .wrap { width: 100%; max-width: 1240px; margin-inline: auto; }
 
-/* Four-fold azulejo motif drawn in CSS: used as a faint texture (≤ 5 %) and as the hero's still fallback. */
-.tile-texture { position: relative; isolation: isolate; }
-.tile-texture::before {
-  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: 0.05;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96'%3E%3Cg fill='none' stroke='%231d4e9e' stroke-width='2'%3E%3Crect x='1' y='1' width='94' height='94'/%3E%3Ccircle cx='48' cy='48' r='16'/%3E%3Cpath d='M48 8 C58 28 68 38 88 48 C68 58 58 68 48 88 C38 68 28 58 8 48 C28 38 38 28 48 8Z'/%3E%3Cpath d='M0 0 Q24 6 24 24 Q6 24 0 0ZM96 0 Q72 6 72 24 Q90 24 96 0ZM0 96 Q24 90 24 72 Q6 72 0 96ZM96 96 Q72 90 72 72 Q90 72 96 96Z'/%3E%3C/g%3E%3C/svg%3E");
-  background-size: 96px 96px;
+/* Each section's content sits on a white panel; the tiles show around and between the panels. */
+.panel {
+  background: rgb(255 255 255 / 0.95); /* 95 %: red #DA291C text stays at 4.5:1 even over the darkest cobalt */
+  border-radius: 22px;
+  box-shadow: 0 1px 2px rgb(14 35 80 / 0.08), 0 22px 44px -26px rgb(14 35 80 / 0.5);
 }
-.tile-texture--night::before { opacity: 0.06; filter: invert(1) brightness(1.6); }
+@media (min-width: 768px) { .panel { border-radius: 28px; } }
+
+/* The hero's still frame (no WebGL or reduced motion): the same tiles as the page. */
 .tile-still {
-  background-color: #10213b;
-  background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Crect width='120' height='120' fill='%2313284a'/%3E%3Cg fill='none' stroke='%232d5fae' stroke-width='3'%3E%3Crect x='1.5' y='1.5' width='117' height='117' stroke='%230b1628'/%3E%3Ccircle cx='60' cy='60' r='19'/%3E%3Cpath d='M60 10 C72 35 85 48 110 60 C85 72 72 85 60 110 C48 85 35 72 10 60 C35 48 48 35 60 10Z'/%3E%3Cpath d='M0 0 Q30 8 30 30 Q8 30 0 0ZM120 0 Q90 8 90 30 Q112 30 120 0ZM0 120 Q30 112 30 90 Q8 90 0 120ZM120 120 Q90 112 90 90 Q112 90 120 120Z' fill='%231d4e9e' fill-opacity='.35'/%3E%3C/g%3E%3Ccircle cx='60' cy='60' r='6' fill='%23c9b23d' fill-opacity='.55'/%3E%3C/svg%3E");
-  background-size: 120px 120px;
+  background-color: #ffffff;
+  background-image: var(--azulejos);
+  background-size: var(--azulejos-size) var(--azulejos-size);
 }
 
 /* Dotted leaders between a dish and its price. */
@@ -74,7 +80,7 @@ h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; font-optical-
 
 .proposal-label {
   position: fixed; inset: env(safe-area-inset-top, 0px) 0 auto 0; z-index: 300; height: var(--label-h); margin: 0;
-  display: grid; place-items: center; background: var(--color-gold); color: var(--color-night);
+  display: grid; place-items: center; background: var(--color-gold); color: var(--color-ink);
   font-size: 11px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; text-align: center;
   padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
 }

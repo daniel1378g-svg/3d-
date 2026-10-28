@@ -75,13 +75,13 @@ export function Hero() {
       body: (
         <>
           <Wipe delay={0.05}>
-            <Logo alt="" className="mb-7 w-[min(72vw,300px)] px-5 py-3 shadow-[0_20px_50px_-24px_rgba(0,0,0,0.8)]" />
+            <Logo alt="" className="mb-7 w-[min(72vw,300px)] px-5 py-3 shadow-[0_20px_50px_-30px_rgba(0,0,0,0.5)] ring-1 ring-ink/10" />
           </Wipe>
-          <Letters text="Restaurant Don Duarte" className="font-display text-[clamp(2.6rem,7.4vw,6.4rem)] font-semibold leading-[0.95] tracking-[-0.02em]" />
-          <Wipe className="mt-5 max-w-xl text-lg text-tile/85 md:text-xl">{UI.tagline[lang]}</Wipe>
+          <Letters text="Restaurant Don Duarte" className="font-display text-[clamp(2.6rem,7.4vw,6.4rem)] font-semibold leading-[0.95] tracking-[-0.02em] text-green" />
+          <Wipe className="mt-5 max-w-xl text-lg text-ink-soft md:text-xl">{UI.tagline[lang]}</Wipe>
           <Wipe delay={0.45} className="mt-8 flex flex-wrap gap-3">
-            <SiteLink page="plats" className={cn(button, "bg-red text-tile hover:bg-red-deep")}>{UI.seePlats[lang]}</SiteLink>
-            <SiteLink page="home" section="horaires" className={cn(button, "border-2 border-tile/40 text-tile hover:border-gold hover:text-gold")}>{UI.navHours[lang]}</SiteLink>
+            <SiteLink page="plats" className={cn(button, "bg-red text-white hover:bg-red-deep")}>{UI.seePlats[lang]}</SiteLink>
+            <SiteLink page="home" section="horaires" className={cn(button, "border-2 border-green text-green hover:border-red hover:text-red")}>{UI.navHours[lang]}</SiteLink>
           </Wipe>
         </>
       ),
@@ -91,14 +91,14 @@ export function Hero() {
       label: UI.terreEtMerButton[lang],
       body: (
         <>
-          <Wipe delay={0.05} className="mb-4 text-sm font-bold uppercase tracking-[0.2em] text-gold">Terra e Mar</Wipe>
-          <Letters text={UI.terreEtMerButton[lang]} className="font-display text-[clamp(2.2rem,5.6vw,4.8rem)] font-semibold leading-[1] tracking-[-0.015em]" />
+          <Wipe delay={0.05} className="mb-4 text-sm font-bold uppercase tracking-[0.2em] text-red">Terra e Mar</Wipe>
+          <Letters text={UI.terreEtMerButton[lang]} className="font-display text-[clamp(2.2rem,5.6vw,4.8rem)] font-semibold leading-[1] tracking-[-0.015em] text-green" />
           <Wipe className="mt-6 flex flex-wrap items-baseline gap-x-4 gap-y-1">
-            <span className="font-display text-4xl font-semibold text-gold tabular-nums md:text-5xl">{chf(TERRE_ET_MER.prices[0])}</span>
-            <span className="text-tile/85">{UI.perPerson[lang]}</span>
+            <span className="font-display text-4xl font-semibold text-red tabular-nums md:text-5xl">{chf(TERRE_ET_MER.prices[0])}</span>
+            <span className="text-ink-soft">{UI.perPerson[lang]}</span>
           </Wipe>
           <Wipe delay={0.45} className="mt-8">
-            <SiteLink page="plats" section="terra-e-mar" className={cn(button, "bg-red text-tile hover:bg-red-deep")}>{UI.seeMenu[lang]}</SiteLink>
+            <SiteLink page="plats" section="terra-e-mar" className={cn(button, "bg-red text-white hover:bg-red-deep")}>{UI.seeMenu[lang]}</SiteLink>
           </Wipe>
         </>
       ),
@@ -109,9 +109,9 @@ export function Hero() {
       label: UI.since[lang],
       body: (
         <>
-          <Letters text="1988" className="font-display text-[clamp(5rem,17vw,12rem)] font-bold leading-[0.85] tracking-[-0.04em] text-gold tabular-nums" />
-          <Wipe className="mt-6 max-w-lg font-display text-2xl italic leading-snug md:text-4xl">{UI.since[lang]}</Wipe>
-          <Wipe delay={0.45} className="mt-6 text-tile/80">
+          <Letters text="1988" className="font-display text-[clamp(5rem,17vw,12rem)] font-bold leading-[0.85] tracking-[-0.04em] text-green tabular-nums" />
+          <Wipe className="mt-6 max-w-lg font-display text-2xl italic leading-snug text-ink md:text-4xl">{UI.since[lang]}</Wipe>
+          <Wipe delay={0.45} className="mt-6 text-ink-soft">
             {CONTACT.street}, {CONTACT.city}
           </Wipe>
         </>
@@ -123,15 +123,15 @@ export function Hero() {
       label: UI.winesLine[lang],
       body: (
         <>
-          <Wipe delay={0.05} className="mb-4 text-sm font-bold uppercase tracking-[0.2em] text-gold">{UI.navVins[lang]}</Wipe>
-          <Letters text={UI.winesLine[lang]} className="max-w-3xl font-display text-[clamp(2rem,4.8vw,4.2rem)] font-semibold leading-[1.02] tracking-[-0.015em]" />
+          <Wipe delay={0.05} className="mb-4 text-sm font-bold uppercase tracking-[0.2em] text-red">{UI.navVins[lang]}</Wipe>
+          <Letters text={UI.winesLine[lang]} className="max-w-3xl font-display text-[clamp(2rem,4.8vw,4.2rem)] font-semibold leading-[1.02] tracking-[-0.015em] text-green" />
           <Wipe className="mt-6 flex flex-wrap gap-2">
             {["Vinho Verde", "Douro", "Dão", "Palmela", "Alentejo"].map((r) => (
-              <span key={r} className="rounded-full border border-tile/30 px-3 py-1 text-sm font-semibold">{r}</span>
+              <span key={r} className="rounded-full border border-green/30 px-3 py-1 text-sm font-semibold text-green">{r}</span>
             ))}
           </Wipe>
           <Wipe delay={0.45} className="mt-8">
-            <SiteLink page="vins" className={cn(button, "bg-red text-tile hover:bg-red-deep")}>{UI.seeVins[lang]}</SiteLink>
+            <SiteLink page="vins" className={cn(button, "bg-red text-white hover:bg-red-deep")}>{UI.seeVins[lang]}</SiteLink>
           </Wipe>
         </>
       ),
@@ -142,17 +142,17 @@ export function Hero() {
       body: (
         <>
           <Wipe delay={0.05}>
-            <OpenBadge tone="dark" />
+            <OpenBadge />
           </Wipe>
-          <Letters text={UI.openEveryDay[lang]} className="mt-5 font-display text-[clamp(2.4rem,6vw,5.2rem)] font-semibold leading-[1] tracking-[-0.015em]" />
+          <Letters text={UI.openEveryDay[lang]} className="mt-5 font-display text-[clamp(2.4rem,6vw,5.2rem)] font-semibold leading-[1] tracking-[-0.015em] text-green" />
           <Wipe className="mt-6">
-            <p className="text-sm font-bold uppercase tracking-[0.18em] text-tile/70">{UI.today[lang]} · {UI[todayRow.key][lang]}</p>
-            <p className="font-display text-5xl font-semibold text-gold tabular-nums md:text-6xl">
+            <p className="text-sm font-bold uppercase tracking-[0.18em] text-ink-soft">{UI.today[lang]} · {UI[todayRow.key][lang]}</p>
+            <p className="font-display text-5xl font-semibold text-green tabular-nums md:text-6xl">
               {todayRow.open}–{todayRow.close}
             </p>
           </Wipe>
           <Wipe delay={0.45} className="mt-8 flex flex-wrap items-center gap-4">
-            <a href={CONTACT.tel} className={cn(button, "bg-red text-tile hover:bg-red-deep")}>
+            <a href={CONTACT.tel} className={cn(button, "bg-red text-white hover:bg-red-deep")}>
               {UI.call[lang]} · <span className="tabular-nums">{CONTACT.phone}</span>
             </a>
           </Wipe>
@@ -188,7 +188,7 @@ export function Hero() {
       ref={host}
       aria-roledescription="carousel"
       aria-label={UI.slideshow[lang]}
-      className="relative isolate overflow-hidden bg-night text-tile"
+      className="relative isolate overflow-hidden text-ink"
       onPointerDown={onPointerDown}
       onPointerUp={onPointerUp}
       onKeyDown={(e) => {
@@ -197,13 +197,11 @@ export function Hero() {
       }}
     >
       <TileWall host={host} />
-      {/* Scrim keeps the text at AA contrast over the brightest tiles. */}
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[linear-gradient(100deg,rgba(15,27,45,0.94)_0%,rgba(15,27,45,0.82)_42%,rgba(15,27,45,0.35)_75%,rgba(15,27,45,0.15)_100%)]" />
-      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-night to-transparent" />
       <h1 className="sr-only">Restaurant Don Duarte · {UI.tagline[lang]}</h1>
 
-      <div className="gutter relative">
-        <div className="wrap grid min-h-[clamp(600px,86svh,860px)] grid-rows-[1fr_auto] pb-8 pt-10 md:pt-16">
+      {/* The slides sit on a white panel; the animated tiles show around it. */}
+      <div className="gutter relative py-4 md:py-8">
+        <div className="wrap panel grid min-h-[clamp(560px,80svh,800px)] grid-rows-[1fr_auto] px-6 pb-8 pt-10 md:px-12 md:pt-14">
           <div aria-live={paused || hold ? "polite" : "off"} className="grid items-center">
             <AnimatePresence mode="wait" initial={false}>
               <motion.div
@@ -225,7 +223,7 @@ export function Hero() {
                     animate={{ opacity: 1, transform: "translateX(0px) rotate(0deg)" }}
                     transition={{ duration: 0.8, ease: EASE, delay: 0.15 }}
                   >
-                    <div className="mx-auto max-w-[380px] rounded-[34px] bg-tile/10 p-3 ring-1 ring-tile/15">{slide.aside}</div>
+                    <div className="mx-auto max-w-[380px] rounded-[34px] bg-ink/5 p-3 ring-1 ring-ink/10">{slide.aside}</div>
                   </motion.div>
                 )}
               </motion.div>
@@ -233,15 +231,15 @@ export function Hero() {
           </div>
 
           <div className="mt-10 flex flex-wrap items-center gap-3" onFocus={() => setHold(true)} onBlur={() => setHold(false)}>
-            <button type="button" onClick={() => goTo(index - 1)} className="grid h-11 w-11 place-items-center rounded-full border border-tile/30 hover:border-gold hover:text-gold">
+            <button type="button" onClick={() => goTo(index - 1)} className="grid h-11 w-11 place-items-center rounded-full border border-ink/20 text-ink hover:border-red hover:text-red">
               <span className="sr-only">{UI.prevSlide[lang]}</span>
               <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" /></svg>
             </button>
-            <button type="button" onClick={() => goTo(index + 1)} className="grid h-11 w-11 place-items-center rounded-full border border-tile/30 hover:border-gold hover:text-gold">
+            <button type="button" onClick={() => goTo(index + 1)} className="grid h-11 w-11 place-items-center rounded-full border border-ink/20 text-ink hover:border-red hover:text-red">
               <span className="sr-only">{UI.nextSlide[lang]}</span>
               <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" /></svg>
             </button>
-            <button type="button" onClick={() => setPaused((p) => !p)} aria-pressed={paused} className="inline-flex h-11 items-center gap-2 rounded-full border border-tile/30 px-4 text-sm font-bold hover:border-gold hover:text-gold">
+            <button type="button" onClick={() => setPaused((p) => !p)} aria-pressed={paused} className="inline-flex h-11 items-center gap-2 rounded-full border border-white/30 px-4 text-sm font-bold hover:border-gold hover:text-gold">
               {paused ? (
                 <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4l13 8-13 8z" fill="currentColor" /></svg>
               ) : (
@@ -259,11 +257,11 @@ export function Hero() {
                     className="group relative block h-11 w-9 md:w-14"
                   >
                     <span className="sr-only">{fill(UI.goToSlide[lang], { n: i + 1 })}: {s.label}</span>
-                    <span aria-hidden="true" className="absolute inset-x-0 top-1/2 h-[3px] -translate-y-1/2 overflow-hidden rounded-full bg-tile/25">
+                    <span aria-hidden="true" className="absolute inset-x-0 top-1/2 h-[3px] -translate-y-1/2 overflow-hidden rounded-full bg-ink/15">
                       {i === index && (
                         <span
                           key={`${index}-${paused || hold}`}
-                          className="absolute inset-0 origin-left rounded-full bg-gold"
+                          className="absolute inset-0 origin-left rounded-full bg-green"
                           style={paused || hold ? { transform: "scaleX(1)" } : { animation: `slide-progress ${DURATION}ms linear forwards` }}
                         />
                       )}

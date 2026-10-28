@@ -12,7 +12,7 @@ type Props = {
   className?: string;
 };
 
-export function LottieIcon({ name, color = "#0F1B2D", accent = "#B80601", size = 40, mode = "loop", className }: Props) {
+export function LottieIcon({ name, color = "#FFCC00", accent = "#FFFFFF", size = 40, mode = "loop", className }: Props) {
   const box = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {

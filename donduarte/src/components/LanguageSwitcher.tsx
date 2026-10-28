@@ -35,7 +35,7 @@ export function LanguageSwitcher({ tone = "light", align = "right", inline = fal
               aria-current={l === lang ? "true" : undefined}
               disabled={switching}
               onClick={() => requestLanguage(l)}
-              className={cn("text-sm font-semibold underline-offset-4 hover:underline", l === lang ? "text-gold" : "opacity-80")}
+              className={cn("text-sm font-semibold underline-offset-4 hover:underline", l === lang ? (tone === "dark" ? "text-gold" : "text-green") : "opacity-80")}
             >
               {NATIVE[l]}
             </button>
@@ -55,7 +55,7 @@ export function LanguageSwitcher({ tone = "light", align = "right", inline = fal
         onClick={() => setOpen((v) => !v)}
         className={cn(
           "inline-flex h-10 items-center gap-2 rounded-full border px-3.5 text-sm font-bold transition-colors",
-          tone === "light" ? "border-ink/15 text-ink hover:border-azulejo hover:text-azulejo" : "border-tile/25 text-tile hover:border-gold hover:text-gold",
+          tone === "light" ? "border-ink/15 text-ink hover:border-red hover:text-red" : "border-white/40 text-white hover:border-red hover:bg-red",
         )}
       >
         <span className="sr-only">{UI.language[lang]}: </span>
@@ -72,7 +72,7 @@ export function LanguageSwitcher({ tone = "light", align = "right", inline = fal
             animate={reduce ? { opacity: 1 } : { opacity: 1, transform: "translateY(0px) scale(1)" }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.16 }}
-            className={cn("absolute top-12 z-50 w-48 origin-top overflow-hidden rounded-2xl border border-ink/10 bg-tile p-1.5 shadow-[0_18px_40px_-16px_rgba(15,27,45,0.45)]", align === "right" ? "right-0" : "left-0")}
+            className={cn("on-light absolute top-12 z-50 w-48 origin-top overflow-hidden rounded-2xl border border-ink/10 bg-white p-1.5 shadow-[0_18px_40px_-16px_rgba(15,27,45,0.45)]", align === "right" ? "right-0" : "left-0")}
           >
             {LANGS.map((l) => (
               <li key={l}>
@@ -84,7 +84,7 @@ export function LanguageSwitcher({ tone = "light", align = "right", inline = fal
                     setOpen(false);
                     requestLanguage(l);
                   }}
-                  className={cn("flex w-full items-center justify-between rounded-xl px-3.5 py-2.5 text-left text-[15px] font-semibold text-ink hover:bg-azulejo-soft", l === lang && "text-azulejo")}
+                  className={cn("flex w-full items-center justify-between rounded-xl px-3.5 py-2.5 text-left text-[15px] font-semibold text-ink hover:bg-green-soft", l === lang && "text-green")}
                 >
                   {NATIVE[l]}
                   {l === lang && <span aria-hidden="true" className="h-2 w-2 rounded-full bg-red" />}

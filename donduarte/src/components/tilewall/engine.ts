@@ -56,20 +56,20 @@ const fragmentShader = /* glsl */ `
     float star = pow(q.x, 0.62) + pow(q.y, 0.62) - 0.78;
     float leaf = abs(q.x - q.y) - 0.07 * (1.0 - smoothstep(0.35, 0.8, r)) * smoothstep(0.32, 0.45, r);
 
-    vec3 glaze = mix(vec3(0.075, 0.150, 0.290), vec3(0.060, 0.120, 0.235), h);
-    vec3 cobalt = vec3(0.180, 0.390, 0.760);
-    vec3 pale = vec3(0.880, 0.900, 0.930);
-    vec3 gold = vec3(0.790, 0.700, 0.240);
+    // White glaze, cobalt #1E4FA3 drawing, light blue #8FA9D9 washes; the blue varies a little per tile.
+    vec3 glaze = mix(vec3(1.0), vec3(0.965, 0.975, 0.995), h);
+    vec3 cobalt = mix(vec3(0.118, 0.310, 0.639), vec3(0.16, 0.36, 0.69), fract(h * 7.0));
+    vec3 pale = vec3(0.561, 0.663, 0.851);
     vec3 col = glaze;
-    col = mix(col, cobalt * 0.55, disc(corner - 0.46) * 0.8);
+    col = mix(col, pale, disc(corner - 0.46) * 0.55);
     col = mix(col, cobalt, line(corner - 0.46, 0.03));
-    col = mix(col, cobalt * 0.8, disc(star) * 0.45);
-    col = mix(col, pale * 0.55, line(star, 0.022));
+    col = mix(col, pale, disc(star) * 0.5);
+    col = mix(col, cobalt, line(star, 0.022));
     col = mix(col, cobalt, line(r - 0.3, 0.035));
-    col = mix(col, gold * 0.9, disc(r - 0.1));
-    col = mix(col, pale * 0.45, disc(leaf) * step(0.4, r) * step(r, 0.82));
+    col = mix(col, cobalt, disc(r - 0.1));
+    col = mix(col, cobalt, disc(leaf) * step(0.4, r) * step(r, 0.82));
     float grout = smoothstep(0.955, 0.985, max(abs(uv.x), abs(uv.y)));
-    col = mix(col, vec3(0.030, 0.060, 0.110), grout);
+    col = mix(col, vec3(0.851, 0.871, 0.902), grout);
 
     // Each tile is a slightly pillowed glaze; near the pointer it tilts towards it.
     vec2 centre = (cell + 0.5) * uTile - warp;
@@ -80,7 +80,9 @@ const fragmentShader = /* glsl */ `
     float spec = pow(max(dot(reflect(-l, n), vec3(0.0, 0.0, 1.0)), 0.0), 36.0);
     vec3 lp = normalize(vec3(uPointer - frag, uTile * 2.2));
     float spec2 = pow(max(dot(n, normalize(lp + vec3(0.0, 0.0, 1.0))), 0.0), 70.0) * near;
-    col += (spec * 0.16 + spec2 * 0.55 + rippleGlow * 0.08) * (1.0 - grout) * vec3(0.95, 0.97, 1.0);
+    // Tilted tiles shade a touch on the side away from the light, and the glaze catches a highlight.
+    col *= mix(0.9, 1.02, clamp(dot(n, l) * 1.25, 0.0, 1.0));
+    col += (spec * 0.08 + spec2 * 0.3 + rippleGlow * 0.05) * (1.0 - grout) * vec3(0.9, 0.95, 1.0);
 
     gl_FragColor = vec4(col, 1.0); // colours are written as display (sRGB) values
   }
@@ -127,7 +129,7 @@ export function createTileWall(canvas: HTMLCanvasElement, host: HTMLElement, opt
     const { width, height } = canvas.getBoundingClientRect();
     renderer.setSize(width, height, false);
     uniforms.uRes.value.set(width * dpr, height * dpr);
-    uniforms.uTile.value = (width < 640 ? 88 : width < 1200 ? 112 : 132) * dpr;
+    uniforms.uTile.value = (width < 640 ? 90 : 140) * dpr; // the page tiles: 90 px on phones, 140 px above
     if (!running) frame();
   };
   // Pointer in drawing-buffer pixels, y up, as gl_FragCoord.

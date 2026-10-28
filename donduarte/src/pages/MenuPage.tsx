@@ -9,10 +9,10 @@ import { SiteLink } from "@/components/SiteLink";
 import { LottieIcon } from "@/lottie/LottieIcon";
 import type { IconName } from "@/lottie/icons";
 
-const PAGE: Record<Exclude<PageKey, "home">, { title: Localized; dl: Localized; icon: IconName; band: string }> = {
-  plats: { title: UI.titlePlats, dl: UI.dlPlats, icon: "flame", band: "bg-night" },
-  vins: { title: UI.titleVins, dl: UI.dlVins, icon: "wine", band: "bg-wine" },
-  desserts: { title: UI.titleDesserts, dl: UI.dlDesserts, icon: "icecream", band: "bg-azulejo" },
+const PAGE: Record<Exclude<PageKey, "home">, { title: Localized; dl: Localized; icon: IconName }> = {
+  plats: { title: UI.titlePlats, dl: UI.dlPlats, icon: "flame" },
+  vins: { title: UI.titleVins, dl: UI.dlVins, icon: "wine" },
+  desserts: { title: UI.titleDesserts, dl: UI.dlDesserts, icon: "icecream" },
 };
 const PHOTO: Record<string, string> = {
   "terra-e-mar": "plat-terra-e-mar",
@@ -43,7 +43,7 @@ function Price({ item, lang }: { item: MenuItem; lang: Lang }) {
       {item.prices.map((p, k) => (
         <span key={k} className="whitespace-nowrap">
           {item.priceLabels?.[k] && <span className="mr-1.5 text-xs font-semibold uppercase tracking-wide text-ink-soft">{item.priceLabels[k][lang]}</span>}
-          <span className="text-gold-ink">{chf(p)}</span>
+          <span className="text-ink">{chf(p)}</span>
         </span>
       ))}
     </span>
@@ -58,13 +58,13 @@ function Line({ item, lang, index }: { item: MenuItem; lang: Lang; index: number
   const frName = item.name.fr !== name && lang !== "fr" ? item.name.fr : null;
   return (
     <motion.li variants={reduce ? undefined : line} custom={index} className="flex gap-4 border-b border-ink/10 py-4 last:border-0">
-      {photo && <img src={img(photo)} alt="" loading="lazy" className="mt-1 h-16 w-16 shrink-0 rounded-full object-cover ring-4 ring-tile-2 md:h-20 md:w-20" />}
+      {photo && <img src={img(photo)} alt="" loading="lazy" className="mt-1 h-16 w-16 shrink-0 rounded-full object-cover ring-4 ring-mist md:h-20 md:w-20" />}
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 sm:flex-nowrap">
-          <h3 className="min-w-0 basis-full font-sans sm:basis-auto text-[17px] font-bold leading-snug text-night" lang={item.name[lang] ? HTML_LANG[lang] : item.name.pt ? "pt-PT" : "fr"}>
+          <h3 className="min-w-0 basis-full font-sans sm:basis-auto text-[17px] font-bold leading-snug text-ink" lang={item.name[lang] ? HTML_LANG[lang] : item.name.pt ? "pt-PT" : "fr"}>
             {name}
             {item.pdfOnly && (
-              <abbr title={UI.pdfOnlyTitle[lang]} className="ml-2 rounded bg-gold/25 px-1.5 py-0.5 align-middle text-[11px] font-bold tracking-wider text-gold-ink no-underline">
+              <abbr title={UI.pdfOnlyTitle[lang]} className="ml-2 rounded bg-gold/40 px-1.5 py-0.5 align-middle text-[11px] font-bold tracking-wider text-ink no-underline">
                 {UI.pdfOnly[lang]}
               </abbr>
             )}
@@ -82,7 +82,7 @@ function Line({ item, lang, index }: { item: MenuItem; lang: Lang; index: number
         {desc && <p className="mt-1 max-w-[62ch] text-[15px] text-ink-soft">{desc}</p>}
         {(item.region || item.grapes) && (
           <p className="mt-1 text-sm text-ink-soft">
-            {item.region && <span className="mr-2 inline-block rounded-full bg-azulejo-soft px-2 py-0.5 text-xs font-bold text-azulejo">{item.region}</span>}
+            {item.region && <span className="mr-2 inline-block rounded-full bg-green-soft px-2 py-0.5 text-xs font-bold text-green">{item.region}</span>}
             {item.grapes}
           </p>
         )}
@@ -103,19 +103,19 @@ function Group({ group, lang, query }: { group: MenuGroup; lang: Lang; query: st
   let n = 0;
   return (
     <section id={group.id} data-group={group.id} className="scroll-mt-40">
-      <header className="mb-2 flex flex-wrap items-end justify-between gap-2 border-b-2 border-night pb-3">
-        <h2 className="font-display text-[clamp(2rem,4vw,3rem)] font-semibold leading-none text-night">{group.title[lang]}</h2>
-        {group.note && <p className="font-display text-lg italic text-azulejo">{group.note[lang]}</p>}
+      <header className="mb-2 flex flex-wrap items-end justify-between gap-2 border-b-2 border-gold pb-3">
+        <h2 className="font-display text-[clamp(2rem,4vw,3rem)] font-semibold leading-none text-green">{group.title[lang]}</h2>
+        {group.note && <p className="font-display text-lg italic text-green">{group.note[lang]}</p>}
       </header>
       {group.winesFromPdf && !query && (
-        <div className="my-5 rounded-2xl bg-wine p-5 text-tile">
+        <div className="on-dark my-5 rounded-2xl bg-green p-5 text-white">
           <ul className="flex flex-wrap gap-2">
             {group.winesFromPdf.map((w) => (
-              <li key={w} className="rounded-full bg-tile/10 px-3 py-1 text-sm font-semibold ring-1 ring-tile/20">{w}</li>
+              <li key={w} className="rounded-full bg-white/10 px-3 py-1 text-sm font-semibold ring-1 ring-white/20">{w}</li>
             ))}
           </ul>
           <p className="mt-4 flex flex-wrap items-center gap-3 text-sm">
-            <span className="text-tile/80">{UI.winesInList[lang]}</span>
+            <span className="text-white/80">{UI.winesInList[lang]}</span>
             <SiteLink page="vins" className="font-bold text-gold underline-offset-4 hover:underline">{UI.seeVins[lang]} →</SiteLink>
           </p>
         </div>
@@ -182,21 +182,21 @@ export function MenuPage({ page, menu }: { page: Exclude<PageKey, "home">; menu:
 
   return (
     <>
-      <section className={cn("tile-texture tile-texture--night gutter py-14 text-tile md:py-20", meta.band)}>
-        <div className="wrap flex flex-wrap items-end justify-between gap-8">
+      <section className="gutter py-3 md:py-5">
+        <div className="wrap panel flex flex-wrap items-end justify-between gap-8 px-6 py-12 md:px-14 md:py-16">
           <div>
-            <span className="mb-5 grid h-16 w-16 place-items-center rounded-2xl bg-tile">
-              <LottieIcon name={meta.icon} size={46} color={page === "vins" ? "#6e1e2e" : "#1d4e9e"} accent="#b80601" />
+            <span className="mb-5 grid h-16 w-16 place-items-center rounded-2xl bg-green">
+              <LottieIcon name={meta.icon} size={46} color="#ffcc00" accent="#ffffff" />
             </span>
-            <h1 className="font-display text-[clamp(2.8rem,7vw,5.6rem)] font-semibold leading-[0.95] tracking-[-0.02em]">{meta.title[lang]}</h1>
-            <p className="mt-4 text-tile/75">{UI.pricesNote[lang]}</p>
-            {menu.note && <p className="mt-2 max-w-2xl text-tile/90">{menu.note[lang]}</p>}
+            <h1 className="font-display text-[clamp(2.8rem,7vw,5.6rem)] font-semibold leading-[0.95] tracking-[-0.02em] text-green">{meta.title[lang]}</h1>
+            <p className="mt-4 text-ink-soft">{UI.pricesNote[lang]}</p>
+            {menu.note && <p className="mt-2 max-w-2xl text-ink">{menu.note[lang]}</p>}
           </div>
-          <PdfButton tone="dark" lang={lang} href={menu.pdf} label={meta.dl[lang]} />
+          <PdfButton lang={lang} href={menu.pdf} label={meta.dl[lang]} />
         </div>
       </section>
 
-      <div className="sticky z-[150] border-b border-ink/10 bg-tile/95 backdrop-blur-md" style={{ top: "calc(var(--label-h) + var(--header-h) - 8px)" }}>
+      <div className="sticky z-[150] border-b border-ink/10 bg-white/95 backdrop-blur-md" style={{ top: "calc(var(--label-h) + var(--header-h) - 8px)" }}>
         <div className="gutter">
           <div className="wrap flex flex-col gap-2 py-2 md:flex-row md:items-center md:gap-6">
             <nav aria-label={UI.categories[lang]} className="relative min-w-0 flex-1">
@@ -208,7 +208,7 @@ export function MenuPage({ page, menu }: { page: Exclude<PageKey, "home">; menu:
                     data-tab={g.id}
                     aria-current={active === g.id ? "true" : undefined}
                     onClick={() => jump(g.id)}
-                    className={cn("shrink-0 whitespace-nowrap rounded-full px-3.5 py-2.5 text-sm font-bold transition-colors", active === g.id ? "text-azulejo" : "text-ink-soft hover:text-ink")}
+                    className={cn("shrink-0 whitespace-nowrap rounded-full px-3.5 py-2.5 text-sm font-bold transition-colors", active === g.id ? "text-green" : "text-ink-soft hover:text-red")}
                   >
                     {g.title[lang]}
                   </button>
@@ -232,19 +232,19 @@ export function MenuPage({ page, menu }: { page: Exclude<PageKey, "home">; menu:
                 value={raw}
                 onChange={(e) => setRaw(e.target.value)}
                 placeholder={UI.searchPlaceholder[lang]}
-                className="h-11 w-full rounded-full border border-ink/15 bg-white/70 pl-10 pr-4 text-[15px] text-ink placeholder:text-ink-soft/80 focus:border-azulejo focus:outline-none"
+                className="h-11 w-full rounded-full border border-ink/15 bg-white/70 pl-10 pr-4 text-[15px] text-ink placeholder:text-ink-soft/80 focus:border-green focus:outline-none"
               />
             </label>
           </div>
         </div>
       </div>
 
-      <div className="tile-texture gutter bg-tile py-12">
-        <div className="wrap grid gap-16">
+      <div className="gutter py-3 md:py-5">
+        <div className="wrap panel grid gap-16 px-5 py-12 md:px-12">
           {query && (
             <p role="status" className="flex flex-wrap items-center gap-3 text-ink-soft">
               {count ? fill(count === 1 ? UI.resultsOne[lang] : UI.results[lang], { n: count }) : fill(UI.noResults[lang], { q: raw.trim() })}
-              <button type="button" onClick={() => setRaw("")} className="rounded-full border border-ink/15 px-3 py-1 text-sm font-bold text-ink hover:border-azulejo">
+              <button type="button" onClick={() => setRaw("")} className="rounded-full border border-ink/15 px-3 py-1 text-sm font-bold text-ink hover:border-red hover:text-red">
                 {UI.clear[lang]}
               </button>
             </p>
@@ -259,7 +259,7 @@ export function MenuPage({ page, menu }: { page: Exclude<PageKey, "home">; menu:
             <span className="mx-2 hidden h-6 w-px bg-ink/15 sm:block" />
             <p className="w-full text-xs font-bold uppercase tracking-[0.16em] text-ink-soft sm:w-auto">{UI.otherMenus[lang]}</p>
             {others.map((p) => (
-              <SiteLink key={p} page={p} className="inline-flex min-h-11 items-center rounded-full bg-night px-5 text-sm font-bold text-tile hover:bg-azulejo">
+              <SiteLink key={p} page={p} className="inline-flex min-h-11 items-center rounded-full bg-green px-5 text-sm font-bold text-white hover:bg-red">
                 {p === "plats" ? UI.seePlats[lang] : p === "vins" ? UI.seeVins[lang] : UI.seeDesserts[lang]}
               </SiteLink>
             ))}

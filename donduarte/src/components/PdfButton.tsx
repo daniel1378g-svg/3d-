@@ -11,12 +11,12 @@ export function PdfButton({ href, label, lang, tone = "light", className }: { hr
       rel="noopener"
       className={cn(
         "group inline-flex items-center gap-3 rounded-full border-2 py-2 pl-2.5 pr-5 text-sm font-bold transition-colors",
-        tone === "light" ? "border-azulejo text-azulejo hover:bg-azulejo hover:text-tile" : "border-gold/70 text-tile hover:border-gold hover:bg-gold hover:text-night",
+        tone === "light" ? "border-green text-green hover:border-red hover:bg-red hover:text-white" : "border-gold/70 text-white hover:border-red hover:bg-red hover:text-white",
         className,
       )}
     >
-      <span className={cn("grid h-9 w-9 place-items-center rounded-full", tone === "light" ? "bg-azulejo-soft" : "bg-tile/10")}>
-        <LottieIcon name="download" mode="hover" size={28} color={tone === "light" ? "#1d4e9e" : "#f7f2e8"} accent="#b80601" />
+      <span className={cn("grid h-9 w-9 place-items-center rounded-full", tone === "light" ? "bg-green" : "bg-white/10")}>
+        <LottieIcon name="download" mode="hover" size={28} color="#ffcc00" accent="#ffffff" />
       </span>
       <span>{label}</span>
       <span className="sr-only"> ({UI.pdfNewTab[lang]})</span>
