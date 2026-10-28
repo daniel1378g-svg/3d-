@@ -1,0 +1,571 @@
+[
+ {
+  "i": 0,
+  "title": "Tropical",
+  "prices": [
+   "19.00"
+  ],
+  "body": "Tomate, mozzarella, crevettes et ananas | Tomate, mozzarella, shrimp and pineapple"
+ },
+ {
+  "i": 1,
+  "title": "Calzone",
+  "prices": [
+   "19.00"
+  ],
+  "body": "Tomate, mozzarella, jambon cuit de devant, champignons frais et oeuf | Tomate, mozzarella, ham, fresh mushrooms and egg"
+ },
+ {
+  "i": 2,
+  "title": "Végétarienne",
+  "prices": [
+   "19.00"
+  ],
+  "body": "Tomate, mozzarella, courgettes, poivrons, aubergines et onions | Tomate, mozzarella, zuchini, peppers, eggplant and onions"
+ },
+ {
+  "i": 3,
+  "title": "Maison",
+  "prices": [
+   "19.00"
+  ],
+  "body": "Tomate, mozzarella, champignons frais et viande de boeuf | Tomate, mozzarella, mushrooms and beef"
+ },
+ {
+  "i": 4,
+  "title": "Au lard",
+  "prices": [
+   "18.00"
+  ],
+  "body": "Tomate, mozzarella, lard et onions | Tomate, mozzarella, bacon and onions"
+ },
+ {
+  "i": 5,
+  "title": "Hugo",
+  "prices": [
+   "12.50"
+  ],
+  "body": ""
+ },
+ {
+  "i": 6,
+  "title": "Petite salade verte| Small green salad",
+  "prices": [
+   "6.00"
+  ],
+  "body": "Salade verte, tomate et carottes | Letuce, tomato and carrots"
+ },
+ {
+  "i": 7,
+  "title": "Grande salade mêlée | Large mixed salad",
+  "prices": [
+   "15.00"
+  ],
+  "body": "Salade verte, carottes, tomate, maïs et endives | Letuce, carrots, tomato, corn and chicory"
+ },
+ {
+  "i": 8,
+  "title": "Salade de poulpe | Octopus salad",
+  "prices": [
+   "25.00"
+  ],
+  "body": "Salade verte, poulpe, tomate, oignons et persil | Letuce, octopus, tomato, onions and parsley"
+ },
+ {
+  "i": 9,
+  "title": "Duo de poisson | Duo de peixe | Duo of fish",
+  "prices": [
+   "30.00"
+  ],
+  "body": "Saumon et lote | Salmão e tamboril | Salmon and monkfish"
+ },
+ {
+  "i": 10,
+  "title": "Secretos de porc | Secretos de porco | Pork secrets",
+  "prices": [
+   "25.00"
+  ],
+  "body": ""
+ },
+ {
+  "i": 11,
+  "title": "Terre et Mer | Terra e Mar | Earth & Sea",
+  "prices": [
+   "39.00"
+  ],
+  "body": "Viandes: boeuf, porc, agneau, chouriço, Poissons: saumon, lote, crevettes, Chou sauté et pommes de terre | Carnes : vaca, porco, cordeiro, chouriço, Peixes : salmão, tamboril, camarão, Couve salteada e batata | Meats: beef, pork, lamb, chourizo, Fish: salmon, lot, shrimps, Sautéed cabbage and potatoes – Min. 2 personnes, prix par personne"
+ },
+ {
+  "i": 12,
+  "title": "Demi coquelet ou coquelet grillé à la portugaise | Franguinho de churrasco | Grilled cockerel",
+  "prices": [
+   "17.00",
+   "22.00"
+  ],
+  "body": "Premier prix pour un demi coquelet, pas d’option d’un coquelet pour deux | First price for half cockerel, no option for a cockerel for two"
+ },
+ {
+  "i": 13,
+  "title": "Kir Royal (1dl)",
+  "prices": [
+   "10.00"
+  ],
+  "body": ""
+ },
+ {
+  "i": 14,
+  "title": "Spritz ou Lemon Spritz",
+  "prices": [
+   "11.50"
+  ],
+  "body": ""
+ },
+ {
+  "i": 15,
+  "title": "Carbonara",
+  "prices": [
+   "18.00"
+  ],
+  "body": ""
+ },
+ {
+  "i": 16,
+  "title": "Saumon à la plancha | Salmão na prancha | Salmon plancha",
+  "prices": [
+   "28.00"
+  ],
+  "body": ""
+ },
+ {
+  "i": 17,
+  "title": "Poulpe grillé | Polvo grelhado | Grilled octopus",
+  "prices": [
+   "32.00"
+  ],
+  "body": ""
+ },
+ {
+  "i": 18,
+  "title": "Queues de crevettes à l’ail | Rabos de camarão ao alho | Garlic shrimp tails",
+  "prices": [
+   "30.00"
+  ],
+  "body": ""
+ },
+ {
+  "i": 19,
+  "title": "Filets de perche | Filetes de perca | Perch fillets",
+  "prices": [
+   "28.00"
+  ],
+  "body": ""
+ },
+ {
+  "i": 20,
+  "title": "Morue grillé, pdt avec la peau au four | Bacalhau grelhado com batatas a murro | Grilled cod, potatoes with the skin in the oven",
+  "prices": [
+   "30.00"
+  ],
+  "body": "30 minutes au four"
+ },
+ {
+  "i": 21,
+  "title": "Morue à braz | Bacalhau à braz | Cod to the braz",
+  "prices": [
+   "30.00"
+  ],
+  "body": ""
+ },
+ {
+  "i": 22,
+  "title": "Morue maison | Bacalhau à casa | Homemade cod",
+  "prices": [
+   "30.00"
+  ],
+  "body": ""
+ },
+ {
+  "i": 23,
+  "title": "Morue à la crème | Bacalhau com natas | Cod with cream",
+  "prices": [
+   "32.00"
+  ],
+  "body": ""
+ },
+ {
+  "i": 24,
+  "title": "Salade de morue | Cod salad",
+  "prices": [
+   "22.00"
+  ],
+  "body": "Salade verte, tomate, morue crue émincée, oignons et olives | Letuce, tomato, minced raw cod, onions and olives"
+ },
+ {
+  "i": 25,
+  "title": "Bolinhos de bacalhau (min. 3 pièces) | Cod bolinhos (min. 3 pieces)",
+  "prices": [
+   "2.00"
+  ],
+  "body": "Prix à la pièce"
+ },
+ {
+  "i": 26,
+  "title": "Rissóis de crevettes (min. 3 pièces) | Shrimp patties (min. 3 pieces)",
+  "prices": [
+   "2.00"
+  ],
+  "body": "Prix à la pièce"
+ },
+ {
+  "i": 27,
+  "title": "Assiette de charcuterie | Cold cuts platter",
+  "prices": [
+   "22.00"
+  ],
+  "body": ""
+ },
+ {
+  "i": 28,
+  "title": "Émincé de porc et palourdes | Carne de porco a alentejana | Alentejo pork meat with clams",
+  "prices": [
+   "28.00"
+  ],
+  "body": ""
+ },
+ {
+  "i": 29,
+  "title": "Travers de porc grillé | Entrecosto de porco grelhado | Grilled pork ribs",
+  "prices": [
+   "30.00"
+  ],
+  "body": ""
+ },
+ {
+  "i": 30,
+  "title": "Steak maison | Bife à casa | Homemade steak",
+  "prices": [
+   "28.00"
+  ],
+  "body": "Tranche de jambon d’épaule et œuf Fiambre e ovo | Shoulder ham and egg slice"
+ },
+ {
+  "i": 31,
+  "title": "Entrecôte de bœuf | Beef steak",
+  "prices": [
+   "30.00"
+  ],
+  "body": ""
+ },
+ {
+  "i": 32,
+  "title": "Côtelettes d’agneau au romarin | Costeletas de cordeiro ao alecrim | Rosemary lamb chops",
+  "prices": [
+   "30.00"
+  ],
+  "body": ""
+ },
+ {
+  "i": 33,
+  "title": "Menu à base de viande | Meat menu",
+  "prices": [
+   "39.00"
+  ],
+  "body": "Salade mêlée – Faux-filet de bœuf – Sauce Don Duarte- Pommes de terre à la plancha- Légumes du jour – Dessert au choix (exceptées les glaces) | Mixed salad – Beef sirloin – Grilled potatoes – Vegetables of the day – Dessert of your choice (excepted ice cream)"
+ },
+ {
+  "i": 34,
+  "title": "Menu à base de poissons | Fish menu",
+  "prices": [
+   "39.00"
+  ],
+  "body": "Salade mêlée – Duo de poissons – Pommes de terre à la plancha – Légumes du jour – Desserts au choix (exceptées les glaces) | Mixed salad – Duo of fish – Grilled potatoes – Vegetables of the day – Dessert of your choice (excepted ice cream)"
+ },
+ {
+  "i": 35,
+  "title": "Cocktail de crevettes | Shrimp cocktail",
+  "prices": [
+   "20.00"
+  ],
+  "body": "Salade verte, tomate et crevettes cocktail | Letuce, tomato and shrimp cocktail"
+ },
+ {
+  "i": 36,
+  "title": "Travers de porc grillés | Entrecosto de porco grelhado | Grilled pork ribs",
+  "prices": [
+   "30.00"
+  ],
+  "body": ""
+ },
+ {
+  "i": 37,
+  "title": "Assiette de jambon cru campagnard | Plate of Raw ham campagnard",
+  "prices": [
+   "22.00"
+  ],
+  "body": ""
+ },
+ {
+  "i": 38,
+  "title": "Chouriça ou morcela | Chorizo or black pudding",
+  "prices": [
+   "16.00"
+  ],
+  "body": ""
+ },
+ {
+  "i": 39,
+  "title": "Queijo da serra | Serra cheese",
+  "prices": [
+   "12.00"
+  ],
+  "body": ""
+ },
+ {
+  "i": 40,
+  "title": "Queijo | Cheese",
+  "prices": [
+   "8.00"
+  ],
+  "body": ""
+ },
+ {
+  "i": 41,
+  "title": "Omelette nature | Omelete natural | Natural omelette",
+  "prices": [
+   "13.00"
+  ],
+  "body": ""
+ },
+ {
+  "i": 42,
+  "title": "Omelette au fromage | Omelete de queijo | Omelette with cheese",
+  "prices": [
+   "15.00"
+  ],
+  "body": ""
+ },
+ {
+  "i": 43,
+  "title": "Omelette aux champignons frais | Omelete de cogumelos | Omelette with mushrooms",
+  "prices": [
+   "15.00"
+  ],
+  "body": ""
+ },
+ {
+  "i": 44,
+  "title": "Omelette au jambon cuit de devant | Omelete de fiambre | Omelette with ham",
+  "prices": [
+   "15.00"
+  ],
+  "body": ""
+ },
+ {
+  "i": 45,
+  "title": "Omelette au chouriço et oignons | Omelette de chouriço e cebola | Omelette with chourizo and onions",
+  "prices": [
+   "15.00"
+  ],
+  "body": ""
+ },
+ {
+  "i": 46,
+  "title": "Petit steack jambon et oeuf | Little steak ham and cheese",
+  "prices": [
+   "16.00"
+  ],
+  "body": ""
+ },
+ {
+  "i": 47,
+  "title": "Saucisses de vienne (2 pièces) et oeuf | Vienna sausages ( 2 pieces) and egg",
+  "prices": [
+   "14.00"
+  ],
+  "body": ""
+ },
+ {
+  "i": 48,
+  "title": "Aux crevettes | With shrimps",
+  "prices": [
+   "20.00"
+  ],
+  "body": ""
+ },
+ {
+  "i": 49,
+  "title": "Ail, basilic et crème | Garlic, basil and cream",
+  "prices": [
+   "18.00"
+  ],
+  "body": ""
+ },
+ {
+  "i": 50,
+  "title": "Aux morilles | With morels",
+  "prices": [
+   "22.00"
+  ],
+  "body": ""
+ },
+ {
+  "i": 51,
+  "title": "Jambon épaule, saucisse, tranche de boeuf, fromage et oeuf | Fiambre, linguiça bife de vaca, queijo e ovo | Shoulder ham, sausage, beef slice, cheese and egg",
+  "prices": [
+   "22.00"
+  ],
+  "body": ""
+ },
+ {
+  "i": 52,
+  "title": "Marguerite",
+  "prices": [
+   "15.00"
+  ],
+  "body": "Tomate et mozzarella | Tomato and mozzarella"
+ },
+ {
+  "i": 53,
+  "title": "Carbonara",
+  "prices": [
+   "17.00"
+  ],
+  "body": "Tomate, mozzarella et jambon cuit de devant | Tomato, mozzarella and cooked ham from the front"
+ },
+ {
+  "i": 54,
+  "title": "Capriciosa",
+  "prices": [
+   "18.00"
+  ],
+  "body": "Tomate, mozzarella, champignons frais, jambon cuit devant et oeuf | Tomato, mozzarella, fresh cooked mushrooms, ham and egg"
+ },
+ {
+  "i": 55,
+  "title": "Du chef",
+  "prices": [
+   "19.00"
+  ],
+  "body": "Tomate, mozzarella, thon, champignons frais et oeuf | Tomato, mozzarella, tuna, fresh mushrooms and egg"
+ },
+ {
+  "i": 56,
+  "title": "4 saisons",
+  "prices": [
+   "19.00"
+  ],
+  "body": "Tomate, mozzarella, champ. frais et jambon cuit de devant, poivrons et câpres | Tomato, mozzarella, fresh mushrooms and cooked from ham peppers and capers"
+ },
+ {
+  "i": 57,
+  "title": "Napolitaine",
+  "prices": [
+   "18.00"
+  ],
+  "body": "Tomate, mozzarella, poivrons, anchois et olives | Tomato, mozzarella, peppers, anchovies and olives"
+ },
+ {
+  "i": 58,
+  "title": "Au jambon",
+  "prices": [
+   "19.00"
+  ],
+  "body": "Tomate, mozzarella, champignons frais et jambon cru campagnard | Tomato, mozzarella, fresh mushrooms and raw country ham"
+ },
+ {
+  "i": 59,
+  "title": "À la morue",
+  "prices": [
+   "19.00"
+  ],
+  "body": "Tomate, mozzarella, morue, poivrons, oignons et câpres | Tomato, mozzarella, cod, peppers, onions and capers"
+ },
+ {
+  "i": 60,
+  "title": "Aux crevettes",
+  "prices": [
+   "19.00"
+  ],
+  "body": "Tomate, mozzarella, crevettes | Tomato, mozzarella, shrimps"
+ },
+ {
+  "i": 61,
+  "title": "Don Duarte",
+  "prices": [
+   "19.00"
+  ],
+  "body": "Tomate, mozzarella, chouriço et oignons | Tomato, mozzarella, chouriço and onions"
+ },
+ {
+  "i": 62,
+  "title": "Au lard",
+  "prices": [
+   "18.00"
+  ],
+  "body": "Tomate, mozzarella, lard et oignons | Tomato, mozzarella, bacon and onions"
+ },
+ {
+  "i": 63,
+  "title": "Maison",
+  "prices": [
+   "19.00"
+  ],
+  "body": "Tomate, mozzarella, champignons frais et viande de boeuf | Tomato, mozzarella, fresh mushrooms and beef"
+ },
+ {
+  "i": 64,
+  "title": "Végétarienne",
+  "prices": [
+   "19.00"
+  ],
+  "body": "Tomate, mozzararella, courgettes, poivrons, aubergines et oignons | Tomato, mozzarella, zucchini, peppers, eggplant and onions"
+ },
+ {
+  "i": 65,
+  "title": "Calzone",
+  "prices": [
+   "19.00"
+  ],
+  "body": "Tomate, mozzarella, jambon cuit, champignons frais et oeuf | Tomato, mozzarella, cooked front ham, fresh mushrooms and egg"
+ },
+ {
+  "i": 66,
+  "title": "Tropical",
+  "prices": [
+   "19.00"
+  ],
+  "body": "Tomate, mozzarella, crevettes et ananas | Tomato, mozzarella, shrimp and pineapple"
+ },
+ {
+  "i": 67,
+  "title": "Sauce aux morilles | Morel sauce",
+  "prices": [
+   "9.00"
+  ],
+  "body": ""
+ },
+ {
+  "i": 68,
+  "title": "Sauce au poivre vert | Green pepper sauce",
+  "prices": [
+   "5.00"
+  ],
+  "body": ""
+ },
+ {
+  "i": 69,
+  "title": "Sauce Don Duarte | Don Duarte Sauce",
+  "prices": [
+   "5.00"
+  ],
+  "body": ""
+ },
+ {
+  "i": 70,
+  "title": "Pizza Junior",
+  "prices": [
+   "12.00"
+  ],
+  "body": "Tomate, mozzarella, jambon cuit de devant"
+ }
+]

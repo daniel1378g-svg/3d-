@@ -1,0 +1,10 @@
+# Old WordPress addresses → new French pages (Netlify / Cloudflare Pages format; port to the host's own syntax).
+/carte-plats/      /fr/carte-plats    301
+/carte-plats       /fr/carte-plats    301
+/carte-vins/       /fr/carte-vins     301
+/carte-vins        /fr/carte-vins     301
+/carte-desserts/   /fr/carte-desserts 301
+/carte-desserts    /fr/carte-desserts 301
+# The PDF download addresses stay on the WordPress media library until the files move:
+#   /menu-restaurant-pdf/, /carte-vins-et-boissons_don-duarte/, /carta_des_vins_et_boissons_don_duarte/,
+#   /carte-des-desserts_2024_don-duarte/, /carte_des_desserts_don_duarte/

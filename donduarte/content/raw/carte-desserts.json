@@ -1,0 +1,273 @@
+[
+ {
+  "i": 0,
+  "title": "Cheesecake",
+  "prices": [
+   "8.00"
+  ],
+  "body": ""
+ },
+ {
+  "i": 1,
+  "title": "Dessert du jour",
+  "prices": [
+   "8.00"
+  ],
+  "body": ""
+ },
+ {
+  "i": 2,
+  "title": "Banana Split",
+  "prices": [
+   "12.00"
+  ],
+  "body": ""
+ },
+ {
+  "i": 3,
+  "title": "Parfait Mocca",
+  "prices": [
+   "8.00",
+   "12.00"
+  ],
+  "body": "Premier prix: nature, second prix: flambé"
+ },
+ {
+  "i": 4,
+  "title": "Portion de fromage",
+  "prices": [
+   "8.00"
+  ],
+  "body": ""
+ },
+ {
+  "i": 5,
+  "title": "Mousse au fruit de la passion",
+  "prices": [
+   "8.00"
+  ],
+  "body": ""
+ },
+ {
+  "i": 6,
+  "title": "Mousse à la mangue",
+  "prices": [
+   "8.00"
+  ],
+  "body": ""
+ },
+ {
+  "i": 7,
+  "title": "Crème brûlée",
+  "prices": [
+   "8.00"
+  ],
+  "body": ""
+ },
+ {
+  "i": 8,
+  "title": "Bolo de bolacha",
+  "prices": [
+   "8.00"
+  ],
+  "body": ""
+ },
+ {
+  "i": 9,
+  "title": "Molotof",
+  "prices": [
+   "7.00"
+  ],
+  "body": ""
+ },
+ {
+  "i": 10,
+  "title": "Tiramisu",
+  "prices": [
+   "8.00"
+  ],
+  "body": ""
+ },
+ {
+  "i": 11,
+  "title": "Flan maison",
+  "prices": [
+   "8.00"
+  ],
+  "body": ""
+ },
+ {
+  "i": 12,
+  "title": "Mousse au chocolat",
+  "prices": [
+   "8.00"
+  ],
+  "body": ""
+ },
+ {
+  "i": 13,
+  "title": "Cheesecake",
+  "prices": [
+   "8.00"
+  ],
+  "body": ""
+ },
+ {
+  "i": 14,
+  "title": "Queijo da serra",
+  "prices": [
+   "13.00"
+  ],
+  "body": ""
+ },
+ {
+  "i": 15,
+  "title": "Fromage",
+  "prices": [
+   "8.00"
+  ],
+  "body": ""
+ },
+ {
+  "i": 16,
+  "title": "Banana Split",
+  "prices": [
+   "12.00"
+  ],
+  "body": "Glace Vanille arrosée de sauce au chocolat"
+ },
+ {
+  "i": 17,
+  "title": "Stracciatella",
+  "prices": [
+   "11.00"
+  ],
+  "body": "Glace Stracciatella, Mocca"
+ },
+ {
+  "i": 18,
+  "title": "Café Glacé",
+  "prices": [
+   "11.00"
+  ],
+  "body": "Mocca, arrosée de sauce au café"
+ },
+ {
+  "i": 19,
+  "title": "Trio Fresco",
+  "prices": [
+   "11.00"
+  ],
+  "body": "Trois Sorbets"
+ },
+ {
+  "i": 20,
+  "title": "Napoli",
+  "prices": [
+   "11.00"
+  ],
+  "body": "Glace Chocolat, Pistache"
+ },
+ {
+  "i": 21,
+  "title": "Danemark",
+  "prices": [
+   "11.00"
+  ],
+  "body": "Glace Vanille arrosée de sauce au chocolat"
+ },
+ {
+  "i": 22,
+  "title": "Cassata",
+  "prices": [
+   "8.00",
+   "12.00"
+  ],
+  "body": "Premier prix: nature, second prix: arrosée de Maraschino"
+ },
+ {
+  "i": 23,
+  "title": "Pruneaux",
+  "prices": [
+   "9.00",
+   "12.00"
+  ],
+  "body": "Sorbet pruneaux avec vielle prune ∣ Premier prix: nature, second prix: flambé"
+ },
+ {
+  "i": 24,
+  "title": "General",
+  "prices": [
+   "9.00",
+   "12.00"
+  ],
+  "body": "Glace Vanille arrosé de Whisky ∣ Premier prix pour 1 boule, second prix pour 2 boules"
+ },
+ {
+  "i": 25,
+  "title": "Blues",
+  "prices": [
+   "9.00",
+   "12.00"
+  ],
+  "body": "Sorbet Williams arrosé de Williamine ∣ Premier prix pour 1 boule, second prix pour 2 boules"
+ },
+ {
+  "i": 26,
+  "title": "Valaisan",
+  "prices": [
+   "9.00",
+   "12.00"
+  ],
+  "body": "Sorbet Abricot arrosé d’Abricotine ∣ Premier prix pour 1 boule, second prix pour 2 boules"
+ },
+ {
+  "i": 27,
+  "title": "Le Colonel",
+  "prices": [
+   "9.00",
+   "12.00"
+  ],
+  "body": "Sorbet Citron arrosé de Vodka ∣ Premier prix pour 1 boule, second prix pour 2 boules"
+ },
+ {
+  "i": 28,
+  "title": "Boule de glace goût au choix",
+  "prices": [
+   "4.00"
+  ],
+  "body": "Vanille, Chocolat, Caramel, Mocca (avec noisettes croquantes), Stracciatella, Tarte au noix, Pistache, Fraise, Abricot, Poire Williams, Pruneaux, Citron ∣ Garniture à la crème : 1 Fr."
+ },
+ {
+  "i": 29,
+  "title": "Frappé",
+  "prices": [
+   "8.50"
+  ],
+  "body": "Arômes aux choix"
+ },
+ {
+  "i": 30,
+  "title": "Smarties Cornet",
+  "prices": [
+   "4.00"
+  ],
+  "body": "Cornet Vanille avec Smarties"
+ },
+ {
+  "i": 31,
+  "title": "Wonderbibi",
+  "prices": [
+   "6.00"
+  ],
+  "body": "Glace Stracciatella avec sa surprise"
+ },
+ {
+  "i": 32,
+  "title": "Hello Kitty Stick",
+  "prices": [
+   "6.00"
+  ],
+  "body": "Vanille – Fraise ∣ Nouveaux stickers pour jouer et collectionner dans le bâton"
+ }
+]

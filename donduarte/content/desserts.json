@@ -1,0 +1,811 @@
+{
+ "source": "https://donduarte.ch/carte-desserts/ · photos from the 2024 dessert PDF",
+ "pdf": "https://donduarte.ch/carte-des-desserts_2024_don-duarte/",
+ "pdfHome": "https://donduarte.ch/carte_des_desserts_don_duarte/",
+ "liveLines": 33,
+ "shownLines": 31,
+ "groups": [
+  {
+   "id": "desserts",
+   "title": {
+    "fr": "Desserts maison",
+    "en": "Homemade desserts",
+    "pt": "Sobremesas caseiras",
+    "it": "Dolci fatti in casa",
+    "de": "Hausgemachte Desserts"
+   },
+   "items": [
+    {
+     "id": "d9",
+     "raw": [
+      9
+     ],
+     "name": {
+      "fr": "Molotof",
+      "en": "Molotof",
+      "pt": "Molotof",
+      "it": "Molotof",
+      "de": "Molotof"
+     },
+     "prices": [
+      "7.00"
+     ],
+     "photo": "molotof"
+    },
+    {
+     "id": "d8",
+     "raw": [
+      8
+     ],
+     "name": {
+      "fr": "Bolo de bolacha",
+      "en": "Bolo de bolacha",
+      "pt": "Bolo de bolacha",
+      "it": "Bolo de bolacha",
+      "de": "Bolo de bolacha"
+     },
+     "prices": [
+      "8.00"
+     ],
+     "photo": "bolo-de-bolacha"
+    },
+    {
+     "id": "d11",
+     "raw": [
+      11
+     ],
+     "name": {
+      "fr": "Flan maison",
+      "en": "Flan maison",
+      "pt": "Flan maison",
+      "it": "Flan maison",
+      "de": "Flan maison"
+     },
+     "prices": [
+      "8.00"
+     ],
+     "photo": "flan"
+    },
+    {
+     "id": "d7",
+     "raw": [
+      7
+     ],
+     "name": {
+      "fr": "Crème brûlée",
+      "en": "Crème brûlée",
+      "pt": "Crème brûlée",
+      "it": "Crème brûlée",
+      "de": "Crème brûlée"
+     },
+     "prices": [
+      "8.00"
+     ],
+     "photo": "creme-brulee"
+    },
+    {
+     "id": "d10",
+     "raw": [
+      10
+     ],
+     "name": {
+      "fr": "Tiramisu",
+      "en": "Tiramisu",
+      "pt": "Tiramisu",
+      "it": "Tiramisu",
+      "de": "Tiramisu"
+     },
+     "prices": [
+      "8.00"
+     ],
+     "photo": "tiramisu"
+    },
+    {
+     "id": "d12",
+     "raw": [
+      12
+     ],
+     "name": {
+      "fr": "Mousse au chocolat",
+      "en": "Mousse au chocolat",
+      "pt": "Mousse au chocolat",
+      "it": "Mousse au chocolat",
+      "de": "Mousse au chocolat"
+     },
+     "prices": [
+      "8.00"
+     ],
+     "photo": "mousse-chocolat"
+    },
+    {
+     "id": "d3",
+     "raw": [
+      3
+     ],
+     "name": {
+      "fr": "Parfait Mocca",
+      "en": "Parfait Mocca",
+      "pt": "Parfait Mocca",
+      "it": "Parfait Mocca",
+      "de": "Parfait Mocca"
+     },
+     "prices": [
+      "8.00",
+      "12.00"
+     ],
+     "priceLabels": [
+      {
+       "fr": "nature",
+       "en": "plain",
+       "pt": "simples",
+       "it": "al naturale",
+       "de": "nature"
+      },
+      {
+       "fr": "flambé",
+       "en": "flambéed",
+       "pt": "flamejado",
+       "it": "flambé",
+       "de": "flambiert"
+      }
+     ],
+     "photo": "parfait-mocca"
+    },
+    {
+     "id": "d0",
+     "raw": [
+      0,
+      13
+     ],
+     "name": {
+      "fr": "Cheesecake",
+      "en": "Cheesecake",
+      "pt": "Cheesecake",
+      "it": "Cheesecake",
+      "de": "Cheesecake"
+     },
+     "prices": [
+      "8.00"
+     ],
+     "photo": "cheesecake",
+     "duplicates": [
+      13
+     ]
+    },
+    {
+     "id": "d6",
+     "raw": [
+      6
+     ],
+     "name": {
+      "fr": "Mousse à la mangue",
+      "en": "Mousse à la mangue",
+      "pt": "Mousse à la mangue",
+      "it": "Mousse à la mangue",
+      "de": "Mousse à la mangue"
+     },
+     "prices": [
+      "8.00"
+     ]
+    },
+    {
+     "id": "d5",
+     "raw": [
+      5
+     ],
+     "name": {
+      "fr": "Mousse au fruit de la passion",
+      "en": "Mousse au fruit de la passion",
+      "pt": "Mousse au fruit de la passion",
+      "it": "Mousse au fruit de la passion",
+      "de": "Mousse au fruit de la passion"
+     },
+     "prices": [
+      "8.00"
+     ]
+    },
+    {
+     "id": "d14",
+     "raw": [
+      14
+     ],
+     "name": {
+      "fr": "Queijo da serra",
+      "en": "Queijo da serra",
+      "pt": "Queijo da serra",
+      "it": "Queijo da serra",
+      "de": "Queijo da serra"
+     },
+     "prices": [
+      "13.00"
+     ]
+    },
+    {
+     "id": "d4",
+     "raw": [
+      4
+     ],
+     "name": {
+      "fr": "Portion de fromage",
+      "en": "Portion de fromage",
+      "pt": "Portion de fromage",
+      "it": "Portion de fromage",
+      "de": "Portion de fromage"
+     },
+     "prices": [
+      "8.00"
+     ]
+    },
+    {
+     "id": "d15",
+     "raw": [
+      15
+     ],
+     "name": {
+      "fr": "Fromage",
+      "en": "Fromage",
+      "pt": "Fromage",
+      "it": "Fromage",
+      "de": "Fromage"
+     },
+     "prices": [
+      "8.00"
+     ]
+    },
+    {
+     "id": "d1",
+     "raw": [
+      1
+     ],
+     "name": {
+      "fr": "Dessert du jour",
+      "en": "Dessert du jour",
+      "pt": "Dessert du jour",
+      "it": "Dessert du jour",
+      "de": "Dessert du jour"
+     },
+     "prices": [
+      "8.00"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "coupes",
+   "title": {
+    "fr": "Coupes glacées",
+    "en": "Ice-cream sundaes",
+    "pt": "Taças de gelado",
+    "it": "Coppe gelato",
+    "de": "Glacecoupes"
+   },
+   "items": [
+    {
+     "id": "d16",
+     "raw": [
+      16,
+      2
+     ],
+     "name": {
+      "fr": "Banana Split",
+      "en": "Banana Split",
+      "pt": "Banana Split",
+      "it": "Banana Split",
+      "de": "Banana Split"
+     },
+     "prices": [
+      "12.00"
+     ],
+     "desc": {
+      "fr": "Glace Vanille arrosée de sauce au chocolat",
+      "en": "Vanilla ice cream topped with chocolate sauce",
+      "pt": "Gelado de baunilha regado com molho de chocolate",
+      "it": "Gelato alla vaniglia con salsa al cioccolato",
+      "de": "Vanilleglace mit Schokoladensauce"
+     },
+     "photo": "banana-split",
+     "duplicates": [
+      2
+     ]
+    },
+    {
+     "id": "d17",
+     "raw": [
+      17
+     ],
+     "name": {
+      "fr": "Stracciatella",
+      "en": "Stracciatella",
+      "pt": "Stracciatella",
+      "it": "Stracciatella",
+      "de": "Stracciatella"
+     },
+     "prices": [
+      "11.00"
+     ],
+     "desc": {
+      "fr": "Glace Stracciatella, Mocca",
+      "en": "Stracciatella and mocha ice cream",
+      "pt": "Gelado de stracciatella e moca",
+      "it": "Gelato stracciatella e moka",
+      "de": "Stracciatella- und Moccaglace"
+     }
+    },
+    {
+     "id": "d18",
+     "raw": [
+      18
+     ],
+     "name": {
+      "fr": "Café Glacé",
+      "en": "Café Glacé",
+      "pt": "Café Glacé",
+      "it": "Café Glacé",
+      "de": "Café Glacé"
+     },
+     "prices": [
+      "11.00"
+     ],
+     "desc": {
+      "fr": "Mocca, arrosée de sauce au café",
+      "en": "Mocha ice cream topped with coffee sauce",
+      "pt": "Moca regado com molho de café",
+      "it": "Moka con salsa al caffè",
+      "de": "Mocca mit Kaffeesauce"
+     }
+    },
+    {
+     "id": "d19",
+     "raw": [
+      19
+     ],
+     "name": {
+      "fr": "Trio Fresco",
+      "en": "Trio Fresco",
+      "pt": "Trio Fresco",
+      "it": "Trio Fresco",
+      "de": "Trio Fresco"
+     },
+     "prices": [
+      "11.00"
+     ],
+     "desc": {
+      "fr": "Trois Sorbets",
+      "en": "Three sorbets",
+      "pt": "Três sorvetes",
+      "it": "Tre sorbetti",
+      "de": "Drei Sorbets"
+     }
+    },
+    {
+     "id": "d20",
+     "raw": [
+      20
+     ],
+     "name": {
+      "fr": "Napoli",
+      "en": "Napoli",
+      "pt": "Napoli",
+      "it": "Napoli",
+      "de": "Napoli"
+     },
+     "prices": [
+      "11.00"
+     ],
+     "desc": {
+      "fr": "Glace Chocolat, Pistache",
+      "en": "Chocolate and pistachio ice cream",
+      "pt": "Gelado de chocolate e pistácio",
+      "it": "Gelato al cioccolato e pistacchio",
+      "de": "Schokoladen- und Pistazienglace"
+     }
+    },
+    {
+     "id": "d21",
+     "raw": [
+      21
+     ],
+     "name": {
+      "fr": "Danemark",
+      "en": "Danemark",
+      "pt": "Danemark",
+      "it": "Danemark",
+      "de": "Danemark"
+     },
+     "prices": [
+      "11.00"
+     ],
+     "desc": {
+      "fr": "Glace Vanille arrosée de sauce au chocolat",
+      "en": "Vanilla ice cream topped with chocolate sauce",
+      "pt": "Gelado de baunilha regado com molho de chocolate",
+      "it": "Gelato alla vaniglia con salsa al cioccolato",
+      "de": "Vanilleglace mit Schokoladensauce"
+     }
+    },
+    {
+     "id": "d22",
+     "raw": [
+      22
+     ],
+     "name": {
+      "fr": "Cassata",
+      "en": "Cassata",
+      "pt": "Cassata",
+      "it": "Cassata",
+      "de": "Cassata"
+     },
+     "prices": [
+      "8.00",
+      "12.00"
+     ],
+     "priceLabels": [
+      {
+       "fr": "nature",
+       "en": "plain",
+       "pt": "simples",
+       "it": "al naturale",
+       "de": "nature"
+      },
+      {
+       "fr": "arrosée de Maraschino",
+       "en": "with Maraschino",
+       "pt": "regada com Maraschino",
+       "it": "con Maraschino",
+       "de": "mit Maraschino"
+      }
+     ]
+    },
+    {
+     "id": "d23",
+     "raw": [
+      23
+     ],
+     "name": {
+      "fr": "Pruneaux",
+      "en": "Pruneaux",
+      "pt": "Pruneaux",
+      "it": "Pruneaux",
+      "de": "Pruneaux"
+     },
+     "prices": [
+      "9.00",
+      "12.00"
+     ],
+     "desc": {
+      "fr": "Sorbet pruneaux avec vielle prune",
+      "en": "Prune sorbet with Vieille Prune",
+      "pt": "Sorvete de ameixa com Vieille Prune",
+      "it": "Sorbetto alla prugna con Vieille Prune",
+      "de": "Zwetschgensorbet mit Vieille Prune"
+     },
+     "priceLabels": [
+      {
+       "fr": "nature",
+       "en": "plain",
+       "pt": "simples",
+       "it": "al naturale",
+       "de": "nature"
+      },
+      {
+       "fr": "flambé",
+       "en": "flambéed",
+       "pt": "flamejado",
+       "it": "flambé",
+       "de": "flambiert"
+      }
+     ]
+    },
+    {
+     "id": "d24",
+     "raw": [
+      24
+     ],
+     "name": {
+      "fr": "General",
+      "en": "General",
+      "pt": "General",
+      "it": "General",
+      "de": "General"
+     },
+     "prices": [
+      "9.00",
+      "12.00"
+     ],
+     "desc": {
+      "fr": "Glace Vanille arrosé de Whisky",
+      "en": "Vanilla ice cream with whisky",
+      "pt": "Gelado de baunilha regado com whisky",
+      "it": "Gelato alla vaniglia con whisky",
+      "de": "Vanilleglace mit Whisky"
+     },
+     "priceLabels": [
+      {
+       "fr": "1 boule",
+       "en": "1 scoop",
+       "pt": "1 bola",
+       "it": "1 pallina",
+       "de": "1 Kugel"
+      },
+      {
+       "fr": "2 boules",
+       "en": "2 scoops",
+       "pt": "2 bolas",
+       "it": "2 palline",
+       "de": "2 Kugeln"
+      }
+     ]
+    },
+    {
+     "id": "d25",
+     "raw": [
+      25
+     ],
+     "name": {
+      "fr": "Blues",
+      "en": "Blues",
+      "pt": "Blues",
+      "it": "Blues",
+      "de": "Blues"
+     },
+     "prices": [
+      "9.00",
+      "12.00"
+     ],
+     "desc": {
+      "fr": "Sorbet Williams arrosé de Williamine",
+      "en": "Williams pear sorbet with Williamine",
+      "pt": "Sorvete de pera Williams regado com Williamine",
+      "it": "Sorbetto alla pera Williams con Williamine",
+      "de": "Williamsbirnensorbet mit Williamine"
+     },
+     "priceLabels": [
+      {
+       "fr": "1 boule",
+       "en": "1 scoop",
+       "pt": "1 bola",
+       "it": "1 pallina",
+       "de": "1 Kugel"
+      },
+      {
+       "fr": "2 boules",
+       "en": "2 scoops",
+       "pt": "2 bolas",
+       "it": "2 palline",
+       "de": "2 Kugeln"
+      }
+     ]
+    },
+    {
+     "id": "d26",
+     "raw": [
+      26
+     ],
+     "name": {
+      "fr": "Valaisan",
+      "en": "Valaisan",
+      "pt": "Valaisan",
+      "it": "Valaisan",
+      "de": "Valaisan"
+     },
+     "prices": [
+      "9.00",
+      "12.00"
+     ],
+     "desc": {
+      "fr": "Sorbet Abricot arrosé d’Abricotine",
+      "en": "Apricot sorbet with Abricotine",
+      "pt": "Sorvete de alperce regado com Abricotine",
+      "it": "Sorbetto all’albicocca con Abricotine",
+      "de": "Aprikosensorbet mit Abricotine"
+     },
+     "priceLabels": [
+      {
+       "fr": "1 boule",
+       "en": "1 scoop",
+       "pt": "1 bola",
+       "it": "1 pallina",
+       "de": "1 Kugel"
+      },
+      {
+       "fr": "2 boules",
+       "en": "2 scoops",
+       "pt": "2 bolas",
+       "it": "2 palline",
+       "de": "2 Kugeln"
+      }
+     ]
+    },
+    {
+     "id": "d27",
+     "raw": [
+      27
+     ],
+     "name": {
+      "fr": "Le Colonel",
+      "en": "Le Colonel",
+      "pt": "Le Colonel",
+      "it": "Le Colonel",
+      "de": "Le Colonel"
+     },
+     "prices": [
+      "9.00",
+      "12.00"
+     ],
+     "desc": {
+      "fr": "Sorbet Citron arrosé de Vodka",
+      "en": "Lemon sorbet with vodka",
+      "pt": "Sorvete de limão regado com vodka",
+      "it": "Sorbetto al limone con vodka",
+      "de": "Zitronensorbet mit Wodka"
+     },
+     "priceLabels": [
+      {
+       "fr": "1 boule",
+       "en": "1 scoop",
+       "pt": "1 bola",
+       "it": "1 pallina",
+       "de": "1 Kugel"
+      },
+      {
+       "fr": "2 boules",
+       "en": "2 scoops",
+       "pt": "2 bolas",
+       "it": "2 palline",
+       "de": "2 Kugeln"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "boules",
+   "title": {
+    "fr": "Boules de glace",
+    "en": "Ice-cream scoops",
+    "pt": "Bolas de gelado",
+    "it": "Palline di gelato",
+    "de": "Glacekugeln"
+   },
+   "items": [
+    {
+     "id": "d28",
+     "raw": [
+      28
+     ],
+     "name": {
+      "fr": "Boule de glace goût au choix",
+      "en": "Boule de glace goût au choix",
+      "pt": "Boule de glace goût au choix",
+      "it": "Boule de glace goût au choix",
+      "de": "Boule de glace goût au choix"
+     },
+     "prices": [
+      "4.00"
+     ],
+     "desc": {
+      "fr": "Vanille, Chocolat, Caramel, Mocca (avec noisettes croquantes), Stracciatella, Tarte au noix, Pistache, Fraise, Abricot, Poire Williams, Pruneaux, Citron",
+      "en": "Vanilla, Chocolate, Caramel, Mocha (with crunchy hazelnuts), Stracciatella, Walnut tart, Pistachio, Strawberry, Apricot, Williams pear, Prune, Lemon",
+      "pt": "Baunilha, Chocolate, Caramelo, Moca (com avelãs crocantes), Stracciatella, Tarte de noz, Pistácio, Morango, Alperce, Pera Williams, Ameixa, Limão",
+      "it": "Vaniglia, Cioccolato, Caramello, Moka (con nocciole croccanti), Stracciatella, Torta di noci, Pistacchio, Fragola, Albicocca, Pera Williams, Prugna, Limone",
+      "de": "Vanille, Schokolade, Caramel, Mocca (mit knusprigen Haselnüssen), Stracciatella, Baumnusstorte, Pistazie, Erdbeere, Aprikose, Williamsbirne, Zwetschge, Zitrone"
+     },
+     "notes": [
+      {
+       "fr": "Garniture à la crème : CHF 1.00",
+       "en": "Cream topping: CHF 1.00",
+       "pt": "Cobertura de natas: CHF 1.00",
+       "it": "Guarnizione di panna: CHF 1.00",
+       "de": "Rahmgarnitur: CHF 1.00"
+      }
+     ],
+     "flavours": 12
+    }
+   ]
+  },
+  {
+   "id": "enfants",
+   "title": {
+    "fr": "Frappé & glaces enfants",
+    "en": "Frappé & kids’ ice creams",
+    "pt": "Batido e gelados para crianças",
+    "it": "Frappé e gelati per bambini",
+    "de": "Frappé & Kinderglace"
+   },
+   "items": [
+    {
+     "id": "d29",
+     "raw": [
+      29
+     ],
+     "name": {
+      "fr": "Frappé",
+      "en": "Frappé",
+      "pt": "Frappé",
+      "it": "Frappé",
+      "de": "Frappé"
+     },
+     "prices": [
+      "8.50"
+     ],
+     "desc": {
+      "fr": "Arômes aux choix",
+      "en": "Flavours of your choice",
+      "pt": "Sabores à escolha",
+      "it": "Gusti a scelta",
+      "de": "Aroma nach Wahl"
+     }
+    },
+    {
+     "id": "d30",
+     "raw": [
+      30
+     ],
+     "name": {
+      "fr": "Smarties Cornet",
+      "en": "Smarties Cornet",
+      "pt": "Smarties Cornet",
+      "it": "Smarties Cornet",
+      "de": "Smarties Cornet"
+     },
+     "prices": [
+      "4.00"
+     ],
+     "desc": {
+      "fr": "Cornet Vanille avec Smarties",
+      "en": "Vanilla cone with Smarties",
+      "pt": "Cone de baunilha com Smarties",
+      "it": "Cono alla vaniglia con Smarties",
+      "de": "Vanillecornet mit Smarties"
+     }
+    },
+    {
+     "id": "d31",
+     "raw": [
+      31
+     ],
+     "name": {
+      "fr": "Wonderbibi",
+      "en": "Wonderbibi",
+      "pt": "Wonderbibi",
+      "it": "Wonderbibi",
+      "de": "Wonderbibi"
+     },
+     "prices": [
+      "6.00"
+     ],
+     "desc": {
+      "fr": "Glace Stracciatella avec sa surprise",
+      "en": "Stracciatella ice cream with its surprise",
+      "pt": "Gelado de stracciatella com surpresa",
+      "it": "Gelato stracciatella con sorpresa",
+      "de": "Stracciatellaglace mit Überraschung"
+     }
+    },
+    {
+     "id": "d32",
+     "raw": [
+      32
+     ],
+     "name": {
+      "fr": "Hello Kitty Stick",
+      "en": "Hello Kitty Stick",
+      "pt": "Hello Kitty Stick",
+      "it": "Hello Kitty Stick",
+      "de": "Hello Kitty Stick"
+     },
+     "prices": [
+      "6.00"
+     ],
+     "desc": {
+      "fr": "Vanille – Fraise. Nouveaux stickers pour jouer et collectionner dans le bâton",
+      "en": "Vanilla – Strawberry. New stickers to play with and collect inside the stick",
+      "pt": "Baunilha – Morango. Novos autocolantes para brincar e colecionar no pauzinho",
+      "it": "Vaniglia – Fragola. Nuovi adesivi da giocare e collezionare nello stecco",
+      "de": "Vanille – Erdbeere. Neue Sticker zum Spielen und Sammeln im Stiel"
+     }
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,95 @@
+@import "tailwindcss";
+
+/* Azulejo nights in the Pâquis: full-bleed bands alternate tile white and night blue; the logo's red,
+   gold and green carry the calls to action, the prices and the "open" signal. One look in every theme. */
+@theme {
+  --color-azulejo: #1d4e9e;
+  --color-azulejo-deep: #163c7a;
+  --color-azulejo-soft: #dbe5f4;
+  --color-night: #0f1b2d;
+  --color-night-2: #16263d;
+  --color-tile: #f7f2e8;
+  --color-tile-2: #efe7d6;
+  --color-ink: #13202f;
+  --color-ink-soft: #4a5566;
+  --color-red: #b80601;
+  --color-red-deep: #8f0501;
+  --color-wine: #6e1e2e;
+  --color-gold: #c9b23d;
+  --color-gold-ink: #6f6210;
+  --color-green: #289227;
+  --font-display: "Fraunces", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --font-sans: "Manrope", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-curtain: cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+:root {
+  color-scheme: light;
+  --label-h: 0px;
+  --header-h: 72px;
+  --tile-line: rgba(29, 78, 158, 0.05);
+}
+:root:has(.proposal-label) { --label-h: 28px; }
+@media (min-width: 1024px) { :root { --header-h: 84px; } }
+
+@layer base {
+html { scroll-padding-top: calc(var(--header-h) + var(--label-h) + 64px); -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--color-tile);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; font-optical-sizing: auto; }
+:focus-visible { outline: 3px solid var(--color-gold); outline-offset: 3px; border-radius: 4px; }
+::selection { background: var(--color-azulejo); color: var(--color-tile); }
+}
+
+.gutter { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+@media (min-width: 768px) { .gutter { padding-left: max(32px, env(safe-area-inset-left, 0px)); padding-right: max(32px, env(safe-area-inset-right, 0px)); } }
+.wrap { width: 100%; max-width: 1240px; margin-inline: auto; }
+
+/* Four-fold azulejo motif drawn in CSS: used as a faint texture (≤ 5 %) and as the hero's still fallback. */
+.tile-texture { position: relative; isolation: isolate; }
+.tile-texture::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96'%3E%3Cg fill='none' stroke='%231d4e9e' stroke-width='2'%3E%3Crect x='1' y='1' width='94' height='94'/%3E%3Ccircle cx='48' cy='48' r='16'/%3E%3Cpath d='M48 8 C58 28 68 38 88 48 C68 58 58 68 48 88 C38 68 28 58 8 48 C28 38 38 28 48 8Z'/%3E%3Cpath d='M0 0 Q24 6 24 24 Q6 24 0 0ZM96 0 Q72 6 72 24 Q90 24 96 0ZM0 96 Q24 90 24 72 Q6 72 0 96ZM96 96 Q72 90 72 72 Q90 72 96 96Z'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 96px 96px;
+}
+.tile-texture--night::before { opacity: 0.06; filter: invert(1) brightness(1.6); }
+.tile-still {
+  background-color: #10213b;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Crect width='120' height='120' fill='%2313284a'/%3E%3Cg fill='none' stroke='%232d5fae' stroke-width='3'%3E%3Crect x='1.5' y='1.5' width='117' height='117' stroke='%230b1628'/%3E%3Ccircle cx='60' cy='60' r='19'/%3E%3Cpath d='M60 10 C72 35 85 48 110 60 C85 72 72 85 60 110 C48 85 35 72 10 60 C35 48 48 35 60 10Z'/%3E%3Cpath d='M0 0 Q30 8 30 30 Q8 30 0 0ZM120 0 Q90 8 90 30 Q112 30 120 0ZM0 120 Q30 112 30 90 Q8 90 0 120ZM120 120 Q90 112 90 90 Q112 90 120 120Z' fill='%231d4e9e' fill-opacity='.35'/%3E%3C/g%3E%3Ccircle cx='60' cy='60' r='6' fill='%23c9b23d' fill-opacity='.55'/%3E%3C/svg%3E");
+  background-size: 120px 120px;
+}
+
+/* Dotted leaders between a dish and its price. */
+.leader { flex: 1 1 24px; min-width: 24px; border-bottom: 2px dotted currentColor; opacity: 0.28; transform: translateY(-0.4em); }
+
+.proposal-label {
+  position: fixed; inset: env(safe-area-inset-top, 0px) 0 auto 0; z-index: 300; height: var(--label-h); margin: 0;
+  display: grid; place-items: center; background: var(--color-gold); color: var(--color-night);
+  font-size: 11px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; text-align: center;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+/* Paints the phone's status-bar band above the fixed label and the sticky header. */
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 301; background: var(--color-gold); }
+@media (max-width: 480px) { .proposal-label { font-size: 9.5px; letter-spacing: 0.03em; } }
+
+.marquee-track { will-change: transform; }
+.no-scrollbar { scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
+@keyframes slide-progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes pulse-dot { 0% { transform: scale(1); opacity: 0.7; } 80%, 100% { transform: scale(2.6); opacity: 0; } }
+.pulse-dot::after { content: ""; position: absolute; inset: 0; border-radius: 999px; background: inherit; animation: pulse-dot 1.8s var(--ease-out-expo) infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}

@@ -1,0 +1,1369 @@
+{
+ "source": "https://donduarte.ch/carte-plats/ · groups from https://donduarte.ch/menu-restaurant-pdf/",
+ "pdf": "https://donduarte.ch/menu-restaurant-pdf/",
+ "liveLines": 71,
+ "shownLines": 67,
+ "groups": [
+  {
+   "id": "aperitifs",
+   "title": {
+    "fr": "Apéritifs",
+    "en": "Aperitifs",
+    "pt": "Aperitivos",
+    "it": "Aperitivi",
+    "de": "Aperitifs"
+   },
+   "items": [
+    {
+     "id": "p13",
+     "raw": [
+      13
+     ],
+     "name": {
+      "fr": "Kir Royal (1dl)"
+     },
+     "prices": [
+      "10.00"
+     ]
+    },
+    {
+     "id": "p14",
+     "raw": [
+      14
+     ],
+     "name": {
+      "fr": "Spritz ou Lemon Spritz"
+     },
+     "prices": [
+      "11.50"
+     ]
+    },
+    {
+     "id": "p5",
+     "raw": [
+      5
+     ],
+     "name": {
+      "fr": "Hugo"
+     },
+     "prices": [
+      "12.50"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "vins",
+   "title": {
+    "fr": "Vins",
+    "en": "Wines",
+    "pt": "Vinhos",
+    "it": "Vini",
+    "de": "Weine"
+   },
+   "note": {
+    "fr": "En accompagnement de nos mets, nous vous conseillons nos vins :",
+    "en": "To go with our dishes, we recommend our wines:",
+    "pt": "Para acompanhar os nossos pratos, aconselhamos os nossos vinhos:",
+    "it": "Per accompagnare i nostri piatti, vi consigliamo i nostri vini:",
+    "de": "Zu unseren Gerichten empfehlen wir unsere Weine:"
+   },
+   "winesFromPdf": [
+    "Rosé de Penalva",
+    "Encosta de Penalva rouge",
+    "Encosta de Penalva branco",
+    "Reserva",
+    "Milénio",
+    "Baga",
+    "Touriga Nacional"
+   ],
+   "items": []
+  },
+  {
+   "id": "terra-e-mar",
+   "title": {
+    "fr": "Terra e Mar",
+    "en": "Terra e Mar",
+    "pt": "Terra e Mar",
+    "it": "Terra e Mar",
+    "de": "Terra e Mar"
+   },
+   "note": {
+    "fr": "Nos spécialités",
+    "en": "Our specialities",
+    "pt": "As nossas especialidades",
+    "it": "Le nostre specialità",
+    "de": "Unsere Spezialitäten"
+   },
+   "items": [
+    {
+     "id": "p11",
+     "raw": [
+      11
+     ],
+     "name": {
+      "fr": "Terre et Mer",
+      "pt": "Terra e Mar",
+      "en": "Earth & Sea"
+     },
+     "prices": [
+      "39.00"
+     ],
+     "desc": {
+      "fr": "Viandes: boeuf, porc, agneau, chouriço, Poissons: saumon, lote, crevettes, Chou sauté et pommes de terre",
+      "pt": "Carnes : vaca, porco, cordeiro, chouriço, Peixes : salmão, tamboril, camarão, Couve salteada e batata",
+      "en": "Meats: beef, pork, lamb, chourizo, Fish: salmon, lot, shrimps, Sautéed cabbage and potatoes",
+      "it": "Carni: manzo, maiale, agnello, chouriço, Pesce: salmone, rana pescatrice, gamberi, Cavolo saltato e patate",
+      "de": "Fleisch: Rind, Schwein, Lamm, Chouriço, Fisch: Lachs, Seeteufel, Crevetten, Gebratener Kohl und Kartoffeln"
+     },
+     "notes": [
+      {
+       "fr": "Min. 2 personnes, prix par personne",
+       "en": "Min. 2 people, price per person",
+       "pt": "Mín. 2 pessoas, preço por pessoa",
+       "it": "Min. 2 persone, prezzo a persona",
+       "de": "Min. 2 Personen, Preis pro Person"
+      }
+     ],
+     "photo": "terra-e-mar"
+    },
+    {
+     "id": "p12",
+     "raw": [
+      12
+     ],
+     "name": {
+      "fr": "Demi coquelet ou coquelet grillé à la portugaise",
+      "pt": "Franguinho de churrasco",
+      "en": "Grilled cockerel"
+     },
+     "prices": [
+      "17.00",
+      "22.00"
+     ],
+     "desc": {
+      "fr": "Premier prix pour un demi coquelet, pas d’option d’un coquelet pour deux",
+      "en": "First price for half cockerel, no option for a cockerel for two",
+      "pt": "Primeiro preço para meio franguinho, sem opção de um franguinho para duas pessoas",
+      "it": "Primo prezzo per mezzo galletto, nessuna opzione di un galletto per due",
+      "de": "Erster Preis für ein halbes Hähnchen, keine Option eines ganzen Hähnchens für zwei"
+     },
+     "priceLabels": [
+      {
+       "fr": "demi",
+       "en": "half",
+       "pt": "meio",
+       "it": "mezzo",
+       "de": "halb"
+      },
+      {
+       "fr": "entier",
+       "en": "whole",
+       "pt": "inteiro",
+       "it": "intero",
+       "de": "ganz"
+      }
+     ]
+    },
+    {
+     "id": "p51",
+     "raw": [
+      51
+     ],
+     "name": {
+      "fr": "Francesinha",
+      "en": "Francesinha",
+      "pt": "Francesinha",
+      "it": "Francesinha",
+      "de": "Francesinha"
+     },
+     "prices": [
+      "22.00"
+     ],
+     "desc": {
+      "fr": "Jambon épaule, saucisse, tranche de boeuf, fromage et oeuf",
+      "pt": "Fiambre, linguiça bife de vaca, queijo e ovo",
+      "en": "Shoulder ham, sausage, beef slice, cheese and egg",
+      "it": "Prosciutto di spalla, salsiccia, fetta di manzo, formaggio e uovo",
+      "de": "Schulterschinken, Wurst, Rindfleischscheibe, Käse und Ei"
+     },
+     "photo": "francesinha"
+    }
+   ]
+  },
+  {
+   "id": "entrees",
+   "title": {
+    "fr": "Entrées",
+    "en": "Starters",
+    "pt": "Entradas",
+    "it": "Antipasti",
+    "de": "Vorspeisen"
+   },
+   "items": [
+    {
+     "id": "p25",
+     "raw": [
+      25
+     ],
+     "name": {
+      "fr": "Bolinhos de bacalhau",
+      "en": "Cod bolinhos"
+     },
+     "prices": [
+      "2.00"
+     ],
+     "notes": [
+      {
+       "fr": "Minimum 3 pièces",
+       "en": "Minimum 3 pieces",
+       "pt": "Mínimo 3 unidades",
+       "it": "Minimo 3 pezzi",
+       "de": "Mindestens 3 Stück"
+      },
+      {
+       "fr": "Prix à la pièce",
+       "en": "Price per piece",
+       "pt": "Preço por unidade",
+       "it": "Prezzo al pezzo",
+       "de": "Preis pro Stück"
+      }
+     ]
+    },
+    {
+     "id": "p26",
+     "raw": [
+      26
+     ],
+     "name": {
+      "fr": "Rissóis de crevettes",
+      "en": "Shrimp patties"
+     },
+     "prices": [
+      "2.00"
+     ],
+     "notes": [
+      {
+       "fr": "Minimum 3 pièces",
+       "en": "Minimum 3 pieces",
+       "pt": "Mínimo 3 unidades",
+       "it": "Minimo 3 pezzi",
+       "de": "Mindestens 3 Stück"
+      },
+      {
+       "fr": "Prix à la pièce",
+       "en": "Price per piece",
+       "pt": "Preço por unidade",
+       "it": "Prezzo al pezzo",
+       "de": "Preis pro Stück"
+      }
+     ]
+    },
+    {
+     "id": "p37",
+     "raw": [
+      37
+     ],
+     "name": {
+      "fr": "Assiette de jambon cru campagnard",
+      "en": "Plate of Raw ham campagnard"
+     },
+     "prices": [
+      "22.00"
+     ]
+    },
+    {
+     "id": "p27",
+     "raw": [
+      27
+     ],
+     "name": {
+      "fr": "Assiette de charcuterie",
+      "en": "Cold cuts platter"
+     },
+     "prices": [
+      "22.00"
+     ]
+    },
+    {
+     "id": "p38",
+     "raw": [
+      38
+     ],
+     "name": {
+      "fr": "Chouriça ou morcela",
+      "en": "Chorizo or black pudding"
+     },
+     "prices": [
+      "16.00"
+     ]
+    },
+    {
+     "id": "p39",
+     "raw": [
+      39
+     ],
+     "name": {
+      "fr": "Queijo da serra",
+      "en": "Serra cheese"
+     },
+     "prices": [
+      "12.00"
+     ]
+    },
+    {
+     "id": "p40",
+     "raw": [
+      40
+     ],
+     "name": {
+      "fr": "Queijo",
+      "en": "Cheese"
+     },
+     "prices": [
+      "8.00"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "pates",
+   "title": {
+    "fr": "Pâtes",
+    "en": "Pasta",
+    "pt": "Massas",
+    "it": "Pasta",
+    "de": "Teigwaren"
+   },
+   "note": {
+    "fr": "Spaghettis ou penne",
+    "en": "Spaghetti or penne",
+    "pt": "Esparguete ou penne",
+    "it": "Spaghetti o penne",
+    "de": "Spaghetti oder Penne"
+   },
+   "items": [
+    {
+     "id": "p15",
+     "raw": [
+      15
+     ],
+     "name": {
+      "fr": "Carbonara"
+     },
+     "prices": [
+      "18.00"
+     ]
+    },
+    {
+     "id": "p48",
+     "raw": [
+      48
+     ],
+     "name": {
+      "fr": "Aux crevettes",
+      "en": "With shrimps"
+     },
+     "prices": [
+      "20.00"
+     ]
+    },
+    {
+     "id": "p49",
+     "raw": [
+      49
+     ],
+     "name": {
+      "fr": "Ail, basilic et crème",
+      "en": "Garlic, basil and cream"
+     },
+     "prices": [
+      "18.00"
+     ]
+    },
+    {
+     "id": "p50",
+     "raw": [
+      50
+     ],
+     "name": {
+      "fr": "Aux morilles",
+      "en": "With morels"
+     },
+     "prices": [
+      "22.00"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "omelettes",
+   "title": {
+    "fr": "Omelettes",
+    "en": "Omelettes",
+    "pt": "Omeletes",
+    "it": "Omelette",
+    "de": "Omeletten"
+   },
+   "items": [
+    {
+     "id": "p41",
+     "raw": [
+      41
+     ],
+     "name": {
+      "fr": "Omelette nature",
+      "pt": "Omelete natural",
+      "en": "Natural omelette"
+     },
+     "prices": [
+      "13.00"
+     ]
+    },
+    {
+     "id": "p42",
+     "raw": [
+      42
+     ],
+     "name": {
+      "fr": "Omelette au fromage",
+      "pt": "Omelete de queijo",
+      "en": "Omelette with cheese"
+     },
+     "prices": [
+      "15.00"
+     ]
+    },
+    {
+     "id": "p43",
+     "raw": [
+      43
+     ],
+     "name": {
+      "fr": "Omelette aux champignons frais",
+      "pt": "Omelete de cogumelos",
+      "en": "Omelette with mushrooms"
+     },
+     "prices": [
+      "15.00"
+     ]
+    },
+    {
+     "id": "p44",
+     "raw": [
+      44
+     ],
+     "name": {
+      "fr": "Omelette au jambon cuit de devant",
+      "pt": "Omelete de fiambre",
+      "en": "Omelette with ham"
+     },
+     "prices": [
+      "15.00"
+     ]
+    },
+    {
+     "id": "p45",
+     "raw": [
+      45
+     ],
+     "name": {
+      "fr": "Omelette au chouriço et oignons",
+      "pt": "Omelette de chouriço e cebola",
+      "en": "Omelette with chourizo and onions"
+     },
+     "prices": [
+      "15.00"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "juniors",
+   "title": {
+    "fr": "Pour les juniors",
+    "en": "For juniors",
+    "pt": "Para os mais novos",
+    "it": "Per i più piccoli",
+    "de": "Für die Kleinen"
+   },
+   "items": [
+    {
+     "id": "p46",
+     "raw": [
+      46
+     ],
+     "name": {
+      "fr": "Petit steack jambon et oeuf",
+      "en": "Little steak ham and cheese"
+     },
+     "prices": [
+      "16.00"
+     ]
+    },
+    {
+     "id": "p47",
+     "raw": [
+      47
+     ],
+     "name": {
+      "fr": "Saucisses de vienne (2 pièces) et oeuf",
+      "en": "Vienna sausages ( 2 pieces) and egg"
+     },
+     "prices": [
+      "14.00"
+     ]
+    },
+    {
+     "id": "p70",
+     "raw": [
+      70
+     ],
+     "name": {
+      "fr": "Pizza Junior"
+     },
+     "prices": [
+      "12.00"
+     ],
+     "desc": {
+      "fr": "Tomate, mozzarella, jambon cuit de devant",
+      "en": "Tomato, mozzarella, cooked ham",
+      "pt": "Tomate, mozzarella, fiambre",
+      "it": "Pomodoro, mozzarella, prosciutto cotto",
+      "de": "Tomate, Mozzarella, Vorderschinken"
+     }
+    }
+   ]
+  },
+  {
+   "id": "poissons",
+   "title": {
+    "fr": "Poissons",
+    "en": "Fish",
+    "pt": "Peixe",
+    "it": "Pesce",
+    "de": "Fisch"
+   },
+   "items": [
+    {
+     "id": "p9",
+     "raw": [
+      9
+     ],
+     "name": {
+      "fr": "Duo de poisson",
+      "pt": "Duo de peixe",
+      "en": "Duo of fish"
+     },
+     "prices": [
+      "30.00"
+     ],
+     "desc": {
+      "fr": "Saumon et lote",
+      "pt": "Salmão e tamboril",
+      "en": "Salmon and monkfish",
+      "it": "Salmone e rana pescatrice",
+      "de": "Lachs und Seeteufel"
+     }
+    },
+    {
+     "id": "p16",
+     "raw": [
+      16
+     ],
+     "name": {
+      "fr": "Saumon à la plancha",
+      "pt": "Salmão na prancha",
+      "en": "Salmon plancha"
+     },
+     "prices": [
+      "28.00"
+     ]
+    },
+    {
+     "id": "p17",
+     "raw": [
+      17
+     ],
+     "name": {
+      "fr": "Poulpe grillé",
+      "pt": "Polvo grelhado",
+      "en": "Grilled octopus"
+     },
+     "prices": [
+      "32.00"
+     ],
+     "photo": "polvo"
+    },
+    {
+     "id": "p18",
+     "raw": [
+      18
+     ],
+     "name": {
+      "fr": "Queues de crevettes à l’ail",
+      "pt": "Rabos de camarão ao alho",
+      "en": "Garlic shrimp tails"
+     },
+     "prices": [
+      "30.00"
+     ]
+    },
+    {
+     "id": "p19",
+     "raw": [
+      19
+     ],
+     "name": {
+      "fr": "Filets de perche",
+      "pt": "Filetes de perca",
+      "en": "Perch fillets"
+     },
+     "prices": [
+      "28.00"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "morues",
+   "title": {
+    "fr": "Morues",
+    "en": "Salt cod",
+    "pt": "Bacalhau",
+    "it": "Baccalà",
+    "de": "Bacalhau"
+   },
+   "items": [
+    {
+     "id": "p20",
+     "raw": [
+      20
+     ],
+     "name": {
+      "fr": "Morue grillé, pdt avec la peau au four",
+      "pt": "Bacalhau grelhado com batatas a murro",
+      "en": "Grilled cod, potatoes with the skin in the oven"
+     },
+     "prices": [
+      "30.00"
+     ],
+     "notes": [
+      {
+       "fr": "30 minutes au four",
+       "en": "30 minutes in the oven",
+       "pt": "30 minutos no forno",
+       "it": "30 minuti in forno",
+       "de": "30 Minuten im Ofen"
+      }
+     ],
+     "photo": "bacalhau-grelhado"
+    },
+    {
+     "id": "p21",
+     "raw": [
+      21
+     ],
+     "name": {
+      "fr": "Morue à braz",
+      "pt": "Bacalhau à braz",
+      "en": "Cod to the braz"
+     },
+     "prices": [
+      "30.00"
+     ],
+     "photo": "bacalhau-braz"
+    },
+    {
+     "id": "p22",
+     "raw": [
+      22
+     ],
+     "name": {
+      "fr": "Morue maison",
+      "pt": "Bacalhau à casa",
+      "en": "Homemade cod"
+     },
+     "prices": [
+      "30.00"
+     ]
+    },
+    {
+     "id": "p23",
+     "raw": [
+      23
+     ],
+     "name": {
+      "fr": "Morue à la crème",
+      "pt": "Bacalhau com natas",
+      "en": "Cod with cream"
+     },
+     "prices": [
+      "32.00"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "pizzas",
+   "title": {
+    "fr": "Pizzas",
+    "en": "Pizzas",
+    "pt": "Pizas",
+    "it": "Pizze",
+    "de": "Pizzas"
+   },
+   "items": [
+    {
+     "id": "p52",
+     "raw": [
+      52
+     ],
+     "name": {
+      "fr": "Marguerite"
+     },
+     "prices": [
+      "15.00"
+     ],
+     "desc": {
+      "fr": "Tomate et mozzarella",
+      "en": "Tomato and mozzarella",
+      "pt": "Tomate e mozzarella",
+      "it": "Pomodoro e mozzarella",
+      "de": "Tomate und Mozzarella"
+     }
+    },
+    {
+     "id": "p53",
+     "raw": [
+      53
+     ],
+     "name": {
+      "fr": "Carbonara"
+     },
+     "prices": [
+      "17.00"
+     ],
+     "desc": {
+      "fr": "Tomate, mozzarella et jambon cuit de devant",
+      "en": "Tomato, mozzarella and cooked ham from the front",
+      "pt": "Tomate, mozzarella e fiambre",
+      "it": "Pomodoro, mozzarella e prosciutto cotto",
+      "de": "Tomate, Mozzarella und Vorderschinken"
+     }
+    },
+    {
+     "id": "p54",
+     "raw": [
+      54
+     ],
+     "name": {
+      "fr": "Capriciosa"
+     },
+     "prices": [
+      "18.00"
+     ],
+     "desc": {
+      "fr": "Tomate, mozzarella, champignons frais, jambon cuit devant et oeuf",
+      "en": "Tomato, mozzarella, fresh cooked mushrooms, ham and egg",
+      "pt": "Tomate, mozzarella, cogumelos frescos, fiambre e ovo",
+      "it": "Pomodoro, mozzarella, funghi freschi, prosciutto cotto e uovo",
+      "de": "Tomate, Mozzarella, frische Champignons, Vorderschinken und Ei"
+     }
+    },
+    {
+     "id": "p55",
+     "raw": [
+      55
+     ],
+     "name": {
+      "fr": "Du chef"
+     },
+     "prices": [
+      "19.00"
+     ],
+     "desc": {
+      "fr": "Tomate, mozzarella, thon, champignons frais et oeuf",
+      "en": "Tomato, mozzarella, tuna, fresh mushrooms and egg",
+      "pt": "Tomate, mozzarella, atum, cogumelos frescos e ovo",
+      "it": "Pomodoro, mozzarella, tonno, funghi freschi e uovo",
+      "de": "Tomate, Mozzarella, Thunfisch, frische Champignons und Ei"
+     }
+    },
+    {
+     "id": "p56",
+     "raw": [
+      56
+     ],
+     "name": {
+      "fr": "4 saisons"
+     },
+     "prices": [
+      "19.00"
+     ],
+     "desc": {
+      "fr": "Tomate, mozzarella, champ. frais et jambon cuit de devant, poivrons et câpres",
+      "en": "Tomato, mozzarella, fresh mushrooms and cooked from ham peppers and capers",
+      "pt": "Tomate, mozzarella, cogumelos frescos, fiambre, pimentos e alcaparras",
+      "it": "Pomodoro, mozzarella, funghi freschi, prosciutto cotto, peperoni e capperi",
+      "de": "Tomate, Mozzarella, frische Champignons, Vorderschinken, Peperoni und Kapern"
+     }
+    },
+    {
+     "id": "p57",
+     "raw": [
+      57
+     ],
+     "name": {
+      "fr": "Napolitaine"
+     },
+     "prices": [
+      "18.00"
+     ],
+     "desc": {
+      "fr": "Tomate, mozzarella, poivrons, anchois et olives",
+      "en": "Tomato, mozzarella, peppers, anchovies and olives",
+      "pt": "Tomate, mozzarella, pimentos, anchovas e azeitonas",
+      "it": "Pomodoro, mozzarella, peperoni, acciughe e olive",
+      "de": "Tomate, Mozzarella, Peperoni, Sardellen und Oliven"
+     }
+    },
+    {
+     "id": "p58",
+     "raw": [
+      58
+     ],
+     "name": {
+      "fr": "Au jambon"
+     },
+     "prices": [
+      "19.00"
+     ],
+     "desc": {
+      "fr": "Tomate, mozzarella, champignons frais et jambon cru campagnard",
+      "en": "Tomato, mozzarella, fresh mushrooms and raw country ham",
+      "pt": "Tomate, mozzarella, cogumelos frescos e presunto",
+      "it": "Pomodoro, mozzarella, funghi freschi e prosciutto crudo di campagna",
+      "de": "Tomate, Mozzarella, frische Champignons und Bauernrohschinken"
+     }
+    },
+    {
+     "id": "p59",
+     "raw": [
+      59
+     ],
+     "name": {
+      "fr": "À la morue"
+     },
+     "prices": [
+      "19.00"
+     ],
+     "desc": {
+      "fr": "Tomate, mozzarella, morue, poivrons, oignons et câpres",
+      "en": "Tomato, mozzarella, cod, peppers, onions and capers",
+      "pt": "Tomate, mozzarella, bacalhau, pimentos, cebola e alcaparras",
+      "it": "Pomodoro, mozzarella, baccalà, peperoni, cipolle e capperi",
+      "de": "Tomate, Mozzarella, Bacalhau, Peperoni, Zwiebeln und Kapern"
+     }
+    },
+    {
+     "id": "p60",
+     "raw": [
+      60
+     ],
+     "name": {
+      "fr": "Aux crevettes"
+     },
+     "prices": [
+      "19.00"
+     ],
+     "desc": {
+      "fr": "Tomate, mozzarella, crevettes",
+      "en": "Tomato, mozzarella, shrimps",
+      "pt": "Tomate, mozzarella, camarão",
+      "it": "Pomodoro, mozzarella, gamberi",
+      "de": "Tomate, Mozzarella, Crevetten"
+     }
+    },
+    {
+     "id": "p61",
+     "raw": [
+      61
+     ],
+     "name": {
+      "fr": "Don Duarte"
+     },
+     "prices": [
+      "19.00"
+     ],
+     "desc": {
+      "fr": "Tomate, mozzarella, chouriço et oignons",
+      "en": "Tomato, mozzarella, chouriço and onions",
+      "pt": "Tomate, mozzarella, chouriço e cebola",
+      "it": "Pomodoro, mozzarella, chouriço e cipolle",
+      "de": "Tomate, Mozzarella, Chouriço und Zwiebeln"
+     }
+    },
+    {
+     "id": "p62",
+     "raw": [
+      62,
+      4
+     ],
+     "name": {
+      "fr": "Au lard"
+     },
+     "prices": [
+      "18.00"
+     ],
+     "desc": {
+      "fr": "Tomate, mozzarella, lard et oignons",
+      "en": "Tomato, mozzarella, bacon and onions",
+      "pt": "Tomate, mozzarella, bacon e cebola",
+      "it": "Pomodoro, mozzarella, pancetta e cipolle",
+      "de": "Tomate, Mozzarella, Speck und Zwiebeln"
+     },
+     "duplicates": [
+      4
+     ]
+    },
+    {
+     "id": "p63",
+     "raw": [
+      63,
+      3
+     ],
+     "name": {
+      "fr": "Maison"
+     },
+     "prices": [
+      "19.00"
+     ],
+     "desc": {
+      "fr": "Tomate, mozzarella, champignons frais et viande de boeuf",
+      "en": "Tomato, mozzarella, fresh mushrooms and beef",
+      "pt": "Tomate, mozzarella, cogumelos frescos e carne de vaca",
+      "it": "Pomodoro, mozzarella, funghi freschi e carne di manzo",
+      "de": "Tomate, Mozzarella, frische Champignons und Rindfleisch"
+     },
+     "duplicates": [
+      3
+     ]
+    },
+    {
+     "id": "p64",
+     "raw": [
+      64,
+      2
+     ],
+     "name": {
+      "fr": "Végétarienne"
+     },
+     "prices": [
+      "19.00"
+     ],
+     "desc": {
+      "fr": "Tomate, mozzararella, courgettes, poivrons, aubergines et oignons",
+      "en": "Tomato, mozzarella, zucchini, peppers, eggplant and onions",
+      "pt": "Tomate, mozzarella, curgete, pimentos, beringela e cebola",
+      "it": "Pomodoro, mozzarella, zucchine, peperoni, melanzane e cipolle",
+      "de": "Tomate, Mozzarella, Zucchetti, Peperoni, Auberginen und Zwiebeln"
+     },
+     "duplicates": [
+      2
+     ]
+    },
+    {
+     "id": "p65",
+     "raw": [
+      65,
+      1
+     ],
+     "name": {
+      "fr": "Calzone"
+     },
+     "prices": [
+      "19.00"
+     ],
+     "desc": {
+      "fr": "Tomate, mozzarella, jambon cuit, champignons frais et oeuf",
+      "en": "Tomato, mozzarella, cooked front ham, fresh mushrooms and egg",
+      "pt": "Tomate, mozzarella, fiambre, cogumelos frescos e ovo",
+      "it": "Pomodoro, mozzarella, prosciutto cotto, funghi freschi e uovo",
+      "de": "Tomate, Mozzarella, Kochschinken, frische Champignons und Ei"
+     },
+     "duplicates": [
+      1
+     ]
+    },
+    {
+     "id": "p66",
+     "raw": [
+      66,
+      0
+     ],
+     "name": {
+      "fr": "Tropical"
+     },
+     "prices": [
+      "19.00"
+     ],
+     "desc": {
+      "fr": "Tomate, mozzarella, crevettes et ananas",
+      "en": "Tomato, mozzarella, shrimp and pineapple",
+      "pt": "Tomate, mozzarella, camarão e ananás",
+      "it": "Pomodoro, mozzarella, gamberi e ananas",
+      "de": "Tomate, Mozzarella, Crevetten und Ananas"
+     },
+     "duplicates": [
+      0
+     ]
+    }
+   ]
+  },
+  {
+   "id": "menus",
+   "title": {
+    "fr": "Menus",
+    "en": "Set menus",
+    "pt": "Menus",
+    "it": "Menù",
+    "de": "Menüs"
+   },
+   "items": [
+    {
+     "id": "p33",
+     "raw": [
+      33
+     ],
+     "name": {
+      "fr": "Menu à base de viande",
+      "en": "Meat menu"
+     },
+     "prices": [
+      "39.00"
+     ],
+     "desc": {
+      "fr": "Salade mêlée – Faux-filet de bœuf – Sauce Don Duarte- Pommes de terre à la plancha- Légumes du jour – Dessert au choix (exceptées les glaces)",
+      "en": "Mixed salad – Beef sirloin – Grilled potatoes – Vegetables of the day – Dessert of your choice (excepted ice cream)",
+      "pt": "Salada mista – Vazia de vaca – Molho Don Duarte – Batatas na plancha – Legumes do dia – Sobremesa à escolha (exceto gelados)",
+      "it": "Insalata mista – Controfiletto di manzo – Salsa Don Duarte – Patate alla piastra – Verdure del giorno – Dessert a scelta (gelati esclusi)",
+      "de": "Gemischter Salat – Rindshuft (Faux-filet) – Sauce Don Duarte – Kartoffeln von der Plancha – Tagesgemüse – Dessert nach Wahl (ohne Glace)"
+     }
+    },
+    {
+     "id": "p34",
+     "raw": [
+      34
+     ],
+     "name": {
+      "fr": "Menu à base de poissons",
+      "en": "Fish menu"
+     },
+     "prices": [
+      "39.00"
+     ],
+     "desc": {
+      "fr": "Salade mêlée – Duo de poissons – Pommes de terre à la plancha – Légumes du jour – Desserts au choix (exceptées les glaces)",
+      "en": "Mixed salad – Duo of fish – Grilled potatoes – Vegetables of the day – Dessert of your choice (excepted ice cream)",
+      "pt": "Salada mista – Duo de peixe – Batatas na plancha – Legumes do dia – Sobremesa à escolha (exceto gelados)",
+      "it": "Insalata mista – Duo di pesce – Patate alla piastra – Verdure del giorno – Dessert a scelta (gelati esclusi)",
+      "de": "Gemischter Salat – Fisch-Duo – Kartoffeln von der Plancha – Tagesgemüse – Dessert nach Wahl (ohne Glace)"
+     }
+    }
+   ]
+  },
+  {
+   "id": "viandes",
+   "title": {
+    "fr": "Viandes",
+    "en": "Meat",
+    "pt": "Carne",
+    "it": "Carne",
+    "de": "Fleisch"
+   },
+   "items": [
+    {
+     "id": "p10",
+     "raw": [
+      10
+     ],
+     "name": {
+      "fr": "Secretos de porc",
+      "pt": "Secretos de porco",
+      "en": "Pork secrets"
+     },
+     "prices": [
+      "25.00"
+     ]
+    },
+    {
+     "id": "p29",
+     "raw": [
+      29,
+      36
+     ],
+     "name": {
+      "fr": "Travers de porc grillé",
+      "pt": "Entrecosto de porco grelhado",
+      "en": "Grilled pork ribs"
+     },
+     "prices": [
+      "30.00"
+     ],
+     "duplicates": [
+      36
+     ]
+    },
+    {
+     "id": "p28",
+     "raw": [
+      28
+     ],
+     "name": {
+      "fr": "Émincé de porc et palourdes",
+      "pt": "Carne de porco a alentejana",
+      "en": "Alentejo pork meat with clams"
+     },
+     "prices": [
+      "28.00"
+     ],
+     "photo": "porco-alentejana"
+    },
+    {
+     "id": "p30",
+     "raw": [
+      30
+     ],
+     "name": {
+      "fr": "Steak maison",
+      "pt": "Bife à casa",
+      "en": "Homemade steak"
+     },
+     "prices": [
+      "28.00"
+     ],
+     "desc": {
+      "fr": "Tranche de jambon d’épaule et œuf",
+      "pt": "Fiambre e ovo",
+      "en": "Shoulder ham and egg slice",
+      "it": "Fetta di prosciutto di spalla e uovo",
+      "de": "Scheibe Schulterschinken und Ei"
+     }
+    },
+    {
+     "id": "p31",
+     "raw": [
+      31
+     ],
+     "name": {
+      "fr": "Entrecôte de bœuf",
+      "en": "Beef steak"
+     },
+     "prices": [
+      "30.00"
+     ]
+    },
+    {
+     "id": "p32",
+     "raw": [
+      32
+     ],
+     "name": {
+      "fr": "Côtelettes d’agneau au romarin",
+      "pt": "Costeletas de cordeiro ao alecrim",
+      "en": "Rosemary lamb chops"
+     },
+     "prices": [
+      "30.00"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "sauces",
+   "title": {
+    "fr": "Sauces",
+    "en": "Sauces",
+    "pt": "Molhos",
+    "it": "Salse",
+    "de": "Saucen"
+   },
+   "items": [
+    {
+     "id": "p69",
+     "raw": [
+      69
+     ],
+     "name": {
+      "fr": "Sauce Don Duarte",
+      "en": "Don Duarte Sauce"
+     },
+     "prices": [
+      "5.00"
+     ]
+    },
+    {
+     "id": "p68",
+     "raw": [
+      68
+     ],
+     "name": {
+      "fr": "Sauce au poivre vert",
+      "en": "Green pepper sauce"
+     },
+     "prices": [
+      "5.00"
+     ]
+    },
+    {
+     "id": "p67",
+     "raw": [
+      67
+     ],
+     "name": {
+      "fr": "Sauce aux morilles",
+      "en": "Morel sauce"
+     },
+     "prices": [
+      "9.00"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "salades",
+   "title": {
+    "fr": "Salades & soupe",
+    "en": "Salads & soup",
+    "pt": "Saladas e sopa",
+    "it": "Insalate e zuppa",
+    "de": "Salate & Suppe"
+   },
+   "items": [
+    {
+     "id": "p6",
+     "raw": [
+      6
+     ],
+     "name": {
+      "fr": "Petite salade verte",
+      "en": "Small green salad"
+     },
+     "prices": [
+      "6.00"
+     ],
+     "desc": {
+      "fr": "Salade verte, tomate et carottes",
+      "en": "Letuce, tomato and carrots",
+      "pt": "Alface, tomate e cenoura",
+      "it": "Insalata verde, pomodoro e carote",
+      "de": "Grüner Salat, Tomate und Karotten"
+     }
+    },
+    {
+     "id": "p7",
+     "raw": [
+      7
+     ],
+     "name": {
+      "fr": "Grande salade mêlée",
+      "en": "Large mixed salad"
+     },
+     "prices": [
+      "15.00"
+     ],
+     "desc": {
+      "fr": "Salade verte, carottes, tomate, maïs et endives",
+      "en": "Letuce, carrots, tomato, corn and chicory",
+      "pt": "Alface, cenoura, tomate, milho e endívias",
+      "it": "Insalata verde, carote, pomodoro, mais e indivia",
+      "de": "Grüner Salat, Karotten, Tomate, Mais und Chicorée"
+     }
+    },
+    {
+     "id": "p8",
+     "raw": [
+      8
+     ],
+     "name": {
+      "fr": "Salade de poulpe",
+      "en": "Octopus salad"
+     },
+     "prices": [
+      "25.00"
+     ],
+     "desc": {
+      "fr": "Salade verte, poulpe, tomate, oignons et persil",
+      "en": "Letuce, octopus, tomato, onions and parsley",
+      "pt": "Alface, polvo, tomate, cebola e salsa",
+      "it": "Insalata verde, polpo, pomodoro, cipolle e prezzemolo",
+      "de": "Grüner Salat, Oktopus, Tomate, Zwiebeln und Petersilie"
+     }
+    },
+    {
+     "id": "p24",
+     "raw": [
+      24
+     ],
+     "name": {
+      "fr": "Salade de morue",
+      "en": "Cod salad"
+     },
+     "prices": [
+      "22.00"
+     ],
+     "desc": {
+      "fr": "Salade verte, tomate, morue crue émincée, oignons et olives",
+      "en": "Letuce, tomato, minced raw cod, onions and olives",
+      "pt": "Alface, tomate, bacalhau cru desfiado, cebola e azeitonas",
+      "it": "Insalata verde, pomodoro, baccalà crudo sminuzzato, cipolle e olive",
+      "de": "Grüner Salat, Tomate, roher, fein geschnittener Bacalhau, Zwiebeln und Oliven"
+     }
+    },
+    {
+     "id": "p35",
+     "raw": [
+      35
+     ],
+     "name": {
+      "fr": "Cocktail de crevettes",
+      "en": "Shrimp cocktail"
+     },
+     "prices": [
+      "20.00"
+     ],
+     "desc": {
+      "fr": "Salade verte, tomate et crevettes cocktail",
+      "en": "Letuce, tomato and shrimp cocktail",
+      "pt": "Alface, tomate e cocktail de camarão",
+      "it": "Insalata verde, pomodoro e cocktail di gamberi",
+      "de": "Grüner Salat, Tomate und Crevettencocktail"
+     }
+    },
+    {
+     "id": "pdf-soupe-petite",
+     "raw": [],
+     "name": {
+      "fr": "Soupe, petite"
+     },
+     "prices": [
+      "6.00"
+     ],
+     "pdfOnly": true
+    },
+    {
+     "id": "pdf-soupe-grande",
+     "raw": [],
+     "name": {
+      "fr": "Grande soupe"
+     },
+     "prices": [
+      "8.00"
+     ],
+     "pdfOnly": true
+    }
+   ]
+  }
+ ]
+}

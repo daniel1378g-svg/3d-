@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://donduarte.ch/sitemap.xml

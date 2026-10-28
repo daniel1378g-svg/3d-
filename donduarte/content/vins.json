@@ -1,0 +1,3015 @@
+{
+ "source": "https://donduarte.ch/carte-vins/ · groups from the wine list PDFs",
+ "pdf": "https://donduarte.ch/carte-vins-et-boissons_don-duarte/",
+ "pdfHome": "https://donduarte.ch/carta_des_vins_et_boissons_don_duarte/",
+ "note": {
+  "fr": "*Lorsque deux prix sont indiqués et sans autre spécification, le premier correspond à 1 dl et le second à la bouteille.",
+  "en": "*When two prices are shown with no other detail, the first is for 1 dl and the second for the bottle.",
+  "pt": "*Quando são indicados dois preços sem outra especificação, o primeiro corresponde a 1 dl e o segundo à garrafa.",
+  "it": "*Quando sono indicati due prezzi senza altra specifica, il primo corrisponde a 1 dl e il secondo alla bottiglia.",
+  "de": "*Sind zwei Preise ohne weitere Angabe aufgeführt, gilt der erste für 1 dl und der zweite für die Flasche."
+ },
+ "liveLines": 131,
+ "shownLines": 131,
+ "groups": [
+  {
+   "id": "portugal",
+   "title": {
+    "fr": "Portugal",
+    "en": "Portugal",
+    "pt": "Portugal",
+    "it": "Portogallo",
+    "de": "Portugal"
+   },
+   "sections": [
+    {
+     "id": "blanc-verde",
+     "title": {
+      "fr": "Blancs · Vinho Verde",
+      "en": "White · Vinho Verde",
+      "pt": "Brancos · Vinho Verde",
+      "it": "Bianchi · Vinho Verde",
+      "de": "Weisse · Vinho Verde"
+     },
+     "items": [
+      {
+       "id": "v9",
+       "raw": [
+        9
+       ],
+       "name": {
+        "fr": "Casal Garcia DOC",
+        "en": "Casal Garcia DOC",
+        "pt": "Casal Garcia DOC",
+        "it": "Casal Garcia DOC",
+        "de": "Casal Garcia DOC"
+       },
+       "prices": [
+        "3.90",
+        "27.00"
+       ],
+       "priceLabels": [
+        {
+         "fr": "1 dl",
+         "en": "1 dl",
+         "pt": "1 dl",
+         "it": "1 dl",
+         "de": "1 dl"
+        },
+        {
+         "fr": "bt.",
+         "en": "btl.",
+         "pt": "gf.",
+         "it": "bt.",
+         "de": "Fl."
+        }
+       ],
+       "region": "Vinho Verde"
+      },
+      {
+       "id": "v11",
+       "raw": [
+        11
+       ],
+       "name": {
+        "fr": "Quinta da Aveleda DOC",
+        "en": "Quinta da Aveleda DOC",
+        "pt": "Quinta da Aveleda DOC",
+        "it": "Quinta da Aveleda DOC",
+        "de": "Quinta da Aveleda DOC"
+       },
+       "prices": [
+        "30.00"
+       ],
+       "region": "Vinho Verde"
+      },
+      {
+       "id": "v12",
+       "raw": [
+        12
+       ],
+       "name": {
+        "fr": "Muralhas de Monção DOC",
+        "en": "Muralhas de Monção DOC",
+        "pt": "Muralhas de Monção DOC",
+        "it": "Muralhas de Monção DOC",
+        "de": "Muralhas de Monção DOC"
+       },
+       "prices": [
+        "32.00"
+       ],
+       "region": "Vinho Verde"
+      },
+      {
+       "id": "v10",
+       "raw": [
+        10
+       ],
+       "name": {
+        "fr": "Alvarinho Morgadio da Torre DOC",
+        "en": "Alvarinho Morgadio da Torre DOC",
+        "pt": "Alvarinho Morgadio da Torre DOC",
+        "it": "Alvarinho Morgadio da Torre DOC",
+        "de": "Alvarinho Morgadio da Torre DOC"
+       },
+       "prices": [
+        "38.00"
+       ],
+       "region": "Vinho Verde"
+      }
+     ],
+     "map": "verde"
+    },
+    {
+     "id": "blanc-douro",
+     "title": {
+      "fr": "Blancs · Douro",
+      "en": "White · Douro",
+      "pt": "Brancos · Douro",
+      "it": "Bianchi · Douro",
+      "de": "Weisse · Douro"
+     },
+     "items": [
+      {
+       "id": "v13",
+       "raw": [
+        13
+       ],
+       "name": {
+        "fr": "Planalto Reserva DOC",
+        "en": "Planalto Reserva DOC",
+        "pt": "Planalto Reserva DOC",
+        "it": "Planalto Reserva DOC",
+        "de": "Planalto Reserva DOC"
+       },
+       "prices": [
+        "30.00"
+       ],
+       "region": "Douro"
+      },
+      {
+       "id": "v14",
+       "raw": [
+        14
+       ],
+       "name": {
+        "fr": "Vallado prima DOC",
+        "en": "Vallado prima DOC",
+        "pt": "Vallado prima DOC",
+        "it": "Vallado prima DOC",
+        "de": "Vallado prima DOC"
+       },
+       "prices": [
+        "34.00"
+       ],
+       "region": "Douro"
+      }
+     ],
+     "map": "douro"
+    },
+    {
+     "id": "blanc-dao",
+     "title": {
+      "fr": "Blancs · Dão",
+      "en": "White · Dão",
+      "pt": "Brancos · Dão",
+      "it": "Bianchi · Dão",
+      "de": "Weisse · Dão"
+     },
+     "items": [
+      {
+       "id": "v15",
+       "raw": [
+        15
+       ],
+       "name": {
+        "fr": "Encostas de Penalva DOC (Malvasia-Fina, Cerceal-Branco e Bical)",
+        "en": "Encostas de Penalva DOC (Malvasia-Fina, Cerceal-Branco e Bical)",
+        "pt": "Encostas de Penalva DOC (Malvasia-Fina, Cerceal-Branco e Bical)",
+        "it": "Encostas de Penalva DOC (Malvasia-Fina, Cerceal-Branco e Bical)",
+        "de": "Encostas de Penalva DOC (Malvasia-Fina, Cerceal-Branco e Bical)"
+       },
+       "prices": [
+        "4.00",
+        "29.00"
+       ],
+       "priceLabels": [
+        {
+         "fr": "1 dl",
+         "en": "1 dl",
+         "pt": "1 dl",
+         "it": "1 dl",
+         "de": "1 dl"
+        },
+        {
+         "fr": "bt.",
+         "en": "btl.",
+         "pt": "gf.",
+         "it": "bt.",
+         "de": "Fl."
+        }
+       ],
+       "region": "Dão"
+      },
+      {
+       "id": "v16",
+       "raw": [
+        16
+       ],
+       "name": {
+        "fr": "Encrozado de Penalva DOC (Encrozado 100%)",
+        "en": "Encrozado de Penalva DOC (Encrozado 100%)",
+        "pt": "Encrozado de Penalva DOC (Encrozado 100%)",
+        "it": "Encrozado de Penalva DOC (Encrozado 100%)",
+        "de": "Encrozado de Penalva DOC (Encrozado 100%)"
+       },
+       "prices": [
+        "43.00"
+       ],
+       "region": "Dão"
+      }
+     ],
+     "map": "dao"
+    },
+    {
+     "id": "blanc-sado",
+     "title": {
+      "fr": "Blancs · Terras do Sado",
+      "en": "White · Terras do Sado",
+      "pt": "Brancos · Terras do Sado",
+      "it": "Bianchi · Terras do Sado",
+      "de": "Weisse · Terras do Sado"
+     },
+     "items": [
+      {
+       "id": "v17",
+       "raw": [
+        17
+       ],
+       "name": {
+        "fr": "João Pires",
+        "en": "João Pires",
+        "pt": "João Pires",
+        "it": "João Pires",
+        "de": "João Pires"
+       },
+       "prices": [
+        "32.00"
+       ],
+       "region": "Terras do Sado"
+      }
+     ],
+     "map": "setubal"
+    },
+    {
+     "id": "blanc-alentejo",
+     "title": {
+      "fr": "Blancs · Alentejo",
+      "en": "White · Alentejo",
+      "pt": "Brancos · Alentejo",
+      "it": "Bianchi · Alentejo",
+      "de": "Weisse · Alentejo"
+     },
+     "items": [
+      {
+       "id": "v18",
+       "raw": [
+        18
+       ],
+       "name": {
+        "fr": "Monte Velho DOC",
+        "en": "Monte Velho DOC",
+        "pt": "Monte Velho DOC",
+        "it": "Monte Velho DOC",
+        "de": "Monte Velho DOC"
+       },
+       "prices": [
+        "29.00"
+       ],
+       "region": "Alentejo"
+      }
+     ],
+     "map": "alentejo"
+    },
+    {
+     "id": "rose-dao",
+     "title": {
+      "fr": "Rosés · Dão",
+      "en": "Rosé · Dão",
+      "pt": "Rosés · Dão",
+      "it": "Rosati · Dão",
+      "de": "Rosé · Dão"
+     },
+     "items": [
+      {
+       "id": "v54",
+       "raw": [
+        54
+       ],
+       "name": {
+        "fr": "Adega de Penalva DOC",
+        "en": "Adega de Penalva DOC",
+        "pt": "Adega de Penalva DOC",
+        "it": "Adega de Penalva DOC",
+        "de": "Adega de Penalva DOC"
+       },
+       "prices": [
+        "3.90",
+        "29.00"
+       ],
+       "priceLabels": [
+        {
+         "fr": "1 dl",
+         "en": "1 dl",
+         "pt": "1 dl",
+         "it": "1 dl",
+         "de": "1 dl"
+        },
+        {
+         "fr": "bt.",
+         "en": "btl.",
+         "pt": "gf.",
+         "it": "bt.",
+         "de": "Fl."
+        }
+       ],
+       "grapes": "Touriga Nacional e Aragonês",
+       "region": "Dão"
+      }
+     ],
+     "map": "dao"
+    },
+    {
+     "id": "rose-petillant",
+     "title": {
+      "fr": "Rosés pétillants",
+      "en": "Sparkling rosés",
+      "pt": "Rosés frisantes",
+      "it": "Rosati frizzanti",
+      "de": "Perlende Rosés"
+     },
+     "items": [
+      {
+       "id": "v55",
+       "raw": [
+        55
+       ],
+       "name": {
+        "fr": "Lancers",
+        "en": "Lancers",
+        "pt": "Lancers",
+        "it": "Lancers",
+        "de": "Lancers"
+       },
+       "prices": [
+        "3.50",
+        "25.00"
+       ],
+       "priceLabels": [
+        {
+         "fr": "1 dl",
+         "en": "1 dl",
+         "pt": "1 dl",
+         "it": "1 dl",
+         "de": "1 dl"
+        },
+        {
+         "fr": "bt.",
+         "en": "btl.",
+         "pt": "gf.",
+         "it": "bt.",
+         "de": "Fl."
+        }
+       ],
+       "desc": {
+        "fr": "Rosé pétillant",
+        "en": "Sparkling rosé",
+        "pt": "Rosé frisante",
+        "it": "Rosato frizzante",
+        "de": "Perlender Rosé"
+       }
+      },
+      {
+       "id": "v56",
+       "raw": [
+        56
+       ],
+       "name": {
+        "fr": "Mateus",
+        "en": "Mateus",
+        "pt": "Mateus",
+        "it": "Mateus",
+        "de": "Mateus"
+       },
+       "prices": [
+        "27.00"
+       ],
+       "desc": {
+        "fr": "Rosé pétillant",
+        "en": "Sparkling rosé",
+        "pt": "Rosé frisante",
+        "it": "Rosato frizzante",
+        "de": "Perlender Rosé"
+       }
+      }
+     ]
+    },
+    {
+     "id": "rouge-douro",
+     "title": {
+      "fr": "Rouges · Douro",
+      "en": "Red · Douro",
+      "pt": "Tintos · Douro",
+      "it": "Rossi · Douro",
+      "de": "Rote · Douro"
+     },
+     "items": [
+      {
+       "id": "v34",
+       "raw": [
+        34
+       ],
+       "name": {
+        "fr": "Cistus",
+        "en": "Cistus",
+        "pt": "Cistus",
+        "it": "Cistus",
+        "de": "Cistus"
+       },
+       "prices": [
+        "35.00"
+       ],
+       "grapes": "Touriga Nacional, Touriga Franca, Tinta Roriz, Tinta Barroca",
+       "region": "Douro"
+      },
+      {
+       "id": "v35",
+       "raw": [
+        35
+       ],
+       "name": {
+        "fr": "Cistus Reserva",
+        "en": "Cistus Reserva",
+        "pt": "Cistus Reserva",
+        "it": "Cistus Reserva",
+        "de": "Cistus Reserva"
+       },
+       "prices": [
+        "52.00"
+       ],
+       "grapes": "Tinta Roriz, Touriga Franca, Touriga Nacional",
+       "region": "Douro"
+      },
+      {
+       "id": "v36",
+       "raw": [
+        36
+       ],
+       "name": {
+        "fr": "Quinta do Vallado Reserva Fiel Blend DOC",
+        "en": "Quinta do Vallado Reserva Fiel Blend DOC",
+        "pt": "Quinta do Vallado Reserva Fiel Blend DOC",
+        "it": "Quinta do Vallado Reserva Fiel Blend DOC",
+        "de": "Quinta do Vallado Reserva Fiel Blend DOC"
+       },
+       "prices": [
+        "95.00"
+       ],
+       "grapes": "Tinta Roriz, Tinta Amarela, Touriga Franca, Touriga Nacional",
+       "region": "Douro"
+      }
+     ],
+     "map": "douro"
+    },
+    {
+     "id": "rouge-dao",
+     "title": {
+      "fr": "Rouges · Dão",
+      "en": "Red · Dão",
+      "pt": "Tintos · Dão",
+      "it": "Rossi · Dão",
+      "de": "Rote · Dão"
+     },
+     "items": [
+      {
+       "id": "v37",
+       "raw": [
+        37
+       ],
+       "name": {
+        "fr": "Encostas de Penalva DOC",
+        "en": "Encostas de Penalva DOC",
+        "pt": "Encostas de Penalva DOC",
+        "it": "Encostas de Penalva DOC",
+        "de": "Encostas de Penalva DOC"
+       },
+       "prices": [
+        "3.50",
+        "24.00"
+       ],
+       "priceLabels": [
+        {
+         "fr": "1 dl",
+         "en": "1 dl",
+         "pt": "1 dl",
+         "it": "1 dl",
+         "de": "1 dl"
+        },
+        {
+         "fr": "bt.",
+         "en": "btl.",
+         "pt": "gf.",
+         "it": "bt.",
+         "de": "Fl."
+        }
+       ],
+       "grapes": "Touriga Nacional, Tinta Roriz, Alfrochoeiro, Jean",
+       "region": "Dão"
+      },
+      {
+       "id": "v38",
+       "raw": [
+        38
+       ],
+       "name": {
+        "fr": "Milénio DOC",
+        "en": "Milénio DOC",
+        "pt": "Milénio DOC",
+        "it": "Milénio DOC",
+        "de": "Milénio DOC"
+       },
+       "prices": [
+        "4.00",
+        "29.00"
+       ],
+       "priceLabels": [
+        {
+         "fr": "1 dl",
+         "en": "1 dl",
+         "pt": "1 dl",
+         "it": "1 dl",
+         "de": "1 dl"
+        },
+        {
+         "fr": "bt.",
+         "en": "btl.",
+         "pt": "gf.",
+         "it": "bt.",
+         "de": "Fl."
+        }
+       ],
+       "grapes": "Touriga Nacional, Aragonez",
+       "region": "Dão"
+      },
+      {
+       "id": "v39",
+       "raw": [
+        39
+       ],
+       "name": {
+        "fr": "Penalva do Castelo Reserva DOC",
+        "en": "Penalva do Castelo Reserva DOC",
+        "pt": "Penalva do Castelo Reserva DOC",
+        "it": "Penalva do Castelo Reserva DOC",
+        "de": "Penalva do Castelo Reserva DOC"
+       },
+       "prices": [
+        "5.50",
+        "39.00"
+       ],
+       "priceLabels": [
+        {
+         "fr": "1 dl",
+         "en": "1 dl",
+         "pt": "1 dl",
+         "it": "1 dl",
+         "de": "1 dl"
+        },
+        {
+         "fr": "bt.",
+         "en": "btl.",
+         "pt": "gf.",
+         "it": "bt.",
+         "de": "Fl."
+        }
+       ],
+       "grapes": "Touriga Nacional, Tinta Roriz, Jean",
+       "region": "Dão"
+      },
+      {
+       "id": "v40",
+       "raw": [
+        40
+       ],
+       "name": {
+        "fr": "Touriga Nacional penalva DOC",
+        "en": "Touriga Nacional penalva DOC",
+        "pt": "Touriga Nacional penalva DOC",
+        "it": "Touriga Nacional penalva DOC",
+        "de": "Touriga Nacional penalva DOC"
+       },
+       "prices": [
+        "43.00"
+       ],
+       "region": "Dão"
+      },
+      {
+       "id": "v41",
+       "raw": [
+        41
+       ],
+       "name": {
+        "fr": "Baga Penalva do Castelo DOC",
+        "en": "Baga Penalva do Castelo DOC",
+        "pt": "Baga Penalva do Castelo DOC",
+        "it": "Baga Penalva do Castelo DOC",
+        "de": "Baga Penalva do Castelo DOC"
+       },
+       "prices": [
+        "43.00"
+       ],
+       "region": "Dão"
+      },
+      {
+       "id": "v42",
+       "raw": [
+        42
+       ],
+       "name": {
+        "fr": "Tinta roriz Penalva do Castelo DOC",
+        "en": "Tinta roriz Penalva do Castelo DOC",
+        "pt": "Tinta roriz Penalva do Castelo DOC",
+        "it": "Tinta roriz Penalva do Castelo DOC",
+        "de": "Tinta roriz Penalva do Castelo DOC"
+       },
+       "prices": [
+        "43.00"
+       ],
+       "region": "Dão"
+      },
+      {
+       "id": "v43",
+       "raw": [
+        43
+       ],
+       "name": {
+        "fr": "Jaen Penalva do Castelo DOC",
+        "en": "Jaen Penalva do Castelo DOC",
+        "pt": "Jaen Penalva do Castelo DOC",
+        "it": "Jaen Penalva do Castelo DOC",
+        "de": "Jaen Penalva do Castelo DOC"
+       },
+       "prices": [
+        "43.00"
+       ],
+       "region": "Dão"
+      }
+     ],
+     "map": "dao"
+    },
+    {
+     "id": "rouge-palmela",
+     "title": {
+      "fr": "Rouges · Palmela",
+      "en": "Red · Palmela",
+      "pt": "Tintos · Palmela",
+      "it": "Rossi · Palmela",
+      "de": "Rote · Palmela"
+     },
+     "items": [
+      {
+       "id": "v44",
+       "raw": [
+        44
+       ],
+       "name": {
+        "fr": "Dona Ermelinda DOC",
+        "en": "Dona Ermelinda DOC",
+        "pt": "Dona Ermelinda DOC",
+        "it": "Dona Ermelinda DOC",
+        "de": "Dona Ermelinda DOC"
+       },
+       "prices": [
+        "29.00"
+       ],
+       "grapes": "Castelão, Cabernet Sauvignon, Touriga Nacional",
+       "region": "Palmela"
+      },
+      {
+       "id": "v45",
+       "raw": [
+        45
+       ],
+       "name": {
+        "fr": "Dona Ermelinda Reserva DOC",
+        "en": "Dona Ermelinda Reserva DOC",
+        "pt": "Dona Ermelinda Reserva DOC",
+        "it": "Dona Ermelinda Reserva DOC",
+        "de": "Dona Ermelinda Reserva DOC"
+       },
+       "prices": [
+        "38.00"
+       ],
+       "grapes": "Castelão, Touriga Nacional, Trincadeira, Cabernet Sauvignon",
+       "region": "Palmela"
+      }
+     ],
+     "map": "setubal"
+    },
+    {
+     "id": "rouge-alentejo",
+     "title": {
+      "fr": "Rouges · Alentejo",
+      "en": "Red · Alentejo",
+      "pt": "Tintos · Alentejo",
+      "it": "Rossi · Alentejo",
+      "de": "Rote · Alentejo"
+     },
+     "items": [
+      {
+       "id": "v46",
+       "raw": [
+        46
+       ],
+       "name": {
+        "fr": "Caiado",
+        "en": "Caiado",
+        "pt": "Caiado",
+        "it": "Caiado",
+        "de": "Caiado"
+       },
+       "prices": [
+        "4.00",
+        "28.00"
+       ],
+       "priceLabels": [
+        {
+         "fr": "1 dl",
+         "en": "1 dl",
+         "pt": "1 dl",
+         "it": "1 dl",
+         "de": "1 dl"
+        },
+        {
+         "fr": "bt.",
+         "en": "btl.",
+         "pt": "gf.",
+         "it": "bt.",
+         "de": "Fl."
+        }
+       ],
+       "grapes": "Aragonez, Trincadeira e alfrocheiro",
+       "region": "Alentejo"
+      },
+      {
+       "id": "v47",
+       "raw": [
+        47
+       ],
+       "name": {
+        "fr": "Monte Velho RV",
+        "en": "Monte Velho RV",
+        "pt": "Monte Velho RV",
+        "it": "Monte Velho RV",
+        "de": "Monte Velho RV"
+       },
+       "prices": [
+        "18.00",
+        "34.00"
+       ],
+       "priceLabels": [
+        {
+         "fr": "3.75 dl",
+         "en": "3.75 dl",
+         "pt": "3.75 dl",
+         "it": "3.75 dl",
+         "de": "3.75 dl"
+        },
+        {
+         "fr": "bt.",
+         "en": "btl.",
+         "pt": "gf.",
+         "it": "bt.",
+         "de": "Fl."
+        }
+       ],
+       "grapes": "Touriga Nacional, Aragonez, Syrah, Trincadeira",
+       "region": "Alentejo"
+      },
+      {
+       "id": "v48",
+       "raw": [
+        48
+       ],
+       "name": {
+        "fr": "Adega de Borba ABC Cortiça Reserva DOC",
+        "en": "Adega de Borba ABC Cortiça Reserva DOC",
+        "pt": "Adega de Borba ABC Cortiça Reserva DOC",
+        "it": "Adega de Borba ABC Cortiça Reserva DOC",
+        "de": "Adega de Borba ABC Cortiça Reserva DOC"
+       },
+       "prices": [
+        "48.00"
+       ],
+       "grapes": "Aragonez, Trincadeira, Castelão, Alicante Bouschet",
+       "region": "Alentejo"
+      },
+      {
+       "id": "v49",
+       "raw": [
+        49
+       ],
+       "name": {
+        "fr": "Esporão Reserva",
+        "en": "Esporão Reserva",
+        "pt": "Esporão Reserva",
+        "it": "Esporão Reserva",
+        "de": "Esporão Reserva"
+       },
+       "prices": [
+        "65.00"
+       ],
+       "grapes": "Alicante Bouschet, Aragonez, Trincadeira, Cabernet Sauvignon",
+       "region": "Alentejo"
+      },
+      {
+       "id": "v50",
+       "raw": [
+        50
+       ],
+       "name": {
+        "fr": "Herdade do Perdigão",
+        "en": "Herdade do Perdigão",
+        "pt": "Herdade do Perdigão",
+        "it": "Herdade do Perdigão",
+        "de": "Herdade do Perdigão"
+       },
+       "prices": [
+        "125.00"
+       ],
+       "grapes": "Trincadeira, Aragonez",
+       "region": "Alentejo"
+      },
+      {
+       "id": "v51",
+       "raw": [
+        51
+       ],
+       "name": {
+        "fr": "Adega Mayor, Reserva",
+        "en": "Adega Mayor, Reserva",
+        "pt": "Adega Mayor, Reserva",
+        "it": "Adega Mayor, Reserva",
+        "de": "Adega Mayor, Reserva"
+       },
+       "prices": [
+        "40.00"
+       ],
+       "grapes": "Aragonez, Touriga Nacional e Alicante Bouschet",
+       "region": "Alentejo"
+      },
+      {
+       "id": "v52",
+       "raw": [
+        52
+       ],
+       "name": {
+        "fr": "Adega Mayor, Reserva do Comendador",
+        "en": "Adega Mayor, Reserva do Comendador",
+        "pt": "Adega Mayor, Reserva do Comendador",
+        "it": "Adega Mayor, Reserva do Comendador",
+        "de": "Adega Mayor, Reserva do Comendador"
+       },
+       "prices": [
+        "6.00",
+        "40.00"
+       ],
+       "priceLabels": [
+        {
+         "fr": "1 dl",
+         "en": "1 dl",
+         "pt": "1 dl",
+         "it": "1 dl",
+         "de": "1 dl"
+        },
+        {
+         "fr": "bt.",
+         "en": "btl.",
+         "pt": "gf.",
+         "it": "bt.",
+         "de": "Fl."
+        }
+       ],
+       "grapes": "Alicante Bouschet, Syrah e Touriga Nacional",
+       "region": "Alentejo"
+      },
+      {
+       "id": "v53",
+       "raw": [
+        53
+       ],
+       "name": {
+        "fr": "Reguengos Garrafeira dos Sócios",
+        "en": "Reguengos Garrafeira dos Sócios",
+        "pt": "Reguengos Garrafeira dos Sócios",
+        "it": "Reguengos Garrafeira dos Sócios",
+        "de": "Reguengos Garrafeira dos Sócios"
+       },
+       "prices": [
+        "60.00"
+       ],
+       "grapes": "Alicante Bouschet , Touriga Nacional e Tinta Caiada",
+       "region": "Alentejo"
+      }
+     ],
+     "map": "alentejo"
+    }
+   ]
+  },
+  {
+   "id": "suisse",
+   "title": {
+    "fr": "Suisse",
+    "en": "Switzerland",
+    "pt": "Suíça",
+    "it": "Svizzera",
+    "de": "Schweiz"
+   },
+   "sections": [
+    {
+     "id": "geneve",
+     "title": {
+      "fr": "Genève",
+      "en": "Geneva",
+      "pt": "Genebra",
+      "it": "Ginevra",
+      "de": "Genf"
+     },
+     "items": [
+      {
+       "id": "v3",
+       "raw": [
+        3
+       ],
+       "name": {
+        "fr": "Pinot Blanc de Choully Le Crêt AOC",
+        "en": "Pinot Blanc de Choully Le Crêt AOC",
+        "pt": "Pinot Blanc de Choully Le Crêt AOC",
+        "it": "Pinot Blanc de Choully Le Crêt AOC",
+        "de": "Pinot Blanc de Choully Le Crêt AOC"
+       },
+       "prices": [
+        "45.00"
+       ]
+      },
+      {
+       "id": "v19",
+       "raw": [
+        19
+       ],
+       "name": {
+        "fr": "Rose de Gamay Le Crêt Choully AOC",
+        "en": "Rose de Gamay Le Crêt Choully AOC",
+        "pt": "Rose de Gamay Le Crêt Choully AOC",
+        "it": "Rose de Gamay Le Crêt Choully AOC",
+        "de": "Rose de Gamay Le Crêt Choully AOC"
+       },
+       "prices": [
+        "38.00"
+       ]
+      },
+      {
+       "id": "v20",
+       "raw": [
+        20
+       ],
+       "name": {
+        "fr": "Le Crêt 4G (Gamaret-Gamay-Galota) AOC",
+        "en": "Le Crêt 4G (Gamaret-Gamay-Galota) AOC",
+        "pt": "Le Crêt 4G (Gamaret-Gamay-Galota) AOC",
+        "it": "Le Crêt 4G (Gamaret-Gamay-Galota) AOC",
+        "de": "Le Crêt 4G (Gamaret-Gamay-Galota) AOC"
+       },
+       "prices": [
+        "49.00"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "vaud",
+     "title": {
+      "fr": "Vaud",
+      "en": "Vaud",
+      "pt": "Vaud",
+      "it": "Vaud",
+      "de": "Waadt"
+     },
+     "items": [
+      {
+       "id": "v21",
+       "raw": [
+        21
+       ],
+       "name": {
+        "fr": "Vinzel Grand Cru La Cure La Côte AOC (blanc)",
+        "en": "Vinzel Grand Cru La Cure La Côte AOC (blanc)",
+        "pt": "Vinzel Grand Cru La Cure La Côte AOC (blanc)",
+        "it": "Vinzel Grand Cru La Cure La Côte AOC (blanc)",
+        "de": "Vinzel Grand Cru La Cure La Côte AOC (blanc)"
+       },
+       "prices": [
+        "32.00"
+       ]
+      },
+      {
+       "id": "v0",
+       "raw": [
+        0
+       ],
+       "name": {
+        "fr": "Pinot Noir De La Côte AOC privilege (rouge)",
+        "en": "Pinot Noir De La Côte AOC privilege (rouge)",
+        "pt": "Pinot Noir De La Côte AOC privilege (rouge)",
+        "it": "Pinot Noir De La Côte AOC privilege (rouge)",
+        "de": "Pinot Noir De La Côte AOC privilege (rouge)"
+       },
+       "prices": [
+        "34.00"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "valais",
+     "title": {
+      "fr": "Valais",
+      "en": "Valais",
+      "pt": "Valais",
+      "it": "Vallese",
+      "de": "Wallis"
+     },
+     "items": [
+      {
+       "id": "v4",
+       "raw": [
+        4
+       ],
+       "name": {
+        "fr": "Petite Arvine Du Valais AOC Domaine Varone",
+        "en": "Petite Arvine Du Valais AOC Domaine Varone",
+        "pt": "Petite Arvine Du Valais AOC Domaine Varone",
+        "it": "Petite Arvine Du Valais AOC Domaine Varone",
+        "de": "Petite Arvine Du Valais AOC Domaine Varone"
+       },
+       "prices": [
+        "59.00"
+       ]
+      },
+      {
+       "id": "v22",
+       "raw": [
+        22
+       ],
+       "name": {
+        "fr": "Cornalin du Valais AOC (rouge)",
+        "en": "Cornalin du Valais AOC (rouge)",
+        "pt": "Cornalin du Valais AOC (rouge)",
+        "it": "Cornalin du Valais AOC (rouge)",
+        "de": "Cornalin du Valais AOC (rouge)"
+       },
+       "prices": [
+        "59.00"
+       ]
+      },
+      {
+       "id": "v118",
+       "raw": [
+        118
+       ],
+       "name": {
+        "fr": "Rosé de Goron (5 dl)",
+        "en": "Rosé de Goron (5 dl)",
+        "pt": "Rosé de Goron (5 dl)",
+        "it": "Rosé de Goron (5 dl)",
+        "de": "Rosé de Goron (5 dl)"
+       },
+       "prices": [
+        "17.00"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "suisse-ouverts",
+     "title": {
+      "fr": "Vins ouverts (1 dl)",
+      "en": "By the glass (1 dl)",
+      "pt": "A copo (1 dl)",
+      "it": "Al bicchiere (1 dl)",
+      "de": "Offenweine (1 dl)"
+     },
+     "items": [
+      {
+       "id": "v27",
+       "raw": [
+        27
+       ],
+       "name": {
+        "fr": "Chasselas de Genève (blanc)",
+        "en": "Chasselas de Genève (blanc)",
+        "pt": "Chasselas de Genève (blanc)",
+        "it": "Chasselas de Genève (blanc)",
+        "de": "Chasselas de Genève (blanc)"
+       },
+       "prices": [
+        "3.50"
+       ]
+      },
+      {
+       "id": "v26",
+       "raw": [
+        26
+       ],
+       "name": {
+        "fr": "La côte VD (blanc)",
+        "en": "La côte VD (blanc)",
+        "pt": "La côte VD (blanc)",
+        "it": "La côte VD (blanc)",
+        "de": "La côte VD (blanc)"
+       },
+       "prices": [
+        "3.50"
+       ]
+      },
+      {
+       "id": "v25",
+       "raw": [
+        25
+       ],
+       "name": {
+        "fr": "Goron (rouge)",
+        "en": "Goron (rouge)",
+        "pt": "Goron (rouge)",
+        "it": "Goron (rouge)",
+        "de": "Goron (rouge)"
+       },
+       "prices": [
+        "3.50"
+       ]
+      },
+      {
+       "id": "v24",
+       "raw": [
+        24
+       ],
+       "name": {
+        "fr": "Rosé de Goron",
+        "en": "Rosé de Goron",
+        "pt": "Rosé de Goron",
+        "it": "Rosé de Goron",
+        "de": "Rosé de Goron"
+       },
+       "prices": [
+        "4.00"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "france",
+   "title": {
+    "fr": "France",
+    "en": "France",
+    "pt": "França",
+    "it": "Francia",
+    "de": "Frankreich"
+   },
+   "sections": [
+    {
+     "id": "france-ouverts",
+     "title": {
+      "fr": "Vins ouverts (1 dl)",
+      "en": "By the glass (1 dl)",
+      "pt": "A copo (1 dl)",
+      "it": "Al bicchiere (1 dl)",
+      "de": "Offenweine (1 dl)"
+     },
+     "items": [
+      {
+       "id": "v1",
+       "raw": [
+        1
+       ],
+       "name": {
+        "fr": "Coteaux d’aix-en-provence (rosé)",
+        "en": "Coteaux d’aix-en-provence (rosé)",
+        "pt": "Coteaux d’aix-en-provence (rosé)",
+        "it": "Coteaux d’aix-en-provence (rosé)",
+        "de": "Coteaux d’aix-en-provence (rosé)"
+       },
+       "prices": [
+        "3.50"
+       ]
+      },
+      {
+       "id": "v2",
+       "raw": [
+        2
+       ],
+       "name": {
+        "fr": "Côtes-du-rhône (rouge) ADC",
+        "en": "Côtes-du-rhône (rouge) ADC",
+        "pt": "Côtes-du-rhône (rouge) ADC",
+        "it": "Côtes-du-rhône (rouge) ADC",
+        "de": "Côtes-du-rhône (rouge) ADC"
+       },
+       "prices": [
+        "3.50"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "italie",
+   "title": {
+    "fr": "Italie",
+    "en": "Italy",
+    "pt": "Itália",
+    "it": "Italia",
+    "de": "Italien"
+   },
+   "sections": [
+    {
+     "id": "italie-vins",
+     "title": {
+      "fr": "Rouges",
+      "en": "Red",
+      "pt": "Tintos",
+      "it": "Rossi",
+      "de": "Rote"
+     },
+     "items": [
+      {
+       "id": "v8",
+       "raw": [
+        8
+       ],
+       "name": {
+        "fr": "Rudiae Primitivo Salento IGT (vigneti Reale)",
+        "en": "Rudiae Primitivo Salento IGT (vigneti Reale)",
+        "pt": "Rudiae Primitivo Salento IGT (vigneti Reale)",
+        "it": "Rudiae Primitivo Salento IGT (vigneti Reale)",
+        "de": "Rudiae Primitivo Salento IGT (vigneti Reale)"
+       },
+       "prices": [
+        "36.00"
+       ]
+      },
+      {
+       "id": "v23",
+       "raw": [
+        23
+       ],
+       "name": {
+        "fr": "Villa a Sesta Il Palei Chianti Classico (DOGC)",
+        "en": "Villa a Sesta Il Palei Chianti Classico (DOGC)",
+        "pt": "Villa a Sesta Il Palei Chianti Classico (DOGC)",
+        "it": "Villa a Sesta Il Palei Chianti Classico (DOGC)",
+        "de": "Villa a Sesta Il Palei Chianti Classico (DOGC)"
+       },
+       "prices": [
+        "39.00"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "espagne",
+   "title": {
+    "fr": "Espagne",
+    "en": "Spain",
+    "pt": "Espanha",
+    "it": "Spagna",
+    "de": "Spanien"
+   },
+   "sections": [
+    {
+     "id": "espagne-vins",
+     "title": {
+      "fr": "Rouges",
+      "en": "Red",
+      "pt": "Tintos",
+      "it": "Rossi",
+      "de": "Rote"
+     },
+     "items": [
+      {
+       "id": "v6",
+       "raw": [
+        6
+       ],
+       "name": {
+        "fr": "Arienzo Crianza (DOC)",
+        "en": "Arienzo Crianza (DOC)",
+        "pt": "Arienzo Crianza (DOC)",
+        "it": "Arienzo Crianza (DOC)",
+        "de": "Arienzo Crianza (DOC)"
+       },
+       "prices": [
+        "33.00"
+       ]
+      },
+      {
+       "id": "v5",
+       "raw": [
+        5
+       ],
+       "name": {
+        "fr": "Portia Crianza (AOC)",
+        "en": "Portia Crianza (AOC)",
+        "pt": "Portia Crianza (AOC)",
+        "it": "Portia Crianza (AOC)",
+        "de": "Portia Crianza (AOC)"
+       },
+       "prices": [
+        "39.00"
+       ]
+      },
+      {
+       "id": "v7",
+       "raw": [
+        7
+       ],
+       "name": {
+        "fr": "Marqués de Riscal Gran-Reserva(AOC)",
+        "en": "Marqués de Riscal Gran-Reserva(AOC)",
+        "pt": "Marqués de Riscal Gran-Reserva(AOC)",
+        "it": "Marqués de Riscal Gran-Reserva(AOC)",
+        "de": "Marqués de Riscal Gran-Reserva(AOC)"
+       },
+       "prices": [
+        "85.00"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "mousseux",
+   "title": {
+    "fr": "Champagne & mousseux",
+    "en": "Champagne & sparkling",
+    "pt": "Champanhe e espumantes",
+    "it": "Champagne e spumanti",
+    "de": "Champagner & Schaumweine"
+   },
+   "sections": [
+    {
+     "id": "mousseux-vins",
+     "title": null,
+     "items": [
+      {
+       "id": "v28",
+       "raw": [
+        28
+       ],
+       "name": {
+        "fr": "Milénio Brut",
+        "en": "Milénio Brut",
+        "pt": "Milénio Brut",
+        "it": "Milénio Brut",
+        "de": "Milénio Brut"
+       },
+       "prices": [
+        "7.50",
+        "45.00"
+       ],
+       "priceLabels": [
+        {
+         "fr": "1 dl",
+         "en": "1 dl",
+         "pt": "1 dl",
+         "it": "1 dl",
+         "de": "1 dl"
+        },
+        {
+         "fr": "bt.",
+         "en": "btl.",
+         "pt": "gf.",
+         "it": "bt.",
+         "de": "Fl."
+        }
+       ]
+      },
+      {
+       "id": "v29",
+       "raw": [
+        29
+       ],
+       "name": {
+        "fr": "Raposeira Super Reserva",
+        "en": "Raposeira Super Reserva",
+        "pt": "Raposeira Super Reserva",
+        "it": "Raposeira Super Reserva",
+        "de": "Raposeira Super Reserva"
+       },
+       "prices": [
+        "50.00"
+       ]
+      },
+      {
+       "id": "v30",
+       "raw": [
+        30
+       ],
+       "name": {
+        "fr": "Moët & Chandon Brut",
+        "en": "Moët & Chandon Brut",
+        "pt": "Moët & Chandon Brut",
+        "it": "Moët & Chandon Brut",
+        "de": "Moët & Chandon Brut"
+       },
+       "prices": [
+        "95.00"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "aperitifs",
+   "title": {
+    "fr": "Apéritifs & cocktails",
+    "en": "Aperitifs & cocktails",
+    "pt": "Aperitivos e cocktails",
+    "it": "Aperitivi e cocktail",
+    "de": "Aperitifs & Cocktails"
+   },
+   "sections": [
+    {
+     "id": "aperitifs-liste",
+     "title": null,
+     "items": [
+      {
+       "id": "v58",
+       "raw": [
+        58
+       ],
+       "name": {
+        "fr": "Spritz ou Lemon Spritz",
+        "en": "Spritz ou Lemon Spritz",
+        "pt": "Spritz ou Lemon Spritz",
+        "it": "Spritz ou Lemon Spritz",
+        "de": "Spritz ou Lemon Spritz"
+       },
+       "prices": [
+        "11.50"
+       ]
+      },
+      {
+       "id": "v59",
+       "raw": [
+        59
+       ],
+       "name": {
+        "fr": "Kir (1 dl)",
+        "en": "Kir (1 dl)",
+        "pt": "Kir (1 dl)",
+        "it": "Kir (1 dl)",
+        "de": "Kir (1 dl)"
+       },
+       "prices": [
+        "4.50"
+       ]
+      },
+      {
+       "id": "v60",
+       "raw": [
+        60
+       ],
+       "name": {
+        "fr": "Kir Royal (1dl)",
+        "en": "Kir Royal (1dl)",
+        "pt": "Kir Royal (1dl)",
+        "it": "Kir Royal (1dl)",
+        "de": "Kir Royal (1dl)"
+       },
+       "prices": [
+        "10.00"
+       ]
+      },
+      {
+       "id": "v61",
+       "raw": [
+        61
+       ],
+       "name": {
+        "fr": "Martini, blanc ou rouge (4 cl)",
+        "en": "Martini, blanc ou rouge (4 cl)",
+        "pt": "Martini, blanc ou rouge (4 cl)",
+        "it": "Martini, blanc ou rouge (4 cl)",
+        "de": "Martini, blanc ou rouge (4 cl)"
+       },
+       "prices": [
+        "5.50"
+       ]
+      },
+      {
+       "id": "v62",
+       "raw": [
+        62
+       ],
+       "name": {
+        "fr": "Porto, Moscatel (4 cl)",
+        "en": "Porto, Moscatel (4 cl)",
+        "pt": "Porto, Moscatel (4 cl)",
+        "it": "Porto, Moscatel (4 cl)",
+        "de": "Porto, Moscatel (4 cl)"
+       },
+       "prices": [
+        "5.50"
+       ]
+      },
+      {
+       "id": "v63",
+       "raw": [
+        63
+       ],
+       "name": {
+        "fr": "Porto 10 ans d’âge (4 cl)",
+        "en": "Porto 10 ans d’âge (4 cl)",
+        "pt": "Porto 10 ans d’âge (4 cl)",
+        "it": "Porto 10 ans d’âge (4 cl)",
+        "de": "Porto 10 ans d’âge (4 cl)"
+       },
+       "prices": [
+        "8.50"
+       ]
+      },
+      {
+       "id": "v64",
+       "raw": [
+        64
+       ],
+       "name": {
+        "fr": "Campari (4 cl)",
+        "en": "Campari (4 cl)",
+        "pt": "Campari (4 cl)",
+        "it": "Campari (4 cl)",
+        "de": "Campari (4 cl)"
+       },
+       "prices": [
+        "5.50"
+       ]
+      },
+      {
+       "id": "v65",
+       "raw": [
+        65
+       ],
+       "name": {
+        "fr": "Suze (2 cl)",
+        "en": "Suze (2 cl)",
+        "pt": "Suze (2 cl)",
+        "it": "Suze (2 cl)",
+        "de": "Suze (2 cl)"
+       },
+       "prices": [
+        "5.50"
+       ]
+      },
+      {
+       "id": "v66",
+       "raw": [
+        66
+       ],
+       "name": {
+        "fr": "Pastis 51 – Ricard (2 cl)",
+        "en": "Pastis 51 – Ricard (2 cl)",
+        "pt": "Pastis 51 – Ricard (2 cl)",
+        "it": "Pastis 51 – Ricard (2 cl)",
+        "de": "Pastis 51 – Ricard (2 cl)"
+       },
+       "prices": [
+        "3.50"
+       ]
+      },
+      {
+       "id": "v67",
+       "raw": [
+        67
+       ],
+       "name": {
+        "fr": "Gin tonic, orange (4 cl)",
+        "en": "Gin tonic, orange (4 cl)",
+        "pt": "Gin tonic, orange (4 cl)",
+        "it": "Gin tonic, orange (4 cl)",
+        "de": "Gin tonic, orange (4 cl)"
+       },
+       "prices": [
+        "10.00"
+       ]
+      },
+      {
+       "id": "v68",
+       "raw": [
+        68
+       ],
+       "name": {
+        "fr": "Rhum Whisky Coca (4 cl)",
+        "en": "Rhum Whisky Coca (4 cl)",
+        "pt": "Rhum Whisky Coca (4 cl)",
+        "it": "Rhum Whisky Coca (4 cl)",
+        "de": "Rhum Whisky Coca (4 cl)"
+       },
+       "prices": [
+        "10.00"
+       ]
+      },
+      {
+       "id": "v69",
+       "raw": [
+        69
+       ],
+       "name": {
+        "fr": "Vodka orange (4 cl)",
+        "en": "Vodka orange (4 cl)",
+        "pt": "Vodka orange (4 cl)",
+        "it": "Vodka orange (4 cl)",
+        "de": "Vodka orange (4 cl)"
+       },
+       "prices": [
+        "10.00"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "spiritueux",
+   "title": {
+    "fr": "Eaux-de-vie & liqueurs",
+    "en": "Spirits & liqueurs",
+    "pt": "Aguardentes e licores",
+    "it": "Distillati e liquori",
+    "de": "Spirituosen & Liköre"
+   },
+   "sections": [
+    {
+     "id": "spiritueux-liste",
+     "title": null,
+     "items": [
+      {
+       "id": "v70",
+       "raw": [
+        70
+       ],
+       "name": {
+        "fr": "Rémy Martin V.S.O.P (2.5 cl)",
+        "en": "Rémy Martin V.S.O.P (2.5 cl)",
+        "pt": "Rémy Martin V.S.O.P (2.5 cl)",
+        "it": "Rémy Martin V.S.O.P (2.5 cl)",
+        "de": "Rémy Martin V.S.O.P (2.5 cl)"
+       },
+       "prices": [
+        "12.00"
+       ]
+      },
+      {
+       "id": "v71",
+       "raw": [
+        71
+       ],
+       "name": {
+        "fr": "Calvados (2.5 cl)",
+        "en": "Calvados (2.5 cl)",
+        "pt": "Calvados (2.5 cl)",
+        "it": "Calvados (2.5 cl)",
+        "de": "Calvados (2.5 cl)"
+       },
+       "prices": [
+        "7.00"
+       ]
+      },
+      {
+       "id": "v72",
+       "raw": [
+        72
+       ],
+       "name": {
+        "fr": "Croft (2.5 cl)",
+        "en": "Croft (2.5 cl)",
+        "pt": "Croft (2.5 cl)",
+        "it": "Croft (2.5 cl)",
+        "de": "Croft (2.5 cl)"
+       },
+       "prices": [
+        "7.00"
+       ]
+      },
+      {
+       "id": "v73",
+       "raw": [
+        73
+       ],
+       "name": {
+        "fr": "Maçieira (2.5 cl)",
+        "en": "Maçieira (2.5 cl)",
+        "pt": "Maçieira (2.5 cl)",
+        "it": "Maçieira (2.5 cl)",
+        "de": "Maçieira (2.5 cl)"
+       },
+       "prices": [
+        "7.00"
+       ]
+      },
+      {
+       "id": "v74",
+       "raw": [
+        74
+       ],
+       "name": {
+        "fr": "Veterano (2.5 cl)",
+        "en": "Veterano (2.5 cl)",
+        "pt": "Veterano (2.5 cl)",
+        "it": "Veterano (2.5 cl)",
+        "de": "Veterano (2.5 cl)"
+       },
+       "prices": [
+        "7.00"
+       ]
+      },
+      {
+       "id": "v75",
+       "raw": [
+        75
+       ],
+       "name": {
+        "fr": "Bagaceira (2.5 cl)",
+        "en": "Bagaceira (2.5 cl)",
+        "pt": "Bagaceira (2.5 cl)",
+        "it": "Bagaceira (2.5 cl)",
+        "de": "Bagaceira (2.5 cl)"
+       },
+       "prices": [
+        "7.00"
+       ]
+      },
+      {
+       "id": "v76",
+       "raw": [
+        76
+       ],
+       "name": {
+        "fr": "Aldeia Velha (2.5 cl)",
+        "en": "Aldeia Velha (2.5 cl)",
+        "pt": "Aldeia Velha (2.5 cl)",
+        "it": "Aldeia Velha (2.5 cl)",
+        "de": "Aldeia Velha (2.5 cl)"
+       },
+       "prices": [
+        "7.00"
+       ]
+      },
+      {
+       "id": "v77",
+       "raw": [
+        77
+       ],
+       "name": {
+        "fr": "Ponte de marante (2.5 cl)",
+        "en": "Ponte de marante (2.5 cl)",
+        "pt": "Ponte de marante (2.5 cl)",
+        "it": "Ponte de marante (2.5 cl)",
+        "de": "Ponte de marante (2.5 cl)"
+       },
+       "prices": [
+        "7.00"
+       ]
+      },
+      {
+       "id": "v78",
+       "raw": [
+        78
+       ],
+       "name": {
+        "fr": "Antiqua (2.5 cl)",
+        "en": "Antiqua (2.5 cl)",
+        "pt": "Antiqua (2.5 cl)",
+        "it": "Antiqua (2.5 cl)",
+        "de": "Antiqua (2.5 cl)"
+       },
+       "prices": [
+        "9.00"
+       ]
+      },
+      {
+       "id": "v79",
+       "raw": [
+        79
+       ],
+       "name": {
+        "fr": "Antiquissima (2.5 cl)",
+        "en": "Antiquissima (2.5 cl)",
+        "pt": "Antiquissima (2.5 cl)",
+        "it": "Antiquissima (2.5 cl)",
+        "de": "Antiquissima (2.5 cl)"
+       },
+       "prices": [
+        "11.00"
+       ]
+      },
+      {
+       "id": "v80",
+       "raw": [
+        80
+       ],
+       "name": {
+        "fr": "CRF (2.5 cl)",
+        "en": "CRF (2.5 cl)",
+        "pt": "CRF (2.5 cl)",
+        "it": "CRF (2.5 cl)",
+        "de": "CRF (2.5 cl)"
+       },
+       "prices": [
+        "9.00"
+       ]
+      },
+      {
+       "id": "v81",
+       "raw": [
+        81
+       ],
+       "name": {
+        "fr": "Kirsch (2.5 cl)",
+        "en": "Kirsch (2.5 cl)",
+        "pt": "Kirsch (2.5 cl)",
+        "it": "Kirsch (2.5 cl)",
+        "de": "Kirsch (2.5 cl)"
+       },
+       "prices": [
+        "7.00"
+       ]
+      },
+      {
+       "id": "v82",
+       "raw": [
+        82
+       ],
+       "name": {
+        "fr": "Pruneau (2.5 cl)",
+        "en": "Pruneau (2.5 cl)",
+        "pt": "Pruneau (2.5 cl)",
+        "it": "Pruneau (2.5 cl)",
+        "de": "Pruneau (2.5 cl)"
+       },
+       "prices": [
+        "7.00"
+       ]
+      },
+      {
+       "id": "v83",
+       "raw": [
+        83
+       ],
+       "name": {
+        "fr": "Williamine (2.5 cl)",
+        "en": "Williamine (2.5 cl)",
+        "pt": "Williamine (2.5 cl)",
+        "it": "Williamine (2.5 cl)",
+        "de": "Williamine (2.5 cl)"
+       },
+       "prices": [
+        "10.00"
+       ]
+      },
+      {
+       "id": "v84",
+       "raw": [
+        84
+       ],
+       "name": {
+        "fr": "Liqueur Williamine (2.5 cl)",
+        "en": "Liqueur Williamine (2.5 cl)",
+        "pt": "Liqueur Williamine (2.5 cl)",
+        "it": "Liqueur Williamine (2.5 cl)",
+        "de": "Liqueur Williamine (2.5 cl)"
+       },
+       "prices": [
+        "10.00"
+       ]
+      },
+      {
+       "id": "v85",
+       "raw": [
+        85
+       ],
+       "name": {
+        "fr": "Moitié moitié (2.5 cl)",
+        "en": "Moitié moitié (2.5 cl)",
+        "pt": "Moitié moitié (2.5 cl)",
+        "it": "Moitié moitié (2.5 cl)",
+        "de": "Moitié moitié (2.5 cl)"
+       },
+       "prices": [
+        "10.00"
+       ]
+      },
+      {
+       "id": "v86",
+       "raw": [
+        86
+       ],
+       "name": {
+        "fr": "Abricotine (2.5 cl)",
+        "en": "Abricotine (2.5 cl)",
+        "pt": "Abricotine (2.5 cl)",
+        "it": "Abricotine (2.5 cl)",
+        "de": "Abricotine (2.5 cl)"
+       },
+       "prices": [
+        "10.00"
+       ]
+      },
+      {
+       "id": "v87",
+       "raw": [
+        87
+       ],
+       "name": {
+        "fr": "Grappa maison (2.5 cl)",
+        "en": "Grappa maison (2.5 cl)",
+        "pt": "Grappa maison (2.5 cl)",
+        "it": "Grappa maison (2.5 cl)",
+        "de": "Grappa maison (2.5 cl)"
+       },
+       "prices": [
+        "7.00"
+       ]
+      },
+      {
+       "id": "v88",
+       "raw": [
+        88
+       ],
+       "name": {
+        "fr": "Grappa fior di vitte (2.5 cl)",
+        "en": "Grappa fior di vitte (2.5 cl)",
+        "pt": "Grappa fior di vitte (2.5 cl)",
+        "it": "Grappa fior di vitte (2.5 cl)",
+        "de": "Grappa fior di vitte (2.5 cl)"
+       },
+       "prices": [
+        "8.00"
+       ]
+      },
+      {
+       "id": "v89",
+       "raw": [
+        89
+       ],
+       "name": {
+        "fr": "Pomme (2.5 cl)",
+        "en": "Pomme (2.5 cl)",
+        "pt": "Pomme (2.5 cl)",
+        "it": "Pomme (2.5 cl)",
+        "de": "Pomme (2.5 cl)"
+       },
+       "prices": [
+        "7.00"
+       ]
+      },
+      {
+       "id": "v90",
+       "raw": [
+        90
+       ],
+       "name": {
+        "fr": "Bacardi (4 cl)",
+        "en": "Bacardi (4 cl)",
+        "pt": "Bacardi (4 cl)",
+        "it": "Bacardi (4 cl)",
+        "de": "Bacardi (4 cl)"
+       },
+       "prices": [
+        "7.00"
+       ]
+      },
+      {
+       "id": "v91",
+       "raw": [
+        91
+       ],
+       "name": {
+        "fr": "Vodka (4 cl)",
+        "en": "Vodka (4 cl)",
+        "pt": "Vodka (4 cl)",
+        "it": "Vodka (4 cl)",
+        "de": "Vodka (4 cl)"
+       },
+       "prices": [
+        "7.00"
+       ]
+      },
+      {
+       "id": "v92",
+       "raw": [
+        92
+       ],
+       "name": {
+        "fr": "Gin (4 cl)",
+        "en": "Gin (4 cl)",
+        "pt": "Gin (4 cl)",
+        "it": "Gin (4 cl)",
+        "de": "Gin (4 cl)"
+       },
+       "prices": [
+        "7.00"
+       ]
+      },
+      {
+       "id": "v93",
+       "raw": [
+        93
+       ],
+       "name": {
+        "fr": "Jack Daniel",
+        "en": "Jack Daniel",
+        "pt": "Jack Daniel",
+        "it": "Jack Daniel",
+        "de": "Jack Daniel"
+       },
+       "prices": [
+        "9.00",
+        "13.00"
+       ],
+       "priceLabels": [
+        {
+         "fr": "2 cl",
+         "en": "2 cl",
+         "pt": "2 cl",
+         "it": "2 cl",
+         "de": "2 cl"
+        },
+        {
+         "fr": "4 cl",
+         "en": "4 cl",
+         "pt": "4 cl",
+         "it": "4 cl",
+         "de": "4 cl"
+        }
+       ]
+      },
+      {
+       "id": "v94",
+       "raw": [
+        94
+       ],
+       "name": {
+        "fr": "Jamesson",
+        "en": "Jamesson",
+        "pt": "Jamesson",
+        "it": "Jamesson",
+        "de": "Jamesson"
+       },
+       "prices": [
+        "9.00",
+        "13.00"
+       ],
+       "priceLabels": [
+        {
+         "fr": "2 cl",
+         "en": "2 cl",
+         "pt": "2 cl",
+         "it": "2 cl",
+         "de": "2 cl"
+        },
+        {
+         "fr": "4 cl",
+         "en": "4 cl",
+         "pt": "4 cl",
+         "it": "4 cl",
+         "de": "4 cl"
+        }
+       ]
+      },
+      {
+       "id": "v95",
+       "raw": [
+        95
+       ],
+       "name": {
+        "fr": "JB, Ball, JW",
+        "en": "JB, Ball, JW",
+        "pt": "JB, Ball, JW",
+        "it": "JB, Ball, JW",
+        "de": "JB, Ball, JW"
+       },
+       "prices": [
+        "7.00",
+        "10.00"
+       ],
+       "priceLabels": [
+        {
+         "fr": "2 cl",
+         "en": "2 cl",
+         "pt": "2 cl",
+         "it": "2 cl",
+         "de": "2 cl"
+        },
+        {
+         "fr": "4 cl",
+         "en": "4 cl",
+         "pt": "4 cl",
+         "it": "4 cl",
+         "de": "4 cl"
+        }
+       ]
+      },
+      {
+       "id": "v96",
+       "raw": [
+        96
+       ],
+       "name": {
+        "fr": "Chivas Regal 12 ans",
+        "en": "Chivas Regal 12 ans",
+        "pt": "Chivas Regal 12 ans",
+        "it": "Chivas Regal 12 ans",
+        "de": "Chivas Regal 12 ans"
+       },
+       "prices": [
+        "9.00",
+        "13.00"
+       ],
+       "priceLabels": [
+        {
+         "fr": "2 cl",
+         "en": "2 cl",
+         "pt": "2 cl",
+         "it": "2 cl",
+         "de": "2 cl"
+        },
+        {
+         "fr": "4 cl",
+         "en": "4 cl",
+         "pt": "4 cl",
+         "it": "4 cl",
+         "de": "4 cl"
+        }
+       ]
+      },
+      {
+       "id": "v97",
+       "raw": [
+        97
+       ],
+       "name": {
+        "fr": "Fernet branca (2.5 cl)",
+        "en": "Fernet branca (2.5 cl)",
+        "pt": "Fernet branca (2.5 cl)",
+        "it": "Fernet branca (2.5 cl)",
+        "de": "Fernet branca (2.5 cl)"
+       },
+       "prices": [
+        "7.00"
+       ]
+      },
+      {
+       "id": "v98",
+       "raw": [
+        98
+       ],
+       "name": {
+        "fr": "Amendoa amarga (4 cl)",
+        "en": "Amendoa amarga (4 cl)",
+        "pt": "Amendoa amarga (4 cl)",
+        "it": "Amendoa amarga (4 cl)",
+        "de": "Amendoa amarga (4 cl)"
+       },
+       "prices": [
+        "7.00"
+       ]
+      },
+      {
+       "id": "v99",
+       "raw": [
+        99
+       ],
+       "name": {
+        "fr": "Lemoncello (4 cl)",
+        "en": "Lemoncello (4 cl)",
+        "pt": "Lemoncello (4 cl)",
+        "it": "Lemoncello (4 cl)",
+        "de": "Lemoncello (4 cl)"
+       },
+       "prices": [
+        "7.00"
+       ]
+      },
+      {
+       "id": "v100",
+       "raw": [
+        100
+       ],
+       "name": {
+        "fr": "Cointreau, Grand Marnier (2.5 cl)",
+        "en": "Cointreau, Grand Marnier (2.5 cl)",
+        "pt": "Cointreau, Grand Marnier (2.5 cl)",
+        "it": "Cointreau, Grand Marnier (2.5 cl)",
+        "de": "Cointreau, Grand Marnier (2.5 cl)"
+       },
+       "prices": [
+        "8.00"
+       ]
+      },
+      {
+       "id": "v101",
+       "raw": [
+        101
+       ],
+       "name": {
+        "fr": "Beirão, Amareto (2.5 cl)",
+        "en": "Beirão, Amareto (2.5 cl)",
+        "pt": "Beirão, Amareto (2.5 cl)",
+        "it": "Beirão, Amareto (2.5 cl)",
+        "de": "Beirão, Amareto (2.5 cl)"
+       },
+       "prices": [
+        "7.00"
+       ]
+      },
+      {
+       "id": "v102",
+       "raw": [
+        102
+       ],
+       "name": {
+        "fr": "Baileys (4 cl)",
+        "en": "Baileys (4 cl)",
+        "pt": "Baileys (4 cl)",
+        "it": "Baileys (4 cl)",
+        "de": "Baileys (4 cl)"
+       },
+       "prices": [
+        "8.00"
+       ]
+      },
+      {
+       "id": "v103",
+       "raw": [
+        103
+       ],
+       "name": {
+        "fr": "Marie Brizard (2.5 cl)",
+        "en": "Marie Brizard (2.5 cl)",
+        "pt": "Marie Brizard (2.5 cl)",
+        "it": "Marie Brizard (2.5 cl)",
+        "de": "Marie Brizard (2.5 cl)"
+       },
+       "prices": [
+        "7.00"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "bieres",
+   "title": {
+    "fr": "Bières",
+    "en": "Beers",
+    "pt": "Cervejas",
+    "it": "Birre",
+    "de": "Biere"
+   },
+   "sections": [
+    {
+     "id": "bieres-liste",
+     "title": null,
+     "items": [
+      {
+       "id": "v113",
+       "raw": [
+        113
+       ],
+       "name": {
+        "fr": "Super Bock (2.5 dl)",
+        "en": "Super Bock (2.5 dl)",
+        "pt": "Super Bock (2.5 dl)",
+        "it": "Super Bock (2.5 dl)",
+        "de": "Super Bock (2.5 dl)"
+       },
+       "prices": [
+        "3.50"
+       ]
+      },
+      {
+       "id": "v114",
+       "raw": [
+        114
+       ],
+       "name": {
+        "fr": "Sagres (2.5 dl)",
+        "en": "Sagres (2.5 dl)",
+        "pt": "Sagres (2.5 dl)",
+        "it": "Sagres (2.5 dl)",
+        "de": "Sagres (2.5 dl)"
+       },
+       "prices": [
+        "3.50"
+       ]
+      },
+      {
+       "id": "v115",
+       "raw": [
+        115
+       ],
+       "name": {
+        "fr": "Heineken (2.5 dl)",
+        "en": "Heineken (2.5 dl)",
+        "pt": "Heineken (2.5 dl)",
+        "it": "Heineken (2.5 dl)",
+        "de": "Heineken (2.5 dl)"
+       },
+       "prices": [
+        "5.00"
+       ]
+      },
+      {
+       "id": "v116",
+       "raw": [
+        116
+       ],
+       "name": {
+        "fr": "Super Bock sans alcool (3.3 dl)",
+        "en": "Super Bock sans alcool (3.3 dl)",
+        "pt": "Super Bock sans alcool (3.3 dl)",
+        "it": "Super Bock sans alcool (3.3 dl)",
+        "de": "Super Bock sans alcool (3.3 dl)"
+       },
+       "prices": [
+        "4.00"
+       ]
+      },
+      {
+       "id": "v117",
+       "raw": [
+        117
+       ],
+       "name": {
+        "fr": "Super Bock brune (2.5 dl)",
+        "en": "Super Bock brune (2.5 dl)",
+        "pt": "Super Bock brune (2.5 dl)",
+        "it": "Super Bock brune (2.5 dl)",
+        "de": "Super Bock brune (2.5 dl)"
+       },
+       "prices": [
+        "3.80"
+       ]
+      },
+      {
+       "id": "v126",
+       "raw": [
+        126
+       ],
+       "name": {
+        "fr": "Super Bock",
+        "en": "Super Bock",
+        "pt": "Super Bock",
+        "it": "Super Bock",
+        "de": "Super Bock"
+       },
+       "prices": [
+        "3.30",
+        "3.50",
+        "6.50"
+       ],
+       "priceLabels": [
+        {
+         "fr": "2 dl",
+         "en": "2 dl",
+         "pt": "2 dl",
+         "it": "2 dl",
+         "de": "2 dl"
+        },
+        {
+         "fr": "2.5 dl",
+         "en": "2.5 dl",
+         "pt": "2.5 dl",
+         "it": "2.5 dl",
+         "de": "2.5 dl"
+        },
+        {
+         "fr": "5 dl",
+         "en": "5 dl",
+         "pt": "5 dl",
+         "it": "5 dl",
+         "de": "5 dl"
+        }
+       ]
+      },
+      {
+       "id": "v127",
+       "raw": [
+        127
+       ],
+       "name": {
+        "fr": "Blanche",
+        "en": "Blanche",
+        "pt": "Blanche",
+        "it": "Blanche",
+        "de": "Blanche"
+       },
+       "prices": [
+        "4.00",
+        "4.50",
+        "8.00"
+       ],
+       "priceLabels": [
+        {
+         "fr": "2 dl",
+         "en": "2 dl",
+         "pt": "2 dl",
+         "it": "2 dl",
+         "de": "2 dl"
+        },
+        {
+         "fr": "2.5 dl",
+         "en": "2.5 dl",
+         "pt": "2.5 dl",
+         "it": "2.5 dl",
+         "de": "2.5 dl"
+        },
+        {
+         "fr": "5 dl",
+         "en": "5 dl",
+         "pt": "5 dl",
+         "it": "5 dl",
+         "de": "5 dl"
+        }
+       ]
+      },
+      {
+       "id": "v128",
+       "raw": [
+        128
+       ],
+       "name": {
+        "fr": "Saison",
+        "en": "Saison",
+        "pt": "Saison",
+        "it": "Saison",
+        "de": "Saison"
+       },
+       "prices": [
+        "4.00",
+        "4.50",
+        "8.00"
+       ],
+       "priceLabels": [
+        {
+         "fr": "2 dl",
+         "en": "2 dl",
+         "pt": "2 dl",
+         "it": "2 dl",
+         "de": "2 dl"
+        },
+        {
+         "fr": "2.5 dl",
+         "en": "2.5 dl",
+         "pt": "2.5 dl",
+         "it": "2.5 dl",
+         "de": "2.5 dl"
+        },
+        {
+         "fr": "5 dl",
+         "en": "5 dl",
+         "pt": "5 dl",
+         "it": "5 dl",
+         "de": "5 dl"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "sans-alcool",
+   "title": {
+    "fr": "Sans alcool",
+    "en": "Soft drinks",
+    "pt": "Sem álcool",
+    "it": "Analcolici",
+    "de": "Alkoholfrei"
+   },
+   "sections": [
+    {
+     "id": "sans-alcool-liste",
+     "title": null,
+     "items": [
+      {
+       "id": "v31",
+       "raw": [
+        31
+       ],
+       "name": {
+        "fr": "Eau minérale",
+        "en": "Eau minérale",
+        "pt": "Eau minérale",
+        "it": "Eau minérale",
+        "de": "Eau minérale"
+       },
+       "prices": [
+        "2.50",
+        "3.50"
+       ],
+       "priceLabels": [
+        {
+         "fr": "2 dl",
+         "en": "2 dl",
+         "pt": "2 dl",
+         "it": "2 dl",
+         "de": "2 dl"
+        },
+        {
+         "fr": "3 dl",
+         "en": "3 dl",
+         "pt": "3 dl",
+         "it": "3 dl",
+         "de": "3 dl"
+        }
+       ]
+      },
+      {
+       "id": "v32",
+       "raw": [
+        32
+       ],
+       "name": {
+        "fr": "Limonade",
+        "en": "Limonade",
+        "pt": "Limonade",
+        "it": "Limonade",
+        "de": "Limonade"
+       },
+       "prices": [
+        "3.00",
+        "4.00"
+       ],
+       "priceLabels": [
+        {
+         "fr": "2 dl",
+         "en": "2 dl",
+         "pt": "2 dl",
+         "it": "2 dl",
+         "de": "2 dl"
+        },
+        {
+         "fr": "3 dl",
+         "en": "3 dl",
+         "pt": "3 dl",
+         "it": "3 dl",
+         "de": "3 dl"
+        }
+       ]
+      },
+      {
+       "id": "v33",
+       "raw": [
+        33
+       ],
+       "name": {
+        "fr": "Parisien nature",
+        "en": "Parisien nature",
+        "pt": "Parisien nature",
+        "it": "Parisien nature",
+        "de": "Parisien nature"
+       },
+       "prices": [
+        "4.20"
+       ],
+       "priceLabels": [
+        {
+         "fr": "3 dl",
+         "en": "3 dl",
+         "pt": "3 dl",
+         "it": "3 dl",
+         "de": "3 dl"
+        }
+       ]
+      },
+      {
+       "id": "v104",
+       "raw": [
+        104
+       ],
+       "name": {
+        "fr": "Coca-Cola (3 dl)",
+        "en": "Coca-Cola (3 dl)",
+        "pt": "Coca-Cola (3 dl)",
+        "it": "Coca-Cola (3 dl)",
+        "de": "Coca-Cola (3 dl)"
+       },
+       "prices": [
+        "4.50"
+       ]
+      },
+      {
+       "id": "v105",
+       "raw": [
+        105
+       ],
+       "name": {
+        "fr": "Sprite (3 dl)",
+        "en": "Sprite (3 dl)",
+        "pt": "Sprite (3 dl)",
+        "it": "Sprite (3 dl)",
+        "de": "Sprite (3 dl)"
+       },
+       "prices": [
+        "4.50"
+       ]
+      },
+      {
+       "id": "v106",
+       "raw": [
+        106
+       ],
+       "name": {
+        "fr": "Fanta (3 dl)",
+        "en": "Fanta (3 dl)",
+        "pt": "Fanta (3 dl)",
+        "it": "Fanta (3 dl)",
+        "de": "Fanta (3 dl)"
+       },
+       "prices": [
+        "4.50"
+       ]
+      },
+      {
+       "id": "v107",
+       "raw": [
+        107
+       ],
+       "name": {
+        "fr": "Sumol orange ou ananas (3 dl)",
+        "en": "Sumol orange ou ananas (3 dl)",
+        "pt": "Sumol orange ou ananas (3 dl)",
+        "it": "Sumol orange ou ananas (3 dl)",
+        "de": "Sumol orange ou ananas (3 dl)"
+       },
+       "prices": [
+        "4.50"
+       ]
+      },
+      {
+       "id": "v108",
+       "raw": [
+        108
+       ],
+       "name": {
+        "fr": "Schweppes tonic, lemon (1.9 cl)",
+        "en": "Schweppes tonic, lemon (1.9 cl)",
+        "pt": "Schweppes tonic, lemon (1.9 cl)",
+        "it": "Schweppes tonic, lemon (1.9 cl)",
+        "de": "Schweppes tonic, lemon (1.9 cl)"
+       },
+       "prices": [
+        "4.50"
+       ]
+      },
+      {
+       "id": "v109",
+       "raw": [
+        109
+       ],
+       "name": {
+        "fr": "Jus de pomme (3 dl)",
+        "en": "Jus de pomme (3 dl)",
+        "pt": "Jus de pomme (3 dl)",
+        "it": "Jus de pomme (3 dl)",
+        "de": "Jus de pomme (3 dl)"
+       },
+       "prices": [
+        "4.50"
+       ]
+      },
+      {
+       "id": "v110",
+       "raw": [
+        110
+       ],
+       "name": {
+        "fr": "Jus de tomate (2 dl)",
+        "en": "Jus de tomate (2 dl)",
+        "pt": "Jus de tomate (2 dl)",
+        "it": "Jus de tomate (2 dl)",
+        "de": "Jus de tomate (2 dl)"
+       },
+       "prices": [
+        "4.50"
+       ]
+      },
+      {
+       "id": "v111",
+       "raw": [
+        111
+       ],
+       "name": {
+        "fr": "Jus de fruits (Compal) (2 dl)",
+        "en": "Jus de fruits (Compal) (2 dl)",
+        "pt": "Jus de fruits (Compal) (2 dl)",
+        "it": "Jus de fruits (Compal) (2 dl)",
+        "de": "Jus de fruits (Compal) (2 dl)"
+       },
+       "prices": [
+        "4.50"
+       ]
+      },
+      {
+       "id": "v112",
+       "raw": [
+        112
+       ],
+       "name": {
+        "fr": "Água das pedras, gazeuse (2.5 dl)",
+        "en": "Água das pedras, gazeuse (2.5 dl)",
+        "pt": "Água das pedras, gazeuse (2.5 dl)",
+        "it": "Água das pedras, gazeuse (2.5 dl)",
+        "de": "Água das pedras, gazeuse (2.5 dl)"
+       },
+       "prices": [
+        "4.50"
+       ]
+      },
+      {
+       "id": "v124",
+       "raw": [
+        124
+       ],
+       "name": {
+        "fr": "Valser, gazeuse ou plat",
+        "en": "Valser, gazeuse ou plat",
+        "pt": "Valser, gazeuse ou plat",
+        "it": "Valser, gazeuse ou plat",
+        "de": "Valser, gazeuse ou plat"
+       },
+       "prices": [
+        "4.50",
+        "5.50",
+        "9.00"
+       ],
+       "priceLabels": [
+        {
+         "fr": "3.3 dl",
+         "en": "3.3 dl",
+         "pt": "3.3 dl",
+         "it": "3.3 dl",
+         "de": "3.3 dl"
+        },
+        {
+         "fr": "5 dl",
+         "en": "5 dl",
+         "pt": "5 dl",
+         "it": "5 dl",
+         "de": "5 dl"
+        },
+        {
+         "fr": "1 litre",
+         "en": "1 litre",
+         "pt": "1 litro",
+         "it": "1 litro",
+         "de": "1 Liter"
+        }
+       ]
+      },
+      {
+       "id": "v129",
+       "raw": [
+        129
+       ],
+       "name": {
+        "fr": "Thé froid",
+        "en": "Thé froid",
+        "pt": "Thé froid",
+        "it": "Thé froid",
+        "de": "Thé froid"
+       },
+       "prices": [
+        "3.20",
+        "4.20",
+        "6.00"
+       ],
+       "priceLabels": [
+        {
+         "fr": "2 dl",
+         "en": "2 dl",
+         "pt": "2 dl",
+         "it": "2 dl",
+         "de": "2 dl"
+        },
+        {
+         "fr": "3 dl",
+         "en": "3 dl",
+         "pt": "3 dl",
+         "it": "3 dl",
+         "de": "3 dl"
+        },
+        {
+         "fr": "5 dl",
+         "en": "5 dl",
+         "pt": "5 dl",
+         "it": "5 dl",
+         "de": "5 dl"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "chaud",
+   "title": {
+    "fr": "Boissons chaudes & lait",
+    "en": "Hot drinks & milk",
+    "pt": "Bebidas quentes e leite",
+    "it": "Bevande calde e latte",
+    "de": "Heissgetränke & Milch"
+   },
+   "sections": [
+    {
+     "id": "chaud-liste",
+     "title": null,
+     "items": [
+      {
+       "id": "v120",
+       "raw": [
+        120
+       ],
+       "name": {
+        "fr": "Café",
+        "en": "Café",
+        "pt": "Café",
+        "it": "Café",
+        "de": "Café"
+       },
+       "prices": [
+        "3.40"
+       ]
+      },
+      {
+       "id": "v121",
+       "raw": [
+        121
+       ],
+       "name": {
+        "fr": "Café renversé",
+        "en": "Café renversé",
+        "pt": "Café renversé",
+        "it": "Café renversé",
+        "de": "Café renversé"
+       },
+       "prices": [
+        "4.00"
+       ]
+      },
+      {
+       "id": "v122",
+       "raw": [
+        122
+       ],
+       "name": {
+        "fr": "Thé, infusion",
+        "en": "Thé, infusion",
+        "pt": "Thé, infusion",
+        "it": "Thé, infusion",
+        "de": "Thé, infusion"
+       },
+       "prices": [
+        "3.40"
+       ]
+      },
+      {
+       "id": "v123",
+       "raw": [
+        123
+       ],
+       "name": {
+        "fr": "Chocolat (2 dl)",
+        "en": "Chocolat (2 dl)",
+        "pt": "Chocolat (2 dl)",
+        "it": "Chocolat (2 dl)",
+        "de": "Chocolat (2 dl)"
+       },
+       "prices": [
+        "4.00"
+       ]
+      },
+      {
+       "id": "v125",
+       "raw": [
+        125
+       ],
+       "name": {
+        "fr": "Capuccino (2 dl)",
+        "en": "Capuccino (2 dl)",
+        "pt": "Capuccino (2 dl)",
+        "it": "Capuccino (2 dl)",
+        "de": "Capuccino (2 dl)"
+       },
+       "prices": [
+        "4.40"
+       ]
+      },
+      {
+       "id": "v119",
+       "raw": [
+        119
+       ],
+       "name": {
+        "fr": "Lait (2 dl)",
+        "en": "Lait (2 dl)",
+        "pt": "Lait (2 dl)",
+        "it": "Lait (2 dl)",
+        "de": "Lait (2 dl)"
+       },
+       "prices": [
+        "3.00"
+       ]
+      },
+      {
+       "id": "v57",
+       "raw": [
+        57
+       ],
+       "name": {
+        "fr": "Lait froid",
+        "en": "Lait froid",
+        "pt": "Lait froid",
+        "it": "Lait froid",
+        "de": "Lait froid"
+       },
+       "prices": [
+        "2.00",
+        "3.00"
+       ],
+       "priceLabels": [
+        {
+         "fr": "2 dl",
+         "en": "2 dl",
+         "pt": "2 dl",
+         "it": "2 dl",
+         "de": "2 dl"
+        },
+        {
+         "fr": "3 dl",
+         "en": "3 dl",
+         "pt": "3 dl",
+         "it": "3 dl",
+         "de": "3 dl"
+        }
+       ]
+      },
+      {
+       "id": "v130",
+       "raw": [
+        130
+       ],
+       "name": {
+        "fr": "Les arrosés",
+        "en": "Les arrosés",
+        "pt": "Les arrosés",
+        "it": "Les arrosés",
+        "de": "Les arrosés"
+       },
+       "prices": [
+        "6.00"
+       ],
+       "desc": {
+        "fr": "Café/thé avec petit verre (2cl), (pruneau, pomme, marc, rhum, maçieira)",
+        "en": "Coffee/tea with a small glass (2 cl): prune, apple, marc, rum or Maçieira",
+        "pt": "Café/chá com um copinho (2 cl): ameixa, maçã, bagaço, rum ou Maçieira",
+        "it": "Caffè/tè con un bicchierino (2 cl): prugna, mela, grappa, rum o Maçieira",
+        "de": "Kaffee/Tee mit einem Gläschen (2 cl): Pflümli, Apfel, Marc, Rum oder Maçieira"
+       }
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
