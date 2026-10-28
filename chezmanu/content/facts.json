@@ -1,0 +1,23 @@
+{
+  "_note": "Contact details and hours copied from the live site. `yearsConfirmed` turns on the «12 ans» count-up once the owner confirms the number (the live text says «Ouverte depuis 12 ans»). Coordinates: OpenStreetMap Nominatim for Rue du Maupas 30.",
+  "name": "Chez Manu",
+  "legalName": "Chez Manu",
+  "street": "Rue du Maupas 30",
+  "zip": "1004",
+  "city": "Lausanne",
+  "region": "VD",
+  "phone": "021 646 38 35",
+  "phoneHref": "tel:+41216463835",
+  "phoneIntl": "+41 21 646 38 35",
+  "email": "chezmanu2007@gmail.com",
+  "facebook": "https://www.facebook.com/people/Chez-Manu-Lausanne/100063577540334/",
+  "instagram": "https://www.instagram.com/chez_manu_lausanne",
+  "localCh": "https://www.local.ch/fr/d/lausanne/1004/tea-room/chez-manu-sarl-Jl2H3IKtZRveEaJH7ofd2g",
+  "searchCh": "https://search.ch/tel/lausanne/rue-du-maupas-30/chez-manu-sarl",
+  "lat": 46.5255236,
+  "lng": 6.6249311,
+  "hours": { "weekdays": ["06:30", "18:30"], "weekend": ["06:30", "18:00"] },
+  "terraceMonths": [4, 10],
+  "years": 12,
+  "yearsConfirmed": false
+}

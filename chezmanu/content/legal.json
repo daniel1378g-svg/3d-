@@ -1,0 +1,305 @@
+{
+ "_note": "French text of the live legal pages, verbatim; built by scripts/extract_legal.py.",
+ "privacy": [
+  {
+   "k": "h2",
+   "t": "1. Introduction"
+  },
+  {
+   "k": "p",
+   "t": "Dans le présent document, nous vous informons notamment sur l’entité qui est responsable du traitement de vos Données, sur les Données que nous collectons dans le cadre de la consultation de nos sites Internet et de l’utilisation de nos services, sur les finalités pour lesquelles nous traitons ces Données ainsi que sur les entités auxquelles nous transmettons vos Données, le cas échéant. Nous vous informons en outre sur la durée du traitement de vos Données, sur le fondement juridique de ce traitement (dans la mesure où un tel fondement devait s‘avérer nécessaire) ainsi que sur les droits que vous pouvez faire valoir à notre égard s‘agissant du traitement de vos Données. La présente Déclaration relative à la protection des données s‘applique à toutes vos Données dont nous avons déjà connaissance ou qui nous seront transmises à l‘avenir. Veuillez noter que nous pouvons adapter la présente Déclaration relative à la protection des données à tout moment. La version actuelle publiée sur notre site Internet fait foi."
+  },
+  {
+   "k": "p",
+   "t": "Sont considérées comme données personnelles toutes les informations qui se rapportent à une personne identifiée ou identifiable (ci-après les «Données personnelles»). Sont notamment concernées les informations telles que le nom, l'adresse, le numéro de téléphone, l'adresse électronique et, le cas échéant, les adresses IP ainsi que les ID d'appareil. Le terme générique «Données» au sens de la présente Déclaration relative à la protection des données englobe aussi bien les Données personnelles que les données anonymisées ou les données ne revêtant pas de caractère personnel. Le terme «traitement», quant à lui, fait référence à tout traitement de Données, notamment à la collecte, à l’enregistrement, à l’utilisation, à la transformation, à la diffusion, à la conservation ou à l’effacement de Données, quel que soit le moyen ou le procédé utilisé (ci-après le «Traitement»)."
+  },
+  {
+   "k": "p",
+   "t": "Avant de mettre à notre disposition les Données personnelles d’autres personnes, veuillez vous assurer que celles-ci ont pris connaissance de la présente Déclaration relative à la protection des données, et transmettez-nous leurs Données personnelles uniquement si la législation sur la protection des données en vigueur vous y autorise."
+  },
+  {
+   "k": "h2",
+   "t": "2. Nom et adresse du responsable du traitement"
+  },
+  {
+   "k": "p",
+   "t": "Est responsable du Traitement des Données conformément à la présente Déclaration relative à la protection des données:"
+  },
+  {
+   "k": "addr",
+   "t": "Chez Manu\nRue du Maupas 30, Lausanne, Vaud 1004, Switzerland\n021 646 38 35\nchezmanu2007@gmail.com"
+  },
+  {
+   "k": "h2",
+   "t": "3. Catégories de données traitées"
+  },
+  {
+   "k": "p",
+   "t": "Lorsque vous visitez notre site Internet, que vous utilisez nos services et que vous nous contactez, nous recueillons certaines Données. En principe, nous recueillons ces Données auprès de vous directement. Peuvent faire partie des Données personnelles que nous traitons:"
+  },
+  {
+   "k": "li",
+   "t": "les Données qui sont obtenues ou divulguées lors de la visite de notre site Internet ou de l’utilisation de nos services; Sont notamment concernés les adresses IP et MAC ou l’ID de l’appareil utilisé, les cookies, les pages Internet que vous avez consultées et les termes de recherche que vous avez saisis, les entrées dans les boîtes de dialogue, les évaluations, la date, l’heure et la durée des consultations, les clics, les référents/URL de sortie, les informations relatives à la date et à l’heure de l’utilisation, au type de navigateur et d’appareil, au système d‘exploitation ainsi qu’au fournisseur de services Internet, ou encore la quantité de données transférées;"
+  },
+  {
+   "k": "li",
+   "t": "les Données échangées dans le cadre ou en relation avec une prise de contact avec nous, par exemple communication par voie postale, téléphone, e-mail, formulaire de contact, etc. (en particulier nom, coordonnées, sexe, état civil, date de naissance, titre professionnel, photo, collaborateurs, langue, informations de paiement);"
+  },
+  {
+   "k": "li",
+   "t": "les Données qui sont communiquées lors de l’inscription à une newsletter ou du téléchargement de fichiers (p. ex. logiciels) (en particulier adresse e-mail et nom);"
+  },
+  {
+   "k": "li",
+   "t": "les Données communiquées dans le cadre de l’établissement d’un compte client pour les achats en ligne et en relation avec les commandes effectuées (en particulier nom d’utilisateur, mot de passe, mode de paiement choisi et adresse de livraison);"
+  },
+  {
+   "k": "li",
+   "t": "les Données en lien avec les offres et les contrats conclus (date du contrat, type de contrat, contenu du contrat, produit contractuel, parties au contrat, durée du contrat, valeur du contrat, modifications du contrat, détails relatifs au paiement, coordonnées, personnes de contact, adresses de facturation et de correspondance, feedbacks des clients, résiliations, litiges, etc.);"
+  },
+  {
+   "k": "li",
+   "t": "les Données communiquées dans le cadre de la fonction commentaire (en particulier adresse e-mail, nom d’utilisateur que vous avez choisi, si vous ne postez pas de manière anonyme, ainsi que votre adresse IP);"
+  },
+  {
+   "k": "li",
+   "t": "les Données que vous communiquez dans le cadre d’une éventuelle participation à des concours ou à des sondages, ou à d’autres opérations similaires."
+  },
+  {
+   "k": "p",
+   "t": "Les Données susmentionnées ne sont pas toujours des Données personnelles. En règle générale, à moins d’un enregistrement (p. ex. pour une newsletter ou une boutique en ligne), nous ne sommes pas en mesure de rattacher à une personne spécifique les Données générées lors de l’utilisation de nos services. Toutefois, dans des cas individuels, un tel rattachement peut s‘avérer possible si ces Données sont combinées avec d‘autres Données."
+  },
+  {
+   "k": "p",
+   "t": "Nous attirons votre attention sur le fait que les informations fournies dans le cadre de l’utilisation du formulaire de contact ou de la fonction commentaire peuvent inclure des Données sensibles (telles que des données relatives à la santé) et que vous les avez volontairement mises à notre disposition."
+  },
+  {
+   "k": "h2",
+   "t": "4. Finalités du traitement"
+  },
+  {
+   "k": "p",
+   "t": "Dans la mesure autorisée par la loi, nous traiterons les Données personnelles notamment aux fins suivantes:"
+  },
+  {
+   "k": "li",
+   "t": "préparation, conclusion, exécution et traitement de contrats;"
+  },
+  {
+   "k": "li",
+   "t": "offre, développement et amélioration de nos offres, développement de nouveaux services, exploitation, maintenance, optimisation et garantie de la sécurité de nos services et de nos infrastructures;"
+  },
+  {
+   "k": "li",
+   "t": "gestion des utilisateurs de nos services, contrôles d’identité, connexions et autres authentifications;"
+  },
+  {
+   "k": "li",
+   "t": "entretien, gestion et développement de nos relations clients, communication avec les clients et les tiers, promotions, publicité et marketing, offre de services personnalisés et de contenus pertinents;"
+  },
+  {
+   "k": "li",
+   "t": "contrôle de qualité, établissement de statistiques;"
+  },
+  {
+   "k": "li",
+   "t": "respect des obligations légales ou réglementaires et des règles internes, application du droit, procédures civiles, pénales ou administratives, plaintes, lutte contre les abus, enquêtes et réponse aux demandes des autorités ou des services officiels."
+  },
+  {
+   "k": "h2",
+   "t": "5. Base juridique"
+  },
+  {
+   "k": "p",
+   "t": "Dans la mesure où un fondement juridique est exigé par la législation sur la protection des données en vigueur, nous utilisons les Données personnelles aux fins susmentionnées en nous appuyant sur les fondements juridiques suivants:"
+  },
+  {
+   "k": "li",
+   "t": "exécution d’un contrat;"
+  },
+  {
+   "k": "li",
+   "t": "respect des obligations légales;"
+  },
+  {
+   "k": "li",
+   "t": "consentement obtenu par localsearch ou par un tiers;"
+  },
+  {
+   "k": "li",
+   "t": "intérêts légitimes de localsearch ou de tiers, en particulier"
+  },
+  {
+   "k": "li2",
+   "t": "offre et fourniture de services;"
+  },
+  {
+   "k": "li2",
+   "t": "publicité et marketing;"
+  },
+  {
+   "k": "li2",
+   "t": "entretien des relations et communication avec les utilisateurs;"
+  },
+  {
+   "k": "li2",
+   "t": "gestion des utilisateurs, contrôles d’identité, connexions;"
+  },
+  {
+   "k": "li2",
+   "t": "respect des obligations légales ou réglementaires, application du droit, procédures civiles, pénales ou administratives, plaintes, enquêtes et réponse aux demandes des autorités."
+  },
+  {
+   "k": "h2",
+   "t": "6. Publication et transmission de données"
+  },
+  {
+   "k": "p",
+   "t": "Nous pouvons publier et transmettre les Données aux termes des dispositions suivantes"
+  },
+  {
+   "k": "h3",
+   "t": "Sous-traitants des données"
+  },
+  {
+   "k": "p",
+   "t": "Nous sommes en droit de mandater des tiers afin qu’ils fournissent certaines prestations (services informatiques, exploitation d’applications, gestion, envoi, etc.) ou traitent et sauvegardent les Données (ci-après les «Sous-traitants des données»). Les Sous-traitants des données peuvent avoir accès aux Données personnelles et traiter celles-ci dans le cadre du mandat que nous leur avons confié. Nous obligeons contractuellement les Sous-traitants des données à respecter la législation sur la protection des données et à traiter les Données de la même manière que nous le faisons. Les Sous-traitants des données susceptibles de recevoir des Données personnelles peuvent être établis dans n’importe quel pays, notamment en Suisse, en Allemagne, en Israël ainsi qu’aux États-Unis."
+  },
+  {
+   "k": "h3",
+   "t": "Partenaires contractuels"
+  },
+  {
+   "k": "p",
+   "t": "Il se peut que nous transmettions des Données à nos partenaires contractuels (partenaires de distribution, prestataires de services, établissements financiers, etc.). Cela a lieu par exemple pour remplir des obligations contractuelles, pour offrir certains services, à des fins de recouvrement et de marketing, pour analyser l'utilisation et le fonctionnement de nos services, systèmes et infrastructures et pour le traitement des paiements. Les acquéreurs ou les parties intéressées par l‘acquisition d’unités commerciales, de sociétés ou de parties de sociétés sont également des destinataires potentiels. Les partenaires contractuels peuvent avoir accès aux Données personnelles et traiter celles-ci à leurs propres fins (par exemple, pour exécuter leurs contrats ou remplir leurs obligations légales). Dans ce cadre, ils sont eux aussi tenus de respecter la législation sur la protection des données en vigueur. Les partenaires contractuels susceptibles de recevoir des Données personnelles peuvent être établis dans n’importe quel pays, notamment en Suisse, dans les pays de l’UE ou de l’EEE ainsi qu’aux États-Unis."
+  },
+  {
+   "k": "h3",
+   "t": "Transmission aux autorités"
+  },
+  {
+   "k": "p",
+   "t": "Dans certaines situations, nous pouvons communiquer des Données aux autorités, aux services officiels et à d’autres tiers. Nous procédons à une telle communication lorsque les autorités ou les services officiels nous le demandent ou lorsque nous estimons y être tenus."
+  },
+  {
+   "k": "h2",
+   "t": "7. Durée de conservation"
+  },
+  {
+   "k": "p",
+   "t": "Nous conservons les Données personnelles le temps nécessaire pour remplir l’objectif pour lequel nous les avons recueillies. Certaines Données personnelles sont en outre soumises à des obligations de conservation légales de dix années ou plus, que nous respectons. Nous pouvons également conserver les Données personnelles au moins pendant les délais de prescription applicables, qui se portent dans de nombreux cas à cinq ou à dix ans. Toutefois, en règle générale, nous effaçons plus tôt, à savoir dès que leur Traitement ne présente plus d’intérêt pour nous, les Données personnelles qui sont générées dans le cadre de l’utilisation de nos services (protocoles, journaux («logs»), analyses, etc.) et qui ne sont pas soumises à de tels délais de conservation ou de prescription. Les Données anonymisées peuvent être conservées plus longtemps. Sous réserve de tout accord contractuel exprès, nous ne sommes pas tenus de conserver les Données pendant une durée déterminée."
+  },
+  {
+   "k": "h2",
+   "t": "8. Sécurité des données"
+  },
+  {
+   "k": "p",
+   "t": "Nous recourons à des mesures de sécurité organisationnelles et techniques appropriées afin de protéger vos Données contre des manipulations accidentelles ou intentionnelles, contre la perte ou la destruction totale ou partielle ou contre des accès non autorisés par des tiers. Nos mesures de sécurité sont améliorées en permanence en fonction de l’évolution technologique."
+  },
+  {
+   "k": "h2",
+   "t": "9. Vos droits (droits de la personne concernée)"
+  },
+  {
+   "k": "p",
+   "t": "Toute personne concernée dispose d’un droit d’accès aux Données personnelles la concernant. Elle a en outre le droit d’exiger que nous rectifiions ou effacions des Données personnelles la concernant ou que nous en limitions le Traitement et l’utilisation, et peut également s’opposer à un tel Traitement des Données personnelles. En règle générale, la personne concernée doit néanmoins être en mesure de prouver clairement son identité pour pouvoir exercer ces droits. Si la personne concernée a consenti au Traitement des Données personnelles, elle peut révoquer son consentement à tout moment. Dans certains cas, la personne concernée a le droit de recevoir les Données générées lors de l’utilisation de services en ligne dans un format structuré, couramment utilisé et lisible par machine qui permette de continuer à utiliser ces Données et de les transmettre. Les demandes relatives à ces droits doivent être adressées à l’adresse susmentionnée. Nous nous réservons le droit de limiter les droits de la personne concernée dans la mesure autorisée par la loi et, par exemple, de ne pas fournir des renseignements complets ou de ne pas effacer des Données. En outre, nous attirons votre attention sur le fait que, si vos Données personnelles sont effacées, des services ou des parties de services peuvent ne plus être disponibles ou utilisables."
+  },
+  {
+   "k": "p",
+   "t": "Toute personne concernée a le droit de déposer une plainte auprès de l’autorité compétente en matière de protection des données. Si le responsable du Traitement des Données est situé en Suisse, il s’agira du Préposé fédéral à la protection des données et à la transparence. Dans le cas d’un responsable du Traitement situé dans la Principauté de Liechtenstein, il s’agit du service de protection des données du Liechtenstein."
+  },
+  {
+   "k": "h2",
+   "t": "10. Cookies, outils d’analyse Internet et de suivi"
+  },
+  {
+   "k": "p",
+   "t": "Nous employons différentes technologies courantes pour collecter, enregistrer et analyser les Données lorsque vous visitez notre site Internet et utilisez nos services."
+  },
+  {
+   "k": "p",
+   "t": "Nous recourons notamment aux cookies, qui permettent d’identifier votre navigateur ou votre appareil. Un cookie est un petit fichier qui est envoyé sur votre ordinateur ou enregistré automatiquement sur votre ordinateur ou votre appareil mobile par le navigateur que vous utilisez. Quand vous accédez une nouvelle fois à un service, celui-ci peut reconnaître votre navigateur ou votre appareil à l’aide des cookies. Les cookies peuvent stocker diverses informations, telles que les préférences des utilisateurs. Nous utilisons des cookies de session. Ils sont nécessaires à l’exécution des fonctions essentielles des services et seront automatiquement supprimés après une utilisation de nos services. Nous utilisons également des cookies temporaires et permanents qui restent enregistrés plus longtemps sur votre ordinateur ou votre appareil mobile. Les informations recueillies au moyen de cookies nous permettent d’améliorer notre site Internet et nos services en fonction des souhaits des clients et de vous soumettre des offres sur mesure."
+  },
+  {
+   "k": "p",
+   "t": "Néanmoins, vous avez la possibilité de bloquer l’utilisation de cookies ou de les supprimer dans les paramètres de votre navigateur. Veuillez toutefois noter que, si vous bloquez les cookies, vous ne serez peut-être pas en mesure d’utiliser toutes les fonctionnalités d’un service. De même, si vous effacez les cookies, les éventuels cookies d’opt-out que vous avez vous-même enregistrés seront eux aussi effacés. Vous devrez alors réactiver ces cookies d’opt-out lors de votre prochaine utilisation du service concerné. Dans le cas contraire, vous serez identifié comme un nouvel utilisateur et devrez saisir à nouveau vos Données."
+  },
+  {
+   "k": "p",
+   "t": "Outre les cookies, nous utilisons des outils d’analyse et de suivi Internet pour mesurer et évaluer l’utilisation de notre site Internet et de nos services, personnaliser les services et afficher des offres et de la publicité sur mesure. Les Traitements de Données effectués au moyen de tels outils, généralement mis à disposition par des tiers, sont soumis aux dispositions en matière d'utilisation et de protection des données de ces tiers."
+  },
+  {
+   "k": "h2",
+   "t": "11. Intégration d’offre de tiers"
+  },
+  {
+   "k": "p",
+   "t": "Nous intégrons sur nos sites Internet des services et contenus de tiers qui peuvent vous permettre d’interagir avec des tiers (p. ex. vidéo YouTube ou paiement en ligne par l’intermédiaire d’un prestataire de services de paiement). Les Données éventuellement saisies sont alors soit transmises à ces tiers en vue du traitement et de l'exécution de la prestation concernée, soit traitées directement par ceux-ci."
+  },
+  {
+   "k": "p",
+   "t": "Veuillez noter que ces tiers traitent les Données en application de leurs propres dispositions en matière d’utilisation et de protection des données."
+  },
+  {
+   "k": "p",
+   "t": "Version 1.0.0"
+  }
+ ],
+ "notice": [
+  {
+   "k": "h2",
+   "t": "Contact"
+  },
+  {
+   "k": "dt",
+   "t": "Nom d’entreprise :"
+  },
+  {
+   "k": "dd",
+   "t": "Chez Manu"
+  },
+  {
+   "k": "dt",
+   "t": "Adresse :"
+  },
+  {
+   "k": "dd",
+   "t": "Rue du Maupas 30, Lausanne, Vaud 1004, Switzerland"
+  },
+  {
+   "k": "dt",
+   "t": "Téléphone :"
+  },
+  {
+   "k": "dd",
+   "t": "021 646 38 35"
+  },
+  {
+   "k": "dt",
+   "t": "E-mail :"
+  },
+  {
+   "k": "dd",
+   "t": "chezmanu2007@gmail.com"
+  },
+  {
+   "k": "h2",
+   "t": "Informations juridiques"
+  },
+  {
+   "k": "p",
+   "t": "Ce site Internet utilise des cookies. Les cookies sont de petits fichiers textes qui sont enregistrés sur votre ordinateur, lors de la visite du site, de façon temporaire ou durable. Le but des cookies est en particulier d’analyser l’utilisation du site, en vue d’une exploitation statistique ainsi que d’améliorations continues. Les cookies peuvent être à tout moment désactivés dans les paramètres de votre navigateur web, partiellement ou en totalité. En désactivant les cookies, certaines fonctionnalités de ce site peuvent éventuellement ne plus être disponibles."
+  },
+  {
+   "k": "link",
+   "t": "Vers l'entrée Chez Manu sur local.ch",
+   "href": "localCh"
+  },
+  {
+   "k": "link",
+   "t": "Vers l'entrée Chez Manu sur search.ch",
+   "href": "searchCh"
+  }
+ ]
+}

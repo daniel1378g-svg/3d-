@@ -1,0 +1,186 @@
+{
+ "natas": {
+  "name": "pasteis-de-nata",
+  "w": 1200,
+  "h": 1600,
+  "widths": [
+   480,
+   960,
+   1200
+  ],
+  "lqip": "data:image/webp;base64,UklGRgIBAABXRUJQVlA4IPYAAABQBgCdASoSABgAPu1ur1KppiQiqAgBMB2JbACdMoR+J/cYAmU7d0FF2BiXN3Vev5EGzPWeh/cq6cdKAAD84u48Qosny7POkZPNCrJUTHxj49XwKQQCoCkIcN7qhxtQHkj4U1plk0OlOluBrRhWHKGJF9Jojs7ISe+oQJgjJr7VpsASS9Rh5l+7UTaMb+Xkx6EVCTud80rYsyXPb1loa6RRDQMMDH4AjQandTpGsjxwfQTC4QxjJRGY0rJJd1EcePra2MlCgclxj1oYhpbqdXL2inxdoVpLAB4jWDpDa8n29E/zwfqKDGw/bcdIJDQqnggMPLUAAAA="
+ },
+ "salads": {
+  "name": "vitrine-salades",
+  "w": 787,
+  "h": 428,
+  "widths": [
+   480,
+   787
+  ],
+  "lqip": "data:image/webp;base64,UklGRrQAAABXRUJQVlA4IKgAAABwBACdASoYAA0APu1iqU2ppaOiMAgBMB2JaACdMoAC/sfb1qjMQrD8jF0eAAD6nBCEG75mRaKtjAkU7RSV0GCT7/z9lly0VIIWT5tfwsNGduV4ECMHFR6Swivr6q86b9dgGXaeNrtd6nMOoF0P80gtthY4XntzxNxAondgmDgVH26ts1TY4hx6m01y3yIyPH8TPg0GCJ90U4wPT4lKyHtseDcZG9gwAAA="
+ },
+ "rolls": {
+  "name": "pains-ronds",
+  "w": 863,
+  "h": 823,
+  "widths": [
+   480,
+   863
+  ],
+  "lqip": "data:image/webp;base64,UklGRuoAAABXRUJQVlA4IN4AAAAQBgCdASoYABcAPu1wsFIppiSiqAgBMB2JQBOgtZ4wK1+WBVSoxxa2g2/EVKHTyWmcAFdZ4zZ85CAA/fQBNNjcMwmoI55r7tv0bkcFo+BUEgX/FLk1HKEzeK60r/HRZzbN4uE1QJurOcAtNQ5VeoheYtHMaAMQITd2IYoxfyidBCOex7PbrA7i1cN4ZWcYxx8KTUoZSGSfyelGdfgERQWJym9Pa4gjMXtSH8QTTGHSJGdY4XyCmrkZ8MiRoNhpmsd7Dsqr55/ucArWRxUK+Kqrp1yrYiyrymdpdpkscAA="
+ },
+ "bread-basket": {
+  "name": "corbeille-pains",
+  "w": 482,
+  "h": 318,
+  "widths": [
+   480,
+   482
+  ],
+  "lqip": "data:image/webp;base64,UklGRswAAABXRUJQVlA4IMAAAAAQBQCdASoYABAAPu1iqU2ppaOiMAgBMB2JbACdMoGv/i1/2B9WKBO5UBrw8i2D+qSgAPjXO/QBHLQaTPXLkUGJsOrolcLH3WgbTU3VDciuU+AD8wBK37ps49hDprmzG98QtVzCxyTfNnIfsww1ic3DG09/VdBEucrGZL+HqrMuKwxlxAHivjlDUnJCICWNfTkpFCH6R9iLXKoPh7U8rj0I5iEkdlXDPEmb8uak5ygz8kadaZUe6bZB8UNAllhAAAA="
+ },
+ "tearoom": {
+  "name": "tea-room",
+  "w": 1920,
+  "h": 3413,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "lqip": "data:image/webp;base64,UklGRpIAAABXRUJQVlA4IIYAAACwAwCdASoOABgAPu1iqU2ppaOiMAgBMB2JYgCdAAsXGQo7ihXqAAD8Uy2QStIgcTw4Dsyz9Zo4zpjbihYX1OeQ8ignGNztjpL+ITMpLDQ9KcFjDWpBgfHV9rfkeHI8LoCF+FvqtKa1rJvW7G8P0eLCbH/XwShCORir5GnzQ9zoRNgAz/2AAA=="
+ },
+ "shop": {
+  "name": "boutique",
+  "w": 1920,
+  "h": 1080,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "lqip": "data:image/webp;base64,UklGRpwAAABXRUJQVlA4IJAAAADwAwCdASoYAA4APu1iqU2ppaOiMAgBMB2JagCdMoACnm162Zm9HCEAAPyKrSEneN47xyJ3ZILnVZHjOocDVPaGLERkCmTkzj1iMo/AAzJnWBcwu6FbPOs9OfHn1+0JrYqTG6Ng6UW5ALnt4wEP1F3tSbvwqQx+A40La2ainKB96ww/RlfND9qLdYJ7/ZYAAAA="
+ },
+ "counter": {
+  "name": "comptoir",
+  "w": 1920,
+  "h": 1080,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "lqip": "data:image/webp;base64,UklGRpwAAABXRUJQVlA4IJAAAADQAwCdASoYAA4APu1iqU2ppaOiMAgBMB2JYgCw7BmERqDRoSO3cEAA/oag6Wp6GN6CHuW97xUVxm2nxCyi7HPeZmuDtsOER8qUypIH40qrbqE1Sfx/cWx5EGBCFA90ktNTxro38TOvJJDGCS9k5yINFRNCNsPWGieZmLsh7hbp0hmcA2ffQDOWKL/uQAfooAA="
+ },
+ "ariel": {
+  "name": "gateau-petite-sirene",
+  "w": 563,
+  "h": 700,
+  "widths": [
+   480,
+   563
+  ],
+  "lqip": "data:image/webp;base64,UklGRuYAAABXRUJQVlA4INoAAAAQBgCdASoTABgAPu1ur1KppiQiqAgBMB2JbACdMt7A+szjwNacGAGmL9xC0YwDV6SsgwsE3N+vtXAA/ooOLvef68RBEN9KdSQItKYEiyE+IHi6bedrlrvgy897fxkIKct6RmP4Bu6kX9sBjdn2kiOZrKuKd3rgu8ahmy+Jo4AZFiAdUxlkMYfBshvA5fL40zPj4+A5mY2YXXf2rQ/pIEMBFX4pCco8iPJKmdHt0q99PxvPPSXE0Wuk90KTbf8bUtIUn52Ib1Fm+I9THCm1JG47j0X+xblby4IAAA=="
+ },
+ "fried": {
+  "name": "chaussons-frits",
+  "w": 960,
+  "h": 1011,
+  "widths": [
+   480,
+   960
+  ],
+  "lqip": "data:image/webp;base64,UklGRv4AAABXRUJQVlA4IPIAAABQBgCdASoXABgAPu1urlIppiQiqAgBMB2JbACdMoR4xtVYrkM0l8jzPV+lECkfj2e2iTMAfql+sgmIAADN62Hxv78LvaiuzEK0HMzgEfgxh6OrmBXhuqC44E8erRYTxGY99Px2/acMKicggYWdUUgRDkLRVXQhS2Da4As8OBwgT2BQcccfw/ijSlsyE/dm+o9udR/dQWw1ErhYBQ/c1xecj4D/UIN0dNMOLgKvh26L9CQa1hFKeQhiwQ9E6PhaJRFjRQJa9j3/HpkNGDZIjsnxTTwW2CboKVvhi5+tyXmGr7Xu7BDUSSRMBsSx5nqmKJ1AAA=="
+ },
+ "carob": {
+  "name": "bola-de-alfarroba",
+  "w": 960,
+  "h": 1446,
+  "widths": [
+   480,
+   960
+  ],
+  "lqip": "data:image/webp;base64,UklGRtYAAABXRUJQVlA4IMoAAAAQBACdASoQABgAPu1iqU2ppaOiMAgBMB2JbACdAYukyR8o+j/8iO/IAAD+ahnpguemu1MW17D2otd2ElnPg/5uIFMcxtHXcF9sL2ZdPym8TPzHgVUbdb4iJFQv1nK+ReMuLnhshlRf3Fv3KNbCaYxnRJDXfhNvY2KiPdSReVKjrB6banJpmZhJ/A8SZ2tDRFKj+KjW8p+48NluFuJkPOHDM1pO9mo4hRXPtjKQDGJo251ho4PnEax+jhQzdl15AaJQER4Py0WBuAAA"
+ },
+ "first-birthday": {
+  "name": "gateau-premier-anniversaire",
+  "w": 960,
+  "h": 1115,
+  "widths": [
+   480,
+   960
+  ],
+  "lqip": "data:image/webp;base64,UklGRqwAAABXRUJQVlA4IKAAAADwBACdASoVABgAPu1qr1CppiQiqAqpMB2JZADBzBEGOqX7pItVsrENRGP3MXQ64gAA/lbKuj0xO3maOitWRboMfP5PDrAHrOEWnwjhrb29BuiPgsg9fTVZZO7wwvdsYe8a0OgoC+SsSlwsq8PP/ApngK2cBQoi85KmfisaiG8RKFujptrZjx5CYhXqLqq8MD5HZF67P+Aw7aUSDdNNsoAA"
+ },
+ "chocolate": {
+  "name": "gateau-chocolat-framboises",
+  "w": 960,
+  "h": 689,
+  "widths": [
+   480,
+   960
+  ],
+  "lqip": "data:image/webp;base64,UklGRsQAAABXRUJQVlA4ILgAAACQBACdASoYABEAPu1qrlCppaQiqAqpMB2JYgC7ABEPX0o4PUsUy8hfHI6uGAAA8oSPw51hRO5AF2qOjbomRRaYG5fZZU0AEWYwT3uVPpqoQEaFBtaYsLRvsT/sO5FaXTAWJNHApA6uXGTDoCuHeBpV0CDUC76AlDPN68BcaLMqJPIm8tc7zOPU/G+9PCcCF74Vx2QbgmZ+VA/HR4uxm65xsQK0PYSPZZ751nrO6xQz7/6rpbx2AAAA"
+ },
+ "shelves": {
+  "name": "etageres-pains",
+  "w": 960,
+  "h": 735,
+  "widths": [
+   480,
+   960
+  ],
+  "lqip": "data:image/webp;base64,UklGRt4AAABXRUJQVlA4INIAAADwBACdASoYABIAPu1qrlCppaQiqAqpMB2JaAC1GzQ1VfxgGqJRyqOMjgqPkvZSD6AA90jVYXBKs9RaH+THZVnNN1iBbA9pNf1f1qnShSG3NX64cgGSpVezmPC3malOUajNVPXWHsXDfeKu5F2xyPCyJPJI4GXQHyt/C1EmoHEs7O1cUZBSHPCr9sTBq820MqHl14ORO498mMEQjgz+VmBYxPpK8QFUr5ZoOyimB+dTZi4wnw2kcrSKBKpvx7T1rl9pcEi22XCTZcQgdIpx7Si8AAA="
+ },
+ "fruit-tart": {
+  "name": "tarte-fraises",
+  "w": 680,
+  "h": 799,
+  "widths": [
+   480,
+   680
+  ],
+  "lqip": "data:image/webp;base64,UklGRuAAAABXRUJQVlA4INQAAACQBQCdASoUABgAPu1sqlEppaOiqAqpMB2JbACdIMgqQPewNMAculv3l+Jl9/B9+mZtX7WQAAD+lxLqLjQq/HsDC+ElBZKp4hjdZ/vA3HFsL0S2ge6iXp12fd5lAzmZly7MLAxN3m8VX6V71lDZLMzrlFrfVSTJj8ztO4MA4iR2bFiOrsdIdsDt0HPB9l70KQIp/vBptvO1IkbVtApVWTVxIPwo8GsW/m9eErfZ+yc6LG5EbLRf8x0z6W/6yN9tJmlUHWBNBDeXq1WOjL3XIhAPOBgAAA=="
+ },
+ "walnut": {
+  "name": "gateau-aux-noix",
+  "w": 481,
+  "h": 536,
+  "widths": [
+   480,
+   481
+  ],
+  "lqip": "data:image/webp;base64,UklGRgQBAABXRUJQVlA4IPgAAADQBQCdASoWABgAPu1sq1EppaOiqAqpMB2JbACdMxx42RGAKyynSSwwfVobbo4Zuxrs+ZSFH90AAP32kn6Vplnnjfu+y7yLKrWl+Y6RQ+dSTXyVB7Mj4GEBonU/4fhTdGsLlbNLG+0Ua+lnxTbmoUh4FLoE7rHqTICrdzTbwnHRdHBCu/aPQUpfl/XP/7Nsf+m9BCkYxes7Q7jk6k/3W+yxXQvjpesY4f0FLG3uuHnr6Sfbw+HQxTn7TUHrANr4D4Woohd8UFJFTucjFimkZi4ZFB6fYnTCGAJp+0aKqR+y3qPxzM1rqdMwZTU6S+EQ27YGHvXCngAAAA=="
+ },
+ "pine-nut": {
+  "name": "gateau-aux-pignons",
+  "w": 838,
+  "h": 785,
+  "widths": [
+   480,
+   838
+  ],
+  "lqip": "data:image/webp;base64,UklGRroAAABXRUJQVlA4IK4AAADwBACdASoYABYAPu1cqE2ppKOiN/VYATAdiWwAnTKEdPcygOrvL4UU84R5HbdQ3RAA/s4Aiui0gPnLI1WEUDRUKFS55u9wzgEu2ItQegvKah6mCcrSKtCBG+QbFI9rtngGoS1KS5buLdreNlBbWwUVOtc4vTsD3rlxDR3eQfaNfxnBOeW53AGgYB9m84eqEKGOZFINjDvdg6oAe9hFeJ26YyMJgxmuOBIkjSJQAAA="
+ },
+ "tiered": {
+  "name": "piece-montee",
+  "w": 830,
+  "h": 863,
+  "widths": [
+   480,
+   830
+  ],
+  "lqip": "data:image/webp;base64,UklGRs4AAABXRUJQVlA4IMIAAACQBQCdASoXABgAPu1qqFCppiOiqA1RMB2JZAC26L0BhJMPyKZYdCRZv3Y+QAeuu2BpF0mRgAD+3f7QnLzadgYmEvkjZwQ5+PbKebYmSI0cWDuOgSm5QEAls0jHuQBzk47eldQRBu/9vrtqrq/yDAAqbZOoDVOAafieBhiyUzhf7PQg5WCUvckODaKElLVmNdTbikjeKyg9r48BDkvLHx7N64EsVvn/W0MEm6athXK6/mZyFTfEvzAQLfFNxXSifH5QAA=="
+ },
+ "red-velvet": {
+  "name": "red-velvet",
+  "w": 960,
+  "h": 968,
+  "widths": [
+   480,
+   960
+  ],
+  "lqip": "data:image/webp;base64,UklGRiQBAABXRUJQVlA4IBgBAAAwBgCdASoYABgAPu1oqk+ppiOiKA1RMB2JbACdMoRwMPvbJAZYnvt+VlK9KnQdVkrhm0rT4CA+WCQAAP7ZQyt5D57VPabOHGRsTDJJ1vjDOqKnX4CyG2pfY6JlZMt78a1npO6yOU7Ev+lY3k889/2gc9vnPKO+e+LSroqrH8eHRG/pQLbVKC1NQcBTD1PADiG1u84ZJerqCSkIG7q6ls3u+SsvcsWCjyJfvVr2f9Bm3RHLxMny9iQrcz6bqFkAdRNsaSeCRj9k3NZdbVAdssqS7R24VrPiMrMNtkDNEGoeFA+n2VfKP008LrnY57cENlseixaXjgZFbSUeD8hMJocwKZ4Jb9fH7URO7bV/t27pQvs+kbDCQAAA"
+ }
+}

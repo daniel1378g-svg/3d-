@@ -1,0 +1,8 @@
+/* Self-hosted in the real build (no request to Google). The Artifact preview loads the same families from
+   Google Fonts instead, because its CSP only admits fonts from there (see scripts/build-artifact.mjs).
+   All three cover ã, ç, é, è, à, ä, ö and ü. */
+@import "@fontsource/dm-serif-display/latin.css";
+@import "@fontsource/dm-serif-display/latin-ext.css";
+@import "@fontsource/dm-serif-display/latin-italic.css";
+@import "@fontsource-variable/figtree/index.css";
+@import "@fontsource/caveat/latin-600.css";

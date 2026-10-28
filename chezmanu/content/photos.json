@@ -1,0 +1,204 @@
+{
+  "_note": "Every photo of the shop's own on the live site (home, Ce que nous proposons; Contact has none), downloaded at -1920w from the Duda CDN into media/original. `live` is where the live site uses it and its alt text there (empty = none). The alt texts below are new descriptions; fr is the source, en/pt/it/de need a native-speaker check. Left out: AdobeStock_245842408 (a stock photo of coffee cups behind the live carte), the bg-long-*.png paper textures and the template background site_background_education.",
+  "photos": [
+    {
+      "id": "natas", "file": "Chez-Manu-01.jpg", "name": "pasteis-de-nata",
+      "live": "home · notre univers (Pâtisserie) · alt «Pasteis de nata»",
+      "alt": {
+        "fr": "Des pastéis de nata dorés, le dessus caramélisé et taché de brun",
+        "en": "Golden pastéis de nata, their tops caramelised with dark spots",
+        "pt": "Pastéis de nata dourados, com o topo caramelizado e manchas escuras",
+        "it": "Pastéis de nata dorati, con la superficie caramellata a macchie scure",
+        "de": "Goldene Pastéis de nata, die Oberfläche karamellisiert und dunkel gefleckt"
+      }
+    },
+    {
+      "id": "salads", "file": "Chez-Manu-02.jpg", "name": "vitrine-salades",
+      "live": "home · notre univers (Tea-room) · alt «Une vitrine remplie d'une variété de salade à l'emporter»; also in the gallery (no alt)",
+      "alt": {
+        "fr": "La vitrine réfrigérée : salades à l'emporter en barquettes, jus de fruits sur l'étagère du haut",
+        "en": "The chilled display case: takeaway salads in tubs, fruit juices on the top shelf",
+        "pt": "A vitrine refrigerada: saladas para levar em caixas, sumos na prateleira de cima",
+        "it": "La vetrina refrigerata: insalate da asporto in vaschette, succhi di frutta sul ripiano in alto",
+        "de": "Die Kühlvitrine: Salate zum Mitnehmen in Schalen, Fruchtsäfte auf dem oberen Tablar"
+      }
+    },
+    {
+      "id": "rolls", "file": "Chez-Manu-03.jpg", "name": "pains-ronds",
+      "live": "home · template slider · alt «Un tas de petits pains dans un panier sur une table»",
+      "alt": {
+        "fr": "Des pains ronds rustiques, farinés et grignés, dans une corbeille en osier",
+        "en": "Rustic round loaves, floured and scored, in a wicker basket",
+        "pt": "Pães redondos rústicos, enfarinhados e golpeados, num cesto de vime",
+        "it": "Pagnotte rotonde rustiche, infarinate e incise, in un cesto di vimini",
+        "de": "Rustikale runde Brote, bemehlt und eingeschnitten, in einem Weidenkorb"
+      }
+    },
+    {
+      "id": "bread-basket", "file": "pain-2.png", "name": "corbeille-pains",
+      "live": "home · notre univers (Boulangerie) · alt «Panier avec choix de pains»",
+      "alt": {
+        "fr": "Une corbeille de pains variés : pain rustique grigné, petits pains au sésame et aux graines",
+        "en": "A basket of assorted breads: a scored rustic loaf, sesame and seeded rolls",
+        "pt": "Um cesto de pães variados: pão rústico golpeado, pãezinhos com sésamo e sementes",
+        "it": "Un cesto di pani assortiti: pagnotta rustica incisa, panini al sesamo e ai semi",
+        "de": "Ein Korb mit verschiedenen Broten: eingeschnittenes Bauernbrot, Sesam- und Körnerbrötchen"
+      }
+    },
+    {
+      "id": "tearoom", "file": "PXL_20241128_095453288-min.jpg", "name": "tea-room",
+      "live": "home · background of the introduction column (no alt)",
+      "alt": {
+        "fr": "La salle du tea room : tables et chaises noires sous des suspensions en verre vert",
+        "en": "The tea room: black tables and chairs under green glass pendant lamps",
+        "pt": "A sala do salão de chá: mesas e cadeiras pretas sob candeeiros de vidro verde",
+        "it": "La sala del tea room: tavoli e sedie neri sotto lampade a sospensione in vetro verde",
+        "de": "Der Tea-Room: schwarze Tische und Stühle unter grünen Glas-Pendelleuchten"
+      }
+    },
+    {
+      "id": "shop", "file": "PXL_20241128_094945499.MP-min.jpg", "name": "boutique",
+      "live": "home · background of the tea room section; Ce que nous proposons · hero background (no alt)",
+      "alt": {
+        "fr": "L'intérieur de la boutique : comptoirs vitrés de pâtisseries et de pains, une cliente au comptoir",
+        "en": "Inside the shop: glass counters of pastries and breads, a customer at the counter",
+        "pt": "O interior da loja: balcões de vidro com pastelaria e pão, uma cliente ao balcão",
+        "it": "L'interno del negozio: banconi di vetro con pasticceria e pane, una cliente al banco",
+        "de": "Im Laden: Glastheken mit Gebäck und Brot, eine Kundin an der Theke"
+      }
+    },
+    {
+      "id": "counter", "file": "PXL_20241128_095038379-min.jpg", "name": "comptoir",
+      "live": "home · background of the contact call to action (no alt)",
+      "alt": {
+        "fr": "Le long comptoir vitré rempli de pâtisseries, face aux fenêtres sur la rue",
+        "en": "The long glass counter full of pastries, facing the windows onto the street",
+        "pt": "O longo balcão de vidro cheio de pastelaria, de frente para as janelas da rua",
+        "it": "Il lungo bancone di vetro pieno di pasticcini, davanti alle vetrine sulla strada",
+        "de": "Die lange Glastheke voller Gebäck, gegenüber den Fenstern zur Strasse"
+      }
+    },
+    {
+      "id": "ariel", "file": "gateau-aniversaire-ariel.png", "name": "gateau-petite-sirene",
+      "live": "gallery #1 · alt «Trois sandwichs avec un panneau indiquant « super frais »» (wrong: the photo shows a cake)",
+      "alt": {
+        "fr": "Un gâteau d'anniversaire sur le thème de la Petite Sirène, avec Ariel, une queue de sirène et des coquillages",
+        "en": "A Little Mermaid birthday cake with Ariel, a mermaid tail and seashells",
+        "pt": "Um bolo de aniversário com o tema da Pequena Sereia, com a Ariel, uma cauda de sereia e conchas",
+        "it": "Una torta di compleanno a tema Sirenetta, con Ariel, una coda di sirena e conchiglie",
+        "de": "Eine Geburtstagstorte zum Thema Arielle, die Meerjungfrau, mit Ariel, Fischschwanz und Muscheln"
+      }
+    },
+    {
+      "id": "fried", "file": "Chez-Manu-06.png", "name": "chaussons-frits",
+      "live": "gallery #2 · alt «Un plateau de nourriture frite»",
+      "alt": {
+        "fr": "Un plateau de chaussons frits dorés en demi-lune",
+        "en": "A tray of golden, half-moon fried turnovers",
+        "pt": "Um tabuleiro de salgados fritos dourados em forma de meia-lua",
+        "it": "Un vassoio di fagottini fritti dorati a mezzaluna",
+        "de": "Ein Tablett mit goldbraun frittierten Teigtaschen in Halbmondform"
+      }
+    },
+    {
+      "id": "carob", "file": "Chez-Manu-07.png", "name": "bola-de-alfarroba",
+      "live": "gallery #3 · empty alt · the photo carries the words «NEW!», «Bola de Alfarroba» and «Boule de Caroube»",
+      "alt": {
+        "fr": "Affiche «New!» : des bolas de alfarroba (boules de caroube) fourrées de crème, sur des feuilles d'automne",
+        "en": "A “New!” poster: bolas de alfarroba (carob buns) filled with cream, on autumn leaves",
+        "pt": "Cartaz «New!»: bolas de alfarroba recheadas com creme, sobre folhas de outono",
+        "it": "Locandina «New!»: bolas de alfarroba (palline di carruba) ripiene di crema, su foglie autunnali",
+        "de": "Plakat «New!»: mit Creme gefüllte Bolas de alfarroba (Johannisbrot-Kugeln) auf Herbstlaub"
+      }
+    },
+    {
+      "id": "first-birthday", "file": "Chez-Manu-09.png", "name": "gateau-premier-anniversaire",
+      "live": "gallery #4 · alt «Un gâteau d'anniversaire avec des animaux et le numéro 1 dessus»",
+      "alt": {
+        "fr": "Un gâteau de premier anniversaire décoré d'animaux de la jungle et d'un grand chiffre 1 vert",
+        "en": "A first-birthday cake decorated with jungle animals and a big green number 1",
+        "pt": "Um bolo de primeiro aniversário decorado com animais da selva e um grande número 1 verde",
+        "it": "Una torta per il primo compleanno decorata con animali della giungla e un grande numero 1 verde",
+        "de": "Eine Torte zum ersten Geburtstag mit Dschungeltieren und einer grossen grünen Eins"
+      }
+    },
+    {
+      "id": "chocolate", "file": "Chez-Manu-010.png", "name": "gateau-chocolat-framboises",
+      "live": "gallery #5 · alt «Un gâteau au chocolat avec des framboises et des Oreos sur le dessus»",
+      "alt": {
+        "fr": "Un grand gâteau au chocolat rectangulaire, bordé de framboises et d'Oreo, parsemé de dragées colorées",
+        "en": "A large rectangular chocolate cake edged with raspberries and Oreos, scattered with coloured sweets",
+        "pt": "Um grande bolo de chocolate retangular, rodeado de framboesas e Oreos, com confeitos coloridos",
+        "it": "Una grande torta al cioccolato rettangolare, bordata di lamponi e Oreo, cosparsa di confettini colorati",
+        "de": "Ein grosser rechteckiger Schokoladekuchen mit Himbeeren und Oreos am Rand und bunten Schokolinsen"
+      }
+    },
+    {
+      "id": "shelves", "file": "Chez-Manu-011.jpg", "name": "etageres-pains",
+      "live": "gallery #6 · alt «Une boulangerie avec un panneau indiquant youpaq.com»",
+      "alt": {
+        "fr": "Des étagères de pains, petits pains et viennoiseries, sous une affiche youpaq.com",
+        "en": "Shelves of loaves, rolls and pastries under a youpaq.com poster",
+        "pt": "Prateleiras de pães, pãezinhos e viennoiserie, sob um cartaz youpaq.com",
+        "it": "Scaffali di pani, panini e viennoiserie, sotto un cartello youpaq.com",
+        "de": "Regale mit Broten, Brötchen und Viennoiserie unter einem youpaq.com-Plakat"
+      }
+    },
+    {
+      "id": "fruit-tart", "file": "Chez-Manu-05.jpg", "name": "tarte-fraises",
+      "live": "gallery #7 · empty alt",
+      "alt": {
+        "fr": "Une tarte aux fraises, les fraises disposées en rosace, devant une vitrine de pâtisseries",
+        "en": "A strawberry tart with the strawberries laid in a rosette, in front of a pastry display",
+        "pt": "Uma tarte de morango com os morangos dispostos em rosácea, diante de uma vitrine de pastelaria",
+        "it": "Una crostata di fragole disposte a rosone, davanti a una vetrina di pasticceria",
+        "de": "Eine Erdbeertorte, die Erdbeeren als Rosette gelegt, vor einer Gebäckvitrine"
+      }
+    },
+    {
+      "id": "walnut", "file": "Gateau-aux-noix.png", "name": "gateau-aux-noix",
+      "live": "gallery #9 · empty alt · file name «Gateau aux noix»",
+      "alt": {
+        "fr": "Un gâteau aux noix en couronne, nappé de noix caramélisées, une part coupée",
+        "en": "A ring-shaped walnut cake topped with caramelised walnuts, one slice cut",
+        "pt": "Um bolo de nozes em coroa, coberto de nozes caramelizadas, com uma fatia cortada",
+        "it": "Una torta alle noci a ciambella, ricoperta di noci caramellate, con una fetta tagliata",
+        "de": "Ein Nusskuchen als Kranz, mit karamellisierten Baumnüssen bedeckt, ein Stück angeschnitten"
+      }
+    },
+    {
+      "id": "pine-nut", "file": "gateau-aux-pignons.png", "name": "gateau-aux-pignons",
+      "live": "gallery #10 · empty alt · file name «gateau aux pignons»",
+      "alt": {
+        "fr": "Un gâteau aux pignons doré, coupé en parts",
+        "en": "A golden pine-nut cake cut into slices",
+        "pt": "Um bolo de pinhões dourado, cortado em fatias",
+        "it": "Una torta ai pinoli dorata, tagliata a fette",
+        "de": "Ein goldener Pinienkernkuchen, in Stücke geschnitten"
+      }
+    },
+    {
+      "id": "tiered", "file": "piece-montee.png", "name": "piece-montee",
+      "live": "gallery #11 · empty alt · file name «piece montee»",
+      "alt": {
+        "fr": "Une pièce montée à deux étages, crème blanche et rose, décorée de macarons et de feuillage",
+        "en": "A two-tier celebration cake in white and pink cream, decorated with macarons and greenery",
+        "pt": "Um bolo de dois andares em creme branco e rosa, decorado com macarons e folhagem",
+        "it": "Una torta a due piani in crema bianca e rosa, decorata con macaron e foglie",
+        "de": "Eine zweistöckige Torte in weisser und rosa Creme, mit Macarons und Grün verziert"
+      }
+    },
+    {
+      "id": "red-velvet", "file": "Chez-Manu-08.png", "name": "red-velvet",
+      "live": "gallery #12 · alt «Un gâteau de velours rouge avec des fraises et de la crème fouettée sur le dessus»",
+      "alt": {
+        "fr": "Un gâteau red velvet garni de fraises et de pointes de crème",
+        "en": "A red velvet cake topped with strawberries and swirls of cream",
+        "pt": "Um bolo red velvet com morangos e rosetas de creme",
+        "it": "Una torta red velvet guarnita di fragole e ciuffi di panna",
+        "de": "Ein Red-Velvet-Kuchen mit Erdbeeren und Rahmtupfen"
+      }
+    }
+  ],
+  "gallery": ["ariel", "fried", "carob", "first-birthday", "chocolate", "shelves", "fruit-tart", "salads", "walnut", "pine-nut", "tiered", "red-velvet"]
+}

@@ -1,0 +1,136 @@
+{
+  "_note": "La carte, copied from https://www.chez-manu-lausanne.ch/ce-que-nous-proposons (October 2026). `name.fr`, `desc.fr` and `price` are verbatim from the live page (prices written there as «4.10chf», «12.0 chf» and shown here as CHF 4.10, CHF 12.00). Brand and product names stay the same in every language. `gloss` explains a name in the other languages and is not on the live site. en/pt/it/de need a native-speaker check. `cup` drives the little drink illustration.",
+  "sections": [
+    {
+      "id": "cafes",
+      "title": { "fr": "Cafés", "en": "Coffees", "pt": "Cafés", "it": "Caffè", "de": "Kaffee" },
+      "items": [
+        { "id": "expresso", "name": { "fr": "Café-Expresso Delta" }, "price": "4.10", "cup": "espresso" },
+        { "id": "double-expresso", "name": { "fr": "Double Expresso Delta" }, "price": "5.30", "cup": "double" },
+        { "id": "chocolat", "name": { "fr": "Chocolat Chaud", "en": "Hot chocolate", "pt": "Chocolate quente", "it": "Cioccolata calda", "de": "Heisse Schokolade" }, "price": "4.90", "cup": "chocolate" },
+        { "id": "renverse", "name": { "fr": "Renverse" }, "gloss": { "en": "coffee with plenty of milk", "pt": "café com muito leite", "it": "caffè con molto latte", "de": "Milchkaffee" }, "price": "4.90", "cup": "renverse" },
+        { "id": "galao", "name": { "fr": "Galão" }, "gloss": { "fr": "café au lait portugais", "en": "Portuguese milky coffee", "pt": "", "it": "caffellatte portoghese", "de": "portugiesischer Milchkaffee" }, "price": "4.90", "cup": "galao" },
+        { "id": "capuccino", "name": { "fr": "Capuccino" }, "price": "5.10", "cup": "cappuccino" },
+        { "id": "viennois", "name": { "fr": "Café Viennois" }, "gloss": { "en": "coffee with whipped cream", "pt": "café com natas batidas", "it": "caffè con panna montata", "de": "Kaffee mit Schlagrahm" }, "price": "5.70", "cup": "viennois" },
+        { "id": "latte", "name": { "fr": "Latte Machiatto" }, "price": "5.70", "cup": "latte" }
+      ]
+    },
+    {
+      "id": "thes",
+      "title": { "fr": "Thés", "en": "Teas", "pt": "Chás", "it": "Tè", "de": "Tee" },
+      "items": [
+        {
+          "id": "sirocco",
+          "name": { "fr": "Thé Bio Sirocco", "en": "Organic Sirocco tea", "pt": "Chá biológico Sirocco", "it": "Tè biologico Sirocco", "de": "Bio-Tee Sirocco" },
+          "price": "4.60",
+          "cup": "tea",
+          "notes": "The live name ends in an asterisk («Thé Bio Sirocco*») with no footnote on the page; the asterisk is left out here and asked about in the hand-off.",
+          "teas": [
+            { "name": "Ceylon Sunrise", "kind": { "fr": "thé noir", "en": "black tea", "pt": "chá preto", "it": "tè nero", "de": "Schwarztee" } },
+            { "name": "Relax", "kind": { "fr": "thé tilleul", "en": "linden tea", "pt": "chá de tília", "it": "tè al tiglio", "de": "Lindenblütentee" } },
+            { "name": "Gentle Blue", "kind": { "fr": "earl grey", "en": "Earl Grey", "pt": "Earl Grey", "it": "Earl Grey", "de": "Earl Grey" } },
+            { "name": "Jade Oolong", "kind": { "fr": "thé vert", "en": "green tea", "pt": "chá verde", "it": "tè verde", "de": "Grüntee" } },
+            { "name": "Golden Assam", "kind": { "fr": "thé noir", "en": "black tea", "pt": "chá preto", "it": "tè nero", "de": "Schwarztee" } },
+            { "name": "Green Jasmine", "kind": { "fr": "thé vert au jasmin", "en": "jasmine green tea", "pt": "chá verde com jasmim", "it": "tè verde al gelsomino", "de": "Grüntee mit Jasmin" } },
+            { "name": "Mélisse", "kind": { "fr": "", "en": "lemon balm", "pt": "melissa", "it": "melissa", "de": "Melisse" } },
+            { "name": "Rooibos", "kind": { "fr": "thé rooibos/clémentine", "en": "rooibos/clementine", "pt": "rooibos/clementina", "it": "rooibos/clementina", "de": "Rooibos/Clementine" } },
+            { "name": "Red Kiss", "kind": { "fr": "thé aux fruits", "en": "fruit tea", "pt": "chá de frutos", "it": "tè alla frutta", "de": "Früchtetee" } },
+            { "name": "Camomile Orange Blossom", "kind": { "fr": "", "en": "", "pt": "camomila e flor de laranjeira", "it": "camomilla e fiori d'arancio", "de": "Kamille und Orangenblüte" } },
+            { "name": "Winter Moments", "kind": { "fr": "thé rooibos /épices", "en": "rooibos/spices", "pt": "rooibos/especiarias", "it": "rooibos/spezie", "de": "Rooibos/Gewürze" } },
+            { "name": "Ginger Lemon Dream", "kind": { "fr": "thé au gingembre/citronnelle", "en": "ginger/lemongrass tea", "pt": "chá de gengibre/erva-príncipe", "it": "tè allo zenzero/citronella", "de": "Ingwer-/Zitronengrastee" } },
+            { "name": "Verveine", "kind": { "fr": "", "en": "lemon verbena", "pt": "lúcia-lima", "it": "verbena", "de": "Verveine (Zitronenverbene)" } }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "petit-dejeuner",
+      "title": { "fr": "Petit-déjeuner Maison", "en": "Homemade breakfast", "pt": "Pequeno-almoço da casa", "it": "Colazione della casa", "de": "Hausgemachtes Frühstück" },
+      "items": [
+        {
+          "id": "pdj-1", "name": { "fr": "N°1" }, "price": "12.00", "cup": "breakfast",
+          "desc": {
+            "fr": "1 ballon blanc, 1croissant, boisson chaude, jus d’orange frais 1dl, beurre et confiture",
+            "en": "1 white roll (ballon blanc), 1 croissant, hot drink, fresh orange juice 1 dl, butter and jam",
+            "pt": "1 pãozinho branco (ballon blanc), 1 croissant, bebida quente, sumo de laranja natural 1 dl, manteiga e compota",
+            "it": "1 panino bianco (ballon blanc), 1 croissant, bevanda calda, succo d’arancia fresco 1 dl, burro e marmellata",
+            "de": "1 weisses Brötchen (Ballon blanc), 1 Croissant, Heissgetränk, frischer Orangensaft 1 dl, Butter und Konfitüre"
+          },
+          "tray": ["ballon", "croissant", "drink", "juice", "butter", "jam"],
+          "notes": "On the live page one price («12.0 chf») follows both formulas."
+        },
+        {
+          "id": "pdj-2", "name": { "fr": "N°2" }, "price": "12.00", "cup": "breakfast",
+          "desc": {
+            "fr": "3 tranches pain maison, boisson chaude, jus d’orange frais 1dl, beurre et confiture",
+            "en": "3 slices of homemade bread, hot drink, fresh orange juice 1 dl, butter and jam",
+            "pt": "3 fatias de pão caseiro, bebida quente, sumo de laranja natural 1 dl, manteiga e compota",
+            "it": "3 fette di pane fatto in casa, bevanda calda, succo d’arancia fresco 1 dl, burro e marmellata",
+            "de": "3 Scheiben hausgemachtes Brot, Heissgetränk, frischer Orangensaft 1 dl, Butter und Konfitüre"
+          },
+          "tray": ["slices", "drink", "juice", "butter", "jam"]
+        }
+      ]
+    },
+    {
+      "id": "petites-restaurations",
+      "title": { "fr": "Petites restaurations", "en": "Light meals", "pt": "Refeições ligeiras", "it": "Spuntini", "de": "Kleine Gerichte" },
+      "items": [
+        { "id": "croque", "name": { "fr": "Croque-Monsieur" }, "price": "6.20" },
+        { "id": "croque-maison", "name": { "fr": "Croque-Monsieur avec pain maison", "en": "Croque-Monsieur with homemade bread", "pt": "Croque-Monsieur com pão caseiro", "it": "Croque-Monsieur con pane fatto in casa", "de": "Croque-Monsieur mit hausgemachtem Brot" }, "price": "6.50" },
+        {
+          "id": "torrada", "name": { "fr": "Torrada" }, "price": "4.80",
+          "desc": { "fr": "(2 tranches de pain toast grillé avec du beurre)", "en": "(2 slices of toasted bread with butter)", "pt": "(2 fatias de pão de forma torrado com manteiga)", "it": "(2 fette di pane in cassetta tostato con burro)", "de": "(2 Scheiben getoastetes Toastbrot mit Butter)" }
+        },
+        { "id": "torrada-maison", "name": { "fr": "Torrada avec pain maison", "en": "Torrada with homemade bread", "pt": "Torrada com pão caseiro", "it": "Torrada con pane fatto in casa", "de": "Torrada mit hausgemachtem Brot" }, "price": "5.10" },
+        {
+          "id": "demi-torrada", "name": { "fr": "½ Torrada" }, "price": "3.50",
+          "desc": { "fr": "(1 tranche de pain toast grillé avec du beurre)", "en": "(1 slice of toasted bread with butter)", "pt": "(1 fatia de pão de forma torrado com manteiga)", "it": "(1 fetta di pane in cassetta tostato con burro)", "de": "(1 Scheibe getoastetes Toastbrot mit Butter)" }
+        },
+        {
+          "id": "croissant-mixte", "name": { "fr": "Croissant mixte portugais", "en": "Portuguese ham and cheese croissant", "pt": "Croissant misto", "it": "Croissant misto portoghese", "de": "Portugiesisches Croissant mit Schinken und Käse" }, "price": "5.50",
+          "desc": { "fr": "(Croissant brioche beurre, jambon et fromage)", "en": "(Butter brioche croissant, ham and cheese)", "pt": "(Croissant brioche de manteiga, fiambre e queijo)", "it": "(Croissant brioche al burro, prosciutto cotto e formaggio)", "de": "(Butter-Brioche-Croissant, Schinken und Käse)" }
+        },
+        {
+          "id": "papo-seco", "name": { "fr": "Papo seco mixte" }, "price": "5.00",
+          "desc": { "fr": "(Petit pain blanc avec du beurre, jambon et fromage)", "en": "(Small white roll with butter, ham and cheese)", "pt": "(Pãozinho branco com manteiga, fiambre e queijo)", "it": "(Panino bianco con burro, prosciutto cotto e formaggio)", "de": "(Kleines weisses Brötchen mit Butter, Schinken und Käse)" }
+        },
+        { "id": "pain-chorizo", "name": { "fr": "Pain au chorizo", "en": "Chorizo bread", "pt": "Pão com chouriço", "it": "Pane al chorizo", "de": "Chorizobrot" }, "price": "5.00" },
+        {
+          "id": "bifana", "name": { "fr": "Bifana" }, "price": "8.90",
+          "desc": { "fr": "(viande de porc avec sauce maison)", "en": "(pork with homemade sauce)", "pt": "(carne de porco com molho da casa)", "it": "(carne di maiale con salsa della casa)", "de": "(Schweinefleisch mit hausgemachter Sauce)" }
+        },
+        {
+          "id": "hamburguer", "name": { "fr": "Hamburguer" }, "price": "10.50",
+          "desc": {
+            "fr": "(Poulet croustillant, œuf/bacon salade et sauce burger OU\nBœuf, œuf/bacon, salade et sauce barbecue)",
+            "en": "(Crispy chicken, egg/bacon, salad and burger sauce OR\nbeef, egg/bacon, salad and barbecue sauce)",
+            "pt": "(Frango crocante, ovo/bacon, salada e molho de hambúrguer OU\nvaca, ovo/bacon, salada e molho barbecue)",
+            "it": "(Pollo croccante, uovo/bacon, insalata e salsa burger OPPURE\nmanzo, uovo/bacon, insalata e salsa barbecue)",
+            "de": "(Knuspriges Poulet, Ei/Speck, Salat und Burgersauce ODER\nRind, Ei/Speck, Salat und Barbecuesauce)"
+          }
+        }
+      ]
+    },
+    {
+      "id": "autres-boissons",
+      "title": { "fr": "Autres boissons", "en": "Other drinks", "pt": "Outras bebidas", "it": "Altre bevande", "de": "Weitere Getränke" },
+      "items": [
+        { "id": "sumol", "name": { "fr": "Sumol (ananas/orange)", "en": "Sumol (pineapple/orange)", "pt": "Sumol (ananás/laranja)", "it": "Sumol (ananas/arancia)", "de": "Sumol (Ananas/Orange)" }, "price": "4.90", "cup": "bottle" },
+        { "id": "compal", "name": { "fr": "Compal" }, "price": "4.90", "cup": "bottle" },
+        { "id": "granini", "name": { "fr": "Granini" }, "price": "4.90", "cup": "bottle" },
+        { "id": "coca", "name": { "fr": "Coca-Cola (normal/zéro)", "en": "Coca-Cola (regular/zero)", "pt": "Coca-Cola (normal/zero)", "it": "Coca-Cola (normale/zero)", "de": "Coca-Cola (normal/Zero)" }, "price": "4.90", "cup": "bottle" },
+        { "id": "rivella", "name": { "fr": "Rivella Rouge" }, "price": "4.90", "cup": "bottle" },
+        { "id": "henniez", "name": { "fr": "Henniez (bleu/verte)", "en": "Henniez (blue/green)", "pt": "Henniez (azul/verde)", "it": "Henniez (blu/verde)", "de": "Henniez (blau/grün)" }, "price": "4.90", "cup": "bottle" },
+        { "id": "redbull", "name": { "fr": "RedBull" }, "price": "4.70", "cup": "bottle" },
+        { "id": "biere", "name": { "fr": "Bière sans alcool", "en": "Alcohol-free beer", "pt": "Cerveja sem álcool", "it": "Birra analcolica", "de": "Alkoholfreies Bier" }, "price": "4.90", "cup": "bottle" },
+        { "id": "jus-2", "name": { "fr": "Jus d’orange pressé 2dl", "en": "Freshly squeezed orange juice 2 dl", "pt": "Sumo de laranja natural 2 dl", "it": "Spremuta d’arancia 2 dl", "de": "Frisch gepresster Orangensaft 2 dl" }, "price": "5.70", "cup": "juice2" },
+        { "id": "jus-3", "name": { "fr": "Jus d’orange pressé 3dl", "en": "Freshly squeezed orange juice 3 dl", "pt": "Sumo de laranja natural 3 dl", "it": "Spremuta d’arancia 3 dl", "de": "Frisch gepresster Orangensaft 3 dl" }, "price": "6.70", "cup": "juice3" },
+        { "id": "coca-the-2", "name": { "fr": "Coca-Cola et Thé froid 2dl", "en": "Coca-Cola and iced tea 2 dl", "pt": "Coca-Cola e chá frio 2 dl", "it": "Coca-Cola e tè freddo 2 dl", "de": "Coca-Cola und Eistee 2 dl" }, "price": "3.80", "cup": "cold2" },
+        { "id": "coca-the-3", "name": { "fr": "Coca-Cola et Thé froid 3dl", "en": "Coca-Cola and iced tea 3 dl", "pt": "Coca-Cola e chá frio 3 dl", "it": "Coca-Cola e tè freddo 3 dl", "de": "Coca-Cola und Eistee 3 dl" }, "price": "4.10", "cup": "cold3" },
+        { "id": "coca-the-5", "name": { "fr": "Coca-Cola et Thé froid 5dl", "en": "Coca-Cola and iced tea 5 dl", "pt": "Coca-Cola e chá frio 5 dl", "it": "Coca-Cola e tè freddo 5 dl", "de": "Coca-Cola und Eistee 5 dl" }, "price": "5.70", "cup": "cold5" },
+        { "id": "ucal", "name": { "fr": "Ucal" }, "price": "4.90", "cup": "bottle" }
+      ]
+    }
+  ]
+}

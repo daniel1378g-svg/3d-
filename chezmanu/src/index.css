@@ -1,0 +1,148 @@
+@import "tailwindcss";
+
+/* Chez Manu: a Lisbon pastry counter in Lausanne. The logo's colours lead: its chocolate brown (cocoa) for
+   headings, its wheat gold beside custard for the warm highlights. Flour carries the light sections, espresso
+   the text and the dark ones; azulejo blue marks Portugal, Swiss red is a small accent only. Text pairs are AA
+   or better: espresso on flour 15.5:1, cocoa on flour 12.1:1, caramel on flour 5.1:1, espresso on custard 10:1,
+   azulejo on flour 7.4:1, chalk on board 12.7:1. */
+@theme {
+  --color-flour: #fbf6ec;
+  --color-flour-deep: #f3ead8;
+  --color-custard: #f2c14e;
+  --color-custard-deep: #e3a730;
+  --color-wheat: #d4932b;
+  --color-caramel: #9a5a24;
+  --color-caramel-dark: #7a4416;
+  --color-cocoa: #5a1c0c;
+  --color-espresso: #2a1a12;
+  --color-espresso-soft: #3b2a20;
+  --color-azulejo: #1f4e9e;
+  --color-azulejo-light: #8fa9d9;
+  --color-swiss: #d52b1e;
+  --color-swiss-text: #b8241a;
+  --color-board: #232a25;
+  --color-chalk: #f3eee4;
+  --color-chalk-gold: #e9c46a;
+  --color-ink: #2a1a12;
+  --font-display: "DM Serif Display", "Iowan Old Style", Georgia, serif;
+  --font-sans: "Figtree Variable", "Figtree", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-chalk: "Caveat", "Segoe Print", cursive;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-curtain: cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+:root {
+  color-scheme: light;
+  --label-h: 0px;
+  --header-h: 78px;
+}
+:root:has(.proposal-label) { --label-h: 30px; }
+@media (min-width: 1024px) { :root { --header-h: 92px; } }
+
+@layer base {
+  html { scroll-padding-top: calc(var(--header-h) + var(--label-h) + 20px); -webkit-text-size-adjust: 100%; }
+  html.lenis, html.lenis body { height: auto; }
+  .lenis.lenis-smooth { scroll-behavior: auto !important; }
+  body {
+    margin: 0;
+    background: var(--color-flour);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    -webkit-tap-highlight-color: transparent;
+    overflow-x: clip;
+  }
+  h1, h2, h3 { font-family: var(--font-display); font-weight: 400; text-wrap: balance; letter-spacing: -0.01em; }
+  p { text-wrap: pretty; }
+  :focus-visible { outline: 3px solid var(--color-azulejo); outline-offset: 3px; border-radius: 8px; }
+  .on-dark :focus-visible { outline-color: var(--color-custard); }
+  ::selection { background: var(--color-custard); color: var(--color-espresso); }
+  button { cursor: pointer; }
+  button:disabled { cursor: default; }
+  img { -webkit-user-drag: none; }
+}
+
+@layer components {
+.gutter { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+@media (min-width: 768px) { .gutter { padding-left: max(32px, env(safe-area-inset-left, 0px)); padding-right: max(32px, env(safe-area-inset-right, 0px)); } }
+.wrap { width: 100%; max-width: 1280px; margin-inline: auto; }
+
+.display { font-family: var(--font-display); font-weight: 400; letter-spacing: -0.015em; }
+.chalk { font-family: var(--font-chalk); font-weight: 600; letter-spacing: 0.01em; }
+.kicker { font-size: 13px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--color-caramel); }
+.on-dark .kicker { color: var(--color-custard); }
+
+/* Flour sections: a warm paper with a breath of flour dust (≤ 5 %). Portuguese sections: azulejos (≤ 5 %). */
+.flour { background-color: var(--color-flour); }
+.dust, .tiles { position: relative; isolation: isolate; }
+.dust::before, .tiles::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+.dust::before { background-image: url("/images/flour.png"); background-size: 320px; opacity: 0.05; }
+.tiles::before { background-image: url("/images/azulejos.svg"); background-size: 360px 360px; opacity: 0.05; }
+.espresso { background-color: var(--color-espresso); color: var(--color-flour); }
+.board {
+  background-color: var(--color-board); color: var(--color-chalk);
+  background-image:
+    radial-gradient(ellipse 60% 40% at 20% 10%, rgb(255 255 255 / 0.05), transparent 70%),
+    radial-gradient(ellipse 50% 50% at 85% 80%, rgb(255 255 255 / 0.04), transparent 70%);
+}
+
+/* Layered, warm shadows: a contact shadow plus a wide ambient one. */
+.shadow-set { box-shadow: 0 1px 1px rgb(90 28 12 / 0.08), 0 4px 8px -2px rgb(90 28 12 / 0.12), 0 26px 48px -24px rgb(60 25 8 / 0.45); }
+.shadow-lift { box-shadow: 0 2px 2px rgb(90 28 12 / 0.06), 0 12px 20px -8px rgb(90 28 12 / 0.18), 0 44px 70px -30px rgb(60 25 8 / 0.5); }
+
+.proposal-label {
+  position: fixed; inset: env(safe-area-inset-top, 0px) 0 auto 0; z-index: 520; height: var(--label-h); margin: 0;
+  display: flex; align-items: center; justify-content: center; gap: 0.6em; background: var(--color-espresso); color: var(--color-custard);
+  font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; text-align: center; white-space: nowrap; overflow: hidden;
+  padding-left: max(12px, env(safe-area-inset-left, 0px)); padding-right: max(12px, env(safe-area-inset-right, 0px));
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 521; background: var(--color-espresso); }
+@media (max-width: 560px) { .proposal-label { font-size: 9.5px; letter-spacing: 0.02em; } .proposal-label .local { display: none; } }
+
+/* Photos crossfade from their blurred placeholder (opacity only). */
+.photo { position: relative; overflow: hidden; background-size: cover; background-position: center; }
+.photo > picture > img { display: block; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.6s var(--ease-out-expo); }
+.photo.is-loaded > picture > img { opacity: 1; }
+
+.btn { display: inline-flex; min-height: 48px; align-items: center; justify-content: center; gap: 0.55rem; border-radius: 999px; padding: 0 1.4rem; font-size: 15px; font-weight: 650; line-height: 1.1; white-space: nowrap; position: relative; overflow: hidden; isolation: isolate; transition: background-color 0.2s, color 0.2s, box-shadow 0.2s; }
+.btn-custard { background: var(--color-custard); color: var(--color-espresso); }
+.btn-custard:hover { background: #f6cf70; }
+.btn-dark { background: var(--color-espresso); color: var(--color-flour); }
+.btn-dark:hover { background: var(--color-cocoa); }
+.btn-ghost { box-shadow: inset 0 0 0 1.5px currentColor; }
+.btn-ghost:hover { background: rgb(42 26 18 / 0.06); }
+.on-dark .btn-ghost:hover { background: rgb(251 246 236 / 0.1); }
+.ripple { position: absolute; z-index: -1; border-radius: 999px; background: currentColor; opacity: 0.2; pointer-events: none; transform: translate(-50%, -50%) scale(0); animation: ripple 0.6s var(--ease-out-expo) forwards; }
+@keyframes ripple { to { transform: translate(-50%, -50%) scale(1); opacity: 0; } }
+
+.price { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.leader { flex: 1 1 auto; min-width: 1.5rem; border-bottom: 2px dotted currentColor; opacity: 0.35; transform: translateY(-0.35em); }
+}
+
+@keyframes pulse-dot { 0% { transform: scale(1); opacity: 0.7; } 80%, 100% { transform: scale(2.6); opacity: 0; } }
+.pulse-dot::after { content: ""; position: absolute; inset: 0; border-radius: 999px; background: inherit; animation: pulse-dot 1.8s var(--ease-out-expo) infinite; }
+
+.no-scrollbar { scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.marquee-track { will-change: transform; }
+
+/* Steam: soft strands rising and fading (transform + opacity). */
+@keyframes steam { 0% { transform: translateY(6px) scaleY(0.7); opacity: 0; } 30% { opacity: 0.75; } 100% { transform: translateY(-26px) scaleY(1.15); opacity: 0; } }
+.steam path { transform-box: fill-box; transform-origin: 50% 100%; animation: steam 2.8s ease-out infinite; }
+.steam path:nth-child(2) { animation-delay: 0.9s; }
+.steam path:nth-child(3) { animation-delay: 1.8s; }
+.steam-once path { animation-iteration-count: 2; }
+
+/* The vitrine's glass: a faint reflection band that the divider leaves behind. */
+.glass-sheen { background: linear-gradient(115deg, rgb(255 255 255 / 0) 30%, rgb(255 255 255 / 0.22) 42%, rgb(255 255 255 / 0) 55%); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+  .steam { display: none; }
+}
+
+@keyframes hero-progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes flat-spin { from { transform: perspective(700px) rotateY(0deg); } to { transform: perspective(700px) rotateY(360deg); } }
