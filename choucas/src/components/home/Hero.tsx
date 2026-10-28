@@ -15,22 +15,44 @@ const MAX = 0.94;
 const clamp = (v: number, a = 0, b = 1) => Math.min(b, Math.max(a, v));
 
 /**
- * Editorial hero: the text in its own column (location, headline, lead, two calls to action, the three
- * places), and beside it the signature panel, where the divider shares the frame between the pizza oven
- * and the Oasis grill. Nothing overlaps the text; on phones the panel follows it.
+ * The hero: the Pizza | Parrilla scene fills the whole section behind the text (oven on the left, grill on
+ * the right, the divider between them). The text sits at the bottom on a dark gradient so it stays readable.
  */
 export function Hero() {
   const { lang, book, go } = useSite();
   const reduce = useReducedMotion();
   const firstVisit = useRef(storage("session").get("cc-welcomed") !== "1");
   const delay = firstVisit.current ? 1.05 : 0.1;
+  const host = useRef<HTMLElement>(null);
+  const split = useMotionValue(0.5);
+  const width = useMotionValue(1200);
+  const [paused, setPaused] = useState(() => prefersReducedMotion());
+
+  useEffect(() => {
+    const el = host.current;
+    if (!el) return;
+    const ro = new ResizeObserver(([e]) => width.set(e.contentRect.width));
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [width]);
 
   return (
-    <section id="start" aria-labelledby="hero-title" className="on-light gutter relative overflow-hidden bg-snow pb-14 pt-8 md:pb-20 md:pt-12 lg:pt-14">
-      <div className="wrap grid items-center gap-9 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-14">
-        <div className="min-w-0">
+    <section
+      ref={host}
+      id="start"
+      aria-labelledby="hero-title"
+      className="on-dark relative isolate touch-pan-y overflow-hidden bg-ink text-snow"
+      style={{ height: "max(620px, min(920px, calc(100svh - var(--header-h) - var(--label-h))))" }}
+    >
+      <Backdrop host={host} split={split} paused={paused} />
+      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-[68%] bg-gradient-to-t from-ink via-ink/75 to-transparent" />
+      <SideLabels split={split} />
+      <Divider split={split} width={width} />
+
+      <div className="gutter pointer-events-none absolute inset-x-0 bottom-0 pb-7 md:pb-12">
+        <div className="wrap pointer-events-auto">
           <motion.p
-            className="mb-5 inline-flex items-center gap-2.5 text-[13px] font-semibold uppercase tracking-[0.18em] text-muted"
+            className="mb-4 inline-flex items-center gap-2.5 text-[13px] font-semibold uppercase tracking-[0.18em] text-beak"
             initial={reduce ? false : { opacity: 0, transform: "translateY(8px)" }}
             animate={{ opacity: 1, transform: "translateY(0px)" }}
             transition={{ duration: 0.5, delay }}
@@ -40,7 +62,7 @@ export function Hero() {
           </motion.p>
           <Title delay={delay} />
           <motion.p
-            className="mt-6 max-w-[40ch] text-lg leading-relaxed text-ink/80 md:text-xl"
+            className="mt-4 max-w-[44ch] text-lg leading-relaxed text-snow/90 md:text-xl"
             initial={reduce ? false : { transform: "translateY(12px)" }}
             animate={{ transform: "translateY(0px)" }}
             transition={{ duration: 0.6, delay: delay + 0.35 }}
@@ -48,47 +70,33 @@ export function Hero() {
             {UI.heroLead[lang]}
           </motion.p>
           <motion.div
-            className="mt-8 flex flex-wrap items-center gap-3"
+            className="mt-6 flex flex-wrap items-center gap-3"
             initial={reduce ? { opacity: 0 } : { opacity: 0, transform: "translateY(12px)" }}
             animate={{ opacity: 1, transform: "translateY(0px)" }}
             transition={{ duration: 0.6, delay: delay + 0.45 }}
           >
             <Magnetic>
-              <button type="button" onClick={book} className="inline-flex min-h-12 items-center rounded-full bg-beak px-6 text-[17px] font-semibold text-ink shadow-[0_10px_24px_-14px_rgba(160,100,0,0.7)] transition-colors hover:bg-[#f5c55d]">
+              <button type="button" onClick={book} className="inline-flex min-h-12 items-center rounded-full bg-beak px-6 text-[17px] font-semibold text-ink transition-colors hover:bg-[#f5c55d]">
                 {UI.bookTable[lang]}
               </button>
             </Magnetic>
             <Magnetic>
-              <button type="button" onClick={() => go("home", "restaurants")} className="group inline-flex min-h-12 items-center gap-2 rounded-full border border-ink/20 px-6 text-[17px] font-semibold text-ink transition-colors hover:border-ink">
+              <button type="button" onClick={() => go("home", "restaurants")} className="group inline-flex min-h-12 items-center gap-2 rounded-full border border-snow/40 px-6 text-[17px] font-semibold text-snow transition-colors hover:border-snow hover:bg-snow/10">
                 {UI.explore[lang]}
                 <ArrowRight className="rotate-90 transition-transform group-hover:translate-y-0.5" />
               </button>
             </Magnetic>
+            <button
+              type="button"
+              onClick={() => setPaused((p) => !p)}
+              className="ml-auto grid size-11 place-items-center rounded-full border border-snow/30 hover:border-snow"
+              aria-label={paused ? UI.play[lang] : UI.pause[lang]}
+              aria-pressed={paused}
+            >
+              {paused ? <PlayIcon size={14} /> : <PauseIcon size={14} />}
+            </button>
           </motion.div>
-          <motion.ul
-            className="mt-9 flex flex-wrap gap-x-5 gap-y-0 border-t border-line pt-4 text-[15px]"
-            initial={reduce ? { opacity: 0 } : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: delay + 0.6 }}
-          >
-            {(
-              [
-                ["pizzeria", "Pizzeria Choucas", "bg-oven"],
-                ["steakhouse", "Oasis Steakhouse", "bg-ember"],
-                ["choucalino", "Choucalino®", "bg-sky"],
-              ] as const
-            ).map(([page, name, dot]) => (
-              <li key={page}>
-                <SiteLink page={page} className="group inline-flex min-h-11 items-center gap-2 font-medium text-ink/80 hover:text-ink">
-                  <span aria-hidden="true" className={cn("size-2 rounded-full", dot)} />
-                  {name}
-                  <ArrowRight size={14} className="opacity-50 transition-transform group-hover:translate-x-0.5 group-hover:opacity-100" />
-                </SiteLink>
-              </li>
-            ))}
-          </motion.ul>
         </div>
-        <ScenePanel delay={delay} />
       </div>
     </section>
   );
@@ -114,7 +122,7 @@ function Title({ delay }: { delay: number }) {
   const onLeave = () => letters.current.forEach((el) => el && (el.style.transform = ""));
 
   return (
-    <h1 ref={box} id="hero-title" onPointerMove={onMove} onPointerLeave={onLeave} className="font-display text-[clamp(3.1rem,8.4vw,6.6rem)] font-semibold leading-[0.9] tracking-[-0.045em] text-ink">
+    <h1 ref={box} id="hero-title" onPointerMove={onMove} onPointerLeave={onLeave} className="font-display text-[clamp(3rem,9vw,7rem)] font-semibold leading-[0.9] tracking-[-0.045em] text-snow">
       <span className="sr-only">Pizza · Parrilla · The Choucas Connection</span>
       <span aria-hidden="true" className="inline-block overflow-hidden pb-[0.08em]">
         {[...title].map((ch, i) => (
@@ -129,7 +137,7 @@ function Title({ delay }: { delay: number }) {
               ref={(el) => {
                 letters.current[i] = el;
               }}
-              className={cn("inline-block transition-transform duration-300 ease-out-expo", ch === "|" && "px-[0.1em] font-extralight text-brand")}
+              className={cn("inline-block transition-transform duration-300 ease-out-expo", ch === "|" && "px-[0.1em] font-extralight text-beak")}
             >
               {ch === " " ? " " : ch}
             </span>
@@ -140,49 +148,8 @@ function Title({ delay }: { delay: number }) {
   );
 }
 
-/** The framed signature scene with its divider. */
-function ScenePanel({ delay }: { delay: number }) {
-  const { lang } = useSite();
-  const reduce = useReducedMotion();
-  const host = useRef<HTMLDivElement>(null);
-  const split = useMotionValue(0.5);
-  const width = useMotionValue(800);
-  const [paused, setPaused] = useState(() => prefersReducedMotion());
-
-  useEffect(() => {
-    const el = host.current;
-    if (!el) return;
-    const ro = new ResizeObserver(([e]) => width.set(e.contentRect.width));
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, [width]);
-
-  return (
-    <motion.div
-      ref={host}
-      className="on-dark relative isolate aspect-[4/5] w-full touch-pan-y overflow-hidden rounded-[28px] bg-ink text-snow shadow-[0_40px_80px_-48px_rgba(28,24,20,0.85)] sm:aspect-[5/4] lg:aspect-[6/5]"
-      initial={reduce ? { opacity: 0 } : { opacity: 0, clipPath: "inset(8% 8% 8% 8% round 28px)" }}
-      animate={reduce ? { opacity: 1 } : { opacity: 1, clipPath: "inset(0% 0% 0% 0% round 28px)" }}
-      transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: delay + 0.15 }}
-    >
-      <Backdrop host={host} split={split} paused={paused} />
-      <SideLabels split={split} />
-      <Divider split={split} width={width} />
-      <button
-        type="button"
-        onClick={() => setPaused((p) => !p)}
-        className="absolute right-3 top-3 z-20 grid size-11 place-items-center rounded-full bg-ink/55 text-snow ring-1 ring-snow/25 backdrop-blur-sm hover:ring-snow"
-        aria-label={paused ? UI.play[lang] : UI.pause[lang]}
-        aria-pressed={paused}
-      >
-        {paused ? <PlayIcon size={14} /> : <PauseIcon size={14} />}
-      </button>
-    </motion.div>
-  );
-}
-
 /** CSS fire paints at once; the WebGL scene loads after first paint and fades in over it. */
-function Backdrop({ host, split, paused }: { host: React.RefObject<HTMLDivElement | null>; split: MotionValue<number>; paused: boolean }) {
+function Backdrop({ host, split, paused }: { host: React.RefObject<HTMLElement | null>; split: MotionValue<number>; paused: boolean }) {
   const canvas = useRef<HTMLCanvasElement>(null);
   const engine = useRef<{ setSplit: (v: number) => void; setPaused: (v: boolean) => void; dispose: () => void } | null>(null);
   const [ready, setReady] = useState(false);
@@ -238,7 +205,7 @@ function SideLabels({ split }: { split: MotionValue<number> }) {
   const label = "group inline-flex min-h-11 items-center gap-2 rounded-full bg-ink/55 px-4 text-sm font-semibold text-snow ring-1 ring-snow/20 backdrop-blur-sm transition-colors hover:bg-ink/75";
   return (
     <>
-      <motion.div className="absolute bottom-3 left-3 z-10 md:bottom-4 md:left-4" style={{ opacity: left, pointerEvents: leftEvents }}>
+      <motion.div className="absolute left-4 top-4 z-10 md:left-8 md:top-6" style={{ opacity: left, pointerEvents: leftEvents }}>
         <SiteLink page="pizzeria" className={label}>
           <span aria-hidden="true" className="size-2 rounded-full bg-oven" />
           <span>
@@ -246,7 +213,7 @@ function SideLabels({ split }: { split: MotionValue<number> }) {
           </span>
         </SiteLink>
       </motion.div>
-      <motion.div className="absolute bottom-3 right-3 z-10 md:bottom-4 md:right-4" style={{ opacity: right, pointerEvents: rightEvents }}>
+      <motion.div className="absolute right-4 top-4 z-10 md:right-8 md:top-6" style={{ opacity: right, pointerEvents: rightEvents }}>
         <SiteLink page="steakhouse" className={label}>
           <span aria-hidden="true" className="size-2 rounded-full bg-ember" />
           <span>
@@ -332,7 +299,7 @@ function Divider({ split, width }: { split: MotionValue<number>; width: MotionVa
         onPointerUp={release}
         onPointerCancel={release}
         style={{ rotate: leanSpring }}
-        className="pointer-events-auto absolute top-1/2 grid size-[68px] -translate-x-1/2 -translate-y-1/2 cursor-grab touch-none place-items-center rounded-full bg-snow shadow-[0_16px_34px_-12px_rgba(0,0,0,0.75)] outline-offset-4 active:cursor-grabbing md:size-[80px]"
+        className="pointer-events-auto absolute top-[30%] grid size-[68px] -translate-x-1/2 -translate-y-1/2 cursor-grab touch-none place-items-center rounded-full bg-snow shadow-[0_16px_34px_-12px_rgba(0,0,0,0.75)] outline-offset-4 active:cursor-grabbing md:size-[80px]"
       >
         <motion.img src={mark()} alt="" draggable={false} className="size-[46px] object-contain md:size-[56px]" animate={{ scale: dragging ? 0.9 : 1 }} />
         <span aria-hidden="true" className="absolute -left-6 top-1/2 -translate-y-1/2 text-snow/90">
@@ -344,7 +311,7 @@ function Divider({ split, width }: { split: MotionValue<number>; width: MotionVa
       </motion.div>
       <motion.p
         aria-hidden="true"
-        className="absolute top-[calc(50%+48px)] w-36 -translate-x-1/2 text-center text-[11px] font-semibold uppercase tracking-[0.16em] text-snow md:top-[calc(50%+54px)]"
+        className="absolute top-[calc(30%+48px)] w-36 -translate-x-1/2 text-center text-[11px] font-semibold uppercase tracking-[0.16em] text-snow md:top-[calc(30%+54px)]"
         animate={{ opacity: touched ? 0 : 0.9 }}
       >
         {UI.dragHint[lang]}
