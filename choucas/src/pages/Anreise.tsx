@@ -15,17 +15,17 @@ export function Anreise() {
         title={UI.nav.anreise[lang]}
         lead={
           <>
-            <strong className="block font-display text-2xl font-bold text-snow">{RESERVATION.title[lang]}</strong>
+            <strong className="block font-display text-2xl font-semibold text-ink">{RESERVATION.title[lang]}</strong>
             <span className="mt-2 block">{RESERVATION.text[lang]}</span>
           </>
         }
         photoId="terasse-pizzeria-choucas"
         dot="bg-beak"
       >
-        <button type="button" onClick={book} className="inline-flex min-h-12 items-center rounded-full bg-beak px-6 font-bold text-ink hover:bg-white">
-          {UI.book[lang]}
+        <button type="button" onClick={book} className="inline-flex min-h-12 items-center rounded-full bg-beak px-6 font-semibold text-ink hover:bg-[#f5c55d]">
+          {UI.bookTable[lang]}
         </button>
-        <a href={CONTACT.tel} className="inline-flex min-h-12 items-center gap-2 rounded-full border border-snow/45 px-6 font-bold hover:border-snow">
+        <a href={CONTACT.tel} className="inline-flex min-h-12 items-center gap-2 rounded-full border border-ink/20 px-6 font-semibold hover:border-ink">
           <PhoneIcon />
           {CONTACT.phone}
         </a>

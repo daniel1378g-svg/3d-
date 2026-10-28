@@ -27,7 +27,7 @@ export function Choucalino() {
         lead={
           <>
             {CHOUCALINO.text[lang]}{" "}
-            <a href={CONTACT.live.press} target="_blank" rel="noopener" className="font-semibold text-beak underline underline-offset-4 hover:text-snow">
+            <a href={CONTACT.live.press} target="_blank" rel="noopener" className="font-semibold text-sky-ink underline underline-offset-4 hover:text-ink">
               {CHOUCALINO.pressLink[lang]}
               <span className="sr-only"> ({UI.newTab[lang]})</span>
             </a>
@@ -35,10 +35,10 @@ export function Choucalino() {
         }
         photoId="choucalino"
         dot="bg-sky"
-        accent="bg-[#0f2c40]"
+        tint="bg-[#eef6fb]"
       >
-        <LiveBadge place="choucalino" tone="dark" />
-        <span className="flex items-center gap-2 rounded-2xl bg-snow p-2">
+        <LiveBadge place="choucalino" />
+        <span className="flex items-center gap-2 rounded-2xl bg-white p-2 ring-1 ring-line">
           <img src={brandImg("choucalinologo")} alt="Choucalino®" width={238} height={134} className="h-14 w-auto" />
           <img src={brandImg("familywelcome")} alt={HOME.familyWelcome[lang]} width={84} height={90} className="h-14 w-auto" />
         </span>
@@ -73,7 +73,7 @@ export function Choucalino() {
             <ParallaxPhoto id="choucalinogrillfb" className="aspect-[3/2] -rotate-1 rounded-[28px] shadow-[0_30px_60px_-30px_rgba(0,0,0,0.7)]" />
           </Reveal>
           <div className="group">
-            <LottieIcon name="grill" color="#F7F4EE" accent="#F2C230" size={56} mode="loop" />
+            <LottieIcon name="grill" color="#F7F4EE" accent="#F2C230" size={56} mode="hover" />
             <Heading id="kinder-grill-title" title={CHOUCALINO.grillTitle[lang]} tone="dark" dot="bg-beak" className="mt-4" />
             <Reveal delay={0.08}>
               <p className="mt-6 max-w-[52ch] text-lg leading-relaxed text-snow/95">{CHOUCALINO.grillText[lang]}</p>

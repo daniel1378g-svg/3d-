@@ -1,20 +1,25 @@
 import { motion, useReducedMotion } from "motion/react";
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
-import { ParallaxPhoto } from "./Parallax";
+import { LightFollow, ParallaxPhoto } from "./Parallax";
 
-/** The top of a venue page: eyebrow, a big title rising word by word, the lead, and a parallax photo. */
-export function PageHero({ eyebrow, title, lead, photoId, dot, children, accent = "bg-ink" }: { eyebrow: string; title: string; lead?: ReactNode; photoId?: string; dot: string; children?: ReactNode; accent?: string }) {
+/** The top of a page, in the same editorial frame as the home hero: eyebrow, title, lead, actions, photo. */
+export function PageHero({ eyebrow, title, lead, photoId, dot, children, position, tint = "bg-snow" }: { eyebrow: string; title: string; lead?: ReactNode; photoId?: string; dot: string; children?: ReactNode; position?: string; tint?: string }) {
   const reduce = useReducedMotion();
   return (
-    <section className={cn("on-dark tex-hex gutter relative overflow-hidden pb-16 pt-14 text-snow md:pb-24 md:pt-20", accent)}>
-      <div className="wrap grid items-center gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
-        <div>
-          <p className="mb-4 inline-flex items-center gap-2.5 text-xs font-bold uppercase tracking-[0.2em] text-beak">
-            <span aria-hidden="true" className={cn("size-2.5 rounded-full", dot)} />
+    <section className={cn("on-light gutter relative overflow-hidden pb-14 pt-10 md:pb-20 md:pt-14", tint)}>
+      <div className="wrap grid items-center gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-16">
+        <div className="min-w-0">
+          <motion.p
+            className="mb-4 inline-flex items-center gap-2.5 text-[13px] font-semibold uppercase tracking-[0.18em] text-muted"
+            initial={reduce ? false : { opacity: 0, transform: "translateY(8px)" }}
+            animate={{ opacity: 1, transform: "translateY(0px)" }}
+            transition={{ duration: 0.5 }}
+          >
+            <span aria-hidden="true" className={cn("size-2 shrink-0 rounded-full", dot)} />
             {eyebrow}
-          </p>
-          <h1 className="font-display text-[clamp(2.6rem,7.4vw,6rem)] font-extrabold leading-[0.92] tracking-[-0.035em]">
+          </motion.p>
+          <h1 className="font-display text-[clamp(2.4rem,6vw,4.8rem)] font-semibold leading-[0.95] tracking-[-0.035em] text-ink">
             <span className="sr-only">{title}</span>
             <span aria-hidden="true">
               {title.split(" ").map((w, i) => (
@@ -23,7 +28,7 @@ export function PageHero({ eyebrow, title, lead, photoId, dot, children, accent 
                     className="inline-block"
                     initial={reduce ? { opacity: 0 } : { transform: "translateY(105%)" }}
                     animate={reduce ? { opacity: 1 } : { transform: "translateY(0%)" }}
-                    transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.1 + i * 0.06 }}
+                    transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.08 + i * 0.05 }}
                   >
                     {w}
                   </motion.span>
@@ -34,24 +39,24 @@ export function PageHero({ eyebrow, title, lead, photoId, dot, children, accent 
           </h1>
           {lead && (
             <motion.div
-              className="mt-6 max-w-[56ch] text-lg leading-relaxed text-snow/90 md:text-xl"
+              className="mt-6 max-w-[54ch] text-lg leading-relaxed text-ink/80"
               initial={reduce ? { opacity: 0 } : { opacity: 0, transform: "translateY(14px)" }}
               animate={{ opacity: 1, transform: "translateY(0px)" }}
-              transition={{ duration: 0.6, delay: 0.35 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
             >
               {lead}
             </motion.div>
           )}
-          {children && <div className="mt-7 flex flex-wrap items-center gap-3">{children}</div>}
+          {children && (
+            <motion.div className="mt-7 flex flex-wrap items-center gap-3" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 0.4 }}>
+              {children}
+            </motion.div>
+          )}
         </div>
         {photoId && (
-          <motion.div
-            initial={reduce ? { opacity: 0 } : { opacity: 0, transform: "translateY(40px) rotate(2deg)" }}
-            animate={{ opacity: 1, transform: "translateY(0px) rotate(0deg)" }}
-            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
-          >
-            <ParallaxPhoto id={photoId} eager className="aspect-[4/3] rounded-[28px] shadow-[0_40px_80px_-40px_rgba(0,0,0,0.8)] lg:aspect-[4/5]" />
-          </motion.div>
+          <LightFollow className="rounded-[24px]">
+            <ParallaxPhoto id={photoId} eager reveal="right" position={position} className="aspect-[4/3] rounded-[24px] shadow-[0_40px_80px_-50px_rgba(28,24,20,0.8)] lg:aspect-[5/6]" />
+          </LightFollow>
         )}
       </div>
     </section>

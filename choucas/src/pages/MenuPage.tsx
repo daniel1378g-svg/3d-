@@ -13,10 +13,10 @@ export function MenuPage() {
   return (
     <>
       <PageHero eyebrow="Pizzeria Choucas · Oasis Steakhouse" title={MENU_PAGE.title[lang]} lead={MENU_PAGE.intro[lang]} photoId="parilladaweb" dot="bg-beak">
-        <button type="button" onClick={book} className="inline-flex min-h-12 items-center rounded-full bg-beak px-6 font-bold text-ink hover:bg-white">
-          {UI.book[lang]}
+        <button type="button" onClick={book} className="inline-flex min-h-12 items-center rounded-full bg-beak px-6 font-semibold text-ink hover:bg-[#f5c55d]">
+          {UI.bookTable[lang]}
         </button>
-        <a href={CONTACT.menuPdf} target="_blank" rel="noopener" className="inline-flex min-h-12 items-center gap-2 rounded-full border border-snow/45 px-6 font-bold hover:border-snow">
+        <a href={CONTACT.menuPdf} target="_blank" rel="noopener" className="inline-flex min-h-12 items-center gap-2 rounded-full border border-ink/20 px-6 font-semibold hover:border-ink">
           {UI.fullMenuPdf[lang]}
           <ExternalIcon />
           <span className="sr-only"> ({UI.newTab[lang]})</span>

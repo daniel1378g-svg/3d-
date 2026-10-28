@@ -1,10 +1,14 @@
-import { useEffect, useId, useMemo, useRef, useState } from "react";
-import { AnimatePresence, LayoutGroup, motion, useReducedMotion } from "motion/react";
+import { createContext, useContext, useEffect, useId, useMemo, useRef, useState } from "react";
+import { AnimatePresence, LayoutGroup, motion, useMotionValue, useReducedMotion, useSpring } from "motion/react";
 import { UI, fill, type Lang } from "@/i18n";
-import { MENU, chf, photo, photoAlt, type Dish, type Section, type Venue } from "@/content";
+import { MENU, chf, photo, type Dish, type Section, type Venue } from "@/content";
 import { useSite } from "@/site";
 import { cn } from "@/lib/utils";
 import { ChiliIcon, SearchIcon } from "./icons";
+import { SmartImage } from "./SmartImage";
+
+/** Which dish photo follows the mouse (desktop only). */
+const HoverPhoto = createContext<(id: string | null) => void>(() => {});
 
 type Filter = "all" | "pizzeria" | "oasis";
 const fold = (s: string) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
@@ -32,8 +36,11 @@ export function MenuBoard({ only, compact = false }: { only?: Exclude<Filter, "a
   );
   const count = sections.reduce((n, s) => n + s.items.length, 0);
   const uid = useId();
+  const [hover, setHover] = useState<string | null>(null);
 
   return (
+    <HoverPhoto.Provider value={setHover}>
+    <CursorPhoto id={hover} />
     <div>
       {!only && (
         <div className="flex flex-wrap items-center gap-3">
@@ -114,6 +121,44 @@ export function MenuBoard({ only, compact = false }: { only?: Exclude<Filter, "a
         </div>
       </LayoutGroup>
     </div>
+    </HoverPhoto.Provider>
+  );
+}
+
+/** A photo that follows the mouse over dishes that have one; nothing on touch or with reduced motion. */
+function CursorPhoto({ id }: { id: string | null }) {
+  const reduce = useReducedMotion();
+  const x = useMotionValue(-400);
+  const y = useMotionValue(-400);
+  const sx = useSpring(x, { stiffness: 320, damping: 30 });
+  const sy = useSpring(y, { stiffness: 320, damping: 30 });
+  useEffect(() => {
+    const move = (e: PointerEvent) => {
+      if (e.pointerType !== "mouse") return;
+      x.set(e.clientX + 24);
+      y.set(e.clientY - 90);
+    };
+    window.addEventListener("pointermove", move, { passive: true });
+    return () => window.removeEventListener("pointermove", move);
+  }, [x, y]);
+  if (reduce) return null;
+  return (
+    <motion.div aria-hidden="true" className="pointer-events-none fixed left-0 top-0 z-[150] max-md:hidden" style={{ x: sx, y: sy }}>
+      <AnimatePresence>
+        {id && (
+          <motion.img
+            key={id}
+            src={photo(id, true)}
+            alt=""
+            className="h-44 w-60 rounded-2xl object-cover shadow-[0_24px_50px_-20px_rgba(28,24,20,0.6)]"
+            initial={{ opacity: 0, scale: 0.85, rotate: -4 }}
+            animate={{ opacity: 1, scale: 1, rotate: 2 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+          />
+        )}
+      </AnimatePresence>
+    </motion.div>
   );
 }
 
@@ -141,7 +186,7 @@ function SectionTabs({ sections }: { sections: Section[] }) {
     bar.current?.querySelector<HTMLElement>(`[data-id="${active}"]`)?.scrollIntoView({ inline: "center", block: "nearest", behavior: reduce ? "auto" : "smooth" });
   }, [active, reduce]);
   return (
-    <nav aria-label={UI.sections[lang]} className="sticky z-30 -mx-4 mt-6 bg-snow/92 px-4 py-2 backdrop-blur-md md:-mx-8 md:px-8" style={{ top: "calc(var(--label-h) + 64px)" }}>
+    <nav aria-label={UI.sections[lang]} className="sticky z-30 -mx-4 mt-6 bg-snow/92 px-4 py-2 backdrop-blur-md md:-mx-8 md:px-8" style={{ top: "calc(var(--label-h) + var(--header-compact))" }}>
       <div ref={bar} className="no-scrollbar flex gap-1 overflow-x-auto">
         {sections.map((s) => (
           <a
@@ -208,9 +253,19 @@ function DishRow({ dish }: { dish: Dish }) {
   const id = useId();
   const desc = dish.desc[lang];
   const price = dish.sizes ? dish.sizes.map((s) => chf(s.price)).join(" · ") : chf(dish.price);
+  const setHover = useContext(HoverPhoto);
   return (
-    <div>
-      <button type="button" aria-expanded={open} aria-controls={id} onClick={() => setOpen((o) => !o)} className="group grid w-full gap-1 py-4 text-left">
+    <div onPointerEnter={(e) => e.pointerType === "mouse" && dish.photo && !open && setHover(dish.photo)} onPointerLeave={() => setHover(null)}>
+      <button
+        type="button"
+        aria-expanded={open}
+        aria-controls={id}
+        onClick={() => {
+          setOpen((o) => !o);
+          setHover(null);
+        }}
+        className="group grid w-full gap-1 rounded-lg py-4 text-left transition-colors hover:bg-snow-2/60"
+      >
         <span className="flex items-baseline gap-3">
           <span className="font-display text-xl font-semibold leading-tight md:text-2xl" lang="de-CH">
             {dish.name}
@@ -223,7 +278,17 @@ function DishRow({ dish }: { dish: Dish }) {
           )}
           {dish.tip && <span className="rounded-full bg-oven px-2 py-0.5 text-xs font-bold uppercase text-snow">{UI.tipBadge[lang]}</span>}
           <span aria-hidden="true" className="leader" />
-          <span className="whitespace-nowrap text-right font-semibold tabular-nums">{price}</span>
+          <span className="inline-block [perspective:400px]">
+            <motion.span
+              key={open ? "open" : "closed"}
+              className="inline-block whitespace-nowrap text-right font-semibold tabular-nums"
+              initial={reduce ? false : { rotateX: -80, opacity: 0 }}
+              animate={{ rotateX: 0, opacity: 1 }}
+              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            >
+              {price}
+            </motion.span>
+          </span>
         </span>
         {desc && <span className={cn("max-w-[70ch] text-[16px] leading-snug text-muted", !open && "line-clamp-1")}>{desc}</span>}
       </button>
@@ -253,7 +318,11 @@ function DishRow({ dish }: { dish: Dish }) {
                 )}
                 {!dish.extra && !dish.sizes && !dish.photo && <p className="text-[16px] text-muted">{desc || dish.name}</p>}
               </div>
-              {dish.photo && <img src={photo(dish.photo, true)} alt={photoAlt(dish.photo, lang)} loading="lazy" className="h-40 w-full rounded-2xl object-cover sm:w-60" />}
+              {dish.photo && (
+                <span className="relative block h-40 w-full overflow-hidden rounded-2xl sm:w-60">
+                  <SmartImage id={dish.photo} fill sizes="240px" reveal="right" />
+                </span>
+              )}
             </div>
           </motion.div>
         )}

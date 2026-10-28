@@ -1,5 +1,5 @@
 import { UI } from "@/i18n";
-import { HOME, MENU_PAGE, STEAKHOUSE } from "@/copy";
+import { MENU_PAGE, STEAKHOUSE } from "@/copy";
 import { brandImg } from "@/content";
 import { useSite } from "@/site";
 import { PageHero } from "@/components/PageHero";
@@ -10,6 +10,7 @@ import { HoursList } from "@/components/Contact";
 import { SiteLink } from "@/components/SiteLink";
 import { GauchoStory } from "@/components/GauchoStory";
 import { Featured } from "@/components/Featured";
+import { openGalleryOn } from "@/components/Gallery";
 import { ArrowRight } from "@/components/icons";
 
 export function Steakhouse() {
@@ -17,25 +18,24 @@ export function Steakhouse() {
   return (
     <>
       <PageHero
-        eyebrow={HOME.boxes.oasis.intro[lang]}
+        eyebrow={`Oasis Steakhouse · ${UI.grillSide[lang]}`}
         title={STEAKHOUSE.title[lang]}
         lead={
           <>
             {STEAKHOUSE.text[lang]}{" "}
-            <SiteLink page="home" section="bilder" className="font-semibold text-sand underline underline-offset-4 hover:text-snow">
+            <SiteLink page="home" section="bilder" onClick={() => openGalleryOn("oasis")} className="font-semibold text-brand-ink underline underline-offset-4 hover:text-ink">
               {STEAKHOUSE.photosLink[lang]}
             </SiteLink>
           </>
         }
         photoId="steakhouse"
         dot="bg-ember"
-        accent="bg-[#24140c]"
       >
-        <LiveBadge place="oasis" tone="dark" />
-        <button type="button" onClick={book} className="inline-flex min-h-12 items-center rounded-full bg-beak px-6 font-bold text-ink hover:bg-white">
-          {UI.book[lang]}
+        <button type="button" onClick={book} className="inline-flex min-h-12 items-center rounded-full bg-beak px-6 font-semibold text-ink hover:bg-[#f5c55d]">
+          {UI.bookTable[lang]}
         </button>
-        <span className="rounded-2xl bg-snow p-2">
+        <LiveBadge place="oasis" />
+        <span className="rounded-2xl bg-white p-2 ring-1 ring-line">
           <img src={brandImg("lareunion-logo")} alt="LaReunion" width={160} height={162} loading="lazy" className="size-16 object-contain" />
         </span>
       </PageHero>
@@ -48,7 +48,7 @@ export function Steakhouse() {
         </div>
       </section>
 
-      <section aria-labelledby="oasis-menu" className="on-light gutter bg-snow py-20 md:py-28">
+      <section id="speisekarte" aria-labelledby="oasis-menu" className="on-light gutter bg-snow py-20 md:py-28">
         <div className="wrap">
           <div className="flex flex-wrap items-end justify-between gap-6">
             <Heading id="oasis-menu" title={UI.nav.menu[lang]} dot="bg-ember" />

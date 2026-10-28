@@ -1,6 +1,6 @@
 import { UI } from "@/i18n";
-import { HOME, PIZZERIA, TAKEAWAY } from "@/copy";
-import { CONTACT, photo, photoAlt } from "@/content";
+import { PIZZERIA, TAKEAWAY } from "@/copy";
+import { CONTACT } from "@/content";
 import { useSite } from "@/site";
 import { PageHero } from "@/components/PageHero";
 import { LiveBadge } from "@/components/LiveBadge";
@@ -9,17 +9,18 @@ import { MenuBoard } from "@/components/MenuBoard";
 import { HoursList } from "@/components/Contact";
 import { SiteLink } from "@/components/SiteLink";
 import { ParallaxPhoto } from "@/components/Parallax";
+import { SmartImage } from "@/components/SmartImage";
 import { ArrowRight, ExternalIcon, PhoneIcon } from "@/components/icons";
 
 export function Pizzeria() {
   const { lang, book } = useSite();
   return (
     <>
-      <PageHero eyebrow={HOME.boxes.pizzeria.intro[lang]} title={PIZZERIA.title[lang]} lead={PIZZERIA.text[lang]} photoId="a3x7690" dot="bg-oven" accent="bg-[#2a0f0c]">
-        <LiveBadge place="pizzeria" tone="dark" />
-        <button type="button" onClick={book} className="inline-flex min-h-12 items-center rounded-full bg-beak px-6 font-bold text-ink hover:bg-white">
-          {UI.book[lang]}
+      <PageHero eyebrow={`Pizzeria Choucas · ${UI.location[lang]}`} title={PIZZERIA.title[lang]} lead={PIZZERIA.text[lang]} photoId="a3x7690" dot="bg-oven" position="50% 70%">
+        <button type="button" onClick={book} className="inline-flex min-h-12 items-center rounded-full bg-beak px-6 font-semibold text-ink hover:bg-[#f5c55d]">
+          {UI.bookTable[lang]}
         </button>
+        <LiveBadge place="pizzeria" />
       </PageHero>
 
       {/* Pizza Geissupür */}
@@ -33,7 +34,7 @@ export function Pizzeria() {
             <Reveal delay={0.08}>
               <p className="mt-6 max-w-[52ch] text-xl leading-relaxed">{PIZZERIA.specialText[lang]}</p>
               <p className="mt-5 inline-block -rotate-1 rounded-2xl bg-beak px-5 py-3 font-display text-2xl font-bold">{PIZZERIA.specialLine[lang]}</p>
-              <img src={photo("pizzageissupuer", true)} alt={photoAlt("pizzageissupuer", lang)} loading="lazy" className="mt-8 h-44 w-auto rounded-2xl" />
+              <SmartImage id="pizzageissupuer" sizes="160px" reveal="up" className="mt-8 h-44 w-auto rounded-2xl" />
             </Reveal>
           </div>
         </div>
@@ -63,7 +64,7 @@ export function Pizzeria() {
       </section>
 
       {/* menu */}
-      <section aria-labelledby="pizzeria-menu" className="on-light gutter bg-snow py-20 md:py-28">
+      <section id="speisekarte" aria-labelledby="pizzeria-menu" className="on-light gutter bg-snow py-20 md:py-28">
         <div className="wrap">
           <div className="flex flex-wrap items-end justify-between gap-6">
             <Heading id="pizzeria-menu" eyebrow={PIZZERIA.menuText[lang]} title={UI.pizzeriaPart[lang]} dot="bg-oven" />

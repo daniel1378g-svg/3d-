@@ -163,7 +163,17 @@ export function Shell({ lang }: { lang: Lang }) {
   );
 }
 
-/** A short chough-black wipe across the screen when the page changes (0.4 s); nothing with reduced motion. */
+const WIPE: Record<PageKey, string> = {
+  home: "#2b211b",
+  pizzeria: "#c8372d",
+  steakhouse: "#b5541e",
+  choucalino: "#4fa3d9",
+  menu: "#f0b43a",
+  anreise: "#1c1814",
+  impressum: "#1c1814",
+};
+
+/** On a page change a 0.4 s wipe crosses the screen in the colour of the page you are going to; nothing with reduced motion. */
 function PageWipe({ page, reduce }: { page: PageKey; reduce: boolean }) {
   const first = useRef(true);
   const [run, setRun] = useState(0);
@@ -179,7 +189,8 @@ function PageWipe({ page, reduce }: { page: PageKey; reduce: boolean }) {
     <motion.div
       key={run}
       aria-hidden="true"
-      className="pointer-events-none fixed inset-0 z-[350] bg-ink"
+      className="pointer-events-none fixed inset-0 z-[350]"
+      style={{ background: WIPE[page] }}
       initial={{ transform: "translateX(-100%)" }}
       animate={{ transform: ["translateX(-100%)", "translateX(0%)", "translateX(100%)"] }}
       transition={{ duration: 0.4, times: [0, 0.45, 1], ease: [0.76, 0, 0.24, 1] }}

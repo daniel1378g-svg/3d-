@@ -2,19 +2,28 @@ import { useEffect, useRef, useState, type KeyboardEvent as ReactKeyboardEvent }
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { UI, fill } from "@/i18n";
 import { GALLERIES } from "@/copy";
-import { photo, photoAlt, photoSize } from "@/content";
+import { photoAlt, photoSize } from "@/content";
 import { useSite } from "@/site";
 import { cn } from "@/lib/utils";
 import { Heading } from "./Reveal";
+import { SmartImage, type Reveal } from "./SmartImage";
 import { ArrowLeft, ArrowRight, CloseIcon, GridIcon } from "./icons";
 
 const TOTAL = GALLERIES.reduce((n, g) => n + g.photos.length, 0);
+
+/** A link elsewhere can ask the home gallery to open on one of its tabs (e.g. "Bilder vom Oasis Steakhouse"). */
+let requested: string | null = null;
+export const openGalleryOn = (id: string) => (requested = id);
 
 /** The nine live galleries: tabs, a swipeable carousel per gallery (or a plain grid) and a lightbox. */
 export function Gallery({ initial = "pizzeria", tone = "dark" }: { initial?: string; tone?: "dark" | "light" }) {
   const { lang } = useSite();
   const reduce = useReducedMotion();
-  const [cat, setCat] = useState(initial);
+  const [cat, setCat] = useState(() => {
+    const r = requested;
+    requested = null;
+    return r ?? initial;
+  });
   const [grid, setGrid] = useState(() => !!reduce);
   const [open, setOpen] = useState<number | null>(null);
   const gallery = GALLERIES.find((g) => g.id === cat) ?? GALLERIES[0];
@@ -90,7 +99,7 @@ export function Gallery({ initial = "pizzeria", tone = "dark" }: { initial?: str
             <ul className="wrap grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
               {gallery.photos.map((id, i) => (
                 <li key={id}>
-                  <Thumb id={id} onOpen={() => setOpen(i)} className="aspect-[4/3] w-full" />
+                  <Thumb id={id} onOpen={() => setOpen(i)} className="aspect-[4/3] w-full" sizes="(min-width: 1024px) 25vw, 50vw" reveal={i % 2 ? "right" : "left"} delay={Math.min(i * 0.05, 0.4)} />
                 </li>
               ))}
             </ul>
@@ -104,34 +113,53 @@ export function Gallery({ initial = "pizzeria", tone = "dark" }: { initial?: str
   );
 }
 
-function Thumb({ id, onOpen, className }: { id: string; onOpen: () => void; className?: string }) {
-  const { lang } = useSite();
-  const [w, h] = photoSize(id);
+function Thumb({ id, onOpen, className, sizes, reveal = "left", delay = 0, style, index }: { id: string; onOpen: () => void; className?: string; sizes: string; reveal?: Reveal; delay?: number; style?: React.CSSProperties; index?: number }) {
   return (
-    <button type="button" onClick={onOpen} className="group block w-full overflow-hidden rounded-2xl bg-ink-2 text-left">
-      <img src={photo(id, true)} width={w} height={h} alt={photoAlt(id, lang)} loading="lazy" decoding="async" draggable={false} className={cn("object-cover transition-transform duration-500 group-hover:scale-105", className)} />
+    <button type="button" data-index={index} onClick={onOpen} className={cn("group relative block overflow-hidden rounded-2xl bg-ink-2 text-left", className)} style={style}>
+      <SmartImage id={id} fill sizes={sizes} reveal={reveal} delay={delay} imgClassName="transition-[scale] duration-700 ease-out-expo group-hover:scale-[1.04]" />
     </button>
   );
 }
 
-/** Native horizontal scrolling (swipe on touch), drag with a mouse, arrow buttons and arrow keys. */
+/**
+ * Native horizontal scrolling (swipe on touch); with a mouse, drag with inertia and a rubber band at the
+ * ends. The photo nearest the middle is the active one; the others dim a little. ← → move between photos.
+ */
 function Carousel({ ids, onOpen, dark }: { ids: string[]; onOpen: (i: number) => void; dark: boolean }) {
   const { lang } = useSite();
   const track = useRef<HTMLUListElement>(null);
-  const drag = useRef<{ x: number; left: number; moved: boolean } | null>(null);
+  const drag = useRef<{ x: number; left: number; moved: boolean; v: number; lastX: number; lastT: number } | null>(null);
+  const glide = useRef(0);
   const [edge, setEdge] = useState({ start: true, end: false });
+  const [active, setActive] = useState(0);
   const reduce = useReducedMotion();
 
   const update = () => {
     const el = track.current;
     if (!el) return;
     setEdge({ start: el.scrollLeft < 8, end: el.scrollLeft + el.clientWidth > el.scrollWidth - 8 });
+    const mid = el.getBoundingClientRect().left + el.clientWidth / 2;
+    let best = 0,
+      dist = Infinity;
+    el.querySelectorAll<HTMLElement>("li").forEach((li, i) => {
+      const r = li.getBoundingClientRect();
+      const d = Math.abs(r.left + r.width / 2 - mid);
+      if (d < dist) ((dist = d), (best = i));
+    });
+    setActive(best);
   };
   useEffect(update, [ids]);
-  const by = (dir: number) => {
+  useEffect(() => () => cancelAnimationFrame(glide.current), []);
+  const go = (i: number) => {
     const el = track.current;
-    if (!el) return;
-    el.scrollBy({ left: dir * el.clientWidth * 0.8, behavior: reduce ? "auto" : "smooth" });
+    const li = el?.querySelectorAll<HTMLElement>("li")[i];
+    if (!el || !li) return;
+    li.querySelector<HTMLElement>("button")?.focus({ preventScroll: true });
+    el.scrollTo({ left: li.offsetLeft - (el.clientWidth - li.offsetWidth) / 2, behavior: reduce ? "auto" : "smooth" });
+  };
+  const max = () => (track.current ? track.current.scrollWidth - track.current.clientWidth : 0);
+  const band = (px: number) => {
+    if (track.current) track.current.style.transform = px ? `translateX(${px}px)` : "";
   };
 
   return (
@@ -140,26 +168,66 @@ function Carousel({ ids, onOpen, dark }: { ids: string[]; onOpen: (i: number) =>
         ref={track}
         onScroll={update}
         aria-roledescription="carousel"
+        aria-label={UI.galleryTitle[lang]}
         style={{ scrollPaddingInline: "max(16px, calc((100vw - 1280px) / 2))" }}
-        className="no-scrollbar flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth px-[max(16px,calc((100vw-1280px)/2))] pb-2 md:px-[max(32px,calc((100vw-1280px)/2))]"
+        className="no-scrollbar flex snap-x snap-mandatory gap-4 overflow-x-auto px-[max(16px,calc((100vw-1280px)/2))] pb-2 transition-transform duration-500 ease-out-expo md:px-[max(32px,calc((100vw-1280px)/2))]"
+        onKeyDown={(e) => {
+          const n = ids.length;
+          const focused = Number((document.activeElement as HTMLElement | null)?.dataset.index ?? active);
+          const from = Number.isFinite(focused) ? focused : active;
+          const to = e.key === "ArrowRight" ? Math.min(n - 1, from + 1) : e.key === "ArrowLeft" ? Math.max(0, from - 1) : e.key === "Home" ? 0 : e.key === "End" ? n - 1 : -1;
+          if (to < 0) return;
+          e.preventDefault();
+          setActive(to);
+          go(to);
+        }}
         onPointerDown={(e) => {
           if (e.pointerType !== "mouse" || !track.current) return;
-          drag.current = { x: e.clientX, left: track.current.scrollLeft, moved: false };
+          cancelAnimationFrame(glide.current);
+          track.current.style.transitionDuration = "0ms";
+          drag.current = { x: e.clientX, left: track.current.scrollLeft, moved: false, v: 0, lastX: e.clientX, lastT: performance.now() };
         }}
         onPointerMove={(e) => {
           const d = drag.current;
-          if (!d || !track.current) return;
+          const el = track.current;
+          if (!d || !el) return;
           const dx = e.clientX - d.x;
           if (Math.abs(dx) > 5) d.moved = true;
-          track.current.style.scrollSnapType = "none";
-          track.current.scrollLeft = d.left - dx;
+          if (!d.moved) return;
+          el.style.scrollSnapType = "none";
+          const now = performance.now();
+          d.v = ((d.lastX - e.clientX) / Math.max(1, now - d.lastT)) * 16;
+          d.lastX = e.clientX;
+          d.lastT = now;
+          const want = d.left - dx;
+          el.scrollLeft = want;
+          // rubber band past either end
+          band(want < 0 ? -want * 0.35 : want > max() ? -(want - max()) * 0.35 : 0);
         }}
         onPointerUp={() => {
-          if (track.current) track.current.style.scrollSnapType = "";
+          const d = drag.current;
+          const el = track.current;
+          if (!d || !el) return;
+          el.style.transitionDuration = "";
+          band(0);
+          let v = reduce ? 0 : d.v;
+          const step = () => {
+            if (Math.abs(v) < 0.5) {
+              el.style.scrollSnapType = "";
+              return;
+            }
+            el.scrollLeft += v;
+            v *= 0.94;
+            glide.current = requestAnimationFrame(step);
+          };
+          step();
           setTimeout(() => (drag.current = null), 0);
         }}
         onPointerLeave={() => {
-          if (track.current) track.current.style.scrollSnapType = "";
+          if (!drag.current || !track.current) return;
+          track.current.style.transitionDuration = "";
+          track.current.style.scrollSnapType = "";
+          band(0);
           drag.current = null;
         }}
         onClickCapture={(e) => {
@@ -171,31 +239,23 @@ function Carousel({ ids, onOpen, dark }: { ids: string[]; onOpen: (i: number) =>
       >
         {ids.map((id, i) => {
           const [w, h] = photoSize(id);
+          const on = i === active;
           return (
-            <motion.li
-              key={id}
-              className="shrink-0 snap-start"
-              initial={reduce ? false : { opacity: 0, transform: "translateX(40px)" }}
-              whileInView={{ opacity: 1, transform: "translateX(0px)" }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: Math.min(i, 6) * 0.06, ease: [0.16, 1, 0.3, 1] }}
-            >
+            <li key={id} className={cn("shrink-0 snap-start transition-[opacity,scale] duration-500 ease-out-expo", on ? "opacity-100" : "scale-[0.95] opacity-60")}>
               <figure>
-                <Thumb id={id} onOpen={() => onOpen(i)} className="h-[260px] w-auto max-w-[80vw] md:h-[360px]" />
-                <figcaption className={cn("mt-2 max-w-[min(80vw,420px)] text-sm", dark ? "text-snow/75" : "text-muted")} style={{ width: `min(80vw, ${Math.round((w / h) * 360)}px)` }}>
-                  {photoAlt(id, lang)}
-                </figcaption>
+                <Thumb id={id} index={i} onOpen={() => onOpen(i)} sizes="(min-width: 768px) 560px, 82vw" reveal="left" delay={Math.min(i, 5) * 0.07} className="h-[260px] max-w-[82vw] md:h-[380px]" style={{ aspectRatio: `${w} / ${h}` }} />
+                <figcaption className={cn("mt-2 max-w-[min(82vw,440px)] text-sm", dark ? "text-snow/75" : "text-muted")}>{photoAlt(id, lang)}</figcaption>
               </figure>
-            </motion.li>
+            </li>
           );
         })}
       </ul>
       <div className="gutter mt-4">
         <div className="wrap flex gap-2">
-          <button type="button" onClick={() => by(-1)} disabled={edge.start} aria-label={UI.prevPhoto[lang]} className={cn("grid size-12 place-items-center rounded-full border-2 transition-opacity disabled:opacity-30", dark ? "border-snow/40 hover:border-snow" : "border-ink/30 hover:border-ink")}>
+          <button type="button" onClick={() => go(Math.max(0, active - 1))} disabled={edge.start} aria-label={UI.prevPhoto[lang]} className={cn("grid size-12 place-items-center rounded-full border transition-opacity disabled:opacity-30", dark ? "border-snow/35 hover:border-snow" : "border-ink/25 hover:border-ink")}>
             <ArrowLeft />
           </button>
-          <button type="button" onClick={() => by(1)} disabled={edge.end} aria-label={UI.nextPhoto[lang]} className={cn("grid size-12 place-items-center rounded-full border-2 transition-opacity disabled:opacity-30", dark ? "border-snow/40 hover:border-snow" : "border-ink/30 hover:border-ink")}>
+          <button type="button" onClick={() => go(Math.min(ids.length - 1, active + 1))} disabled={edge.end} aria-label={UI.nextPhoto[lang]} className={cn("grid size-12 place-items-center rounded-full border transition-opacity disabled:opacity-30", dark ? "border-snow/35 hover:border-snow" : "border-ink/25 hover:border-ink")}>
             <ArrowRight />
           </button>
         </div>
@@ -204,15 +264,20 @@ function Carousel({ ids, onOpen, dark }: { ids: string[]; onOpen: (i: number) =>
   );
 }
 
+/** Full-screen photo: slides in the direction of travel, follows a swipe and springs back if it is too short. */
 function Lightbox({ ids, index, onChange }: { ids: string[]; index: number | null; onChange: (i: number | null) => void }) {
   const { lang } = useSite();
   const reduce = useReducedMotion();
   const panel = useRef<HTMLDivElement>(null);
   const opener = useRef<Element | null>(null);
-  const swipe = useRef<number | null>(null);
+  const [dir, setDir] = useState(1);
   const total = ids.length;
   const isOpen = index !== null;
-  const step = (d: number) => index !== null && onChange((index + d + total) % total);
+  const step = (d: number) => {
+    if (index === null) return;
+    setDir(d);
+    onChange((index + d + total) % total);
+  };
 
   useEffect(() => {
     if (!isOpen) return;
@@ -245,6 +310,11 @@ function Lightbox({ ids, index, onChange }: { ids: string[]; index: number | nul
   });
 
   const id = index !== null ? ids[index] : null;
+  const variants = {
+    enter: (d: number) => (reduce ? { opacity: 0 } : { opacity: 0, x: `${d * 18}%` }),
+    center: { opacity: 1, x: "0%" },
+    exit: (d: number) => (reduce ? { opacity: 0 } : { opacity: 0, x: `${d * -18}%` }),
+  };
   return (
     <AnimatePresence>
       {id && index !== null && (
@@ -269,36 +339,43 @@ function Lightbox({ ids, index, onChange }: { ids: string[]; index: number | nul
               <span className="sr-only">{UI.close[lang]}</span>
             </button>
           </div>
-          <div
-            className="relative flex min-h-0 flex-1 items-center justify-center px-4 md:px-20"
-            onPointerDown={(e) => (swipe.current = e.clientX)}
-            onPointerUp={(e) => {
-              if (swipe.current === null) return;
-              const dx = e.clientX - swipe.current;
-              swipe.current = null;
-              if (Math.abs(dx) > 50) step(dx < 0 ? 1 : -1);
-            }}
-            onClick={(e) => e.target === e.currentTarget && onChange(null)}
-          >
-            <AnimatePresence mode="popLayout" initial={false}>
+          <div className="relative flex min-h-0 flex-1 items-center justify-center overflow-hidden px-4 md:px-20" onClick={(e) => e.target === e.currentTarget && onChange(null)}>
+            <AnimatePresence mode="popLayout" initial={false} custom={dir}>
               <motion.figure
                 key={id}
-                className="flex max-h-full flex-col items-center"
-                initial={reduce ? { opacity: 0 } : { opacity: 0, transform: "scale(0.96)" }}
-                animate={{ opacity: 1, transform: "scale(1)" }}
-                exit={{ opacity: 0, transition: { duration: 0.12 } }}
-                transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                custom={dir}
+                variants={variants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                drag={total > 1 ? "x" : false}
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={0.55}
+                onDragEnd={(_, info) => {
+                  if (info.offset.x < -70 || info.velocity.x < -450) step(1);
+                  else if (info.offset.x > 70 || info.velocity.x > 450) step(-1);
+                }}
+                className="flex max-h-full cursor-grab touch-pan-y flex-col items-center active:cursor-grabbing"
               >
-                <img src={photo(id)} alt={photoAlt(id, lang)} className="max-h-[calc(100svh-200px)] w-auto max-w-full rounded-xl object-contain" />
+                <SmartImage
+                  id={id}
+                  sizes="100vw"
+                  reveal="none"
+                  eager
+                  imgClassName="object-contain"
+                  className="w-auto max-w-full rounded-xl"
+                  style={{ height: `min(calc(100svh - 210px), calc((100vw - 32px) * ${(photoSize(id)[1] / photoSize(id)[0]).toFixed(4)}))` }}
+                />
                 <figcaption className="mt-3 max-w-[60ch] text-center text-[15px] text-snow/90">{photoAlt(id, lang)}</figcaption>
               </motion.figure>
             </AnimatePresence>
             {total > 1 && (
               <>
-                <button type="button" onClick={() => step(-1)} className="absolute left-2 top-1/2 grid size-12 -translate-y-1/2 place-items-center rounded-full bg-ink/70 ring-1 ring-snow/30 hover:ring-snow md:left-6" aria-label={UI.prevPhoto[lang]}>
+                <button type="button" onClick={() => step(-1)} className="absolute left-2 top-1/2 z-10 grid size-12 -translate-y-1/2 place-items-center rounded-full bg-ink/70 ring-1 ring-snow/30 hover:ring-snow md:left-6" aria-label={UI.prevPhoto[lang]}>
                   <ArrowLeft />
                 </button>
-                <button type="button" onClick={() => step(1)} className="absolute right-2 top-1/2 grid size-12 -translate-y-1/2 place-items-center rounded-full bg-ink/70 ring-1 ring-snow/30 hover:ring-snow md:right-6" aria-label={UI.nextPhoto[lang]}>
+                <button type="button" onClick={() => step(1)} className="absolute right-2 top-1/2 z-10 grid size-12 -translate-y-1/2 place-items-center rounded-full bg-ink/70 ring-1 ring-snow/30 hover:ring-snow md:right-6" aria-label={UI.nextPhoto[lang]}>
                   <ArrowRight />
                 </button>
               </>

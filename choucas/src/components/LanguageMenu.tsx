@@ -46,10 +46,10 @@ export function LanguageMenu() {
         type="button"
         aria-haspopup="menu"
         aria-expanded={open}
-        aria-label={`${UI.languagePill}: ${NATIVE[current]}`}
+        aria-label={`${current.toUpperCase()} · ${NATIVE[current]} · ${UI.languagePill}`}
         disabled={switching}
         onClick={() => setOpen((o) => !o)}
-        className="flex h-12 items-center gap-1.5 rounded-full border border-current/30 px-4 text-base font-medium uppercase transition-colors hover:border-current/70 sm:gap-2 sm:px-5 sm:text-lg"
+        className="flex h-11 items-center gap-1.5 rounded-full border border-current/25 px-3.5 text-[15px] font-semibold uppercase tracking-wide transition-colors hover:border-current/60 sm:px-4"
       >
         {current}
         <svg viewBox="0 0 24 24" aria-hidden="true" className={`size-4 transition-transform ${open ? "" : "rotate-180"} motion-reduce:transition-none`}>

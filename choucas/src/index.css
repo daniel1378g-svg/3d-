@@ -1,38 +1,46 @@
 @import "tailwindcss";
 
-/* "Drei Feuer unter einem Dach". Chough black and snow sections alternate; the logo's orange is the house
-   colour, beak yellow carries the calls to action, oven red is the pizzeria, ember and pampa sand the
-   Oasis, sky blue the Choucalino® Kid's Club only. One look in every theme: all colours are explicit. */
+/* Local fallbacks sized to the web fonts (Bricolage Grotesque runs at 89 % of Arial's width), so the text
+   does not re-wrap and push the page when the fonts arrive. */
+@font-face { font-family: "Bricolage Fallback"; src: local("Arial"), local("Helvetica"), local("Liberation Sans"), local("Roboto"); size-adjust: 89.4%; }
+@font-face { font-family: "Instrument Fallback"; src: local("Arial"), local("Helvetica"), local("Liberation Sans"), local("Roboto"); size-adjust: 100%; }
+
+/* Alpine Mediterranean. Warm ivory and cream sections alternate with deep charcoal and espresso; the
+   logo's orange is the house accent, warm gold carries the calls to action. Each place keeps one quiet
+   colour of its own: oven red (Pizzeria), ember and pampa sand (Oasis), sky blue (Choucalino® only).
+   One look in every theme: all colours are explicit. */
 @theme {
-  --color-ink: #161414;
-  --color-ink-2: #231f1f;
-  --color-snow: #f7f4ee;
-  --color-snow-2: #ece6da;
-  --color-beak: #f2c230;
+  --color-ink: #1c1814; /* charcoal: text and dark sections */
+  --color-ink-2: #2b211b; /* espresso */
+  --color-snow: #fbf7f0; /* ivory */
+  --color-snow-2: #f2eadc; /* cream */
+  --color-line: #e4d9c6; /* hairlines on ivory */
+  --color-beak: #f0b43a; /* warm gold, calls to action */
   --color-brand: #ee7a00; /* the logo's hexagon */
-  --color-brand-ink: #9a4a00; /* the same orange, dark enough for text on snow (5.7:1) */
+  --color-brand-ink: #9a4a00; /* the same orange, dark enough for text on ivory and cream */
   --color-oven: #c8372d;
   --color-ember: #b5541e;
   --color-sand: #e6d3aa;
   --color-sky: #4fa3d9;
   --color-sky-ink: #1f6fa3;
-  --color-muted: #5b5552;
-  --font-display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
-  --font-sans: "Instrument Sans", "Helvetica Neue", "Segoe UI", system-ui, sans-serif;
+  --color-muted: #6b5f55;
+  --font-display: "Bricolage Grotesque", "Bricolage Fallback", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --font-sans: "Instrument Sans", "Instrument Fallback", "Helvetica Neue", "Segoe UI", system-ui, sans-serif;
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-curtain: cubic-bezier(0.76, 0, 0.24, 1);
 }
 
 :root {
   color-scheme: light;
-  --snow: #f7f4ee;
-  --ink: #161414;
+  --snow: #fbf7f0;
+  --ink: #1c1814;
   --brand: #ee7a00;
   --label-h: 0px;
-  --header-h: 76px;
+  --header-h: 64px;
+  --header-compact: 56px;
 }
-:root:has(.proposal-label) { --label-h: 28px; }
-@media (min-width: 1024px) { :root { --header-h: 88px; } }
+:root:has(.proposal-label) { --label-h: 24px; }
+@media (min-width: 1024px) { :root { --header-h: 76px; --header-compact: 64px; } }
 
 @layer base {
   html { scroll-padding-top: calc(var(--header-h) + var(--label-h) + 24px); -webkit-text-size-adjust: 100%; }
@@ -44,11 +52,12 @@
     color: var(--color-ink);
     font-family: var(--font-sans);
     font-size: 17px;
-    line-height: 1.6;
+    line-height: 1.62;
     -webkit-font-smoothing: antialiased;
     overflow-x: clip;
   }
-  h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; letter-spacing: -0.02em; }
+  h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; letter-spacing: -0.025em; font-optical-sizing: auto; }
+  p { text-wrap: pretty; }
   :focus-visible { outline: 3px solid var(--color-brand-ink); outline-offset: 3px; border-radius: 6px; }
   .on-dark :focus-visible { outline-color: var(--color-beak); }
   .on-light :focus-visible { outline-color: var(--color-brand-ink); }
@@ -63,12 +72,12 @@
 
 .proposal-label {
   position: fixed; inset: env(safe-area-inset-top, 0px) 0 auto 0; z-index: 800; height: var(--label-h); margin: 0;
-  display: grid; place-items: center; background: var(--color-beak); color: var(--color-ink);
-  font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; text-align: center;
+  display: grid; place-items: center; background: #3a3633; color: #f4f1ec;
+  font-family: ui-monospace, "SFMono-Regular", Menlo, monospace; font-size: 10.5px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; text-align: center;
   padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
 }
-body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 801; background: var(--color-beak); }
-@media (max-width: 480px) { .proposal-label { font-size: 9.5px; letter-spacing: 0.03em; } }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 801; background: #3a3633; }
+@media (max-width: 480px) { .proposal-label { font-size: 9px; letter-spacing: 0.02em; } }
 
 .no-scrollbar { scrollbar-width: none; }
 .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -90,3 +99,17 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
 }
 @keyframes rise { from { transform: translate3d(0, 0, 0) rotate(var(--r, 0deg)); } 50% { transform: translate3d(0, -14px, 0) rotate(calc(var(--r, 0deg) * -1)); } to { transform: translate3d(0, 0, 0) rotate(var(--r, 0deg)); } }
+
+/* SmartImage: the slide-in reveal once a photo is decoded and on screen. */
+.smart-image .si-img { transform: scale(1.08); transition: clip-path 0.75s var(--ease-out-expo) var(--si-delay, 0s), transform 1.1s var(--ease-out-expo) var(--si-delay, 0s); }
+.smart-image .si-ph { transition: opacity 0.6s ease var(--si-delay, 0s); }
+.smart-image[data-reveal="left"] .si-img { clip-path: inset(0 100% 0 0); }
+.smart-image[data-reveal="right"] .si-img { clip-path: inset(0 0 0 100%); }
+.smart-image[data-reveal="up"] .si-img { clip-path: inset(100% 0 0 0); }
+.smart-image[data-reveal="none"] .si-img { clip-path: inset(0); transform: none; }
+.smart-image[data-state="shown"] .si-img { clip-path: inset(0 0 0 0); transform: scale(1); }
+.smart-image[data-state="shown"] .si-ph { opacity: 0; }
+@media (prefers-reduced-motion: reduce) {
+  .smart-image .si-img { clip-path: none !important; transform: none !important; opacity: 0; transition: opacity 0.4s ease !important; }
+  .smart-image[data-state="shown"] .si-img { opacity: 1; }
+}

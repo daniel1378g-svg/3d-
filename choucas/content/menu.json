@@ -1,15 +1,15 @@
 {
- "source": "https://choucas.ch/web/images/content/Menu_Choucas2.pdf (one page, Photoshop image, modified 23.12.2024). German and French texts are copied from the PDF as printed; Italian, English and Portuguese are new translations. Dish names and prices are as printed. The PDF writes most prices as \"Fr. 10.50\" and the grill platter as \"CHF 81.50\"; the site writes every price as CHF 10.50.",
+ "source": "https://choucas.ch/web/images/content/Menu_Choucas2.pdf (one page, Photoshop image, modified 23.12.2024). German and French texts are copied from the PDF as printed; Italian, English and Portuguese are new translations. Dish names and prices are as printed. The PDF writes most prices as \"Fr. 10.50\" and the grill platter as \"CHF 81.50\"; the site writes every price as CHF 10.50. Section titles are translated per language; the PDF's own headings are kept in `printed`.",
  "sections": [
   {
    "id": "starters",
    "venue": "both",
    "title": {
-    "de": "Starters",
-    "fr": "Starters",
-    "it": "Starters",
+    "de": "Vorspeisen",
+    "fr": "Entrées",
+    "it": "Antipasti",
     "en": "Starters",
-    "pt": "Starters"
+    "pt": "Entradas"
    },
    "items": [
     {
@@ -90,13 +90,14 @@
       "pt": "Tortilla chips gratinadas com cheddar, servidas com guacamole, natas azedas e Hot Chunky Salsa"
      }
     }
-   ]
+   ],
+   "printed": "starters"
   },
   {
    "id": "sides",
    "venue": "both",
    "title": {
-    "de": "Beilagen · Sides",
+    "de": "Beilagen",
     "fr": "Accompagnements",
     "it": "Contorni",
     "en": "Sides",
@@ -147,17 +148,18 @@
       "pt": "Risotto clássico"
      }
     }
-   ]
+   ],
+   "printed": "beilagen sides"
   },
   {
    "id": "pizze",
    "venue": "pizzeria",
    "title": {
-    "de": "Le pizze classiche",
-    "fr": "Le pizze classiche",
+    "de": "Klassische Pizzen",
+    "fr": "Pizzas classiques",
     "it": "Le pizze classiche",
-    "en": "Le pizze classiche",
-    "pt": "Le pizze classiche"
+    "en": "Classic pizzas",
+    "pt": "Pizzas clássicas"
    },
    "note": {
     "de": "Pimp my pizza: mit Rucola-Salat CHF 2.50",
@@ -293,17 +295,18 @@
       "pt": "Tomate, mozzarella, legumes mediterrânicos, chouriço, jalapeños… e um golpe de tequila diretamente na pizza… olé"
      }
     }
-   ]
+   ],
+   "printed": "le pizze classiche"
   },
   {
    "id": "pasta",
    "venue": "pizzeria",
    "title": {
-    "de": "Pasta signature",
-    "fr": "Pasta signature",
-    "it": "Pasta signature",
-    "en": "Pasta signature",
-    "pt": "Pasta signature"
+    "de": "Pasta",
+    "fr": "Pâtes",
+    "it": "Pasta",
+    "en": "Pasta",
+    "pt": "Massas"
    },
    "items": [
     {
@@ -351,7 +354,8 @@
       "pt": "Cogumelos silvestres com conhaque, fiambre, natas e estragão"
      }
     }
-   ]
+   ],
+   "printed": "pasta signature"
   },
   {
    "id": "risotto",
@@ -359,10 +363,10 @@
    "isNew": true,
    "title": {
     "de": "Risotto",
-    "fr": "Risotto",
-    "it": "Risotto",
+    "fr": "Risottos",
+    "it": "Risotti",
     "en": "Risotto",
-    "pt": "Risotto"
+    "pt": "Risotos"
    },
    "items": [
     {
@@ -409,17 +413,18 @@
       "pt": "Risotto de outono com cogumelos silvestres variados, apurado com um delicado molho de conhaque"
      }
     }
-   ]
+   ],
+   "printed": "risotto"
   },
   {
    "id": "chef",
    "venue": "oasis",
    "title": {
-    "de": "Chef special",
-    "fr": "Chef special",
-    "it": "Chef special",
-    "en": "Chef special",
-    "pt": "Chef special"
+    "de": "Spezialität des Chefs",
+    "fr": "Spécialité du chef",
+    "it": "Specialità dello chef",
+    "en": "Chef’s special",
+    "pt": "Especialidade do chef"
    },
    "photos": [
     "parilladaweb"
@@ -466,17 +471,18 @@
      ],
      "photo": "parilladaweb"
     }
-   ]
+   ],
+   "printed": "chef special"
   },
   {
    "id": "oasis",
    "venue": "oasis",
    "title": {
-    "de": "Oasis signature",
-    "fr": "Oasis signature",
-    "it": "Oasis signature",
-    "en": "Oasis signature",
-    "pt": "Oasis signature"
+    "de": "Oasis-Spezialitäten",
+    "fr": "Spécialités de l’Oasis",
+    "it": "Specialità dell’Oasis",
+    "en": "Oasis signature dishes",
+    "pt": "Especialidades do Oasis"
    },
    "photos": [
     "ribsweb",
@@ -552,7 +558,8 @@
       }
      ]
     }
-   ]
+   ],
+   "printed": "oasis signature"
   }
  ]
 }

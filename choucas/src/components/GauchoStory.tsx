@@ -45,7 +45,7 @@ export function GauchoStory() {
               </li>
             ))}
           </ul>
-          <ParallaxPhoto id="tbone2" small className="mt-8 aspect-[16/10] rounded-[24px]" />
+          <ParallaxPhoto id="tbone2" sizes="(min-width: 1024px) 40vw, 100vw" className="mt-8 aspect-[16/10] rounded-[24px]" />
         </div>
         <div ref={text} lang={HTML_LANG[lang]}>
           {GAUCHO.paragraphs.map((p, i) => (
