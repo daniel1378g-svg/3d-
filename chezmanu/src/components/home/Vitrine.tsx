@@ -29,7 +29,7 @@ function Item({ p, lang, compact = false }: { p: Product; lang: Lang; compact?: 
             <Icon size={compact ? 30 : 44} className="h-[56%] w-[56%]" />
             <span className="sr-only">{fill(UI.photoSlot[lang], { name: p.name[lang] })}</span>
             {!compact && (
-              <span aria-hidden="true" className="absolute -bottom-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-caramel px-2 py-px text-[12px] font-semibold leading-tight text-flour">
+              <span aria-hidden="true" className="absolute -bottom-2 left-1/2 hidden -translate-x-1/2 whitespace-nowrap rounded-full bg-caramel px-2 py-px text-[12px] font-semibold leading-tight text-flour @[1000px]:block">
                 {UI.photoSlotNote[lang]}
               </span>
             )}
