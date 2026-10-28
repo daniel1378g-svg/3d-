@@ -1,0 +1,5 @@
+# Old WordPress addresses → new pages (Netlify / Cloudflare Pages format; port to the host's own syntax).
+# The home page keeps its anchors (#ueber-uns, #reservation, #kontakt) in every language.
+/impressum-haftungsausschluss/   /de/impressum   301
+/impressum-haftungsausschluss    /de/impressum   301
+/home/                           /de/            301

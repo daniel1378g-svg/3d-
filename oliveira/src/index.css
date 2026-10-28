@@ -1,0 +1,179 @@
+@import "tailwindcss";
+
+/* Oliveira: olive-grove light on a linen table. The logo's green leads, charcoal carries the dark sections,
+   cobalt marks Portugal and Walliser gold marks Switzerland; the logo's red is kept for the motto. Text
+   pairs are AA or better: charcoal on linen 14:1, leaf-dark on linen 5.6:1, linen on charcoal 14:1. */
+@theme {
+  --color-olive: #4aa400;
+  --color-leaf: #3e6b1f;
+  --color-leaf-light: #84c054;
+  --color-silver: #a9b39b;
+  --color-bark: #483c3c;
+  --color-charcoal: #1f2229;
+  --color-char-soft: #2a2e37;
+  --color-linen: #f6f1e7;
+  --color-linen-deep: #ece4d4;
+  --color-apetite: #ed1b2e;
+  --color-apetite-text: #b0121f;
+  --color-cobalt: #1e4fa3;
+  --color-gold: #e8b04a;
+  --color-ink: #1f2229;
+  --font-display: "Fraunces Variable", "Fraunces", "Iowan Old Style", Georgia, serif;
+  --font-sans: "Instrument Sans Variable", "Instrument Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-script: "Caveat Brush", "Segoe Script", cursive;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-curtain: cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+:root {
+  color-scheme: light;
+  --label-h: 0px;
+  --header-h: 76px;
+  --linen: #f6f1e7;
+  --leaf-dark: #3e6b1f;
+  --apetite-text: #b0121f;
+}
+:root:has(.proposal-label) { --label-h: 30px; }
+@media (min-width: 1024px) { :root { --header-h: 88px; } }
+
+@layer base {
+  html { scroll-padding-top: calc(var(--header-h) + var(--label-h) + 24px); -webkit-text-size-adjust: 100%; }
+  html.lenis, html.lenis body { height: auto; }
+  .lenis.lenis-smooth { scroll-behavior: auto !important; }
+  body {
+    margin: 0;
+    background: var(--color-linen);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    -webkit-tap-highlight-color: transparent;
+    overflow-x: clip;
+  }
+  h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; font-optical-sizing: auto; }
+  p { text-wrap: pretty; }
+  :focus-visible { outline: 3px solid var(--color-apetite-text); outline-offset: 3px; border-radius: 6px; }
+  .on-dark :focus-visible { outline-color: var(--color-gold); }
+  ::selection { background: var(--color-olive); color: var(--color-charcoal); }
+  button { cursor: pointer; }
+  button:disabled { cursor: default; }
+  img { -webkit-user-drag: none; }
+}
+
+@layer components {
+.gutter { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+@media (min-width: 768px) { .gutter { padding-left: max(32px, env(safe-area-inset-left, 0px)); padding-right: max(32px, env(safe-area-inset-right, 0px)); } }
+.wrap { width: 100%; max-width: 1280px; margin-inline: auto; }
+
+/* Fraunces breathes: softer and slightly heavier as a heading settles. */
+.display { font-family: var(--font-display); font-variation-settings: "SOFT" var(--soft, 50), "WONK" 0; letter-spacing: -0.02em; }
+.script { font-family: var(--font-script); font-weight: 400; letter-spacing: 0; }
+.kicker { font-size: 13px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; }
+
+/* Linen weave on light sections, a faint wave of tiles on Portugal moments (5 % at most). */
+.linen {
+  background-color: var(--color-linen);
+  background-image:
+    repeating-linear-gradient(0deg, rgb(72 60 60 / 0.035) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, rgb(72 60 60 / 0.03) 0 1px, transparent 1px 4px);
+}
+.charcoal { background-color: var(--color-charcoal); color: var(--color-linen); }
+.tiles-faint { position: relative; isolation: isolate; }
+.tiles-faint::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: 0.05;
+  background-image: url("/images/azulejos.svg"); background-size: 420px 420px;
+}
+
+/* Layered, warm shadows: a contact shadow plus a wide ambient one. */
+.shadow-set { box-shadow: 0 1px 1px rgb(72 40 20 / 0.08), 0 4px 8px -2px rgb(72 40 20 / 0.12), 0 26px 48px -24px rgb(60 30 10 / 0.45); }
+.shadow-lift { box-shadow: 0 2px 2px rgb(72 40 20 / 0.06), 0 12px 20px -8px rgb(72 40 20 / 0.18), 0 44px 70px -30px rgb(60 30 10 / 0.5); }
+
+/* Film grain: one noise tile on a fixed layer, jumping by whole steps (transform only). */
+.grain { position: fixed; inset: -50%; z-index: 250; pointer-events: none; opacity: 0.03; background-image: url("/images/grain.png"); background-size: 256px; animation: grain 1s steps(8) infinite; will-change: transform; }
+/* Phones and tablets skip the grain: it costs a full-screen layer for very little on a small screen. */
+@media (pointer: coarse) { .grain { display: none; } }
+@keyframes grain {
+  0% { transform: translate(0, 0); } 12% { transform: translate(-7%, 4%); } 25% { transform: translate(5%, -6%); } 37% { transform: translate(-3%, -9%); }
+  50% { transform: translate(8%, 3%); } 62% { transform: translate(-6%, 8%); } 75% { transform: translate(4%, 6%); } 87% { transform: translate(-9%, -2%); } 100% { transform: translate(0, 0); }
+}
+
+.proposal-label {
+  position: fixed; inset: env(safe-area-inset-top, 0px) 0 auto 0; z-index: 300; height: var(--label-h); margin: 0;
+  display: flex; align-items: center; justify-content: center; gap: 0.6em; background: var(--color-gold); color: var(--color-charcoal);
+  font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; text-align: center; white-space: nowrap; overflow: hidden;
+  padding-left: max(12px, env(safe-area-inset-left, 0px)); padding-right: max(12px, env(safe-area-inset-right, 0px));
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 301; background: var(--color-gold); }
+@media (max-width: 560px) { .proposal-label { font-size: 9.5px; letter-spacing: 0.02em; } .proposal-label .local { display: none; } }
+
+/* Photos crossfade from their blurred placeholder (opacity only). */
+.photo { position: relative; overflow: hidden; background-size: cover; background-position: center; }
+.photo > picture > img { display: block; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.6s var(--ease-out-expo); }
+.photo.is-loaded > picture > img { opacity: 1; }
+.photo.is-living > picture > img { visibility: hidden; }
+.symbolbild {
+  position: absolute; right: 8px; bottom: 8px; z-index: 2; pointer-events: none;
+  padding: 2px 8px; border-radius: 999px; background: rgb(31 34 41 / 0.62); color: #fff;
+  font-size: 10.5px; font-weight: 600; letter-spacing: 0.02em; backdrop-filter: blur(4px);
+}
+
+.btn { display: inline-flex; min-height: 48px; align-items: center; justify-content: center; gap: 0.55rem; border-radius: 999px; padding: 0 1.4rem; font-size: 15px; font-weight: 650; line-height: 1.1; white-space: nowrap; position: relative; overflow: hidden; isolation: isolate; transition: background-color 0.2s, color 0.2s, box-shadow 0.2s; }
+.btn-olive { background: var(--color-olive); color: var(--color-charcoal); }
+.btn-olive:hover { background: var(--color-leaf-light); }
+.btn-dark { background: var(--color-charcoal); color: var(--color-linen); }
+.btn-dark:hover { background: var(--color-bark); }
+.btn-ghost { box-shadow: inset 0 0 0 1.5px currentColor; }
+.btn-ghost:hover { background: rgb(31 34 41 / 0.06); }
+.on-dark .btn-ghost:hover { background: rgb(246 241 231 / 0.1); }
+.ripple { position: absolute; z-index: -1; border-radius: 999px; background: currentColor; opacity: 0.18; pointer-events: none; transform: translate(-50%, -50%) scale(0); animation: ripple 0.6s var(--ease-out-expo) forwards; }
+@keyframes ripple { to { transform: translate(-50%, -50%) scale(1); opacity: 0; } }
+
+}
+
+@keyframes pulse-dot { 0% { transform: scale(1); opacity: 0.7; } 80%, 100% { transform: scale(2.6); opacity: 0; } }
+.pulse-dot::after { content: ""; position: absolute; inset: 0; border-radius: 999px; background: inherit; animation: pulse-dot 1.8s var(--ease-out-expo) infinite; }
+
+.no-scrollbar { scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.marquee-track { will-change: transform; }
+
+/* Split-flap board. */
+.flap-wrap { container-type: inline-size; max-width: 620px; }
+.flap-board { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: clamp(2px, 0.7cqw, 6px); width: 100%; }
+.flap { position: relative; perspective: 320px; aspect-ratio: 0.64; border-radius: clamp(3px, 0.8cqw, 6px); background: #121418; color: #f2efe6; font-family: var(--font-sans); font-weight: 600; font-size: calc((100cqw - 11 * clamp(2px, 0.7cqw, 6px)) / 12 * 0.86); line-height: 1; box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.06), 0 6px 12px -6px rgb(0 0 0 / 0.6); }
+.flap-half { position: absolute; left: 0; right: 0; height: 50%; overflow: hidden; display: flex; justify-content: center; background: linear-gradient(#1c1f25, #15171c); backface-visibility: hidden; }
+.flap-half > span { display: block; height: 200%; line-height: 1; display: flex; align-items: center; }
+.flap-top { top: 0; border-radius: 5px 5px 0 0; align-items: flex-start; }
+.flap-bottom { bottom: 0; border-radius: 0 0 5px 5px; align-items: flex-start; }
+.flap-top > span { align-items: center; }
+.flap-bottom > span { transform: translateY(-50%); }
+.flap-leaf { transform-origin: 50% 100%; z-index: 2; }
+.flap-leaf-back { transform-origin: 50% 0%; transform: rotateX(90deg); z-index: 2; }
+.flap::after { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: rgb(0 0 0 / 0.7); z-index: 3; }
+.flap-shade { position: absolute; inset: 50% 0 0 0; background: rgb(0 0 0 / 0.0); pointer-events: none; z-index: 1; border-radius: 0 0 5px 5px; }
+
+/* Azulejo tiles in the gallery wall: glazed slabs with an edge and a moving highlight. */
+.tile { position: relative; transform-style: preserve-3d; }
+.tile-face { position: absolute; inset: 0; backface-visibility: hidden; border-radius: 6px; overflow: hidden; }
+.tile-face.back { transform: rotateY(180deg); }
+.tile-glaze { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(circle at var(--gx, 30%) var(--gy, 20%), rgb(255 255 255 / 0.65), rgb(255 255 255 / 0) 42%); mix-blend-mode: soft-light; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+  .grain { display: none; }
+}
+
+/* The poster's leaf light: dappled shadows drifting slowly over the still frame. */
+.leaf-light {
+  background:
+    radial-gradient(ellipse 9% 6% at 22% 70%, rgb(60 50 20 / 0.16), transparent 70%),
+    radial-gradient(ellipse 7% 5% at 46% 78%, rgb(60 50 20 / 0.14), transparent 70%),
+    radial-gradient(ellipse 11% 7% at 68% 66%, rgb(60 50 20 / 0.15), transparent 70%),
+    radial-gradient(ellipse 6% 4% at 84% 82%, rgb(60 50 20 / 0.12), transparent 70%),
+    radial-gradient(ellipse 8% 5% at 12% 86%, rgb(60 50 20 / 0.12), transparent 70%);
+  animation: leaf-drift 9s ease-in-out infinite alternate;
+  mix-blend-mode: multiply;
+}
+@keyframes leaf-drift { from { transform: translate3d(-1.5%, 0, 0) scale(1); } to { transform: translate3d(1.5%, -1%, 0) scale(1.04); } }

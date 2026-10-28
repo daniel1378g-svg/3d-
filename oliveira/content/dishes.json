@@ -1,0 +1,62 @@
+{
+  "_comment": "The dishes the site can show. The live site has no menu, so there are no prices: `price` stays null until the owner sends the menu. Descriptions say only what the photo or the live text shows. `onMenu` is \"unconfirmed\" for dishes known only from the supplied photos. Portuguese dish names stay as written in every language; generic names are translated.",
+  "dishes": [
+    {
+      "id": "bacalhau", "name": "Bacalhau", "cuisine": "pt", "photos": ["own-04"], "source": "live-text", "onMenu": true, "price": null, "feature": true,
+      "desc": { "de": "Mit Kichererbsen und Eiern: eines unserer wechselnden Sonntagsmenüs.", "pt": "Com grão-de-bico e ovos: um dos nossos menus de domingo, sempre diferentes.", "en": "With chickpeas and eggs: one of our changing Sunday menus.", "it": "Con ceci e uova: uno dei nostri menù della domenica, che cambiano di volta in volta.", "fr": "Aux pois chiches et aux œufs: l’un de nos menus du dimanche, qui changent régulièrement." }
+    },
+    {
+      "id": "caldo-verde", "name": "Caldo verde", "cuisine": "pt", "photos": ["own-06"], "source": "own-photo", "onMenu": true, "price": null, "feature": true,
+      "desc": { "de": "Portugiesische Kohlsuppe mit Chouriço-Scheiben.", "pt": "A sopa de couve portuguesa, com rodelas de chouriço.", "en": "Portuguese greens soup with slices of chouriço.", "it": "Zuppa portoghese di cavolo con fette di chouriço.", "fr": "Soupe portugaise au chou, avec des rondelles de chouriço." }
+    },
+    {
+      "id": "francesinha", "name": "Francesinha", "cuisine": "pt", "photos": ["own-07", "sup-06"], "source": "own-photo", "onMenu": true, "price": null, "feature": true,
+      "desc": { "de": "Unter Käse und Sauce, dazu Pommes frites.", "pt": "Coberta de queijo e molho, com batatas fritas.", "en": "Under melted cheese and sauce, with fries.", "it": "Sotto formaggio fuso e salsa, con patatine fritte.", "fr": "Sous le fromage fondu et la sauce, avec des frites." }
+    },
+    {
+      "id": "kaeseschnitte", "name": "Käseschnitte «Walliser Art»", "cuisine": "ch", "photos": ["own-05"], "source": "live-text", "onMenu": true, "price": null, "feature": true,
+      "desc": { "de": "Mit Spiegelei, Essiggurken und Silberzwiebeln.", "pt": "Com ovo estrelado, pepinos e cebolinhas em conserva.", "en": "With a fried egg, gherkins and pickled onions.", "it": "Con uovo al tegamino, cetriolini e cipolline sottaceto.", "fr": "Avec œuf au plat, cornichons et oignons au vinaigre." }
+    },
+    {
+      "id": "polvo-grelhado", "name": "Polvo grelhado", "cuisine": "pt", "photos": ["own-08"], "source": "own-photo", "onMenu": true, "price": null, "feature": true,
+      "desc": { "de": "Gegrillter Oktopus mit Zitrone, Kartoffeln und Bohnen.", "pt": "Polvo grelhado com limão, batatas e feijão-verde.", "en": "Grilled octopus with lemon, potatoes and green beans.", "it": "Polpo alla griglia con limone, patate e fagiolini.", "fr": "Poulpe grillé, citron, pommes de terre et haricots verts." }
+    },
+    {
+      "id": "pastel-de-nata", "name": "Pastel de nata", "cuisine": "pt", "photos": ["own-10", "own-11", "sup-01"], "source": "own-photo", "onMenu": true, "price": null, "feature": true,
+      "desc": { "de": "Blätterteigtörtchen mit Eiercreme, dazu ein Kaffee.", "pt": "Massa folhada e creme de ovos, com um café.", "en": "Puff-pastry custard tarts, with a coffee.", "it": "Tortine di pasta sfoglia con crema all’uovo, con un caffè.", "fr": "Tartelettes feuilletées à la crème aux œufs, avec un café." }
+    },
+    {
+      "id": "pasteis-de-bacalhau", "name": "Pastéis de bacalhau", "cuisine": "pt", "photos": ["own-09", "sup-05"], "source": "own-photo", "onMenu": true, "price": null,
+      "desc": { "de": "Kabeljau-Küchlein mit Pommes frites, Salat und Sauce.", "pt": "Com batatas fritas, salada e molho.", "en": "Salt-cod fritters with fries, salad and a dip.", "it": "Frittelle di baccalà con patatine, insalata e salsa.", "fr": "Beignets de morue, frites, salade et sauce." }
+    },
+    {
+      "id": "super-bock", "name": "Super Bock", "cuisine": "pt", "photos": ["own-21"], "source": "own-photo", "onMenu": true, "price": null,
+      "desc": { "de": "Portugiesisches Bier, in der Flasche.", "pt": "Cerveja portuguesa, em garrafa.", "en": "Portuguese beer, by the bottle.", "it": "Birra portoghese, in bottiglia.", "fr": "Bière portugaise, en bouteille." }
+    },
+    {
+      "id": "grelhada-mista", "name": "Grelhada mista de peixe e marisco", "cuisine": "pt", "photos": ["sup-02"], "source": "supplied", "onMenu": "unconfirmed", "price": null,
+      "desc": { "de": "Dorade, Sardinen, Crevetten, Tintenfisch und Oktopus vom Grill.", "pt": "Dourada, sardinhas, camarão, lulas e polvo, grelhados.", "en": "Sea bream, sardines, prawns, squid and octopus from the grill.", "it": "Orata, sardine, gamberi, calamari e polpo alla griglia.", "fr": "Dorade, sardines, crevettes, calmars et poulpe grillés." }
+    },
+    {
+      "id": "polvo-com-batatas", "name": "Polvo com batatas", "cuisine": "pt", "photos": ["sup-03"], "source": "supplied", "onMenu": "unconfirmed", "price": null,
+      "desc": { "de": "Oktopus mit Kartoffeln, Olivenöl und Paprika.", "pt": "Polvo com batatas, azeite e colorau.", "en": "Octopus with potatoes, olive oil and paprika.", "it": "Polpo con patate, olio d’oliva e paprika.", "fr": "Poulpe, pommes de terre, huile d’olive et paprika." }
+    },
+    {
+      "id": "frango", "name": "Frango", "cuisine": "pt", "photos": ["sup-04"], "source": "supplied", "onMenu": "unconfirmed", "price": null,
+      "desc": { "de": "Grilliertes Poulet mit Reis, Pommes frites und Salat.", "pt": "Frango grelhado com arroz, batatas fritas e salada.", "en": "Grilled chicken with rice, fries and salad.", "it": "Pollo alla griglia con riso, patatine e insalata.", "fr": "Poulet grillé, riz, frites et salade." }
+    },
+    {
+      "id": "pasta", "name": { "de": "Spaghetti", "pt": "Esparguete", "en": "Spaghetti", "it": "Spaghetti", "fr": "Spaghetti" }, "cuisine": null, "photos": ["own-12"], "source": "own-photo", "onMenu": true, "price": null,
+      "desc": { "de": "An Rahmsauce mit Erbsen.", "pt": "Com molho de natas e ervilhas.", "en": "In a cream sauce with peas.", "it": "In salsa alla panna con piselli.", "fr": "À la crème et aux petits pois." }
+    },
+    {
+      "id": "salat", "name": { "de": "Gemischter Salat", "pt": "Salada mista", "en": "Mixed salad", "it": "Insalata mista", "fr": "Salade mêlée" }, "cuisine": null, "photos": ["own-13"], "source": "own-photo", "onMenu": true, "price": null,
+      "desc": { "de": "Blattsalat mit Karotten und Gemüse.", "pt": "Alface com cenoura e legumes.", "en": "Leaves with carrots and vegetables.", "it": "Insalata a foglia con carote e verdure.", "fr": "Salade verte, carottes et légumes." }
+    },
+    {
+      "id": "fleisch", "name": { "de": "Geschmortes Fleisch", "pt": "Carne estufada", "en": "Braised meat", "it": "Carne brasata", "fr": "Viande braisée" }, "cuisine": null, "photos": ["own-14"], "source": "own-photo", "onMenu": true, "price": null,
+      "desc": { "de": "Am Knochen, mit Erbsen, Karotten und Kartoffelstock.", "pt": "Com osso, ervilhas, cenoura e puré.", "en": "On the bone, with peas, carrots and mashed potatoes.", "it": "Con l’osso, piselli, carote e purè.", "fr": "Sur l’os, petits pois, carottes et purée." }
+    }
+  ],
+  "tagesmenue": ["own-15", "own-16", "own-17", "own-18", "own-19", "own-20"]
+}

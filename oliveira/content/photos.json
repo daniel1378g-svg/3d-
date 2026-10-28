@@ -1,0 +1,562 @@
+{
+  "_comment": "Every photo on the site. `file` is under media/original (own) or media/supplied (supplied). `living` places the steam (R) and gloss (G) masks as ellipses [cx, cy, rx, ry] in 0..1, top-left origin; `shimmer` adds heat haze. `illustrative` shows the Symbolbild label until the owner confirms the photo shows Oliveira's food.",
+  "photos": [
+    {
+      "id": "own-01",
+      "name": "arlindo-saal",
+      "file": "Fk3cuwzJ4Yz9thpv63RdPE.jpg",
+      "source": "own",
+      "illustrative": false,
+      "alt": {
+        "de": "Arlindo Oliveira steht im Speisesaal des Restaurants",
+        "pt": "Arlindo Oliveira de pé na sala do restaurante",
+        "en": "Arlindo Oliveira standing in the restaurant’s dining room",
+        "it": "Arlindo Oliveira in piedi nella sala del ristorante",
+        "fr": "Arlindo Oliveira debout dans la salle du restaurant"
+      },
+      "living": {
+        "steam": [],
+        "gloss": []
+      }
+    },
+    {
+      "id": "own-02",
+      "name": "arlindo-gino",
+      "file": "arlindo-oliveira-gino.jpg",
+      "source": "own",
+      "illustrative": false,
+      "alt": {
+        "de": "Arlindo Oliveira mit Gino an einem Tisch im Restaurant",
+        "pt": "Arlindo Oliveira com o Gino a uma mesa do restaurante",
+        "en": "Arlindo Oliveira with Gino at a table in the restaurant",
+        "it": "Arlindo Oliveira con Gino a un tavolo del ristorante",
+        "fr": "Arlindo Oliveira avec Gino à une table du restaurant"
+      }
+    },
+    {
+      "id": "own-03",
+      "name": "fassade",
+      "file": "oliveira-aussen-001-web.jpg",
+      "source": "own",
+      "illustrative": false,
+      "alt": {
+        "de": "Die grüne Fassade des Restaurante Oliveira mit dem Schild, dahinter ein Kirchturm",
+        "pt": "A fachada verde do Restaurante Oliveira com a placa e uma torre de igreja ao fundo",
+        "en": "The green façade of Restaurante Oliveira with its sign, a church tower behind",
+        "it": "La facciata verde del Restaurante Oliveira con l’insegna, dietro un campanile",
+        "fr": "La façade verte du Restaurante Oliveira avec son enseigne, un clocher à l’arrière-plan"
+      },
+      "living": {
+        "steam": [],
+        "gloss": []
+      }
+    },
+    {
+      "id": "own-04",
+      "name": "bacalhau",
+      "file": "restaurante-oliveira-bacalhau-01.jpg",
+      "source": "own",
+      "illustrative": false,
+      "living": {
+        "steam": [
+          [
+            0.5,
+            0.32,
+            0.36,
+            0.34
+          ]
+        ],
+        "gloss": [
+          [
+            0.5,
+            0.5,
+            0.48,
+            0.46
+          ]
+        ]
+      },
+      "alt": {
+        "de": "Bacalhau mit Kichererbsen, Ei, Karotten und Kartoffeln",
+        "pt": "Bacalhau com grão-de-bico, ovo, cenoura e batata",
+        "en": "Salt cod with chickpeas, egg, carrots and potatoes",
+        "it": "Baccalà con ceci, uovo, carote e patate",
+        "fr": "Morue aux pois chiches, œuf, carottes et pommes de terre"
+      }
+    },
+    {
+      "id": "own-05",
+      "name": "kaeseschnitte",
+      "file": "oliveira-kaeseschnitte.jpg",
+      "source": "own",
+      "illustrative": false,
+      "living": {
+        "steam": [
+          [
+            0.55,
+            0.3,
+            0.34,
+            0.3
+          ]
+        ],
+        "gloss": [
+          [
+            0.62,
+            0.2,
+            0.26,
+            0.16
+          ],
+          [
+            0.5,
+            0.62,
+            0.5,
+            0.38
+          ]
+        ]
+      },
+      "alt": {
+        "de": "Käseschnitte «Walliser Art» mit Spiegelei, Essiggurken und Silberzwiebeln",
+        "pt": "Käseschnitte «Walliser Art» com ovo estrelado, pepinos e cebolinhas em conserva",
+        "en": "Käseschnitte «Walliser Art»: cheese toast with a fried egg, gherkins and pickled onions",
+        "it": "Käseschnitte «Walliser Art» con uovo al tegamino, cetriolini e cipolline sottaceto",
+        "fr": "Käseschnitte «Walliser Art» avec œuf au plat, cornichons et oignons au vinaigre"
+      }
+    },
+    {
+      "id": "own-06",
+      "name": "caldo-verde",
+      "file": "oliveira-caldo-verde-003.jpg",
+      "square": "oliveira-caldo-verde-004.jpg",
+      "source": "own",
+      "illustrative": false,
+      "living": {
+        "steam": [
+          [
+            0.55,
+            0.38,
+            0.4,
+            0.36
+          ]
+        ],
+        "gloss": [
+          [
+            0.55,
+            0.52,
+            0.42,
+            0.36
+          ]
+        ]
+      },
+      "alt": {
+        "de": "Ein Teller Caldo verde mit Chouriço, dahinter Wein und Kaffee",
+        "pt": "Um prato de caldo verde com chouriço, com vinho e café ao fundo",
+        "en": "A bowl of caldo verde with chouriço, wine and coffee behind",
+        "it": "Un piatto di caldo verde con chouriço, dietro vino e caffè",
+        "fr": "Une assiette de caldo verde au chouriço, du vin et un café derrière"
+      }
+    },
+    {
+      "id": "own-07",
+      "name": "francesinha",
+      "file": "restaurante-oliveira-francesinha-01.jpg",
+      "source": "own",
+      "illustrative": false,
+      "living": {
+        "steam": [
+          [
+            0.5,
+            0.3,
+            0.4,
+            0.26
+          ]
+        ],
+        "gloss": [
+          [
+            0.5,
+            0.36,
+            0.46,
+            0.32
+          ]
+        ]
+      },
+      "alt": {
+        "de": "Francesinha mit Sauce und Pommes frites",
+        "pt": "Francesinha com molho e batatas fritas",
+        "en": "Francesinha with sauce and fries",
+        "it": "Francesinha con salsa e patatine fritte",
+        "fr": "Francesinha nappée de sauce, avec des frites"
+      }
+    },
+    {
+      "id": "own-08",
+      "name": "polvo-grelhado",
+      "file": "restaurante-oliveira-gegrillter-octopus-01.jpg",
+      "source": "own",
+      "illustrative": false,
+      "living": {
+        "steam": [
+          [
+            0.6,
+            0.42,
+            0.32,
+            0.28
+          ]
+        ],
+        "gloss": [
+          [
+            0.6,
+            0.55,
+            0.42,
+            0.38
+          ]
+        ]
+      },
+      "alt": {
+        "de": "Gegrillter Oktopus mit Zitrone, Kartoffeln und Bohnen",
+        "pt": "Polvo grelhado com limão, batatas e feijão-verde",
+        "en": "Grilled octopus with lemon, potatoes and green beans",
+        "it": "Polpo alla griglia con limone, patate e fagiolini",
+        "fr": "Poulpe grillé au citron, pommes de terre et haricots verts"
+      }
+    },
+    {
+      "id": "own-09",
+      "name": "pasteis-bacalhau",
+      "file": "restaurante-oliveira-pasteis-bacalhau-01.jpg",
+      "source": "own",
+      "illustrative": false,
+      "alt": {
+        "de": "Pastéis de bacalhau mit Pommes frites, Salat und Sauce",
+        "pt": "Pastéis de bacalhau com batatas fritas, salada e molho",
+        "en": "Pastéis de bacalhau (salt-cod fritters) with fries, salad and a dip",
+        "it": "Pastéis de bacalhau con patatine, insalata e salsa",
+        "fr": "Pastéis de bacalhau avec frites, salade et sauce"
+      }
+    },
+    {
+      "id": "own-10",
+      "name": "pastel-de-nata",
+      "file": "pastel-de-nata.jpg",
+      "source": "own",
+      "illustrative": false,
+      "living": {
+        "steam": [
+          [
+            0.17,
+            0.26,
+            0.1,
+            0.16
+          ]
+        ],
+        "gloss": [
+          [
+            0.5,
+            0.56,
+            0.3,
+            0.26
+          ]
+        ]
+      },
+      "alt": {
+        "de": "Pastéis de nata und eine Tasse Kaffee",
+        "pt": "Pastéis de nata e uma chávena de café",
+        "en": "Pastéis de nata and a cup of coffee",
+        "it": "Pastéis de nata e una tazza di caffè",
+        "fr": "Pastéis de nata et une tasse de café"
+      }
+    },
+    {
+      "id": "own-11",
+      "name": "pastel-de-nata-trio",
+      "file": "pastel-de-nata-1.jpg",
+      "source": "own",
+      "illustrative": false,
+      "alt": {
+        "de": "Drei Pastéis de nata auf Jute",
+        "pt": "Três pastéis de nata sobre serapilheira",
+        "en": "Three pastéis de nata on burlap",
+        "it": "Tre pastéis de nata su tela di juta",
+        "fr": "Trois pastéis de nata sur de la toile de jute"
+      }
+    },
+    {
+      "id": "own-12",
+      "name": "pasta",
+      "file": "restaurante-oliveira-pasta-01.jpg",
+      "source": "own",
+      "illustrative": false,
+      "alt": {
+        "de": "Spaghetti an Rahmsauce mit Erbsen",
+        "pt": "Esparguete com molho de natas e ervilhas",
+        "en": "Spaghetti in a cream sauce with peas",
+        "it": "Spaghetti in salsa alla panna con piselli",
+        "fr": "Spaghetti à la crème et aux petits pois"
+      }
+    },
+    {
+      "id": "own-13",
+      "name": "salat",
+      "file": "oliveira-salat-005.jpg",
+      "source": "own",
+      "illustrative": false,
+      "alt": {
+        "de": "Gemischter Salat",
+        "pt": "Salada mista",
+        "en": "Mixed salad",
+        "it": "Insalata mista",
+        "fr": "Salade mêlée"
+      }
+    },
+    {
+      "id": "own-14",
+      "name": "fleisch",
+      "file": "oliveira-fleisch-002.jpg",
+      "source": "own",
+      "illustrative": false,
+      "alt": {
+        "de": "Geschmortes Fleisch am Knochen mit Erbsen, Karotten und Kartoffelstock",
+        "pt": "Carne estufada com osso, ervilhas, cenoura e puré",
+        "en": "Braised meat on the bone with peas, carrots and mashed potatoes",
+        "it": "Carne brasata con l’osso, piselli, carote e purè",
+        "fr": "Viande braisée sur l’os, petits pois, carottes et purée"
+      }
+    },
+    {
+      "id": "own-15",
+      "name": "tagesmenue-01",
+      "file": "restaurante-oliveira-tagesmenue-01.jpg",
+      "source": "own",
+      "illustrative": false,
+      "alt": {
+        "de": "Pouletflügeli mit Pommes frites und Salat",
+        "pt": "Asas de frango com batatas fritas e salada",
+        "en": "Chicken wings with fries and salad",
+        "it": "Ali di pollo con patatine e insalata",
+        "fr": "Ailes de poulet, frites et salade"
+      }
+    },
+    {
+      "id": "own-16",
+      "name": "tagesmenue-02",
+      "file": "restaurante-oliveira-tagesmenue-02.jpg",
+      "source": "own",
+      "illustrative": false,
+      "alt": {
+        "de": "Fleischspiesse mit Peperoni, Ananas, Reis und Kartoffeln",
+        "pt": "Espetadas de carne com pimento, ananás, arroz e batatas",
+        "en": "Meat skewers with peppers, pineapple, rice and potatoes",
+        "it": "Spiedini di carne con peperoni, ananas, riso e patate",
+        "fr": "Brochettes de viande, poivrons, ananas, riz et pommes de terre"
+      }
+    },
+    {
+      "id": "own-17",
+      "name": "tagesmenue-03",
+      "file": "restaurante-oliveira-tagesmenue-03.jpg",
+      "source": "own",
+      "illustrative": false,
+      "alt": {
+        "de": "Crevetten mit Pommes frites und Salat",
+        "pt": "Camarões com batatas fritas e salada",
+        "en": "Prawns with fries and salad",
+        "it": "Gamberi con patatine e insalata",
+        "fr": "Crevettes, frites et salade"
+      }
+    },
+    {
+      "id": "own-18",
+      "name": "tagesmenue-04",
+      "file": "restaurante-oliveira-tagesmenue-04.jpg",
+      "source": "own",
+      "illustrative": false,
+      "alt": {
+        "de": "Frittierte Calamari-Ringe mit Zitrone und Sauce",
+        "pt": "Lulas fritas com limão e molho",
+        "en": "Fried calamari rings with lemon and a dip",
+        "it": "Anelli di calamari fritti con limone e salsa",
+        "fr": "Anneaux de calamars frits, citron et sauce"
+      }
+    },
+    {
+      "id": "own-19",
+      "name": "tagesmenue-05",
+      "file": "restaurante-oliveira-tagesmenue-05.jpg",
+      "source": "own",
+      "illustrative": false,
+      "alt": {
+        "de": "Eine goldbraune gefüllte Rolle mit Salat und Mais",
+        "pt": "Um rolo dourado recheado com salada e milho",
+        "en": "A golden filled roll with salad and corn",
+        "it": "Un involtino dorato ripieno con insalata e mais",
+        "fr": "Un rouleau doré farci, salade et maïs"
+      }
+    },
+    {
+      "id": "own-20",
+      "name": "tagesmenue-06",
+      "file": "restaurante-oliveira-tagesmenue-06.jpg",
+      "source": "own",
+      "illustrative": false,
+      "alt": {
+        "de": "Bratenscheiben an Sauce mit Kartoffeln, Karotten und Spinat",
+        "pt": "Fatias de assado com molho, batatas, cenoura e espinafres",
+        "en": "Sliced roast in gravy with potatoes, carrots and spinach",
+        "it": "Fette di arrosto al sugo con patate, carote e spinaci",
+        "fr": "Tranches de rôti en sauce, pommes de terre, carottes et épinards"
+      }
+    },
+    {
+      "id": "own-21",
+      "name": "superbock",
+      "file": "Superbock.jpg",
+      "source": "own",
+      "illustrative": false,
+      "alt": {
+        "de": "Eine Flasche Super Bock auf dem Tisch",
+        "pt": "Uma garrafa de Super Bock na mesa",
+        "en": "A bottle of Super Bock on the table",
+        "it": "Una bottiglia di Super Bock sul tavolo",
+        "fr": "Une bouteille de Super Bock sur la table"
+      }
+    },
+    {
+      "id": "sup-01",
+      "name": "sup-pastel-de-nata",
+      "file": "supplied-01-pastel-de-nata-azulejo.jpg",
+      "source": "supplied",
+      "illustrative": true,
+      "living": {
+        "steam": [
+          [
+            0.88,
+            0.24,
+            0.1,
+            0.12
+          ]
+        ],
+        "gloss": [
+          [
+            0.45,
+            0.56,
+            0.42,
+            0.2
+          ]
+        ]
+      },
+      "alt": {
+        "de": "Pastéis de nata auf einem blau-weissen Teller, dahinter eine Azulejo-Kachel «Pastel de Nata» und ein Kaffee",
+        "pt": "Pastéis de nata num prato azul e branco, com um azulejo «Pastel de Nata» e um café ao fundo",
+        "en": "Pastéis de nata on a blue-and-white plate, with an azulejo tile reading “Pastel de Nata” and a coffee behind",
+        "it": "Pastéis de nata su un piatto bianco e blu, dietro un azulejo «Pastel de Nata» e un caffè",
+        "fr": "Pastéis de nata sur une assiette bleue et blanche, un azulejo «Pastel de Nata» et un café derrière"
+      }
+    },
+    {
+      "id": "sup-02",
+      "name": "sup-grelhada",
+      "file": "supplied-02-grelhada-mista-peixe-marisco.jpg",
+      "source": "supplied",
+      "illustrative": true,
+      "living": {
+        "steam": [
+          [
+            0.5,
+            0.4,
+            0.4,
+            0.3
+          ]
+        ],
+        "gloss": [
+          [
+            0.5,
+            0.55,
+            0.46,
+            0.36
+          ]
+        ],
+        "shimmer": true
+      },
+      "alt": {
+        "de": "Grillplatte mit Dorade, Sardinen, Crevetten, Tintenfisch und Oktopus",
+        "pt": "Grelhada mista de peixe e marisco: dourada, sardinhas, camarão, lulas e polvo",
+        "en": "Mixed grill of sea bream, sardines, prawns, squid and octopus",
+        "it": "Grigliata mista di orata, sardine, gamberi, calamari e polpo",
+        "fr": "Grillade de dorade, sardines, crevettes, calmars et poulpe"
+      }
+    },
+    {
+      "id": "sup-03",
+      "name": "sup-polvo-batatas",
+      "file": "supplied-03-polvo-batatas-colorau.jpg",
+      "source": "supplied",
+      "illustrative": true,
+      "maxWidth": 600,
+      "alt": {
+        "de": "Oktopus mit Kartoffeln, Olivenöl und Paprikapulver",
+        "pt": "Polvo com batatas, azeite e colorau",
+        "en": "Octopus with potatoes, olive oil and paprika",
+        "it": "Polpo con patate, olio d’oliva e paprika",
+        "fr": "Poulpe aux pommes de terre, huile d’olive et paprika"
+      }
+    },
+    {
+      "id": "sup-04",
+      "name": "sup-frango",
+      "file": "supplied-04-frango-arroz-batatas-salada.jpg",
+      "source": "supplied",
+      "illustrative": true,
+      "alt": {
+        "de": "Grilliertes Poulet mit Reis, Pommes frites und Salat auf einem Terrakottateller",
+        "pt": "Frango grelhado com arroz, batatas fritas e salada num prato de barro",
+        "en": "Grilled chicken with rice, fries and salad on a terracotta plate",
+        "it": "Pollo alla griglia con riso, patatine e insalata su un piatto di terracotta",
+        "fr": "Poulet grillé, riz, frites et salade sur une assiette en terre cuite"
+      }
+    },
+    {
+      "id": "sup-05",
+      "name": "sup-pasteis",
+      "file": "supplied-05-pasteis-de-bacalhau.jpg",
+      "source": "supplied",
+      "illustrative": true,
+      "alt": {
+        "de": "Pastéis de bacalhau mit Petersilie",
+        "pt": "Pastéis de bacalhau com salsa",
+        "en": "Pastéis de bacalhau with parsley",
+        "it": "Pastéis de bacalhau con prezzemolo",
+        "fr": "Pastéis de bacalhau au persil"
+      }
+    },
+    {
+      "id": "sup-06",
+      "name": "sup-francesinha",
+      "file": "supplied-06-francesinha.jpg",
+      "source": "supplied",
+      "illustrative": true,
+      "living": {
+        "steam": [
+          [
+            0.52,
+            0.44,
+            0.26,
+            0.2
+          ]
+        ],
+        "gloss": [
+          [
+            0.52,
+            0.56,
+            0.3,
+            0.22
+          ]
+        ]
+      },
+      "alt": {
+        "de": "Francesinha mit Spiegelei und Sauce, dazu Pommes frites und ein Bier",
+        "pt": "Francesinha com ovo e molho, batatas fritas e uma cerveja",
+        "en": "Francesinha with a fried egg and sauce, fries and a beer",
+        "it": "Francesinha con uovo e salsa, patatine e una birra",
+        "fr": "Francesinha avec œuf et sauce, frites et une bière"
+      }
+    }
+  ]
+}

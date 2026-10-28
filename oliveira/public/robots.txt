@@ -1,0 +1,3 @@
+# Design proposal: keep it out of search engines until the owner approves the launch.
+User-agent: *
+Disallow: /

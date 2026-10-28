@@ -1,0 +1,7 @@
+/* Self-hosted in the real build (no request to Google). The Artifact preview loads the same families from
+   Google Fonts instead, because its CSP only admits fonts from there (see scripts/build-artifact.mjs). */
+@import "@fontsource-variable/fraunces/full.css";
+@import "@fontsource-variable/fraunces/full-italic.css";
+@import "@fontsource-variable/instrument-sans/index.css";
+@import "@fontsource/caveat-brush/latin.css";
+@import "@fontsource/caveat-brush/latin-ext.css";
