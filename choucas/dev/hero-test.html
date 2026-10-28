@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="de-CH">
+  <head><meta charset="UTF-8" /><title>Hero shader test</title>
+  <style>html,body{margin:0;height:100%;background:#161414}#h{position:relative;width:100vw;height:100vh}canvas{width:100%;height:100%;display:block}</style></head>
+  <body>
+    <!-- Renders the Pizza | Parrilla shader alone (also on software GL): ?split=0.5&t=12 -->
+    <div id="h"><canvas id="c"></canvas></div>
+    <script type="module">
+      import { createHero } from "/src/components/hero/engine.ts";
+      const q = new URLSearchParams(location.search);
+      const e = createHero(document.getElementById("c"), document.getElementById("h"), { still: q.has("still"), onFirstFrame: () => (window.__heroReady = true) });
+      e.setSplit(Number(q.get("split") ?? 0.5));
+    </script>
+  </body>
+</html>

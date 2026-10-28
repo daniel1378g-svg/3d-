@@ -1,0 +1,92 @@
+@import "tailwindcss";
+
+/* "Drei Feuer unter einem Dach". Chough black and snow sections alternate; the logo's orange is the house
+   colour, beak yellow carries the calls to action, oven red is the pizzeria, ember and pampa sand the
+   Oasis, sky blue the Choucalino® Kid's Club only. One look in every theme: all colours are explicit. */
+@theme {
+  --color-ink: #161414;
+  --color-ink-2: #231f1f;
+  --color-snow: #f7f4ee;
+  --color-snow-2: #ece6da;
+  --color-beak: #f2c230;
+  --color-brand: #ee7a00; /* the logo's hexagon */
+  --color-brand-ink: #9a4a00; /* the same orange, dark enough for text on snow (5.7:1) */
+  --color-oven: #c8372d;
+  --color-ember: #b5541e;
+  --color-sand: #e6d3aa;
+  --color-sky: #4fa3d9;
+  --color-sky-ink: #1f6fa3;
+  --color-muted: #5b5552;
+  --font-display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --font-sans: "Instrument Sans", "Helvetica Neue", "Segoe UI", system-ui, sans-serif;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-curtain: cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+:root {
+  color-scheme: light;
+  --snow: #f7f4ee;
+  --ink: #161414;
+  --brand: #ee7a00;
+  --label-h: 0px;
+  --header-h: 76px;
+}
+:root:has(.proposal-label) { --label-h: 28px; }
+@media (min-width: 1024px) { :root { --header-h: 88px; } }
+
+@layer base {
+  html { scroll-padding-top: calc(var(--header-h) + var(--label-h) + 24px); -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    /* the proposal band is fixed; the page starts below it */
+    padding-top: calc(var(--label-h) + env(safe-area-inset-top, 0px));
+    background: var(--color-snow);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
+  }
+  h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; letter-spacing: -0.02em; }
+  :focus-visible { outline: 3px solid var(--color-brand-ink); outline-offset: 3px; border-radius: 6px; }
+  .on-dark :focus-visible { outline-color: var(--color-beak); }
+  .on-light :focus-visible { outline-color: var(--color-brand-ink); }
+  ::selection { background: var(--color-beak); color: var(--color-ink); }
+  button, [role="button"], a { cursor: pointer; }
+  button:disabled { cursor: default; }
+}
+
+.gutter { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+@media (min-width: 768px) { .gutter { padding-left: max(32px, env(safe-area-inset-left, 0px)); padding-right: max(32px, env(safe-area-inset-right, 0px)); } }
+.wrap { width: 100%; max-width: 1280px; margin-inline: auto; }
+
+.proposal-label {
+  position: fixed; inset: env(safe-area-inset-top, 0px) 0 auto 0; z-index: 800; height: var(--label-h); margin: 0;
+  display: grid; place-items: center; background: var(--color-beak); color: var(--color-ink);
+  font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; text-align: center;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 801; background: var(--color-beak); }
+@media (max-width: 480px) { .proposal-label { font-size: 9.5px; letter-spacing: 0.03em; } }
+
+.no-scrollbar { scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.leader { flex: 1 1 24px; min-width: 24px; border-bottom: 2px dotted currentColor; opacity: 0.3; transform: translateY(-0.35em); }
+
+/* A faint hexagon pattern from the logo, 5 % at most. */
+.tex-hex { position: relative; isolation: isolate; }
+.tex-hex::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: 0.06;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='97' viewBox='0 0 56 97'%3E%3Cpath d='M28 1 54 16v31L28 62 2 47V16Z M28 62v35' fill='none' stroke='%23f7f4ee' stroke-width='1.4'/%3E%3C/svg%3E");
+  background-size: 56px 97px;
+}
+
+@keyframes pulse-dot { 0% { transform: scale(1); opacity: 0.7; } 80%, 100% { transform: scale(2.6); opacity: 0; } }
+.pulse-dot::after { content: ""; position: absolute; inset: 0; border-radius: 999px; background: inherit; animation: pulse-dot 1.8s var(--ease-out-expo) infinite; }
+@keyframes bulb { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}
+@keyframes rise { from { transform: translate3d(0, 0, 0) rotate(var(--r, 0deg)); } 50% { transform: translate3d(0, -14px, 0) rotate(calc(var(--r, 0deg) * -1)); } to { transform: translate3d(0, 0, 0) rotate(var(--r, 0deg)); } }
