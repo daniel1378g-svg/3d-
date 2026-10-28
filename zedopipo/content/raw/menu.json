@@ -1,0 +1,292 @@
+[
+ {
+  "title": "Bienvenue chez Zé-do-Pipo",
+  "items": [
+   {
+    "name": "Plat du jour",
+    "price": "CHF 20 .-",
+    "desc": "Du lundi au vendredi, nous vous proposons un plat du jour soigné. | From Monday to Friday, we serve a tasty daily special. | De segunda a sexta-feira, propomos um prato do dia cuidadosamente confeccionado."
+   },
+   {
+    "name": "Secretos de porco",
+    "price": "CHF 36,50 .-",
+    "desc": "Secretos de porc ibérique, frites| Iberian black pork, fries | Secretos de porco ibérico, batatas fritas"
+   },
+   {
+    "name": "Suggestions",
+    "price": "CHF dès 20 .-",
+    "desc": "Découvrez de nouvelles suggestions (poissons, pâtes, viandes) chaque semaine | Discover new suggestions (fish, pasta, meat) every week | Prove novas sugestões (peixe, massa, carne) todas as semanas"
+   }
+  ],
+  "images": [
+   "https://zedopipo.ch/wp-content/uploads/2021/07/salle-ze-do-pipo-haut-350x233.jpg",
+   "https://zedopipo.ch/wp-content/uploads/2021/05/secretos-300-2500.jpg",
+   "https://zedopipo.ch/wp-content/uploads/2021/07/tableau-restaurant-molard-350x233.jpg"
+  ]
+ },
+ {
+  "title": "Nos incontournables",
+  "items": [
+   {
+    "name": "Bacalhau à lagareiro",
+    "price": "CHF 39,50 .-",
+    "desc": "Morue grillée, pommes au four et huile d'olive | Grilled Codfish, baked potatoes and olive oil | Bacalhau à lagareiro"
+   },
+   {
+    "name": "Entrecôte maison",
+    "price": "CHF 44,50 .-",
+    "desc": "Entrecôte sauce maison, frites, salade | Sirloin steak with homemade sauce, fries, salad | Bife da vázia, molho da casa, batatas fritas e salada"
+   },
+   {
+    "name": "Poulet piri piri",
+    "price": "CHF 23,50 .-",
+    "desc": "1/2 poulet sauce piri piri, pommes au four, salade | 1/2 frango com molho piri piri, batatas assadas, salada | 1/2 chicken with piri piri sauce, baked potatoes, salad"
+   }
+  ],
+  "images": [
+   "https://zedopipo.ch/wp-content/uploads/2024/03/poulet-350x344.jpeg",
+   "https://zedopipo.ch/wp-content/uploads/2024/03/bacalhau-a-lagareiro-carre-350x350.jpg",
+   "https://zedopipo.ch/wp-content/uploads/2024/03/entrecote-350x344.jpeg"
+  ]
+ },
+ {
+  "title": "Nos entrées",
+  "items": [
+   {
+    "name": "Salade verte",
+    "price": "CHF 8,50 .-",
+    "desc": "salada verde | green salad"
+   },
+   {
+    "name": "Potage du jour",
+    "price": "CHF 8,50 .-",
+    "desc": "sopa do dia | soup of the day"
+   },
+   {
+    "name": "Assiette de jambon cru",
+    "price": "CHF 26,50 .-",
+    "desc": "Prato de presunto | platter of smoked ham"
+   },
+   {
+    "name": "Chouriço grelhado",
+    "price": "CHF 22,50 .-",
+    "desc": "Chouriço grillée | Grilled chouriço sausage"
+   },
+   {
+    "name": "Accras de morue",
+    "price": "CHF 15 .-",
+    "desc": "Fried codfish cake (6pcs) | Pastéis de bacalhau (6pcs) | Accras de morue (6pcs)"
+   },
+   {
+    "name": "Amêijoas à bulhão pato",
+    "price": "CHF 28,50 .-",
+    "desc": "Palourdes à bulhão pato | Vongole, white wine, garlic, olive oil and coriander"
+   },
+   {
+    "name": "Saladinha de Polvo",
+    "price": "CHF 32,50 .-",
+    "desc": "Salade de poulpe | Octopus salad | Saladinha de polvo"
+   },
+   {
+    "name": "Crevettes piri piri",
+    "price": "CHF 22,50 .-",
+    "desc": "Entrée de crevettes piri piri | starter piri piri prawns | entrada de gambas piri piri"
+   },
+   {
+    "name": "Assiette de fromage",
+    "price": "CHF 15 .-",
+    "desc": "Platter of cheese | Pratinho de queijos"
+   }
+  ],
+  "images": [
+   "https://zedopipo.ch/wp-content/uploads/2021/07/ameijoas-500-350x233.jpg",
+   "https://zedopipo.ch/wp-content/uploads/2021/07/pasteis-de-bacalhau-500-350x233.jpg",
+   "https://zedopipo.ch/wp-content/uploads/2021/07/saladinha-de-polvo-500-350x233.jpg"
+  ]
+ },
+ {
+  "title": "Nos salades",
+  "items": [
+   {
+    "name": "Grande salade mêlée",
+    "price": "CHF 14,50 .-",
+    "desc": "mixed salad | salada mista"
+   },
+   {
+    "name": "Salade de chèvre chaud",
+    "price": "CHF 23,50 .-",
+    "desc": "Salade, toast de chèvre chaud | Lettuce, goat cheese toasts | Alface, tostas de queijo de cabra"
+   },
+   {
+    "name": "Salade paysanne",
+    "price": "CHF 23,50 .-",
+    "desc": "Salade, lardons grillés, croûtons, oeuf au plat | lettuce, bacon, crouton, fried egg | alface, bacon, crouton, ovo estralado"
+   },
+   {
+    "name": "Salade de poulet",
+    "price": "CHF 23,50 .-",
+    "desc": "Salade de poulet, croûtons, parmesan | Lettuce, stir-fried chicken, crouton, parmegiano | alface, frango saltealdo, crouton e parmesão"
+   },
+   {
+    "name": "Salade grecque",
+    "price": "CHF 23,50 .-",
+    "desc": "Salade, concombre, poivrons, tomates, olive, feta | Lettuce, cucumber, capsicum, tomato, olive, feta cheese | Alface, pepino, pimento, tomate, azeitonas, queijo feta"
+   },
+   {
+    "name": "Salade niçoise",
+    "price": "CHF 23,50 .-",
+    "desc": "Salade, thon, sardines, anchois, olives, oignons | Lettuce, tuna, sardine, anchovy, olives, onions | Alface, atúm, sardinha, anchovas, azeitonas e cebola"
+   }
+  ],
+  "images": [
+   "https://zedopipo.ch/wp-content/uploads/2021/07/salle-arriere-500-350x233.jpg",
+   "https://zedopipo.ch/wp-content/uploads/2021/07/salle-avant-table-25--350x233.jpg",
+   "https://zedopipo.ch/wp-content/uploads/2021/07/restaurant-salle-ze-do-pipo-350x233.jpg"
+  ]
+ },
+ {
+  "title": "Nos viandes",
+  "items": [
+   {
+    "name": "Entrecôte maison",
+    "price": "CHF 44,50 .-",
+    "desc": "Entrecôte sauce maison, frites, salade | Sirloin steak with homemade sauce, fries, salad | Bife da vázia, molho da casa, batatas fritas e salada"
+   },
+   {
+    "name": "Poulet piri piri",
+    "price": "CHF 23,50 .-",
+    "desc": "1/2 poulet sauce piri piri, pommes au four, salade | 1/2 frango com molho piri piri, batatas assadas, salada | 1/2 chicken with piri piri sauce, baked potatoes, salad"
+   },
+   {
+    "name": "Bitoque de vaca",
+    "price": "CHF 30,50 .-",
+    "desc": "Steak de bœuf, ail, œuf au plat, frites, riz | Beefsteak, garlic, fried egg, fries, rice | Bitoque de vaca"
+   },
+   {
+    "name": "Entrecôte aux morilles",
+    "price": "CHF 48,50 .-",
+    "desc": "Entrecôte sauce morilles, frites, légumes | Sirloin steak morels sauce, fries, veggies | Bife da vázia, molho de morchellas, batatas fritas, legumes"
+   },
+   {
+    "name": "Steak de boeuf",
+    "price": "CHF 30 .-",
+    "desc": "steak de bœuf sauce maison, frites et légumes | beefsteak house sauce, fries and vegetables | bife de vaca molho de casa, batatas fritas e legumes"
+   },
+   {
+    "name": "Bitoque de porco",
+    "price": "CHF 26,50 .-",
+    "desc": "Escalope de porc, ail, œuf au plat, frites, riz | Porc steak, garlic, fried egg, fries, rice | Bitoque de porco"
+   },
+   {
+    "name": "Secretos de porco",
+    "price": "CHF 36,50 .-",
+    "desc": "Secretos de porc ibérique, frites| Iberian black pork, fries | Secretos de porco ibérico, batatas fritas"
+   },
+   {
+    "name": "Carne de porco à Alentejana",
+    "price": "CHF 36 .-",
+    "desc": "Porc sauté aux palourdes, pommes rissolées (prix par personne, minium 2 personnes) | Stir-fried pork with clams and fried potato (price per person, minimum 2 pers.) | Carne de porco à Alentejana (preço por pessoa, minimum 2 pessoas)"
+   },
+   {
+    "name": "Côtes d’agneau à moda da Beira",
+    "price": "CHF 42,50 .-",
+    "desc": "Côtes d'agneau à moda da Beira, frites, légumes | Lamb chops, fries, veggies | Costeletas de borrêgo à moda da Beira, batatas fritas, legumes"
+   }
+  ],
+  "images": [
+   "https://zedopipo.ch/wp-content/uploads/2024/03/entrecote-350x344.jpeg",
+   "https://zedopipo.ch/wp-content/uploads/2021/07/bitoque-lado-500-350x233.jpg",
+   "https://zedopipo.ch/wp-content/uploads/2024/03/poulet-350x344.jpeg"
+  ]
+ },
+ {
+  "title": "Nos poissons",
+  "items": [
+   {
+    "name": "Bacalhau à lagareiro",
+    "price": "CHF 39,50 .-",
+    "desc": "Morue grillée, pommes au four et huile d'olive | Grilled Codfish, baked potatoes and olive oil | Bacalhau à lagareiro"
+   },
+   {
+    "name": "Bacalhau à brás",
+    "price": "CHF 38,50 .-",
+    "desc": "bacalhau desfiado, batata frita e ovo (preço por pessoa, minimum 2 personnes) | morue effilée, pommes frites et œufs brouillés (prix par personne, minimum 2 personnes) | codfish, scrambled egg, fries (price per person, minimum 2 personnes)"
+   },
+   {
+    "name": "Polvo à Lagareiro",
+    "price": "CHF 45 .-",
+    "desc": "Poulpe grillé, pommes au four et huile d'olive | Grilled octopus, baked potatoes and olive oil | Polvo à lagareiro"
+   },
+   {
+    "name": "Riz aux fruits de mer et lotte",
+    "price": "CHF 42,50 .-",
+    "desc": "Arroz de marisco e tamboril (preço por pessoa, minimum 2 pessoas) | Seafood and monkfish risotto (price per person, minimum 2 pers. | Riz aux fruits de mer et lotte (prix par personne, minium 2 personnes)"
+   },
+   {
+    "name": "Dorade royale grillée",
+    "price": "CHF 39,50 .-",
+    "desc": "Dorade royale grillée, pommes au four & légumes | Grilled royal dorade, baked, potatoes & vegetables | Dorada grelhada, batatas assadas e legumes"
+   },
+   {
+    "name": "Sole grillée aux amandes",
+    "price": "CHF 45 .-",
+    "desc": "Sole aux amandes, pommes au four et légumes | Linguado com amêndoas, batatas e legumes | Grilled sole with almonds, baked potato and veggies"
+   },
+   {
+    "name": "Crevettes piri piri",
+    "price": "CHF 42,50 .-",
+    "desc": "Crevettes piri piri, frites | Prawns piri piri, fries | Gambas piri piri, batatas fritas"
+   },
+   {
+    "name": "Spaghettis aux fruits de mer",
+    "price": "CHF 28,50 .-",
+    "desc": "Seafood, tomato sauce, spaghetti | Esparguete, molho de tomate com marisco"
+   }
+  ],
+  "images": [
+   "https://zedopipo.ch/wp-content/uploads/2021/07/bacalhau-lagareiro-lado-500-350x233.jpg",
+   "https://zedopipo.ch/wp-content/uploads/2021/07/camarao-lado-500-350x233.jpg",
+   "https://zedopipo.ch/wp-content/uploads/2021/07/bacalhau-a-bras-500-350x233.jpg"
+  ]
+ },
+ {
+  "title": "Nos desserts",
+  "items": [
+   {
+    "name": "Flan caramel",
+    "price": "CHF 9,50 .-",
+    "desc": "Flan caramel fait maison | Flan caramel homemade | Pudim caseiro"
+   },
+   {
+    "name": "Mousse au chocolat",
+    "price": "CHF 9,50 .-",
+    "desc": "Mousse au chocolat fait maison | Chocolate mousse homemade | Mousse de chocolate caseira"
+   },
+   {
+    "name": "Leite creme",
+    "price": "CHF 9,50 .-",
+    "desc": "Crème brûlée | Leite creme quemado"
+   },
+   {
+    "name": "Glaces",
+    "price": "CHF 4 .-",
+    "desc": "Sélection de glaces | Selection of ice cream | Sortidos de gelados"
+   },
+   {
+    "name": "Mousse de mangue",
+    "price": "CHF 9,50 .-",
+    "desc": "Mango mousse | Mousse de mangue | Mousse de manga"
+   },
+   {
+    "name": "Panna cotta",
+    "price": "CHF 9,50 .-",
+    "desc": "Panna cotta | panacota"
+   }
+  ],
+  "images": [
+   "https://zedopipo.ch/wp-content/uploads/2021/07/flan-lado-500-350x233.jpg",
+   "https://zedopipo.ch/wp-content/uploads/2021/07/mousse-au-chocolat-500-350x233.jpg",
+   "https://zedopipo.ch/wp-content/uploads/2021/07/panacotta-lado-500-350x233.jpg"
+  ]
+ }
+]

@@ -1,0 +1,913 @@
+{
+ "source": "https://zedopipo.ch/menu/",
+ "liveListings": 44,
+ "sections": [
+  {
+   "id": "bienvenue",
+   "title": {
+    "fr": "Bienvenue chez Zé-do-Pipo",
+    "en": "Welcome to Zé-do-Pipo",
+    "pt": "Bem-vindos ao Zé-do-Pipo",
+    "it": "Benvenuti da Zé-do-Pipo",
+    "de": "Willkommen bei Zé-do-Pipo"
+   },
+   "photos": [
+    "salle-ze-do-pipo-haut",
+    "secretos-300-2500",
+    "tableau-restaurant-molard"
+   ],
+   "liveImages": [
+    "https://zedopipo.ch/wp-content/uploads/2021/07/salle-ze-do-pipo-haut-350x233.jpg",
+    "https://zedopipo.ch/wp-content/uploads/2021/05/secretos-300-2500.jpg",
+    "https://zedopipo.ch/wp-content/uploads/2021/07/tableau-restaurant-molard-350x233.jpg"
+   ],
+   "items": [
+    {
+     "id": "bienvenue-plat-du-jour",
+     "name": "Plat du jour",
+     "livePrice": "CHF 20 .-",
+     "price": "20.00",
+     "desc": {
+      "fr": "Du lundi au vendredi, nous vous proposons un plat du jour soigné.",
+      "en": "From Monday to Friday, we serve a tasty daily special.",
+      "pt": "De segunda a sexta-feira, propomos um prato do dia cuidadosamente confeccionado.",
+      "it": "Dal lunedì al venerdì vi proponiamo un piatto del giorno curato.",
+      "de": "Von Montag bis Freitag servieren wir Ihnen ein sorgfältig zubereitetes Tagesgericht."
+     },
+     "side": "none",
+     "notes": [
+      {
+       "fr": "Du lundi au vendredi",
+       "en": "Monday to Friday",
+       "pt": "De segunda a sexta-feira",
+       "it": "Dal lunedì al venerdì",
+       "de": "Montag bis Freitag"
+      }
+     ]
+    },
+    {
+     "id": "bienvenue-secretos-de-porco",
+     "name": "Secretos de porco",
+     "livePrice": "CHF 36,50 .-",
+     "price": "36.50",
+     "desc": {
+      "fr": "Secretos de porc ibérique, frites",
+      "en": "Iberian black pork, fries",
+      "pt": "Secretos de porco ibérico, batatas fritas",
+      "it": "Secretos di maiale iberico, patatine fritte",
+      "de": "Secretos vom iberischen Schwein, Pommes frites"
+     },
+     "side": "terra",
+     "notes": [
+      {
+       "fr": "Porc noir ibérique",
+       "en": "Iberian black pork",
+       "pt": "Porco preto ibérico",
+       "it": "Maiale nero iberico",
+       "de": "Iberisches Schwarzschwein"
+      }
+     ],
+     "photo": "secretos-500",
+     "alsoIn": "viandes"
+    },
+    {
+     "id": "bienvenue-suggestions",
+     "name": "Suggestions",
+     "livePrice": "CHF dès 20 .-",
+     "price": "20.00",
+     "desc": {
+      "fr": "Découvrez de nouvelles suggestions (poissons, pâtes, viandes) chaque semaine",
+      "en": "Discover new suggestions (fish, pasta, meat) every week",
+      "pt": "Prove novas sugestões (peixe, massa, carne) todas as semanas",
+      "it": "Scoprite nuovi suggerimenti (pesce, pasta, carne) ogni settimana",
+      "de": "Entdecken Sie jede Woche neue Vorschläge (Fisch, Pasta, Fleisch)"
+     },
+     "side": "none",
+     "from": true,
+     "notes": [
+      {
+       "fr": "Nouvelles suggestions chaque semaine",
+       "en": "New suggestions every week",
+       "pt": "Novas sugestões todas as semanas",
+       "it": "Nuovi suggerimenti ogni settimana",
+       "de": "Jede Woche neue Vorschläge"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "incontournables",
+   "title": {
+    "fr": "Nos incontournables",
+    "en": "Our must-haves",
+    "pt": "Os nossos imperdíveis",
+    "it": "I nostri imperdibili",
+    "de": "Unsere Klassiker"
+   },
+   "photos": [
+    "poulet",
+    "bacalhau-a-lagareiro-carre",
+    "entrecote"
+   ],
+   "liveImages": [
+    "https://zedopipo.ch/wp-content/uploads/2024/03/poulet-350x344.jpeg",
+    "https://zedopipo.ch/wp-content/uploads/2024/03/bacalhau-a-lagareiro-carre-350x350.jpg",
+    "https://zedopipo.ch/wp-content/uploads/2024/03/entrecote-350x344.jpeg"
+   ],
+   "items": [
+    {
+     "id": "incontournables-bacalhau-a-lagareiro",
+     "name": "Bacalhau à lagareiro",
+     "livePrice": "CHF 39,50 .-",
+     "price": "39.50",
+     "desc": {
+      "fr": "Morue grillée, pommes au four et huile d'olive",
+      "en": "Grilled Codfish, baked potatoes and olive oil",
+      "pt": "Bacalhau à lagareiro",
+      "it": "Baccalà alla griglia, patate al forno e olio d'oliva",
+      "de": "Gegrillter Kabeljau, Ofenkartoffeln und Olivenöl"
+     },
+     "side": "mar",
+     "photo": "bacalhau-a-lagareiro-carre",
+     "alsoIn": "poissons"
+    },
+    {
+     "id": "incontournables-entrecote-maison",
+     "name": "Entrecôte maison",
+     "livePrice": "CHF 44,50 .-",
+     "price": "44.50",
+     "desc": {
+      "fr": "Entrecôte sauce maison, frites, salade",
+      "en": "Sirloin steak with homemade sauce, fries, salad",
+      "pt": "Bife da vázia, molho da casa, batatas fritas e salada",
+      "it": "Entrecôte con salsa della casa, patatine fritte, insalata",
+      "de": "Entrecôte mit Haussauce, Pommes frites, Salat"
+     },
+     "side": "terra",
+     "photo": "entrecote",
+     "alsoIn": "viandes"
+    },
+    {
+     "id": "incontournables-poulet-piri-piri",
+     "name": "Poulet piri piri",
+     "livePrice": "CHF 23,50 .-",
+     "price": "23.50",
+     "desc": {
+      "fr": "1/2 poulet sauce piri piri, pommes au four, salade",
+      "pt": "1/2 frango com molho piri piri, batatas assadas, salada",
+      "en": "1/2 chicken with piri piri sauce, baked potatoes, salad",
+      "it": "1/2 pollo con salsa piri piri, patate al forno, insalata",
+      "de": "1/2 Hähnchen mit Piri-Piri-Sauce, Ofenkartoffeln, Salat"
+     },
+     "side": "terra",
+     "notes": [
+      {
+       "fr": "1/2 poulet",
+       "en": "1/2 chicken",
+       "pt": "1/2 frango",
+       "it": "1/2 pollo",
+       "de": "1/2 Hähnchen"
+      }
+     ],
+     "photo": "poulet",
+     "alsoIn": "viandes"
+    }
+   ]
+  },
+  {
+   "id": "entrees",
+   "title": {
+    "fr": "Nos entrées",
+    "en": "Our starters",
+    "pt": "As nossas entradas",
+    "it": "I nostri antipasti",
+    "de": "Unsere Vorspeisen"
+   },
+   "photos": [
+    "ameijoas-500",
+    "pasteis-de-bacalhau-500",
+    "saladinha-de-polvo-500"
+   ],
+   "liveImages": [
+    "https://zedopipo.ch/wp-content/uploads/2021/07/ameijoas-500-350x233.jpg",
+    "https://zedopipo.ch/wp-content/uploads/2021/07/pasteis-de-bacalhau-500-350x233.jpg",
+    "https://zedopipo.ch/wp-content/uploads/2021/07/saladinha-de-polvo-500-350x233.jpg"
+   ],
+   "items": [
+    {
+     "id": "entrees-salade-verte",
+     "name": "Salade verte",
+     "livePrice": "CHF 8,50 .-",
+     "price": "8.50",
+     "desc": {
+      "pt": "salada verde",
+      "en": "green salad",
+      "it": "Insalata verde",
+      "de": "Grüner Salat"
+     },
+     "side": "none"
+    },
+    {
+     "id": "entrees-potage-du-jour",
+     "name": "Potage du jour",
+     "livePrice": "CHF 8,50 .-",
+     "price": "8.50",
+     "desc": {
+      "pt": "sopa do dia",
+      "en": "soup of the day",
+      "it": "Zuppa del giorno",
+      "de": "Tagessuppe"
+     },
+     "side": "none"
+    },
+    {
+     "id": "entrees-assiette-de-jambon-cru",
+     "name": "Assiette de jambon cru",
+     "livePrice": "CHF 26,50 .-",
+     "price": "26.50",
+     "desc": {
+      "pt": "Prato de presunto",
+      "en": "platter of smoked ham",
+      "it": "Piatto di prosciutto crudo",
+      "de": "Rohschinkenteller"
+     },
+     "side": "terra"
+    },
+    {
+     "id": "entrees-chourico-grelhado",
+     "name": "Chouriço grelhado",
+     "livePrice": "CHF 22,50 .-",
+     "price": "22.50",
+     "desc": {
+      "fr": "Chouriço grillée",
+      "en": "Grilled chouriço sausage",
+      "it": "Chouriço alla griglia",
+      "de": "Gegrillte Chouriço-Wurst"
+     },
+     "side": "terra"
+    },
+    {
+     "id": "entrees-accras-de-morue",
+     "name": "Accras de morue",
+     "livePrice": "CHF 15 .-",
+     "price": "15.00",
+     "desc": {
+      "en": "Fried codfish cake (6pcs)",
+      "pt": "Pastéis de bacalhau (6pcs)",
+      "fr": "Accras de morue (6pcs)",
+      "it": "Frittelle di baccalà (6 pz)",
+      "de": "Stockfisch-Küchlein (6 Stück)"
+     },
+     "side": "mar",
+     "notes": [
+      {
+       "fr": "6 pièces",
+       "en": "6 pieces",
+       "pt": "6 unidades",
+       "it": "6 pezzi",
+       "de": "6 Stück"
+      }
+     ],
+     "photo": "pasteis-de-bacalhau-500"
+    },
+    {
+     "id": "entrees-ameijoas-a-bulhao-pato",
+     "name": "Amêijoas à bulhão pato",
+     "livePrice": "CHF 28,50 .-",
+     "price": "28.50",
+     "desc": {
+      "fr": "Palourdes à bulhão pato",
+      "en": "Vongole, white wine, garlic, olive oil and coriander",
+      "pt": "Amêijoas, vinho branco, alho, azeite e coentros",
+      "it": "Vongole, vino bianco, aglio, olio d'oliva e coriandolo",
+      "de": "Venusmuscheln, Weisswein, Knoblauch, Olivenöl und Koriander"
+     },
+     "side": "mar",
+     "photo": "ameijoas-500",
+     "added": [
+      "pt"
+     ]
+    },
+    {
+     "id": "entrees-saladinha-de-polvo",
+     "name": "Saladinha de Polvo",
+     "livePrice": "CHF 32,50 .-",
+     "price": "32.50",
+     "desc": {
+      "fr": "Salade de poulpe",
+      "en": "Octopus salad",
+      "pt": "Saladinha de polvo",
+      "it": "Insalata di polpo",
+      "de": "Oktopussalat"
+     },
+     "side": "mar",
+     "photo": "saladinha-de-polvo-500"
+    },
+    {
+     "id": "entrees-crevettes-piri-piri-entree",
+     "name": "Crevettes piri piri",
+     "livePrice": "CHF 22,50 .-",
+     "price": "22.50",
+     "desc": {
+      "fr": "Entrée de crevettes piri piri",
+      "en": "starter piri piri prawns",
+      "pt": "entrada de gambas piri piri",
+      "it": "Antipasto di gamberi piri piri",
+      "de": "Piri-Piri-Crevetten als Vorspeise"
+     },
+     "side": "mar",
+     "notes": [
+      {
+       "fr": "Entrée",
+       "en": "Starter",
+       "pt": "Entrada",
+       "it": "Antipasto",
+       "de": "Vorspeise"
+      }
+     ],
+     "photo": "camarao-piri-piri-500",
+     "piri": true
+    },
+    {
+     "id": "entrees-assiette-de-fromage",
+     "name": "Assiette de fromage",
+     "livePrice": "CHF 15 .-",
+     "price": "15.00",
+     "desc": {
+      "en": "Platter of cheese",
+      "pt": "Pratinho de queijos",
+      "it": "Piatto di formaggi",
+      "de": "Käseteller"
+     },
+     "side": "none"
+    }
+   ]
+  },
+  {
+   "id": "salades",
+   "title": {
+    "fr": "Nos salades",
+    "en": "Our salads",
+    "pt": "As nossas saladas",
+    "it": "Le nostre insalate",
+    "de": "Unsere Salate"
+   },
+   "photos": [
+    "salle-arriere-500",
+    "salle-avant-table-25-",
+    "restaurant-salle-ze-do-pipo"
+   ],
+   "liveImages": [
+    "https://zedopipo.ch/wp-content/uploads/2021/07/salle-arriere-500-350x233.jpg",
+    "https://zedopipo.ch/wp-content/uploads/2021/07/salle-avant-table-25--350x233.jpg",
+    "https://zedopipo.ch/wp-content/uploads/2021/07/restaurant-salle-ze-do-pipo-350x233.jpg"
+   ],
+   "items": [
+    {
+     "id": "salades-grande-salade-melee",
+     "name": "Grande salade mêlée",
+     "livePrice": "CHF 14,50 .-",
+     "price": "14.50",
+     "desc": {
+      "en": "mixed salad",
+      "pt": "salada mista",
+      "it": "Insalata mista",
+      "de": "Gemischter Salat"
+     },
+     "side": "none"
+    },
+    {
+     "id": "salades-salade-de-chevre-chaud",
+     "name": "Salade de chèvre chaud",
+     "livePrice": "CHF 23,50 .-",
+     "price": "23.50",
+     "desc": {
+      "fr": "Salade, toast de chèvre chaud",
+      "en": "Lettuce, goat cheese toasts",
+      "pt": "Alface, tostas de queijo de cabra",
+      "it": "Insalata, crostini di formaggio di capra caldo",
+      "de": "Salat, Toasts mit warmem Ziegenkäse"
+     },
+     "side": "none"
+    },
+    {
+     "id": "salades-salade-paysanne",
+     "name": "Salade paysanne",
+     "livePrice": "CHF 23,50 .-",
+     "price": "23.50",
+     "desc": {
+      "fr": "Salade, lardons grillés, croûtons, oeuf au plat",
+      "en": "lettuce, bacon, crouton, fried egg",
+      "pt": "alface, bacon, crouton, ovo estralado",
+      "it": "Insalata, pancetta grigliata, crostini, uovo all'occhio di bue",
+      "de": "Salat, gebratene Speckwürfel, Croûtons, Spiegelei"
+     },
+     "side": "terra"
+    },
+    {
+     "id": "salades-salade-de-poulet",
+     "name": "Salade de poulet",
+     "livePrice": "CHF 23,50 .-",
+     "price": "23.50",
+     "desc": {
+      "fr": "Salade de poulet, croûtons, parmesan",
+      "en": "Lettuce, stir-fried chicken, crouton, parmegiano",
+      "pt": "alface, frango saltealdo, crouton e parmesão",
+      "it": "Insalata di pollo saltato, crostini, parmigiano",
+      "de": "Salat mit gebratenem Poulet, Croûtons, Parmesan"
+     },
+     "side": "terra"
+    },
+    {
+     "id": "salades-salade-grecque",
+     "name": "Salade grecque",
+     "livePrice": "CHF 23,50 .-",
+     "price": "23.50",
+     "desc": {
+      "fr": "Salade, concombre, poivrons, tomates, olive, feta",
+      "en": "Lettuce, cucumber, capsicum, tomato, olive, feta cheese",
+      "pt": "Alface, pepino, pimento, tomate, azeitonas, queijo feta",
+      "it": "Insalata, cetriolo, peperoni, pomodori, olive, feta",
+      "de": "Salat, Gurke, Peperoni, Tomaten, Oliven, Feta"
+     },
+     "side": "none"
+    },
+    {
+     "id": "salades-salade-nicoise",
+     "name": "Salade niçoise",
+     "livePrice": "CHF 23,50 .-",
+     "price": "23.50",
+     "desc": {
+      "fr": "Salade, thon, sardines, anchois, olives, oignons",
+      "en": "Lettuce, tuna, sardine, anchovy, olives, onions",
+      "pt": "Alface, atúm, sardinha, anchovas, azeitonas e cebola",
+      "it": "Insalata, tonno, sardine, acciughe, olive, cipolle",
+      "de": "Salat, Thunfisch, Sardinen, Sardellen, Oliven, Zwiebeln"
+     },
+     "side": "mar"
+    }
+   ]
+  },
+  {
+   "id": "viandes",
+   "title": {
+    "fr": "Nos viandes",
+    "en": "Our meat dishes",
+    "pt": "As nossas carnes",
+    "it": "Le nostre carni",
+    "de": "Unsere Fleischgerichte"
+   },
+   "photos": [
+    "entrecote",
+    "bitoque-lado-500",
+    "poulet"
+   ],
+   "liveImages": [
+    "https://zedopipo.ch/wp-content/uploads/2024/03/entrecote-350x344.jpeg",
+    "https://zedopipo.ch/wp-content/uploads/2021/07/bitoque-lado-500-350x233.jpg",
+    "https://zedopipo.ch/wp-content/uploads/2024/03/poulet-350x344.jpeg"
+   ],
+   "items": [
+    {
+     "id": "viandes-entrecote-maison",
+     "name": "Entrecôte maison",
+     "livePrice": "CHF 44,50 .-",
+     "price": "44.50",
+     "desc": {
+      "fr": "Entrecôte sauce maison, frites, salade",
+      "en": "Sirloin steak with homemade sauce, fries, salad",
+      "pt": "Bife da vázia, molho da casa, batatas fritas e salada",
+      "it": "Entrecôte con salsa della casa, patatine fritte, insalata",
+      "de": "Entrecôte mit Haussauce, Pommes frites, Salat"
+     },
+     "side": "terra",
+     "photo": "entrecote"
+    },
+    {
+     "id": "viandes-poulet-piri-piri",
+     "name": "Poulet piri piri",
+     "livePrice": "CHF 23,50 .-",
+     "price": "23.50",
+     "desc": {
+      "fr": "1/2 poulet sauce piri piri, pommes au four, salade",
+      "pt": "1/2 frango com molho piri piri, batatas assadas, salada",
+      "en": "1/2 chicken with piri piri sauce, baked potatoes, salad",
+      "it": "1/2 pollo con salsa piri piri, patate al forno, insalata",
+      "de": "1/2 Hähnchen mit Piri-Piri-Sauce, Ofenkartoffeln, Salat"
+     },
+     "side": "terra",
+     "notes": [
+      {
+       "fr": "1/2 poulet",
+       "en": "1/2 chicken",
+       "pt": "1/2 frango",
+       "it": "1/2 pollo",
+       "de": "1/2 Hähnchen"
+      }
+     ],
+     "photo": "poulet",
+     "piri": true
+    },
+    {
+     "id": "viandes-bitoque-de-vaca",
+     "name": "Bitoque de vaca",
+     "livePrice": "CHF 30,50 .-",
+     "price": "30.50",
+     "desc": {
+      "fr": "Steak de bœuf, ail, œuf au plat, frites, riz",
+      "en": "Beefsteak, garlic, fried egg, fries, rice",
+      "pt": "Bitoque de vaca",
+      "it": "Bistecca di manzo, aglio, uovo all'occhio di bue, patatine fritte, riso",
+      "de": "Rindssteak, Knoblauch, Spiegelei, Pommes frites, Reis"
+     },
+     "side": "terra",
+     "photo": "bitoque-lado-500"
+    },
+    {
+     "id": "viandes-entrecote-aux-morilles",
+     "name": "Entrecôte aux morilles",
+     "livePrice": "CHF 48,50 .-",
+     "price": "48.50",
+     "desc": {
+      "fr": "Entrecôte sauce morilles, frites, légumes",
+      "en": "Sirloin steak morels sauce, fries, veggies",
+      "pt": "Bife da vázia, molho de morchellas, batatas fritas, legumes",
+      "it": "Entrecôte con salsa di spugnole, patatine fritte, verdure",
+      "de": "Entrecôte mit Morchelsauce, Pommes frites, Gemüse"
+     },
+     "side": "terra"
+    },
+    {
+     "id": "viandes-steak-de-boeuf",
+     "name": "Steak de boeuf",
+     "livePrice": "CHF 30 .-",
+     "price": "30.00",
+     "desc": {
+      "fr": "steak de bœuf sauce maison, frites et légumes",
+      "en": "beefsteak house sauce, fries and vegetables",
+      "pt": "bife de vaca molho de casa, batatas fritas e legumes",
+      "it": "Bistecca di manzo con salsa della casa, patatine fritte e verdure",
+      "de": "Rindssteak mit Haussauce, Pommes frites und Gemüse"
+     },
+     "side": "terra"
+    },
+    {
+     "id": "viandes-bitoque-de-porco",
+     "name": "Bitoque de porco",
+     "livePrice": "CHF 26,50 .-",
+     "price": "26.50",
+     "desc": {
+      "fr": "Escalope de porc, ail, œuf au plat, frites, riz",
+      "en": "Porc steak, garlic, fried egg, fries, rice",
+      "pt": "Bitoque de porco",
+      "it": "Scaloppina di maiale, aglio, uovo all'occhio di bue, patatine fritte, riso",
+      "de": "Schweinsschnitzel, Knoblauch, Spiegelei, Pommes frites, Reis"
+     },
+     "side": "terra"
+    },
+    {
+     "id": "viandes-secretos-de-porco",
+     "name": "Secretos de porco",
+     "livePrice": "CHF 36,50 .-",
+     "price": "36.50",
+     "desc": {
+      "fr": "Secretos de porc ibérique, frites",
+      "en": "Iberian black pork, fries",
+      "pt": "Secretos de porco ibérico, batatas fritas",
+      "it": "Secretos di maiale iberico, patatine fritte",
+      "de": "Secretos vom iberischen Schwein, Pommes frites"
+     },
+     "side": "terra",
+     "notes": [
+      {
+       "fr": "Porc noir ibérique",
+       "en": "Iberian black pork",
+       "pt": "Porco preto ibérico",
+       "it": "Maiale nero iberico",
+       "de": "Iberisches Schwarzschwein"
+      }
+     ],
+     "photo": "secretos-500"
+    },
+    {
+     "id": "viandes-carne-de-porco-a-alentejana",
+     "name": "Carne de porco à Alentejana",
+     "livePrice": "CHF 36 .-",
+     "price": "36.00",
+     "desc": {
+      "fr": "Porc sauté aux palourdes, pommes rissolées (prix par personne, minium 2 personnes)",
+      "en": "Stir-fried pork with clams and fried potato (price per person, minimum 2 pers.)",
+      "pt": "Carne de porco à Alentejana (preço por pessoa, minimum 2 pessoas)",
+      "it": "Maiale saltato con vongole, patate rosolate (prezzo a persona, minimo 2 persone)",
+      "de": "Gebratenes Schweinefleisch mit Venusmuscheln, Bratkartoffeln (Preis pro Person, mindestens 2 Personen)"
+     },
+     "side": "both",
+     "notes": [
+      {
+       "fr": "Prix par personne, minimum 2 personnes",
+       "en": "Price per person, minimum 2 people",
+       "pt": "Preço por pessoa, mínimo 2 pessoas",
+       "it": "Prezzo a persona, minimo 2 persone",
+       "de": "Preis pro Person, mindestens 2 Personen"
+      }
+     ]
+    },
+    {
+     "id": "viandes-cotes-d-agneau-a-moda-da-beira",
+     "name": "Côtes d’agneau à moda da Beira",
+     "livePrice": "CHF 42,50 .-",
+     "price": "42.50",
+     "desc": {
+      "fr": "Côtes d'agneau à moda da Beira, frites, légumes",
+      "en": "Lamb chops, fries, veggies",
+      "pt": "Costeletas de borrêgo à moda da Beira, batatas fritas, legumes",
+      "it": "Costolette d'agnello à moda da Beira, patatine fritte, verdure",
+      "de": "Lammkoteletts à moda da Beira, Pommes frites, Gemüse"
+     },
+     "side": "terra"
+    }
+   ]
+  },
+  {
+   "id": "poissons",
+   "title": {
+    "fr": "Nos poissons",
+    "en": "Our fish dishes",
+    "pt": "Os nossos peixes",
+    "it": "I nostri piatti di pesce",
+    "de": "Unsere Fischgerichte"
+   },
+   "photos": [
+    "bacalhau-lagareiro-lado-500",
+    "camarao-lado-500",
+    "bacalhau-a-bras-500"
+   ],
+   "liveImages": [
+    "https://zedopipo.ch/wp-content/uploads/2021/07/bacalhau-lagareiro-lado-500-350x233.jpg",
+    "https://zedopipo.ch/wp-content/uploads/2021/07/camarao-lado-500-350x233.jpg",
+    "https://zedopipo.ch/wp-content/uploads/2021/07/bacalhau-a-bras-500-350x233.jpg"
+   ],
+   "items": [
+    {
+     "id": "poissons-bacalhau-a-lagareiro",
+     "name": "Bacalhau à lagareiro",
+     "livePrice": "CHF 39,50 .-",
+     "price": "39.50",
+     "desc": {
+      "fr": "Morue grillée, pommes au four et huile d'olive",
+      "en": "Grilled Codfish, baked potatoes and olive oil",
+      "pt": "Bacalhau à lagareiro",
+      "it": "Baccalà alla griglia, patate al forno e olio d'oliva",
+      "de": "Gegrillter Kabeljau, Ofenkartoffeln und Olivenöl"
+     },
+     "side": "mar",
+     "photo": "bacalhau-lagareiro-lado-500"
+    },
+    {
+     "id": "poissons-bacalhau-a-bras",
+     "name": "Bacalhau à brás",
+     "livePrice": "CHF 38,50 .-",
+     "price": "38.50",
+     "desc": {
+      "pt": "bacalhau desfiado, batata frita e ovo (preço por pessoa, minimum 2 personnes)",
+      "fr": "morue effilée, pommes frites et œufs brouillés (prix par personne, minimum 2 personnes)",
+      "en": "codfish, scrambled egg, fries (price per person, minimum 2 personnes)",
+      "it": "Baccalà sfilacciato, patatine fritte e uova strapazzate (prezzo a persona, minimo 2 persone)",
+      "de": "Zerzupfter Kabeljau, Pommes frites und Rührei (Preis pro Person, mindestens 2 Personen)"
+     },
+     "side": "mar",
+     "notes": [
+      {
+       "fr": "Prix par personne, minimum 2 personnes",
+       "en": "Price per person, minimum 2 people",
+       "pt": "Preço por pessoa, mínimo 2 pessoas",
+       "it": "Prezzo a persona, minimo 2 persone",
+       "de": "Preis pro Person, mindestens 2 Personen"
+      }
+     ],
+     "photo": "bacalhau-a-bras-500"
+    },
+    {
+     "id": "poissons-polvo-a-lagareiro",
+     "name": "Polvo à Lagareiro",
+     "livePrice": "CHF 45 .-",
+     "price": "45.00",
+     "desc": {
+      "fr": "Poulpe grillé, pommes au four et huile d'olive",
+      "en": "Grilled octopus, baked potatoes and olive oil",
+      "pt": "Polvo à lagareiro",
+      "it": "Polpo alla griglia, patate al forno e olio d'oliva",
+      "de": "Gegrillter Oktopus, Ofenkartoffeln und Olivenöl"
+     },
+     "side": "mar",
+     "photo": "pouple-grille-500w"
+    },
+    {
+     "id": "poissons-riz-aux-fruits-de-mer-et-lotte",
+     "name": "Riz aux fruits de mer et lotte",
+     "livePrice": "CHF 42,50 .-",
+     "price": "42.50",
+     "desc": {
+      "pt": "Arroz de marisco e tamboril (preço por pessoa, minimum 2 pessoas)",
+      "en": "Seafood and monkfish risotto (price per person, minimum 2 pers.",
+      "fr": "Riz aux fruits de mer et lotte (prix par personne, minium 2 personnes)",
+      "it": "Riso ai frutti di mare e rana pescatrice (prezzo a persona, minimo 2 persone)",
+      "de": "Reis mit Meeresfrüchten und Seeteufel (Preis pro Person, mindestens 2 Personen)"
+     },
+     "side": "mar",
+     "notes": [
+      {
+       "fr": "Prix par personne, minimum 2 personnes",
+       "en": "Price per person, minimum 2 people",
+       "pt": "Preço por pessoa, mínimo 2 pessoas",
+       "it": "Prezzo a persona, minimo 2 persone",
+       "de": "Preis pro Person, mindestens 2 Personen"
+      }
+     ]
+    },
+    {
+     "id": "poissons-dorade-royale-grillee",
+     "name": "Dorade royale grillée",
+     "livePrice": "CHF 39,50 .-",
+     "price": "39.50",
+     "desc": {
+      "fr": "Dorade royale grillée, pommes au four & légumes",
+      "en": "Grilled royal dorade, baked, potatoes & vegetables",
+      "pt": "Dorada grelhada, batatas assadas e legumes",
+      "it": "Orata reale alla griglia, patate al forno e verdure",
+      "de": "Gegrillte Dorade royale, Ofenkartoffeln und Gemüse"
+     },
+     "side": "mar"
+    },
+    {
+     "id": "poissons-sole-grillee-aux-amandes",
+     "name": "Sole grillée aux amandes",
+     "livePrice": "CHF 45 .-",
+     "price": "45.00",
+     "desc": {
+      "fr": "Sole aux amandes, pommes au four et légumes",
+      "pt": "Linguado com amêndoas, batatas e legumes",
+      "en": "Grilled sole with almonds, baked potato and veggies",
+      "it": "Sogliola alle mandorle, patate al forno e verdure",
+      "de": "Seezunge mit Mandeln, Ofenkartoffeln und Gemüse"
+     },
+     "side": "mar"
+    },
+    {
+     "id": "poissons-crevettes-piri-piri-plat",
+     "name": "Crevettes piri piri",
+     "livePrice": "CHF 42,50 .-",
+     "price": "42.50",
+     "desc": {
+      "fr": "Crevettes piri piri, frites",
+      "en": "Prawns piri piri, fries",
+      "pt": "Gambas piri piri, batatas fritas",
+      "it": "Gamberi piri piri, patatine fritte",
+      "de": "Piri-Piri-Crevetten, Pommes frites"
+     },
+     "side": "mar",
+     "notes": [
+      {
+       "fr": "Plat",
+       "en": "Main course",
+       "pt": "Prato principal",
+       "it": "Piatto principale",
+       "de": "Hauptgang"
+      }
+     ],
+     "photo": "camarao-lado-500",
+     "piri": true
+    },
+    {
+     "id": "poissons-spaghettis-aux-fruits-de-mer",
+     "name": "Spaghettis aux fruits de mer",
+     "livePrice": "CHF 28,50 .-",
+     "price": "28.50",
+     "desc": {
+      "en": "Seafood, tomato sauce, spaghetti",
+      "pt": "Esparguete, molho de tomate com marisco",
+      "fr": "Fruits de mer, sauce tomate, spaghettis",
+      "it": "Spaghetti ai frutti di mare, salsa di pomodoro",
+      "de": "Spaghetti mit Meeresfrüchten und Tomatensauce"
+     },
+     "side": "mar",
+     "added": [
+      "fr"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "desserts",
+   "title": {
+    "fr": "Nos desserts",
+    "en": "Our desserts",
+    "pt": "As nossas sobremesas",
+    "it": "I nostri dessert",
+    "de": "Unsere Desserts"
+   },
+   "photos": [
+    "flan-lado-500",
+    "mousse-au-chocolat-500",
+    "panacotta-lado-500"
+   ],
+   "liveImages": [
+    "https://zedopipo.ch/wp-content/uploads/2021/07/flan-lado-500-350x233.jpg",
+    "https://zedopipo.ch/wp-content/uploads/2021/07/mousse-au-chocolat-500-350x233.jpg",
+    "https://zedopipo.ch/wp-content/uploads/2021/07/panacotta-lado-500-350x233.jpg"
+   ],
+   "items": [
+    {
+     "id": "desserts-flan-caramel",
+     "name": "Flan caramel",
+     "livePrice": "CHF 9,50 .-",
+     "price": "9.50",
+     "desc": {
+      "fr": "Flan caramel fait maison",
+      "en": "Flan caramel homemade",
+      "pt": "Pudim caseiro",
+      "it": "Flan al caramello fatto in casa",
+      "de": "Hausgemachter Caramelflan"
+     },
+     "side": "none",
+     "photo": "flan-lado-500"
+    },
+    {
+     "id": "desserts-mousse-au-chocolat",
+     "name": "Mousse au chocolat",
+     "livePrice": "CHF 9,50 .-",
+     "price": "9.50",
+     "desc": {
+      "fr": "Mousse au chocolat fait maison",
+      "en": "Chocolate mousse homemade",
+      "pt": "Mousse de chocolate caseira",
+      "it": "Mousse al cioccolato fatta in casa",
+      "de": "Hausgemachte Schokoladenmousse"
+     },
+     "side": "none",
+     "photo": "mousse-au-chocolat-500"
+    },
+    {
+     "id": "desserts-leite-creme",
+     "name": "Leite creme",
+     "livePrice": "CHF 9,50 .-",
+     "price": "9.50",
+     "desc": {
+      "fr": "Crème brûlée",
+      "pt": "Leite creme quemado",
+      "en": "Crème brûlée",
+      "it": "Crema bruciata",
+      "de": "Crème brûlée"
+     },
+     "side": "none",
+     "added": [
+      "en"
+     ]
+    },
+    {
+     "id": "desserts-glaces",
+     "name": "Glaces",
+     "livePrice": "CHF 4 .-",
+     "price": "4.00",
+     "desc": {
+      "fr": "Sélection de glaces",
+      "en": "Selection of ice cream",
+      "pt": "Sortidos de gelados",
+      "it": "Selezione di gelati",
+      "de": "Glace-Auswahl"
+     },
+     "side": "none"
+    },
+    {
+     "id": "desserts-mousse-de-mangue",
+     "name": "Mousse de mangue",
+     "livePrice": "CHF 9,50 .-",
+     "price": "9.50",
+     "desc": {
+      "en": "Mango mousse",
+      "fr": "Mousse de mangue",
+      "pt": "Mousse de manga",
+      "it": "Mousse al mango",
+      "de": "Mangomousse"
+     },
+     "side": "none"
+    },
+    {
+     "id": "desserts-panna-cotta",
+     "name": "Panna cotta",
+     "livePrice": "CHF 9,50 .-",
+     "price": "9.50",
+     "desc": {
+      "fr": "Panna cotta",
+      "pt": "panacota",
+      "it": "Panna cotta",
+      "de": "Panna cotta"
+     },
+     "side": "none",
+     "photo": "panacotta-lado-500"
+    }
+   ]
+  }
+ ]
+}
