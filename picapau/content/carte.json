@@ -1,0 +1,748 @@
+{
+ "_source": "https://picapau.ch/ (inline script: MENU, PREORDER, T.menuData), captured 2026-10-29. IT/DE: content/carte-it-de.json.",
+ "sections": [
+  {
+   "id": "entrees",
+   "title": {
+    "fr": "Entrées",
+    "pt": "Entradas",
+    "en": "Starters",
+    "it": "Antipasti",
+    "de": "Vorspeisen"
+   },
+   "photos": [
+    "salgados-presunto",
+    "gambas-ao-alho"
+   ],
+   "items": [
+    {
+     "id": "entrees-salgados-tradicionais",
+     "name": "Salgados Tradicionais",
+     "price": "5.-",
+     "desc": {
+      "fr": "Rissóis de Carne (Viande hachée)\nRissóis de Camarão (Crevette)\nBolinhos de Bacalhau (Morue)",
+      "pt": "Rissóis de Carne\nRissóis de Camarão\nBolinhos de Bacalhau",
+      "en": "Rissóis de Carne (minced beef)\nRissóis de Camarão (prawn)\nBolinhos de Bacalhau (cod)",
+      "it": "Rissóis de Carne (carne macinata)\nRissóis de Camarão (gamberi)\nBolinhos de Bacalhau (baccalà)",
+      "de": "Rissóis de Carne (Hackfleisch)\nRissóis de Camarão (Crevetten)\nBolinhos de Bacalhau (Stockfisch)"
+     },
+     "surCommande": false,
+     "extra": {
+      "fr": "Beignets Traditionnels · 2 pièces au choix",
+      "pt": "Salgados tradicionais · 2 peças à escolha",
+      "en": "Traditional fritters · 2 pieces of your choice",
+      "it": "Frittelle tradizionali · 2 pezzi a scelta",
+      "de": "Traditionelle Frittierspezialitäten · 2 Stück nach Wahl"
+     },
+     "note": {
+      "fr": "Pièce supplémentaire : 2.50 / Les 6 pièces : 15.- (puis 2.- l'unité)",
+      "pt": "Peça adicional: 2,50 / 6 peças: 15.- (depois 2.- cada)",
+      "en": "Extra piece: 2.50 / 6 pieces: 15.- (then 2.- each)",
+      "it": "Pezzo supplementare: 2.50 / 6 pezzi: 15.- (poi 2.- l'uno)",
+      "de": "Zusätzliches Stück: 2.50 / 6 Stück: 15.- (danach 2.- pro Stück)"
+     },
+     "photo": "salgados-presunto"
+    },
+    {
+     "id": "entrees-moelas",
+     "name": "Moelas",
+     "price": "8.-",
+     "desc": {
+      "fr": "Gésiers de poulet mijotés dans une sauce maison pimentée.",
+      "pt": "Moelas de frango estufadas num molho caseiro picante.",
+      "en": "Chicken gizzards slowly cooked in a house spicy sauce.",
+      "it": "Ventrigli di pollo stufati in una salsa piccante della casa.",
+      "de": "Hühnermägen, in einer hausgemachten pikanten Sauce geschmort."
+     },
+     "surCommande": false
+    },
+    {
+     "id": "entrees-tabua-de-presunto-e-queijo",
+     "name": "Tábua de Presunto e Queijo",
+     "price": "15.-",
+     "desc": {
+      "fr": "Plateau de jambon cru et de fromage.",
+      "pt": "Tábua de presunto e queijo.",
+      "en": "A platter of cured ham and cheese.",
+      "it": "Tagliere di prosciutto crudo e formaggio.",
+      "de": "Platte mit Rohschinken und Käse."
+     },
+     "surCommande": false
+    },
+    {
+     "id": "entrees-ameijoas-a-bulhao-pato",
+     "name": "Amêijoas à Bulhão Pato",
+     "price": "18.-",
+     "desc": {
+      "fr": "Palourdes sautées à l'huile d'olive, à l'ail et à la coriandre.",
+      "pt": "Amêijoas salteadas em azeite, alho e coentros.",
+      "en": "Clams sautéed in olive oil, garlic and coriander.",
+      "it": "Vongole saltate in olio d'oliva, aglio e coriandolo.",
+      "de": "Venusmuscheln, in Olivenöl mit Knoblauch und Koriander sautiert."
+     },
+     "surCommande": false,
+     "note": {
+      "fr": "Disponible uniquement de vendredi à dimanche",
+      "pt": "Disponível apenas de sexta-feira a domingo.",
+      "en": "Available Friday to Sunday only.",
+      "it": "Disponibile solo dal venerdì alla domenica",
+      "de": "Nur von Freitag bis Sonntag erhältlich"
+     }
+    },
+    {
+     "id": "entrees-gambas-ao-alho",
+     "name": "Gambas ao Alho",
+     "price": "20.-",
+     "desc": {
+      "fr": "Grosses crevettes sautées à l’ail (6 unités), nappées d’une sauce maison pimentée.",
+      "pt": "Gambas grandes salteadas com alho (6 unidades), cobertas com molho picante da casa.",
+      "en": "Large prawns sautéed with garlic (6 pieces), topped with our house spicy sauce.",
+      "it": "Gamberoni saltati all'aglio (6 pezzi), nappati con una salsa piccante della casa.",
+      "de": "Grosse Crevetten mit Knoblauch sautiert (6 Stück), mit hausgemachter pikanter Sauce."
+     },
+     "surCommande": false
+    },
+    {
+     "id": "entrees-pica-pau",
+     "name": "Pica Pau",
+     "price": "24.-",
+     "desc": {
+      "fr": "Morceaux de bœuf, saucisse de porc et linguiça, sautés dans une sauce maison pimentée.",
+      "pt": "Pedaços de vaca, salsicha de porco e linguiça, salteados num molho picante da casa.",
+      "en": "Beef pieces, pork sausage and linguiça, sautéed in our house spicy sauce.",
+      "it": "Bocconcini di manzo, salsiccia di maiale e linguiça, saltati in una salsa piccante della casa.",
+      "de": "Rindfleischstücke, Schweinswurst und Linguiça, in hausgemachter pikanter Sauce sautiert."
+     },
+     "surCommande": false
+    },
+    {
+     "id": "entrees-salada-de-polvo",
+     "name": "Salada de Polvo",
+     "price": "24.-",
+     "desc": {
+      "fr": "Poulpe assaisonné à l'huile d'olive, servi avec une salade mixte.",
+      "pt": "Polvo temperado com azeite, servido com salada mista.",
+      "en": "Octopus seasoned with olive oil, served with a mixed salad.",
+      "it": "Polpo condito con olio d'oliva, servito con un'insalata mista.",
+      "de": "Oktopus mit Olivenöl angemacht, serviert mit gemischtem Salat."
+     },
+     "surCommande": false
+    },
+    {
+     "id": "entrees-polvo-a-galega",
+     "name": "Polvo à Galega",
+     "price": "24.-",
+     "desc": {
+      "fr": "Poulpe servi avec des pommes de terre en rondelles, arrosé d'huile d'olive et saupoudré de paprika.",
+      "pt": "Polvo servido com batatas às rodelas, coberto com azeite e polvilhado com pimentão.",
+      "en": "Octopus served with sliced potatoes, drizzled with olive oil and sprinkled with paprika.",
+      "it": "Polpo servito con patate a rondelle, irrorato d'olio d'oliva e spolverato di paprika.",
+      "de": "Oktopus auf Kartoffelscheiben, mit Olivenöl beträufelt und mit Paprika bestäubt."
+     },
+     "surCommande": false
+    },
+    {
+     "id": "entrees-salada-mista",
+     "name": "Salada Mista",
+     "price": "5.-",
+     "desc": {
+      "fr": "Salade mixte et sa sauce blanche maison (assaisonnement huile d'olive et vinaigre sur demande).",
+      "pt": "Salada mista com molho branco da casa (tempero de azeite e vinagre disponível mediante pedido).",
+      "en": "Mixed salad with our house white dressing (olive oil and vinegar dressing available on request).",
+      "it": "Insalata mista con la sua salsa bianca della casa (condimento olio d'oliva e aceto su richiesta).",
+      "de": "Gemischter Salat mit hausgemachter weisser Sauce (Olivenöl und Essig auf Wunsch)."
+     },
+     "surCommande": false
+    }
+   ]
+  },
+  {
+   "id": "viandes",
+   "title": {
+    "fr": "Viandes",
+    "pt": "Carnes",
+    "en": "Meat",
+    "it": "Carne",
+    "de": "Fleisch"
+   },
+   "photos": [
+    "pica-pau-companhia"
+   ],
+   "items": [
+    {
+     "id": "viandes-pica-pau-e-companhia",
+     "name": "Pica Pau & Companhia",
+     "price": "65.-",
+     "desc": {
+      "fr": "Généreux plateau dégustation : Pica Pau, poulpe, ovos rotos (frites, jambon cru et œufs fondants mélangés), moelas, accompagnés d'un assortiment de beignets traditionnels (2 à la viande, 2 aux crevettes, 2 à la morue), frites maison et sur demande, du riz.",
+      "pt": "Generosa tábua de degustação: Pica Pau, polvo, ovos rotos (batatas fritas, presunto cru e ovos com gema cremosa misturados), moelas, acompanhada por uma seleção de salgados tradicionais (2 de carne, 2 de camarão, 2 de bacalhau), batatas fritas caseiras e, mediante pedido, arroz.",
+      "en": "Generous tasting platter: Pica Pau, octopus, ovos rotos (fries, cured ham and runny eggs mixed together), gizzards, accompanied by a selection of traditional fritters (2 beef, 2 prawn, 2 cod), house fries and, on request, rice.",
+      "it": "Generoso tagliere degustazione: Pica Pau, polpo, ovos rotos (patatine fritte, prosciutto crudo e uova dal tuorlo morbido mescolati), ventrigli, accompagnati da un assortimento di frittelle tradizionali (2 di carne, 2 di gamberi, 2 di baccalà), patatine fritte della casa e, su richiesta, riso.",
+      "de": "Grosszügige Degustationsplatte: Pica Pau, Oktopus, Ovos rotos (Pommes frites, Rohschinken und weiche Eier vermischt), Hühnermägen, dazu eine Auswahl traditioneller Frittierspezialitäten (2 mit Fleisch, 2 mit Crevetten, 2 mit Stockfisch), hausgemachte Pommes frites und auf Wunsch Reis."
+     },
+     "surCommande": false,
+     "extra": {
+      "fr": "(conseillé pour 2-3 personnes)",
+      "pt": "(recomendado para 2-3 pessoas)",
+      "en": "(recommended for 2–3 people)",
+      "it": "(consigliato per 2-3 persone)",
+      "de": "(empfohlen für 2–3 Personen)"
+     },
+     "photo": "pica-pau-companhia"
+    },
+    {
+     "id": "viandes-francesinha",
+     "name": "Francesinha",
+     "price": "25.-",
+     "desc": {
+      "fr": "Plat emblématique de Porto : pain de mie richement garni d'une tranche de bœuf, jambon, mortadelle et charcuteries traditionnelles (chorizo, linguiça, saucisse), recouvert de fromage fondant et nappé de notre sauce maison.",
+      "pt": "Prato emblemático do Porto: pão de forma generosamente recheado com uma fatia de vaca, fiambre, mortadela e enchidos tradicionais (chouriço, linguiça, salsicha), coberto com queijo derretido e o nosso molho da casa.",
+      "en": "Porto’s iconic dish: sliced bread generously filled with beef, ham, mortadella and traditional cold cuts (chorizo, linguiça, sausage), topped with melted cheese and our house sauce.",
+      "it": "Il piatto simbolo di Porto: pancarré riccamente farcito con una fetta di manzo, prosciutto cotto, mortadella e salumi tradizionali (chorizo, linguiça, salsiccia), ricoperto di formaggio fuso e nappato con la nostra salsa della casa.",
+      "de": "Das Wahrzeichen Portos auf dem Teller: Toastbrot, reich belegt mit einer Scheibe Rindfleisch, Schinken, Mortadella und traditionellen Wurstwaren (Chorizo, Linguiça, Wurst), mit geschmolzenem Käse überbacken und mit unserer Haussauce übergossen."
+     },
+     "surCommande": false
+    },
+    {
+     "id": "viandes-cachorro",
+     "name": "Cachorro",
+     "price": "20.-",
+     "desc": {
+      "fr": "Hot-Dog revisité façon Porto : pain à Hot-Dog garni de saucisse, jambon et mortadelle, recouvert de fromage fondant et nappé de notre sauce maison.",
+      "pt": "Hot-dog à moda do Porto: pão de hot-dog recheado com salsicha, fiambre e mortadela, coberto com queijo derretido e o nosso molho da casa.",
+      "en": "Porto-style hot dog: hot dog bun filled with sausage, ham and mortadella, topped with melted cheese and our house sauce.",
+      "it": "Hot dog rivisitato alla maniera di Porto: panino da hot dog farcito con salsiccia, prosciutto cotto e mortadella, ricoperto di formaggio fuso e nappato con la nostra salsa della casa.",
+      "de": "Hotdog nach Porto-Art: Hotdog-Brot mit Wurst, Schinken und Mortadella, mit geschmolzenem Käse überbacken und mit unserer Haussauce übergossen."
+     },
+     "surCommande": false
+    },
+    {
+     "id": "viandes-bitoque-de-porco",
+     "name": "Bitoque de Porco",
+     "price": "24.-",
+     "desc": {
+      "fr": "Steak de porc grillé, accompagné d’un œuf au plat, de riz et de frites maison.",
+      "pt": "Bife de porco grelhado, acompanhado de ovo estrelado, arroz e batatas fritas caseiras.",
+      "en": "Grilled pork steak, served with a fried egg, rice and house fries.",
+      "it": "Bistecca di maiale alla griglia, servita con uovo all'occhio di bue, riso e patatine fritte della casa.",
+      "de": "Grilliertes Schweinssteak mit Spiegelei, Reis und hausgemachten Pommes frites."
+     },
+     "surCommande": false
+    },
+    {
+     "id": "viandes-grelhada-mista",
+     "name": "Grelhada Mista",
+     "price": "27.-",
+     "desc": {
+      "fr": "Assortiment de viandes grillées : tranche de bœuf, tranche de porc, poitrine de porc et saucisse, accompagné de frites maison.",
+      "pt": "Seleção de carnes grelhadas: bife de vaca, bife de porco, entremeada de porco e salsicha, acompanhada de batatas fritas caseiras.",
+      "en": "Selection of grilled meats: beef, pork, pork belly and sausage, served with house fries.",
+      "it": "Assortimento di carni alla griglia: fetta di manzo, fetta di maiale, pancetta di maiale e salsiccia, con patatine fritte della casa.",
+      "de": "Auswahl an grilliertem Fleisch: Rindsschnitte, Schweinsschnitte, Schweinsbauch und Wurst, mit hausgemachten Pommes frites."
+     },
+     "surCommande": false
+    },
+    {
+     "id": "viandes-carne-de-porco-a-alentejana",
+     "name": "Carne de Porco à Alentejana",
+     "price": "28.-",
+     "desc": {
+      "fr": "Le célèbre plat terre-mer portugais : tendres cubes de porc marinés à l'ail, poêlés avec des palourdes et des pommes de terre frites en dés.",
+      "pt": "O famoso prato português de terra e mar: tenros cubos de porco marinados em alho, salteados com amêijoas e batatas fritas em cubos.",
+      "en": "Portugal’s famous surf-and-turf dish: tender pork cubes marinated with garlic, sautéed with clams and diced fried potatoes.",
+      "it": "Il celebre piatto portoghese terra-mare: teneri cubetti di maiale marinati all'aglio, saltati in padella con vongole e patate fritte a cubetti.",
+      "de": "Der berühmte portugiesische Klassiker von Land und Meer: zarte, in Knoblauch marinierte Schweinefleischwürfel, in der Pfanne mit Venusmuscheln und frittierten Kartoffelwürfeln gebraten."
+     },
+     "surCommande": false,
+     "note": {
+      "fr": "Disponible uniquement de vendredi à dimanche",
+      "pt": "Disponível apenas de sexta-feira a domingo.",
+      "en": "Available Friday to Sunday only.",
+      "it": "Disponibile solo dal venerdì alla domenica",
+      "de": "Nur von Freitag bis Sonntag erhältlich"
+     }
+    },
+    {
+     "id": "viandes-bitoque-de-vaca",
+     "name": "Bitoque de Vaca",
+     "price": "29.-",
+     "desc": {
+      "fr": "Steak de bœuf (viande maturée) grillé, accompagné d’un œuf au plat, de riz et de frites maison.",
+      "pt": "Bife de vaca (carne maturada) grelhado, acompanhado de ovo estrelado, arroz e batatas fritas caseiras.",
+      "en": "Grilled aged beef steak, served with a fried egg, rice and house fries.",
+      "it": "Bistecca di manzo (carne frollata) alla griglia, servita con uovo all'occhio di bue, riso e patatine fritte della casa.",
+      "de": "Grilliertes Rindssteak (gereiftes Fleisch) mit Spiegelei, Reis und hausgemachten Pommes frites."
+     },
+     "surCommande": false
+    },
+    {
+     "id": "viandes-bife-a-portuguesa",
+     "name": "Bife à Portuguesa",
+     "price": "32.-",
+     "desc": {
+      "fr": "Pavé de bœuf (viande maturée), surmonté de jambon cru et d'un œuf au plat, poêlé dans une sauce à l'ail et à la moutarde, accompagné de chips maison.",
+      "pt": "Naco de vaca (carne maturada), coberto com presunto cru e ovo estrelado, salteado num molho de alho e mostarda, acompanhado de chips caseiras.",
+      "en": "Aged beef steak topped with cured ham and a fried egg, cooked in a garlic and mustard sauce, served with house-made crisps.",
+      "it": "Trancio di manzo (carne frollata) sormontato da prosciutto crudo e uovo all'occhio di bue, cotto in padella in una salsa all'aglio e senape, servito con chips della casa.",
+      "de": "Rindssteak (gereiftes Fleisch) mit Rohschinken und Spiegelei, in einer Knoblauch-Senf-Sauce gebraten, dazu hausgemachte Chips."
+     },
+     "surCommande": false
+    },
+    {
+     "id": "viandes-entrecote-de-vaca",
+     "name": "Entrecôte de Vaca",
+     "price": "36.-",
+     "desc": {
+      "fr": "Entrecôte de bœuf (viande maturée) grillée, accompagnée de frites maison.",
+      "pt": "Entrecôte de vaca (carne maturada) grelhada, acompanhada de batatas fritas caseiras.",
+      "en": "Grilled aged beef rib steak, served with house fries.",
+      "it": "Entrecôte di manzo (carne frollata) alla griglia, servita con patatine fritte della casa.",
+      "de": "Grilliertes Rindsentrecôte (gereiftes Fleisch) mit hausgemachten Pommes frites."
+     },
+     "surCommande": false
+    },
+    {
+     "id": "viandes-costeletas-de-borrego",
+     "name": "Costeletas de Borrego",
+     "price": "30.-",
+     "desc": {
+      "fr": "Côtelettes d’agneau grillées, accompagnement au choix.",
+      "pt": "Costeletas de borrego grelhadas, acompanhamento à escolha.",
+      "en": "Grilled lamb chops, with your choice of side.",
+      "it": "Costolette d'agnello alla griglia, contorno a scelta.",
+      "de": "Grillierte Lammkoteletts, Beilage nach Wahl."
+     },
+     "surCommande": false
+    }
+   ]
+  },
+  {
+   "id": "poissons",
+   "title": {
+    "fr": "Poissons",
+    "pt": "Peixe",
+    "en": "Fish",
+    "it": "Pesce",
+    "de": "Fisch"
+   },
+   "photos": [
+    "polvo-a-lagareiro",
+    "bacalhau-a-braga",
+    "polvo-batatas",
+    "peixe-grelhado"
+   ],
+   "items": [
+    {
+     "id": "poissons-bacalhau-a-braga",
+     "name": "Bacalhau à Braga",
+     "price": "35.-",
+     "desc": {
+      "fr": "Morue frite, accompagnée de chips de pommes de terre maison et nappée d’une sauce aux oignons et poivrons.",
+      "pt": "Bacalhau frito, acompanhado de batatas às rodelas fritas e coberto com molho de cebola e pimento.",
+      "en": "Fried cod served with house-made potato crisps and topped with an onion and pepper sauce.",
+      "it": "Baccalà fritto, servito con chips di patate della casa e nappato con una salsa di cipolle e peperoni.",
+      "de": "Frittierter Stockfisch mit hausgemachten Kartoffelchips und einer Sauce aus Zwiebeln und Peperoni."
+     },
+     "surCommande": false,
+     "photo": "bacalhau-a-braga"
+    },
+    {
+     "id": "poissons-bacalhau-a-lagareiro",
+     "name": "Bacalhau à Lagareiro",
+     "price": "35.-",
+     "desc": {
+      "fr": "Morue grillée puis rôtie au four, accompagnée de pommes de terre écrasées et arrosée d’huile d’olive.",
+      "pt": "Bacalhau grelhado e depois assado no forno, acompanhado de batatas à murro e coberto com azeite.",
+      "en": "Grilled then oven-roasted cod, served with crushed potatoes and drizzled with olive oil.",
+      "it": "Baccalà grigliato e poi arrostito al forno, servito con patate schiacciate e irrorato d'olio d'oliva.",
+      "de": "Stockfisch, grilliert und danach im Ofen gebraten, mit zerdrückten Kartoffeln und Olivenöl."
+     },
+     "surCommande": false
+    },
+    {
+     "id": "poissons-filetes-de-dourada",
+     "name": "Filetes de Dourada",
+     "price": "30.-",
+     "desc": {
+      "fr": "Filets de dorade grillés, arrosés d'huile d'olive, accompagnement au choix.",
+      "pt": "Filetes de dourada grelhados, com azeite, acompanhamento à escolha.",
+      "en": "Grilled sea bream fillets, drizzled with olive oil, with your choice of side.",
+      "it": "Filetti di orata alla griglia, irrorati d'olio d'oliva, contorno a scelta.",
+      "de": "Grillierte Doradenfilets mit Olivenöl, Beilage nach Wahl."
+     },
+     "surCommande": false
+    },
+    {
+     "id": "poissons-filetes-de-robalo",
+     "name": "Filetes de Robalo",
+     "price": "30.-",
+     "desc": {
+      "fr": "Filets de bar grillés, arrosés d'huile d'olive, accompagnement au choix.",
+      "pt": "Filetes de robalo grelhados, com azeite, acompanhamento à escolha.",
+      "en": "Grilled sea bass fillets, drizzled with olive oil, with your choice of side.",
+      "it": "Filetti di branzino alla griglia, irrorati d'olio d'oliva, contorno a scelta.",
+      "de": "Grillierte Wolfsbarschfilets mit Olivenöl, Beilage nach Wahl."
+     },
+     "surCommande": false
+    },
+    {
+     "id": "poissons-misto-do-mar",
+     "name": "Misto do Mar",
+     "price": "36.-",
+     "desc": {
+      "fr": "Assortiment de la mer grillé comprenant filet de dorade, filet de bar, saumon et crevette, arrosé d’huile d’olive, accompagnement au choix.",
+      "pt": "Seleção de peixe e marisco grelhado: filete de dourada, filete de robalo, salmão e camarão, com azeite, acompanhamento à escolha.",
+      "en": "Grilled selection from the sea including sea bream fillet, sea bass fillet, salmon and prawn, drizzled with olive oil, with your choice of side.",
+      "it": "Assortimento di mare alla griglia con filetto di orata, filetto di branzino, salmone e gambero, irrorato d'olio d'oliva, contorno a scelta.",
+      "de": "Grillierte Meeresauswahl mit Doradenfilet, Wolfsbarschfilet, Lachs und Crevette, mit Olivenöl, Beilage nach Wahl."
+     },
+     "surCommande": false
+    },
+    {
+     "id": "poissons-lulas-grelhadas",
+     "name": "Lulas Grelhadas",
+     "price": "28.-",
+     "desc": {
+      "fr": "Calamars grillés, arrosés d'huile d'olive, accompagnement au choix.",
+      "pt": "Lulas grelhadas, com azeite, acompanhamento à escolha.",
+      "en": "Grilled squid, drizzled with olive oil, with your choice of side.",
+      "it": "Calamari alla griglia, irrorati d'olio d'oliva, contorno a scelta.",
+      "de": "Grillierte Calamari mit Olivenöl, Beilage nach Wahl."
+     },
+     "surCommande": false
+    },
+    {
+     "id": "poissons-choco-grelhado",
+     "name": "Choco Grelhado",
+     "price": "28.-",
+     "desc": {
+      "fr": "Seiche grillée, arrosée d'huile d'olive, accompagnement au choix.",
+      "pt": "Choco grelhado, com azeite, acompanhamento à escolha.",
+      "en": "Grilled cuttlefish, drizzled with olive oil, with your choice of side.",
+      "it": "Seppia alla griglia, irrorata d'olio d'oliva, contorno a scelta.",
+      "de": "Grillierte Sepia mit Olivenöl, Beilage nach Wahl."
+     },
+     "surCommande": false
+    },
+    {
+     "id": "poissons-gambas-ao-alho",
+     "name": "Gambas ao Alho",
+     "price": "30.-",
+     "desc": {
+      "fr": "Grosses crevettes sautées à l’ail (10 unités), nappées d’une sauce maison pimentée, accompagnées de frites maison.",
+      "pt": "Gambas grandes salteadas com alho (10 unidades), cobertas com molho picante da casa, acompanhadas de batatas fritas caseiras.",
+      "en": "Large prawns sautéed with garlic (10 pieces), topped with our house spicy sauce and served with house fries.",
+      "it": "Gamberoni saltati all'aglio (10 pezzi), nappati con una salsa piccante della casa, serviti con patatine fritte della casa.",
+      "de": "Grosse Crevetten mit Knoblauch sautiert (10 Stück), mit hausgemachter pikanter Sauce und hausgemachten Pommes frites."
+     },
+     "surCommande": false,
+     "photo": "gambas-ao-alho"
+    },
+    {
+     "id": "poissons-polvo-a-lagareiro",
+     "name": "Polvo à Lagareiro",
+     "price": "37.-",
+     "desc": {
+      "fr": "Poulpe grillé puis rôti au four, accompagné de pommes de terre écrasées et arrosé d’huile d’olive.",
+      "pt": "Polvo grelhado e depois assado no forno, acompanhado de batatas à murro e coberto com azeite.",
+      "en": "Grilled then oven-roasted octopus, served with crushed potatoes and drizzled with olive oil.",
+      "it": "Polpo grigliato e poi arrostito al forno, servito con patate schiacciate e irrorato d'olio d'oliva.",
+      "de": "Oktopus, grilliert und danach im Ofen gebraten, mit zerdrückten Kartoffeln und Olivenöl."
+     },
+     "surCommande": false,
+     "photo": "polvo-a-lagareiro"
+    },
+    {
+     "id": "poissons-espetada-de-polvo-lulas-e-camarao",
+     "name": "Espetada de Polvo, Lulas e Camarão",
+     "price": "37.-",
+     "desc": {
+      "fr": "Brochette mixte de poulpe, calamars et crevettes grillés, accompagnement au choix.",
+      "pt": "Espetada mista de polvo, lulas e camarão grelhados, acompanhamento à escolha.",
+      "en": "Mixed skewer of grilled octopus, squid and prawns, with your choice of side.",
+      "it": "Spiedino misto di polpo, calamari e gamberi alla griglia, contorno a scelta.",
+      "de": "Gemischter Spiess mit grilliertem Oktopus, Calamari und Crevetten, Beilage nach Wahl."
+     },
+     "surCommande": false
+    }
+   ]
+  },
+  {
+   "id": "enfant",
+   "title": {
+    "fr": "Menu enfant",
+    "pt": "Menu infantil",
+    "en": "Kids’ menu",
+    "it": "Menu bambini",
+    "de": "Kindermenü"
+   },
+   "photos": [],
+   "items": [
+    {
+     "id": "enfant-salsicha-de-vitela",
+     "name": "Salsicha de Vitela",
+     "price": "12.-",
+     "desc": {
+      "fr": "Saucisse de veau grillée, accompagnée d’un œuf au plat, de riz et de frites maison.",
+      "pt": "Salsicha de vitela grelhada, acompanhada de ovo estrelado, arroz e batatas fritas caseiras.",
+      "en": "Grilled veal sausage, served with a fried egg, rice and house fries.",
+      "it": "Salsiccia di vitello alla griglia, servita con uovo all'occhio di bue, riso e patatine fritte della casa.",
+      "de": "Grillierte Kalbswurst mit Spiegelei, Reis und hausgemachten Pommes frites."
+     },
+     "surCommande": false
+    },
+    {
+     "id": "enfant-omelette",
+     "name": "Omelette",
+     "price": "12.-",
+     "desc": {
+      "fr": "Omelette garnie de jambon et fromage, accompagnée de riz et de frites maison.",
+      "pt": "Omelete recheada com fiambre e queijo, acompanhada de arroz e batatas fritas caseiras.",
+      "en": "Omelette filled with ham and cheese, served with rice and house fries.",
+      "it": "Omelette farcita con prosciutto cotto e formaggio, servita con riso e patatine fritte della casa.",
+      "de": "Omelette mit Schinken und Käse, dazu Reis und hausgemachte Pommes frites."
+     },
+     "surCommande": false
+    },
+    {
+     "id": "enfant-mini-bitoque-de-porco",
+     "name": "Mini Bitoque de Porco",
+     "price": "14.-",
+     "desc": {
+      "fr": "Petit steak de porc grillé, accompagné d’un œuf au plat, de riz et de frites maison.",
+      "pt": "Pequeno bife de porco grelhado, acompanhado de ovo estrelado, arroz e batatas fritas caseiras.",
+      "en": "Small grilled pork steak, served with a fried egg, rice and house fries.",
+      "it": "Piccola bistecca di maiale alla griglia, servita con uovo all'occhio di bue, riso e patatine fritte della casa.",
+      "de": "Kleines grilliertes Schweinssteak mit Spiegelei, Reis und hausgemachten Pommes frites."
+     },
+     "surCommande": false
+    },
+    {
+     "id": "enfant-mini-bitoque-de-vaca",
+     "name": "Mini Bitoque de Vaca",
+     "price": "17.-",
+     "desc": {
+      "fr": "Petit steak de bœuf grillé, accompagné d’un œuf au plat, de riz et de frites maison.",
+      "pt": "Pequeno bife de vaca grelhado, acompanhado de ovo estrelado, arroz e batatas fritas caseiras.",
+      "en": "Small grilled beef steak, served with a fried egg, rice and house fries.",
+      "it": "Piccola bistecca di manzo alla griglia, servita con uovo all'occhio di bue, riso e patatine fritte della casa.",
+      "de": "Kleines grilliertes Rindssteak mit Spiegelei, Reis und hausgemachten Pommes frites."
+     },
+     "surCommande": false
+    }
+   ]
+  },
+  {
+   "id": "desserts",
+   "title": {
+    "fr": "Desserts",
+    "pt": "Sobremesas",
+    "en": "Desserts",
+    "it": "Dessert",
+    "de": "Desserts"
+   },
+   "photos": [],
+   "items": [
+    {
+     "id": "desserts-pudim",
+     "name": "Pudim",
+     "price": "7.-",
+     "desc": {
+      "fr": "Flan traditionnel portugais nappé de caramel.",
+      "pt": "Flan tradicional português coberto com caramelo.",
+      "en": "Traditional Portuguese flan topped with caramel.",
+      "it": "Flan tradizionale portoghese nappato di caramello.",
+      "de": "Traditioneller portugiesischer Flan mit Karamell."
+     },
+     "surCommande": false
+    },
+    {
+     "id": "desserts-bolo-de-bolacha",
+     "name": "Bolo de Bolacha",
+     "price": "7.-",
+     "desc": {
+      "fr": "Gâteau étagé de biscuits Maria au café et crème onctueuse.",
+      "pt": "Bolo em camadas de bolachas Maria, café e creme aveludado.",
+      "en": "Layered cake of Maria biscuits, coffee and smooth cream.",
+      "it": "Torta a strati di biscotti Maria al caffè e crema vellutata.",
+      "de": "Schichttorte aus Maria-Biscuits mit Kaffee und samtiger Crème."
+     },
+     "surCommande": false
+    },
+    {
+     "id": "desserts-natas-do-ceu",
+     "name": "Natas do Céu",
+     "price": "7.-",
+     "desc": {
+      "fr": "Mousse légère, brisures de biscuits croquants et crème aux œufs.",
+      "pt": "Mousse leve, pedaços de bolacha crocante e creme de ovos.",
+      "en": "Light mousse, crunchy biscuit pieces and egg cream.",
+      "it": "Mousse leggera, briciole di biscotti croccanti e crema all'uovo.",
+      "de": "Leichte Mousse, knusprige Biscuitstücke und Eiercreme."
+     },
+     "surCommande": false
+    },
+    {
+     "id": "desserts-molotof",
+     "name": "Molotof",
+     "price": "7.-",
+     "desc": {
+      "fr": "Soufflé de blancs d'œufs aérien et caramélisé.",
+      "pt": "Soufflé leve de claras de ovo, caramelizado.",
+      "en": "Light, airy caramelized egg-white soufflé.",
+      "it": "Soufflé di albumi arioso e caramellato.",
+      "de": "Luftiges, karamellisiertes Eiweiss-Soufflé."
+     },
+     "surCommande": false
+    },
+    {
+     "id": "desserts-bolo-de-noz",
+     "name": "Bolo de Noz",
+     "price": "7.-",
+     "desc": {
+      "fr": "Gâteau moelleux aux éclats de noix.",
+      "pt": "Bolo macio com pedaços de noz.",
+      "en": "Moist cake with pieces of walnut.",
+      "it": "Torta soffice con granella di noci.",
+      "de": "Saftiger Kuchen mit Baumnussstücken."
+     },
+     "surCommande": false
+    },
+    {
+     "id": "desserts-bolo-de-chocolate",
+     "name": "Bolo de Chocolate",
+     "price": "7.-",
+     "desc": {
+      "fr": "Gâteau au chocolat tendre et fondant.",
+      "pt": "Bolo de chocolate macio e cremoso.",
+      "en": "Soft, moist chocolate cake.",
+      "it": "Torta al cioccolato tenera e fondente.",
+      "de": "Zarter, saftiger Schokoladenkuchen."
+     },
+     "surCommande": false
+    },
+    {
+     "id": "desserts-mousse-de-chocolate",
+     "name": "Mousse de Chocolate",
+     "price": "7.-",
+     "desc": {
+      "fr": "Mousse onctueuse et intense en cacao.",
+      "pt": "Mousse cremosa e intensa de cacau.",
+      "en": "Smooth, rich chocolate mousse.",
+      "it": "Mousse vellutata e intensa al cacao.",
+      "de": "Cremige, intensive Schokoladenmousse."
+     },
+     "surCommande": false
+    },
+    {
+     "id": "desserts-mousse-de-manga-e-maracuja",
+     "name": "Mousse de Manga e Maracujá",
+     "price": "7.-",
+     "desc": {
+      "fr": "Mousse légère à la mangue et au fruit de la passion.",
+      "pt": "Mousse leve de manga e maracujá.",
+      "en": "Light mango and passion fruit mousse.",
+      "it": "Mousse leggera al mango e frutto della passione.",
+      "de": "Leichte Mousse mit Mango und Passionsfrucht."
+     },
+     "surCommande": false
+    },
+    {
+     "id": "desserts-boule-de-glace",
+     "name": "Boule de Glace",
+     "price": "3.50",
+     "desc": {
+      "fr": "Saveurs : fraise · chocolat · vanille · citron.",
+      "pt": "Sabores: morango · chocolate · baunilha · limão.",
+      "en": "Flavors: strawberry · chocolate · vanilla · lemon.",
+      "it": "Gusti: fragola · cioccolato · vaniglia · limone.",
+      "de": "Sorten: Erdbeere · Schokolade · Vanille · Zitrone."
+     },
+     "surCommande": false
+    }
+   ],
+   "note": {
+    "fr": "Toutes nos pâtisseries sont faites maison.\nLes desserts tournent régulièrement et ne sont pas tous disponibles chaque jour.",
+    "pt": "Todos os nossos doces são feitos em casa.\nAs sobremesas mudam regularmente e nem todas estão disponíveis todos os dias.",
+    "en": "All our pastries are homemade.\nDesserts change regularly, and not all of them are available every day.",
+    "it": "Tutti i nostri dolci sono fatti in casa.\nI dessert cambiano regolarmente e non sono tutti disponibili ogni giorno.",
+    "de": "Unsere ganze Patisserie ist hausgemacht.\nDie Desserts wechseln regelmässig, und nicht alle sind jeden Tag erhältlich."
+   }
+  },
+  {
+   "id": "commande",
+   "title": {
+    "fr": "Sur commande",
+    "pt": "Por encomenda",
+    "en": "Pre-order",
+    "it": "Su ordinazione",
+    "de": "Auf Bestellung"
+   },
+   "photos": [],
+   "items": [
+    {
+     "id": "tripas-a-moda-do-porto",
+     "name": "Tripas à moda do Porto",
+     "price": null,
+     "surCommande": true
+    },
+    {
+     "id": "cozido-a-portuguesa",
+     "name": "Cozido à Portuguesa",
+     "price": null,
+     "surCommande": true
+    },
+    {
+     "id": "bacalhau-com-natas",
+     "name": "Bacalhau com Natas",
+     "price": null,
+     "surCommande": true
+    },
+    {
+     "id": "arroz-de-cabidela",
+     "name": "Arroz de Cabidela",
+     "price": null,
+     "surCommande": true
+    },
+    {
+     "id": "arroz-de-marisco",
+     "name": "Arroz de Marisco",
+     "price": null,
+     "surCommande": true
+    },
+    {
+     "id": "arroz-de-tamboril",
+     "name": "Arroz de Tamboril",
+     "price": null,
+     "surCommande": true
+    },
+    {
+     "id": "cabrito-assado",
+     "name": "Cabrito Assado",
+     "price": null,
+     "surCommande": true
+    },
+    {
+     "id": "leitao-assado",
+     "name": "Leitão Assado",
+     "price": null,
+     "surCommande": true
+    }
+   ],
+   "kicker": {
+    "fr": "À réserver au moins 3 jours à l'avance",
+    "pt": "Encomendar pelo menos 3 dias antes",
+    "en": "Please pre-order at least 3 days ahead",
+    "it": "Da ordinare almeno 3 giorni prima",
+    "de": "Mindestens 3 Tage im Voraus bestellen"
+   },
+   "text": {
+    "fr": "Prix sur demande selon le nombre de personnes et les produits. Un acompte pourra être demandé pour confirmer la commande. D'autres plats sont possibles sur demande.",
+    "pt": "Preço sob consulta conforme o número de pessoas e os produtos. Poderá ser solicitado um sinal para confirmar a encomenda. Outros pratos também são possíveis mediante pedido.",
+    "en": "Price on request depending on the number of people and the products. A deposit may be requested to confirm the order. Other dishes are also available on request.",
+    "it": "Prezzo su richiesta secondo il numero di persone e i prodotti. Per confermare l'ordine potrà essere richiesto un acconto. Altri piatti sono possibili su richiesta.",
+    "de": "Preis auf Anfrage, je nach Anzahl Personen und Produkten. Zur Bestätigung der Bestellung kann eine Anzahlung verlangt werden. Weitere Gerichte sind auf Anfrage möglich."
+   }
+  }
+ ]
+}

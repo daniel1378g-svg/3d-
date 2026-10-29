@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Douro shader</title>
+    <style>html,body{margin:0;height:100%;background:#000}canvas{display:block;width:100vw;height:100vh}</style>
+  </head>
+  <body>
+    <!-- Renders the hero's Douro shader alone. ?t=<seconds> freezes one frame (for the still image). -->
+    <canvas id="c"></canvas>
+    <script type="module">
+      import { createDouro } from "/src/three/douro.ts";
+      const canvas = document.getElementById("c");
+      const d = createDouro(canvas);
+      d.resize(innerWidth, innerHeight);
+      const t = new URLSearchParams(location.search).get("t");
+      if (t) { d.renderAt(Number(t)); document.title = "ready"; }
+      else { d.setRunning(true); addEventListener("pointermove", (e) => d.ripple(e.clientX / innerWidth, 1 - e.clientY / innerHeight, 1)); }
+    </script>
+  </body>
+</html>

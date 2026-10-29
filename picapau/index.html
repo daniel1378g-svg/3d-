@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Pica Pau - Restaurant portugais à Genève - L’Âme du Portugal</title>
+    <meta name="description" content="Plongez au cœur des traditions avec une cuisine portugaise authentique et généreuse. Restaurant familial à Genève : Francesinha, Bacalhau, Poulpe à Lagareiro et bien plus de spécialités portugaises." />
+    <meta name="theme-color" content="#1f4e99" />
+    <!--head-seo-->
+    <link rel="icon" type="image/png" sizes="32x32" href="/brand/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/brand/favicon-180.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Lato:wght@400;700&family=Caveat:wght@600&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Lato:wght@400;700&family=Caveat:wght@600&display=swap" /></noscript>
+    <script>
+      // First visit of the session on a home page: the intro panel is on screen from the first paint.
+      try {
+        var home = /^\/(fr|en|pt|it|de)\/?$/.test(location.pathname) || location.pathname === "/";
+        if (home && sessionStorage.getItem("pp-intro") !== "1" && !matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.dataset.intro = "play";
+      } catch (e) {}
+    </script>
+    <noscript>
+      <style>
+        /* without scripts the prerendered page shows everything in its final place */
+        .split-inner { transform: none !important; }
+        [style*="clip-path"] { clip-path: none !important; }
+        .river-window { clip-path: inset(calc(100% - var(--arch-h)) calc(50% - var(--arch-w) / 2) 0 round calc(var(--arch-w) / 2) calc(var(--arch-w) / 2) 0 0) !important; }
+      </style>
+    </noscript>
+    <style>
+      .intro-static { display: none; }
+      html[data-intro="play"] .intro-static { display: grid; position: fixed; inset: 0; z-index: 640; place-items: center; background: #1f4e99; }
+      .intro-static img { width: min(46vw, 300px); height: auto; transform: translateY(-90px); }
+    </style>
+  </head>
+  <body>
+    <!-- the first-visit intro panel, painted before the app loads; the app's intro takes over on top of it -->
+    <div class="intro-static" aria-hidden="true"><img src="/brand/oiseau-480.webp" alt="" width="300" height="298" fetchpriority="high" /></div>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

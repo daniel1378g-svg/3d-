@@ -1,0 +1,118 @@
+/* In the components layer, so Tailwind utilities on the same elements still win. The layer order is restated
+   first: this file can load before the main stylesheet, and the first mention of a layer fixes its rank. */
+@layer theme, base, components, utilities;
+@layer components {
+/* ---------- 1–2 · Hero and river story ---------- */
+.river { position: relative; height: 420svh; background: var(--azulejo); }
+.river-stage {
+  --arch-w: clamp(300px, 31vw, 540px);
+  --arch-h: min(76svh, calc(var(--arch-w) * 1.75));
+  position: sticky; top: 0; height: 100svh; overflow: hidden; background: var(--azulejo); isolation: isolate;
+  touch-action: pan-y;
+}
+.river-window { position: absolute; inset: 0; z-index: 1; background: #10142a; will-change: clip-path; }
+.river-poster, .river-canvas { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.river-canvas { transition: opacity 0.8s var(--ease-out); }
+.river-shade { position: absolute; inset: 0; opacity: 0; pointer-events: none; background: linear-gradient(90deg, rgba(11, 13, 16, 0.62), rgba(11, 13, 16, 0.12) 45%, rgba(11, 13, 16, 0.12) 55%, rgba(11, 13, 16, 0.62)); }
+.river-arch-ref { position: absolute; left: calc(50% - var(--arch-w) / 2); bottom: 0; width: var(--arch-w); height: var(--arch-h); pointer-events: none; visibility: hidden; }
+
+.river-hero { position: absolute; inset: 0; z-index: 3; color: var(--branco); pointer-events: none; }
+.river-hero > * { pointer-events: auto; }
+.river-title {
+  position: absolute; left: var(--gutter); right: var(--gutter); top: calc(100% - var(--arch-h) + 5svh);
+  display: grid; grid-template-columns: minmax(0, 1fr) var(--arch-w) minmax(0, 1fr); column-gap: clamp(20px, 2.6vw, 48px); align-items: start;
+  margin: 0; font-family: var(--font-display); font-weight: 800; line-height: 0.9; letter-spacing: -0.01em; text-transform: uppercase;
+  pointer-events: none;
+}
+.river-left, .river-right { container-type: inline-size; display: block; }
+.river-left { grid-column: 1; text-align: right; }
+.river-right { grid-column: 3; text-align: left; color: var(--dourado); padding-top: 1.1em; }
+.river-line { display: block; font-size: max(36px, min(140px, 12.5svh, calc(100cqi / (var(--longest) * 0.56)))); text-wrap: balance; }
+.river-actions { position: absolute; left: var(--gutter); bottom: clamp(28px, 6svh, 64px); max-width: calc(50% - var(--arch-w) / 2 - 2 * var(--gutter)); }
+.river-meta {
+  position: absolute; right: var(--gutter); bottom: clamp(70px, 10svh, 112px); max-width: calc(50% - var(--arch-w) / 2 - 2 * var(--gutter));
+  font: 500 14px / 1.5 var(--font-display); letter-spacing: 0.18em; text-transform: uppercase; color: var(--azulejo-claro); text-align: right;
+}
+.river-hint {
+  position: absolute; right: var(--gutter); bottom: clamp(24px, 4svh, 40px); display: flex; align-items: center; gap: 12px;
+  font: 500 13px / 1 var(--font-display); letter-spacing: 0.2em; text-transform: uppercase; color: var(--azulejo-claro); pointer-events: none;
+}
+
+.river-caps { position: absolute; inset: 0; z-index: 4; margin: 0; padding: 0; list-style: none; pointer-events: none; }
+.river-cap { position: absolute; opacity: 0; display: grid; gap: 14px; max-width: 440px; color: var(--branco); text-shadow: 0 2px 24px rgba(11, 13, 16, 0.55); }
+.river-cap[data-side="left"] { left: var(--gutter); top: 32%; }
+.river-cap[data-side="right"] { right: calc(var(--gutter) + 300px); top: 24%; }
+.river-cap-text { font: 500 clamp(24px, 2.3vw, 38px) / 1.15 var(--font-display); }
+.river-end {
+  position: absolute; z-index: 4; inset: 0; display: grid; place-content: center; justify-items: center; gap: 32px;
+  padding: calc(var(--header-h) + var(--label-h)) var(--gutter) 0; text-align: center; color: var(--branco); opacity: 0;
+  text-shadow: 0 2px 30px rgba(11, 13, 16, 0.5);
+}
+.river-end .display { max-width: 18ch; }
+
+.river-rail {
+  position: absolute; z-index: 4; right: var(--gutter); top: 50%; transform: translateY(-50%);
+  display: grid; grid-template-columns: auto 2px; column-gap: 14px; height: min(46svh, 420px);
+  color: var(--azulejo-claro); visibility: hidden; opacity: 0; pointer-events: none;
+}
+.river-track { position: relative; grid-row: 1; grid-column: 2; background: rgba(255, 250, 242, 0.25); }
+.river-fill { position: absolute; inset: 0; background: var(--francesinha); transform-origin: 50% 0; transform: scaleY(0); }
+.river-marks { position: relative; grid-row: 1; grid-column: 1; min-width: 16ch; margin: 0; padding: 0; list-style: none; font: 500 13px / 1.2 var(--font-display); letter-spacing: 0.16em; text-transform: uppercase; }
+.river-mark { position: absolute; right: 0; white-space: nowrap; text-align: right; transform: translateY(-50%); opacity: 0.5; transition: opacity 0.3s, color 0.3s; }
+.river-mark[data-on] { opacity: 1; color: var(--dourado); }
+.river-count { grid-column: 1 / -1; justify-self: end; margin-top: 16px; font: 500 13px / 1 var(--font-display); letter-spacing: 0.14em; }
+
+@media (max-aspect-ratio: 1/1), (max-width: 1023px) {
+  .river { height: 320svh; }
+  .river-stage { --arch-w: min(88vw, 560px); --arch-h: clamp(200px, calc(100svh - 470px), 54svh); }
+  .river-title { top: calc(var(--header-h) + var(--label-h) + 18px); display: block; }
+  .river-left, .river-right { text-align: left; padding: 0; container-type: normal; }
+  .river-line, .river-right .river-line { font-size: clamp(40px, 12.4vw, 84px); line-height: 0.92; hyphens: auto; }
+  .river-actions { position: absolute; top: auto; bottom: calc(var(--arch-h) + 22px); max-width: none; right: var(--gutter); }
+  .river-actions .btn { min-height: 48px; padding: 0 18px; font-size: 14px; }
+  .river-meta, .river-hint { display: none; }
+  .river-cap, .river-cap[data-side] { left: var(--gutter); right: var(--gutter); top: auto; bottom: 88px; max-width: none; }
+  .river-cap-text { font-size: clamp(22px, 6vw, 30px); }
+  .river-shade { background: linear-gradient(0deg, rgba(11, 13, 16, 0.78), rgba(11, 13, 16, 0.15) 60%, rgba(11, 13, 16, 0.3)); }
+  .river-rail { top: auto; bottom: 28px; left: var(--gutter); right: auto; transform: none; height: auto; grid-template-columns: auto; }
+  .river-count { justify-self: start; }
+  .river-track, .river-marks { display: none; }
+  .river-count { margin: 0; }
+}
+
+/* ---------- Sheets that slide over a pinned scene ---------- */
+.sheet-over { margin-top: -80svh; }
+@media (max-width: 767px) { .sheet-over { margin-top: -70svh; } }
+
+/* ---------- 3 · The four classics ---------- */
+.classics { height: 320svh; }
+.classics-stage { position: sticky; top: 0; height: 100svh; overflow: hidden; }
+.classics-grid {
+  position: relative; z-index: 1; height: 100%;
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr); gap: clamp(32px, 6vw, 110px); align-items: center;
+  padding-top: calc(var(--header-h) + var(--label-h) + 10px); padding-bottom: 4svh;
+}
+.classics-copy { display: grid; gap: 28px; align-content: center; }
+.classics-copy > .grid > .classic-copy { grid-area: 1 / 1; display: grid; gap: 24px; align-content: start; }
+.classics-frame {
+  position: relative; justify-self: center; width: min(100%, 520px); height: min(74svh, 720px);
+  border-radius: 999px 999px 24px 24px / 34% 34% 24px 24px; overflow: hidden; isolation: isolate;
+  box-shadow: 0 40px 80px -40px rgba(0, 0, 0, 0.7);
+}
+.classic-layer { position: absolute; inset: 0; transform-origin: 50% 100%; will-change: clip-path, transform; }
+.photo-slot {
+  position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%); white-space: nowrap;
+  padding: 8px 14px; border-radius: 999px; border: 1.5px dashed currentColor; color: var(--tinta);
+  font: 600 13px / 1 var(--font-display); letter-spacing: 0.14em; text-transform: uppercase; background: rgba(255, 250, 242, 0.6);
+}
+@media (max-width: 1023px) {
+  .classics { height: 260svh; }
+  .classics-grid { grid-template-columns: 1fr; grid-template-rows: auto minmax(0, 1fr); gap: 18px; align-items: start; padding-bottom: 20px; }
+  .classics-copy { gap: 14px; }
+  .classics-copy .fs-xxl { font-size: clamp(40px, 11vw, 72px); }
+  .classics-copy p { font-size: 15px; }
+  .classics-copy .text-4xl { font-size: 28px; }
+  .classics-frame { width: min(76vw, 360px); height: 100%; max-height: 46svh; align-self: end; }
+}
+
+}
