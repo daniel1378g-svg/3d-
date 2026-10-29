@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.cache/
+artifact/
+
+# the captured live HTML embeds the old site's own API tokens (Mapbox): never commit it; the .txt captures are enough
+content/raw/*.html

@@ -1,0 +1,267 @@
+[link https://www.daolafoes.ch/]
+[img https://www.daolafoes.ch/images/header/icon-home.png alt=""]
+[link https://www.daolafoes.ch/pt/login]
+[img https://www.daolafoes.ch/images/header/icon-account.png alt=""]
+Iniciar sessao
+|
+[link https://www.daolafoes.ch/pt/checkout]
+[img https://www.daolafoes.ch/images/header/icon-shopping-cart.png alt=""]
+Carrinho de Compras
+0
+|
+Língua
+[img https://www.daolafoes.ch/images/header/img-logo.png alt=""]
+[link https://www.facebook.com/cdlschlieren]
+[img https://www.daolafoes.ch/images/header/icon-facebook.png alt=""]
+[link https://twitter.com/casadaolafoes]
+[img https://www.daolafoes.ch/images/header/icon-twitter.png alt=""]
+[link https://vimeo.com/daolafoes]
+[img https://www.daolafoes.ch/images/header/icon-vimeo.png alt=""]
+[link https://www.daolafoes.ch/pt#]
+[img https://www.daolafoes.ch/images/header/icon-instagram.png alt=""]
+[link https://www.daolafoes.ch/pt/menu]
+ementa
+[link https://www.daolafoes.ch/pt#take%20away]
+take away
+[link https://www.daolafoes.ch/pt#servi%C3%A7os]
+serviços
+[link https://www.daolafoes.ch/pt#galeria]
+galeria
+[link https://www.daolafoes.ch/pt#sobre%20n%C3%B3s]
+sobre nós
+[link https://www.daolafoes.ch/pt#contactos]
+contactos
+[img https://www.daolafoes.ch/images/slideshow/img-home.jpg alt=""]
+[img https://www.daolafoes.ch/images/slideshow/slide_2.jpg alt=""]
+[img https://www.daolafoes.ch/images/slideshow/IMG_E5505.JPG alt=""]
+[img https://www.daolafoes.ch/images/slideshow/IMG_E5301.JPG alt=""]
+[img https://www.daolafoes.ch/images/slideshow/IMG_3481%20(1).JPG alt=""]
+Bem-Vindo ao
+Dão Lafões
+“Cantigas de portugueses
+São como barcos no mar —
+Vão de uma alma para outra
+Com riscos de naufragar.
+Ai, os pratos de arroz doce
+Com as linhas de canela!
+Ai a mão branca que os trouxe!
+Ai essa mão ser a dela!
+Saudades, só portugueses
+Conseguem senti-las bem.
+Porque têm essa palavra
+Para dizer que as têm.”
+Quadras ao Gosto Popular,
+Fernando Pessoa
+Prato do dia
+[img https://www.daolafoes.ch/images/take-away/thumb_Bacalhau%20Laf%C3%B5es.png alt=""]
+Bacalhau à Dão Lafões
+0 CHF
+1 Dose
+[img https://www.daolafoes.ch/images/take-away/thumb_img-default.png alt=""]
+Bacalhau à Lagareiro
+0 CHF
+1 Dose
+[img https://www.daolafoes.ch/images/take-away/thumb_img-default.png alt=""]
+Bife à Casa
+0 CHF
+1 Dose
+[img https://www.daolafoes.ch/images/take-away/thumb_img-default.png alt=""]
+Bitoque (Criança)
+0 CHF
+1 Dose
+[img https://www.daolafoes.ch/images/take-away/thumb_Bitoque%20Porco.png alt=""]
+Bitoque de Porco
+0 CHF
+1 Peça
+[img https://www.daolafoes.ch/images/take-away/thumb_img-default.png alt=""]
+Chocos Grelhados
+0 CHF
+1 Dose
+[img https://www.daolafoes.ch/images/take-away/thumb_img-default.png alt=""]
+Entremeada Grelhada
+0 CHF
+1 Dose
+[img https://www.daolafoes.ch/images/take-away/thumb_img-default.png alt=""]
+Francesinha de leitão
+0 CHF
+1 Dose
+[img https://www.daolafoes.ch/images/take-away/thumb_img-default.png alt=""]
+Francesinha Normal
+0 CHF
+1 Dose
+[img https://www.daolafoes.ch/images/take-away/thumb_Frango%20Churrasco.png alt=""]
+Frango (Inteiro)
+0 CHF
+1 Peça
+[img https://www.daolafoes.ch/images/take-away/thumb_Frango%20Dose.png alt=""]
+Frango com Batata
+0 CHF
+1 Peça
+[img https://www.daolafoes.ch/images/take-away/thumb_Grelhado%20Misto.png alt=""]
+Grelhada Mista
+0 CHF
+1 Peça
+[img https://www.daolafoes.ch/images/take-away/thumb_F2-Leit%C3%A3o%20D%C3%A3o%20Laf%C3%B5es+.png alt=""]
+Leitão à Bairrada (Inteiro)
+0 CHF
+1 Peça
+[img https://www.daolafoes.ch/images/take-away/thumb_Leit%C3%A3o%20Dose.png alt=""]
+Leitão à Bairrada com Batata Frita às Rodelas
+0 CHF
+1 Dose
+[img https://www.daolafoes.ch/images/take-away/thumb_Nugguets%20Frango.png alt=""]
+Nuggets de Frango c/ Batata Frita 5Pcs
+0 CHF
+1 Peça
+[img https://www.daolafoes.ch/images/take-away/thumb_Picanha.png alt=""]
+Picanha com Feijão Preto
+0 CHF
+1 Dose
+[img https://www.daolafoes.ch/images/take-away/thumb_Posta%20Mirandesa.png alt=""]
+Posta à Mirandesa
+0 CHF
+1 Dose
+[img https://www.daolafoes.ch/images/take-away/thumb_img-default.png alt=""]
+Prego á Casa
+0 CHF
+1 Dose
+[img https://www.daolafoes.ch/images/take-away/thumb_img-default.png alt=""]
+Salmão grelhado
+0 CHF
+1 Dose
+[img https://www.daolafoes.ch/images/take-away/thumb_img-default.png alt=""]
+Vitela assada no forno
+0 CHF
+1 Dose
+[img https://www.daolafoes.ch/images/take-away/thumb_img-default.png alt=""]
+Bifanas
+0 CHF
+1 Dose
+[img https://www.daolafoes.ch/images/take-away/thumb_img-default.png alt=""]
+Camarão ao alho
+0 CHF
+1 Dose
+[img https://www.daolafoes.ch/images/take-away/thumb_img-default.png alt=""]
+Couvert Salgados
+0 CHF
+1 Dose
+[img https://www.daolafoes.ch/images/take-away/thumb_img-default.png alt=""]
+Moelas
+0 CHF
+1 Dose
+[img https://www.daolafoes.ch/images/take-away/thumb_img-default.png alt=""]
+Salada de bacalhau
+0 CHF
+1 Dose
+[img https://www.daolafoes.ch/images/take-away/thumb_img-default.png alt=""]
+Salada de polvo
+0 CHF
+1 Dose
+[img https://www.daolafoes.ch/images/take-away/thumb_D2-Sandes%20de%20Leit%C3%A3o.png alt=""]
+Sandes de Leitão
+0 CHF
+1 Peça
+[img https://www.daolafoes.ch/images/take-away/thumb_img-default.png alt=""]
+Sopa do dia
+0 CHF
+1 Dose
+[img https://www.daolafoes.ch/images/take-away/thumb_Salada%20Mista.png alt=""]
+Salada Mista
+0 CHF
+1 Dose
+[img https://www.daolafoes.ch/images/take-away/thumb_img-default.png alt=""]
+Baba de Camelo
+0 CHF
+1 Dose
+[img https://www.daolafoes.ch/images/take-away/thumb_img-default.png alt=""]
+Bolo de Bolacha
+0 CHF
+1 Dose
+[img https://www.daolafoes.ch/images/take-away/thumb_img-default.png alt=""]
+Doce da Casa
+0 CHF
+1 Dose
+[img https://www.daolafoes.ch/images/take-away/thumb_img-default.png alt=""]
+Mousse de chocolate
+0 CHF
+1 Dose
+[img https://www.daolafoes.ch/images/take-away/thumb_Pudim.png alt=""]
+Pudim Caseiro
+0 CHF
+1 Dose
+[img https://www.daolafoes.ch/images/take-away/thumb_img-default.png alt=""]
+Supresa da Casa
+0 CHF
+1 Dose
+[img https://www.daolafoes.ch/images/icons/seta_esq.png alt=""]
+[img https://www.daolafoes.ch/images/icons/seta_dir.png alt=""]
+SERVIÇOS
+[img https://www.daolafoes.ch/images/services/img-services-item-01-1.png alt=""]
+ENTREGA AO DOMICILIO
+[img https://www.daolafoes.ch/images/services/img-services-item-02-1.png alt=""]
+DEGUSTAÇÕES
+[img https://www.daolafoes.ch/images/services/img-services-item-03-1.png alt=""]
+CASAMENTOS
+[img https://www.daolafoes.ch/images/services/img-services-item-04-1.png alt=""]
+BATIZADOS
+[img https://www.daolafoes.ch/images/services/img-services-item-05-1.png alt=""]
+COMUNHÕES
+[img https://www.daolafoes.ch/images/services/img-services-item-06-1.png alt=""]
+SERVIÇO DE CATERING
+[img https://www.daolafoes.ch/images/services/img-services-item-07-1.png alt=""]
+ANIMAÇÕES
+[img https://www.daolafoes.ch/images/services/img_service_parque_wifi.png alt=""]
+[link https://www.daolafoes.ch/images/gallery/Bacalhau%20GomesdeS%C3%A1.png]
+[img https://www.daolafoes.ch/images/gallery/thumb_Bacalhau%20GomesdeS%C3%A1.png alt=""]
+[link https://www.daolafoes.ch/images/gallery/Bacalhau%20c%20Broa.png]
+[img https://www.daolafoes.ch/images/gallery/thumb_Bacalhau%20c%20Broa.png alt=""]
+[link https://www.daolafoes.ch/images/gallery/Frango%20c%20Arroz%20de%20Feij%C3%A3o.png]
+[img https://www.daolafoes.ch/images/gallery/thumb_Frango%20c%20Arroz%20de%20Feij%C3%A3o.png alt=""]
+[link https://www.daolafoes.ch/images/gallery/Cabrito%20Assado.png]
+[img https://www.daolafoes.ch/images/gallery/thumb_Cabrito%20Assado.png alt=""]
+[link https://www.daolafoes.ch/images/gallery/Vitela%20Assada.png]
+[img https://www.daolafoes.ch/images/gallery/thumb_Vitela%20Assada.png alt=""]
+[img https://www.daolafoes.ch/images/icons/seta_esq.png alt=""]
+[img https://www.daolafoes.ch/images/icons/seta_dir.png alt=""]
+[img https://www.daolafoes.ch/images/about/img-about-header.jpg alt=""]
+[H3]
+Quem somos?
+A Casa Dão Lafões é uma casa portuguesa, com certeza, apesar dos mais de dois mil quilómetros que a separam de Portugal.
+Este restaurante regional, situado na pitoresca localidade suíça de Hägglingen
+(no cantão alemão Aargau) foi fundado em 2003 por Joaquim Sousa com o intuito de dar apoio gastronómico, e não só, à grande comunidade portuguesa residente em terras helvéticas.
+Nesta árdua tarefa de aproximar Portugal dos emigrantes pelo estômago, Joaquim Sousa conta com toda a sua família, e juntos preparam deliciosas refeições marcadas por sabor e qualidade que ajudam a matar as saudades do leitão, do cabrito ou do bacalhau. A confeção dos pratos e a criação do ambiente com ‘cheirinho a Portugal’ - como o proprietário prefere dizer - é feita com produtos genuinamente portugueses.
+O leitão, os vinhos, enchidos e até cerveja ou alguns refrigerantes, vindos diretamente
+de terras lusas acompanham as conversas animadas sobre futebol, política ou a próxima festa popular.
+A fama dos pratos - principalmente o leitão à Bairrada, o rancho à lavrador, o bacalhau à Lafões, o cabrito assado com batatinhas a murro, as sandes de leitão, as bifanas, entre muitas outras iguarias – atrai portugueses e estrangeiros, anónimos e celebridades.
+A Casa dos Lafões já teve a honra de receber no seu restaurante a lenda futebolística Eusébio, o comediante Fernando Rocha, o popular cantor romântico Tony Carreira, políticos e artistas, entre outros.
+O sucesso foi tal que levou, em 2014, à abertura de uma segunda Casa Dão Lafões em Schlieren, no cantão de Zurique.
+Segue-nos!
+[link https://www.facebook.com/cdlschlieren]
+[img https://www.daolafoes.ch/images/footer/icon-footer-facebook.png alt=""]
+[link https://twitter.com/casadaolafoes]
+[img https://www.daolafoes.ch/images/footer/icon-footer-twitter.png alt=""]
+[link https://vimeo.com/daolafoes]
+[img https://www.daolafoes.ch/images/footer/icon-footer-vimeo.png alt=""]
+[link https://www.daolafoes.ch/pt#]
+[img https://www.daolafoes.ch/images/footer/icon-footer-instagram.png alt=""]
+DÃO LAFÕES © 2014 . All Rights Reserved | Developed by
+[link http://www.grandesplanos.com/]
+Grandes Planos
+Contactos
+Casa Dão Lafões
+(Cantão Zurich)
+Zürcherstrasse 164
+CH - 8952 Schlieren
+Tel:
+043 433 84 61
+078 831 28 07
+E-mail:
+[link mailto:info@daolafoes.ch]
+info@daolafoes.ch
+Coordenadas GPS:
+47.395030, 8.469237
+Horário:
+Seg. a Dom.
+9:30 - 22:30
+Terça-Feira
+Dia de descanso

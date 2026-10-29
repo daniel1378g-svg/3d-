@@ -1,0 +1,164 @@
+{
+ "de": {
+  "status": 200,
+  "title": "Dão Lafões",
+  "description": "",
+  "roles": {
+   "header": null,
+   "nav": null,
+   "h1": null,
+   "h2": null,
+   "body": "rgb(255, 255, 255)",
+   "button": "rgba(0, 0, 0, 0)",
+   "buttonText": "rgb(223, 96, 52)",
+   "footer": null,
+   "footerText": null,
+   "link": null
+  },
+  "lang": ""
+ },
+ "pt": {
+  "status": 200,
+  "title": "Dão Lafões",
+  "description": "",
+  "roles": {
+   "header": null,
+   "nav": null,
+   "h1": null,
+   "h2": null,
+   "body": "rgb(255, 255, 255)",
+   "button": "rgba(0, 0, 0, 0)",
+   "buttonText": "rgb(223, 96, 52)",
+   "footer": null,
+   "footerText": null,
+   "link": null
+  },
+  "lang": ""
+ },
+ "de/menu": {
+  "status": 200,
+  "title": "Dão Lafões - Menu",
+  "description": "",
+  "roles": {
+   "header": null,
+   "nav": null,
+   "h1": null,
+   "h2": null,
+   "body": null,
+   "button": null,
+   "buttonText": null,
+   "footer": null,
+   "footerText": null,
+   "link": null
+  },
+  "lang": ""
+ },
+ "pt/menu": {
+  "status": 200,
+  "title": "Dão Lafões - Menu",
+  "description": "",
+  "roles": {
+   "header": null,
+   "nav": null,
+   "h1": null,
+   "h2": null,
+   "body": null,
+   "button": null,
+   "buttonText": null,
+   "footer": null,
+   "footerText": null,
+   "link": null
+  },
+  "lang": ""
+ },
+ "de/login": {
+  "status": 200,
+  "title": "Dão Lafões",
+  "description": "",
+  "roles": {
+   "header": null,
+   "nav": null,
+   "h1": null,
+   "h2": null,
+   "body": null,
+   "button": "rgb(81, 53, 40)",
+   "buttonText": "rgb(255, 255, 255)",
+   "footer": null,
+   "footerText": null,
+   "link": null
+  },
+  "lang": ""
+ },
+ "de/checkout": {
+  "status": 200,
+  "title": "Dão Lafões - Kasse",
+  "description": "",
+  "roles": {
+   "header": null,
+   "nav": null,
+   "h1": null,
+   "h2": null,
+   "body": null,
+   "button": "rgb(81, 53, 40)",
+   "buttonText": "rgb(255, 255, 255)",
+   "footer": null,
+   "footerText": null,
+   "link": null
+  },
+  "lang": ""
+ },
+ "de/register": {
+  "status": 500,
+  "title": "Whoops! There was an error.",
+  "description": "",
+  "roles": {
+   "header": "rgb(39, 39, 39)",
+   "nav": null,
+   "h1": null,
+   "h2": null,
+   "body": "rgb(255, 255, 255)",
+   "button": "rgb(239, 239, 239)",
+   "buttonText": "rgb(0, 0, 0)",
+   "footer": null,
+   "footerText": null,
+   "link": null
+  },
+  "lang": ""
+ },
+ "de/forgot-password": {
+  "status": 404,
+  "title": "Error 404 - Seite nicht gefunden",
+  "description": "",
+  "roles": {
+   "header": null,
+   "nav": null,
+   "h1": "rgb(102, 102, 102)",
+   "h2": null,
+   "body": "rgb(102, 102, 102)",
+   "button": null,
+   "buttonText": null,
+   "footer": null,
+   "footerText": null,
+   "link": "rgb(156, 170, 109)"
+  },
+  "lang": "en"
+ },
+ "de/cart": {
+  "status": 404,
+  "title": "Error 404 - Seite nicht gefunden",
+  "description": "",
+  "roles": {
+   "header": null,
+   "nav": null,
+   "h1": "rgb(102, 102, 102)",
+   "h2": null,
+   "body": "rgb(102, 102, 102)",
+   "button": null,
+   "buttonText": null,
+   "footer": null,
+   "footerText": null,
+   "link": "rgb(156, 170, 109)"
+  },
+  "lang": "en"
+ }
+}

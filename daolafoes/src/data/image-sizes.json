@@ -1,0 +1,210 @@
+{
+ "hero-leitao": [
+  1600,
+  909
+ ],
+ "leitao-feuer": [
+  1280,
+  727
+ ],
+ "cozido": [
+  1200,
+  1600
+ ],
+ "costeleta-teller": [
+  640,
+  797
+ ],
+ "flyer": [
+  640,
+  357
+ ],
+ "bacalhau-banner": [
+  1050,
+  301
+ ],
+ "cutouts/g-bacalhau-gomes": [
+  884,
+  521
+ ],
+ "g-bacalhau-gomes": [
+  1096,
+  733
+ ],
+ "cutouts/g-bacalhau-broa": [
+  900,
+  567
+ ],
+ "g-bacalhau-broa": [
+  1116,
+  783
+ ],
+ "cutouts/g-cabrito": [
+  900,
+  565
+ ],
+ "g-cabrito": [
+  1116,
+  781
+ ],
+ "cutouts/g-frango-feijao": [
+  896,
+  549
+ ],
+ "g-frango-feijao": [
+  1110,
+  763
+ ],
+ "cutouts/g-vitela": [
+  900,
+  517
+ ],
+ "g-vitela": [
+  1116,
+  733
+ ],
+ "cutouts/t-bacalhau-lafoes": [
+  263,
+  204
+ ],
+ "t-bacalhau-lafoes": [
+  325,
+  266
+ ],
+ "cutouts/t-bitoque-porco": [
+  245,
+  206
+ ],
+ "t-bitoque-porco": [
+  303,
+  264
+ ],
+ "cutouts/t-sandes-leitao": [
+  259,
+  244
+ ],
+ "t-sandes-leitao": [
+  321,
+  306
+ ],
+ "cutouts/t-leitao-inteiro": [
+  258,
+  123
+ ],
+ "t-leitao-inteiro": [
+  318,
+  183
+ ],
+ "cutouts/t-frango-churrasco": [
+  259,
+  203
+ ],
+ "t-frango-churrasco": [
+  321,
+  265
+ ],
+ "cutouts/t-frango-dose": [
+  241,
+  211
+ ],
+ "t-frango-dose": [
+  297,
+  267
+ ],
+ "cutouts/t-grelhado-misto": [
+  247,
+  197
+ ],
+ "t-grelhado-misto": [
+  305,
+  255
+ ],
+ "cutouts/t-leitao-dose": [
+  247,
+  234
+ ],
+ "t-leitao-dose": [
+  305,
+  292
+ ],
+ "cutouts/t-nuggets": [
+  262,
+  202
+ ],
+ "t-nuggets": [
+  324,
+  264
+ ],
+ "cutouts/t-picanha": [
+  257,
+  202
+ ],
+ "t-picanha": [
+  317,
+  262
+ ],
+ "cutouts/t-posta": [
+  243,
+  227
+ ],
+ "t-posta": [
+  301,
+  285
+ ],
+ "cutouts/t-pudim": [
+  243,
+  195
+ ],
+ "t-pudim": [
+  301,
+  253
+ ],
+ "cutouts/t-salada-mista": [
+  227,
+  229
+ ],
+ "t-salada-mista": [
+  281,
+  283
+ ],
+ "s-hauslieferung": [
+  208,
+  208
+ ],
+ "s-degustationen": [
+  208,
+  208
+ ],
+ "s-hochzeiten": [
+  208,
+  208
+ ],
+ "s-taufen": [
+  208,
+  208
+ ],
+ "s-kommunionen": [
+  208,
+  208
+ ],
+ "s-catering": [
+  208,
+  208
+ ],
+ "s-unterhaltung": [
+  208,
+  208
+ ],
+ "s-parking-wifi": [
+  207,
+  206
+ ],
+ "brand/logo": [
+  352,
+  181
+ ],
+ "brand/mark": [
+  240,
+  114
+ ]
+}

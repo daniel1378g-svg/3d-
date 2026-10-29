@@ -1,0 +1,50 @@
+text       #000000 rgb(0, 0, 0) ×902
+text       #513528 rgb(81, 53, 40) ×456
+text       #FFFFFF rgb(255, 255, 255) ×411
+text       #D0541F rgb(208, 84, 31) ×280
+text       #2B2B2B rgb(43, 43, 43) ×243
+text       #0000EE rgb(0, 0, 238) ×160
+background #FDF9F6 rgb(253, 249, 246) ×140
+background #E04505 rgb(224, 69, 5) ×98
+text       #513D32 rgb(81, 61, 50) ×70
+background #FEEDE5 rgb(254, 237, 229) ×70
+text       #463C54 rgb(70, 60, 84) ×67
+text       #E24301 rgb(226, 67, 1) ×59
+text       #4288CE rgb(66, 136, 206) ×52
+background #FFFFFF rgb(255, 255, 255) ×46
+border     #FFFFFF rgb(255, 255, 255) ×36
+background #513628 rgb(81, 54, 40) ×30
+border     #513528 rgb(81, 53, 40) ×27
+text       #BDBDBD rgb(189, 189, 189) ×23
+background #F3F3F3 rgb(243, 243, 243) ×22
+text       #E9E4E5 rgb(233, 228, 229) ×22
+background #513528 rgb(81, 53, 40) ×19
+background #000000 rgb(0, 0, 0) ×16
+border     #523528 rgb(82, 53, 40) ×16
+background #B8B4B1 rgb(184, 180, 177) ×16
+background #C59B6C rgba(197, 155, 108, 0.1) ×14
+text       #999999 rgb(153, 153, 153) ×14
+background #FF5000 rgb(255, 80, 0) ×12
+text       #FFB79A rgb(255, 183, 154) ×12
+text       #666666 rgb(102, 102, 102) ×12
+text       #A5A5A5 rgb(165, 165, 165) ×10
+background #E24301 rgb(226, 67, 1) ×9
+border     #E24301 rgb(226, 67, 1) ×6
+text       #000000 rgba(0, 0, 0, 0.3) ×5
+border     #DBCBBE rgb(219, 203, 190) ×4
+background #FE5200 rgb(254, 82, 0) ×4
+text       #F3F3F3 rgb(243, 243, 243) ×4
+text       #4BB1B1 rgb(75, 177, 177) ×4
+background #2B1106 rgba(43, 17, 6, 0.9) ×2
+text       #FF5000 rgb(255, 80, 0) ×2
+border     #FF5000 rgb(255, 80, 0) ×2
+background #FD4F00 rgb(253, 79, 0) ×2
+text       #BEE9EA rgb(190, 233, 234) ×2
+text       #272727 rgb(39, 39, 39) ×2
+text       #BCD42A rgb(188, 212, 42) ×2
+background #FF6464 rgba(255, 100, 100, 0.07) ×2
+text       #9CAA6D rgb(156, 170, 109) ×2
+background #EFEFEF rgba(239, 239, 239, 0.3) ×1
+background #EFEFEF rgb(239, 239, 239) ×1
+background #4288CE rgb(66, 136, 206) ×1
+background #DADADA rgb(218, 218, 218) ×1

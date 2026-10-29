@@ -1,0 +1,124 @@
+{
+ "sandrine": {
+  "de": {
+   "when": "vor 3 Jahren",
+   "text": "Sehr zufrieden, ich empfehle es."
+  },
+  "pt": {
+   "when": "há 3 anos",
+   "text": "Muito satisfeita, recomendo."
+  },
+  "fr": {
+   "when": "il y a 3 ans",
+   "text": "Très satisfaite, je recommande."
+  },
+  "it": {
+   "when": "3 anni fa",
+   "text": "Molto soddisfatta, lo consiglio."
+  }
+ },
+ "katy": {
+  "de": {
+   "when": "vor einem Jahr",
+   "text": "Ich kann dieses Lokal gar nicht genug empfehlen!! Der Catering-Service verdient fünf Sterne! Ich habe ihn mehrmals für Kommunionen und Geburtstage gebucht, und es ist IMMER ein Genuss!!! Der Take-Away ist ein echter Leckerbissen, die Preise sind sehr fair und die Portionen grosszügig… ganz portugiesisch! Wir lieben es!! Das Personal ist immer lächelnd und unglaublich herzlich! Alle, mit denen ich ihr Churrasco-Poulet geteilt habe, waren begeistert! Ein Ort, den ich zu 1000 % empfehle! Auch ihr spezielles Festtagsmenü ist fantastisch: traditionelle Gerichte geniessen, ohne sich um die Zubereitung zu kümmern. Eine echte Zeitersparnis, um die Zeit mit der Familie voll auszukosten, ohne Kochstress. Und der Laden? Es gibt von allem ein bisschen, zu super attraktiven Preisen! Noch einmal: ich empfehle es sehr +++++++ Danke, dass ihr unsere Kleine verwöhnt habt 😝"
+  },
+  "pt": {
+   "when": "há um ano",
+   "text": "Não consigo recomendar este sítio o suficiente!! O serviço de catering merece 5 estrelas! Já o usei várias vezes para comunhões e aniversários e é SEMPRE uma delícia!!! O take away é um verdadeiro mimo, os preços são muito acessíveis e as doses são generosas… à boa maneira portuguesa! Adoramos!! O pessoal está sempre sorridente e é incrivelmente acolhedor! Toda a gente com quem partilhei o frango de churrasco deles ficou conquistada! É sem dúvida um sítio que recomendo a 1000%! O menu especial de festas também é fantástico: pratos tradicionais sem preocupações com a preparação. Uma verdadeira poupança de tempo para aproveitar a família, sem o stress de cozinhar. E a mercearia? Tem um pouco de tudo, a preços super atrativos! Mais uma vez: recomendo vivamente +++++++ Obrigada por mimarem a nossa pequenina 😝"
+  },
+  "fr": {
+   "when": "il y a un an",
+   "text": "Je ne recommanderai jamais assez cette adresse !! Le service traiteur mérite ses 5 étoiles ! J’y ai fait appel plusieurs fois pour des communions et des anniversaires, et c’est TOUJOURS un régal !!! Le take away est un vrai délice, les prix sont très abordables et les portions généreuses… à la portugaise ! On adore !! Le personnel est toujours souriant et incroyablement accueillant ! Tous ceux avec qui j’ai partagé leur poulet churrasco ont été conquis ! C’est vraiment une adresse que je recommande à 1000 % ! Leur menu spécial fêtes est aussi fantastique : on profite des plats traditionnels sans se soucier de la préparation. Un vrai gain de temps pour profiter pleinement de la famille, sans le stress de la cuisine. Et l’épicerie ? Il y a un peu de tout, à des prix super attractifs ! Encore une fois : je recommande vivement +++++++ Merci d’avoir gâté notre petite 😝"
+  },
+  "it": {
+   "when": "un anno fa",
+   "text": "Non posso che consigliare questo posto!! Il servizio catering merita 5 stelle! L’ho usato più volte per comunioni e compleanni ed è SEMPRE una delizia!!! Il take away è una vera bontà, i prezzi sono molto accessibili e le porzioni generose… alla portoghese! Lo adoriamo!! Il personale è sempre sorridente e incredibilmente accogliente! Tutti quelli con cui ho condiviso il loro pollo churrasco ne sono rimasti conquistati! È un posto che consiglio al 1000%! Anche il loro menu speciale delle feste è fantastico: si gustano i piatti tradizionali senza pensare alla preparazione. Un vero risparmio di tempo per godersi la famiglia, senza lo stress di cucinare. E la bottega? Offre un po’ di tutto, a prezzi super interessanti! Ancora una volta: lo consiglio vivamente +++++++ Grazie per aver viziato la nostra piccola 😝"
+  }
+ },
+ "susana": {
+  "de": {
+   "when": "vor 4 Jahren",
+   "text": "Service und Produktqualität sind fünf Sterne. Ich empfehle sie."
+  },
+  "pt": {
+   "when": "há 4 anos",
+   "text": "Serviço e qualidade dos produtos são 5 estrelas. Recomendo."
+  },
+  "fr": {
+   "when": "il y a 4 ans",
+   "text": "Service et qualité des produits : 5 étoiles. Je les recommande."
+  },
+  "it": {
+   "when": "4 anni fa",
+   "text": "Servizio e qualità dei prodotti da 5 stelle. Li consiglio."
+  }
+ },
+ "rui": {
+  "de": {
+   "when": "vor 5 Monaten",
+   "text": "Ausgezeichneter Kundenservice. Gute portugiesische Produkte.",
+   "meta": {
+    "Essen": "5/5",
+    "Service": "5/5",
+    "Atmosphäre": "5/5",
+    "Reservierung": "Nicht sicher",
+    "Parkplätze": "Viele Parkplätze",
+    "Parkmöglichkeiten": "Kostenloser Parkplatz"
+   }
+  },
+  "pt": {
+   "when": "há 5 meses",
+   "text": "Excelente atendimento. Bons produtos portugueses.",
+   "meta": {
+    "Comida": "5/5",
+    "Serviço": "5/5",
+    "Ambiente": "5/5",
+    "Reserva": "Não sei",
+    "Estacionamento": "Muito estacionamento",
+    "Opções de estacionamento": "Parque gratuito"
+   }
+  },
+  "fr": {
+   "when": "il y a 5 mois",
+   "text": "Excellent service client. Bons produits portugais.",
+   "meta": {
+    "Cuisine": "5/5",
+    "Service": "5/5",
+    "Ambiance": "5/5",
+    "Réservation": "Pas sûr",
+    "Places de parc": "Beaucoup de places",
+    "Options de parking": "Parking gratuit"
+   }
+  },
+  "it": {
+   "when": "5 mesi fa",
+   "text": "Servizio clienti eccellente. Buoni prodotti portoghesi.",
+   "meta": {
+    "Cibo": "5/5",
+    "Servizio": "5/5",
+    "Atmosfera": "5/5",
+    "Prenotazione": "Non so",
+    "Parcheggio": "Molti posti",
+    "Opzioni di parcheggio": "Parcheggio gratuito"
+   }
+  }
+ },
+ "nuno": {
+  "de": {
+   "when": "bearbeitet vor 2 Jahren",
+   "text": ""
+  },
+  "pt": {
+   "when": "editada há 2 anos",
+   "text": ""
+  },
+  "fr": {
+   "when": "modifié il y a 2 ans",
+   "text": ""
+  },
+  "it": {
+   "when": "modificata 2 anni fa",
+   "text": ""
+  }
+ }
+}

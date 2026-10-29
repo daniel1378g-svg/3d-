@@ -1,0 +1,10 @@
+{
+ "_source": "Five Google reviews supplied by the client on 2026-10-29, verbatim and in this order. Supplied in English; the originals may be in French or Portuguese (to confirm). No average, no count.",
+ "reviews": [
+  {"id": "sandrine", "author": "Sandrine Rodrigues", "stars": 5, "when": "3 years ago", "lang": "en", "text": "Very satisfied, I recommend it."},
+  {"id": "katy", "author": "Katy Nail Designer", "stars": 5, "when": "A year ago", "lang": "en", "text": "I can't recommend this place highly enough!! The catering service is worthy of a 5-star rating! I've used them several times for communions and birthdays, and it's ALWAYS a delight!!! The takeaway service is a real treat, the prices are very affordable, and the portions are generous… in true Portuguese style! We love it!! The staff is always smiling and incredibly welcoming! Everyone I've shared their churrasco chicken with has been won over! It's definitely a place I recommend 1000%! Their special holiday menu is also fantastic: you can enjoy traditional dishes without worrying about the preparation. A real time-saver to fully enjoy family time, without the stress of cooking. And the grocery store? It offers a little bit of everything, at super attractive prices! Once again: I highly recommend it +++++++ Thank you for treating our little one 😝"},
+  {"id": "susana", "author": "Susana Rodrigues", "stars": 5, "when": "4 years ago", "lang": "en", "text": "Service and product quality are 5 stars. I recommend them."},
+  {"id": "rui", "author": "Rui Valentim", "stars": 5, "when": "5 months ago", "lang": "en", "text": "Excellent customer service. Good Portuguese products.", "meta": {"Food": "5/5", "Service": "5/5", "Atmosphere": "5/5", "Reservation": "Not sure", "Parking space": "Plenty of parking", "Parking options": "Free of charge parking lot"}},
+  {"id": "nuno", "author": "Nuno Coelho", "stars": 5, "when": "Edited 2 years ago", "lang": "en", "text": ""}
+ ]
+}

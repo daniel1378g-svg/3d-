@@ -1,0 +1,1309 @@
+{
+ "_source": "Prices transcribed from files/menu/menu_de.pdf (6 pages, read page by page); German headlines for the 'Auf Anfrage' and 'Restaurant' pages, which menu_de.pdf prints in Portuguese only, come from the newer print files/menu/menu_pt.pdf (deAlt). The web list is the dish list of /de/menu and /pt/menu (40 dishes, prices '0 CHF' / '-- CHF' on the live site).",
+ "pdf": {
+  "takeaway": [
+   {
+    "id": "ta-leitao-inteiro",
+    "col": "takeaway",
+    "de": "GANZER FERKEL (+/- 6KG)",
+    "deSource": "menu_de.pdf",
+    "deAlt": "GANZES SPANFERKEL (+/- 6kg)",
+    "headPt": null,
+    "pt": "Leitão Inteiro (+/- 6 Kg)",
+    "price": "250.00",
+    "unit": "FR"
+   },
+   {
+    "id": "ta-meio-leitao",
+    "col": "takeaway",
+    "de": "HALBER FERKEL",
+    "deSource": "menu_de.pdf",
+    "deAlt": "HALBES SPANFERKEL",
+    "headPt": null,
+    "pt": "1/2 Leitão",
+    "price": "150.00",
+    "unit": "FR"
+   },
+   {
+    "id": "ta-leitao-kg",
+    "col": "takeaway",
+    "de": "FERKEL DAS KG",
+    "deSource": "menu_de.pdf",
+    "deAlt": "SPANFERKEL (kg)",
+    "headPt": null,
+    "pt": "Leitão ao Kg",
+    "price": "50.00",
+    "unit": "FR/KG"
+   },
+   {
+    "id": "ta-dose-leitao",
+    "col": "takeaway",
+    "de": "DOSIS VON FERKEL MIT POMMES FRITES",
+    "deSource": "menu_de.pdf",
+    "deAlt": "PORTION SPANFERKEL MIT POMMES SOUFLET",
+    "headPt": null,
+    "pt": "Dose de Leitão com Batatas Fritas às rodelas",
+    "price": "25.00",
+    "unit": "FR"
+   },
+   {
+    "id": "ta-meia-dose-leitao",
+    "col": "takeaway",
+    "de": "HALBE DOSIS VON FERKEL MIT POMMES FRITES",
+    "deSource": "menu_de.pdf",
+    "deAlt": "1/2 PORTION SPANFERKEL MIT POMMES SOUFLET",
+    "headPt": null,
+    "pt": "1/2 Dose de Leitão com Batatas Fritas às rodelas",
+    "price": "20.00",
+    "unit": "FR"
+   },
+   {
+    "id": "ta-frango-inteiro",
+    "col": "takeaway",
+    "de": "GANZER HUHN (+/- 1KG)",
+    "deSource": "menu_de.pdf",
+    "deAlt": "GANZES POULET (+/- 1KG)",
+    "headPt": null,
+    "pt": "Frango Inteiro (+/- 1 Kg)",
+    "price": "16.00",
+    "unit": "FR"
+   },
+   {
+    "id": "ta-meio-frango",
+    "col": "takeaway",
+    "de": "HALBER HUHN",
+    "deSource": "menu_de.pdf",
+    "deAlt": "HALBES POULET",
+    "headPt": null,
+    "pt": "1/2 Frango",
+    "price": "8.00",
+    "unit": "FR"
+   },
+   {
+    "id": "ta-frango-batatas",
+    "col": "takeaway",
+    "de": "GANZER HUHN MIT POMMES FRITES",
+    "deSource": "menu_de.pdf",
+    "deAlt": "GANZES POULET MIT POMMES FRITES",
+    "headPt": null,
+    "pt": "Frango Inteiro com Batatas Fritas",
+    "price": "20.00",
+    "unit": "FR"
+   },
+   {
+    "id": "ta-meio-frango-batatas",
+    "col": "takeaway",
+    "de": "HALBER HUHN MIT POMMES FRITES",
+    "deSource": "menu_de.pdf",
+    "deAlt": "HALBES POULET MIT POMMES FRITES",
+    "headPt": null,
+    "pt": "1/2 Frango com Batatas Fritas",
+    "price": "12.00",
+    "unit": "FR"
+   },
+   {
+    "id": "ta-esparguete-tomate",
+    "col": "takeaway",
+    "de": "SPAGHETTI MIT TOMATEN",
+    "deSource": "menu_de.pdf",
+    "deAlt": "SPAGHETTI NAPOLI",
+    "headPt": null,
+    "pt": "Esparguete com Tomate",
+    "price": "18.00",
+    "unit": "FR"
+   },
+   {
+    "id": "ta-crianca",
+    "col": "takeaway",
+    "de": "PORTION KIND IMMER (TOMATEN, CARBONARA, BOLOGNESE)",
+    "deSource": "menu_de.pdf",
+    "deAlt": "KINDERPORTION(TOMATEN, CARBONARA, BOLOGNESE)",
+    "headPt": null,
+    "pt": "Porção “Criança Sempre” (Tomate, Carbonara, Bolonhesa)",
+    "price": "14.00",
+    "unit": "FR"
+   },
+   {
+    "id": "ta-nuggets",
+    "col": "takeaway",
+    "de": "POULET NUGGETS",
+    "deSource": "menu_de.pdf",
+    "deAlt": "CHICKEN NUGGETS 5Stk.",
+    "headPt": null,
+    "pt": "Nuggets de Frango",
+    "price": "14.00",
+    "unit": "FR"
+   },
+   {
+    "id": "ta-bolonhesa",
+    "col": "takeaway",
+    "de": "SPAGHETTI DIE BOLOGNESE",
+    "deSource": "menu_de.pdf",
+    "deAlt": "SPAGHETTI BOLOGNESE",
+    "headPt": null,
+    "pt": "Esparguete à Bolonhesa",
+    "price": "18.00",
+    "unit": "FR"
+   },
+   {
+    "id": "ta-carbonara",
+    "col": "takeaway",
+    "de": "SPAGHETTI DIE CARBONARA",
+    "deSource": "menu_de.pdf",
+    "deAlt": "SPAGHETTI CARBONARA",
+    "headPt": null,
+    "pt": "Esparguete à Carbonara",
+    "price": "18.00",
+    "unit": "FR"
+   },
+   {
+    "id": "ta-grelhada",
+    "col": "takeaway",
+    "de": "GEGRILLTE MIXED",
+    "deSource": "menu_de.pdf",
+    "deAlt": "GRILL MIX (SPECK, POULET, WURST, SCHWEINSCHNITZEL)",
+    "headPt": null,
+    "pt": "Grelhada Mista",
+    "price": "24.00",
+    "unit": "FR"
+   },
+   {
+    "id": "ta-costeleta",
+    "col": "takeaway",
+    "de": "SCHNITZEL VON KUH",
+    "deSource": "menu_de.pdf",
+    "deAlt": "KALBSHALS KOTELETTE",
+    "headPt": null,
+    "pt": "Costeleta de Vaca",
+    "price": "28.00",
+    "unit": "FR"
+   },
+   {
+    "id": "ta-costelinha-batatas",
+    "col": "takeaway",
+    "de": "SCHWEINERIPPCHEN MIT POMMES FRITES",
+    "deSource": "menu_de.pdf",
+    "deAlt": "SPARE RIBS MIT POMMES FRITES",
+    "headPt": null,
+    "pt": "Costelinha de Porco Rapada com Batatas Fritas",
+    "price": "20.00",
+    "unit": "FR"
+   },
+   {
+    "id": "ta-costelinha-kg",
+    "col": "takeaway",
+    "de": "SCHWEINERIPPCHEN 1 KG",
+    "deSource": "menu_de.pdf",
+    "deAlt": "SPARE RIBS 1 kg",
+    "headPt": null,
+    "pt": "Costelinha de Porco Rapada 1 Kg",
+    "price": "25.00",
+    "unit": "FR"
+   },
+   {
+    "id": "ta-costelinha-meio",
+    "col": "takeaway",
+    "de": "SCHWEINERIPPCHEN 1/2 KG",
+    "deSource": "menu_de.pdf",
+    "deAlt": "SPARE RIBS 1/2 kg",
+    "headPt": null,
+    "pt": "Costelinha de Porco Rapada 1/2 Kg",
+    "price": "12.50",
+    "unit": "FR"
+   },
+   {
+    "id": "ta-picanha",
+    "col": "takeaway",
+    "de": "PICANHA C/ ARROZ DE FEIJÃO PRETO E B. FRITAS",
+    "deSource": "menu_de.pdf",
+    "deAlt": "RINDSHUFT DECKEL MIT REIS SCHWARZE BOHNEN UND POMMES FRITES",
+    "headPt": null,
+    "pt": "Picanha c/ Arroz de Feijão Preto e Batatas Fritas",
+    "price": "25.00",
+    "unit": "FR"
+   },
+   {
+    "id": "ta-bitoque-porco",
+    "col": "takeaway",
+    "de": "BITOQUE DE PORCO C/ BATATAS FRITAS E OVO",
+    "deSource": "menu_de.pdf",
+    "deAlt": "SCHWEINESCHNITZEL MIT POMMES FRITES UND SPIEGELEI",
+    "headPt": null,
+    "pt": "Bitoque de Porco com Batatas Fritas e Ovo",
+    "price": "22.00",
+    "unit": "FR"
+   },
+   {
+    "id": "ta-bitoque-vaca",
+    "col": "takeaway",
+    "de": "BITOQUE DE VACA C/ BATATAS FRITAS E OVO",
+    "deSource": "menu_de.pdf",
+    "deAlt": "RINDSSCHNITZEL MIT POMMES FRITES UND SPIEGELEI",
+    "headPt": null,
+    "pt": "Bitoque de Vaca com Batatas Fritas e Ovo",
+    "price": "25.00",
+    "unit": "FR"
+   },
+   {
+    "id": "ta-bacalhau-lafoes",
+    "col": "takeaway",
+    "de": "BACALHAU À LAFÕES C/ CEBOLADA E B. FRITAS",
+    "deSource": "menu_de.pdf",
+    "deAlt": "STOCKFISCH AN LAFÕES MIT ZWIEBELN PEPERONI UND POMMES SOUFLET",
+    "headPt": null,
+    "pt": "Bacalhau à Lafões com Cebolada e Batatas Fritas",
+    "price": "24.00",
+    "unit": "FR"
+   },
+   {
+    "id": "ta-meio-bacalhau-lafoes",
+    "col": "takeaway",
+    "de": "1/2 BACALHAU À LAFÕES C/ CEBOLADA E B. FRITAS",
+    "deSource": "menu_de.pdf",
+    "deAlt": "1/2 STOCKFISCH AN LAFÕES MIT ZWIEBELN PEPERONI UND POMMES SOUFLET",
+    "headPt": null,
+    "pt": "1/2 Dose de Bacalhau à Lafões com Cebolada e Batatas Fritas",
+    "price": "18.00",
+    "unit": "FR"
+   },
+   {
+    "id": "ta-bacalhau-lagareiro",
+    "col": "takeaway",
+    "de": "BACALHAU À LAGAREIRO COM BATATA A MURRO",
+    "deSource": "menu_de.pdf",
+    "deAlt": "STOCKFISCH AN LAGAREIRO MIT GESTAMPFTEN KARTOFFELN",
+    "headPt": null,
+    "pt": "Bacalhau à Lagareiro com Batata a Murro",
+    "price": "24.00",
+    "unit": "FR"
+   },
+   {
+    "id": "ta-meio-bacalhau-lagareiro",
+    "col": "takeaway",
+    "de": "1/2 BACALHAU À LAGAREIRO COM BATATA A MURRO",
+    "deSource": "menu_de.pdf",
+    "deAlt": "1/2 BACALHAU À LAGAREIRO MIT GESTAMPFTEN KARTOFFELN",
+    "headPt": null,
+    "pt": "1/2 Dose de Bacalhau à Lagareiro com Batata a Murro",
+    "price": "18.00",
+    "unit": "FR"
+   },
+   {
+    "id": "ta-posta",
+    "col": "takeaway",
+    "de": "POSTA À MIRANDESA COM BATATA A MURRO",
+    "deSource": "menu_de.pdf",
+    "deAlt": "RINDSSTEAK AN MIRANDESA MIT GESTAMPFTEN KARTOFFELN",
+    "headPt": null,
+    "pt": "Posta à Mirandesa com Batata a Murro",
+    "price": "26.00",
+    "unit": "FR"
+   },
+   {
+    "id": "ta-sandes",
+    "col": "takeaway",
+    "de": "SANDES DE LEITÃO",
+    "deSource": "menu_de.pdf",
+    "deAlt": "SPANFERKEL SANDWICH",
+    "headPt": null,
+    "pt": "Sandes de Leitão",
+    "price": "10.00",
+    "unit": "FR"
+   }
+  ],
+  "anfrage": [
+   {
+    "id": "an-cabrito",
+    "col": "anfrage",
+    "de": "GITZI /kg",
+    "deSource": "menu_pt.pdf",
+    "deAlt": "GITZI /kg",
+    "headPt": "CABRITO",
+    "pt": "Cabrito",
+    "price": "40.00",
+    "unit": "FR/KG"
+   },
+   {
+    "id": "an-borrego",
+    "col": "anfrage",
+    "de": "LAMM /kg",
+    "deSource": "menu_pt.pdf",
+    "deAlt": "LAMM /kg",
+    "headPt": "BORREGO",
+    "pt": "Borrego",
+    "price": "35.00",
+    "unit": "FR/KG"
+   },
+   {
+    "id": "an-lombo",
+    "col": "anfrage",
+    "de": "SCHWEINELENDE /kg",
+    "deSource": "menu_pt.pdf",
+    "deAlt": "SCHWEINELENDE /kg",
+    "headPt": "LOMBO DE PORCO",
+    "pt": "Lombo de Porco",
+    "price": "30.00",
+    "unit": "FR/KG"
+   },
+   {
+    "id": "an-lombo-recheado",
+    "col": "anfrage",
+    "de": "GEFÜLLTE SCHWEINELENDE /kg",
+    "deSource": "menu_pt.pdf",
+    "deAlt": "GEFÜLLTE SCHWEINELENDE /kg",
+    "headPt": "LOMBO DE PORCO RECHEADO",
+    "pt": "Lombo de Porco Recheado",
+    "price": "35.00",
+    "unit": "FR/KG"
+   },
+   {
+    "id": "an-vitela",
+    "col": "anfrage",
+    "de": "KALBSBRATEN /kg",
+    "deSource": "menu_pt.pdf",
+    "deAlt": "KALBSBRATEN /kg",
+    "headPt": "VITELA",
+    "pt": "Vitela",
+    "price": "40.00",
+    "unit": "FR/KG"
+   },
+   {
+    "id": "an-chanfana",
+    "col": "anfrage",
+    "de": "CHANFANA SCHAF /kg",
+    "deSource": "menu_pt.pdf",
+    "deAlt": "CHANFANA SCHAF /kg",
+    "headPt": "CHANFANA",
+    "pt": "Chanfana",
+    "price": "35.00",
+    "unit": "FR/KG"
+   },
+   {
+    "id": "an-moelas",
+    "col": "anfrage",
+    "de": "POULET MUSKELMAGEN /kg",
+    "deSource": "menu_pt.pdf",
+    "deAlt": "POULET MUSKELMAGEN /kg",
+    "headPt": "MOELAS",
+    "pt": "Moelas",
+    "price": "20.00",
+    "unit": "FR/KG"
+   },
+   {
+    "id": "an-orelha",
+    "col": "anfrage",
+    "de": "SCHWEINEOHREN",
+    "deSource": "menu_pt.pdf",
+    "deAlt": "SCHWEINEOHREN",
+    "headPt": "ORELHA DE PORCO",
+    "pt": "Orelha de Porco",
+    "price": "16.00",
+    "unit": "FR/KG"
+   },
+   {
+    "id": "an-barriga-kg",
+    "col": "anfrage",
+    "de": "BAUCHSPECK GESPICKT 1kg",
+    "deSource": "menu_pt.pdf",
+    "deAlt": "BAUCHSPECK GESPICKT 1kg",
+    "headPt": "BARRIGA (ENTREMEADA) 1 KG",
+    "pt": "1 Kg de Barriga (Entremeada)",
+    "price": "20.00",
+    "unit": "FR/KG"
+   },
+   {
+    "id": "an-barriga-meio",
+    "col": "anfrage",
+    "de": "BAUCHSPECK GESPICKT 1/2kg",
+    "deSource": "menu_pt.pdf",
+    "deAlt": "BAUCHSPECK GESPICKT 1/2kg",
+    "headPt": "BARRIGA (ENTREMEADA) 1/2 KG",
+    "pt": "1/2 Kg de Barriga (Entremeada)",
+    "price": "12.00",
+    "unit": "FR/KG"
+   },
+   {
+    "id": "an-polvo",
+    "col": "anfrage",
+    "de": "KRAKE MIT GRÜNER SAUCE",
+    "deSource": "menu_pt.pdf",
+    "deAlt": "KRAKE MIT GRÜNER SAUCE",
+    "headPt": "POLVO COM MOLHO VERDE",
+    "pt": "Polvo com Molho Verde",
+    "price": "25.00",
+    "unit": "FR/KG"
+   },
+   {
+    "id": "an-arroz-marisco",
+    "col": "anfrage",
+    "de": "REIS MIT MEERESFRÜCHTEN (AB 2 PERSONEN)",
+    "deSource": "menu_pt.pdf",
+    "deAlt": "REIS MIT MEERESFRÜCHTEN (AB 2 PERSONEN)",
+    "headPt": "ARROZ DE MARISCO (A PARTIR DE 2 PESSOAS)",
+    "pt": "Arroz de Marisco (Mín. 2 Pessoas)",
+    "price": "25.00",
+    "unit": "FR/P"
+   },
+   {
+    "id": "an-camarao",
+    "col": "anfrage",
+    "de": "CREVETTEN GEKOCHT /kg",
+    "deSource": "menu_pt.pdf",
+    "deAlt": "CREVETTEN GEKOCHT /kg",
+    "headPt": "CAMARÃO COZIDO MÉDIO",
+    "pt": "Camarão Cozido Médio",
+    "price": "25.00",
+    "unit": "FR/KG"
+   },
+   {
+    "id": "an-bolinhos",
+    "col": "anfrage",
+    "de": "STOCKFISCH PASTETCHEN /stk",
+    "deSource": "menu_pt.pdf",
+    "deAlt": "STOCKFISCH PASTETCHEN /stk",
+    "headPt": "BOLINHOS DE BACALHAU",
+    "pt": "Bolinhos de Bacalhau",
+    "price": "2.00",
+    "unit": "FR"
+   },
+   {
+    "id": "an-rissois-carne",
+    "col": "anfrage",
+    "de": "FLEISCH TEIGTASCHEN /stk",
+    "deSource": "menu_pt.pdf",
+    "deAlt": "FLEISCH TEIGTASCHEN /stk",
+    "headPt": "RISSÓIS DE CARNE",
+    "pt": "Rissóis de Carne",
+    "price": "2.00",
+    "unit": "FR"
+   },
+   {
+    "id": "an-rissois-camarao",
+    "col": "anfrage",
+    "de": "CREVETTEN TEIGTASCHEN /stk",
+    "deSource": "menu_pt.pdf",
+    "deAlt": "CREVETTEN TEIGTASCHEN /stk",
+    "headPt": "RISSÓIS DE CAMARÃO",
+    "pt": "Rissóis de Camarão",
+    "price": "2.00",
+    "unit": "FR"
+   },
+   {
+    "id": "an-rissois-leitao",
+    "col": "anfrage",
+    "de": "SPANFERKEL TEIGTASCHEN /stk",
+    "deSource": "menu_pt.pdf",
+    "deAlt": "SPANFERKEL TEIGTASCHEN /stk",
+    "headPt": "RISSÓIS DE LEITÃO",
+    "pt": "Rissóis de Leitão",
+    "price": "2.00",
+    "unit": "FR"
+   },
+   {
+    "id": "an-caprichos",
+    "col": "anfrage",
+    "de": "KRABBENSCHEREN /stk",
+    "deSource": "menu_pt.pdf",
+    "deAlt": "KRABBENSCHEREN /stk",
+    "headPt": "CAPRICHOS DO MAR",
+    "pt": "Caprichos do Mar",
+    "price": "2.00",
+    "unit": "FR"
+   },
+   {
+    "id": "an-salada-verde-tab",
+    "col": "anfrage",
+    "de": "GRÜNER SALAT (PLATTE)",
+    "deSource": "menu_pt.pdf",
+    "deAlt": "GRÜNER SALAT (PLATTE)",
+    "headPt": "SALADA VERDE (TABULEIRO GRANDE)",
+    "pt": "Tabuleiro Grande de Salada Verde",
+    "price": "22.00",
+    "unit": "FR"
+   },
+   {
+    "id": "an-salada-mista-tab",
+    "col": "anfrage",
+    "de": "GEMISCHTER SALAT (PLATTE)",
+    "deSource": "menu_pt.pdf",
+    "deAlt": "GEMISCHTER SALAT (PLATTE)",
+    "headPt": "SALADA MISTA (TABULEIRO GRANDE)",
+    "pt": "Tabuleiro Grande de Salada Mista",
+    "price": "25.00",
+    "unit": "FR"
+   },
+   {
+    "id": "an-salada-verde",
+    "col": "anfrage",
+    "de": "PORTION GRÜNER SALAT",
+    "deSource": "menu_pt.pdf",
+    "deAlt": "PORTION GRÜNER SALAT",
+    "headPt": "1 DOSE SALADA VERDE",
+    "pt": "1 Dose de Salada Verde",
+    "price": "3.00",
+    "unit": "FR"
+   },
+   {
+    "id": "an-salada-mista",
+    "col": "anfrage",
+    "de": "PORTION GEMISCHTER SALAT",
+    "deSource": "menu_pt.pdf",
+    "deAlt": "PORTION GEMISCHTER SALAT",
+    "headPt": "1 DOSE SALADA MISTA",
+    "pt": "1 Dose de Salada Mista",
+    "price": "3.50",
+    "unit": "FR"
+   },
+   {
+    "id": "an-batatas-fritas",
+    "col": "anfrage",
+    "de": "PORTION POMMES FRITES",
+    "deSource": "menu_pt.pdf",
+    "deAlt": "PORTION POMMES FRITES",
+    "headPt": "1 DOSE BATATAS FRITAS",
+    "pt": "1 Dose de Batatas Fritas",
+    "price": "4.00",
+    "unit": "FR"
+   },
+   {
+    "id": "an-batata-murro",
+    "col": "anfrage",
+    "de": "PORTION GESTAMPFTE KARTOFFELN",
+    "deSource": "menu_pt.pdf",
+    "deAlt": "PORTION GESTAMPFTE KARTOFFELN",
+    "headPt": "1 DOSE BATATA A MURRO",
+    "pt": "1 Dose de Batata a Murro",
+    "price": "4.00",
+    "unit": "FR"
+   },
+   {
+    "id": "an-batata-assada",
+    "col": "anfrage",
+    "de": "PORTION GEBRATENE KARTOFFELN",
+    "deSource": "menu_pt.pdf",
+    "deAlt": "PORTION GEBRATENE KARTOFFELN",
+    "headPt": "1 DOSE BATATA ASSADA",
+    "pt": "1 Dose de Batata Assada",
+    "price": "4.00",
+    "unit": "FR"
+   },
+   {
+    "id": "an-arroz",
+    "col": "anfrage",
+    "de": "PORTION REIS",
+    "deSource": "menu_pt.pdf",
+    "deAlt": "PORTION REIS",
+    "headPt": "1 DOSE ARROZ",
+    "pt": "1 Dose de Arroz",
+    "price": "4.00",
+    "unit": "FR"
+   },
+   {
+    "id": "an-sobremesas",
+    "col": "anfrage",
+    "de": "VERSCHIEDEN DESSERTS (WAFER-KUCHEN / HAUSGEMACHTER PUDDING)",
+    "deSource": "menu_pt.pdf",
+    "deAlt": "VERSCHIEDEN DESSERTS (WAFER-KUCHEN / HAUSGEMACHTER PUDDING)",
+    "headPt": "SOBREMESAS VARIADAS (BOLO DE BOL. / PUDIM CASEIRO)",
+    "pt": "Sobremesas Variadas (Bolo de Bolacha / Pudim Caseiro)",
+    "price": "5.00",
+    "unit": "FR"
+   },
+   {
+    "id": "an-gelado",
+    "col": "anfrage",
+    "de": "KINDER GLACE",
+    "deSource": "menu_pt.pdf",
+    "deAlt": "KINDER GLACE",
+    "headPt": "GELADO DE CRIANÇA",
+    "pt": "Gelado de Criança",
+    "price": "2.00",
+    "unit": "FR"
+   },
+   {
+    "id": "an-bolo-aniversario",
+    "col": "anfrage",
+    "de": "GEBURTSTAGSTORTE (/Person)",
+    "deSource": "menu_pt.pdf",
+    "deAlt": "GEBURTSTAGSTORTE (/Person)",
+    "headPt": "BOLO DE ANIVERSÁRIO CASEIRO (POR PESSOA)",
+    "pt": "Bolo de Aniversário Caseiro (por pessoa)",
+    "price": "7.00",
+    "unit": "FR"
+   },
+   {
+    "id": "an-bolo-nata",
+    "col": "anfrage",
+    "de": "SAHNETORTE /stk",
+    "deSource": "menu_pt.pdf",
+    "deAlt": "SAHNETORTE /stk",
+    "headPt": "BOLO DE NATA",
+    "pt": "Bolo de Nata",
+    "price": "2.00",
+    "unit": "FR"
+   }
+  ],
+  "restaurant": [
+   {
+    "id": "re-esparguete-crianca",
+    "col": "restaurant",
+    "de": "KINDER SPAGHETTI",
+    "deSource": "menu_pt.pdf",
+    "deAlt": "KINDER SPAGHETTI",
+    "headPt": "ESPARGUETE DE CRIANÇA",
+    "pt": "Esparguete de Criança (Tomate, Carbonara, Bolonhesa, Manteiga)",
+    "price": "14.00",
+    "unit": "FR"
+   },
+   {
+    "id": "re-nuggets",
+    "col": "restaurant",
+    "de": "CHICKEN NUGGETS (5stk)",
+    "deSource": "menu_pt.pdf",
+    "deAlt": "CHICKEN NUGGETS (5stk)",
+    "headPt": "NUGGETS DE FRANGO (5 UNI.)",
+    "pt": "Nuggets de Frango (5 Uni.)",
+    "price": "14.00",
+    "unit": "FR"
+   },
+   {
+    "id": "re-hamburguer",
+    "col": "restaurant",
+    "de": "RINDS HAMBURGUER MIT POMMES FRITES",
+    "deSource": "menu_pt.pdf",
+    "deAlt": "RINDS HAMBURGUER MIT POMMES FRITES",
+    "headPt": "HAMBURGUER DE VACA C/ BATATAS FRITAS",
+    "pt": "Hamburguer de Vaca com Batatas Fritas",
+    "price": "14.00",
+    "unit": "FR"
+   },
+   {
+    "id": "re-bolonhesa",
+    "col": "restaurant",
+    "de": "SPAGHETTI BOLOGNESE",
+    "deSource": "menu_pt.pdf",
+    "deAlt": "SPAGHETTI BOLOGNESE",
+    "headPt": "ESPARGUETE À BOLONHESA",
+    "pt": "Esparguete à Bolonhesa",
+    "price": "18.00",
+    "unit": "FR"
+   },
+   {
+    "id": "re-carbonara",
+    "col": "restaurant",
+    "de": "SPAGHETTI CARBONARA",
+    "deSource": "menu_pt.pdf",
+    "deAlt": "SPAGHETTI CARBONARA",
+    "headPt": "ESPARGUETE CARBONARA",
+    "pt": "Esparguete Carbonara",
+    "price": "18.00",
+    "unit": "FR"
+   },
+   {
+    "id": "re-tomate",
+    "col": "restaurant",
+    "de": "SPAGHETTI NAPOLI",
+    "deSource": "menu_pt.pdf",
+    "deAlt": "SPAGHETTI NAPOLI",
+    "headPt": "ESPARGUETE COM TOMATE",
+    "pt": "Esparguete com Tomate",
+    "price": "18.00",
+    "unit": "FR"
+   },
+   {
+    "id": "re-grelhada",
+    "col": "restaurant",
+    "de": "GRILL MIX MIT REISSCHWARZE BOHNEN UND POMMES FRITES",
+    "deSource": "menu_pt.pdf",
+    "deAlt": "GRILL MIX MIT REISSCHWARZE BOHNEN UND POMMES FRITES",
+    "headPt": "GRELHADA MISTA C/ ARROZ DE FEIJÃO P. E B. FRITAS",
+    "pt": "Grelhada Mista c/ Arroz de Feijão Preto e Batatas Fritas",
+    "price": "24.00",
+    "unit": "FR"
+   },
+   {
+    "id": "re-costeleta",
+    "col": "restaurant",
+    "de": "KALBSHALS KOTELETT MIT REIS UND POMMES FRITES",
+    "deSource": "menu_pt.pdf",
+    "deAlt": "KALBSHALS KOTELETT MIT REIS UND POMMES FRITES",
+    "headPt": "COSTELETA DE VACA C/ ARROZ E BATATAS FRITAS",
+    "pt": "Costeleta de Vaca com Arroz e Batatas Fritas",
+    "price": "28.00",
+    "unit": "FR"
+   },
+   {
+    "id": "re-costelinha",
+    "col": "restaurant",
+    "de": "SPARE RIBS MIT POMMES FRITES",
+    "deSource": "menu_pt.pdf",
+    "deAlt": "SPARE RIBS MIT POMMES FRITES",
+    "headPt": "COSTELINHA RAPADA COM BATATAS FRITAS",
+    "pt": "Costelinha Rapada com Batatas Fritas",
+    "price": "20.00",
+    "unit": "FR"
+   },
+   {
+    "id": "re-picanha",
+    "col": "restaurant",
+    "de": "RINDSHUFT DECKEL MIT REIS SCHWARZE BOHNEN UND POMMES FRITES",
+    "deSource": "menu_pt.pdf",
+    "deAlt": "RINDSHUFT DECKEL MIT REIS SCHWARZE BOHNEN UND POMMES FRITES",
+    "headPt": "PICANHA C/ ARROZ DE FEIJÃO PRETO E B. FRITAS",
+    "pt": "Picanha c/ Arroz de Feijão Preto e Batatas Fritas",
+    "price": "25.00",
+    "unit": "FR"
+   },
+   {
+    "id": "re-sandes",
+    "col": "restaurant",
+    "de": "SPANFERKEL SANDWICH",
+    "deSource": "menu_pt.pdf",
+    "deAlt": "SPANFERKEL SANDWICH",
+    "headPt": "SANDES DE LEITÃO",
+    "pt": "Sandes de Leitão",
+    "price": "12.00",
+    "unit": "FR"
+   },
+   {
+    "id": "re-bitoque-porco",
+    "col": "restaurant",
+    "de": "SCHWEINESCHNITZEL MIT SALAT POMES FRITES UND SPIEGELEI",
+    "deSource": "menu_pt.pdf",
+    "deAlt": "SCHWEINESCHNITZEL MIT SALAT POMES FRITES UND SPIEGELEI",
+    "headPt": "BITOQUE DE PORCO C/ OVO, SALADA E B. FRITAS",
+    "pt": "Bitoque de Porco com Ovo, Salada e Batatas Fritas",
+    "price": "22.00",
+    "unit": "FR"
+   },
+   {
+    "id": "re-bitoque-vaca",
+    "col": "restaurant",
+    "de": "RINDSSCHNITZEL MIT SALAT POMES FRITES UND SPIEGELEI",
+    "deSource": "menu_pt.pdf",
+    "deAlt": "RINDSSCHNITZEL MIT SALAT POMES FRITES UND SPIEGELEI",
+    "headPt": "BITOQUE DE VACA C/ OVO, SALADA E B. FRITAS",
+    "pt": "Bitoque de Vaca com Ovo, Salada e Batatas Fritas",
+    "price": "25.00",
+    "unit": "FR"
+   },
+   {
+    "id": "re-bacalhau-lafoes",
+    "col": "restaurant",
+    "de": "STOCKFISCH AN LAFÕES MIT ZWIEBELN PEPERONI UND POMMES SOUFLET",
+    "deSource": "menu_pt.pdf",
+    "deAlt": "STOCKFISCH AN LAFÕES MIT ZWIEBELN PEPERONI UND POMMES SOUFLET",
+    "headPt": "BACALHAU À LAFÕES C/ B. FRITAS ÀS RODELAS",
+    "pt": "Bacalhau à Lafões com Batatas Fritas às Rodelas",
+    "price": "24.00",
+    "unit": "FR"
+   },
+   {
+    "id": "re-posta",
+    "col": "restaurant",
+    "de": "RINDSSTEAK AN MIRANDESA MIT GESTAMPFTEN KARTOFFELN",
+    "deSource": "menu_pt.pdf",
+    "deAlt": "RINDSSTEAK AN MIRANDESA MIT GESTAMPFTEN KARTOFFELN",
+    "headPt": "POSTA À MIRANDESA COM BATATA A MURRO",
+    "pt": "Posta à Mirandesa com Batata a Murro",
+    "price": "26.00",
+    "unit": "FR"
+   },
+   {
+    "id": "re-leitao",
+    "col": "restaurant",
+    "de": "SPANFERKEL MIT POMMES SOUFLET",
+    "deSource": "menu_pt.pdf",
+    "deAlt": "SPANFERKEL MIT POMMES SOUFLET",
+    "headPt": "LEITÃO C/ BATATAS FRITAS ÀS RODELAS",
+    "pt": "Leitão com Batatas Fritas às Rodelas",
+    "price": "25.00",
+    "unit": "FR"
+   },
+   {
+    "id": "re-arroz-marisco",
+    "col": "restaurant",
+    "de": "REIS MIT MEERESFRÜCHTEN",
+    "deSource": "menu_pt.pdf",
+    "deAlt": "REIS MIT MEERESFRÜCHTEN",
+    "headPt": "ARROZ DE MARISCO (MÍN. 2 PESSOAS)",
+    "pt": "Arroz de Marisco (Mín. 2 Pessoas)",
+    "price": "25.00",
+    "unit": "FR/P"
+   },
+   {
+    "id": "re-frango",
+    "col": "restaurant",
+    "de": "1/2 POULET MIT POMMES FRITES",
+    "deSource": "menu_pt.pdf",
+    "deAlt": "1/2 POULET MIT POMMES FRITES",
+    "headPt": "FRANGO DE CHURRASCO C/ BATATAS FRITAS",
+    "pt": "Frango de Churrasco com Batatas Fritas",
+    "price": "18.00",
+    "unit": "FR"
+   },
+   {
+    "id": "re-francesinha",
+    "col": "restaurant",
+    "de": "FRANCESINHA MIT POMMES FRITES",
+    "deSource": "menu_pt.pdf",
+    "deAlt": "FRANCESINHA MIT POMMES FRITES",
+    "headPt": "FRANCESINHA C/ BATATAS FRITAS",
+    "pt": "Francesinha com Batatas Fritas",
+    "price": "25.00",
+    "unit": "FR"
+   },
+   {
+    "id": "re-salada-verde",
+    "col": "restaurant",
+    "de": "PORTION GRÜNER SALAT",
+    "deSource": "menu_pt.pdf",
+    "deAlt": "PORTION GRÜNER SALAT",
+    "headPt": "1 DOSE SALADA VERDE",
+    "pt": "1 Dose de Salada Verde",
+    "price": "3.00",
+    "unit": "FR"
+   },
+   {
+    "id": "re-salada-mista",
+    "col": "restaurant",
+    "de": "PORTION GEMISCHTER SALAT",
+    "deSource": "menu_pt.pdf",
+    "deAlt": "PORTION GEMISCHTER SALAT",
+    "headPt": "1 DOSE SALADA MISTA",
+    "pt": "1 Dose de Salada Mista",
+    "price": "3.50",
+    "unit": "FR"
+   },
+   {
+    "id": "re-bolo-bolacha",
+    "col": "restaurant",
+    "de": "WAFER-KUCHEN",
+    "deSource": "menu_pt.pdf",
+    "deAlt": "WAFER-KUCHEN",
+    "headPt": "BOLO DE BOLACHA",
+    "pt": "Bolo de Bolacha",
+    "price": "5.00",
+    "unit": "FR"
+   }
+  ],
+  "lunch": {
+   "headPt": "DIÁRIAS VARIADAS AO MEIO DIA, INCLUI:",
+   "pt": "Diárias Variadas ao Meio Dia, Inclui:",
+   "deAlt": "VERSCHIEDEN TAGESMENU‘S",
+   "price": "20.00",
+   "unit": "FR",
+   "includes": [
+    {
+     "pt": "1 Sopa",
+     "deAlt": "SUPPE"
+    },
+    {
+     "pt": "1 Salada",
+     "deAlt": "SALAT"
+    },
+    {
+     "pt": "1 Prato Principal",
+     "deAlt": "HAUPTGERICHT"
+    },
+    {
+     "pt": "1 Bebida",
+     "deAlt": "GETRÄNK"
+    },
+    {
+     "pt": "1 Sobremesa da Casa",
+     "deAlt": "DESSERT"
+    },
+    {
+     "pt": "1 Café",
+     "deAlt": "KAFFEE"
+    }
+   ],
+   "note": "menu_pt.pdf prints the first line as 'SUPPE oder SALAT / Sopa ou salada' (soup or salad); menu_de.pdf lists both."
+  },
+  "footer": "Preise in FR, Inkl. MwSt. 8.0% / Preços em FR, incl. IVA. 8,0%",
+  "footerAlt": "Preise in CHF Inkl. MwSt. 8.0% / Preços em CHF incl. IVA. 8,0%",
+  "origin": "HERKUNFT: Fleisch und Fisch ; SCHWEIZ, DEUTSCHLAND, PORTUGAL, FRANKREICH, SÜDAMERIKA, ITALIEN"
+ },
+ "web": [
+  {
+   "key": "vorspeisen",
+   "items": [
+    {
+     "id": "sandes-leitao",
+     "nr": 1,
+     "de": "Spanferkel Sandwich",
+     "pt": "Sandes de Leitão",
+     "unit": "1 Stk",
+     "thumb": "_thumb_D2-Sandes de Leitão.png",
+     "pdf": "ta-sandes",
+     "note": ""
+    },
+    {
+     "id": "entradas",
+     "nr": 2,
+     "de": "entradas",
+     "pt": "Couvert Salgados",
+     "unit": "1 Portion",
+     "thumb": null,
+     "pdf": null,
+     "note": "live name 'entradas' in lower case, kept"
+    },
+    {
+     "id": "bifanas",
+     "nr": 3,
+     "de": "Schweinsplätzli Sandwich",
+     "pt": "Bifanas",
+     "unit": "1 Stk",
+     "thumb": null,
+     "pdf": null,
+     "note": ""
+    },
+    {
+     "id": "salada-polvo",
+     "nr": 4,
+     "de": "Oktopussalat",
+     "pt": "Salada de polvo",
+     "unit": "1 Portion",
+     "thumb": null,
+     "pdf": null,
+     "note": ""
+    },
+    {
+     "id": "moelas",
+     "nr": 5,
+     "de": "Hühnerspezialität",
+     "pt": "Moelas",
+     "unit": "1 Portion",
+     "thumb": null,
+     "pdf": "an-moelas",
+     "note": "PDF price is per kg, on request"
+    },
+    {
+     "id": "salada-bacalhau",
+     "nr": 6,
+     "de": "Stockfish Salat",
+     "pt": "Salada de bacalhau",
+     "unit": "1 Portion",
+     "thumb": null,
+     "pdf": null,
+     "note": "live spelling 'Stockfish', kept"
+    },
+    {
+     "id": "camarao-alho",
+     "nr": 7,
+     "de": "Knoblauch Krevetten",
+     "pt": "Camarão ao alho",
+     "unit": "1 Portion",
+     "thumb": null,
+     "pdf": null,
+     "note": ""
+    }
+   ]
+  },
+  {
+   "key": "haupt",
+   "items": [
+    {
+     "id": "leitao-dose",
+     "nr": null,
+     "de": "Bairrada Spanferkel mit Pommes in runden Scheiben",
+     "pt": "Leitão à Bairrada com Batata Frita às Rodelas",
+     "unit": "1 Portion",
+     "thumb": "_thumb_Leitão Dose.png",
+     "pdf": "ta-dose-leitao",
+     "note": ""
+    },
+    {
+     "id": "leitao-inteiro",
+     "nr": null,
+     "de": "Bairrada Spanferkel (Ganze)",
+     "pt": "Leitão à Bairrada (Inteiro)",
+     "unit": "1 Stk",
+     "thumb": "_thumb_F2-Leitão Dão Lafões+.png",
+     "pdf": "ta-leitao-inteiro",
+     "note": ""
+    },
+    {
+     "id": "frango-inteiro",
+     "nr": null,
+     "de": "Poulet (Ganze)",
+     "pt": "Frango (Inteiro)",
+     "unit": "1 Stk",
+     "thumb": "_thumb_Frango Churrasco.png",
+     "pdf": "ta-frango-inteiro",
+     "note": "PDF: 16.00 FR without chips, 20.00 FR with chips; the web dish names no side"
+    },
+    {
+     "id": "frango-batatas",
+     "nr": null,
+     "de": "Halb Poulet mit Pommes",
+     "pt": "Frango com Batata",
+     "unit": "1 Portion",
+     "thumb": "_thumb_Frango Dose.png",
+     "pdf": "ta-meio-frango-batatas",
+     "note": ""
+    },
+    {
+     "id": "nuggets",
+     "nr": null,
+     "de": "Pouletnuggets mit Pommes Frites 5Stk",
+     "pt": "Nuggets de Frango c/ Batata Frita 5Pcs",
+     "unit": "1 Portion",
+     "thumb": "_thumb_Nugguets Frango.png",
+     "pdf": "ta-nuggets",
+     "note": ""
+    },
+    {
+     "id": "grelhada",
+     "nr": null,
+     "de": "Mixed Grill",
+     "pt": "Grelhada Mista",
+     "unit": "1 Portion",
+     "thumb": "_thumb_Grelhado Misto.png",
+     "pdf": "ta-grelhada",
+     "note": ""
+    },
+    {
+     "id": "bitoque-porco",
+     "nr": null,
+     "de": "Schweineschnitzel mit Spiegelei und Pommes Frites",
+     "pt": "Bitoque de Porco",
+     "unit": "1 Portion",
+     "thumb": "_thumb_Bitoque Porco.png",
+     "pdf": "ta-bitoque-porco",
+     "note": ""
+    },
+    {
+     "id": "bacalhau-lafoes",
+     "nr": 8,
+     "de": "Stockfisch an Dão Lafões art",
+     "pt": "Bacalhau à Dão Lafões",
+     "unit": "1 Portion",
+     "thumb": "_thumb_Bacalhau Lafões.png",
+     "pdf": "ta-bacalhau-lafoes",
+     "note": ""
+    },
+    {
+     "id": "posta",
+     "nr": 9,
+     "de": "Rinds Steak Mirandesa art",
+     "pt": "Posta à Mirandesa",
+     "unit": "1 Portion",
+     "thumb": "_thumb_Posta Mirandesa.png",
+     "pdf": "ta-posta",
+     "note": ""
+    },
+    {
+     "id": "picanha",
+     "nr": 10,
+     "de": "Rinds Huft Deckel mit Schwarzen Bohnen",
+     "pt": "Picanha com Feijão Preto",
+     "unit": "1 Portion",
+     "thumb": "_thumb_Picanha.png",
+     "pdf": "ta-picanha",
+     "note": ""
+    },
+    {
+     "id": "francesinha-leitao",
+     "nr": 11,
+     "de": "Francesinha de leitão",
+     "pt": "Francesinha de leitão",
+     "unit": "1 Portion",
+     "thumb": null,
+     "pdf": null,
+     "note": ""
+    },
+    {
+     "id": "salmao",
+     "nr": 12,
+     "de": "Lachs vom Grill",
+     "pt": "Salmão grelhado",
+     "unit": "1 Portion",
+     "thumb": null,
+     "pdf": null,
+     "note": ""
+    },
+    {
+     "id": "bacalhau-lagareiro",
+     "nr": 13,
+     "de": "Stockfish vom Grill",
+     "pt": "Bacalhau à Lagareiro",
+     "unit": "1 Portion",
+     "thumb": null,
+     "pdf": "ta-bacalhau-lagareiro",
+     "note": "live spelling 'Stockfish', kept"
+    },
+    {
+     "id": "chocos",
+     "nr": 14,
+     "de": "Tintenfisch vom Grill",
+     "pt": "Chocos Grelhados",
+     "unit": "1 Portion",
+     "thumb": null,
+     "pdf": null,
+     "note": ""
+    },
+    {
+     "id": "bitoque-crianca",
+     "nr": 15,
+     "de": "Kindes Schweinsplätzli",
+     "pt": "Bitoque (Criança)",
+     "unit": "1 Portion",
+     "thumb": null,
+     "pdf": null,
+     "note": "live wording 'Kindes', kept"
+    },
+    {
+     "id": "bife-casa",
+     "nr": 16,
+     "de": "Garnierte Kalbstplätzli",
+     "pt": "Bife à Casa",
+     "unit": "1 Portion",
+     "thumb": null,
+     "pdf": null,
+     "note": "live spelling 'Kalbstplätzli', kept"
+    },
+    {
+     "id": "francesinha",
+     "nr": 17,
+     "de": "Fracesinha",
+     "pt": "Francesinha Normal",
+     "unit": "1 Portion",
+     "thumb": null,
+     "pdf": "re-francesinha",
+     "note": "live spelling 'Fracesinha', kept; PDF price is the restaurant price"
+    },
+    {
+     "id": "entremeada",
+     "nr": 18,
+     "de": "Schweinsbauch gerilliert",
+     "pt": "Entremeada Grelhada",
+     "unit": "1 Portion",
+     "thumb": null,
+     "pdf": null,
+     "note": "live spelling 'gerilliert', kept; the PDF lists Barriga only per kg on request"
+    },
+    {
+     "id": "vitela",
+     "nr": 19,
+     "de": "Gebratenes Kalbsfleisch",
+     "pt": "Vitela assada no forno",
+     "unit": "1 Portion",
+     "thumb": null,
+     "pdf": "an-vitela",
+     "note": "PDF price is per kg, on request"
+    },
+    {
+     "id": "prego",
+     "nr": 20,
+     "de": "Rindsplätzli Garniert",
+     "pt": "Prego á Casa",
+     "unit": "1 Portion",
+     "thumb": null,
+     "pdf": null,
+     "note": "live accent 'á', kept"
+    }
+   ]
+  },
+  {
+   "key": "suppen",
+   "items": [
+    {
+     "id": "sopa",
+     "nr": null,
+     "de": "Tagessuppe",
+     "pt": "Sopa do dia",
+     "unit": "1 Portion",
+     "thumb": null,
+     "pdf": null,
+     "note": "part of the lunch formula"
+    }
+   ]
+  },
+  {
+   "key": "salate",
+   "items": [
+    {
+     "id": "salada-mista",
+     "nr": null,
+     "de": "Gemischter Salat",
+     "pt": "Salada Mista",
+     "unit": "1 Portion",
+     "thumb": "_thumb_Salada Mista.png",
+     "pdf": "re-salada-mista",
+     "note": ""
+    }
+   ]
+  },
+  {
+   "key": "desserts",
+   "items": [
+    {
+     "id": "pudim",
+     "nr": null,
+     "de": "Hausgemacht Pudim",
+     "pt": "Pudim Caseiro",
+     "unit": "1 Portion",
+     "thumb": "_thumb_Pudim.png",
+     "pdf": "an-sobremesas",
+     "note": ""
+    },
+    {
+     "id": "doce-casa",
+     "nr": null,
+     "de": "Hausgemachte Dessert",
+     "pt": "Doce da Casa",
+     "unit": "1 Portion",
+     "thumb": null,
+     "pdf": null,
+     "note": ""
+    },
+    {
+     "id": "baba-camelo",
+     "nr": null,
+     "de": "Baba de Camelo",
+     "pt": "Baba de Camelo",
+     "unit": "1 Portion",
+     "thumb": null,
+     "pdf": null,
+     "note": ""
+    },
+    {
+     "id": "bolo-bolacha",
+     "nr": null,
+     "de": "Kekse Kuchen",
+     "pt": "Bolo de Bolacha",
+     "unit": "1 Portion",
+     "thumb": null,
+     "pdf": "re-bolo-bolacha",
+     "note": ""
+    },
+    {
+     "id": "mousse",
+     "nr": null,
+     "de": "Schokoladen Mousse",
+     "pt": "Mousse de chocolate",
+     "unit": "1 Portion",
+     "thumb": null,
+     "pdf": null,
+     "note": ""
+    },
+    {
+     "id": "surpresa",
+     "nr": null,
+     "de": "Überraschungs Dessert",
+     "pt": "Supresa da Casa",
+     "unit": "1 Portion",
+     "thumb": null,
+     "pdf": null,
+     "note": "live PT spelling 'Supresa', kept"
+    }
+   ]
+  },
+  {
+   "key": "getraenke",
+   "items": []
+  }
+ ]
+}

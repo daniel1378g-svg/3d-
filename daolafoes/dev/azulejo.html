@@ -1,0 +1,5 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;height:100%;background:#2B1A12}#h{position:relative;width:100vw;height:100vh}canvas{position:absolute;inset:0;width:100%;height:100%}</style></head>
+<body><div id="h"><canvas id="c"></canvas></div><script type="module">
+import { createAzulejo } from "/src/components/webgl/azulejo.ts";
+window.__az = createAzulejo(document.getElementById("c"), document.getElementById("h"), { onFirstFrame: () => (document.title = "ready") });
+</script></body></html>

@@ -1,0 +1,741 @@
+# Text of https://www.daolafoes.ch/de extracted from the full HTML (form and take-away widget labels that the visible-text capture skipped)
+Dão Lafões
+-->
+-->
+Einloggen
+|
+Einkaufswagen
+0
+|
+Sprache
+Deutsch
+Português
+speisekarte
+take away
+take away
+Vorspeisen
+Hauptgerichte
+Suppen
+Salate
+Desserts
+Getränke
+services
+galerie
+über uns
+kontakte
+speisekarte
+take away
+take away
+Vorspeisen
+Hauptgerichte
+Suppen
+Salate
+Desserts
+Getränke
+services
+galerie
+über uns
+kontakte
+PT
+DE
+-->
+speisekarte
+take away
+take away
+Vorspeisen
+Hauptgerichte
+Suppen
+Salate
+Desserts
+Getränke
+services
+galerie
+über uns
+kontakte
+Herzlich Willkommen auf
+Dão Lafões
+“Die Lieder der Portugiesen
+sind wie Schiffe auf See.
+Sie ziehn von Seele zu Seele
+und können leicht untergehn.
+Ach, die Milchreistellerpracht
+Mit Zimt bestreut!
+Ach, von der weissen Hand gebracht!
+Ach, die Hand, die sie betreut!
+Saudades - nur Portugiesen
+Können fühlen sie recht.
+Sie sind Besitzer dieses Wortes
+Und sagen es wahrhaft und echt.”
+Volkstümliche Vierzeiler,
+Fernando Pessoa
+-->
+TAGESGERICHTE ZUM MITTAGESSEN
+Stockfisch an Dão Lafões art
+1
+Portion
+0 CHF
+Take Away
+1
+0 CHF
+Menge
+Summe
+0 CHF
+Hinzufügen
+Stockfisch an Dão Lafões art
+0 CHF
+1
+Portion
+Bairrada Spanferkel (Ganze)
+*nur auf Anfrage
+1
+Stk
+0 CHF
+Take Away
+1
+0 CHF
+Menge
+Summe
+0 CHF
+Hinzufügen
+Bairrada Spanferkel (Ganze)
+0 CHF
+1
+Stk
+Bairrada Spanferkel mit Pommes in runden Scheiben
+1
+Portion
+0 CHF
+Take Away
+1
+0 CHF
+Menge
+Summe
+0 CHF
+Hinzufügen
+Bairrada Spanferkel mit Pommes in runden Scheiben
+0 CHF
+1
+Portion
+Fracesinha
+1
+Portion
+0 CHF
+Take Away
+1
+0 CHF
+Menge
+Summe
+0 CHF
+Hinzufügen
+Fracesinha
+0 CHF
+1
+Portion
+Francesinha de leitão
+1
+Portion
+0 CHF
+Take Away
+1
+0 CHF
+Menge
+Summe
+0 CHF
+Hinzufügen
+Francesinha de leitão
+0 CHF
+1
+Portion
+Garnierte Kalbstplätzli
+1
+Portion
+0 CHF
+Take Away
+1
+0 CHF
+Menge
+Summe
+0 CHF
+Hinzufügen
+Garnierte Kalbstplätzli
+0 CHF
+1
+Portion
+Gebratenes Kalbsfleisch
+1
+Portion
+0 CHF
+Take Away
+1
+0 CHF
+Menge
+Summe
+0 CHF
+Hinzufügen
+Gebratenes Kalbsfleisch
+0 CHF
+1
+Portion
+Halb Poulet mit Pommes
+1
+Stk
+0 CHF
+Take Away
+1
+0 CHF
+Menge
+Summe
+0 CHF
+Hinzufügen
+Halb Poulet mit Pommes
+0 CHF
+1
+Stk
+Kindes Schweinsplätzli
+1
+Portion
+0 CHF
+Take Away
+1
+0 CHF
+Menge
+Summe
+0 CHF
+Hinzufügen
+Kindes Schweinsplätzli
+0 CHF
+1
+Portion
+Lachs vom Grill
+1
+Portion
+0 CHF
+Take Away
+1
+0 CHF
+Menge
+Summe
+0 CHF
+Hinzufügen
+Lachs vom Grill
+0 CHF
+1
+Portion
+Mixed Grill
+1
+Stk
+0 CHF
+Take Away
+1
+0 CHF
+Menge
+Summe
+0 CHF
+Hinzufügen
+Mixed Grill
+0 CHF
+1
+Stk
+Poulet (Ganze)
+1
+Stk
+0 CHF
+Take Away
+1
+0 CHF
+Menge
+Summe
+0 CHF
+Hinzufügen
+Poulet (Ganze)
+0 CHF
+1
+Stk
+Pouletnuggets mit Pommes Frites 5Stk
+1
+Stk
+0 CHF
+Take Away
+1
+0 CHF
+Menge
+Summe
+0 CHF
+Hinzufügen
+Pouletnuggets mit Pommes Frites 5Stk
+0 CHF
+1
+Stk
+Rinds Huft Deckel mit Schwarzen Bohnen
+1
+Portion
+0 CHF
+Take Away
+1
+0 CHF
+Menge
+Summe
+0 CHF
+Hinzufügen
+Rinds Huft Deckel mit Schwarzen Bohnen
+0 CHF
+1
+Portion
+Rinds Steak Mirandesa art
+1
+Portion
+0 CHF
+Take Away
+1
+0 CHF
+Menge
+Summe
+0 CHF
+Hinzufügen
+Rinds Steak Mirandesa art
+0 CHF
+1
+Portion
+Rindsplätzli Garniert
+1
+Portion
+0 CHF
+Take Away
+1
+0 CHF
+Menge
+Summe
+0 CHF
+Hinzufügen
+Rindsplätzli Garniert
+0 CHF
+1
+Portion
+Schweineschnitzel mit Spiegelei und Pommes Frites
+1
+Stk
+0 CHF
+Take Away
+1
+0 CHF
+Menge
+Summe
+0 CHF
+Hinzufügen
+Schweineschnitzel mit Spiegelei und Pommes Frites
+0 CHF
+1
+Stk
+Schweinsbauch gerilliert
+1
+Portion
+0 CHF
+Take Away
+1
+0 CHF
+Menge
+Summe
+0 CHF
+Hinzufügen
+Schweinsbauch gerilliert
+0 CHF
+1
+Portion
+Stockfish vom Grill
+1
+Portion
+0 CHF
+Take Away
+1
+0 CHF
+Menge
+Summe
+0 CHF
+Hinzufügen
+Stockfish vom Grill
+0 CHF
+1
+Portion
+Tintenfisch vom Grill
+1
+Portion
+0 CHF
+Take Away
+1
+0 CHF
+Menge
+Summe
+0 CHF
+Hinzufügen
+Tintenfisch vom Grill
+0 CHF
+1
+Portion
+entradas
+1
+Portion
+0 CHF
+Take Away
+1
+0 CHF
+Menge
+Summe
+0 CHF
+Hinzufügen
+entradas
+0 CHF
+1
+Portion
+Hühnerspezialität
+1
+Portion
+0 CHF
+Take Away
+1
+0 CHF
+Menge
+Summe
+0 CHF
+Hinzufügen
+Hühnerspezialität
+0 CHF
+1
+Portion
+Knoblauch Krevetten
+1
+Portion
+0 CHF
+Take Away
+1
+0 CHF
+Menge
+Summe
+0 CHF
+Hinzufügen
+Knoblauch Krevetten
+0 CHF
+1
+Portion
+Oktopussalat
+1
+Portion
+0 CHF
+Take Away
+1
+0 CHF
+Menge
+Summe
+0 CHF
+Hinzufügen
+Oktopussalat
+0 CHF
+1
+Portion
+Schweinsplätzli Sandwich
+1
+Portion
+0 CHF
+Take Away
+1
+0 CHF
+Menge
+Summe
+0 CHF
+Hinzufügen
+Schweinsplätzli Sandwich
+0 CHF
+1
+Portion
+Spanferkel Sandwich
+1
+Stk
+0 CHF
+Take Away
+1
+0 CHF
+Menge
+Summe
+0 CHF
+Hinzufügen
+Spanferkel Sandwich
+0 CHF
+1
+Stk
+Stockfish Salat
+1
+Portion
+0 CHF
+Take Away
+1
+0 CHF
+Menge
+Summe
+0 CHF
+Hinzufügen
+Stockfish Salat
+0 CHF
+1
+Portion
+Tagessuppe
+1
+Portion
+0 CHF
+Take Away
+1
+0 CHF
+Menge
+Summe
+0 CHF
+Hinzufügen
+Tagessuppe
+0 CHF
+1
+Portion
+Gemischter Salat
+1
+Portion
+0 CHF
+Take Away
+1
+0 CHF
+Menge
+Summe
+0 CHF
+Hinzufügen
+Gemischter Salat
+0 CHF
+1
+Portion
+Baba de Camelo
+1
+Portion
+0 CHF
+Take Away
+1
+0 CHF
+Menge
+Summe
+0 CHF
+Hinzufügen
+Baba de Camelo
+0 CHF
+1
+Portion
+Hausgemacht Pudim
+1
+Portion
+0 CHF
+Take Away
+1
+0 CHF
+Menge
+Summe
+0 CHF
+Hinzufügen
+Hausgemacht Pudim
+0 CHF
+1
+Portion
+Hausgemachte Dessert
+1
+Portion
+0 CHF
+Take Away
+1
+0 CHF
+Menge
+Summe
+0 CHF
+Hinzufügen
+Hausgemachte Dessert
+0 CHF
+1
+Portion
+Kekse Kuchen
+1
+Portion
+0 CHF
+Take Away
+1
+0 CHF
+Menge
+Summe
+0 CHF
+Hinzufügen
+Kekse Kuchen
+0 CHF
+1
+Portion
+Schokoladen Mousse
+1
+Portion
+0 CHF
+Take Away
+1
+0 CHF
+Menge
+Summe
+0 CHF
+Hinzufügen
+Schokoladen Mousse
+0 CHF
+1
+Portion
+Überraschungs Dessert
+1
+Portion
+0 CHF
+Take Away
+1
+0 CHF
+Menge
+Summe
+0 CHF
+Hinzufügen
+Überraschungs Dessert
+0 CHF
+1
+Portion
+SERVICE
+Reservierung
+Vollständiger Name
+(vorname und name)
+:
+*
+Firma:
+Adresse:
+*
+Stadt:
+*
+Land:
+Schweiz
+*
+Kanton:
+Zürich
+Aargau
+Appenzell Ausserrhoden
+Appenzell Innerrhoden
+Basel-Landschaft
+Basel-Stadt
+Bern
+Freiburg
+Genf
+Geneve
+Glarus
+Graubünden
+Jura
+Luzern
+Neuenburg
+Nidwalden
+Obwalden
+Schaffhausen
+Schwyz
+Solothurn
+St. Gallen
+Tessin
+Thurgau
+Uri
+Zug
+Waadt
+Wallis
+canton.canton_28
+*
+Postleitzahl:
+= 48 && event.charCode
+*
+E-Mail Addresse:
+*
+Telefonnummer:
+= 48 && event.charCode
+*
+Ich bin damit einverstanden, dass Dão Lafoes, mich unter diesen Nr., zum Zwecke der Bestelleng unter Beachtund des Datenschutzes Kontaktiert.
+Zusatzinformationen
+(optional)
+:
+Buchungskonditionen:
+Datum:
+bis
+*
+Uhr:
+-->
+07:00
+08:00
+09:00
+10:00
+11:00
+12:00
+13:00
+14:00
+15:00
+16:00
+17:00
+18:00
+19:00
+20:00
+21:00
+22:00
+23:00
+00:00
+bis
+-->
+07:00
+08:00
+09:00
+10:00
+11:00
+12:00
+13:00
+14:00
+15:00
+16:00
+17:00
+18:00
+19:00
+20:00
+21:00
+22:00
+23:00
+00:00
+*
+Zürich
+Aargau
+*Erforderliche felder
+Reservieren
+HAUSLIEFERUNG
+DEGUSTATIONEN
+HOCHZEITEN
+TAUFEN
+KOMMUNIONEN
+CATERING DIENSTLEISTUNG
+UNTERHALTUNG
+-->
+Über uns?
+Casa Dão Lafões – ist, ganz gewiss, ein portugiesisches Haus, obwohl es über 2.000km von Portugal entfernt ist. Dieses regionale Restaurant liegt in einem malerischen Schweizer Ort namens Hägglingen (im Kanton Aargau) und wurde von Joaquim Sousa im Jahre 2003 gegründet, um der lokalen portugiesischen Gemeinschaft gastronomische Unterstützung zu leisten. Um die portugiesischen Emigranten durch den Magen zu erobern, zählt Joaquim Sousa mit der Hilfe seiner ganzen Familie. Zusammen bereiten sie leckere Gerichte zu, die reich an Geschmack und Qualität sind und so die Sehnsucht nach Spanferkel, Zicklein und Stockfisch stillen.
+Die Zubereitung der Gerichte und die Erzeugung der Atmosphäre mit ,,einem portugiesischen Duft’’ – wie es der Inhaber so treffend nennt  - wird mit authentischen portugiesischen Produkten geschaffen.  Spanferkel, Weine, Wurstsorten und sogar Bier oder Limonaden, direkt aus portugiesischen Regionen, begleiten die munteren Gespräche über Fussball, Politik oder das nächste Volksfest.
+Der gute Ruf der Speisen – besonders das gebratene Spanferkel nach Bairrada Art, der Bauerneintopf, der Stockfisch nach "Dão Lafões" Art, das gebratene Zicklein mit zerdrückten Bratkartoffeln, Spanferkel-, Schweinefillets-, Sandwiches und viele andere Leckereien – ziehen auf Portugiesen und Nichtportugiesen, Anonyme und Prominente an. Die Fusballlegende Eusébio, der Komödiant Fernando Rocha, der romantische Sänger Tony Carreira, sowie Politiker und Künstler haben das Restaurant
+Casa dos Lafões
+schon mit ihrer Anwesenheit beschert.
+Der grosse Erfolg hat zur Eröffnung im Jahre 2014 eines zweiten Lokales
+Casa Dão Lafões
+Schlieren,
+im Kanton Zürich geführt.
+Folgen sie uns!
+DÃO LAFÕES © 2014 . All Rights Reserved | Developed by
+Grandes Planos
+KONTAKTE
+Casa Dão Lafões
+(Kanton Zürich)
+Zürcherstrasse 164
+CH - 8952 Schlieren
+Tel:
+043 433 84 61
+078 831 28 07
+E-mail:
+info@daolafoes.ch
+GPS:
+47.395030, 8.469237
+Öffnungszeiten:
+Mo, Mi – So
+9:30 Uhr bis 22:30 Uhr
+Ruhetag.
+Dienstag

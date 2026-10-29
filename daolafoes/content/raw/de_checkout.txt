@@ -1,0 +1,111 @@
+[link https://www.daolafoes.ch/]
+[img https://www.daolafoes.ch/images/header/icon-home.png alt=""]
+[link https://www.daolafoes.ch/de/login]
+[img https://www.daolafoes.ch/images/header/icon-account.png alt=""]
+Einloggen
+|
+[link https://www.daolafoes.ch/de/checkout]
+[img https://www.daolafoes.ch/images/header/icon-shopping-cart.png alt=""]
+Einkaufswagen
+0
+|
+Sprache
+[link https://www.daolafoes.ch/de]
+[img https://www.daolafoes.ch/images/header/img-logo-mini.png alt=""]
+[link https://www.facebook.com/daolafoes]
+[img https://www.daolafoes.ch/images/header/icon-facebook.png alt=""]
+[link https://twitter.com/casadaolafoes]
+[img https://www.daolafoes.ch/images/header/icon-twitter.png alt=""]
+[link https://vimeo.com/daolafoes]
+[img https://www.daolafoes.ch/images/header/icon-vimeo.png alt=""]
+[link https://www.daolafoes.ch/de/checkout#]
+[img https://www.daolafoes.ch/images/header/icon-instagram.png alt=""]
+[link https://www.daolafoes.ch/de/menu]
+speisekarte
+take away
+services
+galerie
+über uns
+[link https://www.daolafoes.ch/de/checkout#kontakte]
+kontakte
+[img https://www.daolafoes.ch/images/checkout/icon-lock.png alt=""]
+Kasse
+[img https://www.daolafoes.ch/images/icons/checked.png alt=""]
+Kasse Verfahren
+Abrechnungsdaten
+Versand informationen
+Liefermethode
+Zahlungsinformationen
+Revision Bestellung
+1
+Kasse Verfahren
+Neu anmelden
+Melden sie sich bei uns an für zukünftiges vorteil:
+Schnell und leicht Kaufen
+Melden sie sich an und sparen sie zeit!
+Neu anmelden
+Einloggen
+Schon registriert?
+Melden sie sich an:
+E-Mail Addresse:
+[input name=email type=text placeholder="" value=""]
+*
+Passwort:
+[input name=password type=password placeholder="" value=""]
+*
+*Erforderliche Felder
+[input name= type=submit placeholder="" value="Einloggen"]
+2
+Versand
+3
+Versand informationen
+4
+Abrechnung
+5
+Zahlung
+6
+Bestätigung
+Einkaufswagen
+Bestellen Kritik
+Produkt name
+Preis
+Menge
+Zwichensumme
+Zwichensumme
+0.00 CHF
+0.00 CHF
+Summe
+Ein produkt vergessen?
+[link https://www.daolafoes.ch/#take-away]
+Zum einkaufswagen hinzufügen
+[input name= type=submit placeholder="" value="Aktualisieren"]
+Folgen sie uns!
+[link https://www.facebook.com/cdlschlieren]
+[img https://www.daolafoes.ch/images/footer/icon-footer-facebook.png alt=""]
+[link https://twitter.com/casadaolafoes]
+[img https://www.daolafoes.ch/images/footer/icon-footer-twitter.png alt=""]
+[link https://vimeo.com/daolafoes]
+[img https://www.daolafoes.ch/images/footer/icon-footer-vimeo.png alt=""]
+[link https://www.daolafoes.ch/de/checkout#]
+[img https://www.daolafoes.ch/images/footer/icon-footer-instagram.png alt=""]
+DÃO LAFÕES © 2014 . All Rights Reserved | Developed by
+[link http://www.grandesplanos.com/]
+Grandes Planos
+KONTAKTE
+Casa Dão Lafões
+(Kanton Zürich)
+Zürcherstrasse 164
+CH - 8952 Schlieren
+Tel:
+043 433 84 61
+078 831 28 07
+E-mail:
+[link mailto:info@daolafoes.ch]
+info@daolafoes.ch
+GPS:
+47.395030, 8.469237
+Öffnungszeiten:
+Mo, Mi – So
+9:30 Uhr bis 22:30 Uhr
+Ruhetag.
+Dienstag
