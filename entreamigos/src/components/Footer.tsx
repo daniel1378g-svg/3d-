@@ -8,6 +8,10 @@ import { PillButton } from "./ui/Pill";
 import { IconFacebook, IconMail, IconPhone } from "./icons";
 import { Glasses } from "./Illustrations";
 
+/** "Protection des données": the live site has no privacy statement and this proposal writes no legal text.
+ *  Set the address of the owner's statement here and the footer link appears. */
+const PRIVACY_URL: string | null = null;
+
 export function Footer() {
   const { lang, book, requestLanguage, href, go } = useSite();
   return (
@@ -104,6 +108,11 @@ export function Footer() {
           <div className="flex items-center gap-4">
             <img src={asset("brand/logo.webp")} alt="Logo Entre Amigos" width={900} height={366} className="h-12 w-auto" loading="lazy" />
             <p className="text-[14px] text-suave">{BUSINESS.copyright}</p>
+            {PRIVACY_URL && (
+              <a className="link text-[14px] text-suave" href={PRIVACY_URL}>
+                Protection des données
+              </a>
+            )}
           </div>
         </div>
       </div>

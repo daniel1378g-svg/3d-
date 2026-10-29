@@ -46,7 +46,7 @@ function Listing({ d, lang, dark }: { d: Dish; lang: Lang; dark: boolean }) {
         <span aria-hidden="true" className="leader" />
         <span className="shrink-0 whitespace-nowrap text-right font-display text-[clamp(22px,1.9vw,30px)] font-bold leading-none">{priceText(d, lang)}</span>
       </div>
-      {desc && <p className={cn("mt-1.5 max-w-[640px] text-[16px] leading-snug", dark ? "text-branco/80" : "text-tinta/80")}>{desc}</p>}
+      {desc && <p className={cn("mt-1.5 max-w-[640px] text-[16px] leading-snug", dark ? "text-branco/80" : "text-tinta")}>{desc}</p>}
       {d.wait && <p className="mt-1 font-hand text-[24px] leading-none text-destaque">{WAIT_L[lang]}</p>}
       {d.section === "commande" && (
         <button
@@ -85,7 +85,7 @@ function SectionBlock({ id, index, dishes, lang, notes }: { id: string; index: n
         {notes.length > 0 && (
           <ul className="mt-5 list-none space-y-1">
             {notes.map((n) => (
-              <li key={n} className={cn("text-[15px]", t.dark ? "text-suave" : "text-linha")}>
+              <li key={n} className={cn("text-[15px]", t.dark ? "text-suave" : t.sub)}>
                 {noteText(n, lang)}
               </li>
             ))}
@@ -112,7 +112,7 @@ function SectionBlock({ id, index, dishes, lang, notes }: { id: string; index: n
             ))}
           </ul>
         </div>
-        <p className={cn("mt-10 text-[14px]", t.dark ? "text-suave" : "text-linha")}>{TEXT.prices[lang]}</p>
+        <p className={cn("mt-10 text-[14px]", t.dark ? "text-suave" : t.sub)}>{TEXT.prices[lang]}</p>
       </div>
     </section>
   );
@@ -226,7 +226,7 @@ export default function CartePage() {
                 {active === s.id && <motion.span layoutId="carte-pill" className="absolute inset-0 rounded-full bg-destaque" transition={reduce ? { duration: 0 } : { type: "spring", stiffness: 480, damping: 38 }} />}
                 <span className="relative">{String(i + 1).padStart(2, "0")}</span>
                 <span className="relative">{SECTION_TITLES[s.id].short[lang]}</span>
-                <span className={cn("relative rounded-full px-1.5 text-[12px]", active === s.id ? "bg-tinta/15" : "bg-branco/15")}>{s.dishes.length}</span>
+                <span className={cn("relative rounded-full px-1.5 text-[12px]", active === s.id ? "bg-marca-escura text-branco" : "bg-branco/15")}>{s.dishes.length}</span>
               </button>
             ))}
           </div>
