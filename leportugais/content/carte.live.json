@@ -1,0 +1,365 @@
+{
+ "source": "https://www.leportugais.ch/cusine-gastronomique-portugaise-geneve/",
+ "sections": [
+  {
+   "id": "entradas",
+   "live": "ENTRADAS / ENTRÉES",
+   "items": [
+    {
+     "id": "caldo-verde",
+     "name": "Caldo verde",
+     "live": "Caldo verde",
+     "price": "14.-",
+     "desc": {
+      "fr": "Potage national du Portugal : pommes de terre, choux portugais, chouriço"
+     }
+    },
+    {
+     "id": "sopa-de-peixe",
+     "name": "Sopa de Peixe",
+     "live": "Sopa de Peixe",
+     "price": "14.-",
+     "desc": {
+      "fr": "Soupe de poissons selon la recette de notre famille"
+     }
+    },
+    {
+     "id": "salada-mista",
+     "name": "Salada Mista",
+     "live": "Salada Mista",
+     "price": "9.50",
+     "desc": {
+      "fr": "Salade de saison du marché ou du potager, crudités et oignons"
+     }
+    },
+    {
+     "id": "salada-de-estacao",
+     "name": "Salada de Estaçao",
+     "live": "Salada de Estaçao",
+     "price": "7.50",
+     "desc": {
+      "fr": "Salade verte de saison, du marché ou du potager et oignons"
+     }
+    },
+    {
+     "id": "salada-de-feijao-frade",
+     "name": "Salada de Feijao Frade",
+     "live": "Salada de Feijao Frade",
+     "price": "15.-",
+     "desc": {
+      "fr": "Salade de haricots princes tièdes agrémentés d’oignons, d’oeuf dur et vinaigrette"
+     }
+    },
+    {
+     "id": "travessa-de-degustacao-para-dois",
+     "name": "Travessa de Degustaçao para dois",
+     "live": "Travessa de Degustaçao para dois",
+     "price": "54.-",
+     "desc": {
+      "fr": "Plat de dégustation pour deux (composé selon arrivages)"
+     }
+    },
+    {
+     "id": "bolinhos-de-bacalhau-6-pecas",
+     "name": "Bolinhos de Bacalhau 6 peças",
+     "live": "Bolinhos de Bacalhau 6 peças",
+     "price": "15.-",
+     "desc": {
+      "fr": "Croquettes de morue 6 pièces"
+     }
+    }
+   ],
+   "pt": "ENTRADAS",
+   "fr": "ENTRÉES"
+  },
+  {
+   "id": "pratos",
+   "live": "PRATOS PRINCIPAIS / PLATS PRINCIPAUX",
+   "items": [
+    {
+     "id": "peixes-grelhados-segundo-as-chegadas",
+     "name": "Peixes grelhados segundo as chegadas",
+     "live": "Peixes grelhados segundo as chegadas",
+     "price": "---",
+     "desc": {
+      "fr": "Poisson grillé selon arrivages (voir l’annexe « proposition de saison »)"
+     }
+    },
+    {
+     "id": "bacalhau-assado-na-grelha",
+     "name": "Bacalhau assado na grelha",
+     "live": "Bacalhau assado na grelha",
+     "price": "41.-",
+     "desc": {
+      "fr": "Morue grillée, pommes rôties au gros sel, ail, oignons crus, huile vierge du Portugal"
+     }
+    },
+    {
+     "id": "polvo-com-vinagrete-morno",
+     "name": "Polvo com vinagrete morno",
+     "live": "Polvo com vinagrete morno",
+     "price": "42.-",
+     "desc": {
+      "fr": "Poulpe poché, vinaigrette tiède, oignons, pommes au gros sel"
+     }
+    },
+    {
+     "id": "filetes-de-polvo-grelhados",
+     "name": "Filetes de Polvo grelhados",
+     "live": "Filetes de Polvo grelhados",
+     "price": "44.-",
+     "desc": {
+      "fr": "Poulpe grillé, huile vierge, pommes en robe au gros sel, légumes"
+     }
+    },
+    {
+     "id": "gambas-selvagens-salteadas",
+     "name": "Gambas selvagens salteadas",
+     "live": "Gambas selvagens salteadas",
+     "price": "42.-",
+     "desc": {
+      "fr": "Gambas poêlées au piripiri. Riz persillé."
+     }
+    },
+    {
+     "id": "conchas-a-bulhao-pato",
+     "name": "Conchas à Bulhâo Pato",
+     "live": "Conchas à Bulhâo Pato",
+     "price": "selon marché",
+     "desc": {
+      "fr": "Coquillages à l’ail, coriandre et huile d’olive (supplément riz au four 5.-)"
+     }
+    },
+    {
+     "id": "feijoada-brasileira",
+     "name": "Feijoada Brasileira",
+     "live": "Feijoada Brasileira",
+     "price": "39.-",
+     "desc": {
+      "fr": "Palette, jarret de bœuf, cochonnaille, haricots noirs. Riz au four. (Supplément 6.- pour garnitures brésiliennes)"
+     }
+    },
+    {
+     "id": "bife-do-vazio-com-manteiga",
+     "name": "Bife do Vazio com manteiga",
+     "live": "Bife do Vazio com manteiga",
+     "price": "47.-",
+     "desc": {
+      "fr": "Entrecôte (200gr) poêlée à la coriandre fraîche au beurre. Garniture au choix."
+     }
+    }
+   ],
+   "pt": "PRATOS PRINCIPAIS",
+   "fr": "PLATS PRINCIPAUX"
+  },
+  {
+   "id": "sur-commande",
+   "live": "Plats sur commande dès 72 heures à l’avance ou plus",
+   "items": [
+    {
+     "id": "bacalhau-a-braz-a-gomes-de-sa-com-natas-no-forno-ou-outros-pratos",
+     "name": "Bacalhau à Braz, A Gomes de Sa, com Natas no Forno ou outros pratos",
+     "live": "Bacalhau à Braz, A Gomes de Sa, com Natas no Forno ou outros pratos",
+     "price": null,
+     "desc": {
+      "fr": "Diverses préparations traditionnelles de morue"
+     },
+     "onOrder": true
+    },
+    {
+     "id": "acordas-de-marisco-ou-camarao-ou-bacalhau",
+     "name": "Açordas de Marisco ou Camarao ou Bacalhau",
+     "live": "Açordas de Marisco ou Camarao ou Bacalhau",
+     "price": null,
+     "desc": {
+      "fr": "Plat traditionnel à base de fruits de mer ou morue lié au pain et parfumé à la coriande fraîche"
+     },
+     "onOrder": true
+    },
+    {
+     "id": "parrilhada-de-pescador",
+     "name": "Parrilhada de Pescador",
+     "live": "Parrilhada de Pescador",
+     "price": null,
+     "desc": {
+      "fr": "Panaché du Pêcheur (panaché de poissons et fruits de mer grillés)"
+     },
+     "onOrder": true
+    },
+    {
+     "id": "arroz-de-marisco",
+     "name": "Arroz de Marisco",
+     "live": "Arroz de Marisco",
+     "price": null,
+     "desc": {
+      "fr": "Riz aux fruits de mer"
+     },
+     "onOrder": true
+    },
+    {
+     "id": "caldeirada-de-peixe",
+     "name": "Caldeirada de Peixe",
+     "live": "Caldeirada de Peixe",
+     "price": null,
+     "desc": {
+      "fr": "Matelote de poissons (notre bouillabaisse)"
+     },
+     "onOrder": true
+    },
+    {
+     "id": "cabrito-assado-no-forno",
+     "name": "Cabrito assado no forno",
+     "live": "Cabrito assado no forno",
+     "price": null,
+     "desc": {
+      "fr": "Cabri de lait rôti et sa garniture"
+     },
+     "onOrder": true
+    },
+    {
+     "id": "leitao-assado-no-forno",
+     "name": "Leitao assado no forno",
+     "live": "Leitao assado no forno",
+     "price": null,
+     "desc": {
+      "fr": "Cochon de lait rôti et laqué au four"
+     },
+     "onOrder": true
+    },
+    {
+     "id": "cozido-a-portuguesa",
+     "name": "Cozido à Portuguesa",
+     "live": "Cozido à Portuguesa",
+     "price": null,
+     "desc": {
+      "fr": "Pot-au-feu à la portugaise"
+     },
+     "onOrder": true
+    },
+    {
+     "id": "arroz-de-pato-no-forno",
+     "name": "Arroz de Pato no forno",
+     "live": "Arroz de Pato no forno",
+     "price": null,
+     "desc": {
+      "fr": "Riz au canard au four"
+     },
+     "onOrder": true
+    },
+    {
+     "id": "carnes-de-caca-a-portuguesa",
+     "name": "Carnes de Caça a portuguesa",
+     "live": "Carnes de Caça a portuguesa",
+     "price": null,
+     "desc": {
+      "fr": "Gibier à la portugaise (automne)"
+     },
+     "onOrder": true
+    },
+    {
+     "id": "carne-de-porco-a-alentejana",
+     "name": "Carne de Porco à Alentejana",
+     "live": "Carne de Porco à Alentejana",
+     "price": null,
+     "desc": {
+      "fr": "Filet de porc aux palourdes à l’Alentejane"
+     },
+     "onOrder": true
+    }
+   ],
+   "sub": "Prix selon arrivages ou marché",
+   "onOrder": true
+  },
+  {
+   "id": "sobremesas",
+   "live": "SOBREMESAS CASEIRAS / DESSERTS FAITS MAISON",
+   "items": [
+    {
+     "id": "pera-cozida-no-vinho-do-porto-e-especiarias",
+     "name": "Pera cozida no vinho do Porto e especiarias",
+     "live": "Pera cozida no vinho do Porto e especiarias",
+     "price": "12.50",
+     "desc": {
+      "fr": "Poire pochée au porto et aux épices"
+     }
+    },
+    {
+     "id": "ovos-moles",
+     "name": "Ovos moles",
+     "live": "Ovos moles",
+     "price": "9.50",
+     "desc": {
+      "fr": "Jaunes d’oeufs cuits au sirop et arrosés au Porto blanc"
+     }
+    },
+    {
+     "id": "pudim-de-ovos-perfumado-de-laranja",
+     "name": "Pudim de ovos perfumado de laranja",
+     "live": "Pudim de ovos perfumado de laranja",
+     "price": "9.50",
+     "desc": {
+      "fr": "Flan caramel aux oeufs parfumé à l’orange"
+     }
+    },
+    {
+     "id": "molotofe-com-creme-de-baunilha",
+     "name": "Molotofe com creme de baunilha",
+     "live": "Molotofe com creme de baunilha",
+     "price": "11.-",
+     "desc": {
+      "fr": "Blancs d’oeufs en neige cuits au bain marie Nappés à la crème vanille"
+     }
+    },
+    {
+     "id": "molotofe-com-creme-de-ovos-moles",
+     "name": "Molotofe com creme de ovos moles",
+     "live": "Molotofe com creme de ovos moles",
+     "price": "13.50",
+     "desc": {
+      "fr": "Blanc d’oeufs en neige cuits au bain marie Nappés de ovos moles"
+     }
+    },
+    {
+     "id": "sortido-de-sobremesas-caseiras",
+     "name": "Sortido de Sobremesas caseiras",
+     "live": "Sortido de Sobremesas caseiras",
+     "price": "14.50",
+     "desc": {
+      "fr": "Assortiement de desserts maisons"
+     }
+    },
+    {
+     "id": "queijo-da-serra-com-marmelada-caseira",
+     "name": "Queijo da Serra com marmelada caseira",
+     "live": "Queijo da Serra com marmelada caseira",
+     "price": "14.50",
+     "desc": {
+      "fr": "Fromage de brebis de la « Serra da Estrela » Accompagné de pâte de coing maison"
+     }
+    },
+    {
+     "id": "bola-de-gelado-artesanal",
+     "name": "Bola de Gelado artesanal",
+     "live": "Bola de Gelado artesanal la boule",
+     "price": "4.-",
+     "desc": {
+      "fr": "Boule de glace artisanale"
+     },
+     "priceUnit": "scoop"
+    },
+    {
+     "id": "gelados-regados",
+     "name": "Gelados regados",
+     "live": "Gelados regados dès",
+     "price": "12.-",
+     "desc": {
+      "fr": "Glaces arrosées"
+     },
+     "pricePrefix": "from"
+    }
+   ],
+   "pt": "SOBREMESAS CASEIRAS",
+   "fr": "DESSERTS FAITS MAISON"
+  }
+ ]
+}

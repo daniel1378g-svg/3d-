@@ -1,0 +1,478 @@
+{
+ "source": "https://www.leportugais.ch/restaurant-de-poisson-geneve/",
+ "colours": [
+  {
+   "id": "tinto",
+   "live": "Vinhos Tintos de Portugal/Vins Rouges du Portugal",
+   "regions": [
+    {
+     "id": "tinto-douro",
+     "live": "Région Douro",
+     "name": "Douro",
+     "wines": [
+      {
+       "id": "tinto-douro-quinta-do-crasto-reserva-vinhas-velhas-2010",
+       "name": "Quinta do Crasto Reserva Vinhas Velhas 2010",
+       "producer": "Quinta do Crasto",
+       "details": "assemblage de vieux cépages traditionnels de la région",
+       "abv": "14%",
+       "live": "Quinta do Crasto Reserva Vinhas Velhas 2010 /Quinta do Crasto/ assemblage de vieux cépages traditionnels de la région – 14%"
+      },
+      {
+       "id": "tinto-douro-quinta-do-crasto-reserva-vinhas-velhas-2011",
+       "name": "Quinta do Crasto Reserva Vinhas Velhas 2011",
+       "producer": "Quinta do Crasto",
+       "details": "assemblage de vieux cépages traditionnels de la région",
+       "abv": "14,5%",
+       "live": "Quinta do Crasto Reserva Vinhas Velhas 2011 /Quinta do Crasto/\nassemblage de vieux cépages traditionnels de la région -14,5%"
+      },
+      {
+       "id": "tinto-douro-crasto-2012",
+       "name": "Crasto 2012",
+       "producer": "Quinta do Crasto",
+       "details": "tinta roriz, tinta barroca, touriga franca, touriga nacional",
+       "abv": "13.5%",
+       "live": "Crasto 2012 /Quinta do Crasto/ INOX\ntinta roriz, tinta barroca, touriga franca, touriga nacional- 13.5%",
+       "extra": "INOX"
+      },
+      {
+       "id": "tinto-douro-cara-metade-reserva-2011",
+       "name": "Cara Metade Reserva 2011",
+       "producer": "PrimeGrape, Famille Boal",
+       "details": "touriga nacional, touriga franca, sousão",
+       "abv": "15,5%",
+       "live": "Cara Metade Reserva 2011 /PrimeGrape, Famille Boal/\ntouriga nacional, touriga franca, sousão – 15,5%"
+      },
+      {
+       "id": "tinto-douro-casa-boal-reserva-2011",
+       "name": "Casa Boal Reserva 2011",
+       "producer": "PrimeGrape, Famille Boal",
+       "details": "touriga nacional, touriga franca, aragonez, sousão",
+       "abv": "15%",
+       "live": "Casa Boal Reserva 2011 /PrimeGrape, Famille Boal/\ntouriga nacional, touriga franca, aragonez, sousão – 15%"
+      },
+      {
+       "id": "tinto-douro-quinta-do-portal-2011",
+       "name": "Quinta do Portal 2011",
+       "producer": "Quinta do Portal",
+       "details": "touriga nacional, touriga franca, tinta roriz",
+       "abv": "13,5%",
+       "live": "Quinta do Portal 2011 /Quinta do Portal/\ntouriga nacional, touriga franca, tinta roriz – 13,5%"
+      },
+      {
+       "id": "tinto-douro-lua-nova-em-vinhas-velhas-2011",
+       "name": "Lua Nova em Vinhas Velhas 2011",
+       "producer": "Fracastel, A. Mendes, J. Silva e Sousa",
+       "details": "vieilles vignes – INOX",
+       "abv": "14%",
+       "live": "Lua Nova em Vinhas Velhas 2011 /Fracastel, A. Mendes, J. Silva e Sousa/\nvieilles vignes – INOX 14%"
+      },
+      {
+       "id": "tinto-douro-chriseya-2008",
+       "name": "Chriseya 2008",
+       "producer": "Prats & Symington",
+       "details": "tinto cão, touriga franca, touriga nacional",
+       "abv": "13%",
+       "live": "Chriseya 2008 /Prats & Symington/\ntinto cão, touriga franca, touriga nacional – 13%"
+      },
+      {
+       "id": "tinto-douro-roquette-cazes-2011",
+       "name": "Roquette & Cazes 2011",
+       "producer": "2 Familles, Roquette e Cazes",
+       "details": "Tinta Roriz, Touriga Franca, Touriga Nacional",
+       "abv": "14.5%",
+       "live": "Roquette & Cazes 2011 / 2 Familles, Roquette e Cazes/\nTinta Roriz, Touriga Franca, Touriga Nacional-14.5%"
+      },
+      {
+       "id": "tinto-douro-batuta-2009",
+       "name": "BATUTA 2009",
+       "producer": "Niepoort",
+       "details": "touriga franca, tinta roriz, rufete, malvasia preta et autres",
+       "abv": "14%",
+       "live": "BATUTA 2009 / Niepoort /\ntouriga franca, tinta roriz, rufete, malvasia preta et autres – 14%"
+      },
+      {
+       "id": "tinto-douro-quinta-do-javali-reserva-2010",
+       "name": "Quinta do Javali Reserva 2010",
+       "producer": "Qta do Javali",
+       "details": "touriga franca, touriga nacional, tinto cão, tinta barroca",
+       "abv": "15%",
+       "live": "Quinta do Javali Reserva 2010 (culture biodynamique) /Qta do Javali/\ntouriga franca, touriga nacional, tinto cão, tinta barroca – 15%",
+       "notes": [
+        "biodynamic"
+       ]
+      },
+      {
+       "id": "tinto-douro-quinta-do-javali-tn-2010",
+       "name": "Quinta do Javali TN 2010",
+       "producer": "Qta do Javali",
+       "details": "touriga franca",
+       "abv": "13,5%",
+       "live": "Quinta do Javali TN 2010 (culture biodynamique) /Qta do Javali/\ntouriga franca- 13,5%",
+       "notes": [
+        "biodynamic"
+       ]
+      },
+      {
+       "id": "tinto-douro-quinta-do-vallado-2009",
+       "name": "Quinta do Vallado 2009",
+       "producer": "Familia Ferreira",
+       "details": "touriga nacional",
+       "abv": "14,5%",
+       "live": "Quinta do Vallado 2009 /Familia Ferreira/\ntouriga nacional– 14,5%"
+      }
+     ]
+    },
+    {
+     "id": "tinto-dao",
+     "live": "Région Dão",
+     "name": "Dão",
+     "wines": [
+      {
+       "id": "tinto-dao-dom-bella-2010",
+       "name": "Dom Bella 2010",
+       "producer": "Qta.Bella Encosta",
+       "details": "assemblage",
+       "abv": "13%",
+       "live": "Dom Bella 2010 / Qta.Bella Encosta/ …\nassemblage-13%",
+       "extra": "…"
+      }
+     ]
+    },
+    {
+     "id": "tinto-bairrada",
+     "live": "Région Bairrada",
+     "name": "Bairrada",
+     "wines": [
+      {
+       "id": "tinto-bairrada-vinhas-velhas-2008",
+       "name": "Vinhas Velhas 2008",
+       "producer": "Luis Pato",
+       "details": "baga",
+       "abv": "13%",
+       "live": "Vinhas Velhas 2008 /Luis Pato/\nbaga– 13%"
+      }
+     ]
+    },
+    {
+     "id": "tinto-palmela",
+     "live": "Région Palmela",
+     "name": "Palmela",
+     "wines": [
+      {
+       "id": "tinto-palmela-quinta-da-mimosa-2009",
+       "name": "Quinta da Mimosa 2009",
+       "producer": "Ermelinda Freitas",
+       "details": "castelão",
+       "abv": "14%",
+       "live": "Quinta da Mimosa 2009 /Ermelinda Freitas/\ncastelão – 14%"
+      },
+      {
+       "id": "tinto-palmela-dona-ermelinda-reserva-2011",
+       "name": "Dona Ermelinda Reserva 2011",
+       "producer": "Ermelinda Freitas",
+       "details": "castelão, touriga nacional, trincadeira, cab.sauvignon",
+       "abv": "14%",
+       "live": "Dona Ermelinda Reserva 2011 /Ermelinda Freitas/\ncastelão, touriga nacional, trincadeira, cab.sauvignon – 14%"
+      }
+     ]
+    },
+    {
+     "id": "tinto-ribatejo",
+     "live": "Région Ribatejo",
+     "name": "Ribatejo",
+     "wines": [
+      {
+       "id": "tinto-ribatejo-quinta-da-alorna-2011",
+       "name": "Quinta da Alorna 2011",
+       "producer": "Quinta da Alorna",
+       "details": "tinta roriz, syrah, castelão, alicante bouschet",
+       "abv": "13%",
+       "live": "Quinta da Alorna 2011 /Quinta da Alorna/\ntinta roriz, syrah, castelão, alicante bouschet – 13%"
+      },
+      {
+       "id": "tinto-ribatejo-quinta-da-alorna-reserva-2010",
+       "name": "Quinta da Alorna Reserva 2010",
+       "producer": "Quinta da Alorna",
+       "details": "touriga nacional, cabernet sauvignon",
+       "abv": "14%",
+       "live": "Quinta da Alorna Reserva 2010 /Quinta da Alorna/\ntouriga nacional, cabernet sauvignon – 14%"
+      }
+     ]
+    },
+    {
+     "id": "tinto-alentejo",
+     "live": "Région Alentejo",
+     "name": "Alentejo",
+     "wines": [
+      {
+       "id": "tinto-alentejo-monte-das-anforas-2012",
+       "name": "Monte das Anforas 2012",
+       "producer": "Bacalhôa",
+       "details": "aragonês, trincadeira, alfrocheiro",
+       "abv": "14%",
+       "live": "Monte das Anforas 2012 /Bacalhôa/\naragonês, trincadeira, alfrocheiro – 14%"
+      },
+      {
+       "id": "tinto-alentejo-pero-dalter-2012",
+       "name": "Pêro D’Alter 2012",
+       "producer": "Herdade Fonte Paredes",
+       "details": "touriga nacional, trincadeira, aragonez, castelão",
+       "abv": "13 %",
+       "live": "Pêro D’Alter 2012 /Herdade Fonte Paredes/\ntouriga nacional, trincadeira, aragonez, castelão – 13 %"
+      },
+      {
+       "id": "tinto-alentejo-esporao-reserva-2011",
+       "name": "Esporão Reserva 2011",
+       "producer": "Finagra, Esporão",
+       "details": "aragonês, tricadeira, cabernet sauvignon",
+       "abv": "14,5%",
+       "live": "Esporão Reserva 2011/Finagra, Esporão/\naragonês, tricadeira, cabernet sauvignon – 14,5%"
+      },
+      {
+       "id": "tinto-alentejo-quinta-do-mouro-rotulo-dourado-2008",
+       "name": "Quinta do Mouro Rotulo Dourado 2008",
+       "producer": "Miguel Louro",
+       "details": "Assemblage",
+       "abv": "14%",
+       "live": "Quinta do Mouro Rotulo Dourado 2008 /Miguel Louro/\nAssemblage 14%"
+      },
+      {
+       "id": "tinto-alentejo-quinta-do-mouro-2005",
+       "name": "Quinta do Mouro 2005",
+       "producer": "Miguel Louro",
+       "details": "Tinta Roriz e, Touriga Franca e outras",
+       "abv": "13,5%",
+       "live": "Quinta do Mouro 2005 /Miguel Louro/\nTinta Roriz e, Touriga Franca e outras-13,5%"
+      },
+      {
+       "id": "tinto-alentejo-malhadinha-2011",
+       "name": "Malhadinha 2011",
+       "producer": "Herdade da Malhadinha Nova",
+       "details": "tinta miuda,aragonês, alicante bouschet, touriga nacional,syrha",
+       "abv": "15,5%",
+       "live": "Malhadinha 2011 /Herdade da Malhadinha Nova/\ntinta miuda,aragonês, alicante bouschet, touriga nacional,syrha – 15,5%"
+      },
+      {
+       "id": "tinto-alentejo-tinto-da-anfora-2011",
+       "name": "Tinto da Ânfora 2011",
+       "producer": "Bacalhôa",
+       "details": "trincadeira, aragonês, touriga nacional, alfrocheiro, cabernet sauv.",
+       "abv": "14%",
+       "live": "Tinto da Ânfora 2011 /Bacalhôa/\ntrincadeira, aragonês, touriga nacional, alfrocheiro, cabernet sauv. – 14%"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "rosado",
+   "live": "Vinhos Rosados de Portugal/Vins Rosés du Portugal",
+   "regions": [
+    {
+     "id": "rosado-tras-os-montes",
+     "live": "Région Trás-os-Montes",
+     "name": "Trás-os-Montes",
+     "wines": [
+      {
+       "id": "rosado-tras-os-montes-mateus-rose",
+       "name": "Mateus Rosé",
+       "producer": "Sogrape",
+       "details": "baga, rufete, tinta barroca, touriga franca",
+       "abv": "11%",
+       "live": "Mateus Rosé /Sogrape/\nbaga, rufete, tinta barroca, touriga franca – 11%"
+      }
+     ]
+    },
+    {
+     "id": "rosado-douro",
+     "live": "Région Douro",
+     "name": "Douro",
+     "wines": [
+      {
+       "id": "rosado-douro-quinta-do-portal-2012",
+       "name": "Quinta do Portal 2012",
+       "producer": "Quina do Portal",
+       "details": "tinta roriz, touriga nacional, touriga franca",
+       "abv": "13%",
+       "live": "Quinta do Portal 2012 /Quina do Portal/\ntinta roriz, touriga nacional, touriga franca – 13%"
+      }
+     ]
+    },
+    {
+     "id": "rosado-setubal",
+     "live": "Région Setubal",
+     "name": "Setubal",
+     "wines": [
+      {
+       "id": "rosado-setubal-dona-helena-2013",
+       "name": "Dona Helena 2013",
+       "producer": "Soc.agricola Pegões",
+       "details": "castelão, syrah",
+       "abv": "12.5%",
+       "live": "Dona Helena 2013 /Soc.agricola Pegões/\ncastelão, syrah – 12.5%"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "branco",
+   "live": "Vinhos Brancos de Portugal/Vins Blancs du Portugal",
+   "regions": [
+    {
+     "id": "branco-minho",
+     "live": "Région Minho",
+     "name": "Minho",
+     "wines": [
+      {
+       "id": "branco-minho-gazela-vinho-verde",
+       "name": "Gazela -Vinho Verde",
+       "producer": "Sogrape",
+       "details": "assemblage de cépages du minho",
+       "abv": "9%",
+       "live": "Gazela -Vinho Verde /Sogrape/\nassemblage de cépages du minho – 9%"
+      },
+      {
+       "id": "branco-minho-muralhas-de-moncao-2013-vinho-verde",
+       "name": "Muralhas de Monção 2013 -Vinho Verde",
+       "producer": "Adeg.coop. de Monção",
+       "details": "alvarinho, trajadura",
+       "abv": "12.5%",
+       "live": "Muralhas de Monção 2013 -Vinho Verde /Adeg.coop. de Monção/\nalvarinho, trajadura – 12.5%"
+      },
+      {
+       "id": "branco-minho-quinta-da-aveleda-2012-vinho-verde",
+       "name": "Quinta da Aveleda 2012 -Vinho Verde",
+       "producer": "Soc.Agricola Quinta Aveleda",
+       "details": "alvarinho, loureiro, trajadura",
+       "abv": "11,5%",
+       "live": "Quinta da Aveleda 2012 -Vinho Verde / Soc.Agricola Quinta Aveleda /\nalvarinho, loureiro, trajadura – 11,5%"
+      },
+      {
+       "id": "branco-minho-alvarinho-deu-la-deu-2013-vinho-verde",
+       "name": "Alvarinho Deu-la-Deu 2013 -Vinho Verde",
+       "producer": "Adega coop. de Monção",
+       "details": "alvarinho",
+       "abv": "13%",
+       "live": "Alvarinho Deu-la-Deu 2013 -Vinho Verde /Adega coop. de Monção/\nalvarinho – 13%"
+      },
+      {
+       "id": "branco-minho-alvarinho-quinta-de-alderiz-2010-vinho-verde",
+       "name": "Alvarinho Quinta de Alderiz 2010 -Vinho Verde",
+       "producer": "Casa Pinheiro",
+       "details": "alvarinho",
+       "abv": "13.5%",
+       "live": "Alvarinho Quinta de Alderiz 2010 -Vinho Verde /Casa Pinheiro/\nalvarinho – 13.5%"
+      }
+     ]
+    },
+    {
+     "id": "branco-douro",
+     "live": "Région Douro",
+     "name": "Douro",
+     "wines": [
+      {
+       "id": "branco-douro-casa-boal-2011",
+       "name": "Casa boal 2011",
+       "producer": "PrimeGrape, Familia Boal",
+       "details": "códega de larinho, viosinho, verdelho",
+       "abv": "13,5%",
+       "live": "Casa boal 2011 /PrimeGrape, Familia Boal/\ncódega de larinho, viosinho, verdelho – 13,5%"
+      },
+      {
+       "id": "branco-douro-quinta-do-portal-2013",
+       "name": "Quinta do Portal 2013",
+       "producer": "Quinta do Portal",
+       "details": "gouveio, moscatel, malvasia fina, viosinho",
+       "abv": "13,5%",
+       "live": "Quinta do Portal 2013 /Quinta do Portal/\ngouveio, moscatel, malvasia fina, viosinho – 13,5%"
+      },
+      {
+       "id": "branco-douro-crasto-2013",
+       "name": "Crasto 2013",
+       "producer": "Qta do Crasto",
+       "details": "rabigato, viozinho, gouveio",
+       "abv": "12%",
+       "live": "Crasto 2013 /Qta do Crasto/\nrabigato, viozinho, gouveio– 12%"
+      }
+     ]
+    },
+    {
+     "id": "branco-setubal",
+     "live": "Région Setubal",
+     "name": "Setubal",
+     "wines": [
+      {
+       "id": "branco-setubal-periquita-2013",
+       "name": "Periquita 2013",
+       "producer": "Jodé Maria da Fonseca",
+       "details": "moscatel de setubal, verdelho",
+       "abv": "12,5%",
+       "live": "Periquita 2013 /Jodé Maria da Fonseca/\nmoscatel de setubal, verdelho – 12,5%"
+      }
+     ]
+    },
+    {
+     "id": "branco-alentejo",
+     "live": "Région Alentejo",
+     "name": "Alentejo",
+     "wines": [
+      {
+       "id": "branco-alentejo-esporao-private-selection-2012",
+       "name": "Esporão Private Selection 2012",
+       "producer": "Finagra, Esporão",
+       "details": "semillon, marsanne, roussanne",
+       "abv": "14%",
+       "live": "Esporão Private Selection 2012/Finagra, Esporão/\nsemillon, marsanne, roussanne – 14%"
+      },
+      {
+       "id": "branco-alentejo-esporao-reserva-2012",
+       "name": "Esporão Reserva 2012",
+       "producer": "Finagra, Esporão",
+       "details": "roupeiro, arinto, antão vaz",
+       "abv": "14%",
+       "live": "Esporão Reserva 2012/Finagra, Esporão/\nroupeiro, arinto, antão vaz – 14%"
+      },
+      {
+       "id": "branco-alentejo-esporao-espumante-bruto-2010",
+       "name": "Esporão Espumante Bruto 2010",
+       "producer": "Finagra, Esporão",
+       "details": "verdelho, antão vaz",
+       "abv": "12%",
+       "live": "Esporão Espumante (mousseux)Bruto 2010/Finagra, Esporão/ La coupe\nverdelho, antão vaz – 12%",
+       "extra": "La coupe",
+       "notes": [
+        "sparkling"
+       ]
+      },
+      {
+       "id": "branco-alentejo-viognier-da-peceguina-2012",
+       "name": "Viognier da Peceguina 2012",
+       "producer": "Herdade da Malhadinha Nova",
+       "details": "viognier",
+       "abv": "14%",
+       "live": "Viognier da Peceguina 2012 /Herdade da Malhadinha Nova/\nviognier – 14%"
+      }
+     ]
+    },
+    {
+     "id": "branco-champagne",
+     "live": "Région Champagne",
+     "name": "Champagne",
+     "wines": [
+      {
+       "id": "branco-champagne-gosset",
+       "name": "GOSSET",
+       "producer": "Gosset à Aÿ",
+       "details": "chardonnay, pinot noir, pinot meunier",
+       "abv": "12%",
+       "live": "GOSSET/Gosset à Aÿ/\nchardonnay, pinot noir, pinot meunier – 12%"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "footnote": "D’autres milesime son disponible sur demande"
+}

@@ -1,0 +1,171 @@
+// The site's animated icons, written as Lottie animations (48 × 48, 30 fps) so they play through lottie-web
+// (the dotLottie player needs WebAssembly, which the preview blocks) and take the palette at runtime.
+// Drawn for this site; no third-party animation files.
+type V2 = [number, number];
+type Anim<T> = { a: 0; k: T } | { a: 1; k: object[] };
+const S = <T,>(k: T): Anim<T> => ({ a: 0, k });
+const ease = { i: { x: [0.4], y: [1] }, o: { x: [0.6], y: [0] } };
+/** Keyframes: [frame, value][]; scalars and vectors both pass as arrays. */
+const K = (frames: [number, number[] | number][]) => ({
+  a: 1 as const,
+  k: frames.map(([t, s], n) => (n === frames.length - 1 ? { t, s: Array.isArray(s) ? s : [s] } : { t, s: Array.isArray(s) ? s : [s], ...ease })),
+});
+
+// "M x y L x y C x1 y1 x2 y2 x y Z", absolute coordinates only.
+function path(d: string) {
+  const tokens = d.match(/[MLCZ]|-?\d*\.?\d+/g) ?? [];
+  const v: V2[] = [], i: V2[] = [], o: V2[] = [];
+  let closed = false;
+  for (let n = 0; n < tokens.length; ) {
+    const cmd = tokens[n++];
+    const num = () => Number(tokens[n++]);
+    if (cmd === "M" || cmd === "L") {
+      v.push([num(), num()]); i.push([0, 0]); o.push([0, 0]);
+    } else if (cmd === "C") {
+      const c1: V2 = [num(), num()], c2: V2 = [num(), num()], p: V2 = [num(), num()];
+      const last = v.length - 1;
+      o[last] = [c1[0] - v[last][0], c1[1] - v[last][1]];
+      v.push(p); i.push([c2[0] - p[0], c2[1] - p[1]]); o.push([0, 0]);
+    } else if (cmd === "Z") closed = true;
+  }
+  // A closing curve that lands on the first point merges into it.
+  const end = v.length - 1;
+  if (closed && end > 0 && Math.hypot(v[end][0] - v[0][0], v[end][1] - v[0][1]) < 0.01) {
+    i[0] = i[end];
+    v.pop(); i.pop(); o.pop();
+  }
+  return { ty: "sh", ks: S({ i, o, v, c: closed }) };
+}
+const el = (x: number, y: number, w: number, h = w) => ({ ty: "el", p: S([x, y]), s: S([w, h]) });
+const rc = (x: number, y: number, w: number, h: number, r = 2) => ({ ty: "rc", p: S([x, y]), s: S([w, h]), r: S(r) });
+const stroke = (c: number[], w = 2.4) => ({ ty: "st", c: S([...c, 1]), o: S(100), w: S(w), lc: 2, lj: 2 });
+const fill = (c: number[], op = 100) => ({ ty: "fl", c: S([...c, 1]), o: S(op), r: 1 });
+const trim = (e: Anim<number> | ReturnType<typeof K>, s: Anim<number> | ReturnType<typeof K> = S(0)) => ({ ty: "tm", s, e, o: S(0), m: 1 });
+type Tr = { p?: object; a?: object; s?: object; r?: object; o?: object };
+const tr = (t: Tr = {}) => ({ ty: "tr", p: t.p ?? S([0, 0]), a: t.a ?? S([0, 0]), s: t.s ?? S([100, 100]), r: t.r ?? S(0), o: t.o ?? S(100), sk: S(0), sa: S(0) });
+const group = (items: object[], t: Tr = {}) => ({ ty: "gr", it: [...items, tr(t)] });
+const layer = (shapes: object[], op: number, ind = 1) => ({
+  ddd: 0, ind, ty: 4, nm: `l${ind}`, sr: 1, ao: 0, ip: 0, op, st: 0, bm: 0,
+  ks: { o: S(100), r: S(0), p: S([24, 24, 0]), a: S([24, 24, 0]), s: S([100, 100, 100]) },
+  shapes,
+});
+const doc = (op: number, layers: object[]) => ({ v: "5.7.4", fr: 30, ip: 0, op, w: 48, h: 48, nm: "icon", ddd: 0, assets: [], layers });
+
+const rgb = (hex: string) => [1, 3, 5].map((k) => parseInt(hex.slice(k, k + 2), 16) / 255);
+
+export type IconName = "fish" | "octopus" | "prawn" | "glass" | "leaf" | "nowheat" | "phone" | "tram" | "calendar" | "bag" | "pot";
+
+const builders: Record<IconName, (c: number[], a: number[]) => object> = {
+  fish: (c, a) =>
+    doc(60, [
+      layer([
+        group([el(36, 12, 3), stroke(a, 1.6)], { p: K([[0, [0, 6]], [40, [0, -6]], [60, [0, -6]]]), o: K([[0, 0], [8, 100], [40, 0], [60, 0]]) }),
+        group([el(17, 23, 2.6), fill(c)], { p: K([[0, [0, 0]], [30, [2, 0]], [60, [0, 0]]]) }),
+        group([path("M9 25 C13 16 24 14 32 21 L32 29 C24 35 13 33 9 25 Z"), stroke(c)], { p: K([[0, [0, 0]], [30, [2, 0]], [60, [0, 0]]]) }),
+        group([path("M32 25 L41 18 L41 32 Z"), stroke(a)], { a: S([32, 25]), p: K([[0, [32, 25]], [30, [34, 25]], [60, [32, 25]]]), r: K([[0, -12], [15, 12], [30, -12], [45, 12], [60, -12]]) }),
+      ], 60),
+    ]),
+  octopus: (c, a) =>
+    doc(60, [
+      layer([
+        ...[13, 20, 28, 35].map((x, n) =>
+          group([path(`M${x} 26 C${x - 2} 32 ${x + 3} 36 ${x + (n < 2 ? -3 : 3)} 41`), stroke(a, 2.2)], {
+            a: S([x, 26]), p: S([x, 26]), r: K([[0, 0], [15 + n * 3, n % 2 ? 14 : -14], [30 + n * 3, 0], [60, 0]]),
+          }),
+        ),
+        group([el(20, 18, 2.4), el(28, 18, 2.4), fill(c)]),
+        group([path("M11 27 C10 16 16 8 24 8 C32 8 38 16 37 27 Z"), stroke(c)], { a: S([24, 27]), p: S([24, 27]), s: K([[0, [100, 100]], [15, [104, 96]], [30, [100, 100]], [60, [100, 100]]]) }),
+      ], 60),
+    ]),
+  prawn: (c, a) =>
+    doc(60, [
+      layer([
+        group([path("M30 13 C36 8 41 8 44 5"), path("M30 15 C37 12 42 13 45 11"), stroke(a, 1.6)], { a: S([30, 14]), p: S([30, 14]), r: K([[0, 0], [10, -8], [20, 6], [30, 0], [60, 0]]) }),
+        group([el(27, 16, 2.2), fill(c)]),
+        group([path("M30 14 C18 12 9 20 10 30 C11 37 17 41 23 39"), path("M15 19 L19 25"), path("M11 26 L17 29"), path("M13 34 L19 33"), stroke(c)], { a: S([20, 26]), p: S([20, 26]), r: K([[0, 0], [12, -5], [24, 3], [36, 0], [60, 0]]) }),
+        group([path("M23 39 L19 44 L27 43 Z"), stroke(a, 2)], { a: S([23, 39]), p: S([23, 39]), r: K([[0, 0], [12, 12], [24, -6], [36, 0], [60, 0]]) }),
+      ], 60),
+    ]),
+  glass: (c, a) =>
+    doc(90, [
+      layer([
+        group([path("M24 4 L24 18"), trim(K([[0, 0], [14, 100], [60, 100], [70, 100]]), K([[0, 0], [50, 0], [64, 100], [90, 100]])), stroke(a, 2)]),
+        group([path("M15 20 L33 20 C33 26 29 29 24 29 C19 29 15 26 15 20 Z"), fill(a)], { a: S([24, 29]), p: S([24, 29]), s: K([[0, [100, 0]], [14, [100, 0]], [50, [100, 100]], [80, [100, 100]], [90, [100, 0]]]) }),
+        group([path("M14 12 L34 12 C34 24 30 30 24 30 C18 30 14 24 14 12 Z"), path("M24 30 L24 40"), path("M17 40 L31 40"), stroke(c)]),
+      ], 90),
+    ]),
+  leaf: (c, a) =>
+    doc(60, [
+      layer([
+        group([
+          group([path("M24 40 C24 30 25 20 30 12"), path("M25 30 L19 26"), path("M27 22 L33 19"), trim(K([[0, 0], [24, 100], [60, 100]])), stroke(a, 1.8)]),
+          group([path("M24 41 C12 36 10 22 18 14 C24 8 34 7 38 6 C39 14 38 26 32 34 C29 38 26 40 24 41 Z"), stroke(c)]),
+        ], { a: S([24, 41]), p: S([24, 41]), r: K([[0, 0], [15, -7], [30, 4], [45, -2], [60, 0]]) }),
+      ], 60),
+    ]),
+  nowheat: (c, a) =>
+    doc(60, [
+      layer([
+        group([el(24, 24, 36), path("M11 37 L37 11"), trim(K([[0, 0], [24, 100], [60, 100]])), stroke(a, 2.4)]),
+        group([
+          path("M24 40 L24 12"),
+          ...[16, 22, 28].flatMap((y) => [path(`M24 ${y} C20 ${y - 1} 18 ${y - 4} 18 ${y - 6} C21 ${y - 6} 23 ${y - 3} 24 ${y}`), path(`M24 ${y} C28 ${y - 1} 30 ${y - 4} 30 ${y - 6} C27 ${y - 6} 25 ${y - 3} 24 ${y}`)]),
+          stroke(c, 1.8),
+        ], { a: S([24, 40]), p: S([24, 40]), r: K([[0, 0], [12, -6], [24, 4], [36, 0], [60, 0]]) }),
+      ], 60),
+    ]),
+  phone: (c, a) =>
+    doc(60, [
+      layer([
+        group([path("M29 11 C33 12 36 15 37 19"), path("M29 6 C36 7 41 12 42 19"), stroke(a, 2)], { o: K([[0, 0], [10, 100], [30, 100], [40, 0], [60, 0]]) }),
+        group([path("M14 8 L19 8 L22 16 L18 19 C20 24 24 28 29 30 L32 26 L40 29 L40 34 C40 37 38 40 34 40 C21 39 9 27 8 14 C8 10 11 8 14 8 Z"), stroke(c)], {
+          a: S([24, 24]), p: S([24, 24]), r: K([[0, 0], [5, -8], [10, 8], [15, -8], [20, 8], [25, 0], [60, 0]]),
+        }),
+      ], 60),
+    ]),
+  tram: (c, a) =>
+    doc(60, [
+      layer([
+        group([path("M4 41 L44 41"), stroke(a, 1.8)]),
+        group([
+          group([path("M20 9 L24 5 L28 9"), path("M24 9 L24 12"), stroke(a, 1.8)]),
+          group([rc(24, 24, 28, 22, 4), path("M10 21 L38 21"), path("M17 13 L17 21"), path("M24 13 L24 21"), path("M31 13 L31 21"), stroke(c)]),
+          group([el(16, 38, 4), el(32, 38, 4), stroke(c, 2)]),
+        ], { p: K([[0, [-30, 0]], [22, [0, 0]], [38, [0, 0]], [60, [30, 0]]]), o: K([[0, 0], [8, 100], [52, 100], [60, 0]]) }),
+      ], 60),
+    ]),
+  calendar: (c, a) =>
+    doc(60, [
+      layer([
+        group([path("M18 28 L22 32 L30 24"), trim(K([[0, 0], [8, 0], [30, 100], [60, 100]])), stroke(a, 2.6)]),
+        group([path("M17 9 L17 15"), path("M31 9 L31 15"), stroke(c)], { p: K([[0, [0, 0]], [6, [0, -2]], [12, [0, 0]], [60, [0, 0]]]) }),
+        group([rc(24, 26, 28, 26, 3), path("M10 19 L38 19"), stroke(c)]),
+      ], 60),
+    ]),
+  bag: (c, a) =>
+    doc(60, [
+      layer([
+        group([path("M18 18 C18 10 30 10 30 18"), stroke(a, 2)], { a: S([24, 18]), p: S([24, 18]), r: K([[0, 0], [10, -10], [20, 8], [30, 0], [60, 0]]) }),
+        group([path("M11 18 L37 18 L34 41 L14 41 Z"), path("M19 28 L29 28"), stroke(c)], { a: S([24, 41]), p: S([24, 41]), s: K([[0, [100, 100]], [8, [104, 94]], [18, [98, 104]], [28, [100, 100]], [60, [100, 100]]]) }),
+      ], 60),
+    ]),
+  pot: (c, a) =>
+    doc(60, [
+      layer([
+        ...[18, 24, 30].map((x, n) =>
+          group([path(`M${x} 15 C${x - 2} 12 ${x + 2} 9 ${x} 6`), stroke(a, 2)], {
+            p: K([[n * 8, [0, 4]], [n * 8 + 30, [0, -2]], [60, [0, -2]]]), o: K([[n * 8, 0], [n * 8 + 12, 100], [n * 8 + 30, 0], [60, 0]]),
+          }),
+        ),
+        group([path("M10 22 L38 22"), path("M20 18 L28 18"), stroke(c, 2)]),
+        group([path("M12 22 L12 36 C12 39 14 41 17 41 L31 41 C34 41 36 39 36 36 L36 22"), path("M12 27 L7 27"), path("M36 27 L41 27"), stroke(c)]),
+      ], 60),
+    ]),
+};
+
+const cache = new Map<string, object>();
+export function iconData(name: IconName, color: string, accent: string) {
+  const key = `${name}${color}${accent}`;
+  if (!cache.has(key)) cache.set(key, builders[name](rgb(color), rgb(accent)));
+  return cache.get(key)!;
+}

@@ -1,0 +1,162 @@
+{
+ "bacalhau-geneve-1": [
+  1200,
+  836
+ ],
+ "bacalhau-plainpalais-geneve-1": [
+  1200,
+  751
+ ],
+ "banquets-portugais-geneve": [
+  1200,
+  798
+ ],
+ "fruits-de-mer-plainpalais-geneve": [
+  1200,
+  693
+ ],
+ "gastronomie-portugaise-geneve": [
+  1200,
+  731
+ ],
+ "gastronomie-portugaise-plainpalais": [
+  1200,
+  719
+ ],
+ "marisqueira-restaurant-portugais-geneve": [
+  1200,
+  847
+ ],
+ "meilleur-restaurant-portugais-plainpalais-1": [
+  1200,
+  798
+ ],
+ "plats-du-jour-plainpalais": [
+  1200,
+  798
+ ],
+ "poisson-arrivage-journalier-geneve": [
+  1200,
+  728
+ ],
+ "portugais-poisson-frais-geneve": [
+  1200,
+  798
+ ],
+ "restaurant-convivial-portugais-geneve": [
+  1200,
+  746
+ ],
+ "restaurant-de-poisson-geneve": [
+  1200,
+  515
+ ],
+ "restaurant-plainpalais": [
+  1200,
+  634
+ ],
+ "restaurant-plats-du-jour-plainpalais-1": [
+  1200,
+  805
+ ],
+ "restaurant-portugais-geneve-1": [
+  1200,
+  775
+ ],
+ "restaurant-portugais-plainpalais-banquets-4": [
+  1200,
+  849
+ ],
+ "restaurant-portugais-plainpalais": [
+  800,
+  1553
+ ],
+ "restaurant-portugais-sympa-plainpalais-1": [
+  1200,
+  798
+ ],
+ "restaurant-pour-banquets-portugais": [
+  1200,
+  798
+ ],
+ "restaurant-specialites-de-la-mer-geneve": [
+  1200,
+  602
+ ],
+ "restaurant-specialites-poisson-geneve-1": [
+  1200,
+  798
+ ],
+ "specialites-fruits-de-mer-plainpalais": [
+  1200,
+  448
+ ],
+ "specialites-portugaise-geneve": [
+  1200,
+  798
+ ],
+ "press/tribune-de-geneve": [
+  960,
+  658
+ ],
+ "press/article-portugais": [
+  800,
+  1139
+ ],
+ "press/fines-gueules": [
+  800,
+  933
+ ],
+ "press/gault-millau": [
+  600,
+  1139
+ ],
+ "press/adresses-exotiques": [
+  1200,
+  1048
+ ],
+ "blog/lusitania-flyer": [
+  189,
+  267
+ ],
+ "blog/antonina-fernando": [
+  1200,
+  798
+ ],
+ "cutouts/peixes": [
+  900,
+  363
+ ],
+ "cutouts/mariscos": [
+  900,
+  375
+ ],
+ "cutouts/tomates": [
+  480,
+  260
+ ],
+ "cutouts/polvo": [
+  900,
+  326
+ ],
+ "cutouts/travessa": [
+  900,
+  329
+ ],
+ "cutouts/batatas": [
+  453,
+  440
+ ],
+ "cutouts/feijao": [
+  857,
+  597
+ ],
+ "brand/logo": [
+  500,
+  512
+ ],
+ "brand/mark": [
+  205,
+  286
+ ]
+}
