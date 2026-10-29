@@ -138,6 +138,7 @@ Nothing from the cut list was dropped. The phases did not follow the brief's ord
 - **Texts as read** match the brief. The live "Qui sommes-nous ?" paragraphs, the plat du jour lines, the menu intro, the services texts, the hours and the "Pour réserver…" line are verbatim. The privacy statement is copied in full; its cookie section is **not empty**: it lists the old platform's cookies (Duda, Termly, Elfsight, Snowplow), copied as they are. Its "Ouvrir les préférences de cookies" button belongs to the old cookie banner and is left out.
 - The new site sets no cookies (it remembers the language and the intro in the browser's own storage) and loads the map, Facebook and Instagram only on tap.
 - Nothing on the live site was unreadable.
+- The live pages embed a Mapbox access token in their page code (the map widget of the old builder). GitHub's secret scanning classes it as a Mapbox secret token, so the saved HTML copies of the live pages were left out of the repo (`content/raw/` keeps the texts, links, images list and colours as `.txt` and `.json`, with the token removed). The owner may want to ask ZIP.ch whether that token should be rotated.
 
 ## Open questions for the owner
 
