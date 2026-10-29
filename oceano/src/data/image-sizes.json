@@ -1,0 +1,170 @@
+{
+ "steak-chips": [
+  1600,
+  778
+ ],
+ "burger-sauce": [
+  1100,
+  980
+ ],
+ "bacalhau-chips": [
+  1100,
+  980
+ ],
+ "steak-sauce": [
+  1600,
+  1200
+ ],
+ "laden-theke": [
+  1080,
+  486
+ ],
+ "laden-kuehlregal": [
+  1080,
+  525
+ ],
+ "laden-regal-1": [
+  1080,
+  525
+ ],
+ "laden-kasse": [
+  1080,
+  525
+ ],
+ "laden-kasse-2": [
+  545,
+  265
+ ],
+ "laden-regal-2": [
+  1080,
+  525
+ ],
+ "laden-kuehlschrank": [
+  640,
+  1316
+ ],
+ "laden-regal-3": [
+  1080,
+  525
+ ],
+ "laden-tiefkuehl": [
+  1080,
+  525
+ ],
+ "laden-glace": [
+  1080,
+  525
+ ],
+ "laden-tiefkuehl-2": [
+  1080,
+  525
+ ],
+ "laden-bier-1": [
+  1080,
+  525
+ ],
+ "laden-bier-2": [
+  1080,
+  525
+ ],
+ "laden-stockfisch-1": [
+  1080,
+  525
+ ],
+ "laden-stockfisch-2": [
+  1080,
+  525
+ ],
+ "galerie-tapas": [
+  1600,
+  960
+ ],
+ "galerie-tisch": [
+  1600,
+  960
+ ],
+ "galerie-fisch": [
+  1600,
+  960
+ ],
+ "galerie-spiesse": [
+  1600,
+  960
+ ],
+ "galerie-salat": [
+  1600,
+  960
+ ],
+ "galerie-burger": [
+  545,
+  363
+ ],
+ "restaurant-saal": [
+  545,
+  334
+ ],
+ "steak-brett": [
+  1600,
+  1066
+ ],
+ "schweinebauch": [
+  1562,
+  1012
+ ],
+ "gebaeck": [
+  1600,
+  1528
+ ],
+ "bacalhau-lagareiro": [
+  1565,
+  1018
+ ],
+ "polvo": [
+  1553,
+  1033
+ ],
+ "kaese-gericht": [
+  1467,
+  936
+ ],
+ "dessert": [
+  1600,
+  1281
+ ],
+ "platte-wein": [
+  1446,
+  948
+ ],
+ "cutouts/burger": [
+  700,
+  610
+ ],
+ "cutouts/bacalhau": [
+  700,
+  495
+ ],
+ "cutouts/polvo": [
+  700,
+  331
+ ],
+ "cutouts/steak": [
+  700,
+  623
+ ],
+ "cutouts/platte": [
+  700,
+  426
+ ],
+ "cutouts/gebaeck": [
+  700,
+  396
+ ],
+ "brand/logo": [
+  301,
+  75
+ ],
+ "brand/mark": [
+  90,
+  74
+ ]
+}

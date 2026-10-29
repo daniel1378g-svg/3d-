@@ -1,0 +1,23 @@
+text       #1B1B1B rgb(27, 27, 27) ×1659
+text       #000000 rgb(0, 0, 0) ×294
+text       #555555 rgb(85, 85, 85) ×71
+text       #463939 rgb(70, 57, 57) ×65
+text       #F7F7F7 rgb(247, 247, 247) ×45
+background #DFCE9B rgb(223, 206, 155) ×43
+text       #333333 rgb(51, 51, 51) ×42
+text       #666666 rgb(102, 102, 102) ×36
+background #FFFFFF rgb(255, 255, 255) ×30
+border     #000000 rgb(0, 0, 0) ×27
+text       #FFFFFF rgb(255, 255, 255) ×25
+background #000000 rgb(0, 0, 0) ×20
+background #B2A47C rgb(178, 164, 124) ×18
+text       #999999 rgb(153, 153, 153) ×18
+border     #CCCCCC rgb(204, 204, 204) ×14
+background #FBFAF5 rgb(251, 250, 245) ×13
+background #F5F5F5 rgb(245, 245, 245) ×9
+background #FFFFFF rgba(255, 255, 255, 0.4) ×9
+background #F3F2E1 rgb(243, 242, 225) ×8
+background #000000 rgba(0, 0, 0, 0.45) ×5
+background #F1F1F1 rgb(241, 241, 241) ×5
+border     #1B1B1B rgb(27, 27, 27) ×2
+background #E4E4E7 rgb(228, 228, 231) ×2

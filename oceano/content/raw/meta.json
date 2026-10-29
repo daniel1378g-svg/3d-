@@ -1,0 +1,119 @@
+{
+ "home": {
+  "title": "Portugiesische Burger | Schlieren | Restaurant Oceano",
+  "description": "Das Restaurant Oceano hat nicht nur Burger in Schlieren, sondern weitere feine portugiesische Gerichte zu bieten. Erfahren Sie hier mehr über unsere Speisen.",
+  "roles": {
+   "nav": "rgb(85, 85, 85)",
+   "h1": "rgb(51, 51, 51)",
+   "h2": "rgb(51, 51, 51)",
+   "body": "rgb(27, 27, 27)",
+   "button": "rgba(0, 0, 0, 0)",
+   "buttonText": "rgb(0, 0, 0)",
+   "link": "rgb(85, 85, 85)"
+  }
+ },
+ "unsere-kueche": {
+  "title": "Fisch nach portugiesischer Art | Schlieren | Restaurant Oceano",
+  "description": "Fisch in Schlieren nach portugiesischer Art ist im Restaurant Oceano ein wahrer Genuss. Erfahren Sie hier mehr über unsere traditionelle portugiesische Küche.",
+  "roles": {
+   "nav": "rgb(27, 27, 27)",
+   "h1": "rgb(51, 51, 51)",
+   "h2": "rgb(51, 51, 51)",
+   "body": "rgb(27, 27, 27)",
+   "button": "rgba(0, 0, 0, 0)",
+   "buttonText": "rgb(0, 0, 0)",
+   "link": "rgb(85, 85, 85)"
+  }
+ },
+ "unser-laden": {
+  "title": "Portugiesischer Stockfisch | Schlieren | Restaurant Oceano",
+  "description": "Stockfisch in Schlieren gibt es im Spezialitätenladen des Restaurant Oceano. Welche weiteren Köstlichkeiten auf Sie warten, erfahren Sie auf dieser Seite.",
+  "roles": {
+   "nav": "rgb(27, 27, 27)",
+   "h1": "rgb(51, 51, 51)",
+   "h2": "rgb(51, 51, 51)",
+   "body": "rgb(27, 27, 27)",
+   "button": "rgba(0, 0, 0, 0)",
+   "buttonText": "rgb(0, 0, 0)",
+   "link": "rgb(85, 85, 85)"
+  }
+ },
+ "ueber-uns": {
+  "title": "Portugiesisches Essen | Schlieren | Restaurant Oceano",
+  "description": "Traditionelles portugiesisches Essen in Schlieren finden Sie im Restaurant Oceano. Lernen Sie uns kennen, hier stellen wir uns vor. Wir freuen uns auf Sie.",
+  "roles": {
+   "nav": "rgb(27, 27, 27)",
+   "h1": "rgb(51, 51, 51)",
+   "h2": "rgb(51, 51, 51)",
+   "body": "rgb(27, 27, 27)",
+   "button": "rgba(0, 0, 0, 0)",
+   "buttonText": "rgb(0, 0, 0)",
+   "link": "rgb(85, 85, 85)"
+  }
+ },
+ "kundenbewertungen": {
+  "title": "Portugiesische Spezialitäten | Schlieren | Restaurant Oceano",
+  "description": "Portugiesische Spezialitäten in Schlieren gibt es im Restaurant Oceano. Unser Spezialitätenladen hält so einige Köstlichkeiten bereit. Jetzt reservieren!",
+  "roles": {
+   "nav": "rgb(27, 27, 27)",
+   "h1": "rgb(51, 51, 51)",
+   "h2": "rgb(51, 51, 51)",
+   "body": "rgb(27, 27, 27)",
+   "button": "rgba(0, 0, 0, 0)",
+   "buttonText": "rgb(0, 0, 0)",
+   "link": "rgb(85, 85, 85)"
+  }
+ },
+ "galerie": {
+  "title": "Portugiesisches Restaurant | Schlieren | Restaurant Oceano",
+  "description": "Unser portugiesisches Restaurant in Schlieren bietet eine traditionelle Küche mit hervorragendem Service. Machen Sie sich gern selbst ein Bild.",
+  "roles": {
+   "nav": "rgb(27, 27, 27)",
+   "h1": "rgb(51, 51, 51)",
+   "h2": "rgb(51, 51, 51)",
+   "body": "rgb(27, 27, 27)",
+   "button": "rgba(0, 0, 0, 0)",
+   "buttonText": "rgb(0, 0, 0)",
+   "link": "rgb(85, 85, 85)"
+  }
+ },
+ "web-shop": {
+  "title": "Portugiesische Küche | Schlieren | Restaurant Oceano",
+  "description": "Erleben Sie im Restaurant Oceano die portugiesische Küche in Schlieren. Authentischer Geschmack, der alle Sinne mit einbezieht. Kommen Sie zu uns.",
+  "roles": {
+   "nav": "rgb(27, 27, 27)",
+   "h1": "rgb(51, 51, 51)",
+   "h2": null,
+   "body": "rgb(27, 27, 27)",
+   "button": "rgba(0, 0, 0, 0)",
+   "buttonText": "rgb(0, 0, 0)",
+   "link": "rgb(85, 85, 85)"
+  }
+ },
+ "kontakt": {
+  "title": "Geschäftsessen und Take-away | Schlieren | Restaurant Oceano",
+  "description": "Das Restaurant Oceano steht auch für Geschäftsessen und Take-away in Schlieren zur Verfügung. Rufen Sie uns an, um alles in die Wege zu leiten: 044 7302548!",
+  "roles": {
+   "nav": "rgb(27, 27, 27)",
+   "h1": "rgb(51, 51, 51)",
+   "h2": "rgb(51, 51, 51)",
+   "body": "rgb(27, 27, 27)",
+   "button": "rgba(0, 0, 0, 0)",
+   "buttonText": "rgb(0, 0, 0)",
+   "link": "rgb(85, 85, 85)"
+  }
+ },
+ "impressum": {
+  "title": "impressum",
+  "description": "impressum",
+  "roles": {
+   "nav": "rgb(27, 27, 27)",
+   "h1": "rgb(51, 51, 51)",
+   "h2": "rgb(51, 51, 51)",
+   "body": "rgb(27, 27, 27)",
+   "button": "rgba(0, 0, 0, 0)",
+   "buttonText": "rgb(0, 0, 0)",
+   "link": "rgb(85, 85, 85)"
+  }
+ }
+}

@@ -1,0 +1,446 @@
+{
+  "photos": [
+    {
+      "id": "steak-chips",
+      "cat": "restaurant",
+      "shows": "fleisch",
+      "stock": false,
+      "alt": {
+        "de": "Gegrilltes Rindssteak auf einem Holzbrett mit violetten Kartoffelchips, einer Orangenscheibe, Tomate und roter Zwiebel.",
+        "en": "Grilled beef steak on a wooden board with purple potato crisps, an orange slice, tomato and red onion.",
+        "pt": "Bife de vaca grelhado numa tábua de madeira com batatas fritas roxas às rodelas, uma rodela de laranja, tomate e cebola roxa.",
+        "fr": "Steak de bœuf grillé sur une planche en bois avec des chips de pommes de terre violettes, une rondelle d'orange, de la tomate et de l'oignon rouge.",
+        "it": "Bistecca di manzo alla griglia su un tagliere di legno con chips di patate viola, una fetta d'arancia, pomodoro e cipolla rossa."
+      }
+    },
+    {
+      "id": "burger-sauce",
+      "cat": "restaurant",
+      "shows": "burger",
+      "stock": false,
+      "alt": {
+        "de": "Burger im roten Brötchen, überzogen mit geschmolzenem Käse und mit einem Messer darin, daneben Kartoffelecken in einem Drahtkörbchen auf einem runden Holzbrett.",
+        "en": "Burger in a red bun covered with melted cheese and pierced with a knife, next to potato wedges in a small wire basket on a round wooden board.",
+        "pt": "Hambúrguer em pão vermelho coberto de queijo derretido e espetado com uma faca, ao lado de batatas em gomos num cestinho de arame sobre uma tábua redonda de madeira.",
+        "fr": "Burger dans un pain rouge nappé de fromage fondu et planté d'un couteau, à côté de quartiers de pommes de terre dans un petit panier en fil de fer sur une planche ronde en bois.",
+        "it": "Hamburger in un panino rosso ricoperto di formaggio fuso e infilzato con un coltello, accanto a spicchi di patate in un cestino di rete metallica su un tagliere rotondo di legno."
+      }
+    },
+    {
+      "id": "bacalhau-chips",
+      "cat": "restaurant",
+      "shows": "fisch",
+      "stock": false,
+      "alt": {
+        "de": "Gebratener Stockfisch unter geschmorten Zwiebeln, Peperoni und grünen Oliven, umgeben von Kartoffelchips auf einem ovalen weissen Teller.",
+        "en": "Fried salt cod under stewed onions, peppers and green olives, surrounded by potato crisps on an oval white plate.",
+        "pt": "Bacalhau frito coberto de cebolada com pimentos e azeitonas verdes, rodeado de batatas fritas às rodelas num prato oval branco.",
+        "fr": "Morue frite sous des oignons mijotés, des poivrons et des olives vertes, entourée de chips de pommes de terre sur une assiette ovale blanche.",
+        "it": "Baccalà fritto sotto cipolle stufate, peperoni e olive verdi, circondato da chips di patate su un piatto ovale bianco."
+      }
+    },
+    {
+      "id": "steak-sauce",
+      "cat": "restaurant",
+      "shows": "fleisch",
+      "stock": false,
+      "alt": {
+        "de": "Steak mit Spiegelei unter einer orangefarbenen Sauce und Kräuter-Pommes-frites auf einem schwarzen Schieferbrett auf einer Edelstahltheke.",
+        "en": "Steak topped with a fried egg under an orange sauce, with herbed chips on a black slate board on a stainless steel counter.",
+        "pt": "Bife com ovo estrelado coberto por um molho alaranjado e batatas fritas com ervas numa tábua de ardósia preta sobre uma bancada de inox.",
+        "fr": "Steak surmonté d'un œuf au plat sous une sauce orangée, avec des frites aux herbes sur une ardoise noire posée sur un comptoir en inox.",
+        "it": "Bistecca con uovo fritto sotto una salsa arancione e patatine alle erbe su una lavagna di ardesia nera posata su un bancone in acciaio."
+      }
+    },
+    {
+      "id": "laden-theke",
+      "cat": "laden",
+      "shows": "laden",
+      "stock": false,
+      "alt": {
+        "de": "Kühltheke mit portugiesischem Gebäck und Kuchen, dahinter Backöfen und eine Aufschnittmaschine, rechts Regale mit Cuétara-Keksen, Oreo und Alsa-Milchreis.",
+        "en": "Refrigerated counter with Portuguese pastries and cakes, with ovens and a slicer behind it and shelves of Cuétara biscuits, Oreo and Alsa rice pudding on the right.",
+        "pt": "Vitrina refrigerada com bolos e pastelaria portuguesa, com fornos e uma fiambreira atrás e, à direita, prateleiras com bolachas Cuétara, Oreo e arroz doce Alsa.",
+        "fr": "Comptoir réfrigéré avec des pâtisseries et gâteaux portugais, des fours et une trancheuse derrière, et à droite des étagères de biscuits Cuétara, Oreo et riz au lait Alsa.",
+        "it": "Banco refrigerato con pasticceria e dolci portoghesi, dietro forni e un'affettatrice, a destra scaffali con biscotti Cuétara, Oreo e riso al latte Alsa."
+      }
+    },
+    {
+      "id": "laden-kuehlregal",
+      "cat": "laden",
+      "shows": "laden",
+      "stock": false,
+      "alt": {
+        "de": "Kühlregal mit vakuumverpackten Würsten und Schinken sowie Käselaiben, darüber Schachteln mit Royal-Dessertpulver.",
+        "en": "Chilled shelving with vacuum-packed sausages and ham and wheels of cheese, with boxes of Royal dessert mix on top.",
+        "pt": "Expositor frigorífico com enchidos e presunto embalados a vácuo e queijos, com caixas de pudim Royal na prateleira de cima.",
+        "fr": "Rayon réfrigéré avec des saucissons et du jambon sous vide et des fromages, surmonté de boîtes de préparation pour dessert Royal.",
+        "it": "Scaffale refrigerato con salumi e prosciutto sottovuoto e forme di formaggio, con scatole di preparato per dolci Royal in alto."
+      }
+    },
+    {
+      "id": "laden-regal-1",
+      "cat": "laden",
+      "shows": "laden",
+      "stock": false,
+      "alt": {
+        "de": "Regal mit Delta-Kaffee, Delta-Q-Kapseln und -Maschinen, Maizena, Mehl und Gewürzen, links das Kassenband.",
+        "en": "Shelf with Delta coffee, Delta Q capsules and machines, Maizena, flour and spices, with the checkout belt on the left.",
+        "pt": "Prateleira com café Delta, cápsulas e máquinas Delta Q, Maizena, farinha e especiarias, com o tapete da caixa à esquerda.",
+        "fr": "Rayon avec du café Delta, des capsules et machines Delta Q, de la Maizena, de la farine et des épices, le tapis de caisse à gauche.",
+        "it": "Scaffale con caffè Delta, capsule e macchine Delta Q, Maizena, farina e spezie, a sinistra il nastro della cassa."
+      }
+    },
+    {
+      "id": "laden-kasse",
+      "cat": "laden",
+      "shows": "raum",
+      "stock": false,
+      "alt": {
+        "de": "Kassentheke mit Waage und Kasse, links ein Regal mit Wein und Bier, rechts Delta-Q-Kaffeemaschinen und Kaffeepackungen, davor orange Einkaufskörbe.",
+        "en": "Checkout counter with scale and till, a shelf of wine and beer on the left, Delta Q coffee machines and coffee packs on the right and orange shopping baskets in front.",
+        "pt": "Balcão da caixa com balança e registadora, à esquerda uma prateleira com vinho e cerveja, à direita máquinas de café Delta Q e pacotes de café, e cestos de compras laranja à frente.",
+        "fr": "Comptoir de caisse avec balance et caisse enregistreuse, à gauche un rayon de vin et de bière, à droite des machines à café Delta Q et des paquets de café, des paniers orange devant.",
+        "it": "Banco cassa con bilancia e registratore di cassa, a sinistra uno scaffale di vino e birra, a destra macchine da caffè Delta Q e pacchetti di caffè, davanti cestini arancioni."
+      }
+    },
+    {
+      "id": "laden-kasse-2",
+      "cat": "laden",
+      "shows": "raum",
+      "stock": false,
+      "alt": {
+        "de": "Kassentheke mit Waage und Kasse, dahinter Regale mit Wein, Kaffee und Delta-Q-Maschinen.",
+        "en": "Checkout counter with scale and till, with shelves of wine, coffee and Delta Q machines behind.",
+        "pt": "Balcão da caixa com balança e registadora, atrás prateleiras com vinho, café e máquinas Delta Q.",
+        "fr": "Comptoir de caisse avec balance et caisse enregistreuse, derrière des rayons de vin, de café et de machines Delta Q.",
+        "it": "Banco cassa con bilancia e registratore di cassa, dietro scaffali con vino, caffè e macchine Delta Q."
+      }
+    },
+    {
+      "id": "laden-regal-2",
+      "cat": "laden",
+      "shows": "raum",
+      "stock": false,
+      "alt": {
+        "de": "Ladenraum mit einem Ständer voller Chips und Süssigkeiten, gestapelten Pedras-Mineralwasserflaschen, einem Weinregal und der Kassentheke rechts.",
+        "en": "Shop floor with a rack of crisps and sweets, stacked packs of Pedras mineral water, a wine shelf and the checkout counter on the right.",
+        "pt": "Interior da loja com um expositor de batatas fritas e doces, grades de água das Pedras empilhadas, uma prateleira de vinhos e o balcão da caixa à direita.",
+        "fr": "Intérieur de la boutique avec un présentoir de chips et de bonbons, des packs d'eau Pedras empilés, un rayon de vins et le comptoir de caisse à droite.",
+        "it": "Interno del negozio con un espositore di patatine e dolciumi, confezioni di acqua Pedras impilate, uno scaffale di vini e il banco cassa a destra."
+      }
+    },
+    {
+      "id": "laden-kuehlschrank",
+      "cat": "laden",
+      "shows": "laden",
+      "stock": false,
+      "alt": {
+        "de": "Kühlschrank mit Paiva-Käse: Mistura, Ovelha, Cabra und Flamengo, mit Preisschildern in Franken.",
+        "en": "Fridge with Paiva cheeses: Mistura, Ovelha, Cabra and Flamengo, with price tags in francs.",
+        "pt": "Frigorífico com queijos Paiva: Mistura, Ovelha, Cabra e Flamengo, com etiquetas de preço em francos.",
+        "fr": "Réfrigérateur avec des fromages Paiva : Mistura, Ovelha, Cabra et Flamengo, avec des étiquettes de prix en francs.",
+        "it": "Frigorifero con formaggi Paiva: Mistura, Ovelha, Cabra e Flamengo, con cartellini dei prezzi in franchi."
+      }
+    },
+    {
+      "id": "laden-regal-3",
+      "cat": "laden",
+      "shows": "laden",
+      "stock": false,
+      "alt": {
+        "de": "Regale mit Nestum-Cerealien, Saucenflaschen, Mehl, Maizena, Kartoffelpüree, Olivenöl und Gewürzen.",
+        "en": "Shelves with Nestum cereals, bottles of sauce, flour, Maizena, instant mashed potato, olive oil and spices.",
+        "pt": "Prateleiras com cereais Nestum, garrafas de molho, farinha, Maizena, puré de batata, azeite e especiarias.",
+        "fr": "Rayons avec des céréales Nestum, des bouteilles de sauce, de la farine, de la Maizena, de la purée de pommes de terre, de l'huile d'olive et des épices.",
+        "it": "Scaffali con cereali Nestum, bottiglie di salsa, farina, Maizena, purè di patate, olio d'oliva e spezie."
+      }
+    },
+    {
+      "id": "laden-tiefkuehl",
+      "cat": "laden",
+      "shows": "laden",
+      "stock": false,
+      "alt": {
+        "de": "Dreitüriger Tiefkühlschrank mit Beuteln tiefgekühlter Fische und Meeresfrüchte, daneben gestapelte Wasserflaschen und Heineken-Kartons.",
+        "en": "Three-door freezer with bags of frozen fish and seafood, next to stacked water bottles and Heineken cases.",
+        "pt": "Arca vertical de três portas com sacos de peixe e marisco congelado, ao lado de garrafas de água empilhadas e caixas de Heineken.",
+        "fr": "Congélateur à trois portes avec des sachets de poisson et de fruits de mer surgelés, à côté de bouteilles d'eau empilées et de cartons de Heineken.",
+        "it": "Congelatore a tre ante con buste di pesce e frutti di mare surgelati, accanto a bottiglie d'acqua impilate e cartoni di Heineken."
+      }
+    },
+    {
+      "id": "laden-glace",
+      "cat": "laden",
+      "shows": "nachspeise",
+      "stock": false,
+      "alt": {
+        "de": "Tiefkühltruhe mit Schachteln Solero- und Cornetto-Glace.",
+        "en": "Chest freezer with boxes of Solero and Cornetto ice cream.",
+        "pt": "Arca congeladora com caixas de gelados Solero e Cornetto.",
+        "fr": "Congélateur bahut avec des boîtes de glaces Solero et Cornetto.",
+        "it": "Congelatore a pozzetto con scatole di gelati Solero e Cornetto."
+      }
+    },
+    {
+      "id": "laden-tiefkuehl-2",
+      "cat": "laden",
+      "shows": "laden",
+      "stock": false,
+      "alt": {
+        "de": "Tiefkühlregal mit Schalen tiefgekühlter Rissóis und Kroketten, links Schachteln Magnum Almond und Viennetta.",
+        "en": "Freezer shelf with trays of frozen rissóis and croquettes, with boxes of Magnum Almond and Viennetta on the left.",
+        "pt": "Prateleira de congelador com cuvetes de rissóis e croquetes congelados, à esquerda caixas de Magnum Almond e Viennetta.",
+        "fr": "Étagère de congélateur avec des barquettes de rissóis et de croquettes surgelés, à gauche des boîtes de Magnum Almond et de Viennetta.",
+        "it": "Ripiano del congelatore con vaschette di rissóis e crocchette surgelati, a sinistra scatole di Magnum Almond e Viennetta."
+      }
+    },
+    {
+      "id": "laden-bier-1",
+      "cat": "laden",
+      "shows": "getraenk",
+      "stock": false,
+      "alt": {
+        "de": "Gestapelte Kartons Super-Bock-Bier mit je 24 Flaschen à 33 cl, dahinter ein grünes Open-Schild.",
+        "en": "Stacked cases of Super Bock beer, 24 bottles of 33 cl each, with a green Open sign behind.",
+        "pt": "Caixas de cerveja Super Bock empilhadas, com 24 garrafas de 33 cl cada, e um letreiro verde Open atrás.",
+        "fr": "Cartons de bière Super Bock empilés, 24 bouteilles de 33 cl chacun, avec une enseigne verte Open derrière.",
+        "it": "Cartoni di birra Super Bock impilati, 24 bottiglie da 33 cl ciascuno, con un'insegna verde Open dietro."
+      }
+    },
+    {
+      "id": "laden-bier-2",
+      "cat": "laden",
+      "shows": "getraenk",
+      "stock": false,
+      "alt": {
+        "de": "Karton Sagres-Bier neben einem Sechserpack alkoholfreiem Super Bock 0,0 %.",
+        "en": "Case of Sagres beer next to a six-pack of non-alcoholic Super Bock 0.0%.",
+        "pt": "Caixa de cerveja Sagres ao lado de um pack de seis Super Bock 0,0% sem álcool.",
+        "fr": "Carton de bière Sagres à côté d'un pack de six Super Bock 0,0 % sans alcool.",
+        "it": "Cartone di birra Sagres accanto a una confezione da sei di Super Bock 0,0% analcolica."
+      }
+    },
+    {
+      "id": "laden-stockfisch-1",
+      "cat": "laden",
+      "shows": "fisch",
+      "stock": false,
+      "alt": {
+        "de": "In Folie verpackte Stücke Stockfisch (Bacalhau) auf dem Rost eines Tiefkühlschranks.",
+        "en": "Pieces of salt cod wrapped in plastic on the rack of a freezer.",
+        "pt": "Postas de bacalhau embaladas em plástico na grelha de um congelador.",
+        "fr": "Morceaux de morue emballés sous plastique sur la grille d'un congélateur.",
+        "it": "Pezzi di baccalà avvolti nella plastica sulla griglia di un congelatore."
+      }
+    },
+    {
+      "id": "laden-stockfisch-2",
+      "cat": "laden",
+      "shows": "meeresfruechte",
+      "stock": false,
+      "alt": {
+        "de": "Vakuumverpackte Venusmuscheln auf dem Rost eines Tiefkühlschranks.",
+        "en": "Vacuum-packed clams on the rack of a freezer.",
+        "pt": "Amêijoas embaladas a vácuo na grelha de um congelador.",
+        "fr": "Palourdes sous vide sur la grille d'un congélateur.",
+        "it": "Vongole sottovuoto sulla griglia di un congelatore."
+      }
+    },
+    {
+      "id": "galerie-tapas",
+      "cat": "restaurant",
+      "shows": "mehrere",
+      "stock": true,
+      "alt": {
+        "de": "Zwei Gläser Rotwein vor Bruschette mit Schinken, Tomaten und Basilikum, Oliven, Artischocken und Kartoffelecken auf einem dunklen Holztisch.",
+        "en": "Two glasses of red wine in front of bruschetta with ham, tomatoes and basil, olives, artichokes and potato wedges on a dark wooden table.",
+        "pt": "Dois copos de vinho tinto à frente de bruschettas com presunto, tomate e manjericão, azeitonas, alcachofras e batatas em gomos numa mesa de madeira escura.",
+        "fr": "Deux verres de vin rouge devant des bruschettas au jambon, tomates et basilic, des olives, des artichauts et des quartiers de pommes de terre sur une table en bois sombre.",
+        "it": "Due bicchieri di vino rosso davanti a bruschette con prosciutto, pomodori e basilico, olive, carciofi e spicchi di patate su un tavolo di legno scuro."
+      }
+    },
+    {
+      "id": "galerie-tisch",
+      "cat": "restaurant",
+      "shows": "mehrere",
+      "stock": true,
+      "alt": {
+        "de": "Blick von oben auf eine Tischrunde mit Salaten, Pasta und Fleischgerichten, Wein- und Wassergläsern und den Händen der Gäste.",
+        "en": "Overhead view of a group at a table with salads, pasta and meat dishes, glasses of wine and water and the diners' hands.",
+        "pt": "Vista de cima de uma mesa com saladas, massa e pratos de carne, copos de vinho e de água e as mãos dos convivas.",
+        "fr": "Vue du dessus d'une tablée avec des salades, des pâtes et des plats de viande, des verres de vin et d'eau et les mains des convives.",
+        "it": "Vista dall'alto di una tavolata con insalate, pasta e piatti di carne, bicchieri di vino e d'acqua e le mani dei commensali."
+      }
+    },
+    {
+      "id": "galerie-fisch",
+      "cat": "restaurant",
+      "shows": "fisch",
+      "stock": true,
+      "alt": {
+        "de": "Gegrilltes weisses Fischfilet auf Kräuterseitlingen mit grünem Spargel und Dill auf einem blaugrauen Teller.",
+        "en": "Grilled white fish fillet on king oyster mushrooms with green asparagus and dill on a blue-grey plate.",
+        "pt": "Filete de peixe branco grelhado sobre cogumelos eryngii com espargos verdes e endro num prato azul-acinzentado.",
+        "fr": "Filet de poisson blanc grillé sur des pleurotes du panicaut avec des asperges vertes et de l'aneth sur une assiette gris-bleu.",
+        "it": "Filetto di pesce bianco alla griglia su cardoncelli con asparagi verdi e aneto su un piatto grigio-azzurro."
+      }
+    },
+    {
+      "id": "galerie-spiesse",
+      "cat": "restaurant",
+      "shows": "fleisch",
+      "stock": true,
+      "alt": {
+        "de": "Drei Pouletspiesse mit Peperoni, Cherrytomaten und Champignons auf einer runden Schieferplatte mit Zitronenscheiben, Rosmarin und einem Schälchen Tomatensauce.",
+        "en": "Three chicken skewers with peppers, cherry tomatoes and mushrooms on a round slate with lemon slices, rosemary and a small bowl of tomato sauce.",
+        "pt": "Três espetadas de frango com pimentos, tomate-cereja e cogumelos numa ardósia redonda com rodelas de limão, alecrim e uma taça de molho de tomate.",
+        "fr": "Trois brochettes de poulet aux poivrons, tomates cerises et champignons sur une ardoise ronde avec des rondelles de citron, du romarin et un bol de sauce tomate.",
+        "it": "Tre spiedini di pollo con peperoni, pomodorini e funghi su un'ardesia rotonda con fette di limone, rosmarino e una ciotolina di salsa di pomodoro."
+      }
+    },
+    {
+      "id": "galerie-salat",
+      "cat": "restaurant",
+      "shows": "fleisch",
+      "stock": true,
+      "alt": {
+        "de": "Salatteller mit geschnittener Pouletbrust, Cherrytomaten, Gurke, roten Zwiebeln und Blattsalat, daneben zwei Gabeln.",
+        "en": "Salad bowl with sliced chicken breast, cherry tomatoes, cucumber, red onion and leaf salad, with two forks beside it.",
+        "pt": "Prato de salada com peito de frango fatiado, tomate-cereja, pepino, cebola roxa e folhas verdes, com dois garfos ao lado.",
+        "fr": "Assiette de salade avec du blanc de poulet tranché, des tomates cerises, du concombre, de l'oignon rouge et des feuilles de salade, deux fourchettes à côté.",
+        "it": "Piatto di insalata con petto di pollo a fette, pomodorini, cetriolo, cipolla rossa e foglie verdi, con due forchette accanto."
+      }
+    },
+    {
+      "id": "galerie-burger",
+      "cat": "restaurant",
+      "shows": "burger",
+      "stock": true,
+      "alt": {
+        "de": "Zwei Cheeseburger im Sesambrötchen mit Salat, Tomate, roten Zwiebeln und Gurke auf Papier.",
+        "en": "Two cheeseburgers in sesame buns with lettuce, tomato, red onion and pickle on paper.",
+        "pt": "Dois cheeseburgers em pão de sésamo com alface, tomate, cebola roxa e pickle sobre papel.",
+        "fr": "Deux cheeseburgers dans des pains au sésame avec salade, tomate, oignon rouge et cornichon sur du papier.",
+        "it": "Due cheeseburger in panini al sesamo con lattuga, pomodoro, cipolla rossa e cetriolino su carta."
+      }
+    },
+    {
+      "id": "restaurant-saal",
+      "cat": "restaurant",
+      "shows": "raum",
+      "stock": true,
+      "alt": {
+        "de": "Speisesaal mit Holzlattenwänden, runden Tischen, Holzstühlen und weissen Hängeleuchten vor hohen Fenstern.",
+        "en": "Dining room with wooden slat walls, round tables, wooden chairs and white pendant lamps in front of tall windows.",
+        "pt": "Sala de refeições com paredes de ripas de madeira, mesas redondas, cadeiras de madeira e candeeiros suspensos brancos diante de janelas altas.",
+        "fr": "Salle de restaurant avec des murs en lattes de bois, des tables rondes, des chaises en bois et des suspensions blanches devant de hautes fenêtres.",
+        "it": "Sala da pranzo con pareti a listelli di legno, tavoli rotondi, sedie di legno e lampade a sospensione bianche davanti a finestre alte."
+      }
+    },
+    {
+      "id": "steak-brett",
+      "cat": "restaurant",
+      "shows": "fleisch",
+      "stock": false,
+      "alt": {
+        "de": "Rindssteak mit grobem Salz auf einem heissen Stein, daneben Ketchup, Kräutersauce und Senfsauce in Gläschen und Kräuter-Pommes-frites auf einem weissen Teller.",
+        "en": "Beef steak with coarse salt on a hot stone, with ketchup, herb sauce and mustard sauce in small jars and herbed chips on a white plate.",
+        "pt": "Bife de vaca com sal grosso numa pedra quente, ao lado de ketchup, molho de ervas e molho de mostarda em taças pequenas e batatas fritas com ervas num prato branco.",
+        "fr": "Steak de bœuf au gros sel sur une pierre chaude, avec du ketchup, une sauce aux herbes et une sauce moutarde dans des petits pots et des frites aux herbes sur une assiette blanche.",
+        "it": "Bistecca di manzo con sale grosso su una pietra calda, con ketchup, salsa alle erbe e salsa alla senape in vasetti e patatine alle erbe su un piatto bianco."
+      }
+    },
+    {
+      "id": "schweinebauch",
+      "cat": "restaurant",
+      "shows": "fleisch",
+      "stock": false,
+      "alt": {
+        "de": "Gebratene Scheiben Schweinebauch mit Knoblauch, Pommes frites, einem Schälchen dunkler Sauce und Orangenschnitzen auf einem weissen Teller, daneben eine Orange und eine Zitrone.",
+        "en": "Roasted slices of pork belly with garlic, chips, a small bowl of dark sauce and orange wedges on a white plate, with an orange and a lemon beside it.",
+        "pt": "Fatias de entremeada assada com alho, batatas fritas, uma taça de molho escuro e gomos de laranja num prato branco, com uma laranja e um limão ao lado.",
+        "fr": "Tranches de poitrine de porc rôtie à l'ail, frites, un petit bol de sauce foncée et des quartiers d'orange sur une assiette blanche, avec une orange et un citron à côté.",
+        "it": "Fette di pancetta di maiale arrosto con aglio, patatine, una ciotolina di salsa scura e spicchi d'arancia su un piatto bianco, con un'arancia e un limone accanto."
+      }
+    },
+    {
+      "id": "gebaeck",
+      "cat": "restaurant",
+      "shows": "nachspeise",
+      "stock": false,
+      "alt": {
+        "de": "Schokoladen-Croissant mit Schokoladenstreifen auf einem weissen Teller, dahinter ein Glas Milchkaffee und ein Fenster mit Blick auf Wohnhäuser.",
+        "en": "Pain au chocolat drizzled with chocolate on a white plate, with a glass of milky coffee and a window looking onto apartment buildings behind.",
+        "pt": "Croissant de chocolate com fios de chocolate num prato branco, atrás um galão em copo de vidro e uma janela com vista para prédios.",
+        "fr": "Pain au chocolat nappé de filets de chocolat sur une assiette blanche, derrière un verre de café au lait et une fenêtre donnant sur des immeubles.",
+        "it": "Pain au chocolat decorato con fili di cioccolato su un piatto bianco, dietro un bicchiere di caffellatte e una finestra che dà su palazzi."
+      }
+    },
+    {
+      "id": "bacalhau-lagareiro",
+      "cat": "restaurant",
+      "shows": "fisch",
+      "stock": false,
+      "alt": {
+        "de": "Stockfischfilet unter geschmorten Zwiebeln und Peperoni auf gebratenen Kartoffelscheiben mit Paprika, daneben ein Drahtkörbchen mit Kartoffelchips, Salat, Tomate, Chili und Knoblauch.",
+        "en": "Salt cod fillet under stewed onions and peppers on fried potato slices with paprika, with a small wire basket of potato crisps, lettuce, tomato, chilli and garlic beside it.",
+        "pt": "Posta de bacalhau coberta de cebolada com pimentos sobre rodelas de batata frita com colorau, ao lado um cestinho de arame com batatas fritas, alface, tomate, malagueta e alho.",
+        "fr": "Filet de morue sous des oignons et poivrons mijotés sur des rondelles de pommes de terre sautées au paprika, à côté un petit panier de chips, de la salade, une tomate, un piment et de l'ail.",
+        "it": "Filetto di baccalà sotto cipolle e peperoni stufati su fette di patate fritte con paprica, accanto un cestino di rete con chips, lattuga, pomodoro, peperoncino e aglio."
+      }
+    },
+    {
+      "id": "polvo",
+      "cat": "restaurant",
+      "shows": "meeresfruechte",
+      "stock": false,
+      "alt": {
+        "de": "Gegrillter Pulpo-Arm auf einer Scheibe geröstetem Brot mit gegrillter Tomate, Zwiebelringen und kleinen Kartoffeln auf einem weissen Teller mit Paprika.",
+        "en": "Grilled octopus tentacle on a slice of toasted bread with grilled tomato, onion rings and small potatoes on a white plate dusted with paprika.",
+        "pt": "Tentáculo de polvo grelhado sobre uma fatia de pão torrado com tomate grelhado, rodelas de cebola e batatinhas num prato branco polvilhado com colorau.",
+        "fr": "Tentacule de poulpe grillé sur une tranche de pain grillé avec une tomate grillée, des rondelles d'oignon et des petites pommes de terre sur une assiette blanche saupoudrée de paprika.",
+        "it": "Tentacolo di polpo alla griglia su una fetta di pane tostato con pomodoro grigliato, anelli di cipolla e patatine su un piatto bianco spolverato di paprica."
+      }
+    },
+    {
+      "id": "kaese-gericht",
+      "cat": "restaurant",
+      "shows": "fleisch",
+      "stock": false,
+      "alt": {
+        "de": "Francesinha in einer Tonschale: ein mit geschmolzenem Käse überzogenes Sandwich in orangefarbener Sauce, halbiert, daneben Pommes frites, eine Tomate, eine Chili und eine Pfeffermühle.",
+        "en": "Francesinha in a terracotta dish: a sandwich covered in melted cheese in an orange sauce, cut in half, with chips, a tomato, a chilli and a pepper mill beside it.",
+        "pt": "Francesinha num prato de barro: uma sandes coberta de queijo derretido em molho alaranjado, cortada ao meio, ao lado batatas fritas, um tomate, uma malagueta e um moinho de pimenta.",
+        "fr": "Francesinha dans un plat en terre cuite : un sandwich nappé de fromage fondu dans une sauce orangée, coupé en deux, avec des frites, une tomate, un piment et un moulin à poivre à côté.",
+        "it": "Francesinha in una terrina di terracotta: un panino ricoperto di formaggio fuso in una salsa arancione, tagliato a metà, accanto patatine, un pomodoro, un peperoncino e un macinapepe."
+      }
+    },
+    {
+      "id": "dessert",
+      "cat": "restaurant",
+      "shows": "nachspeise",
+      "stock": false,
+      "alt": {
+        "de": "Geripptes Gebäck, halb in dunkle Schokolade getaucht, auf einem weissen Teller mit Serviette, daneben ein Glas Milchkaffee mit Löffel und Zuckerbeuteln.",
+        "en": "Ridged pastry half dipped in dark chocolate on a white plate with a napkin, next to a glass of milky coffee with a spoon and sugar sachets.",
+        "pt": "Bolo seco com estrias, metade coberto de chocolate negro, num prato branco com guardanapo, ao lado um galão em copo de vidro com colher e saquetas de açúcar.",
+        "fr": "Pâtisserie striée à moitié trempée dans du chocolat noir sur une assiette blanche avec une serviette, à côté d'un verre de café au lait avec une cuillère et des sachets de sucre.",
+        "it": "Dolce rigato immerso per metà nel cioccolato fondente su un piatto bianco con tovagliolo, accanto un bicchiere di caffellatte con cucchiaino e bustine di zucchero."
+      }
+    },
+    {
+      "id": "platte-wein",
+      "cat": "restaurant",
+      "shows": "mehrere",
+      "stock": false,
+      "alt": {
+        "de": "Ovale Platte mit geschnittenem gegrilltem Rindfleisch, Pommes frites, gegrillter Zwiebel und Tomate, umgeben von Rucola, daneben eine Flasche Vale d'Aldeia Grande Reserva und ein Weinglas.",
+        "en": "Oval platter with sliced grilled beef, chips, grilled onion and tomato, surrounded by rocket, next to a bottle of Vale d'Aldeia Grande Reserva and a wine glass.",
+        "pt": "Travessa oval com carne de vaca grelhada fatiada, batatas fritas, cebola e tomate grelhados, rodeada de rúcula, ao lado uma garrafa de Vale d'Aldeia Grande Reserva e um copo de vinho.",
+        "fr": "Plat ovale avec du bœuf grillé tranché, des frites, un oignon et une tomate grillés, entouré de roquette, à côté d'une bouteille de Vale d'Aldeia Grande Reserva et d'un verre à vin.",
+        "it": "Vassoio ovale con manzo grigliato a fette, patatine, cipolla e pomodoro grigliati, circondato da rucola, accanto una bottiglia di Vale d'Aldeia Grande Reserva e un calice da vino."
+      }
+    }
+  ]
+}
