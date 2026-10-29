@@ -205,6 +205,8 @@ Já estão em `dist/_redirects`, com e sem a barra final.
 
 ## Notas
 
+- **Segurança do site atual:** as páginas do site atual (Duda) trazem no HTML um token secreto de acesso ao Mapbox (o GitHub bloqueou o push até eu retirar as capturas HTML do repositório). Convém que os donos ou a localsearch.ch o revoguem e substituam por um token público. As capturas em `content/raw/*.txt` não o contêm; o HTML capturado fica fora do git (`.gitignore`).
+
 - **Formulário:** compatível com o Formspree (`VITE_FORM_ENDPOINT`), com campo-isco e tempo mínimo de preenchimento no lugar do captcha; mantém as mensagens de sucesso e erro do site. Na pré-visualização está em modo de teste. Para enviar para oceanoimport.gmbh@bluewin.ch é preciso o acordo dos donos e uma conta Formspree (ou o serviço de formulários do alojamento).
 - **Privacidade e Impressum:** antes do lançamento o site precisa de uma declaração de privacidade própria (a atual é gerada pelo Duda e fala de cookies de análise; o site novo não põe cookies de análise) e de um Impressum completo (forma jurídica, UID, responsável).
 - **Traduções:** o alemão é o do site. O inglês, o português, o francês e o italiano foram escritos para esta proposta (e verificados por um segundo passo contra os factos) e precisam de ser revistos por falantes nativos antes do lançamento.
