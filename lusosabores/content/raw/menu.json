@@ -1,0 +1,2228 @@
+{
+ "url": "https://www.luso-sabores.ch/menu",
+ "title": "Luso Sabores Gland | Spécialités portugaises | Menu",
+ "metas": [
+  {
+   "name": "d-service-worker",
+   "content": "register"
+  },
+  {
+   "name": "viewport",
+   "content": "initial-scale=1, minimum-scale=1, maximum-scale=5, viewport-fit=cover"
+  },
+  {
+   "name": "apple-mobile-web-app-capable",
+   "content": "yes"
+  },
+  {
+   "name": "og:type",
+   "content": "website"
+  },
+  {
+   "name": "og:url",
+   "content": "https://www.luso-sabores.ch/menu"
+  },
+  {
+   "name": "description",
+   "content": "Afin de garantir la fraîcheur de nos plats, nos 2 ou 3 assiettes du jour changent chaque jour et nos spécialités sont préparées uniquement sur demande 48h à l'avance."
+  },
+  {
+   "name": "twitter:card",
+   "content": "summary"
+  },
+  {
+   "name": "twitter:title",
+   "content": "Luso Sabores Gland | Spécialités portugaises | Menu"
+  },
+  {
+   "name": "twitter:description",
+   "content": "Afin de garantir la fraîcheur de nos plats, nos 2 ou 3 assiettes du jour changent chaque jour et nos spécialités sont préparées uniquement sur demande 48h à l'avance."
+  },
+  {
+   "name": "twitter:image",
+   "content": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/Lusosabores-fond-1920w.jpg"
+  },
+  {
+   "name": "og:description",
+   "content": "Afin de garantir la fraîcheur de nos plats, nos 2 ou 3 assiettes du jour changent chaque jour et nos spécialités sont préparées uniquement sur demande 48h à l'avance."
+  },
+  {
+   "name": "og:title",
+   "content": "Luso Sabores Gland | Spécialités portugaises | Menu"
+  },
+  {
+   "name": "og:image",
+   "content": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/Lusosabores-fond-1920w.jpg"
+  }
+ ],
+ "text": "We use essential cookies to make our site work. With your consent, we may also use non-essential cookies to improve user experience and analyze website traffic. By clicking “Accept,” you agree to our website's cookie use as described in our Cookie Policy and Privacy Policy. You can change your cookie settings at any time by clicking “Preferences.”\nPreferences\nDecline\nAccept\n \nAccueil\nMenu\nServices\nContact\n+41 22 364 47 40 \nDécouvrez notre menu\n\nLe Portugal dans vos assiettes !\n\n\n\nAfin de garantir la fraîcheur de nos plats, nos 2 ou 3 assiettes du jour changent chaque jour et nos spécialités sont préparées uniquement sur demande 48h à l'avance.\n\nAlheira com grelos\nAlheira com ovo\nBacalhau a braz\nBacalhau com grão\nBacalhau a lagareiro\nArroz de cabidela\nCarne estufada\nCarne porco a alentejana\nChourição\nCostoletas porco c/cebolada\nEntrecôte\nEntremeada\nEspecialidades\nFrango churrasco\nCostoletas porco c/cebolada\nFrancesinha\nFrango a braz\nFrango de churrasco\nGambas\nGrelhada mista\nJambon\nJambon gratin\nOrelha\nPanados frango ou porco caseiros\nPeru recheado\nPicanha\nPresunto\nRancho\nSalada de polvo\nSaladas polvo, Orelha, Pipis, Rissois de Camarão\nSalmão grelhado\nSecretos de porco c/batata\nSecretos de porco\nSecretos de porco preto c/arroz feijão\nCrabe farci / Sapateira recheada\n\nPour réserver une table ou connaître notre plat du jour, merci de bien vouloir nous contacter par téléphone\n\n+41 22 364 47 40 \n\n+41 22 364 47 40\n+41 79 903 81 31\n\n\nChemin du Lavasson 39\n1196 Gland\n\n\n \n\n©2026 Luso Sabores | Tous droits réservés | Site internet par ZIP.ch | Protection des données\n\nShare by:",
+ "colours": [
+  [
+   "text rgb(67, 60, 60)",
+   239
+  ],
+  [
+   "text rgb(0, 0, 0)",
+   67
+  ],
+  [
+   "text rgb(147, 26, 37)",
+   51
+  ],
+  [
+   "text rgb(51, 51, 51)",
+   35
+  ],
+  [
+   "background rgba(255, 203, 142, 0.8)",
+   35
+  ],
+  [
+   "text rgb(255, 255, 255)",
+   22
+  ],
+  [
+   "text rgb(70, 78, 76)",
+   9
+  ],
+  [
+   "text rgb(255, 203, 142)",
+   5
+  ],
+  [
+   "text rgb(255, 251, 232)",
+   4
+  ],
+  [
+   "background rgb(147, 26, 37)",
+   4
+  ],
+  [
+   "background rgb(255, 255, 255)",
+   2
+  ],
+  [
+   "background rgb(0, 58, 250)",
+   2
+  ],
+  [
+   "border rgb(0, 58, 250)",
+   2
+  ],
+  [
+   "background rgb(245, 239, 239)",
+   2
+  ],
+  [
+   "background rgb(233, 113, 113)",
+   2
+  ],
+  [
+   "border rgb(255, 203, 142)",
+   2
+  ],
+  [
+   "text rgb(153, 153, 153)",
+   2
+  ],
+  [
+   "border rgb(0, 0, 0)",
+   1
+  ],
+  [
+   "background rgba(245, 239, 239, 0.8)",
+   1
+  ],
+  [
+   "background rgba(255, 247, 247, 0.4)",
+   1
+  ],
+  [
+   "background rgb(245, 245, 245)",
+   1
+  ],
+  [
+   "background rgba(255, 255, 255, 0.4)",
+   1
+  ]
+ ],
+ "imgs": [
+  {
+   "src": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/LOGO-LUSO-SABORES-121w.png",
+   "srcset": null,
+   "dsrc": null,
+   "alt": "LOGO LUSOSABORES GLAND",
+   "w": 120,
+   "h": 84,
+   "vis": true,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/alheira_c_Grelos-1920w.jpg",
+   "alt": "ALHEIRA COM GRELOS",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/alheira_com_ovo-1920w.jpg",
+   "alt": "Alheira com ovo",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/bacalhau_Braz-b7e3e1ed-1920w.jpg",
+   "alt": "Bacalhau a braz",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/bacalhau_c_grao-1920w.jpg",
+   "alt": "Bacalhau com grão",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/bacalhau_lagareiro-1920w.jpg",
+   "alt": "Bacalhau a lagareiro",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/cabidela-1920w.jpg",
+   "alt": "Arroz de cabidela",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/carne_estufada-1920w.jpg",
+   "alt": "Carne estufada",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/carne_porco_alentejana-1920w.jpg",
+   "alt": "Carne porco a alentejana",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/chouricao-1920w.jpg",
+   "alt": "Chourição",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/costoletas_porco_molho_cebolada-1920w.jpg",
+   "alt": "Costoletas porco c/cebolada",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/entrecote-1920w.jpg",
+   "alt": "Entrecôte",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/entremeadas-1920w.jpg",
+   "alt": "Entremeada",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/especialidades-1920w.jpg",
+   "alt": "Especialidades",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/f_churrasco-1920w.jpg",
+   "alt": "Frango churrasco",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/feijao_polvo-1920w.jpg",
+   "alt": "Costoletas porco c/cebolada",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/francesinha-1920w.jpg",
+   "alt": "Francesinha",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/frango_a_braz-1920w.jpg",
+   "alt": "Frango a braz",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/frango_churrasco-1920w.jpg",
+   "alt": "Frango de churrasco",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/gambas-1920w.jpg",
+   "alt": "Gambas",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/grelhada_mista-1920w.jpg",
+   "alt": "Grelhada mista",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/jambon-1920w.jpg",
+   "alt": "Jambon",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/jambon_gratin-1920w.jpg",
+   "alt": "Jambon gratin",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/orelha-1920w.jpg",
+   "alt": "Orelha",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/panados_frango_porco_caseiros-1920w.jpg",
+   "alt": "Panados frango ou porco caseiros",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/peru_recheado-1920w.jpg",
+   "alt": "Peru recheado",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/picanha-1920w.jpg",
+   "alt": "Picanha",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/presunto-1920w.jpg",
+   "alt": "Presunto",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/rancho-1920w.jpg",
+   "alt": "Rancho",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/salada_polvo-1920w.jpg",
+   "alt": "Salada de polvo",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/saladas_diversas-1920w.jpg",
+   "alt": "Saladas polvo, Orelha, Pipis, Rissois de Camarão",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/salmao_grelhado-1920w.jpg",
+   "alt": "Salmão grelhado",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/secretos_porco-1920w.jpg",
+   "alt": "Secretos de porco c/batata",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/secretos_porco_-1920w.jpg",
+   "alt": "Secretos de porco",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/secretos_porco_preto_arroz_feijao-1920w.jpg",
+   "alt": "",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/alheira_c_Grelos-1920w.jpg",
+   "alt": "ALHEIRA COM GRELOS",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/alheira_com_ovo-1920w.jpg",
+   "alt": "Alheira com ovo",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/bacalhau_Braz-b7e3e1ed-1920w.jpg",
+   "alt": "Bacalhau a braz",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/bacalhau_c_grao-1920w.jpg",
+   "alt": "Bacalhau com grão",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/bacalhau_lagareiro-1920w.jpg",
+   "alt": "Bacalhau a lagareiro",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/cabidela-1920w.jpg",
+   "alt": "Arroz de cabidela",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/carne_estufada-1920w.jpg",
+   "alt": "Carne estufada",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/carne_porco_alentejana-1920w.jpg",
+   "alt": "Carne porco a alentejana",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/chouricao-1920w.jpg",
+   "alt": "Chourição",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/costoletas_porco_molho_cebolada-1920w.jpg",
+   "alt": "Costoletas porco c/cebolada",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/entrecote-1920w.jpg",
+   "alt": "Entrecôte",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/entremeadas-1920w.jpg",
+   "alt": "Entremeada",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/especialidades-1920w.jpg",
+   "alt": "Especialidades",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/f_churrasco-1920w.jpg",
+   "alt": "Frango churrasco",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/feijao_polvo-1920w.jpg",
+   "alt": "Costoletas porco c/cebolada",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/francesinha-1920w.jpg",
+   "alt": "Francesinha",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/frango_a_braz-1920w.jpg",
+   "alt": "Frango a braz",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/frango_churrasco-1920w.jpg",
+   "alt": "Frango de churrasco",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/gambas-1920w.jpg",
+   "alt": "Gambas",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/grelhada_mista-1920w.jpg",
+   "alt": "Grelhada mista",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/jambon-1920w.jpg",
+   "alt": "Jambon",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/jambon_gratin-1920w.jpg",
+   "alt": "Jambon gratin",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/orelha-1920w.jpg",
+   "alt": "Orelha",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/panados_frango_porco_caseiros-1920w.jpg",
+   "alt": "Panados frango ou porco caseiros",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/peru_recheado-1920w.jpg",
+   "alt": "Peru recheado",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/picanha-1920w.jpg",
+   "alt": "Picanha",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/presunto-1920w.jpg",
+   "alt": "Presunto",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/rancho-1920w.jpg",
+   "alt": "Rancho",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/salada_polvo-1920w.jpg",
+   "alt": "Salada de polvo",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/saladas_diversas-1920w.jpg",
+   "alt": "Saladas polvo, Orelha, Pipis, Rissois de Camarão",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/salmao_grelhado-1920w.jpg",
+   "alt": "Salmão grelhado",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/secretos_porco-1920w.jpg",
+   "alt": "Secretos de porco c/batata",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/secretos_porco_-1920w.jpg",
+   "alt": "Secretos de porco",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/secretos_porco_preto_arroz_feijao-1920w.jpg",
+   "alt": "",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com/da5c9512/dms3rep/multi/opt/20220109_121518-1920w.jpg",
+   "alt": "Crabe farci / Sapateira recheada",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/LOGO-LUSO-SABORES-146w.png",
+   "srcset": null,
+   "dsrc": null,
+   "alt": "Logo Luso Sabores",
+   "w": 150,
+   "h": 105,
+   "vis": true,
+   "caption": ""
+  },
+  {
+   "src": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/LOGO-LUSO-SABORES-1920w.png",
+   "srcset": null,
+   "dsrc": null,
+   "alt": "Logo Luso Sabores",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  }
+ ],
+ "bgs": [
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/alheira_c_Grelos-0h.jpg\")",
+   "cls": "u_1992804708",
+   "id": "",
+   "vis": false,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/alheira_com_ovo-0h.jpg\")",
+   "cls": "u_1451726642",
+   "id": "",
+   "vis": false,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/bacalhau_Braz-b7e3e1ed-0h.jpg\")",
+   "cls": "u_1281590751",
+   "id": "",
+   "vis": false,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/bacalhau_c_grao-0h.jpg\")",
+   "cls": "u_1818210947",
+   "id": "",
+   "vis": false,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/bacalhau_lagareiro-0h.jpg\")",
+   "cls": "u_1447955694",
+   "id": "",
+   "vis": false,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/cabidela-0h.jpg\")",
+   "cls": "u_1121731806",
+   "id": "",
+   "vis": false,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/carne_estufada-0h.jpg\")",
+   "cls": "u_1618484279",
+   "id": "",
+   "vis": false,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/carne_porco_alentejana-0h.jpg\")",
+   "cls": "u_1550766842",
+   "id": "",
+   "vis": false,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/chouricao-0h.jpg\")",
+   "cls": "u_1230495063",
+   "id": "",
+   "vis": false,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/costoletas_porco_molho_cebolada-0h.jpg\")",
+   "cls": "u_1240830397",
+   "id": "",
+   "vis": false,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/entrecote-0h.jpg\")",
+   "cls": "u_1544292844",
+   "id": "",
+   "vis": false,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/entremeadas-0h.jpg\")",
+   "cls": "u_1391591169",
+   "id": "",
+   "vis": false,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/especialidades-0h.jpg\")",
+   "cls": "u_1527120429",
+   "id": "",
+   "vis": false,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/f_churrasco-0h.jpg\")",
+   "cls": "u_1787350192",
+   "id": "",
+   "vis": false,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/feijao_polvo-0h.jpg\")",
+   "cls": "u_1194032092",
+   "id": "",
+   "vis": false,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/francesinha-0h.jpg\")",
+   "cls": "u_1567362588",
+   "id": "",
+   "vis": false,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/frango_a_braz-0h.jpg\")",
+   "cls": "u_1624753982",
+   "id": "",
+   "vis": false,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/frango_churrasco-0h.jpg\")",
+   "cls": "u_1472658694",
+   "id": "",
+   "vis": false,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/gambas-0h.jpg\")",
+   "cls": "u_1686487320",
+   "id": "",
+   "vis": false,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/grelhada_mista-0h.jpg\")",
+   "cls": "u_1793239817",
+   "id": "",
+   "vis": false,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/jambon-0h.jpg\")",
+   "cls": "u_1589243136",
+   "id": "",
+   "vis": false,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/jambon_gratin-0h.jpg\")",
+   "cls": "u_1625371449",
+   "id": "",
+   "vis": false,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/orelha-0h.jpg\")",
+   "cls": "u_1638894972",
+   "id": "",
+   "vis": false,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/panados_frango_porco_caseiros-0h.jpg\")",
+   "cls": "u_1983689503",
+   "id": "",
+   "vis": false,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/peru_recheado-0h.jpg\")",
+   "cls": "u_1804457435",
+   "id": "",
+   "vis": false,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/picanha-0h.jpg\")",
+   "cls": "u_1511344911",
+   "id": "",
+   "vis": false,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/presunto-0h.jpg\")",
+   "cls": "u_1484303942",
+   "id": "",
+   "vis": false,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/rancho-0h.jpg\")",
+   "cls": "u_1003639936",
+   "id": "",
+   "vis": false,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/salada_polvo-0h.jpg\")",
+   "cls": "u_1672346832",
+   "id": "",
+   "vis": false,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/saladas_diversas-0h.jpg\")",
+   "cls": "u_1097603927",
+   "id": "",
+   "vis": false,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/salmao_grelhado-0h.jpg\")",
+   "cls": "u_1252231576",
+   "id": "",
+   "vis": false,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/secretos_porco-0h.jpg\")",
+   "cls": "u_1380907286",
+   "id": "",
+   "vis": false,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/secretos_porco_-0h.jpg\")",
+   "cls": "u_1730322439",
+   "id": "",
+   "vis": false,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/secretos_porco_preto_arroz_feijao-0h.jpg\")",
+   "cls": "u_1230565118",
+   "id": "",
+   "vis": false,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/alheira_c_Grelos-600h.jpg\")",
+   "cls": "u_1875023899",
+   "id": "",
+   "vis": true,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/alheira_com_ovo-600h.jpg\")",
+   "cls": "u_1708205091",
+   "id": "",
+   "vis": true,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/bacalhau_Braz-b7e3e1ed-600h.jpg\")",
+   "cls": "u_1252061481",
+   "id": "",
+   "vis": true,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/bacalhau_c_grao-600h.jpg\")",
+   "cls": "u_1983800895",
+   "id": "",
+   "vis": true,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/bacalhau_lagareiro-600h.jpg\")",
+   "cls": "u_1078988871",
+   "id": "",
+   "vis": true,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/cabidela-600h.jpg\")",
+   "cls": "u_1124192603",
+   "id": "",
+   "vis": true,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/carne_estufada-600h.jpg\")",
+   "cls": "u_1398929492",
+   "id": "",
+   "vis": true,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/carne_porco_alentejana-600h.jpg\")",
+   "cls": "u_1626598369",
+   "id": "",
+   "vis": true,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/chouricao-600h.jpg\")",
+   "cls": "u_1191922992",
+   "id": "",
+   "vis": true,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/costoletas_porco_molho_cebolada-600h.jpg\")",
+   "cls": "u_1593494141",
+   "id": "",
+   "vis": true,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/entrecote-600h.jpg\")",
+   "cls": "u_1173698372",
+   "id": "",
+   "vis": true,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/entremeadas-600h.jpg\")",
+   "cls": "u_1878598349",
+   "id": "",
+   "vis": true,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/especialidades-600h.jpg\")",
+   "cls": "u_1383933893",
+   "id": "",
+   "vis": true,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/f_churrasco-600h.jpg\")",
+   "cls": "u_1561023251",
+   "id": "",
+   "vis": true,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/feijao_polvo-600h.jpg\")",
+   "cls": "u_1597030818",
+   "id": "",
+   "vis": true,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/francesinha-600h.jpg\")",
+   "cls": "u_1456663929",
+   "id": "",
+   "vis": true,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/frango_a_braz-600h.jpg\")",
+   "cls": "u_1868284252",
+   "id": "",
+   "vis": true,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/frango_churrasco-600h.jpg\")",
+   "cls": "u_1750066887",
+   "id": "",
+   "vis": true,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/gambas-600h.jpg\")",
+   "cls": "u_1012761762",
+   "id": "",
+   "vis": true,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/grelhada_mista-600h.jpg\")",
+   "cls": "u_1108811427",
+   "id": "",
+   "vis": true,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/jambon-600h.jpg\")",
+   "cls": "u_1997696866",
+   "id": "",
+   "vis": true,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/jambon_gratin-600h.jpg\")",
+   "cls": "u_1415449948",
+   "id": "",
+   "vis": true,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/orelha-600h.jpg\")",
+   "cls": "u_1932936815",
+   "id": "",
+   "vis": true,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/panados_frango_porco_caseiros-600h.jpg\")",
+   "cls": "u_1181781324",
+   "id": "",
+   "vis": true,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/peru_recheado-600h.jpg\")",
+   "cls": "u_1252744356",
+   "id": "",
+   "vis": true,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/picanha-600h.jpg\")",
+   "cls": "u_1632712652",
+   "id": "",
+   "vis": true,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/presunto-600h.jpg\")",
+   "cls": "u_1707085221",
+   "id": "",
+   "vis": true,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/rancho-600h.jpg\")",
+   "cls": "u_1462738114",
+   "id": "",
+   "vis": true,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/salada_polvo-600h.jpg\")",
+   "cls": "u_1750885401",
+   "id": "",
+   "vis": true,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/saladas_diversas-600h.jpg\")",
+   "cls": "u_1680798401",
+   "id": "",
+   "vis": true,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/salmao_grelhado-600h.jpg\")",
+   "cls": "u_1977290561",
+   "id": "",
+   "vis": true,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/secretos_porco-600h.jpg\")",
+   "cls": "u_1576694616",
+   "id": "",
+   "vis": true,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/secretos_porco_-600h.jpg\")",
+   "cls": "u_1841339412",
+   "id": "",
+   "vis": true,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/secretos_porco_preto_arroz_feijao-600h.jpg\")",
+   "cls": "u_1765681840",
+   "id": "",
+   "vis": true,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com/da5c9512/dms3rep/multi/opt/20220109_121518-600h.jpg\")",
+   "cls": "u_1891092567",
+   "id": "",
+   "vis": true,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//md/unsplash/dms3rep/multi/opt/photo-1583549322726-4407bfb42013-2880w.jpg\")",
+   "cls": "u_1897544687 dmRespRow dmSectionParallaxNew hasBackgroundOverlay lazy skrollable",
+   "id": "1897544687",
+   "vis": true,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com/_dm/s/rt/scripts/vendor/photoswipe4/icons/default-skin.png\")",
+   "cls": "pswp__button pswp__button--close",
+   "id": "",
+   "vis": false,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com/_dm/s/rt/scripts/vendor/photoswipe4/icons/default-skin.png\")",
+   "cls": "pswp__button pswp__button--share",
+   "id": "",
+   "vis": false,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com/_dm/s/rt/scripts/vendor/photoswipe4/icons/default-skin.png\")",
+   "cls": "pswp__button pswp__button--fs",
+   "id": "",
+   "vis": false,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com/_dm/s/rt/scripts/vendor/photoswipe4/icons/default-skin.png\")",
+   "cls": "pswp__button pswp__button--zoom",
+   "id": "",
+   "vis": false,
+   "dbg": null
+  }
+ ],
+ "links": [
+  {
+   "href": "https://www.luso-sabores.ch/privacy",
+   "text": "Privacy Policy",
+   "vis": true
+  },
+  {
+   "href": "https://www.facebook.com/lusosabores.marquesribeiro",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.instagram.com/lusosabores/",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/",
+   "text": "Accueil",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Menu",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/home",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/services",
+   "text": "Services",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/contact",
+   "text": "Contact",
+   "vis": true
+  },
+  {
+   "href": "",
+   "text": "+41 22 364 47 40",
+   "vis": true
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": false
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": false
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": false
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": false
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": false
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": false
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": false
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": false
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": false
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": false
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": false
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": false
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": false
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": false
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": false
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": false
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": false
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": false
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": false
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": false
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": false
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": false
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": false
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": false
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": false
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": false
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": false
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": false
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": false
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": false
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": false
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": false
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": false
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": false
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "tel:+41 22 364 47 40",
+   "text": "+41 22 364 47 40",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "tel:+41 22 364 47 40",
+   "text": "+41 22 364 47 40",
+   "vis": true
+  },
+  {
+   "href": "tel:+41 79 903 81 31",
+   "text": "+41 79 903 81 31",
+   "vis": true
+  },
+  {
+   "href": "https://goo.gl/maps/TU3Zg4jZsG5czYS59",
+   "text": "Chemin du Lavasson 39\n1196 Gland",
+   "vis": true
+  },
+  {
+   "href": "https://www.facebook.com/lusosabores.marquesribeiro",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.instagram.com/lusosabores/",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/",
+   "text": "",
+   "vis": false
+  },
+  {
+   "href": "tel:+41 22 364 47 40",
+   "text": "+41 22 364 47 40",
+   "vis": false
+  },
+  {
+   "href": "tel:+41 79 903 81 31",
+   "text": "+41 79 903 81 31",
+   "vis": false
+  },
+  {
+   "href": "https://goo.gl/maps/TU3Zg4jZsG5czYS59",
+   "text": "Chemin du Lavasson 39 1196 Gland",
+   "vis": false
+  },
+  {
+   "href": "https://www.google.com/maps/place/Restaurant+LUSOSabores/@46.4232952,6.272197,15z/data=!4m2!3m1!1s0x0:0xf15bbb931f51778c?sa=X&ved=2ahUKEwjdnr6mj7bsAhVKzKQKHaEADpQQ_BIwH3oECBwQBQ",
+   "text": "",
+   "vis": false
+  },
+  {
+   "href": "https://fr.foursquare.com/v/restaurant-portugais-luso-sabores/5f44fce7815dd91c30fd0fe8",
+   "text": "",
+   "vis": false
+  },
+  {
+   "href": "https://de.yelp.ch/biz/restaurant-lusosabores-gland?adjust_creative=-yJlvocjPe08xwvAx1kbqw&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_lookup&utm_source=-yJlvocjPe08xwvAx1kbqw",
+   "text": "",
+   "vis": false
+  },
+  {
+   "href": "https://www.waze.com/ul?ll=46.42347,6.27236",
+   "text": "",
+   "vis": false
+  },
+  {
+   "href": "https://www.facebook.com/lusosabores.marquesribeiro",
+   "text": "",
+   "vis": false
+  },
+  {
+   "href": "https://www.instagram.com/lusosabores/",
+   "text": "",
+   "vis": false
+  },
+  {
+   "href": "https://www.myzip.ch/mywebsite",
+   "text": "Site internet",
+   "vis": true
+  },
+  {
+   "href": "https://www.myzip.ch/",
+   "text": "ZIP.ch",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/privacy",
+   "text": "Protection des données",
+   "vis": true
+  }
+ ]
+}

@@ -1,0 +1,532 @@
+{
+ "source": "https://www.luso-sabores.ch/menu",
+ "read": "2026-10-29",
+ "note": "Live order of the 35 tiles (the second of the two layouts, which ends on Crabe farci / Sapateira recheada). Dish names exactly as written on the live site. No prices: the live menu shows none. The groups are a decision for the owner.",
+ "tiles": [
+  {
+   "n": 1,
+   "id": "alheira-com-grelos",
+   "name": "Alheira com grelos",
+   "group": "pratos",
+   "photo": "alheira-com-grelos",
+   "source": "https://irp.cdn-website.com/da5c9512/dms3rep/multi/alheira_c_Grelos.jpg",
+   "alt": {
+    "fr": "Alheira grillée en fer à cheval et grelos (pousses de navet) sautés, sur assiette blanche",
+    "en": "Grilled horseshoe alheira sausage with sautéed turnip greens on a white plate",
+    "pt": "Alheira grelhada em ferradura com grelos salteados, em prato branco",
+    "it": "Alheira alla griglia a ferro di cavallo con cime di rapa saltate, su piatto bianco",
+    "de": "Gegrillte Alheira-Wurst in Hufeisenform mit gebratenem Stängelkohl auf weissem Teller"
+   }
+  },
+  {
+   "n": 2,
+   "id": "alheira-com-ovo",
+   "name": "Alheira com ovo",
+   "group": "pratos",
+   "photo": "alheira-com-ovo",
+   "source": "https://irp.cdn-website.com/da5c9512/dms3rep/multi/alheira_com_ovo.jpg",
+   "alt": {
+    "fr": "Alheira, œuf au plat, grelos et gratin de pommes de terre",
+    "en": "Alheira sausage, fried egg, turnip greens and potato gratin",
+    "pt": "Alheira, ovo estrelado, grelos e batatas gratinadas",
+    "it": "Alheira, uovo all’occhio di bue, cime di rapa e patate gratinate",
+    "de": "Alheira, Spiegelei, Stängelkohl und Kartoffelgratin"
+   }
+  },
+  {
+   "n": 3,
+   "id": "bacalhau-a-braz",
+   "name": "Bacalhau a braz",
+   "group": "bacalhau",
+   "photo": "bacalhau-a-braz",
+   "source": "https://irp.cdn-website.com/da5c9512/dms3rep/multi/bacalhau_Braz-b7e3e1ed.jpg",
+   "alt": {
+    "fr": "Morue effilochée aux pommes paille et à l’œuf, lanières de poivron rouge et olives noires",
+    "en": "Shredded salt cod with matchstick potatoes and egg, red pepper strips and black olives",
+    "pt": "Bacalhau desfiado com batata palha e ovo, tiras de pimento vermelho e azeitonas pretas",
+    "it": "Baccalà sfilacciato con patate a fiammifero e uovo, strisce di peperone rosso e olive nere",
+    "de": "Zerzupfter Stockfisch mit Strohkartoffeln und Ei, roten Paprikastreifen und schwarzen Oliven"
+   }
+  },
+  {
+   "n": 4,
+   "id": "bacalhau-com-grao",
+   "name": "Bacalhau com grão",
+   "group": "bacalhau",
+   "photo": "bacalhau-c-grao",
+   "source": "https://irp.cdn-website.com/da5c9512/dms3rep/multi/bacalhau_c_grao.jpg",
+   "alt": {
+    "fr": "Morue aux pois chiches, pommes de terre, œufs durs, oignon et persil",
+    "en": "Salt cod with chickpeas, potatoes, hard-boiled eggs, onion and parsley",
+    "pt": "Bacalhau com grão, batatas, ovos cozidos, cebola e salsa",
+    "it": "Baccalà con ceci, patate, uova sode, cipolla e prezzemolo",
+    "de": "Stockfisch mit Kichererbsen, Kartoffeln, harten Eiern, Zwiebeln und Petersilie"
+   }
+  },
+  {
+   "n": 5,
+   "id": "bacalhau-a-lagareiro",
+   "name": "Bacalhau a lagareiro",
+   "group": "bacalhau",
+   "photo": "bacalhau-lagareiro",
+   "source": "https://irp.cdn-website.com/da5c9512/dms3rep/multi/bacalhau_lagareiro.jpg",
+   "alt": {
+    "fr": "Morue rôtie à l’huile d’olive, croix de poivron rouge, haricots verts et pommes de terre écrasées",
+    "en": "Roast salt cod in olive oil with a cross of red pepper, green beans and crushed potatoes",
+    "pt": "Bacalhau assado com azeite, cruz de pimento vermelho, feijão-verde e batatas a murro",
+    "it": "Baccalà arrosto all’olio d’oliva, croce di peperone rosso, fagiolini e patate schiacciate",
+    "de": "Ofen-Stockfisch in Olivenöl mit einem Kreuz aus roter Paprika, grünen Bohnen und gequetschten Kartoffeln"
+   }
+  },
+  {
+   "n": 6,
+   "id": "arroz-de-cabidela",
+   "name": "Arroz de cabidela",
+   "group": "pratos",
+   "photo": "cabidela",
+   "source": "https://irp.cdn-website.com/da5c9512/dms3rep/multi/cabidela.jpg",
+   "alt": {
+    "fr": "Riz de cabidela, poulet mijoté dans sa sauce sombre, dans un plat creux blanc",
+    "en": "Cabidela rice: chicken stewed in its dark sauce, in a white bowl",
+    "pt": "Arroz de cabidela com frango, em travessa funda branca",
+    "it": "Riso di cabidela con pollo nella sua salsa scura, in una ciotola bianca",
+    "de": "Cabidela-Reis mit Huhn in dunkler Sauce, in einer weissen Schale"
+   }
+  },
+  {
+   "n": 7,
+   "id": "carne-estufada",
+   "name": "Carne estufada",
+   "group": "pratos",
+   "photo": "carne-estufada",
+   "source": "https://irp.cdn-website.com/da5c9512/dms3rep/multi/carne_estufada.jpg",
+   "alt": {
+    "fr": "Bœuf mijoté en sauce, carottes, petits pois et spaghettis",
+    "en": "Braised beef in gravy with carrots, peas and spaghetti",
+    "pt": "Carne estufada com molho, cenoura, ervilhas e esparguete",
+    "it": "Manzo stufato al sugo con carote, piselli e spaghetti",
+    "de": "Geschmortes Rindfleisch in Sauce mit Karotten, Erbsen und Spaghetti"
+   }
+  },
+  {
+   "n": 8,
+   "id": "carne-porco-a-alentejana",
+   "name": "Carne porco a alentejana",
+   "group": "pratos",
+   "photo": "carne-porco-alentejana",
+   "source": "https://irp.cdn-website.com/da5c9512/dms3rep/multi/carne_porco_alentejana.jpg",
+   "alt": {
+    "fr": "Dés de porc aux palourdes, pommes de terre en cubes et coriandre",
+    "en": "Cubes of pork with clams, diced potatoes and coriander",
+    "pt": "Carne de porco com amêijoas, batata em cubos e coentros",
+    "it": "Bocconcini di maiale con vongole, patate a cubetti e coriandolo",
+    "de": "Schweinefleischwürfel mit Venusmuscheln, Kartoffelwürfeln und Koriander"
+   }
+  },
+  {
+   "n": 9,
+   "id": "chouricao",
+   "name": "Chourição",
+   "group": "petiscos",
+   "photo": "chouricao",
+   "source": "https://irp.cdn-website.com/da5c9512/dms3rep/multi/chouricao.jpg",
+   "alt": {
+    "fr": "Plateau de chouriço tranché et cornichons",
+    "en": "Platter of sliced chouriço sausage with gherkins",
+    "pt": "Travessa de chouriço fatiado com pepinos de conserva",
+    "it": "Vassoio di chouriço affettato con cetriolini",
+    "de": "Platte mit aufgeschnittener Chouriço-Wurst und Essiggurken"
+   }
+  },
+  {
+   "n": 10,
+   "id": "costoletas-porco-c-cebolada",
+   "name": "Costoletas porco c/cebolada",
+   "group": "pratos",
+   "photo": "costoletas-porco-molho-cebolada",
+   "source": "https://irp.cdn-website.com/da5c9512/dms3rep/multi/costoletas_porco_molho_cebolada.jpg",
+   "alt": {
+    "fr": "Côtelettes de porc grillées nappées d’oignons fondants, pommes de terre",
+    "en": "Grilled pork chops topped with stewed onions, with potatoes",
+    "pt": "Costeletas de porco grelhadas com cebolada e batata",
+    "it": "Costolette di maiale alla griglia con cipolle stufate e patate",
+    "de": "Gegrillte Schweinskoteletts mit geschmorten Zwiebeln und Kartoffeln"
+   }
+  },
+  {
+   "n": 11,
+   "id": "entrecote",
+   "name": "Entrecôte",
+   "group": "grelhados",
+   "photo": "entrecote",
+   "source": "https://irp.cdn-website.com/da5c9512/dms3rep/multi/entrecote.jpg",
+   "alt": {
+    "fr": "Entrecôte grillée, haricots verts, pommes de terre rôties et poivron rouge",
+    "en": "Grilled entrecôte with green beans, roast potatoes and red pepper",
+    "pt": "Entrecôte grelhado com feijão-verde, batatas assadas e pimento vermelho",
+    "it": "Entrecôte alla griglia con fagiolini, patate arrosto e peperone rosso",
+    "de": "Gegrilltes Entrecôte mit grünen Bohnen, Ofenkartoffeln und roter Paprika"
+   }
+  },
+  {
+   "n": 12,
+   "id": "entremeada",
+   "name": "Entremeada",
+   "group": "grelhados",
+   "photo": "entremeadas",
+   "source": "https://irp.cdn-website.com/da5c9512/dms3rep/multi/entremeadas.jpg",
+   "alt": {
+    "fr": "Poitrine de porc grillée, frites et riz",
+    "en": "Grilled pork belly slices with chips and rice",
+    "pt": "Entremeada grelhada com batata frita e arroz",
+    "it": "Pancetta di maiale alla griglia con patatine e riso",
+    "de": "Gegrillter Schweinebauch mit Pommes frites und Reis"
+   }
+  },
+  {
+   "n": 13,
+   "id": "especialidades",
+   "name": "Especialidades",
+   "group": "especialidades",
+   "photo": "especialidades",
+   "source": "https://irp.cdn-website.com/da5c9512/dms3rep/multi/especialidades.jpg",
+   "alt": {
+    "fr": "Une assiette : pièce panée, œuf au plat, frites et grelos",
+    "en": "One plate: a breaded cut, fried egg, chips and turnip greens",
+    "pt": "Um prato: panado, ovo estrelado, batata frita e grelos",
+    "it": "Un piatto: carne impanata, uovo all’occhio di bue, patatine e cime di rapa",
+    "de": "Ein Teller: paniertes Stück, Spiegelei, Pommes frites und Stängelkohl"
+   }
+  },
+  {
+   "n": 14,
+   "id": "frango-churrasco",
+   "name": "Frango churrasco",
+   "group": "grelhados",
+   "photo": "f-churrasco",
+   "source": "https://irp.cdn-website.com/da5c9512/dms3rep/multi/f_churrasco.jpg",
+   "alt": {
+    "fr": "Poulet entier grillé au charbon, ouvert en crapaudine, sur un plateau en inox",
+    "en": "Whole charcoal-grilled chicken, butterflied, on a steel tray",
+    "pt": "Frango inteiro grelhado no carvão, aberto, num tabuleiro de inox",
+    "it": "Pollo intero alla brace, aperto a libro, su un vassoio d’acciaio",
+    "de": "Ganzes Holzkohle-Grillhähnchen, aufgeklappt, auf einem Stahlblech"
+   }
+  },
+  {
+   "n": 15,
+   "id": "costoletas-porco-c-cebolada-2",
+   "name": "Costoletas porco c/cebolada",
+   "group": "pratos",
+   "photo": "feijao-polvo",
+   "source": "https://irp.cdn-website.com/da5c9512/dms3rep/multi/feijao_polvo.jpg",
+   "alt": {
+    "fr": "Ragoût de haricots blancs au poulpe et persil, dans un plat blanc avec une cuillère",
+    "en": "Octopus and white-bean stew with parsley, in a white dish with a spoon",
+    "pt": "Feijoada de polvo com salsa, em travessa branca com colher",
+    "it": "Stufato di fagioli bianchi e polpo con prezzemolo, in un piatto bianco con cucchiaio",
+    "de": "Eintopf aus weissen Bohnen und Oktopus mit Petersilie, in einer weissen Schale mit Löffel"
+   }
+  },
+  {
+   "n": 16,
+   "id": "francesinha",
+   "name": "Francesinha",
+   "group": "pratos",
+   "photo": "francesinha",
+   "source": "https://irp.cdn-website.com/da5c9512/dms3rep/multi/francesinha.jpg",
+   "alt": {
+    "fr": "Francesinha nappée de fromage fondu et d’un œuf, dans sa sauce",
+    "en": "Francesinha sandwich under melted cheese and an egg, in its sauce",
+    "pt": "Francesinha com queijo derretido e ovo, no seu molho",
+    "it": "Francesinha ricoperta di formaggio fuso e uovo, nella sua salsa",
+    "de": "Francesinha mit geschmolzenem Käse und Ei in ihrer Sauce"
+   }
+  },
+  {
+   "n": 17,
+   "id": "frango-a-braz",
+   "name": "Frango a braz",
+   "group": "pratos",
+   "photo": "frango-a-braz",
+   "source": "https://irp.cdn-website.com/da5c9512/dms3rep/multi/frango_a_braz.jpg",
+   "alt": {
+    "fr": "Poulet effiloché aux pommes paille et à l’œuf, persil",
+    "en": "Shredded chicken with matchstick potatoes, egg and parsley",
+    "pt": "Frango desfiado com batata palha, ovo e salsa",
+    "it": "Pollo sfilacciato con patate a fiammifero, uovo e prezzemolo",
+    "de": "Zerzupftes Huhn mit Strohkartoffeln, Ei und Petersilie"
+   }
+  },
+  {
+   "n": 18,
+   "id": "frango-de-churrasco",
+   "name": "Frango de churrasco",
+   "group": "grelhados",
+   "photo": "frango-churrasco",
+   "source": "https://irp.cdn-website.com/da5c9512/dms3rep/multi/frango_churrasco.jpg",
+   "alt": {
+    "fr": "Morceaux de poulet grillé, frites et riz",
+    "en": "Grilled chicken pieces with chips and rice",
+    "pt": "Frango de churrasco às peças com batata frita e arroz",
+    "it": "Pezzi di pollo alla brace con patatine e riso",
+    "de": "Grillhähnchenstücke mit Pommes frites und Reis"
+   }
+  },
+  {
+   "n": 19,
+   "id": "gambas",
+   "name": "Gambas",
+   "group": "marisco",
+   "photo": "gambas",
+   "source": "https://irp.cdn-website.com/da5c9512/dms3rep/multi/gambas.jpg",
+   "alt": {
+    "fr": "Plateau de gambas autour d’une tomate garnie",
+    "en": "Platter of prawns around a filled tomato",
+    "pt": "Travessa de gambas com tomate recheado ao centro",
+    "it": "Vassoio di gamberi con pomodoro ripieno al centro",
+    "de": "Platte mit Gambas um eine gefüllte Tomate"
+   }
+  },
+  {
+   "n": 20,
+   "id": "grelhada-mista",
+   "name": "Grelhada mista",
+   "group": "grelhados",
+   "photo": "grelhada-mista",
+   "source": "https://irp.cdn-website.com/da5c9512/dms3rep/multi/grelhada_mista.jpg",
+   "alt": {
+    "fr": "Grillade mixte : viandes et saucisse grillées, frites et riz",
+    "en": "Mixed grill: grilled meats and sausage with chips and rice",
+    "pt": "Grelhada mista de carnes e salsicha com batata frita e arroz",
+    "it": "Grigliata mista di carni e salsiccia con patatine e riso",
+    "de": "Gemischter Grillteller: Fleisch und Wurst mit Pommes frites und Reis"
+   }
+  },
+  {
+   "n": 21,
+   "id": "jambon",
+   "name": "Jambon",
+   "group": "pratos",
+   "photo": "jambon",
+   "source": "https://irp.cdn-website.com/da5c9512/dms3rep/multi/jambon.jpg",
+   "alt": {
+    "fr": "Jambon rôti découpé sur une planche rouge, en cuisine",
+    "en": "Roast ham being carved on a red board in the kitchen",
+    "pt": "Fiambre assado a ser cortado numa tábua vermelha, na cozinha",
+    "it": "Prosciutto arrosto tagliato su un tagliere rosso, in cucina",
+    "de": "Gebratener Schinken wird in der Küche auf einem roten Brett aufgeschnitten"
+   }
+  },
+  {
+   "n": 22,
+   "id": "jambon-gratin",
+   "name": "Jambon gratin",
+   "group": "pratos",
+   "photo": "jambon-gratin",
+   "source": "https://irp.cdn-website.com/da5c9512/dms3rep/multi/jambon_gratin.jpg",
+   "alt": {
+    "fr": "Tranches de jambon, haricots verts et pommes de terre gratinées",
+    "en": "Slices of ham with green beans and gratinated potatoes",
+    "pt": "Fatias de fiambre com feijão-verde e batatas gratinadas",
+    "it": "Fette di prosciutto con fagiolini e patate gratinate",
+    "de": "Schinkenscheiben mit grünen Bohnen und überbackenen Kartoffeln"
+   }
+  },
+  {
+   "n": 23,
+   "id": "orelha",
+   "name": "Orelha",
+   "group": "petiscos",
+   "photo": "orelha",
+   "source": "https://irp.cdn-website.com/da5c9512/dms3rep/multi/orelha.jpg",
+   "alt": {
+    "fr": "Salade d’oreille de porc, olives et citron, sur un plat d’argent",
+    "en": "Pig’s ear salad with olives and lemon on a silver platter",
+    "pt": "Salada de orelha com azeitonas e limão, em travessa de prata",
+    "it": "Insalata di orecchio di maiale con olive e limone, su un vassoio d’argento",
+    "de": "Schweineohrsalat mit Oliven und Zitrone auf einer Silberplatte"
+   }
+  },
+  {
+   "n": 24,
+   "id": "panados-frango-ou-porco-caseiros",
+   "name": "Panados frango ou porco caseiros",
+   "group": "pratos",
+   "photo": "panados-frango-porco-caseiros",
+   "source": "https://irp.cdn-website.com/da5c9512/dms3rep/multi/panados_frango_porco_caseiros.jpg",
+   "alt": {
+    "fr": "Escalopes panées maison, sauce tomate et basilic, frites et citron",
+    "en": "Homemade breaded cutlets with tomato sauce and basil, chips and lemon",
+    "pt": "Panados caseiros com molho de tomate e manjericão, batata frita e limão",
+    "it": "Cotolette impanate fatte in casa con salsa di pomodoro e basilico, patatine e limone",
+    "de": "Hausgemachte panierte Schnitzel mit Tomatensauce und Basilikum, Pommes frites und Zitrone"
+   }
+  },
+  {
+   "n": 25,
+   "id": "peru-recheado",
+   "name": "Peru recheado",
+   "group": "pratos",
+   "photo": "peru-recheado",
+   "source": "https://irp.cdn-website.com/da5c9512/dms3rep/multi/peru_recheado.jpg",
+   "alt": {
+    "fr": "Dinde farcie rôtie et dorée, dans son papier d’aluminium",
+    "en": "Golden roast stuffed turkey in its foil",
+    "pt": "Peru recheado assado e dourado, em papel de alumínio",
+    "it": "Tacchino ripieno arrosto e dorato, nella sua carta stagnola",
+    "de": "Goldbraun gebratener gefüllter Truthahn in Alufolie"
+   }
+  },
+  {
+   "n": 26,
+   "id": "picanha",
+   "name": "Picanha",
+   "group": "grelhados",
+   "photo": "picanha",
+   "source": "https://irp.cdn-website.com/da5c9512/dms3rep/multi/picanha.jpg",
+   "alt": {
+    "fr": "Picanha grillée, riz, haricots noirs, frites et sauce",
+    "en": "Grilled picanha with rice, black beans, chips and a sauce",
+    "pt": "Picanha grelhada com arroz, feijão preto, batata frita e molho",
+    "it": "Picanha alla griglia con riso, fagioli neri, patatine e salsa",
+    "de": "Gegrillte Picanha mit Reis, schwarzen Bohnen, Pommes frites und Sauce"
+   }
+  },
+  {
+   "n": 27,
+   "id": "presunto",
+   "name": "Presunto",
+   "group": "petiscos",
+   "photo": "presunto",
+   "source": "https://irp.cdn-website.com/da5c9512/dms3rep/multi/presunto.jpg",
+   "alt": {
+    "fr": "Plateau de presunto (jambon cru) en fines tranches, rondelle de citron",
+    "en": "Platter of thinly sliced presunto (cured ham) with a slice of lemon",
+    "pt": "Travessa de presunto fatiado fino com rodela de limão",
+    "it": "Vassoio di presunto (prosciutto crudo) a fette sottili con una fetta di limone",
+    "de": "Platte mit dünn geschnittenem Presunto (Rohschinken) und einer Zitronenscheibe"
+   }
+  },
+  {
+   "n": 28,
+   "id": "rancho",
+   "name": "Rancho",
+   "group": "pratos",
+   "photo": "rancho",
+   "source": "https://irp.cdn-website.com/da5c9512/dms3rep/multi/rancho.jpg",
+   "alt": {
+    "fr": "Pâtes, pois chiches, viandes et carottes",
+    "en": "Pasta with chickpeas, meats and carrots",
+    "pt": "Massa com grão, carnes e cenoura",
+    "it": "Pasta con ceci, carni e carote",
+    "de": "Nudeln mit Kichererbsen, Fleisch und Karotten"
+   }
+  },
+  {
+   "n": 29,
+   "id": "salada-de-polvo",
+   "name": "Salada de polvo",
+   "group": "marisco",
+   "photo": "salada-polvo",
+   "source": "https://irp.cdn-website.com/da5c9512/dms3rep/multi/salada_polvo.jpg",
+   "alt": {
+    "fr": "Salade de poulpe, poivrons rouges et persil, sur un plat d’argent",
+    "en": "Octopus salad with red peppers and parsley on a silver platter",
+    "pt": "Salada de polvo com pimento vermelho e salsa, em travessa de prata",
+    "it": "Insalata di polpo con peperoni rossi e prezzemolo, su un vassoio d’argento",
+    "de": "Oktopussalat mit roter Paprika und Petersilie auf einer Silberplatte"
+   }
+  },
+  {
+   "n": 30,
+   "id": "saladas-polvo-orelha-pipis-rissois-de-camarao",
+   "name": "Saladas polvo, Orelha, Pipis, Rissois de Camarão",
+   "group": "petiscos",
+   "photo": "saladas-diversas",
+   "source": "https://irp.cdn-website.com/da5c9512/dms3rep/multi/saladas_diversas.jpg",
+   "alt": {
+    "fr": "Plusieurs plats d’argent sur une table : salades de poulpe et d’oreille, pipis et rissóis",
+    "en": "Several silver platters on a table: octopus and pig’s ear salads, pipis and rissóis",
+    "pt": "Várias travessas de prata numa mesa: saladas de polvo e de orelha, pipis e rissóis",
+    "it": "Diversi vassoi d’argento su un tavolo: insalate di polpo e di orecchio, pipis e rissóis",
+    "de": "Mehrere Silberplatten auf einem Tisch: Oktopus- und Schweineohrsalat, Pipis und Rissóis"
+   }
+  },
+  {
+   "n": 31,
+   "id": "salmao-grelhado",
+   "name": "Salmão grelhado",
+   "group": "grelhados",
+   "photo": "salmao-grelhado",
+   "source": "https://irp.cdn-website.com/da5c9512/dms3rep/multi/salmao_grelhado.jpg",
+   "alt": {
+    "fr": "Darnes de saumon grillées, haricots verts, pommes de terre et citron",
+    "en": "Grilled salmon steaks with green beans, potatoes and lemon",
+    "pt": "Postas de salmão grelhado com feijão-verde, batatas e limão",
+    "it": "Tranci di salmone alla griglia con fagiolini, patate e limone",
+    "de": "Gegrillte Lachstranchen mit grünen Bohnen, Kartoffeln und Zitrone"
+   }
+  },
+  {
+   "n": 32,
+   "id": "secretos-de-porco-c-batata",
+   "name": "Secretos de porco c/batata",
+   "group": "grelhados",
+   "photo": "secretos-porco",
+   "source": "https://irp.cdn-website.com/da5c9512/dms3rep/multi/secretos_porco.jpg",
+   "alt": {
+    "fr": "Secretos de porc grillés, pommes de terre, haricots verts et citron",
+    "en": "Grilled pork secretos with potatoes, green beans and lemon",
+    "pt": "Secretos de porco grelhados com batatas, feijão-verde e limão",
+    "it": "Secretos di maiale alla griglia con patate, fagiolini e limone",
+    "de": "Gegrillte Schweine-Secretos mit Kartoffeln, grünen Bohnen und Zitrone"
+   }
+  },
+  {
+   "n": 33,
+   "id": "secretos-de-porco",
+   "name": "Secretos de porco",
+   "group": "grelhados",
+   "photo": "secretos-porco-travessa",
+   "source": "https://irp.cdn-website.com/da5c9512/dms3rep/multi/secretos_porco_.jpg",
+   "alt": {
+    "fr": "Secretos de porc grillés sur un plat d’argent, rondelles de citron",
+    "en": "Grilled pork secretos on a silver platter with lemon slices",
+    "pt": "Secretos de porco grelhados em travessa de prata com rodelas de limão",
+    "it": "Secretos di maiale alla griglia su un vassoio d’argento con fette di limone",
+    "de": "Gegrillte Schweine-Secretos auf einer Silberplatte mit Zitronenscheiben"
+   }
+  },
+  {
+   "n": 34,
+   "id": "secretos-de-porco-preto-c-arroz-feijao",
+   "name": "Secretos de porco preto c/arroz feijão",
+   "group": "grelhados",
+   "photo": "secretos-porco-preto-arroz-feijao",
+   "source": "https://irp.cdn-website.com/da5c9512/dms3rep/multi/secretos_porco_preto_arroz_feijao.jpg",
+   "alt": {
+    "fr": "Secretos de porc noir grillés sur riz aux haricots rouges, citron",
+    "en": "Grilled black pork secretos on rice with red beans, lemon",
+    "pt": "Secretos de porco preto grelhados sobre arroz de feijão, limão",
+    "it": "Secretos di maiale nero alla griglia su riso con fagioli rossi, limone",
+    "de": "Gegrillte Secretos vom schwarzen Schwein auf Reis mit roten Bohnen, Zitrone"
+   }
+  },
+  {
+   "n": 35,
+   "id": "crabe-farci-sapateira-recheada",
+   "name": "Crabe farci / Sapateira recheada",
+   "group": "marisco",
+   "photo": "sapateira-recheada",
+   "source": "https://irp.cdn-website.com/da5c9512/dms3rep/multi/20220109_121518.jpg",
+   "alt": {
+    "fr": "Tourteau farci dans sa carapace, sur salade et roquette",
+    "en": "Stuffed brown crab in its shell on salad leaves and rocket",
+    "pt": "Sapateira recheada na carapaça, sobre alface e rúcula",
+    "it": "Granciporro ripieno nel suo guscio, su insalata e rucola",
+    "de": "Gefüllter Taschenkrebs in seiner Schale auf Salat und Rucola"
+   }
+  }
+ ]
+}

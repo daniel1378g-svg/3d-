@@ -1,0 +1,40 @@
+{
+ "source": "https://www.luso-sabores.ch/ (the review slider on the home page, three slides)",
+ "note": "The quotes stay in French in every language, as the guests wrote them; the translations below are marked as translations. No other reviews, ratings, averages or counts.",
+ "googleReviewUrl": "https://www.google.com/search?q=lusosabores&rlz=1C5CHFA_enCH836CH836&oq=luso&aqs=chrome.4.69i60j46j0j69i59l2j0j69i60l2.4386j0j7&sourceid=chrome&ie=UTF-8#lrd=0x478c44822e1eccd7:0xf15bbb931f51778c,3,,,",
+ "reviews": [
+  {
+   "stars": 5,
+   "quote": "C'était ma première expérience culinaire portugaise. Très bon et très bon marché.",
+   "name": "Talios",
+   "translation": {
+    "en": "It was my first Portuguese culinary experience. Very good and very good value.",
+    "pt": "Foi a minha primeira experiência culinária portuguesa. Muito bom e muito barato.",
+    "it": "È stata la mia prima esperienza culinaria portoghese. Molto buono e molto economico.",
+    "de": "Es war mein erstes portugiesisches kulinarisches Erlebnis. Sehr gut und sehr günstig."
+   }
+  },
+  {
+   "stars": 5,
+   "quote": "Excellent service, nourriture délicieuse",
+   "name": "Rosana Luján",
+   "translation": {
+    "en": "Excellent service, delicious food",
+    "pt": "Serviço excelente, comida deliciosa",
+    "it": "Servizio eccellente, cibo delizioso",
+    "de": "Ausgezeichneter Service, köstliches Essen"
+   }
+  },
+  {
+   "stars": 5,
+   "quote": "Un morceau de l'Algarve en Suisse",
+   "name": "Giovanni Orlandi",
+   "translation": {
+    "en": "A piece of the Algarve in Switzerland",
+    "pt": "Um pedaço do Algarve na Suíça",
+    "it": "Un pezzo di Algarve in Svizzera",
+    "de": "Ein Stück Algarve in der Schweiz"
+   }
+  }
+ ]
+}

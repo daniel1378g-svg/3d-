@@ -1,0 +1,645 @@
+{
+ "url": "https://www.luso-sabores.ch/",
+ "title": "Luso Sabores | Restaurant cuisine portugaise à Gland",
+ "metas": [
+  {
+   "name": "d-service-worker",
+   "content": "register"
+  },
+  {
+   "name": "viewport",
+   "content": "initial-scale=1, minimum-scale=1, maximum-scale=5, viewport-fit=cover"
+  },
+  {
+   "name": "dm:lcp-preload",
+   "content": "dm:lcp-frozen"
+  },
+  {
+   "name": "apple-mobile-web-app-capable",
+   "content": "yes"
+  },
+  {
+   "name": "og:type",
+   "content": "website"
+  },
+  {
+   "name": "og:url",
+   "content": "https://www.luso-sabores.ch/"
+  },
+  {
+   "name": "description",
+   "content": "Luso Sabores vous propose une carte de spécialités portugaises, cuisinées avec des produits frais, dans une atmosphère accueillante et conviviale. Ouvert 7 jours/7."
+  },
+  {
+   "name": "twitter:card",
+   "content": "summary"
+  },
+  {
+   "name": "twitter:title",
+   "content": "Luso Sabores | Restaurant cuisine portugaise à Gland"
+  },
+  {
+   "name": "twitter:description",
+   "content": "Luso Sabores vous propose une carte de spécialités portugaises, cuisinées avec des produits frais, dans une atmosphère accueillante et conviviale. Ouvert 7 jours/7."
+  },
+  {
+   "name": "twitter:image",
+   "content": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/Lusosabores-fond-1920w.jpg"
+  },
+  {
+   "name": "og:description",
+   "content": "Luso Sabores vous propose une carte de spécialités portugaises, cuisinées avec des produits frais, dans une atmosphère accueillante et conviviale. Ouvert 7 jours/7."
+  },
+  {
+   "name": "og:title",
+   "content": "Luso Sabores | Restaurant cuisine portugaise à Gland"
+  },
+  {
+   "name": "og:image",
+   "content": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/Lusosabores-fond-1920w.jpg"
+  }
+ ],
+ "text": "We use essential cookies to make our site work. With your consent, we may also use non-essential cookies to improve user experience and analyze website traffic. By clicking “Accept,” you agree to our website's cookie use as described in our Cookie Policy and Privacy Policy. You can change your cookie settings at any time by clicking “Preferences.”\nPreferences\nDecline\nAccept\n \nAccueil\nMenu\nServices\nContact\n+41 22 364 47 40 \nLUSOSABORES\nRestaurant spécialités Portugaises à Gland\nDécouvrir notre menu \nPlat du jour\n\nLUSOSABORES vous propose chaque jour de la semaine un plat du jour différent, mais toujours une spécialité portugaise !\n\nContactez-nous par téléphone pour connaître le plat du jour.\n\nQui sommes-nous ?\n\nChez LusoSabores, découvrez des grillades comme vous n'en avez jamais mangé...\n\nNotre restaurant propose une cuisine portugaise. Découvrez nos spécialités portugaises, cuisinées avec des produits frais, dans une atmosphère accueillante et conviviale.\n\n\n\n\nNous nous réjouissons de votre visite à bientôt chez LusoSabores !\n\n\nJoão Ribeiro.\n\nMENU\n\nSERVICES\n\nLusosabores Marques Ribeiro\n@lusosabores\n20\nPosts\n218\nFollowers\n191\nFollowing\nFollow\n★★★★★\n\n\"Un morceau de l'Algarve en Suisse\"\n\n\n\n\nGiovanni Orlandi\n\nPrevious\nNext\nLaissez-nous un avis sur Google \n\n+41 22 364 47 40\n+41 79 903 81 31\n\n\nChemin du Lavasson 39\n1196 Gland\n\n\n \n\n©2026 Luso Sabores | Tous droits réservés | Site internet par ZIP.ch | Protection des données\n\nShare by:",
+ "colours": [
+  [
+   "text rgb(67, 60, 60)",
+   120
+  ],
+  [
+   "text rgb(0, 0, 0)",
+   113
+  ],
+  [
+   "text rgb(255, 255, 255)",
+   37
+  ],
+  [
+   "text rgb(147, 26, 37)",
+   19
+  ],
+  [
+   "background rgb(255, 255, 255)",
+   9
+  ],
+  [
+   "text rgb(70, 78, 76)",
+   9
+  ],
+  [
+   "text rgb(255, 203, 142)",
+   7
+  ],
+  [
+   "background rgb(147, 26, 37)",
+   6
+  ],
+  [
+   "border rgb(255, 203, 142)",
+   6
+  ],
+  [
+   "text rgb(255, 251, 232)",
+   4
+  ],
+  [
+   "background rgba(147, 26, 37, 0.67)",
+   4
+  ],
+  [
+   "background rgb(233, 113, 113)",
+   3
+  ],
+  [
+   "text rgba(255, 203, 142, 0.9)",
+   3
+  ],
+  [
+   "background rgb(0, 58, 250)",
+   2
+  ],
+  [
+   "border rgb(0, 58, 250)",
+   2
+  ],
+  [
+   "background rgb(245, 239, 239)",
+   2
+  ],
+  [
+   "background rgba(255, 247, 247, 0.4)",
+   2
+  ],
+  [
+   "text rgb(153, 153, 153)",
+   2
+  ],
+  [
+   "border rgb(0, 0, 0)",
+   1
+  ],
+  [
+   "background rgb(0, 149, 246)",
+   1
+  ],
+  [
+   "background rgba(0, 0, 0, 0.9)",
+   1
+  ],
+  [
+   "background rgb(255, 203, 142)",
+   1
+  ],
+  [
+   "background rgba(245, 239, 239, 0.8)",
+   1
+  ],
+  [
+   "background rgb(245, 245, 245)",
+   1
+  ],
+  [
+   "background rgba(255, 255, 255, 0.4)",
+   1
+  ]
+ ],
+ "imgs": [
+  {
+   "src": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/LOGO-LUSO-SABORES-121w.png",
+   "srcset": null,
+   "dsrc": null,
+   "alt": "LOGO LUSOSABORES GLAND",
+   "w": 120,
+   "h": 84,
+   "vis": true,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//md/unsplash/dms3rep/multi/opt/photo-1575137252010-edeb337669d3-1920w.jpg",
+   "alt": "Plat du jour",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "https://phosphor.utils.elfsightcdn.com/?url=https%3A%2F%2Fscontent-dfw5-1.cdninstagram.com%2Fv%2Ft51.2885-19%2F178178676_941369226627923_259320124897955640_n.jpg%3Fstp%3Ddst-jpg_e0_s150x150_tt6%26_nc_cat%3D105%26ig_cache_key%3DGHTKngpTC1uaK1gDADgPp5dHSpkDbkULAAAB1501500j-ccb7-5%26ccb%3D7-5%26_nc_sid%3D669407%26efg%3DeyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLnd3dy4xMDgwLkMzIn0%253D%26_nc_ohc%3DK-vPo6jYy2UQ7kNvwG1SOx2%26_nc_oc%3DAdoSaeRFZB4XlC0pHw4pgS919p2KMgYd93rS7t4xAMYZY79uYfB5Sfmz6WifIg4zBpc%26_nc_ad%3Dz-m%26_nc_cid%3D0%26_nc_zt%3D24%26_nc_ht%3Dscontent-dfw5-1.cdninstagram.com%26_nc_ss%3D7f3ba%26oh%3D00_AQQZzVaRaYVRZX69-sOcQG66uT9QXiMn-vFo07UmQyFsww%26oe%3D6AE81E97",
+   "srcset": null,
+   "dsrc": null,
+   "alt": "lusosabores",
+   "w": 150,
+   "h": 150,
+   "vis": true,
+   "caption": ""
+  },
+  {
+   "src": "https://phosphor.utils.elfsightcdn.com/?url=https%3A%2F%2Fscontent-waw2-2.cdninstagram.com%2Fv%2Ft51.71878-15%2F500951890_9809216232530992_1320664410438378066_n.jpg%3Fstp%3Ddst-jpg_e15_s640x640_tt6%26_nc_cat%3D106%26ig_cache_key%3DMzM4Mzc0OTA1NTc3NjY0OTI1Mg%253D%253D.3-ccb7-5%26ccb%3D7-5%26_nc_sid%3D58cdad%26efg%3DeyJ2ZW5jb2RlX3RhZyI6IkNMSVBTLnhwaWRzLjcyMC5zZHIudmlkZW9fZGVmYXVsdF9jb3Zlcl9mcmFtZS5DMyJ9%26_nc_ohc%3Dtdgyw5Vz0GIQ7kNvwHw6p74%26_nc_oc%3DAdrqtlu2FU25uF9LMUcyVGzcdj_1lYrlGSIIRhWnrSN_38g9OXEeodiL1VKxoUdSX_i45lBWHkogvlnMLe1e7Zaw%26_nc_ad%3Dz-m%26_nc_cid%3D0%26_nc_zt%3D23%26_nc_ht%3Dscontent-waw2-2.cdninstagram.com%26_nc_gid%3DSaHey-7MzLO6mAdaDNCr_w%26_nc_ss%3D7a3ba%26oh%3D00_Af_49z3PNq3O4gfcNDNvoiRQ1NRzmOVf2bw6YCDCi1YXgQ%26oe%3D6A2DCA1C",
+   "srcset": null,
+   "dsrc": null,
+   "alt": "...",
+   "w": 360,
+   "h": 640,
+   "vis": true,
+   "caption": ""
+  },
+  {
+   "src": "https://phosphor.utils.elfsightcdn.com/?url=https%3A%2F%2Fscontent-waw2-1.cdninstagram.com%2Fv%2Ft51.71878-15%2F501676649_625678660527330_6023398802355752000_n.jpg%3Fstp%3Ddst-jpg_e15_s640x640_tt6%26_nc_cat%3D104%26ig_cache_key%3DMzM4Mzc0ODQxMjE2MDg2NTc3Nw%253D%253D.3-ccb7-5%26ccb%3D7-5%26_nc_sid%3D58cdad%26efg%3DeyJ2ZW5jb2RlX3RhZyI6IkNMSVBTLnhwaWRzLjcyMC5zZHIudmlkZW9fZGVmYXVsdF9jb3Zlcl9mcmFtZS5DMyJ9%26_nc_ohc%3DX64f-dycSiYQ7kNvwHtFsYA%26_nc_oc%3DAdqrWYhViDi1_0b1H3rShp7S8MXGy1KwPHZO_V-jqK9tkGUR2Nh2r-Tejo8ZH0VY9opHwm3eVUjJrloDVkZJmHK8%26_nc_ad%3Dz-m%26_nc_cid%3D0%26_nc_zt%3D23%26_nc_ht%3Dscontent-waw2-1.cdninstagram.com%26_nc_gid%3DSaHey-7MzLO6mAdaDNCr_w%26_nc_ss%3D7a3ba%26oh%3D00_Af8UzzFZ6gh45tXd37rgwDvmjVtkdn508QZAIlbwJJNmDg%26oe%3D6A2DB076",
+   "srcset": null,
+   "dsrc": null,
+   "alt": "...",
+   "w": 360,
+   "h": 640,
+   "vis": true,
+   "caption": ""
+  },
+  {
+   "src": "https://phosphor.utils.elfsightcdn.com/?url=https%3A%2F%2Fscontent-waw2-1.cdninstagram.com%2Fv%2Ft51.71878-15%2F501404656_1351158112666483_1576882550241602815_n.jpg%3Fstp%3Ddst-jpg_e15_s640x640_tt6%26_nc_cat%3D109%26ig_cache_key%3DMzM4MzU0NjQ1MDY4NTM3MjEwNg%253D%253D.3-ccb7-5%26ccb%3D7-5%26_nc_sid%3D58cdad%26efg%3DeyJ2ZW5jb2RlX3RhZyI6IkNMSVBTLnhwaWRzLjM4OS5zZHIudmlkZW9fZGVmYXVsdF9jb3Zlcl9mcmFtZS5DMyJ9%26_nc_ohc%3DgIPGfrxoT7AQ7kNvwFxzxQD%26_nc_oc%3DAdrPI0qzH9zzT3HAg5EhvHFNj8ObSAODF8AjnxwxL32erBJfyXNN1v3BpU83-dwBaT0KZaIj0iZH4nNpcwfbXi5r%26_nc_ad%3Dz-m%26_nc_cid%3D0%26_nc_zt%3D23%26_nc_ht%3Dscontent-waw2-1.cdninstagram.com%26_nc_gid%3DSaHey-7MzLO6mAdaDNCr_w%26_nc_ss%3D7a3ba%26oh%3D00_Af85qvPxWkxP63ETxK0ujksG5qpxaJeV7kgbsf7fO_sYqQ%26oe%3D6A2DC899",
+   "srcset": null,
+   "dsrc": null,
+   "alt": "...",
+   "w": 360,
+   "h": 640,
+   "vis": true,
+   "caption": ""
+  },
+  {
+   "src": "https://phosphor.utils.elfsightcdn.com/?url=https%3A%2F%2Fscontent-waw2-2.cdninstagram.com%2Fv%2Ft51.82787-15%2F639792541_18562017556045975_2362187730881734885_n.jpg%3Fstp%3Ddst-jpg_e35_tt6%26_nc_cat%3D102%26ig_cache_key%3DMjU2MDU3NDIzNjgyMDExMTI2OQ%253D%253D.3-ccb7-5%26ccb%3D7-5%26_nc_sid%3D58cdad%26efg%3DeyJ2ZW5jb2RlX3RhZyI6IkZFRUQueHBpZHMuMTA4MC5zZHIucmVndWxhcl9waG90by5DMyJ9%26_nc_ohc%3D7HP003wvQTgQ7kNvwFqSVfA%26_nc_oc%3DAdqngvbssWXjlp5Gr_eOhsWN_g0N_j19UbV_NMPCM_7WBrtVSCzKHFsxTRRmCO-VP3ZLWrbk4hCFjNQVn8JB3a2L%26_nc_ad%3Dz-m%26_nc_cid%3D0%26_nc_zt%3D23%26se%3D7%26_nc_ht%3Dscontent-waw2-2.cdninstagram.com%26_nc_gid%3DSaHey-7MzLO6mAdaDNCr_w%26_nc_ss%3D7a3ba%26oh%3D00_Af-S-zJUi_xZLezFlo7nxpQvaCKt31S-G1V-qXzpamx9xQ%26oe%3D6A2DA743",
+   "srcset": null,
+   "dsrc": null,
+   "alt": "Feijoada a transmontana...",
+   "w": 1080,
+   "h": 1350,
+   "vis": true,
+   "caption": ""
+  },
+  {
+   "src": "https://phosphor.utils.elfsightcdn.com/?url=https%3A%2F%2Fscontent-waw2-2.cdninstagram.com%2Fv%2Ft51.82787-15%2F619747249_18055619549381475_3332846892181980522_n.jpg%3Fstp%3Ddst-jpg_e35_tt6%26_nc_cat%3D106%26ig_cache_key%3DMjU2MDU3MzgyNDI1MTY3MDQ3NQ%253D%253D.3-ccb7-5%26ccb%3D7-5%26_nc_sid%3D58cdad%26efg%3DeyJ2ZW5jb2RlX3RhZyI6IkZFRUQueHBpZHMuMTA4MC5zZHIucmVndWxhcl9waG90by5DMyJ9%26_nc_ohc%3DHK89u6uGVggQ7kNvwGeZt5y%26_nc_oc%3DAdoMLycnZCSFGJimvFLCDYUygxiWgwaylZIhrJZ2iFEYwxUJjX-gMdZOhZU0BxTrFnBD2RFOC1SzgKPIcW97Ay-W%26_nc_ad%3Dz-m%26_nc_cid%3D0%26_nc_zt%3D23%26se%3D7%26_nc_ht%3Dscontent-waw2-2.cdninstagram.com%26_nc_gid%3DSaHey-7MzLO6mAdaDNCr_w%26_nc_ss%3D7a3ba%26oh%3D00_Af_Ybari4n9wurayxSh6zQKt9Km1IDORxb448GWpo5hI7A%26oe%3D6A2DA66B",
+   "srcset": null,
+   "dsrc": null,
+   "alt": "Salmão grilhado Saumon grillé...",
+   "w": 1080,
+   "h": 1350,
+   "vis": true,
+   "caption": ""
+  },
+  {
+   "src": "https://phosphor.utils.elfsightcdn.com/?url=https%3A%2F%2Fscontent-waw2-2.cdninstagram.com%2Fv%2Ft51.82787-15%2F619701878_18083477293940936_4571634646712495000_n.jpg%3Fstp%3Ddst-jpg_e35_tt6%26_nc_cat%3D106%26ig_cache_key%3DMjU2MDU3MzAyOTU5MDMzOTczNg%253D%253D.3-ccb7-5%26ccb%3D7-5%26_nc_sid%3D58cdad%26efg%3DeyJ2ZW5jb2RlX3RhZyI6IkZFRUQueHBpZHMuMTA4MC5zZHIucmVndWxhcl9waG90by5DMyJ9%26_nc_ohc%3DTFCDKOignSwQ7kNvwGJsT0w%26_nc_oc%3DAdrz2uXUYghVN___uMpbOJucY3gXylfWPVTzXgAwbkW2Rdn3DsCCUaFQKNE5leJsFtEp75AQyw2Zg6JFBO21HVI3%26_nc_ad%3Dz-m%26_nc_cid%3D0%26_nc_zt%3D23%26se%3D7%26_nc_ht%3Dscontent-waw2-2.cdninstagram.com%26_nc_gid%3DSaHey-7MzLO6mAdaDNCr_w%26_nc_ss%3D7a3ba%26oh%3D00_Af9IH5vnQy_b-gPxryX08bqJyuIM4SnQPSIgLz47cj1UQw%26oe%3D6A2DADE6",
+   "srcset": null,
+   "dsrc": null,
+   "alt": "Secretos de porco preto...",
+   "w": 1080,
+   "h": 1293,
+   "vis": true,
+   "caption": ""
+  },
+  {
+   "src": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/transparent-1069w.png",
+   "srcset": null,
+   "dsrc": null,
+   "alt": "",
+   "w": 1000,
+   "h": 276,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/transparent-1069w.png",
+   "srcset": null,
+   "dsrc": null,
+   "alt": "",
+   "w": 1000,
+   "h": 276,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/transparent-1069w.png",
+   "srcset": null,
+   "dsrc": null,
+   "alt": "",
+   "w": 1000,
+   "h": 276,
+   "vis": false,
+   "caption": "★★★★★\n\n\"Un morceau de l'Algarve en Suisse\"\n\n\n\n\nGiovanni Orlandi"
+  },
+  {
+   "src": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/LOGO-LUSO-SABORES-146w.png",
+   "srcset": null,
+   "dsrc": null,
+   "alt": "Logo Luso Sabores",
+   "w": 150,
+   "h": 105,
+   "vis": true,
+   "caption": ""
+  },
+  {
+   "src": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/LOGO-LUSO-SABORES-1920w.png",
+   "srcset": null,
+   "dsrc": null,
+   "alt": "Logo Luso Sabores",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  }
+ ],
+ "bgs": [
+  {
+   "bg": "url(\"https://lirp.cdn-website.com/da5c9512/dms3rep/multi/opt/artem-beliaikin-7b8eGUOBbGE-unsplash-1920w.jpg\")",
+   "cls": "u_1239437687 dmRespRow dmHomeSection1 hasBackgroundOverlay",
+   "id": "1239437687",
+   "vis": true,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//md/unsplash/dms3rep/multi/opt/photo-1575137252010-edeb337669d3-400h.jpg\")",
+   "cls": "u_1255432416",
+   "id": "",
+   "vis": true,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://lirp.cdn-website.com/md/unsplash/dms3rep/multi/opt/photo-1583549322726-4407bfb42013-1920w.jpg\")",
+   "cls": "dmRespCol small-12 u_1545792326 medium-6 large-6 hasBackgroundOverlay lazy",
+   "id": "1545792326",
+   "vis": true,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://lirp.cdn-website.com/md/unsplash/dms3rep/multi/opt/photo-1518492104633-130d0cc84637-1920w.jpg\")",
+   "cls": "dmRespCol small-12 u_1761899622 medium-6 large-6 hasBackgroundOverlay lazy",
+   "id": "1761899622",
+   "vis": true,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://lirp.cdn-website.com/md/unsplash/dms3rep/multi/opt/photo-1562967914-b2176ee4f468-1920w.jpg\")",
+   "cls": "dmRespRow u_1478664381 dmSectionParallaxNew lazy skrollable skrollable-between",
+   "id": "1478664381",
+   "vis": true,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/transparent-1069w.png\")",
+   "cls": "dmCoverImgContainer",
+   "id": "1895376422",
+   "vis": true,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/transparent-1069w.png\")",
+   "cls": "dmCoverImgContainer",
+   "id": "1460730692",
+   "vis": true,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/transparent-1069w.png\")",
+   "cls": "dmCoverImgContainer flex-active-slide",
+   "id": "1255438525",
+   "vis": true,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com/_dm/s/rt/scripts/vendor/photoswipe4/icons/default-skin.png\")",
+   "cls": "pswp__button pswp__button--close",
+   "id": "",
+   "vis": false,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com/_dm/s/rt/scripts/vendor/photoswipe4/icons/default-skin.png\")",
+   "cls": "pswp__button pswp__button--share",
+   "id": "",
+   "vis": false,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com/_dm/s/rt/scripts/vendor/photoswipe4/icons/default-skin.png\")",
+   "cls": "pswp__button pswp__button--fs",
+   "id": "",
+   "vis": false,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com/_dm/s/rt/scripts/vendor/photoswipe4/icons/default-skin.png\")",
+   "cls": "pswp__button pswp__button--zoom",
+   "id": "",
+   "vis": false,
+   "dbg": null
+  }
+ ],
+ "links": [
+  {
+   "href": "https://www.luso-sabores.ch/privacy",
+   "text": "Privacy Policy",
+   "vis": true
+  },
+  {
+   "href": "https://www.facebook.com/lusosabores.marquesribeiro",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.instagram.com/lusosabores/",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/",
+   "text": "Accueil",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Menu",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/home",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/services",
+   "text": "Services",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/contact",
+   "text": "Contact",
+   "vis": true
+  },
+  {
+   "href": "",
+   "text": "+41 22 364 47 40",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Découvrir notre menu",
+   "vis": true
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/",
+   "text": "Bouton",
+   "vis": false
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "MENU",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/services",
+   "text": "SERVICES",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "MENU",
+   "vis": false
+  },
+  {
+   "href": "https://www.luso-sabores.ch/services",
+   "text": "SERVICES",
+   "vis": false
+  },
+  {
+   "href": "https://www.luso-sabores.ch/contact",
+   "text": "CONTACT",
+   "vis": false
+  },
+  {
+   "href": "https://www.instagram.com/lusosabores",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.instagram.com/lusosabores",
+   "text": "Lusosabores Marques Ribeiro",
+   "vis": true
+  },
+  {
+   "href": "https://www.instagram.com/lusosabores",
+   "text": "@lusosabores",
+   "vis": true
+  },
+  {
+   "href": "https://www.instagram.com/lusosabores",
+   "text": "Follow",
+   "vis": true
+  },
+  {
+   "href": "https://www.instagram.com/p/C71fdaeoXAk",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.instagram.com/p/C71fUDEI_Xx",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.instagram.com/p/C70xZHyIqbK",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.instagram.com/p/COI_LOurf-l",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.instagram.com/p/COI_FOfry_L",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.instagram.com/p/COI-5qaLZCY",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/#",
+   "text": "Previous",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/#",
+   "text": "Next",
+   "vis": true
+  },
+  {
+   "href": "https://www.google.com/search?q=lusosabores&rlz=1C5CHFA_enCH836CH836&oq=luso&aqs=chrome.4.69i60j46j0j69i59l2j0j69i60l2.4386j0j7&sourceid=chrome&ie=UTF-8#lrd=0x478c44822e1eccd7:0xf15bbb931f51778c,3,,,",
+   "text": "Laissez-nous un avis sur Google",
+   "vis": true
+  },
+  {
+   "href": "https://www.google.com/maps/place/Restaurant+LUSOSabores/@46.4232989,6.2696167,710m/data=!3m3!1e3!4b1!5s0x478c4482303cdb57:0xb999b6555fd553cf!4m6!3m5!1s0x478c44822e1eccd7:0xf15bbb931f51778c!8m2!3d46.4232952!4d6.272197!16s%2Fg%2F11cnch9cn1?entry=ttu&g_ep=EgoyMDI2MDYwMy4xIKXMDSoASAFQAw%3D%3D",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "tel:+41 22 364 47 40",
+   "text": "+41 22 364 47 40",
+   "vis": true
+  },
+  {
+   "href": "tel:+41 79 903 81 31",
+   "text": "+41 79 903 81 31",
+   "vis": true
+  },
+  {
+   "href": "https://goo.gl/maps/TU3Zg4jZsG5czYS59",
+   "text": "Chemin du Lavasson 39\n1196 Gland",
+   "vis": true
+  },
+  {
+   "href": "https://www.facebook.com/lusosabores.marquesribeiro",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.instagram.com/lusosabores/",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/",
+   "text": "",
+   "vis": false
+  },
+  {
+   "href": "tel:+41 22 364 47 40",
+   "text": "+41 22 364 47 40",
+   "vis": false
+  },
+  {
+   "href": "tel:+41 79 903 81 31",
+   "text": "+41 79 903 81 31",
+   "vis": false
+  },
+  {
+   "href": "https://goo.gl/maps/TU3Zg4jZsG5czYS59",
+   "text": "Chemin du Lavasson 39 1196 Gland",
+   "vis": false
+  },
+  {
+   "href": "https://www.google.com/maps/place/Restaurant+LUSOSabores/@46.4232952,6.272197,15z/data=!4m2!3m1!1s0x0:0xf15bbb931f51778c?sa=X&ved=2ahUKEwjdnr6mj7bsAhVKzKQKHaEADpQQ_BIwH3oECBwQBQ",
+   "text": "",
+   "vis": false
+  },
+  {
+   "href": "https://fr.foursquare.com/v/restaurant-portugais-luso-sabores/5f44fce7815dd91c30fd0fe8",
+   "text": "",
+   "vis": false
+  },
+  {
+   "href": "https://de.yelp.ch/biz/restaurant-lusosabores-gland?adjust_creative=-yJlvocjPe08xwvAx1kbqw&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_lookup&utm_source=-yJlvocjPe08xwvAx1kbqw",
+   "text": "",
+   "vis": false
+  },
+  {
+   "href": "https://www.waze.com/ul?ll=46.42347,6.27236",
+   "text": "",
+   "vis": false
+  },
+  {
+   "href": "https://www.facebook.com/lusosabores.marquesribeiro",
+   "text": "",
+   "vis": false
+  },
+  {
+   "href": "https://www.instagram.com/lusosabores/",
+   "text": "",
+   "vis": false
+  },
+  {
+   "href": "https://www.myzip.ch/mywebsite",
+   "text": "Site internet",
+   "vis": true
+  },
+  {
+   "href": "https://www.myzip.ch/",
+   "text": "ZIP.ch",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/privacy",
+   "text": "Protection des données",
+   "vis": true
+  }
+ ]
+}

@@ -1,0 +1,423 @@
+{
+ "url": "https://www.luso-sabores.ch/services",
+ "title": "Luso Sabores : Restaurant Spécialités Portugaises à Gland",
+ "metas": [
+  {
+   "name": "d-service-worker",
+   "content": "register"
+  },
+  {
+   "name": "viewport",
+   "content": "initial-scale=1, minimum-scale=1, maximum-scale=5, viewport-fit=cover"
+  },
+  {
+   "name": "dm:lcp-preload",
+   "content": "dm:lcp-frozen"
+  },
+  {
+   "name": "apple-mobile-web-app-capable",
+   "content": "yes"
+  },
+  {
+   "name": "og:type",
+   "content": "website"
+  },
+  {
+   "name": "og:url",
+   "content": "https://www.luso-sabores.ch/services"
+  },
+  {
+   "name": "description",
+   "content": "Découvrez nos spécialités portugaises, cuisinées avec des produits frais, dans une atmosphère accueillante et conviviale."
+  },
+  {
+   "name": "twitter:card",
+   "content": "summary"
+  },
+  {
+   "name": "twitter:title",
+   "content": "Luso Sabores : Restaurant Spécialités Portugaises à Gland"
+  },
+  {
+   "name": "twitter:description",
+   "content": "Découvrez nos spécialités portugaises, cuisinées avec des produits frais, dans une atmosphère accueillante et conviviale."
+  },
+  {
+   "name": "twitter:image",
+   "content": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/Lusosabores-fond-1920w.jpg"
+  },
+  {
+   "name": "og:description",
+   "content": "Découvrez nos spécialités portugaises, cuisinées avec des produits frais, dans une atmosphère accueillante et conviviale."
+  },
+  {
+   "name": "og:title",
+   "content": "Luso Sabores : Restaurant Spécialités Portugaises à Gland"
+  },
+  {
+   "name": "og:image",
+   "content": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/Lusosabores-fond-1920w.jpg"
+  }
+ ],
+ "text": "We use essential cookies to make our site work. With your consent, we may also use non-essential cookies to improve user experience and analyze website traffic. By clicking “Accept,” you agree to our website's cookie use as described in our Cookie Policy and Privacy Policy. You can change your cookie settings at any time by clicking “Preferences.”\nPreferences\nDecline\nAccept\n \nAccueil\nMenu\nServices\nContact\n+41 22 364 47 40 \nPrivatisation pour évènements\n\nPour vos évènements tels que les anniversaires, diners d'entreprise etc., il est possible de privatiser le restaurant.\n\nNous proposons plusieurs formules avec traiteur, prix sur demande.\n\nOuverts 7/7\n\nNotre restaurant vous accueille 7 jours sur 7, du Lundi au Dimanche sans exception, pour le plus grand plaisir de vos papilles ! Il est possible de prendre votre repas sur place, ou à l'emporter.\n\nPour réserver une table ou connaître notre plat du jour, merci de bien vouloir nous contacter par téléphone\n\n+41 22 364 47 40 \n\n+41 22 364 47 40\n+41 79 903 81 31\n\n\nChemin du Lavasson 39\n1196 Gland\n\n\n \n\n©2026 Luso Sabores | Tous droits réservés | Site internet par ZIP.ch | Protection des données\n\nShare by:",
+ "colours": [
+  [
+   "text rgb(67, 60, 60)",
+   82
+  ],
+  [
+   "text rgb(0, 0, 0)",
+   34
+  ],
+  [
+   "text rgb(147, 26, 37)",
+   20
+  ],
+  [
+   "text rgb(255, 255, 255)",
+   18
+  ],
+  [
+   "text rgb(70, 78, 76)",
+   7
+  ],
+  [
+   "text rgb(255, 251, 232)",
+   4
+  ],
+  [
+   "text rgb(255, 203, 142)",
+   4
+  ],
+  [
+   "background rgb(147, 26, 37)",
+   4
+  ],
+  [
+   "background rgb(255, 255, 255)",
+   2
+  ],
+  [
+   "background rgb(0, 58, 250)",
+   2
+  ],
+  [
+   "border rgb(0, 58, 250)",
+   2
+  ],
+  [
+   "background rgb(245, 239, 239)",
+   2
+  ],
+  [
+   "background rgb(233, 113, 113)",
+   2
+  ],
+  [
+   "border rgb(255, 203, 142)",
+   2
+  ],
+  [
+   "text rgb(153, 153, 153)",
+   2
+  ],
+  [
+   "border rgb(0, 0, 0)",
+   1
+  ],
+  [
+   "background rgba(233, 113, 113, 0.51)",
+   1
+  ],
+  [
+   "background rgba(255, 203, 142, 0.57)",
+   1
+  ],
+  [
+   "background rgba(245, 239, 239, 0.8)",
+   1
+  ],
+  [
+   "background rgba(255, 247, 247, 0.4)",
+   1
+  ],
+  [
+   "background rgb(245, 245, 245)",
+   1
+  ],
+  [
+   "background rgba(255, 255, 255, 0.4)",
+   1
+  ]
+ ],
+ "imgs": [
+  {
+   "src": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/LOGO-LUSO-SABORES-121w.png",
+   "srcset": null,
+   "dsrc": null,
+   "alt": "LOGO LUSOSABORES GLAND",
+   "w": 120,
+   "h": 84,
+   "vis": true,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com/da5c9512/dms3rep/multi/opt/20210619_102545-1920w.jpg",
+   "alt": "Privatisation pour évènements",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "",
+   "srcset": null,
+   "dsrc": "https://irp.cdn-website.com//md/unsplash/dms3rep/multi/opt/photo-1472851294608-062f824d29cc-1920w.jpg",
+   "alt": "Photo ouverture 7/7",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  },
+  {
+   "src": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/LOGO-LUSO-SABORES-146w.png",
+   "srcset": null,
+   "dsrc": null,
+   "alt": "Logo Luso Sabores",
+   "w": 150,
+   "h": 105,
+   "vis": true,
+   "caption": ""
+  },
+  {
+   "src": "https://irp.cdn-website.com//da5c9512/dms3rep/multi/opt/LOGO-LUSO-SABORES-1920w.png",
+   "srcset": null,
+   "dsrc": null,
+   "alt": "Logo Luso Sabores",
+   "w": 0,
+   "h": 0,
+   "vis": false,
+   "caption": ""
+  }
+ ],
+ "bgs": [
+  {
+   "bg": "url(\"https://irp.cdn-website.com/da5c9512/dms3rep/multi/opt/20210619_102545-400h.jpg\")",
+   "cls": "u_1235349680",
+   "id": "",
+   "vis": true,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//md/unsplash/dms3rep/multi/opt/photo-1472851294608-062f824d29cc-400h.jpg\")",
+   "cls": "u_1731673785",
+   "id": "",
+   "vis": true,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com//md/unsplash/dms3rep/multi/opt/photo-1583549322726-4407bfb42013-2880w.jpg\")",
+   "cls": "u_1883622550 dmRespRow dmSectionParallaxNew hasBackgroundOverlay skrollable skro",
+   "id": "1883622550",
+   "vis": true,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com/_dm/s/rt/scripts/vendor/photoswipe4/icons/default-skin.png\")",
+   "cls": "pswp__button pswp__button--close",
+   "id": "",
+   "vis": false,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com/_dm/s/rt/scripts/vendor/photoswipe4/icons/default-skin.png\")",
+   "cls": "pswp__button pswp__button--share",
+   "id": "",
+   "vis": false,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com/_dm/s/rt/scripts/vendor/photoswipe4/icons/default-skin.png\")",
+   "cls": "pswp__button pswp__button--fs",
+   "id": "",
+   "vis": false,
+   "dbg": null
+  },
+  {
+   "bg": "url(\"https://irp.cdn-website.com/_dm/s/rt/scripts/vendor/photoswipe4/icons/default-skin.png\")",
+   "cls": "pswp__button pswp__button--zoom",
+   "id": "",
+   "vis": false,
+   "dbg": null
+  }
+ ],
+ "links": [
+  {
+   "href": "https://www.luso-sabores.ch/privacy",
+   "text": "Privacy Policy",
+   "vis": true
+  },
+  {
+   "href": "https://www.facebook.com/lusosabores.marquesribeiro",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.instagram.com/lusosabores/",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/",
+   "text": "Accueil",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/menu",
+   "text": "Menu",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/home",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/services",
+   "text": "Services",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/contact",
+   "text": "Contact",
+   "vis": true
+  },
+  {
+   "href": "",
+   "text": "+41 22 364 47 40",
+   "vis": true
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/services",
+   "text": "Bouton",
+   "vis": false
+  },
+  {
+   "href": "",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/services",
+   "text": "Button",
+   "vis": false
+  },
+  {
+   "href": "tel:+41 22 364 47 40",
+   "text": "+41 22 364 47 40",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "tel:+41 22 364 47 40",
+   "text": "+41 22 364 47 40",
+   "vis": true
+  },
+  {
+   "href": "tel:+41 79 903 81 31",
+   "text": "+41 79 903 81 31",
+   "vis": true
+  },
+  {
+   "href": "https://goo.gl/maps/TU3Zg4jZsG5czYS59",
+   "text": "Chemin du Lavasson 39\n1196 Gland",
+   "vis": true
+  },
+  {
+   "href": "https://www.facebook.com/lusosabores.marquesribeiro",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.instagram.com/lusosabores/",
+   "text": "",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/",
+   "text": "",
+   "vis": false
+  },
+  {
+   "href": "tel:+41 22 364 47 40",
+   "text": "+41 22 364 47 40",
+   "vis": false
+  },
+  {
+   "href": "tel:+41 79 903 81 31",
+   "text": "+41 79 903 81 31",
+   "vis": false
+  },
+  {
+   "href": "https://goo.gl/maps/TU3Zg4jZsG5czYS59",
+   "text": "Chemin du Lavasson 39 1196 Gland",
+   "vis": false
+  },
+  {
+   "href": "https://www.google.com/maps/place/Restaurant+LUSOSabores/@46.4232952,6.272197,15z/data=!4m2!3m1!1s0x0:0xf15bbb931f51778c?sa=X&ved=2ahUKEwjdnr6mj7bsAhVKzKQKHaEADpQQ_BIwH3oECBwQBQ",
+   "text": "",
+   "vis": false
+  },
+  {
+   "href": "https://fr.foursquare.com/v/restaurant-portugais-luso-sabores/5f44fce7815dd91c30fd0fe8",
+   "text": "",
+   "vis": false
+  },
+  {
+   "href": "https://de.yelp.ch/biz/restaurant-lusosabores-gland?adjust_creative=-yJlvocjPe08xwvAx1kbqw&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_lookup&utm_source=-yJlvocjPe08xwvAx1kbqw",
+   "text": "",
+   "vis": false
+  },
+  {
+   "href": "https://www.waze.com/ul?ll=46.42347,6.27236",
+   "text": "",
+   "vis": false
+  },
+  {
+   "href": "https://www.facebook.com/lusosabores.marquesribeiro",
+   "text": "",
+   "vis": false
+  },
+  {
+   "href": "https://www.instagram.com/lusosabores/",
+   "text": "",
+   "vis": false
+  },
+  {
+   "href": "https://www.myzip.ch/mywebsite",
+   "text": "Site internet",
+   "vis": true
+  },
+  {
+   "href": "https://www.myzip.ch/",
+   "text": "ZIP.ch",
+   "vis": true
+  },
+  {
+   "href": "https://www.luso-sabores.ch/privacy",
+   "text": "Protection des données",
+   "vis": true
+  }
+ ]
+}
