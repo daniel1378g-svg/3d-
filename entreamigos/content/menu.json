@@ -1,0 +1,502 @@
+{
+ "source": "https://entreamigos.ch/la-carte/",
+ "pricesNote": "*Tous nos prix sont en CHF et incluent la TVA",
+ "sections": [
+  {
+   "id": "entrees",
+   "title": "Entrées",
+   "notes": [],
+   "items": [
+    {
+     "name": "Salade verte",
+     "price": "4.00",
+     "unit": "",
+     "desc": ""
+    },
+    {
+     "name": "Salade de tomates",
+     "price": "5.50",
+     "unit": "",
+     "desc": ""
+    },
+    {
+     "name": "Salade mêlée",
+     "price": "6.50",
+     "unit": "",
+     "desc": ""
+    },
+    {
+     "name": "Cocktail de crevettes",
+     "price": "10.00",
+     "unit": "",
+     "desc": ""
+    },
+    {
+     "name": "Accras de morue",
+     "price": "2.00",
+     "unit": "pièce",
+     "desc": ""
+    },
+    {
+     "name": "Rissoles de crevettes",
+     "price": "2.00",
+     "unit": "pièce",
+     "desc": ""
+    },
+    {
+     "name": "Rissoles de thon",
+     "price": "2.00",
+     "unit": "pièce",
+     "desc": ""
+    },
+    {
+     "name": "Rissoles de boeuf",
+     "price": "2.00",
+     "unit": "pièce",
+     "desc": ""
+    },
+    {
+     "name": "Rissoles de poulet",
+     "price": "2.00",
+     "unit": "pièce",
+     "desc": ""
+    },
+    {
+     "name": "Rissoles de cochon de lait",
+     "price": "2.50",
+     "unit": "pièce",
+     "desc": ""
+    },
+    {
+     "name": "Rissoles 6 pièces",
+     "price": "9.00",
+     "unit": "",
+     "desc": ""
+    }
+   ]
+  },
+  {
+   "id": "specialites",
+   "title": "Spécialités de la maison",
+   "notes": [],
+   "items": [
+    {
+     "name": "Poulet grillé",
+     "price": "18.00",
+     "unit": "",
+     "desc": ""
+    },
+    {
+     "name": "Travers de porc grillé",
+     "price": "25.00",
+     "unit": "",
+     "desc": ""
+    },
+    {
+     "name": "Poitrine de porc grillée",
+     "price": "18.00",
+     "unit": "",
+     "desc": ""
+    },
+    {
+     "name": "Grillades mixtes",
+     "price": "25.00",
+     "unit": "",
+     "desc": "Grillades de poulet, travers de porc, poitrine de porc"
+    }
+   ]
+  },
+  {
+   "id": "viandes",
+   "title": "Viandes",
+   "notes": [
+    "Accompagnements : Frites, Pommes de terre au four, Riz, Pâtes et Légumes du jour",
+    "Origine des viandes : Suisse, Portugal, Brésil, Argentine"
+   ],
+   "items": [
+    {
+     "name": "Bitoque",
+     "price": "25.00",
+     "unit": "",
+     "desc": "Steak de boeuf, oeuf, frites et riz"
+    },
+    {
+     "name": "Steak de boeuf",
+     "price": "25.00",
+     "unit": "",
+     "desc": ""
+    },
+    {
+     "name": "Entrecôte de boeuf",
+     "price": "32.00",
+     "unit": "",
+     "desc": ""
+    },
+    {
+     "name": "Filet de boeuf",
+     "price": "35.00",
+     "unit": "",
+     "desc": ""
+    },
+    {
+     "name": "Bifanas",
+     "price": "23.00",
+     "unit": "",
+     "desc": "Viande de porc coupée finement, mijotée en sauce"
+    },
+    {
+     "name": "Secretos de porco preto",
+     "price": "28.00",
+     "unit": "",
+     "desc": "Cochon ibérique grillé avec une sauce à l’ail"
+    },
+    {
+     "name": "Francesinha, frites",
+     "price": "23.00",
+     "unit": "",
+     "desc": "Toast, fromage, saucisson fin, saucisse, viande de boeuf, jambon, fromage, oeuf, frites"
+    },
+    {
+     "name": "Francesinha",
+     "price": "22.00",
+     "unit": "",
+     "desc": "Toast, fromage, saucisson fin, saucisse, viande de boeuf, jambon, fromage, oeuf"
+    },
+    {
+     "name": "Picanha",
+     "price": "28.00",
+     "unit": "",
+     "desc": "Aiguillette de boeuf grillée, haricots noirs, riz et frites"
+    },
+    {
+     "name": "Viande sur ardoise",
+     "price": "35.00",
+     "unit": "",
+     "desc": "Pavé de boeuf 300 gr., frites, légumes"
+    }
+   ]
+  },
+  {
+   "id": "poissons",
+   "title": "Poissons - Fruits de mer - Crustacés",
+   "notes": [
+    "Origine des poissons, fruits de mer et crustacés : Estonie, Sri Lanka, Norvège"
+   ],
+   "items": [
+    {
+     "name": "Gambas à l'ail",
+     "price": "28.00",
+     "unit": "",
+     "desc": ""
+    },
+    {
+     "name": "Gambas à la provençale",
+     "price": "28.00",
+     "unit": "",
+     "desc": "Gambas décortiquées, à l'ail et à la sauce tomate"
+    },
+    {
+     "name": "Pavé de saumon grillé",
+     "price": "28.00",
+     "unit": "",
+     "desc": ""
+    },
+    {
+     "name": "Calamares à la romaine",
+     "price": "20.00",
+     "unit": "",
+     "desc": "Calamares panés, sauce tartare et frites"
+    },
+    {
+     "name": "Bacalhau à Braga",
+     "price": "28.00",
+     "unit": "",
+     "desc": "Morue frite : huile d'olive, poivrons, oignons.",
+     "wait": "Délai d'attente : 30 min."
+    },
+    {
+     "name": "Bacalhau à Lagareiro",
+     "price": "28.00",
+     "unit": "",
+     "desc": "Morue grillée au four : huile d'olive et ail.",
+     "wait": "Délai d'attente : 30 min."
+    },
+    {
+     "name": "Polvo à Lagareiro",
+     "price": "33.00",
+     "unit": "",
+     "desc": "Poulpe grillé au four : huile d'olive, et ail.",
+     "wait": "Délai d'attente : 30 min."
+    },
+    {
+     "name": "Polvo com molho verde",
+     "price": "33.00",
+     "unit": "",
+     "desc": "Poulpe cuit à la vapeur : huile d'olive, vinaigre, oignons, persil et paprika doux"
+    },
+    {
+     "name": "Polvo a Gallega",
+     "price": "33.00",
+     "unit": "",
+     "desc": "Poulpe cuit à la vapeur : huile d'olive, gros sel et paprika doux"
+    },
+    {
+     "name": "Filets de Perches Meunière",
+     "price": "28.00",
+     "unit": "",
+     "desc": ""
+    }
+   ]
+  },
+  {
+   "id": "pates",
+   "title": "Pâtes",
+   "notes": [],
+   "items": [
+    {
+     "name": "Carbonara",
+     "price": "19.00",
+     "unit": "",
+     "desc": "Tagliatelle / Spaghetti / Penne"
+    },
+    {
+     "name": "Bolognaise",
+     "price": "18.00",
+     "unit": "",
+     "desc": "Tagliatelle / Spaghetti / Penne"
+    },
+    {
+     "name": "Gnocchi à la crème gorgonzola",
+     "price": "18.00",
+     "unit": "",
+     "desc": "Gnocchi au gorgonzola"
+    },
+    {
+     "name": "Gnocchi à la provençale",
+     "price": "18.00",
+     "unit": "",
+     "desc": "Gnocchi à la sauce tomate"
+    }
+   ]
+  },
+  {
+   "id": "fondues",
+   "title": "Fondues",
+   "notes": [],
+   "items": [
+    {
+     "name": "Moitié - Moitié",
+     "price": "22.00",
+     "unit": "",
+     "desc": "",
+     "group": "Fondue au fromage"
+    },
+    {
+     "name": "Aux Bolets",
+     "price": "25.00",
+     "unit": "",
+     "desc": "",
+     "group": "Fondue au fromage"
+    },
+    {
+     "name": "Aux Morilles",
+     "price": "27.00",
+     "unit": "",
+     "desc": "",
+     "group": "Fondue au fromage"
+    }
+   ]
+  },
+  {
+   "id": "enfants",
+   "title": "Menus enfants",
+   "notes": [],
+   "items": [
+    {
+     "name": "JE NE SAIS PAS",
+     "price": "9.50",
+     "unit": "",
+     "desc": "Saucisse de veau grillée avec frites"
+    },
+    {
+     "name": "JE N'AI PAS FAIM",
+     "price": "10.00",
+     "unit": "",
+     "desc": "Poulet grillé avec frites"
+    },
+    {
+     "name": "JE M'EN FICHE",
+     "price": "9.50",
+     "unit": "",
+     "desc": "Nuggets et frites"
+    },
+    {
+     "name": "PEU IMPORTE",
+     "price": "12.00",
+     "unit": "",
+     "desc": "Spaghetti Carbonara / Bolognaise"
+    }
+   ]
+  },
+  {
+   "id": "commande",
+   "title": "Sur commande pour minimum 10 personnes",
+   "notes": [],
+   "items": [
+    {
+     "name": "Leitao",
+     "price": "35.00",
+     "unit": "par personne",
+     "desc": "Cochon de lait"
+    },
+    {
+     "name": "Cabrito no formo",
+     "price": "35.00",
+     "unit": "par personne",
+     "desc": "Cabri au four"
+    },
+    {
+     "name": "Cozido à Portuguesa",
+     "price": "25.00",
+     "unit": "par personne",
+     "desc": "Pot-au-feu"
+    },
+    {
+     "name": "Feijoada à Transmontana",
+     "price": "25.00",
+     "unit": "par personne",
+     "desc": "Cassoulet Portugais"
+    },
+    {
+     "name": "Vitela no Formo",
+     "price": "25.00",
+     "unit": "par personne",
+     "desc": "Veau au four"
+    }
+   ]
+  },
+  {
+   "id": "desserts",
+   "title": "Desserts",
+   "notes": [],
+   "items": [
+    {
+     "name": "Tiramisù",
+     "price": "6.50",
+     "unit": "",
+     "desc": ""
+    },
+    {
+     "name": "Gâteau aux biscuits",
+     "price": "5.50",
+     "unit": "",
+     "desc": ""
+    },
+    {
+     "name": "Fondant au chocolat",
+     "price": "7.50",
+     "unit": "",
+     "desc": "Avec boule de glace au choix"
+    },
+    {
+     "name": "Flan portugais",
+     "price": "5.50",
+     "unit": "",
+     "desc": ""
+    },
+    {
+     "name": "Gâteau au chocolat",
+     "price": "5.50",
+     "unit": "",
+     "desc": ""
+    },
+    {
+     "name": "Tarte aux fruits rouges",
+     "price": "5.50",
+     "unit": "",
+     "desc": ""
+    }
+   ]
+  },
+  {
+   "id": "coupes",
+   "title": "Coupes de glaces",
+   "notes": [],
+   "items": [
+    {
+     "name": "Moonlight",
+     "price": "9.00",
+     "unit": "",
+     "desc": "Glaces Vanille, Pistache, Sorbet Mangue"
+    },
+    {
+     "name": "Maison",
+     "price": "9.00",
+     "unit": "",
+     "desc": "Glaces Vanille, Fraise, Sorbet citron"
+    },
+    {
+     "name": "Jazz Dance",
+     "price": "9.00",
+     "unit": "",
+     "desc": "Glaces Stracciatella, Vanille, Mocca"
+    },
+    {
+     "name": "Cha Cha Cha",
+     "price": "9.00",
+     "unit": "",
+     "desc": "Glaces Caramelissimo, Mocca, Chocolat"
+    },
+    {
+     "name": "Le Colonel",
+     "price": "9.00",
+     "unit": "",
+     "desc": "Sorbet Citron arrosé de Vodka"
+    },
+    {
+     "name": "Le Valaisan",
+     "price": "9.00",
+     "unit": "",
+     "desc": "Sorbet Abricot arrosé d'Abricotine"
+    },
+    {
+     "name": "Blues",
+     "price": "9.00",
+     "unit": "",
+     "desc": "Sorbet Williams arrosé de Williamine"
+    },
+    {
+     "name": "Général",
+     "price": "9.00",
+     "unit": "",
+     "desc": "Glace Vanille arrosée de Whisky"
+    }
+   ]
+  },
+  {
+   "id": "boules",
+   "title": "Boules de glaces",
+   "notes": [],
+   "items": [
+    {
+     "name": "Glaces à la crème",
+     "price": "3.50",
+     "unit": "boule",
+     "desc": "Mocca et Noisettes croquantes, Chocolat, Vanille, Stracciatella, Pistache, Caramellissimo, Fraise"
+    },
+    {
+     "name": "Sorbets",
+     "price": "3.50",
+     "unit": "boule",
+     "desc": "Poire Williams, Citron, Abricots, Mangue"
+    },
+    {
+     "name": "Garniture à la crème",
+     "price": "1.00",
+     "unit": "",
+     "desc": ""
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,106 @@
+{
+ "terrasse": [
+  1024,
+  768
+ ],
+ "plats-table": [
+  946,
+  707
+ ],
+ "vin-bouteille": [
+  675,
+  1200
+ ],
+ "calamares": [
+  946,
+  701
+ ],
+ "bifanas": [
+  946,
+  732
+ ],
+ "rissoles-accras": [
+  946,
+  715
+ ],
+ "porc-grille": [
+  946,
+  717
+ ],
+ "secretos": [
+  946,
+  708
+ ],
+ "polvo": [
+  946,
+  715
+ ],
+ "poulet-grille": [
+  946,
+  708
+ ],
+ "bolognaise": [
+  946,
+  709
+ ],
+ "gateau-chocolat": [
+  946,
+  723
+ ],
+ "glaces-1": [
+  762,
+  252
+ ],
+ "glaces-2": [
+  1200,
+  411
+ ],
+ "glaces-poster": [
+  682,
+  1200
+ ],
+ "leitao": [
+  640,
+  427
+ ],
+ "wine/casal-gazela": [
+  319,
+  478
+ ],
+ "wine/douro-planalto": [
+  300,
+  832
+ ],
+ "wine/carte-vins": [
+  473,
+  726
+ ],
+ "cutouts/poulet": [
+  603,
+  384
+ ],
+ "cutouts/rissoles": [
+  628,
+  449
+ ],
+ "cutouts/polvo": [
+  666,
+  471
+ ],
+ "cutouts/bifanas": [
+  671,
+  454
+ ],
+ "cutouts/calamares": [
+  612,
+  400
+ ],
+ "cutouts/bolognaise": [
+  683,
+  465
+ ],
+ "brand/logo": [
+  900,
+  366
+ ]
+}

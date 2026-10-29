@@ -1,0 +1,103 @@
+{
+ "source": "https://entreamigos.ch/nos-vins/",
+ "sections": [
+  {
+   "id": "rose",
+   "title": "Rosés Pétillants",
+   "wines": [
+    {
+     "name": "Mateus",
+     "price": "20.00"
+    },
+    {
+     "name": "Casal Mendes",
+     "price": "20.00"
+    },
+    {
+     "name": "Plexus",
+     "price": "20.00"
+    },
+    {
+     "name": "Lancers",
+     "price": "20.00"
+    }
+   ]
+  },
+  {
+   "id": "verde",
+   "title": "Vinho Verde",
+   "wines": [
+    {
+     "name": "Casal Garcia",
+     "price": "20.00"
+    },
+    {
+     "name": "Gazela",
+     "price": "20.00"
+    }
+   ]
+  },
+  {
+   "id": "rouge",
+   "title": "Rouges Portugais",
+   "wines": [
+    {
+     "name": "Casa da Santar",
+     "price": "37.00",
+     "region": "Dão",
+     "size": "75cl"
+    },
+    {
+     "name": "Quinta do Cabriz",
+     "price": "28.00",
+     "region": "Dão",
+     "size": "75cl"
+    },
+    {
+     "name": "Esteva",
+     "price": "32.00",
+     "region": "Douro",
+     "size": "75cl"
+    },
+    {
+     "name": "Piano Reserva",
+     "price": "33.00",
+     "region": "Douro",
+     "size": "75cl"
+    },
+    {
+     "name": "Carm Reserva",
+     "price": "49.00",
+     "region": "Douro",
+     "size": "75cl"
+    },
+    {
+     "name": "Convento da Vila",
+     "price": "20.00",
+     "region": "Alentejo",
+     "size": "75cl"
+    },
+    {
+     "name": "Esporao",
+     "price": "45.00",
+     "region": "Alentejo",
+     "size": "75cl"
+    }
+   ]
+  },
+  {
+   "id": "blanc",
+   "title": "Blancs Portugais",
+   "wines": [
+    {
+     "name": "Douro Planalto Reserva",
+     "price": "32.00"
+    },
+    {
+     "name": "Alentejo Convento da Vila",
+     "price": "20.00"
+    }
+   ]
+  }
+ ]
+}
