@@ -139,6 +139,9 @@
   transition: transform 160ms var(--ease-out), background-color 200ms ease;
 }
 .icon-btn:active { transform: scale(0.94); }
+@media (max-width: 439px) { header .icon-btn { width: 44px; height: 44px; } }
+/* touch targets: 44 px on touch screens (WCAG 2.5.5) */
+@media (pointer: coarse) { .chip, .pill-sm { min-height: 44px; } }
 @media (hover: hover) and (pointer: fine) { .icon-btn:hover { background: color-mix(in srgb, var(--color-creme) 18%, transparent); } }
 
 .chip {

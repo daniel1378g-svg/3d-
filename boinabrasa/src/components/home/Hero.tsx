@@ -163,13 +163,16 @@ export function Hero() {
           />
         )}
         {(mode === "fallback" || !ready) && (
-          <img
-            src={asset("/poster/hero-1600.webp")}
-            srcSet={`${asset("/poster/hero-960.webp")} 960w, ${asset("/poster/hero-1600.webp")} 1600w`}
-            sizes="100vw"
-            alt={mode === "fallback" ? t.hero.stillLabel : ""}
-            className={cn("absolute inset-0 h-full w-full object-cover", mode !== "fallback" && "opacity-0")}
-          />
+          <picture>
+            <source media="(max-aspect-ratio: 1/1)" srcSet={asset("/poster/hero-tall-720.webp")} />
+            <img
+              src={asset("/poster/hero-1600.webp")}
+              srcSet={`${asset("/poster/hero-960.webp")} 960w, ${asset("/poster/hero-1600.webp")} 1600w`}
+              sizes="100vw"
+              alt={mode === "fallback" ? t.hero.stillLabel : ""}
+              className={cn("absolute inset-0 h-full w-full object-cover", mode !== "fallback" && "opacity-0")}
+            />
+          </picture>
         )}
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(12,9,8,0.72)_0%,rgba(12,9,8,0.25)_42%,rgba(12,9,8,0)_65%)] max-md:bg-[linear-gradient(180deg,rgba(12,9,8,0.78)_0%,rgba(12,9,8,0.2)_38%,rgba(12,9,8,0)_60%,rgba(12,9,8,0.7)_100%)]" />
 
@@ -224,7 +227,7 @@ export function Hero() {
                     </button>
                     <ol className="hidden items-center gap-3 sm:flex" aria-label={t.hero.phasesLabel}>
                       {t.hero.phases.map((p, i) => (
-                        <li key={p} aria-current={i === phase ? "step" : undefined} className={cn("kicker text-[0.64rem] transition-colors duration-300", i === phase ? "text-ouro" : i < phase ? "text-creme/55" : "text-creme/30")}>
+                        <li key={p} aria-current={i === phase ? "step" : undefined} className={cn("kicker text-[0.64rem] transition-colors duration-300", i === phase ? "text-ouro" : i < phase ? "text-creme/70" : "text-creme/30")}>
                           {p}
                         </li>
                       ))}
@@ -245,7 +248,7 @@ export function Hero() {
               </div>
             )}
             <div className="flex items-center gap-4">
-              <p className="hidden text-[0.72rem] text-creme/45 md:block">{t.hero.note}</p>
+              <p className="hidden text-[0.72rem] text-creme/70 md:block">{t.hero.note}</p>
               <a href="#rodizio" onClick={(e) => { e.preventDefault(); go("home", { anchor: "rodizio" }); }} className="kicker flex items-center gap-2 text-[0.68rem] text-creme/70 hover:text-creme">
                 {t.hero.scroll}
                 <motion.span animate={reduce ? undefined : { transform: ["translateY(0px)", "translateY(5px)", "translateY(0px)"] }} transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}>

@@ -12,6 +12,7 @@ import { PageHero } from "@/components/PageHero";
 import { Groups } from "@/components/home/Groups";
 import { TableViz } from "@/components/reservation/TableViz";
 import { IconMail, IconPhone } from "@/components/icons";
+import { ComposedMessage } from "@/components/ComposedMessage";
 
 const ENDPOINT = import.meta.env.VITE_FORM_ENDPOINT;
 
@@ -24,7 +25,8 @@ export function Gruppen() {
     company: "", invoice: false, name: "", first: "", street: "", zip: "", city: "", email: "", phone: "", other: "", consent: false, agb: false,
   });
   const [err, setErr] = useState<Record<string, string>>({});
-  const [state, setState] = useState<"idle" | "mailto" | "sent" | "error">("idle");
+  const [state, setState] = useState<"idle" | "mailto" | "compose" | "sent" | "error">("idle");
+  const [composed, setComposed] = useState("");
   const set = <K extends keyof typeof v>(k: K, val: (typeof v)[K]) => setV((s) => ({ ...s, [k]: val }));
   const kids = v.kids5 + v.kids12;
   const adults = Math.max(0, v.total - kids);
@@ -51,6 +53,7 @@ export function Gruppen() {
       `${v.street}, ${v.zip} ${v.city}`, `${f.email}: ${v.email}`, `${f.phone}: ${v.phone}`,
       v.other && `${f.other}: ${v.other}`,
     ].filter(Boolean).join("\n");
+    if (!ENDPOINT && __ARTIFACT__) { setComposed(lines); setState("compose"); return; }
     if (!ENDPOINT) {
       window.location.href = `mailto:${EMAIL}?subject=${encodeURIComponent(`${t.groups.pageTitle} – ${v.date} – ${v.total}`)}&body=${encodeURIComponent(lines)}`;
       setState("mailto");
@@ -98,7 +101,7 @@ export function Gruppen() {
                     <select className="field" value={v.occasion} onChange={(e) => set("occasion", e.target.value)}>{f.occasions.map((o) => <option key={o} className="text-tinta">{o}</option>)}</select>
                   </label>
                 </div>
-                <p className="text-sm text-creme/60">{t.groups.availabilityNote}</p>
+                <p className="text-sm text-creme/70">{t.groups.availabilityNote}</p>
               </fieldset>
               <fieldset>
                 <legend className="kicker mb-4 text-ouro">2. {f.step2}</legend>
@@ -117,7 +120,7 @@ export function Gruppen() {
                 <label className="mt-4 block"><span className="label">{f.exclusive}</span>
                   <select className="field" value={v.exclusive} onChange={(e) => set("exclusive", e.target.value)}>{f.exclusiveOptions.map((o) => <option key={o} className="text-tinta">{o}</option>)}</select>
                 </label>
-                <p className="mt-2 text-sm text-creme/60">{t.groups.rooms}</p>
+                <p className="mt-2 text-sm text-creme/70">{t.groups.rooms}</p>
               </fieldset>
               <fieldset className="flex flex-col gap-4">
                 <legend className="kicker mb-4 text-ouro">3. {f.step3}</legend>
@@ -135,7 +138,8 @@ export function Gruppen() {
                     <span>{f.agb} <a className="link-u" href={href("agb")} onClick={(e) => { e.preventDefault(); go("agb"); }}>{t.nav.agb}</a> *{err.agb && <span className="block text-[#ff9b85]">{err.agb}</span>}</span></label>
                 )}
               </fieldset>
-              {!ENDPOINT && <p className="text-sm text-creme/65">{t.contact.mailtoNote}</p>}
+              {!ENDPOINT && !__ARTIFACT__ && <p className="text-sm text-creme/65">{t.contact.mailtoNote}</p>}
+              {state === "compose" && <ComposedMessage subject={`${t.groups.pageTitle} – ${v.date} – ${v.total}`} body={composed} />}
               <div className="flex flex-wrap items-center gap-4">
                 <button type="submit" className="pill">{f.submit}</button>
                 <p role="status" className="text-sm">{state === "mailto" ? t.contact.mailtoDone : state === "sent" ? t.contact.sent : state === "error" ? t.contact.error : ""}</p>

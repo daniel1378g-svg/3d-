@@ -21,6 +21,7 @@ import { buildPiece, QUALITY_HIGH, QUALITY_LOW, type PieceInfo, type PieceSpec }
 import { createMeatMaterial, type MeatUniforms } from "./meatMaterial";
 import { createKnife, createPlate, createSkewer, BLADE_LENGTH } from "./props";
 import { createBackground, createEmbers, createSmoke } from "./fx";
+import { BULL_OUTLINE, BULL_W, BULL_H } from "@/brand/bull";
 
 export const PHASE_STARTS = [0, 2.6, 7.0, 9.2, 12.2, 14.4];
 export const SEQUENCE_END = 18.4;
@@ -41,10 +42,10 @@ export type EngineOptions = {
 type Piece = { group: THREE.Group; offset: THREE.Group; main: THREE.Mesh; uniforms: MeatUniforms; info: PieceInfo; spec: PieceSpec };
 
 const PIECES: (Omit<PieceSpec, "theta0" | "theta1" | "cut"> & { y: number; rotY: number; tilt: number })[] = [
-  { seed: 11, ro: 0.6, band: 0.565, depth: 0.48, fat: 0.11, y: 1.72, rotY: 1.25, tilt: 0.1 },
-  { seed: 23, ro: 0.62, band: 0.585, depth: 0.48, fat: 0.115, y: 0.42, rotY: 0.36, tilt: -0.04 },
-  { seed: 37, ro: 0.6, band: 0.565, depth: 0.47, fat: 0.105, y: -0.78, rotY: 1.95, tilt: 0.08 },
-  { seed: 51, ro: 0.58, band: 0.545, depth: 0.46, fat: 0.1, y: -1.94, rotY: 1.1, tilt: -0.07 },
+  { seed: 11, ro: 0.6, band: 0.592, depth: 0.48, fat: 0.11, y: 1.72, rotY: 1.25, tilt: 0.1 },
+  { seed: 23, ro: 0.62, band: 0.612, depth: 0.48, fat: 0.115, y: 0.42, rotY: 0.36, tilt: -0.04 },
+  { seed: 37, ro: 0.6, band: 0.592, depth: 0.47, fat: 0.105, y: -0.78, rotY: 1.95, tilt: 0.08 },
+  { seed: 51, ro: 0.58, band: 0.572, depth: 0.46, fat: 0.1, y: -1.94, rotY: 1.1, tilt: -0.07 },
 ];
 const HERO = 1;
 
@@ -82,6 +83,8 @@ export class PicanhaEngine {
   private plateLight!: THREE.PointLight;
   private fireLight!: THREE.PointLight;
   private envMap: THREE.Texture | null = null;
+  private neonMats: THREE.MeshBasicMaterial[] = [];
+  private neonLight!: THREE.PointLight;
 
   /** everything the timeline animates */
   readonly S = {
@@ -237,6 +240,22 @@ export class PicanhaEngine {
     this.plate.receiveShadow = !this.low;
     scene.add(this.plate);
     this.plateSurfaceY = this.plate.position.y + plate.surfaceY;
+    // a soft contact shadow: the plate rests on a dark table we do not see
+    const sh = document.createElement("canvas");
+    sh.width = sh.height = 128;
+    const g = sh.getContext("2d")!;
+    const grad = g.createRadialGradient(64, 64, 10, 64, 64, 64);
+    grad.addColorStop(0, "rgba(0,0,0,0.85)");
+    grad.addColorStop(0.55, "rgba(0,0,0,0.45)");
+    grad.addColorStop(1, "rgba(0,0,0,0)");
+    g.fillStyle = grad;
+    g.fillRect(0, 0, 128, 128);
+    const shadow = new THREE.Mesh(new THREE.PlaneGeometry(3.4, 3.4), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(sh), transparent: true, depthWrite: false }));
+    shadow.rotation.x = -Math.PI / 2;
+    shadow.position.set(this.plate.position.x, this.plate.position.y - 0.002, this.plate.position.z);
+    this.scene.add(shadow);
+
+    this.makeNeon();
 
     this.embers = createEmbers(this.low ? 150 : 420, this.dpr);
     scene.add(this.embers.points);
@@ -246,6 +265,44 @@ export class PicanhaEngine {
     this.shots = this.makeShots();
     this.computeLanding();
     if (!this.low) this.setupPost();
+  }
+
+  /** The bull as a red neon sign on the back wall: a sharp tube texture and a soft halo, switched on at the end. */
+  private makeNeon() {
+    const draw = (blur: number, line: string) => {
+      const size = 512;
+      const c = document.createElement("canvas");
+      c.width = c.height = size;
+      const g = c.getContext("2d")!;
+      const sc = (size * 0.74) / BULL_H;
+      g.translate((size - BULL_W * sc) / 2, (size - BULL_H * sc) / 2);
+      g.scale(sc, sc);
+      const path = new Path2D(BULL_OUTLINE);
+      g.fillStyle = line;
+      if (blur) {
+        g.shadowColor = line;
+        for (const b of [blur, blur * 0.5]) { g.shadowBlur = b; g.fill(path); }
+      } else g.fill(path);
+      const tex = new THREE.CanvasTexture(c);
+      tex.colorSpace = THREE.SRGBColorSpace;
+      return tex;
+    };
+    const group = new THREE.Group();
+    const w = 2.6, h = (2.6 * BULL_H) / BULL_W;
+    const halo = new THREE.MeshBasicMaterial({ map: draw(60, "#ff4030"), color: new THREE.Color("#ff2a1a").multiplyScalar(0.0), transparent: true, blending: THREE.AdditiveBlending, depthWrite: false });
+    const tube = new THREE.MeshBasicMaterial({ map: draw(0, "#ffffff"), color: new THREE.Color("#ff3528").multiplyScalar(0.0), transparent: true, blending: THREE.AdditiveBlending, depthWrite: false });
+    const haloMesh = new THREE.Mesh(new THREE.PlaneGeometry(w * 1.35, h * 1.35), halo);
+    const tubeMesh = new THREE.Mesh(new THREE.PlaneGeometry(w, h), tube);
+    tubeMesh.position.z = 0.01;
+    group.add(haloMesh, tubeMesh);
+    group.position.set(0.55, 0.75, -4.8);
+    group.rotation.y = -0.22;
+    group.renderOrder = -5;
+    this.scene.add(group);
+    this.neonMats = [halo, tube];
+    this.neonLight = new THREE.PointLight("#ff3a2a", 0, 10, 1.6);
+    this.neonLight.position.set(1.4, 0.5, -3.2);
+    this.scene.add(this.neonLight);
   }
 
   /** A small studio for reflections: dark room, a warm strip of fire below, a soft box above left, a warm wall behind. */
@@ -337,7 +394,7 @@ export class PicanhaEngine {
 
   /** Where the slice lands on the plate (world). */
   private computeLanding() {
-    this.landing.set(this.plate.position.x + 0.05, this.plateSurfaceY, this.plate.position.z + 0.02);
+    this.landing.set(this.plate.position.x - 0.15, this.plateSurfaceY, this.plate.position.z - 0.1);
   }
 
   private makeShots(): Shot[] {
@@ -353,7 +410,7 @@ export class PicanhaEngine {
         { p: [-0.55, hy + 0.15, 3.2], t: [-0.42, hy - 0.05, 0.1], fov: 31 }, // 4 cut, close
         { p: [-0.75, hy - 1.0, 3.9], t: [-0.4, -1.75, 0.35], fov: 31 }, // 5 following the fall
         { p: [1.1, -1.2, 5.2], t: [-0.35, -2.3, 0.6], fov: 31 }, // 6 plate
-        { p: [2.3, -0.3, 6.6], t: [-1.15, -0.95, 0.3], fov: 31 }, // 7 final (skewer right, text left)
+        { p: [2.25, -0.55, 7.1], t: [-1.05, -1.45, 0.25], fov: 31 }, // 7 final (skewer right, text left)
       ];
     }
     return [
@@ -364,7 +421,7 @@ export class PicanhaEngine {
       { p: [-0.5, hy + 0.1, 4.4], t: [-0.4, hy - 0.15, 0.1], fov: 38 },
       { p: [-0.6, hy - 1.0, 5.4], t: [-0.4, -1.75, 0.35], fov: 38 },
       { p: [0.8, -0.7, 7.0], t: [-0.25, -1.8, 0.5], fov: 38 },
-      { p: [0.9, -0.2, 11.6], t: [-0.15, -1.15, 0.1], fov: 36 },
+      { p: [0.9, -0.6, 12.4], t: [-0.15, -1.5, 0.1], fov: 36 },
     ];
   }
 
@@ -425,6 +482,15 @@ export class PicanhaEngine {
     this.embers.uniforms.uAmount.value = S.embers;
     this.smoke.uniforms.uTime.value = time;
     this.smoke.uniforms.uAmount.value = S.smoke;
+    // the neon sign switches on during the final orbit: two short blinks, then steady with a faint hum
+    const f = S.final;
+    const blink = f <= 0 ? 0 : f < 0.12 ? (f > 0.05 && f < 0.08 ? 1 : 0.15) : f < 0.2 ? (f > 0.15 ? 1 : 0.2) : 1;
+    const neon = blink * (0.96 + 0.04 * Math.sin(time * 23.0)) * (f > 0 ? 1 : 0);
+    if (this.neonMats.length) {
+      this.neonMats[0].color.setRGB(1.0, 0.16, 0.1).multiplyScalar(0.9 * neon);
+      this.neonMats[1].color.setRGB(1.0, 0.24, 0.17).multiplyScalar(3.2 * neon);
+    }
+    this.neonLight.intensity = 6 * neon;
     // key light follows the pointer a little (the fire seems to move with you)
     this.keyLight.position.set(4.8 + this.pointerS.x * 0.5, 2.9 + this.pointerS.y * 0.4, 1.0 + this.pointerS.x * 0.6);
 
@@ -510,12 +576,13 @@ export class PicanhaEngine {
     const p = this.slicePivot.position;
     p.x = THREE.MathUtils.lerp(start.x, end.x, THREE.MathUtils.smoothstep(fall, 0, 1));
     p.z = THREE.MathUtils.lerp(start.z, end.z + 0.05, Math.sin(fall * Math.PI * 0.5));
-    p.y = THREE.MathUtils.lerp(start.y, end.y + 0.075, drop);
+    p.y = THREE.MathUtils.lerp(start.y, end.y + 0.11, drop);
     const settle = f > contact ? (f - contact) / (1 - contact) : 0;
     p.y += Math.sin(settle * Math.PI) * 0.035 * (1 - settle);
     // tumble: from hanging (flap folded towards the camera) to lying flat, pink side up
     const tumble = THREE.MathUtils.smoothstep(fall, 0.05, 1) * 0.92 + settle * 0.08;
-    const qx = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), -tumble * 1.45);
+    // + about X: the crust side turns down, the pink cut side up, the slice's top end towards the camera
+    const qx = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), tumble * 1.5);
     const qy = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), tumble * 0.35);
     this.slicePivot.quaternion.copy(this.sliceStart.quat).premultiply(qx).premultiply(qy);
     // the folded slice relaxes as it lands

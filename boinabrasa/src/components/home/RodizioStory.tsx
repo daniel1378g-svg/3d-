@@ -33,7 +33,7 @@ function Signal() {
         />
       </button>
       <div aria-live="polite">
-        <p className="kicker text-[0.66rem] text-creme/60">{t.rodizio.signalTitle}</p>
+        <p className="kicker text-[0.66rem] text-creme/70">{t.rodizio.signalTitle}</p>
         <p className="font-display text-[1.05rem] font-bold text-creme">{green ? t.rodizio.signalGreen : t.rodizio.signalRed}</p>
       </div>
     </div>
@@ -117,7 +117,7 @@ export function RodizioStory() {
                     exit={{ opacity: 0, transform: "translateY(-16px)" }}
                     transition={{ duration: 0.45, ease: EASE_OUT }}
                   >
-                    <p className="kicker text-creme/50">{fill(t.rodizio.stepLabel, { n: active + 1, total: 4 })}</p>
+                    <p className="kicker text-creme/70">{fill(t.rodizio.stepLabel, { n: active + 1, total: 4 })}</p>
                     <h3 className="display mt-2 text-[clamp(2.4rem,3.6vw,3.8rem)] text-brasa">{steps[active].title}</h3>
                     <p className="lead mt-4 max-w-[34rem] text-creme/90">{steps[active].text}</p>
                     <p className="mt-4 max-w-[34rem] text-creme/65">{steps[active].detail}</p>
@@ -132,7 +132,7 @@ export function RodizioStory() {
                   </li>
                 ))}
               </ol>
-              <p className="mt-4 text-sm text-creme/55">{t.rodizio.note} {t.rodizio.rodizioMeaning}</p>
+              <p className="mt-4 text-sm text-creme/70">{t.rodizio.note} {t.rodizio.rodizioMeaning}</p>
             </div>
             <div className="relative overflow-hidden rounded-[var(--radius-xl2)]">
               {MEDIA.map((m, i) => (
@@ -164,7 +164,7 @@ export function RodizioStory() {
                   <div className="aspect-[4/3] overflow-hidden rounded-[28px]">
                     <Media kind={MEDIA[i]} active />
                   </div>
-                  <p className="kicker text-creme/50">{fill(t.rodizio.stepLabel, { n: i + 1, total: 4 })}</p>
+                  <p className="kicker text-creme/70">{fill(t.rodizio.stepLabel, { n: i + 1, total: 4 })}</p>
                   <h3 className="display text-[2.6rem] text-brasa">{s.title}</h3>
                   <p className="lead text-creme/90">{s.text}</p>
                   <p className="text-creme/65">{s.detail}</p>
@@ -172,7 +172,7 @@ export function RodizioStory() {
                 </Reveal>
               ))}
             </ol>
-            <p className={cn("mt-12 text-sm text-creme/55")}>{t.rodizio.note} {t.rodizio.rodizioMeaning}</p>
+            <p className={cn("mt-12 text-sm text-creme/70")}>{t.rodizio.note} {t.rodizio.rodizioMeaning}</p>
           </div>
         </div>
       )}

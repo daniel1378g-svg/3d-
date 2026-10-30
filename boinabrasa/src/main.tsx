@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import { Router, useLocation, useNavigate } from "./lib/router";
 import { Shell } from "./App";
 import { ZhPage } from "./pages/ZhPage";
-import { isLang, loadDict, pathFor, routeFromSlug, type Lang } from "./i18n";
+import { ARTICLES, isLang, LANGS, loadDict, pathFor, SLUGS, type Lang, type PageKey } from "./i18n";
 import { storage } from "./lib/utils";
 import "./index.css";
 
@@ -31,15 +31,19 @@ function Routes() {
   return <Shell lang={lang} slug={rest.join("/")} />;
 }
 
-// The claude.ai preview can only carry a plain "#name", so there the router lives in memory and mirrors its
-// path into the hash: /de/preise ↔ #de/preise.
-const toHash = (path: string) => "#" + path.replace(/^\/|\/$/g, "");
+// The claude.ai preview can only carry a plain "#name" (letters, digits, hyphens), so there the router lives in
+// memory and mirrors its path into the hash: /de/preise ↔ #de-preise, /en/stories/picanha ↔ #en-stories-picanha.
+const toHash = (path: string) => "#" + (path.replace(/^\/|\/$/g, "").split("/").filter(Boolean).join("-") || "de");
+const HASHES = new Map<string, string>();
+for (const lang of LANGS) {
+  for (const page of Object.keys(SLUGS[lang]) as PageKey[]) {
+    HASHES.set(toHash(pathFor(lang, page)).slice(1), pathFor(lang, page));
+    if (page === "wissen") for (const a of ARTICLES) HASHES.set(toHash(pathFor(lang, page, a)).slice(1), pathFor(lang, page, a));
+  }
+}
+HASHES.set("zh", "/zh/");
 function fromHash(hash: string) {
-  const name = hash.replace(/^#\/?/, "");
-  if (name === "zh") return "/zh/";
-  const [lang, ...rest] = name.split("/");
-  if (!isLang(lang)) return null;
-  return routeFromSlug(lang, rest.join("/")) ? `/${lang}/${rest.join("/")}` : null;
+  return HASHES.get(hash.replace(/^#/, "").replace(/[?&].*$/, "")) ?? null;
 }
 function HashSync() {
   const location = useLocation();

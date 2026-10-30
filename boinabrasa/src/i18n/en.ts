@@ -369,7 +369,7 @@ export const en: Dict = {
     preview: "Preview",
     toShop: "Continue to the voucher shop",
     shopNote: "Payment and issue take place in the official shop at coupons.boinabrasa.ch. There you choose the design and amount once more.",
-    motifs: { gaucho: "Gaucho", rindschild: "Beef shield", "rio-grande": "Rio Grande do Sul", caipirinha: "Caipirinha", geschenk: "Gift", orchideen: "Orchids", rose: "Rose", wunderkerze: "Sparkler", birthday: "Birthday", danke: "Thank you" },
+    motifs: { gaucho: "Gaucho", rindschild: "Beef rib", "rio-grande": "Rio Grande do Sul", caipirinha: "Caipirinha", geschenk: "Gift", orchideen: "Orchids", rose: "Rose", wunderkerze: "Sparkler", birthday: "Birthday", danke: "Thank you" },
     deckLabel: "Voucher designs",
     swipe: "Swipe or use the arrow keys",
   },
@@ -463,6 +463,9 @@ export const en: Dict = {
     consentMissing: "Please confirm the privacy notice.",
     phoneInvalid: "Please enter a phone number.",
     errorsTitle: "Please check {n} field(s).",
+    previewCompose: "This preview sends nothing. Your message is ready: copy it and send it to info@boinabrasa.ch.",
+    copy: "Copy message",
+    copied: "Copied",
   },
   about: {
     kicker: "About us",

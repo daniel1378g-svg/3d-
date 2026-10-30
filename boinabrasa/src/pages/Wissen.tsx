@@ -17,7 +17,7 @@ function Card({ k, a }: { k: ArticleKey; a: Article }) {
     <a href={href("wissen", { article: k })} onClick={(e) => { e.preventDefault(); go("wissen", { article: k }); }} className="group flex h-full flex-col overflow-hidden rounded-[var(--radius-card)] bg-white/60 ring-1 ring-tinta/10 transition-shadow hover:shadow-xl">
       {a.cover && <Img id={a.cover} sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" className="aspect-[16/10] w-full" imgClassName="transition-transform duration-700 group-hover:scale-[1.04]" />}
       <div className="flex flex-1 flex-col p-6">
-        {a.date && <p className="kicker text-[0.66rem] text-tinta/55">{new Intl.DateTimeFormat(LOCALE[lang], { day: "numeric", month: "long", year: "numeric" }).format(new Date(a.date))} · {fill(t.knowledge.readTime, { n: Math.max(2, Math.round(words(a) / 200)) })}</p>}
+        {a.date && <p className="kicker text-[0.66rem] text-tinta/75">{new Intl.DateTimeFormat(LOCALE[lang], { day: "numeric", month: "long", year: "numeric" }).format(new Date(a.date))} · {fill(t.knowledge.readTime, { n: Math.max(2, Math.round(words(a) / 200)) })}</p>}
         <h2 className="display mt-2 text-[1.9rem] text-vinho">{a.title}</h2>
         <p className="mt-3 line-clamp-3 text-tinta/75">{first(a)}</p>
         <span className="kicker mt-auto flex items-center gap-2 pt-5 text-vinho-2">{t.cta.readMore}<IconArrow size={16} className="transition-transform group-hover:translate-x-1" /></span>

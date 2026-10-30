@@ -28,7 +28,7 @@ export function Packages() {
             {open === i && (
               <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.28, ease: EASE_OUT }} className="overflow-hidden">
                 <p className="pt-3 text-tinta/85">{p.services}</p>
-                <p className="pt-2 text-sm text-tinta/60">{p.note}</p>
+                <p className="pt-2 text-sm text-tinta/75">{p.note}</p>
               </motion.div>
             )}
           </AnimatePresence>

@@ -203,7 +203,7 @@ export function TableViz({ guests, className }: { guests: number; className?: st
       </svg>
       <figcaption className="mt-3 flex flex-wrap items-baseline justify-between gap-2 text-sm">
         <span className="kicker text-ouro">{label}</span>
-        <span className="text-creme/60">{t.reservation.illustration}</span>
+        <span className="text-creme/70">{t.reservation.illustration}</span>
       </figcaption>
     </figure>
   );

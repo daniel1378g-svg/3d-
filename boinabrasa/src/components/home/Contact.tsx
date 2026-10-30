@@ -7,6 +7,7 @@ import { useSite } from "@/site";
 import { EMAIL, PHONE } from "@/content/facts";
 import { cn } from "@/lib/utils";
 import { IconMail, IconPhone } from "../icons";
+import { ComposedMessage } from "../ComposedMessage";
 
 const ENDPOINT = import.meta.env.VITE_FORM_ENDPOINT;
 type Errors = Partial<Record<"name" | "email" | "subject" | "message" | "consent", string>>;
@@ -15,7 +16,7 @@ export function ContactForm() {
   const { t, href, go } = useSite();
   const [v, setV] = useState({ name: "", email: "", subject: "", message: "", consent: false, website: "" });
   const [errors, setErrors] = useState<Errors>({});
-  const [state, setState] = useState<"idle" | "sending" | "sent" | "mailto" | "error">("idle");
+  const [state, setState] = useState<"idle" | "sending" | "sent" | "mailto" | "compose" | "error">("idle");
   const set = (k: keyof typeof v) => (e: { target: { value: string; checked?: boolean } }) => setV({ ...v, [k]: k === "consent" ? !!e.target.checked : e.target.value });
   const validate = () => {
     const e: Errors = {};
@@ -36,6 +37,7 @@ export function ContactForm() {
       document.getElementById(`cf-${Object.keys(e)[0]}`)?.focus();
       return;
     }
+    if (!ENDPOINT && __ARTIFACT__) { setState("compose"); return; }
     if (!ENDPOINT) {
       const body = `${v.message}\n\n— ${v.name} <${v.email}>`;
       window.location.href = `mailto:${EMAIL}?subject=${encodeURIComponent(v.subject)}&body=${encodeURIComponent(body)}`;
@@ -82,7 +84,8 @@ export function ContactForm() {
           {errors.consent && <span className="mt-1 block text-[#ff9b85]">{errors.consent}</span>}
         </span>
       </label>
-      {!ENDPOINT && <p className="text-sm opacity-70">{t.contact.mailtoNote}</p>}
+      {!ENDPOINT && !__ARTIFACT__ && <p className="text-sm opacity-70">{t.contact.mailtoNote}</p>}
+      {state === "compose" && <ComposedMessage subject={v.subject} body={`${v.message}\n\n— ${v.name} <${v.email}>`} />}
       <div className="flex flex-wrap items-center gap-4">
         <button type="submit" className="pill" disabled={state === "sending"}>{state === "sending" ? t.contact.sending : t.contact.submit}</button>
         <p role="status" className={cn("text-sm", state === "error" && "text-[#ff9b85]")}>

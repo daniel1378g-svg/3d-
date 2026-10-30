@@ -29,7 +29,7 @@ export type MeatUniforms = {
 
 const c = (hex: string) => new THREE.Color(hex);
 const PALETTE = {
-  raw1: c("#6e0f1c"), raw2: c("#9a2230"), rawFat: c("#efe2cf"),
+  raw1: c("#5a0e18"), raw2: c("#7e1b25"), rawFat: c("#e6d8c0"),
   grey: c("#6e4a3e"), brown1: c("#3d1d0e"), brown2: c("#5e3018"), crust1: c("#1d0d07"), crust2: c("#3b1d0e"), char: c("#0b0605"),
   gold1: c("#ebbd6a"), gold2: c("#cf9443"), toast: c("#8d5222"),
   pink1: c("#cf6f72"), pink2: c("#b84a5a"), greyBand: c("#8c5a4c"), fatIn: c("#efe0c2"),
@@ -109,6 +109,11 @@ uniform vec3 cGrey; uniform vec3 cBrown1; uniform vec3 cBrown2; uniform vec3 cCr
 uniform vec3 cGold1; uniform vec3 cGold2; uniform vec3 cToast;
 uniform vec3 cPink1; uniform vec3 cPink2; uniform vec3 cGreyBand; uniform vec3 cFatIn;
 ${NOISE}
+#if OCTAVES < 3
+#define CELLS(q) (0.5 + 0.5 * snoise(q))
+#else
+#define CELLS(q) cells(q)
+#endif
 
 struct Meat { vec3 albedo; float rough; float coat; float coatRough; float height; float glow; float sheen; };
 
@@ -117,13 +122,15 @@ Meat meatSurface() {
   float n1 = fbm4(p * 6.5);            // large blotches: how fast an area browns
   float n2 = fbm3(p * 21.0);           // medium variation
   float n3 = snoise(p * 47.0);          // fine flecks
-  float salt = cells(p * 62.0);         // coarse salt / fibre cells
+  float salt = CELLS(p * 62.0);         // coarse salt / fibre cells
   Meat m;
 
   // ---------------------------------------------------------------- outside: muscle
   float stage = clamp(uCook * 1.32 - 0.24 * n1 + 0.3 * vEdge - 0.16, 0.0, 1.0);
   vec3 raw = mix(cRaw1, cRaw2, clamp(n2 * 0.7 + 0.5, 0.0, 1.0));
-  raw = mix(raw, raw * vec3(1.25, 1.08, 1.05), smoothstep(0.35, 0.6, n3) * 0.35); // marbling glints
+  raw = mix(raw, raw * vec3(0.78, 0.82, 0.95), smoothstep(-0.2, 0.5, n1) * 0.35);       // darker, purplish areas
+  float marb = smoothstep(0.55, 0.72, snoise(p * vec3(30.0, 9.0, 30.0)) * 0.7 + n3 * 0.4);
+  raw = mix(raw, cRawFat * 0.85, marb * 0.45 * (1.0 - smoothstep(0.1, 0.5, uCook)));   // marbling streaks
   vec3 brown = mix(cBrown1, cBrown2, clamp(n2 * 0.8 + 0.5, 0.0, 1.0));
   vec3 crust = mix(cCrust1, cCrust2, clamp(n2 * 0.9 + 0.45 + n3 * 0.15, 0.0, 1.0));
   vec3 muscle = raw;
@@ -135,10 +142,10 @@ Meat meatSurface() {
   // where the skewer goes through, the hot metal browns the meat a little more
   float skw = 1.0 - smoothstep(0.03, 0.09, length(vec2(vRest.x - uSkewerX, vRest.z)));
   muscle = mix(muscle, muscle * 0.55, skw * uCook);
-  float bundle = cells(p * 26.0 + 3.0);                       // seared fibre bundles on the steak faces
+  float bundle = CELLS(p * 26.0 + 3.0);                       // seared fibre bundles on the steak faces
   float glint = smoothstep(0.55, 0.85, snoise(p * 34.0 + 9.0)) * smoothstep(-0.1, 0.4, n1);
-  float mRough = mix(0.46, 0.62, smoothstep(0.2, 0.9, stage)) - 0.25 * glint * uCook;
-  float mCoat = mix(0.3, 0.45, uCook) * (0.35 + 0.65 * smoothstep(-0.3, 0.3, n1)) + 0.4 * glint * uCook;
+  float mRough = mix(0.52, 0.62, smoothstep(0.2, 0.9, stage)) - 0.25 * glint * uCook;
+  float mCoat = mix(0.14, 0.45, uCook) * (0.35 + 0.65 * smoothstep(-0.3, 0.3, n1)) + 0.4 * glint * uCook;
   float ridge = smoothstep(0.08, 0.62, bundle);
   float mH = (n2 * 0.5 + n3 * 0.3) * (0.3 + stage) * 0.0045 + ridge * 0.0075 * (0.3 + stage) + (1.0 - smoothstep(0.0, 0.28, salt)) * 0.0006 * (1.0 - uCook);
   muscle *= mix(1.0, 0.45 + 0.85 * ridge * (0.65 + 0.35 * smoothstep(-0.3, 0.4, n2)), smoothstep(0.2, 0.8, stage));
@@ -151,15 +158,16 @@ Meat meatSurface() {
   float fleck = smoothstep(0.62, 0.78, n3 * 0.6 + n2 * 0.5) * smoothstep(0.6, 1.0, fStage);
   fat = mix(fat, cChar * 1.4, fleck * 0.8);
   // coarse black pepper and charred specks, as in the reference
-  float pep = 1.0 - smoothstep(0.0, 0.11, cells(p * 30.0 + 41.0));
+  float pep = 1.0 - smoothstep(0.0, 0.11, CELLS(p * 30.0 + 41.0));
   fat = mix(fat, vec3(0.03, 0.018, 0.012), pep * 0.85 * smoothstep(0.3, 0.8, fStage));
   muscle = mix(muscle, vec3(0.02, 0.012, 0.008), pep * 0.6 * smoothstep(0.4, 0.9, stage));
   float saltSpot = (1.0 - smoothstep(0.0, 0.16, salt)) * (1.0 - smoothstep(0.35, 0.85, uCook));
   fat = mix(fat, vec3(0.95), saltSpot * 0.7);
-  float blister = 1.0 - smoothstep(0.05, 0.5, cells(p * 30.0 + 11.0));
+  float blister = 1.0 - smoothstep(0.05, 0.5, CELLS(p * 30.0 + 11.0));
   fat *= mix(1.0, 0.72 + 0.42 * blister, smoothstep(0.3, 0.8, fStage));
-  float fRough = mix(0.5, 0.22, smoothstep(0.1, 0.7, fStage)) + saltSpot * -0.2;
-  float fCoat = mix(0.3, 0.95, smoothstep(0.15, 0.8, fStage));
+  float fRough = mix(0.58, 0.22, smoothstep(0.1, 0.7, fStage)) + saltSpot * -0.2;
+  float fCoat = mix(0.08, 0.95, smoothstep(0.15, 0.8, fStage));
+  fat = mix(fat * vec3(1.0, 0.97, 0.9), fat, smoothstep(0.0, 0.3, fStage)) * mix(0.92 + 0.1 * n2, 1.0, fStage);
   float fH = (blister * 0.0062 + n2 * 0.0022) * (0.3 + fStage) + saltSpot * 0.0012 + pep * 0.0015;
 
   // ---------------------------------------------------------------- cut face
@@ -184,7 +192,7 @@ Meat meatSurface() {
   m.coatRough = mix(mix(0.2, 0.1, vFat), 0.12, vCut);
   m.height = mix(mix(mH, fH, vFat), cH, vCut);
   m.glow = vFat * (1.0 - vCut) * smoothstep(0.25, 0.85, fStage);
-  m.sheen = vFat;
+  m.sheen = vFat * smoothstep(0.3, 0.9, uCook);
   return m;
 }
 

@@ -63,7 +63,7 @@ export function Prices({ withLinks = true }: { withLinks?: boolean }) {
                 </Reveal>
               ))}
               <p className="text-sm text-creme/75">{t.prices.separate}</p>
-              <p className="text-sm text-creme/60">{t.prices.vat}</p>
+              <p className="text-sm text-creme/70">{t.prices.vat}</p>
             </div>
           </div>
 
@@ -80,7 +80,7 @@ export function Prices({ withLinks = true }: { withLinks?: boolean }) {
                 <span className="kicker text-creme/80">{t.prices.calcTotal}</span>
                 <span className="display text-[3rem] text-ouro tabular" aria-live="polite">CHF {total}.–</span>
               </div>
-              <p className="mt-2 text-xs text-creme/60">{t.prices.calcNote}</p>
+              <p className="mt-2 text-xs text-creme/70">{t.prices.calcNote}</p>
             </div>
             {withLinks && (
               <div className="flex flex-col justify-end gap-3">

@@ -20,7 +20,7 @@ export function HoursCard({ className }: { className?: string }) {
       <dl className="flex flex-col">
         {rows.map((r) => (
           <div key={r.days} className={cn("flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 border-b py-4", r.on ? "border-brasa" : "border-current/15")}>
-            <dt className={cn("font-display text-[1.25rem] font-bold", r.on && "text-brasa")} style={{ fontStretch: "88%" }}>{r.days}{r.on && <span className="kicker ml-3 text-[0.62rem]">· {t.reservation.today}</span>}</dt>
+            <dt className={cn("font-display text-[1.25rem] font-bold", r.on && "text-vinho-2")} style={{ fontStretch: "88%" }}>{r.days}{r.on && <span className="kicker ml-3 text-[0.62rem]">· {t.reservation.today}</span>}</dt>
             <dd className={cn("tabular", r.closed && "opacity-60")}>{r.hours}</dd>
           </div>
         ))}
@@ -55,9 +55,9 @@ export function HoursLocation() {
               <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-full text-boi drop-shadow-lg" aria-hidden="true"><IconPin size={44} /></span>
               <span className="pill pill-dark pill-sm absolute bottom-4 left-4">{t.cta.openMaps}<IconExternal size={15} /><span className="sr-only">{t.a11y.newTab}</span></span>
             </a>
-            <p className="mt-2 text-xs text-tinta/55">{t.location.mapNote}</p>
+            <p className="mt-2 text-xs text-tinta/75">{t.location.mapNote}</p>
             <div className="mt-6 flex flex-wrap items-center gap-2">
-              <span className="kicker mr-1 text-tinta/60">{t.location.routeWith}</span>
+              <span className="kicker mr-1 text-tinta/75">{t.location.routeWith}</span>
               <a className="chip text-tinta" href={MAPS_URL} target="_blank" rel="noopener">Google Maps</a>
               <a className="chip text-tinta" href={APPLE_MAPS_URL} target="_blank" rel="noopener">Apple Maps</a>
               <a className="chip text-tinta" href={WAZE_URL} target="_blank" rel="noopener">Waze</a>

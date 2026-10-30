@@ -87,12 +87,12 @@ export function MeatExplorer({ compact = false }: { compact?: boolean }) {
                       onClick={() => setSel(i)}
                       className={cn(
                         "group flex w-full items-baseline gap-4 rounded-full px-4 py-2.5 text-left transition-[opacity,filter,background-color,color] duration-300 lg:rounded-none lg:px-0 lg:py-3",
-                        on ? "bg-vinho text-creme lg:bg-transparent lg:text-vinho" : "bg-tinta/5 text-tinta lg:bg-transparent lg:opacity-45 lg:blur-[0.4px] lg:hover:opacity-80 lg:hover:blur-0",
+                        on ? "bg-vinho text-creme lg:bg-transparent lg:text-vinho" : "bg-tinta/5 text-tinta lg:bg-transparent lg:text-tinta/[0.62] lg:hover:text-tinta",
                       )}
                     >
-                      <span className="kicker hidden w-8 text-[0.68rem] text-tinta/50 lg:inline">{String(i + 1).padStart(2, "0")}</span>
+                      <span className="kicker hidden w-8 text-[0.68rem] text-tinta/75 lg:inline">{String(i + 1).padStart(2, "0")}</span>
                       <span className="display whitespace-nowrap text-[1.15rem] lg:text-[clamp(2rem,3.4vw,3.4rem)]">{c.name}</span>
-                      <span className="ml-auto hidden text-sm text-tinta/60 xl:inline">{t.meats.cuts[c.id].sub}</span>
+                      <span className="ml-auto hidden text-sm text-tinta/75 xl:inline">{t.meats.cuts[c.id].sub}</span>
                     </button>
                   </li>
                 );
@@ -121,7 +121,7 @@ export function MeatExplorer({ compact = false }: { compact?: boolean }) {
                           {cut.garlic && <span className="absolute -right-4 -top-2 rounded-full bg-creme px-2.5 py-1 font-display text-[0.7rem] font-bold uppercase tracking-wider text-vinho">{t.meats.garlic}</span>}
                         </div>
                         <p className="display text-[clamp(2.2rem,5vw,4.2rem)] text-creme">{cut.name}</p>
-                        <p className="max-w-[28ch] text-xs text-creme/45">{t.meats.noPhoto}</p>
+                        <p className="max-w-[28ch] text-xs text-creme/70">{t.meats.noPhoto}</p>
                       </div>
                     )}
                   </motion.div>
@@ -144,7 +144,7 @@ export function MeatExplorer({ compact = false }: { compact?: boolean }) {
                   transition={{ duration: 0.4, ease: EASE_OUT }}
                 >
                   <h3 className="display text-[clamp(2.4rem,4vw,3.6rem)] text-vinho">{cut.name}</h3>
-                  <p className="kicker mt-1 text-tinta/60">{text.sub}</p>
+                  <p className="kicker mt-1 text-tinta/75">{text.sub}</p>
                   <p className="lead mt-4 max-w-[38rem] text-tinta/85">{text.text}</p>
                   {cut.article && (
                     <a href={href("wissen", { article: cut.article })} onClick={(e) => { e.preventDefault(); go("wissen", { article: cut.article }); }} className="pill pill-ghost mt-5 text-vinho">
@@ -167,7 +167,7 @@ export function MeatExplorer({ compact = false }: { compact?: boolean }) {
               <ul className="mt-4 flex flex-wrap gap-2">{t.meats.vegiItems.map((v) => <li key={v} className="rounded-full bg-creme/10 px-3 py-1.5 text-sm">{v}</li>)}</ul>
             </div>
           </div>
-          <p className="mt-6 text-sm text-tinta/60">{t.meats.disclaimer}</p>
+          <p className="mt-6 text-sm text-tinta/75">{t.meats.disclaimer}</p>
         </div>
       </div>
     </section>

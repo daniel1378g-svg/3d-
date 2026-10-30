@@ -463,6 +463,9 @@ export const fr: Dict = {
     consentMissing: "Veuillez accepter l’avis de protection des données.",
     phoneInvalid: "Veuillez indiquer un numéro de téléphone.",
     errorsTitle: "Veuillez vérifier {n} champs.",
+    previewCompose: "Cet aperçu n’envoie rien. Votre message est prêt : copiez-le et envoyez-le à info@boinabrasa.ch.",
+    copy: "Copier le message",
+    copied: "Copié",
   },
   about: {
     kicker: "À propos",

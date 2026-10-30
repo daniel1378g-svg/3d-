@@ -7,18 +7,23 @@ import { useSite } from "@/site";
 import { asset, cn } from "@/lib/utils";
 import { EASE_OUT } from "@/lib/motion";
 import { IconMenu } from "./icons";
+import { BULL_OUTLINE, BULL_VIEWBOX } from "@/brand/bull";
 
 export function Logo({ className, compact }: { className?: string; compact?: boolean }) {
   return (
-    <img
+    <>
+      {/* narrow phones: the bull alone (the wordmark is in the hero, the intro and the footer) */}
+      <svg viewBox={BULL_VIEWBOX} aria-hidden="true" className="h-8 w-8 text-boi min-[440px]:hidden"><path d={BULL_OUTLINE} fill="currentColor" /></svg>
+      <img
       src={asset("/brand/logo.webp")}
       alt=""
       width={500}
       height={123}
-      className={cn("h-auto select-none", compact ? "w-[118px] sm:w-[150px]" : "w-[140px] sm:w-[178px]", className)}
+      className={cn("h-auto select-none max-[439px]:hidden", compact ? "w-[124px] sm:w-[150px]" : "w-[132px] sm:w-[178px]", className)}
       draggable={false}
       data-logo
     />
+    </>
   );
 }
 
@@ -102,15 +107,15 @@ export function Header({ onMenu, menuOpen }: { onMenu: () => void; menuOpen: boo
           href={href("home")}
           onClick={(e) => { e.preventDefault(); go("home"); }}
           aria-label={t.a11y.homeLink}
-          className={cn("glass pointer-events-auto flex items-center rounded-full transition-[padding] duration-300", compact ? "px-4 py-2.5" : "px-5 py-3")}
+          className={cn("glass pointer-events-auto flex shrink-0 items-center rounded-full transition-[padding] duration-300", compact ? "px-3 py-2 sm:px-4 sm:py-2.5" : "px-3 py-2.5 sm:px-5 sm:py-3")}
           data-header-logo
         >
           <Logo compact={compact} />
         </a>
-        <nav aria-label={t.a11y.mainNav} className="glass pointer-events-auto flex items-center gap-1.5 rounded-full p-1.5">
-          <button type="button" className="pill pill-sm max-[380px]:px-3.5" onClick={() => openBooking()} data-reserve-button>
-            <span className="max-[380px]:hidden">{t.cta.reserve}</span>
-            <span className="hidden max-[380px]:inline">{t.reservation.kicker}</span>
+        <nav aria-label={t.a11y.mainNav} className="glass pointer-events-auto flex min-w-0 items-center gap-1 rounded-full p-1.5 sm:gap-1.5">
+          <button type="button" className="pill pill-sm max-[520px]:px-3.5" onClick={() => openBooking()} data-reserve-button>
+            <span className="max-[520px]:hidden">{t.cta.reserve}</span>
+            <span className="hidden max-[520px]:inline">{t.reservation.kicker}</span>
           </button>
           <LanguageMenu />
           <button type="button" className="icon-btn" aria-label={menuOpen ? t.a11y.menuClose : t.a11y.menuOpen} aria-expanded={menuOpen} onClick={onMenu} data-menu-button>

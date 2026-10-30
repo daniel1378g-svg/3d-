@@ -77,7 +77,7 @@ function section(spec: PieceSpec, phi: number, out: { r: number; z: number }, ba
   const c = Math.cos(phi);
   const s = Math.sin(phi);
   const outer = THREE.MathUtils.smoothstep(c, -0.35, 0.35);
-  const n = THREE.MathUtils.lerp(5.2, 3.0, outer); // inner side boxy, fat side round and puffy
+  const n = THREE.MathUtils.lerp(7.5, 3.0, outer); // inner side boxy (the fold closes flat), fat side round and puffy
   const e = 2 / n;
   const r = rc + a * Math.sign(c) * Math.pow(Math.abs(c), e);
   let z = b * Math.sign(s) * Math.pow(Math.abs(s), e);
@@ -96,6 +96,15 @@ function capScale(u: number, cap = 0.035) {
   const t = 1 - d / cap;
   // nearly square ends: a steak's cut end, only the corners rounded
   return Math.cbrt(Math.max(0, 1 - t * t * t));
+}
+
+/** How exposed a point is to the fire: the outer (fat-side) corners of the section brown first; the inside of the
+ *  fold is pressed shut and stays paler (negative). */
+function exposure(phi: number, k: number) {
+  const c = Math.cos(phi);
+  const corner = Math.pow(Math.abs(c * Math.sin(phi)) * 2, 1.4) * THREE.MathUtils.smoothstep(c, -0.1, 0.45);
+  const inner = THREE.MathUtils.smoothstep(-c, 0.35, 0.9);
+  return Math.max(-0.7, Math.min(1, corner * 0.85 + (1 - k) * 0.9 - inner * 0.7));
 }
 
 /** Stations crowd towards the ends so the rounded caps stay smooth. */
@@ -167,12 +176,14 @@ export function buildPiece(spec: PieceSpec, q: Quality) {
   const skewerX = rc * Math.cos(armTheta) * 0.92;
 
   const deform = (p: THREE.Vector3) => {
+    // the centre of the fold stays put (no self-intersection where the two halves meet)
+    const centre = THREE.MathUtils.smoothstep(Math.hypot(p.x, p.y), 0.01, 0.26);
     p.set(p.x * sx + p.y * shear, p.y * sy, p.z);
     field(p, tmpD);
-    p.add(tmpD);
+    p.addScaledVector(tmpD, 0.06 + 0.94 * centre);
     lumps(p, tmpD);
     fine(p, tmpF);
-    return p.add(tmpD).add(tmpF);
+    return p.addScaledVector(tmpD, 0.2 + 0.8 * centre).add(tmpF);
   };
 
   const planeZ = spec.cut
@@ -246,9 +257,7 @@ export function buildPiece(spec: PieceSpec, q: Quality) {
       main.fat.push(fatAt(r, k));
       main.cut.push(isCut);
       main.depth.push(depth);
-      // exposure: the rounded edges of the section and the arc ends
-      const edgeness = Math.pow(Math.abs(Math.cos(phi) * Math.sin(phi)) * 2, 1.4) * 0.8 + (1 - k) * 0.9;
-      main.edge.push(Math.min(1, edgeness));
+      main.edge.push(exposure(phi, k));
       main.thick.push(0);
     }
   }
@@ -309,8 +318,7 @@ export function buildPiece(spec: PieceSpec, q: Quality) {
           sl.fat.push(fatAt(r, k));
           sl.cut.push(bottom ? THREE.MathUtils.smoothstep(thick, 0.0, 0.004) : 0);
           sl.depth.push(bottom ? Math.min(distToSection(r, Math.min(z, pz), k), arcLenToEnd + 0.004) : 0);
-          const edgeness = Math.pow(Math.abs(Math.cos(phi) * Math.sin(phi)) * 2, 1.4) * 0.8 + (1 - k) * 0.9;
-          sl.edge.push(Math.min(1, edgeness));
+          sl.edge.push(exposure(phi, k));
           sl.thick.push(thick);
         }
       }

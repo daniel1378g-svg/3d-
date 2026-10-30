@@ -464,6 +464,9 @@ export const de = {
     consentMissing: "Bitte bestätigen Sie den Datenschutzhinweis.",
     phoneInvalid: "Bitte geben Sie eine Telefonnummer an.",
     errorsTitle: "Bitte prüfen Sie {n} Angaben.",
+    previewCompose: "Diese Vorschau sendet nichts. Ihre Nachricht ist fertig: kopieren Sie sie und senden Sie sie an info@boinabrasa.ch.",
+    copy: "Nachricht kopieren",
+    copied: "Kopiert",
   },
   about: {
     kicker: "Über uns",

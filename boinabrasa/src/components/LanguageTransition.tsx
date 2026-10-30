@@ -37,7 +37,8 @@ export const LanguageTransition = forwardRef<LanguageTransitionHandle>(function 
         return;
       }
       // where the header's bull is (the left fifth of the logo image)
-      const logo = document.querySelector<HTMLElement>("[data-header-logo] img");
+      // the header shows the full logo, or the bull alone on narrow phones: start from whichever is visible
+      const logo = Array.from(document.querySelectorAll<Element>("[data-header-logo] img, [data-header-logo] svg")).find((e) => e.getBoundingClientRect().width > 0);
       const r = logo?.getBoundingClientRect();
       const vw = window.innerWidth, vh = window.innerHeight;
       const startW = r ? r.height * 0.95 : 48;

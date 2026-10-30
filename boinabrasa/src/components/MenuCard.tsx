@@ -50,7 +50,7 @@ export function MenuCard() {
           {SECTIONS.map((s) => (
             <section key={s.id} data-sec={s.id} className="mb-14 break-inside-avoid" aria-labelledby={`m-${s.id}`}>
               <h3 id={`m-${s.id}`} className="display text-[2.4rem] text-vinho">{tr?.sections[s.id]?.title ?? s.title}</h3>
-              {s.note && <p className="kicker mt-1 text-tinta/55">{tr?.sections[s.id]?.note ?? s.note}</p>}
+              {s.note && <p className="kicker mt-1 text-tinta/75">{tr?.sections[s.id]?.note ?? s.note}</p>}
               <ul className="mt-4 flex flex-col">
                 {s.items.map((it) => {
                   const name = tr?.items[it.id]?.name ?? it.name;
@@ -76,7 +76,7 @@ export function MenuCard() {
             </section>
           ))}
         </div>
-        <p className={cn("wrap text-sm text-tinta/60")}>{t.prices.origin} {t.prices.vat}</p>
+        <p className={cn("wrap text-sm text-tinta/75")}>{t.prices.origin} {t.prices.vat}</p>
       </div>
     </section>
   );

@@ -22,7 +22,7 @@ export function Catering({ full = false }: { full?: boolean }) {
               <a className="pill" href={URLS.catering} target="_blank" rel="noopener">{t.cta.cateringDiscover}<IconExternal size={16} /><span className="sr-only">{t.a11y.newTab}</span></a>
               <a className="pill pill-ghost text-creme" href={CATERING_HOTLINE.href}><IconPhone size={17} />{t.catering.hotline} {CATERING_HOTLINE.display}</a>
             </div>
-            <p className="mt-4 text-xs text-creme/45">{t.catering.source}</p>
+            <p className="mt-4 text-xs text-creme/70">{t.catering.source}</p>
           </div>
           <div className="grid grid-cols-6 grid-rows-[repeat(6,minmax(0,1fr))] gap-3" style={{ aspectRatio: "1 / 1.02" }}>
             <Reveal className="col-span-4 row-span-4 overflow-hidden rounded-[28px]"><Img id="catering-impressionen-9" sizes="(min-width: 1024px) 34vw, 66vw" className="h-full w-full" /></Reveal>

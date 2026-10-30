@@ -82,10 +82,10 @@ export function Footer() {
           </div>
         </div>
       </div>
-      <p aria-hidden="true" className="display pointer-events-none mt-16 select-none whitespace-nowrap text-center text-[21.5vw] leading-[0.78] text-creme/[0.06]">
-        Boinabrasa
-      </p>
-      <div className="gutter border-t border-creme/10 py-6 text-sm text-creme/60">
+      <svg aria-hidden="true" focusable="false" viewBox="0 0 1000 205" className="pointer-events-none mt-16 block w-full select-none">
+        <text x="500" y="182" textAnchor="middle" className="display fill-creme/[0.06]" style={{ fontSize: "238px" }}>BOINABRASA</text>
+      </svg>
+      <div className="gutter border-t border-creme/10 py-6 text-sm text-creme/70">
         <div className="wrap flex flex-col gap-2 md:flex-row md:justify-between">
           <p>{t.footer.copyright}</p>
           <p>{t.footer.proposal}</p>

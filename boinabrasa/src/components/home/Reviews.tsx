@@ -60,7 +60,7 @@ function Carousel() {
       <div className="mt-5 flex items-center gap-2">
         <button type="button" className="icon-btn" onClick={() => go(-1)} aria-label={t.a11y.prev}><IconChevronLeft /></button>
         <button type="button" className="icon-btn" onClick={() => go(1)} aria-label={t.a11y.next}><IconChevronRight /></button>
-        <span className="ml-2 text-sm text-creme/60 tabular">{i + 1} / {REVIEWS.length}</span>
+        <span className="ml-2 text-sm text-creme/70 tabular">{i + 1} / {REVIEWS.length}</span>
       </div>
     </div>
   );

@@ -7,6 +7,7 @@ import { useSite } from "@/site";
 import { cn } from "@/lib/utils";
 import { EASE_OUT } from "@/lib/motion";
 import { resumeScroll, stopScroll } from "@/lib/scroll";
+import { useFocusTrap } from "@/lib/focusTrap";
 import { Img } from "../Img";
 import { IconChevronLeft, IconChevronRight, IconClose } from "../icons";
 
@@ -33,6 +34,7 @@ const PHOTOS: { id: string; cat: Cat; w: 1 | 2 }[] = [
 function Lightbox({ list, index, onClose, onIndex }: { list: string[]; index: number; onClose: () => void; onIndex: (i: number) => void }) {
   const { t } = useSite();
   const ref = useRef<HTMLDivElement>(null);
+  useFocusTrap(ref, true);
   useEffect(() => {
     stopScroll();
     document.documentElement.style.overflow = "hidden";
@@ -111,7 +113,7 @@ export function Gallery() {
         ))}
         <span className="w-px shrink-0" aria-hidden="true" />
       </div>
-      <p className="gutter mt-3 text-sm text-creme/50">{t.gallery.drag}</p>
+      <p className="gutter mt-3 text-sm text-creme/70">{t.gallery.drag}</p>
       <AnimatePresence>{open !== null && <Lightbox list={list.map((p) => p.id)} index={open} onClose={() => setOpen(null)} onIndex={setOpen} />}</AnimatePresence>
     </section>
   );

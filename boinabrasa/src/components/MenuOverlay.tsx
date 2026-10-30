@@ -6,6 +6,7 @@ import { LANGS, NATIVE, type Anchor, type PageKey } from "@/i18n";
 import { useSite } from "@/site";
 import { EASE_IN_OUT, EASE_OUT } from "@/lib/motion";
 import { resumeScroll, stopScroll } from "@/lib/scroll";
+import { useFocusTrap } from "@/lib/focusTrap";
 import { ADDRESS, EMAIL, PHONE, SOCIAL } from "@/content/facts";
 import { IconClose, IconFacebook, IconInstagram } from "./icons";
 
@@ -15,6 +16,7 @@ export function MenuOverlay({ open, onClose }: { open: boolean; onClose: () => v
   const { t, lang, go, href, openBooking, requestLanguage, reduce } = useSite();
   const panel = useRef<HTMLDivElement>(null);
   const [origin, setOrigin] = useState("calc(100% - 48px) 48px");
+  useFocusTrap(panel, open);
 
   useEffect(() => {
     if (!open) return;
@@ -27,13 +29,6 @@ export function MenuOverlay({ open, onClose }: { open: boolean; onClose: () => v
     document.documentElement.style.overflow = "hidden";
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
-      if (e.key === "Tab" && panel.current) {
-        const f = panel.current.querySelectorAll<HTMLElement>("a,button");
-        if (!f.length) return;
-        const first = f[0], last = f[f.length - 1];
-        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-      }
     };
     window.addEventListener("keydown", onKey);
     const id = requestAnimationFrame(() => panel.current?.querySelector<HTMLElement>("[data-first]")?.focus());

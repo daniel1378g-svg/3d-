@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { useSite } from "@/site";
 import { EASE_DRAWER } from "@/lib/motion";
 import { resumeScroll, stopScroll } from "@/lib/scroll";
+import { useFocusTrap } from "@/lib/focusTrap";
 import { Reservation } from "./reservation/Reservation";
 import { IconClose } from "./icons";
 
@@ -13,6 +14,7 @@ const BAND = "RESERVIEREN ✱ BOOK A TABLE ✱ RESERVAR ✱ RÉSERVER ✱ PRENOT
 export function BookingSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { t, reduce } = useSite();
   const panel = useRef<HTMLDivElement>(null);
+  useFocusTrap(panel, open);
   const wide = typeof window !== "undefined" && window.matchMedia("(min-width: 900px)").matches;
 
   useEffect(() => {
@@ -22,13 +24,6 @@ export function BookingSheet({ open, onClose }: { open: boolean; onClose: () => 
     document.documentElement.style.overflow = "hidden";
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
-      if (e.key === "Tab" && panel.current) {
-        const f = panel.current.querySelectorAll<HTMLElement>('a[href],button:not([disabled]),[tabindex="0"]');
-        if (!f.length) return;
-        const first = f[0], lastEl = f[f.length - 1];
-        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); lastEl.focus(); }
-        else if (!e.shiftKey && document.activeElement === lastEl) { e.preventDefault(); first.focus(); }
-      }
     };
     window.addEventListener("keydown", onKey);
     requestAnimationFrame(() => panel.current?.querySelector<HTMLElement>("[data-close]")?.focus());

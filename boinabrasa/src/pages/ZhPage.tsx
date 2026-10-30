@@ -24,7 +24,7 @@ export function ZhPage() {
           <p className="mt-3 leading-relaxed text-creme/85">我們熟悉旅遊團、公司聚餐與大型團體的接待需求。請事先預約並確認抵達時間，讓我們為您的團體做好準備。抵達後即可享用自助餐，烤肉則由服務人員陸續送到桌邊。</p>
           <ul className="mt-4 list-disc pl-6 text-creme/85"><li>可接待多達 150 位賓客</li><li>超過 80 個免費專用停車位</li><li>設有遊覽車（旅遊巴士）停車空間</li><li>公司消費可開立帳單付款</li></ul>
           <p className="mt-4">我們也提供包含飲料的團體套餐。<br />歡迎聯絡我們，了解套餐內容，並為您的旅遊團或公司聚餐選擇合適的方案。</p>
-          <p className="mt-4"><a className="pill" href={__ARTIFACT__ ? "#en/groups" : "/en/groups"}>團體預約與詢價（英文表格）</a></p>
+          <p className="mt-4"><a className="pill" href={__ARTIFACT__ ? "#en-groups" : "/en/groups"}>團體預約與詢價（英文表格）</a></p>
           <p className="mt-4">您也可以透過電子郵件聯絡我們：<a className="link-u" href={`mailto:${EMAIL}`}>{EMAIL}</a></p>
           <h2 className="mt-10 text-[1.5rem] font-bold text-ouro">如何享用巴西烤肉</h2>
           <ol className="mt-3 flex flex-col gap-3 text-creme/85"><li><strong>1. 先享用自助餐</strong><br />自由選取冷熱配菜及沙拉。</li><li><strong>2. 桌邊烤肉服務</strong><br />服務人員將現烤串肉帶到桌邊，直接為您切片。您可品嚐多達 10 種不同的燒烤美味。</li><li><strong>3. 按自己的步調享用</strong><br />喜歡的口味可以繼續享用，也可以隨時休息。</li></ol>
@@ -39,7 +39,7 @@ export function ZhPage() {
           <p className="mt-3 text-creme/85">週一至週三：休息<br />週四至週六：18:00–23:00<br />週日：12:30–16:00、18:00–22:00</p>
           <p className="mt-4 text-creme/85">Boinabrasa<br />Honeywell-Platz 1, 8157 Dielsdorf, Switzerland<br />電話：<a className="link-u" href={PHONE.href}>{PHONE.intl}</a><br />電子郵件：<a className="link-u" href={`mailto:${EMAIL}`}>{EMAIL}</a></p>
           <p className="mt-6"><a className="pill" href={BOOKING_BASE.en} target="_blank" rel="noopener">線上訂位（英文）</a></p>
-          <p className="mt-3 text-sm text-creme/60">訂位系統及團體表格目前尚未提供中文介面。</p>
+          <p className="mt-3 text-sm text-creme/70">訂位系統及團體表格目前尚未提供中文介面。</p>
           <p className="mt-12"><a className="link-u text-creme/70" href={back}>Deutsch · English · Português · Français · Italiano</a></p>
         </div>
       </div>

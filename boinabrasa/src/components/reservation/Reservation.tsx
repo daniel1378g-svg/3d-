@@ -72,10 +72,10 @@ function Calendar({ value, onChange }: { value: string | null; onChange: (d: str
         <p className="font-display text-[1.05rem] font-bold capitalize" aria-live="polite">{monthName}</p>
         <button type="button" className="icon-btn h-10 w-10 disabled:opacity-25" onClick={() => shift(1)} disabled={!canNext} aria-label={t.reservation.nextMonth}><IconChevronRight size={18} /></button>
       </div>
-      <div className="grid grid-cols-7 gap-1 text-center text-[0.72rem] text-creme/50" aria-hidden="true">
+      <div className="grid grid-cols-7 gap-1 text-center text-[0.72rem] text-creme/70" aria-hidden="true">
         {weekdays.map((w, i) => <span key={i} className="py-1">{w}</span>)}
       </div>
-      <div ref={grid} role="grid" aria-label={t.reservation.chooseDate} className="grid grid-cols-7 gap-1">
+      <div ref={grid} role="group" aria-label={t.reservation.chooseDate} className="grid grid-cols-7 gap-1">
         {cells.map((d, i) => {
           if (!d) return <span key={i} />;
           const st = dayState(d, today, last);
@@ -87,9 +87,8 @@ function Calendar({ value, onChange }: { value: string | null; onChange: (d: str
               key={d}
               type="button"
               data-day={d}
-              role="gridcell"
               tabIndex={d === tabDay ? 0 : -1}
-              aria-selected={selected}
+              aria-pressed={selected}
               aria-disabled={disabled}
               aria-label={`${longDate(d)}${reason ? ` – ${reason}` : ""}${d === today ? ` (${t.reservation.today})` : ""}`}
               title={reason || undefined}
@@ -107,7 +106,7 @@ function Calendar({ value, onChange }: { value: string | null; onChange: (d: str
           );
         })}
       </div>
-      <p className="mt-3 text-[0.8rem] text-creme/55">{t.reservation.closedDay}</p>
+      <p className="mt-3 text-[0.8rem] text-creme/70">{t.reservation.closedDay}</p>
     </div>
   );
 }
@@ -164,7 +163,7 @@ export function Reservation({ variant = "section" }: { variant?: "section" | "sh
                   {guests}
                 </motion.output>
               </AnimatePresence>
-              <span className="kicker text-creme/60">{fill(guests === 1 ? t.reservation.guestOne : t.reservation.guestMany, { n: "" }).trim()}</span>
+              <span className="kicker text-creme/70">{fill(guests === 1 ? t.reservation.guestOne : t.reservation.guestMany, { n: "" }).trim()}</span>
             </div>
             <button type="button" className="icon-btn h-14 w-14 bg-creme/10 disabled:opacity-30" onClick={() => setGuests(guests + 1)} disabled={guests >= MAX_GUESTS} aria-label={t.reservation.more}><IconPlus /></button>
           </div>
@@ -185,14 +184,14 @@ export function Reservation({ variant = "section" }: { variant?: "section" | "sh
         <section>
           {step(3, <IconClock size={16} />, t.reservation.time)}
           {!date ? (
-            <p className="text-creme/60">{t.reservation.pickFirst}</p>
+            <p className="text-creme/70">{t.reservation.pickFirst}</p>
           ) : isSilvester ? (
             <p className="text-creme/80">{t.reservation.silvesterDate}</p>
           ) : (
             <div className="flex flex-col gap-4">
               {slots.map((s) => (
                 <div key={s.label}>
-                  <p className="kicker mb-2 text-creme/60">{s.label === "lunch" ? t.reservation.lunch : t.reservation.dinner}</p>
+                  <p className="kicker mb-2 text-creme/70">{s.label === "lunch" ? t.reservation.lunch : t.reservation.dinner}</p>
                   <div className="flex flex-wrap gap-2" role="radiogroup" aria-label={`${t.reservation.time} – ${s.label === "lunch" ? t.reservation.lunch : t.reservation.dinner}`}>
                     {s.times.map(([h, m]) => {
                       const v = `${h}:${String(m).padStart(2, "0")}`;
@@ -205,7 +204,7 @@ export function Reservation({ variant = "section" }: { variant?: "section" | "sh
                   </div>
                 </div>
               ))}
-              <p className="text-[0.8rem] text-creme/55">{t.reservation.lastArrival}</p>
+              <p className="text-[0.8rem] text-creme/70">{t.reservation.lastArrival}</p>
             </div>
           )}
         </section>
@@ -244,9 +243,9 @@ export function Reservation({ variant = "section" }: { variant?: "section" | "sh
                   </button>
                 )}
               </div>
-              {!ready && (online || isSilvester) && <p className="text-[0.85rem] text-creme/60">{t.reservation.pickFirst}</p>}
-              {(online || isSilvester) && <p className="text-[0.85rem] text-creme/60">{t.reservation.toSystemNote} {lang !== "de" && lang !== "en" ? t.reservation.systemLangs : ""}</p>}
-              <p className="text-[0.85rem] text-creme/60">{t.reservation.noConfirm}</p>
+              {!ready && (online || isSilvester) && <p className="text-[0.85rem] text-creme/70">{t.reservation.pickFirst}</p>}
+              {(online || isSilvester) && <p className="text-[0.85rem] text-creme/70">{t.reservation.toSystemNote} {lang !== "de" && lang !== "en" ? t.reservation.systemLangs : ""}</p>}
+              <p className="text-[0.85rem] text-creme/70">{t.reservation.noConfirm}</p>
             </div>
           )}
         </section>
@@ -272,12 +271,12 @@ export function SilvesterCard() {
         {t.reservation.silvesterItems.map((x) => <li key={x} className="flex gap-2"><span className="text-ouro" aria-hidden="true">✱</span>{x}</li>)}
       </ul>
       <p className="mt-4"><span className="display text-[2.2rem] text-ouro">CHF {PRICES.silvester}.–</span> <span className="text-sm text-creme/70">{t.reservation.silvesterPrice}</span></p>
-      <p className="text-sm text-creme/60">{t.reservation.silvesterKids}</p>
+      <p className="text-sm text-creme/70">{t.reservation.silvesterKids}</p>
       <div className="mt-5 flex flex-wrap gap-2">
         <a className="pill pill-gold pill-sm" href={SILVESTER_URL(lang)} target="_blank" rel="noopener">{t.reservation.silvesterCta}<IconExternal size={16} /><span className="sr-only">{t.a11y.newTab}</span></a>
         <a className="pill pill-ghost pill-sm text-creme" href={URLS.silvesterFlyer} target="_blank" rel="noopener">{t.reservation.silvesterFlyer}<span className="sr-only">{t.a11y.newTab}</span></a>
       </div>
-      <p className="mt-4 text-[0.75rem] text-creme/45">{t.reservation.silvesterSource}</p>
+      <p className="mt-4 text-[0.75rem] text-creme/70">{t.reservation.silvesterSource}</p>
     </aside>
   );
 }
