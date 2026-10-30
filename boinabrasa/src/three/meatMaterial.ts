@@ -31,7 +31,7 @@ const c = (hex: string) => new THREE.Color(hex);
 const PALETTE = {
   raw1: c("#5a0e18"), raw2: c("#7e1b25"), rawFat: c("#e6d8c0"),
   grey: c("#6e4a3e"), brown1: c("#3d1d0e"), brown2: c("#5e3018"), crust1: c("#1d0d07"), crust2: c("#3b1d0e"), char: c("#0b0605"),
-  gold1: c("#ebbd6a"), gold2: c("#cf9443"), toast: c("#8d5222"),
+  gold1: c("#f2c873"), gold2: c("#d99c48"), toast: c("#7a4219"),
   pink1: c("#cf6f72"), pink2: c("#b84a5a"), greyBand: c("#8c5a4c"), fatIn: c("#efe0c2"),
 };
 
@@ -154,7 +154,11 @@ Meat meatSurface() {
   float fStage = clamp(uCook * 1.22 - 0.16 * n1 + 0.2 * vEdge - 0.08, 0.0, 1.0);
   vec3 fat = cRawFat * (0.94 + 0.08 * n2);
   fat = mix(fat, mix(cGold1, cGold2, clamp(n2 * 0.8 + 0.45, 0.0, 1.0)), smoothstep(0.08, 0.62, fStage));
-  fat = mix(fat, cToast, smoothstep(0.5, 1.0, fStage) * smoothstep(-0.2, 0.45, n1 + n3 * 0.3) * 0.75);
+  // turning over the flames leaves irregular toasted patches and a few near-black crisp spots on the fat
+  float toastMask = smoothstep(-0.15, 0.4, n1 * 0.8 + snoise(p * vec3(5.0, 14.0, 5.0)) * 0.45 + n3 * 0.2);
+  fat = mix(fat, cToast, smoothstep(0.45, 1.0, fStage) * toastMask * 0.85);
+  float crisp = smoothstep(0.58, 0.8, n2 * 0.6 + snoise(p * 18.0 + 7.0) * 0.5) * smoothstep(0.7, 1.0, fStage);
+  fat = mix(fat, cChar * 1.8, crisp * 0.7);
   float fleck = smoothstep(0.62, 0.78, n3 * 0.6 + n2 * 0.5) * smoothstep(0.6, 1.0, fStage);
   fat = mix(fat, cChar * 1.4, fleck * 0.8);
   // coarse black pepper and charred specks, as in the reference
