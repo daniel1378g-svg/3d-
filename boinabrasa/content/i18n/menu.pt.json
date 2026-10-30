@@ -1,0 +1,285 @@
+{
+  "sections": {
+    "apero": {
+      "title": "Salgados para petiscar"
+    },
+    "kalt": {
+      "title": "Bebidas frias"
+    },
+    "saefte": {
+      "title": "Sucos de frutas tropicais",
+      "note": "feitos com a polpa da fruta"
+    },
+    "alkoholfrei": {
+      "title": "Drinques sem álcool"
+    },
+    "biere": {
+      "title": "Cervejas"
+    },
+    "aperitif": {
+      "title": "Aperitivos"
+    },
+    "cocktails": {
+      "title": "Drinques"
+    },
+    "rotwein": {
+      "title": "Vinhos tintos",
+      "note": "75cl"
+    },
+    "weiss": {
+      "title": "Vinhos brancos, rosés & espumantes"
+    },
+    "offen": {
+      "title": "Vinhos em taça",
+      "note": "10cl"
+    },
+    "warm": {
+      "title": "Bebidas quentes"
+    },
+    "digestif": {
+      "title": "Grappa, conhaque & destilados"
+    },
+    "likoere": {
+      "title": "Amaros & licores"
+    },
+    "desserts": {
+      "title": "Sobremesas brasileiras"
+    },
+    "klassisch": {
+      "title": "Sobremesas clássicas & sorvetes"
+    }
+  },
+  "items": {
+    "paodequeijo-s": {
+      "desc": "Servidos quentes (espera de cerca de 15 minutos) – porção pequena, 8 unidades"
+    },
+    "paodequeijo-l": {
+      "desc": "Servidos quentes (espera de cerca de 15 minutos) – porção grande, 16 unidades"
+    },
+    "coxinha-s": {
+      "desc": "Recheadas com frango e fritas – porção pequena, 6 unidades"
+    },
+    "coxinha-l": {
+      "desc": "Recheadas com frango e fritas – porção grande, 12 unidades"
+    },
+    "eptinger-100": {
+      "desc": "Água com ou sem gás"
+    },
+    "eptinger-50": {
+      "desc": "Água com ou sem gás"
+    },
+    "cola": {
+      "desc": "Normal / Zero"
+    },
+    "sprite": {
+      "desc": "Servido no copo"
+    },
+    "eistee-30": {
+      "name": "Chá gelado",
+      "desc": "Servido no copo"
+    },
+    "eistee-50": {
+      "name": "Chá gelado",
+      "desc": "Servido no copo"
+    },
+    "apfelschorle": {
+      "name": "Suco de maçã com gás"
+    },
+    "maracuja": {
+      "desc": "Suco de maracujá"
+    },
+    "goiaba": {
+      "desc": "Suco de goiaba"
+    },
+    "acerola": {
+      "desc": "Suco de acerola"
+    },
+    "manga": {
+      "desc": "Suco de manga"
+    },
+    "abacaxi": {
+      "desc": "Suco de abacaxi"
+    },
+    "caju": {
+      "desc": "Suco de caju"
+    },
+    "skol": {
+      "desc": "Cerveja brasileira"
+    },
+    "weizen": {
+      "desc": "Cerveja de trigo"
+    },
+    "lager-30": {
+      "desc": "Chope"
+    },
+    "lager-50": {
+      "desc": "Chope"
+    },
+    "panache-30": {
+      "desc": "Quöllfrisch"
+    },
+    "panache-50": {
+      "desc": "Quöllfrisch"
+    },
+    "sonnwendlig": {
+      "desc": "Cerveja Appenzeller, sem álcool"
+    },
+    "gespritzt": {
+      "name": "Spritz de vinho branco",
+      "desc": "Doce ou seco"
+    },
+    "aperol": {
+      "desc": "Prosecco / Aperol / água com gás / rodela de laranja fresca"
+    },
+    "hugo": {
+      "desc": "Prosecco / xarope de flor de sabugueiro / água com gás / hortelã fresca / limão"
+    },
+    "cynar": {
+      "desc": "4cl de Cynar completado com suco de laranja"
+    },
+    "campari": {
+      "desc": "4cl de Campari completado com suco de laranja"
+    },
+    "caipirinha": {
+      "desc": "6cl de cachaça / limão fresco / açúcar"
+    },
+    "caipi-maracuja": {
+      "desc": "6cl de cachaça / maracujá fresco / xarope de maracujá / açúcar"
+    },
+    "caipiroska": {
+      "desc": "6cl de vodka / limão fresco / açúcar"
+    },
+    "caipiroska-maracuja": {
+      "desc": "6cl de vodka / maracujá fresco / xarope de maracujá / açúcar"
+    },
+    "mojito": {
+      "desc": "6cl de rum / limão fresco / hortelã fresca / açúcar"
+    },
+    "monkey47": {
+      "desc": "Gin tônica"
+    },
+    "hendrick": {
+      "desc": "Gin tônica"
+    },
+    "miolo": {
+      "desc": "Brasil · Cabernet Sauvignon, Merlot"
+    },
+    "esporao": {
+      "desc": "Portugal · Cabernet Sauvignon, Alicante"
+    },
+    "antu": {
+      "desc": "Chile · Syrah"
+    },
+    "trapiche": {
+      "desc": "Argentina · Malbec"
+    },
+    "cerro": {
+      "desc": "Espanha, Rioja · Tempranillo"
+    },
+    "barbera": {
+      "desc": "Itália · Barbera"
+    },
+    "barolo": {
+      "desc": "Itália · Nebbiolo"
+    },
+    "primitivo": {
+      "desc": "Itália · Primitivo"
+    },
+    "amarone": {
+      "desc": "Itália · Molinara, Corvina, Rondinella"
+    },
+    "arneis": {
+      "desc": "Vinho branco · Itália · Arneis"
+    },
+    "bogle": {
+      "desc": "Vinho branco · EUA, Califórnia · Chardonnay"
+    },
+    "rose": {
+      "desc": "Rosé · Espanha · Cabernet Sauvignon"
+    },
+    "miolo-brut": {
+      "desc": "Espumante · Brasil"
+    },
+    "ponte": {
+      "desc": "Espumante · Itália"
+    },
+    "moet": {
+      "desc": "Espumante · França"
+    },
+    "esporao-10": {
+      "desc": "Vinho tinto · Portugal · Cabernet Sauvignon, Alicante"
+    },
+    "primitivo-10": {
+      "desc": "Vinho tinto · Itália · Primitivo"
+    },
+    "arneis-10": {
+      "desc": "Vinho branco · Itália · Arneis"
+    },
+    "ponte-10": {
+      "desc": "Espumante · Itália"
+    },
+    "kaffee": {
+      "name": "Café"
+    },
+    "tee": {
+      "name": "Chá",
+      "desc": "Vários sabores"
+    },
+    "remy": {
+      "desc": "Conhaque"
+    },
+    "hennessy": {
+      "desc": "Conhaque"
+    },
+    "carlos": {
+      "desc": "Brandy"
+    },
+    "duque": {
+      "desc": "Brandy"
+    },
+    "jack": {
+      "desc": "Whisky"
+    },
+    "jw-black": {
+      "desc": "Whisky"
+    },
+    "pudim": {
+      "desc": "À moda brasileira"
+    },
+    "mousse": {
+      "desc": "Feita com maracujá"
+    },
+    "abacaxi-grelhado": {
+      "desc": "Grelhado na brasa"
+    },
+    "papaya": {
+      "desc": "Se quiser, finalizado com licor de cassis (conforme disponibilidade)"
+    },
+    "boinabrasa": {
+      "desc": "Cubinhos de abacaxi caramelizados, acompanhados de uma bola de sorvete de banana, uma de coco e uma de manga com maracujá, servidos de um jeito especial. Surpreenda-se!"
+    },
+    "brigadeiro": {
+      "desc": "Docinho brasileiro de chocolate, estilo trufa"
+    },
+    "petit-gateau": {
+      "desc": "Bolinho de chocolate servido quente com sorvete de baunilha e chantili (espera de cerca de 15 minutos)"
+    },
+    "panna-cotta": {
+      "desc": "Com calda de frutas vermelhas"
+    },
+    "cafe-glace": {
+      "desc": "Duas bolas de sorvete de café com cobertura de chantili"
+    },
+    "colonel": {
+      "desc": "Duas bolas de sorvete de limão com vodka"
+    },
+    "bananensplit": {
+      "name": "Banana split",
+      "desc": "Um clássico com uma bola de sorvete de chocolate, uma de baunilha e uma de morango, servido com calda extra de chocolate e coberto com chantili"
+    },
+    "kugel": {
+      "name": "Bola de sorvete",
+      "desc": "Chocolate, baunilha, stracciatella, limão, manga com maracujá, café, morango, coco. Adicional de chantili: CHF 1"
+    }
+  }
+}

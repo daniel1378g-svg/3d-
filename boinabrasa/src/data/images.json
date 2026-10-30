@@ -1,0 +1,622 @@
+{
+ "catering-grill": {
+  "w": 600,
+  "h": 400,
+  "widths": [
+   480,
+   600
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRngAAABXRUJQVlA4IGwAAABwAgCdASoQAAsAA4BaJZACdH8AGNo/yeG6RdMAAP4K1XAzp1Ycn9i6gG32b9oRZwuL+1Uzh8J4aZ2tF6nMZlEJCW+bAh4djPPTRX93ihEjUNL694pOZBNOcHNFvlDN2atwdLnlwrQPq0gAAAA="
+ },
+ "catering-impression": {
+  "w": 600,
+  "h": 449,
+  "widths": [
+   480,
+   600
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRnIAAABXRUJQVlA4IGYAAAAwAgCdASoQAAwAA4BaJYwC7AfwBX7seYB2gAD+76ELOR5Drbjt070YQqITTBUJBrzCrl4J6d49SyMRD18PG77qWTvTQ7lWUPk1D92LSOKLbh5ZMrUeBOmR9nIWhmpzWIVQfcaAAAA="
+ },
+ "catering-impressionen-1": {
+  "w": 600,
+  "h": 449,
+  "widths": [
+   480,
+   600
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRnYAAABXRUJQVlA4IGoAAACQAgCdASoQAAwAA4BaJYgCdAYt92uH/aaJjP1K4AD+80Dsk8PAUTuBQAPvyfZkQ2Xb51qDzpsWJdwIOWMh72qlp48CXuPO0pfNIwvPqDv+ZZqGQBPvExRO79kWV+q70RCjXhBMAFuSQAAA"
+ },
+ "catering-impressionen-10": {
+  "w": 600,
+  "h": 449,
+  "widths": [
+   480,
+   600
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRmoAAABXRUJQVlA4IF4AAAAwAgCdASoQAAwAA4BaJZACdAD5P9wu/3rNAAD+6ixGZhG0ZDUp5W+VA8j9msKmtAZL/bIXhb/4ToJkD0jTt0qwPY47AYB/21RdYmGnggQwE5+nThlJ3L5ChDtqAAAA"
+ },
+ "catering-impressionen-11": {
+  "w": 600,
+  "h": 449,
+  "widths": [
+   480,
+   600
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRoYAAABXRUJQVlA4IHoAAAAwAgCdASoQAAwAA4BaJbACdAYq1qvHd6wmAAD+M0/pROxIr64e0k8ifRstNrF/Y2EkiBAhbaTFN4ZsjahYjdJWRC2LEhw/YOC4+E3OBLGPwG+syX6glmzJh0xFNrQD6uumB90fBjFKfnpsvZB1obdY9lACZ69ZBrAAAA=="
+ },
+ "catering-impressionen-2": {
+  "w": 600,
+  "h": 449,
+  "widths": [
+   480,
+   600
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRngAAABXRUJQVlA4IGwAAAAwAgCdASoQAAwAA4BaJagCdAYtpc7f/Kj9sAD2vAicrTI99k9q/uplPAfJI1cdPCFQJ0STf/gk9mw1kE6h9fIAv1vmmw8RGY2i/G8rYdsaYixlO5POBVkBm++aCnBiZUKaiw1bUoxkJPjogAA="
+ },
+ "catering-impressionen-3": {
+  "w": 600,
+  "h": 449,
+  "widths": [
+   480,
+   600
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRmoAAABXRUJQVlA4IF4AAADwAQCdASoQAAwAA4BaJQBOgMWHx7s73QAA/ZoeZ3/O80tIlFgxutONu4VER1tPH1ogiNEjBnyjTavrbYfMLfetzHWzz4/9RaJ8VpGiSuBPdaFvrOcudKVA4OJZ6WAA"
+ },
+ "catering-impressionen-4": {
+  "w": 600,
+  "h": 449,
+  "widths": [
+   480,
+   600
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRmIAAABXRUJQVlA4IFYAAABQAgCdASoQAAwAA4BaJYgCdH8CkAA2Jxby5gAA/vObCG1oiV7wU68Msy+GddXr0ixOAEB3TNhclWS3jkRMVrRfjHircADY/fGCIJ1KmNl3URHX5gAAAA=="
+ },
+ "catering-impressionen-5": {
+  "w": 600,
+  "h": 449,
+  "widths": [
+   480,
+   600
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRogAAABXRUJQVlA4IHwAAABQAgCdASoQAAwAA4BaJbACdAYtLGDhkV+HEDAA/eOwJad5VB2oRvJ5mi9VgbNS88zC0n41YS0OnKiCU886pklrmHsnDrcWvnIqmHwMp33HYA/h7q4N++hpy043cCCSO5ey16g5/TvhJIsUIeApst93LEyUUuVp5c9tAAAA"
+ },
+ "catering-impressionen-6": {
+  "w": 600,
+  "h": 449,
+  "widths": [
+   480,
+   600
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRmgAAABXRUJQVlA4IFwAAAAwAgCdASoQAAwAA4BaJYgC7ADpNu84HnmXwAD1w5QG/sGxaH1brzGrEW4hiz1TMiLDgPM97UEHVFQXvHVzxn9AH+7+r0rnjifVFwAMBizGdsUY7usgWbv2iNKAAA=="
+ },
+ "catering-impressionen-7": {
+  "w": 600,
+  "h": 449,
+  "widths": [
+   480,
+   600
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRnAAAABXRUJQVlA4IGQAAAAQAgCdASoQAAwAA4BaJZACdAYuHgKqADnwAP7AVFK7wxvnEhk+hoJMkJN4HaW4ShoX7D77ThGcPkBlFROH4DZIeqapZ2l9UaNV2mIw6P8e9GyWY4XLHJi0B/omZ2k5XBdCAAAA"
+ },
+ "catering-impressionen-8": {
+  "w": 600,
+  "h": 449,
+  "widths": [
+   480,
+   600
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRnYAAABXRUJQVlA4IGoAAAAwAgCdASoQAAwAA4BaJZgCdAYrTTSwnNwDAAD+if4kucSgdFX64qF4Y+6PhCT3YQxm4AWrWM8XHAap2MGWR1QcqwhPGr4eS4wyye2SGduDQA75nRL9hddLkd5KBWrELDMEDxEJlL5OY3gA"
+ },
+ "catering-impressionen-9": {
+  "w": 600,
+  "h": 449,
+  "widths": [
+   480,
+   600
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRngAAABXRUJQVlA4IGwAAABQAgCdASoQAAwAA4BaJZQCdAYwnlIN/kqoPAAA/vEjKiP/zJ/nbJkP6lK1a/oF/WG+xyl5LRUT5BTGnrF/Rpd3+q09N6EFPlVIvdb+6BwBQKuETnJqH4GYG4+auPSkf79gieMhc4AjAIEAAAA="
+ },
+ "catering-hall": {
+  "w": 2560,
+  "h": 1877,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRjAAAABXRUJQVlA4ICQAAACwAQCdASoQAAwAA4BaJaQAAxf8BogAAP7yz+J6SgPrG4rwAAA="
+ },
+ "voucher-birthday": {
+  "w": 1592,
+  "h": 1080,
+  "widths": [
+   480,
+   960,
+   1592
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRnoAAABXRUJQVlA4IG4AAABwAgCdASoQAAsAA4BaJbACdEf/gdNcmRbFykAAAP7218/94BUCvxsic9rnfd5p0m4jat05BMwdxCg61zPlO6hkHlWHdpwPfHcDD14sJeR7Gtb9X+AD9DUZROj6eOpDAJ3cJTwZ7SKu1XXxGcAAAA=="
+ },
+ "voucher-caipirinha": {
+  "w": 1592,
+  "h": 1080,
+  "widths": [
+   480,
+   960,
+   1592
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRnAAAABXRUJQVlA4IGQAAADQAQCdASoQAAsAA4BaJZgCdAEOIaNkAAD++IxskS+ADUFQHZuXY3QBx4UKu7zYjjR8U3aXGMsfBKGJxfa/neLhOkT+6s2WynJqhmvYcjD8eKnY/bLZMEDouWUT7zfIxzYqAAAA"
+ },
+ "voucher-danke": {
+  "w": 1592,
+  "h": 1080,
+  "widths": [
+   480,
+   960,
+   1592
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAADwAQCdASoQAAsAA4BaJZwAAxOf3VQOQAAA/pqm8gTvP8I4j11KgCTih/2L+6cziDz5ijhtwpqEXe+4bu7LG5duN7ohgtRdY+RBjDgA"
+ },
+ "voucher-gaucho": {
+  "w": 1592,
+  "h": 1080,
+  "widths": [
+   480,
+   960,
+   1592
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRmQAAABXRUJQVlA4IFgAAADQAQCdASoQAAsAA4BaJZQAAtikBJSXQAD+94KZ4To45afoRykWbm9WOURtjT6/en7ZY/A14c19rfwk0GWjXYDf7l+CFKEAlFrf37QnBKiZQUF8XIlCTRAA"
+ },
+ "voucher-geschenk": {
+  "w": 1592,
+  "h": 1080,
+  "widths": [
+   480,
+   960,
+   1592
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRngAAABXRUJQVlA4IGwAAAAQAgCdASoQAAsAA4BaJbACdH8ADYne5IAAAP717uHc3ofaOdzufrAqRFpz2KYd88s625zINOWtTS/M31/upVBOlXOhIXDQh2W4OZhdmpvQQyJLqg4Bwx5+lRwohn0waKWsib6onLcO96VpwAA="
+ },
+ "voucher-orchideen": {
+  "w": 1592,
+  "h": 1080,
+  "widths": [
+   480,
+   960,
+   1592
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRmIAAABXRUJQVlA4IFYAAADwAQCdASoQAAsAA4BaJZACdAEDZVvEVqAA/vS0gh5wpmTwDiMKOIdrv0m3nI7K9dD0lLY3laZLrCWWqLpPZLfW06v2TUc8LQroXDIdKFckgDS2ngAAAA=="
+ },
+ "voucher-rindschild": {
+  "w": 1592,
+  "h": 1080,
+  "widths": [
+   480,
+   960,
+   1592
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRmwAAABXRUJQVlA4IGAAAABQAgCdASoQAAsAA4BaJZgCdH8AgryBBxexYAAA/ve+rOVh/QvrXlz775gwsXv8clBESHf0ZH7QjNY5dvtF++/F2cT/yt9RQsKL71+qXdZ7KC3jF8OIx9/adnFo4Q6MAAA="
+ },
+ "voucher-rio-grande": {
+  "w": 1592,
+  "h": 1080,
+  "widths": [
+   480,
+   960,
+   1592
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRnYAAABXRUJQVlA4IGoAAADwAQCdASoQAAsAA4BaJYwAD40qJ2TtW7gA/vXayo0oZSWZZQFaNuOGIs2ICKq2/z7FB/l+ciTzQb35DZHiucCO9Y5v86seadpz9Cmq+XfXuTd3lECi8/qx8r6reWFxMI6X1+AAqpfNMAAA"
+ },
+ "voucher-rose": {
+  "w": 1592,
+  "h": 1080,
+  "widths": [
+   480,
+   960,
+   1592
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRnQAAABXRUJQVlA4IGgAAADwAQCdASoQAAsAA4BaJZACdAYsPNM8zdwA/vfGwm9I7FIUIwdinl7L7QNdnzh2+5jruGHECwkdxiKvbfvfOfom7FfKp3lEfzkiofLQqbmyxMEN0Bnt4YUux/Sfa0cFAZVGQApEpQKgAA=="
+ },
+ "voucher-wunderkerze": {
+  "w": 1592,
+  "h": 1080,
+  "widths": [
+   480,
+   960,
+   1592
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRnIAAABXRUJQVlA4IGYAAAAQAgCdASoQAAsAA4BaJbACdH8AFEKSCHcAAP74jGyd4A/WOqcMsJd6IsYifJVhUFdyaP/9NmyedbyIbC3jbHPZH4T77qzZV9f6xO9ivcZdwirMtv91Du/ynyJmIuHkq6nZCY3YAAA="
+ },
+ "reservation-tables": {
+  "w": 2063,
+  "h": 824,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAADQAQCdASoQAAYAA4BaJYwCdAEKIR0TwAD+8ORZflcMCLFR7yCM0pgRusS5Mmmovole50Y6jT6Y+rE5nvL1BDC1Cl69ynFBiJz8ugAA"
+ },
+ "brasilianische_wurst": {
+  "w": 1180,
+  "h": 460,
+  "widths": [
+   480,
+   960,
+   1180
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRmYAAABXRUJQVlA4IFoAAADwAQCdASoQAAYAA4BaJbACdADcYg4kNIAA+QkqlmPkGJ45vZIc9YOqBpZbq5Od4wrNbE1bxJWi6cxvkrF+kbbDWSkO3t9SoKIwknvqwA3qea4+LXami/YAAAA="
+ },
+ "brasiliansiche_caipirinha": {
+  "w": 1180,
+  "h": 700,
+  "widths": [
+   480,
+   960,
+   1180
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRmoAAABXRUJQVlA4IF4AAADwAQCdASoQAAkAA4BaJbACdAYstilWgIAA/vRHlSWlIUFXW6yuc9ZfcVW8Ln299oKYu23mu88hhhjMax0qjH8r8c28X6XgLhfC04K0dHSGyWQQ8u75rS9FzBbp1rAA"
+ },
+ "brasiliansiche_gerichte_feijoada": {
+  "w": 1182,
+  "h": 570,
+  "widths": [
+   480,
+   960,
+   1182
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRkgAAABXRUJQVlA4IDwAAADQAQCdASoQAAgAA4BaJbACdADdZhabgADNkafjx/wrm/B0yA65x2/AHboe/ZiX8z5SQTHbwIvdii8AAAA="
+ },
+ "brasiliansiche_gerichte_tisch": {
+  "w": 1180,
+  "h": 700,
+  "widths": [
+   480,
+   960,
+   1180
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRnQAAABXRUJQVlA4IGgAAADwAQCdASoQAAkAA4BaJbACdAYuQ+g30AAA/N3rq2F9+31i9xvBObQLkL5dNt+quhVTorvg4hpunUF8FlBxYA8p57WdHqqgt2FkNJSSVga/4KUpgylAkTt+rwz1Bo7Olk2Bv6Wa5RgAAA=="
+ },
+ "brasiliansiche_wurst_wissen": {
+  "w": 500,
+  "h": 350,
+  "widths": [
+   480,
+   500
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRnQAAABXRUJQVlA4IGgAAABQAgCdASoQAAsAA4BaJbACdAYubnWZoZcIvcAA+FGQbS94TB6b5Kl/rqfD3+BOInyA0bOTkXQZCxmGhuu/RnXxdQ9fHvgbk61QWwAUjMro6n34WussmfB5dEx35YPmuN1WxzwCYQAAAA=="
+ },
+ "caipirinha_wissen": {
+  "w": 500,
+  "h": 350,
+  "widths": [
+   480,
+   500
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRn4AAABXRUJQVlA4IHIAAABQAgCdASoQAAsAA4BaJbACdAYubyE5lWHSggAA/uzYguJqn389ZWE+pS2j3P9l3kDCHET/LVn3cwDqmWMjAHoZY5Sf5eZW89ykAZd5CHPodfmdHoZMq0wCcdnujtGRgCWva4git8PyqxpS3nFwczSiAAA="
+ },
+ "churrasco_grill": {
+  "w": 590,
+  "h": 460,
+  "widths": [
+   480,
+   590
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRmwAAABXRUJQVlA4IGAAAAAQAgCdASoQAAwAA4BaJYwC7ADwH5P/QRAAAP7KB6ohuBigM1HGRs9p34pW7n6iN0qveBgtk36SSlxXlzVeWSciFFOFos11LhDQGwhGILKm1Y6oujCcb25PxYYyLuTAAAA="
+ },
+ "gaucho_am_feuer": {
+  "w": 590,
+  "h": 460,
+  "widths": [
+   480,
+   590
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRnYAAABXRUJQVlA4IGoAAAAQAgCdASoQAAwAA4BaJYgCdAYt9V/9c0hwAP7aJakQaNNR4W24itQnkigmlN1KSFS6HQ+U6pfngRiTGhh6SjQXob7O80SwHMrNnsr5QEXGftmc79A7wgqZuhyPqGHj6gg6uUjxlAt6gAAA"
+ },
+ "gaucho_grill_wissen": {
+  "w": 500,
+  "h": 350,
+  "widths": [
+   480,
+   500
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRnYAAABXRUJQVlA4IGoAAABwAgCdASoQAAsAA4BaJZACdH8AgrTECxqF0wBAAP6H9RqrxWl7Hwd6trTGoBfGzXm6wH4lVhy/w1YwfWQzvw6ZkNyMJOOeTWH16/vT2bG1uHTE55EV6096nj4umSdZOs+qoKKYm/S+AAAA"
+ },
+ "gaucho_zubereitung": {
+  "w": 590,
+  "h": 460,
+  "widths": [
+   480,
+   590
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRmIAAABXRUJQVlA4IFYAAADwAQCdASoQAAwAA4BaJQBOgBa5OvCKYAAA/vF6TJE6clZyvETdU88M2NNvlqTtRLiB8H02YEMvroaT3YahOJfgiFBFsYiyXx0s9d++Qt88PKjBbmdIAA=="
+ },
+ "maminha_wissen": {
+  "w": 500,
+  "h": 350,
+  "widths": [
+   480,
+   500
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRl4AAABXRUJQVlA4IFIAAAAQAgCdASoQAAsAA4BaJQBOgCPc/UDdCl1AAP5r3grDOVYWO5G8GSC5DezrcjUV2Svk5nqaQrDGQdy31ghSWGId+OyE9TSbXIRIPDujTaOlAAAA"
+ },
+ "maminha_zubereitung": {
+  "w": 1180,
+  "h": 700,
+  "widths": [
+   480,
+   960,
+   1180
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRmwAAABXRUJQVlA4IGAAAADwAQCdASoQAAkAA4BaJZACdADHSgxuTwAA/sxpna0waC9D7mEGVi4O4/vQU4X3h7X/aj4xj3OdD6lIYFN3dPVDWpAflIV2uelifhsimBWTCzVdtpO561mxjWoQGN4AAAA="
+ },
+ "picanha_am_tisch": {
+  "w": 1180,
+  "h": 700,
+  "widths": [
+   480,
+   960,
+   1180
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRnIAAABXRUJQVlA4IGYAAACQAgCdASoQAAkAA4BaJaACdApgE8gWXyUk8ruWAAD+rWXXR228HafDPA/OluGUpSmhTIS8I34YIVbWMTN1xzrIbBRkulJjIC0WgwBvnZxCPLKULYVodXFHMmEIpeLu3PaH7AzgAAA="
+ },
+ "picanha_roh_spiess": {
+  "w": 1180,
+  "h": 400,
+  "widths": [
+   480,
+   960,
+   1180
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRlAAAABXRUJQVlA4IEQAAADQAQCdASoQAAUAA4BaJbACdADiX0i0AAD+x23sP6ajAhkuldFbb1qqfSQBI7emhi3H8Gh/K+Tce0zyPYzYuhdKOIAsAA=="
+ },
+ "picanha_wissen": {
+  "w": 500,
+  "h": 350,
+  "widths": [
+   480,
+   500
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRmAAAABXRUJQVlA4IFQAAABQAgCdASoQAAsAA4BaJZgCdH8AGEV+C/fclOAA/P+fZ2IbwY+ZSPu1nd6mqBl2P2O4vbEW0x7l8r2W06XOnipp+FF9uCkY2yI3hu2an7aQ8BRAAAA="
+ },
+ "salatplatte": {
+  "w": 590,
+  "h": 460,
+  "widths": [
+   480,
+   590
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRoAAAABXRUJQVlA4IHQAAADwAQCdASoQAAwAA4BaJbACdAYrJgALcfgA/lYHRUwJhYA7qZIF6TqIwG7lYmsb8rUfn9FLc7/SW1DzfHLLZdpU+Obtbnq1TB6envhGr+NJnhYUkObc0grw+r2z1b7Bf+qwOv8v0OUtu3fDgObkFE4LByAAAA=="
+ },
+ "schnitt_fleisch": {
+  "w": 590,
+  "h": 460,
+  "widths": [
+   480,
+   590
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRnwAAABXRUJQVlA4IHAAAABQAgCdASoQAAwAA4BaJaACdAYvhbZ02f5EkAAA/ubGfg00CUjjhs8qPrqhrMV2IXSEluCW1jJxwNtQOby1m6g+KwUbNgNrCCv53xOkC8jD1K5Ack/cuEC8RQ6PCPuyrr2X25olDAW4Y+gDhgmknZAA"
+ },
+ "schnitt_zubereitung": {
+  "w": 590,
+  "h": 460,
+  "widths": [
+   480,
+   590
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRn4AAABXRUJQVlA4IHIAAABwAgCdASoQAAwAA4BaJbACdAYubk0c4kbrpDOAAP7uai+0pUw5vcImNgICxaxtfibu7XWCAunNPfR3ogjmce/KeK0j6XTKRC72wHWoxgF1bZ7tdyJk/MYm7ZOYiDpSwcxSbG1b4c/l3wbUyAn2gurhYAA="
+ },
+ "map": {
+  "w": 2903,
+  "h": 612,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRiQAAABXRUJQVlA4IBgAAAAwAQCdASoQAAMAA4BaJaQAA3AA/vH3AAA="
+ },
+ "header-gaucho_pferden": {
+  "w": 1920,
+  "h": 480,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRlQAAABXRUJQVlA4IEgAAADwAQCdASoQAAQAA4BaJZgCdAEQ2IUnlgAA/uoB2xhCi7NVqnENz8GCXiSKuLUO/uD9TQPxOUGaVCnnq0nrKMBO5p9dZpSwAAA="
+ },
+ "header-gutscheine": {
+  "w": 1920,
+  "h": 480,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRkAAAABXRUJQVlA4IDQAAACwAQCdASoQAAQAA4BaJYwCdADGKDYAAP3VZWAtngbxRZ9jTANr8yKKemqz186MgXUdXKAA"
+ },
+ "header-preise": {
+  "w": 1920,
+  "h": 480,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRjgAAABXRUJQVlA4ICwAAACwAQCdASoQAAQAA4BaJZQCdADDCrTsAP5UgRR+ncEJ88OVYqycigVLUqwAAA=="
+ },
+ "header-dolcebrigadeiro": {
+  "w": 1920,
+  "h": 480,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAACwAQCdASoQAAQAA4BaJZQCdAEfKJTIAMlwCMdnPAkw+c1u2YXktPtbRKNqdGgA"
+ },
+ "header-spiesse": {
+  "w": 1920,
+  "h": 480,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRkQAAABXRUJQVlA4IDgAAADQAQCdASoQAAQAA4BaJYwAAuiumXbrgAD+6avLwbNcMAeaQZkiFNU5/9mjFwrwHsiCaP7ZO8QAAA=="
+ },
+ "header-tische_2": {
+  "w": 1920,
+  "h": 480,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRkYAAABXRUJQVlA4IDoAAACQAQCdASoQAAQAA4BaJQBOgBi8E6AA/vFHdFMB8JoSUcrflP9/nAN8FS8VCIN+iA1GPIxjO9kfIAAA"
+ },
+ "spiess": {
+  "w": 1920,
+  "h": 960,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRmgAAABXRUJQVlA4IFwAAADwAQCdASoQAAgAA4BaJbACdADO+frWirAA/sJd3TGodz+jxeY8ioL2VhM2vlUwfdHD8+KXNigQE/Op4mv1anHb7sJdCZPR1GpOdJccgla3GhaHyha8aoPM7IAAAA=="
+ },
+ "buffet": {
+  "w": 1920,
+  "h": 960,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRmIAAABXRUJQVlA4IFYAAADQAQCdASoQAAgAA4BaJaACdADL/VFW7AD9vgkw/zFGDNCQ3EdRMeRmXNeHdU8BWxwwAfp/oA9ayA4ashrZvt4dykKlFHOmlxnOACzIWBKVopQqtAAAAA=="
+ },
+ "catering": {
+  "w": 1920,
+  "h": 960,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRmoAAABXRUJQVlA4IF4AAADwAQCdASoQAAgAA4BaJQBOgMW0poxohUAA/uor9A56X8zAwd4zFVsIgIZtoi6u1ZCfFaz9wFSASQBka9Fy0E417s6/M/BvCpXtLALY3BKikdkLy0dmYzXqaSeIAAAA"
+ },
+ "restaurant-rodizio": {
+  "w": 1920,
+  "h": 960,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRlAAAABXRUJQVlA4IEQAAACwAQCdASoQAAgAA4BaJZQCdACCk+pgAP6W567p0qFdhr39fB30MYbJVZPHqwTbZCDRabCEDZCgz0USmIQ8wn8hyAAAAA=="
+ },
+ "restaurant": {
+  "w": 1920,
+  "h": 960,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAADwAQCdASoQAAgAA4BaJZACdADxIq9aGcgA/uRK+HZ5H9vRCMpzKjloteTB2jHwl/a4fO/mWuyWmJG9JgfpHvuPK0uzvCHHy2WkOyAA"
+ },
+ "cutout-costela_de_boi": {
+  "w": 280,
+  "h": 380,
+  "widths": [
+   280
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRs4AAABXRUJQVlA4IMIAAAAwBQCdASoQABYAPu1iqU2ppaOiMAgBMB2JbACdMoRwEGADleoOWDA4P6kqraSqe5bEAAD+wH60oacbX6V0TewdrHbjZvkdATxeYkPb/MCiGPqU0Vaqag9x3TrqT/xSuRD6eV/xeb+ZVG11xC0WoMqlW7LTer3kca7XM/Po3c8FUg2mBNXUyN8NYPdurODKIU+satfW/xaSVUOn+u0TkJqcumFUsmJBDy9sAZabEA8UTx8w5muIp+OGrAiedjjx2AAAAA=="
+ },
+ "cutout-picanha": {
+  "w": 280,
+  "h": 380,
+  "widths": [
+   280
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRnYAAABXRUJQVlA4IGoAAAAQBACdASoQABYAPu1iqU2ppaOiMAgBMB2JQBOkGQBcc8ZmxQJ4Y6LEAAD9RwzWMgLd6GgdFOmhDTcQUiW+Tj4RvHTzafekyxouaHsQ6gqBFaRif7+txDxjLkfY2i/FVh4XgocJVvWVAAAA"
+ },
+ "silvester-2026": {
+  "w": 960,
+  "h": 1440,
+  "widths": [
+   480,
+   960
+  ],
+  "alpha": true,
+  "blur": "data:image/webp;base64,UklGRgwCAABXRUJQVlA4WAoAAAAQAAAADwAAFwAAQUxQSCoBAAAFkGVb2/FIz/t+P+Ok7Krmpc0R9ER7DHZf23bs5OPbmEREJCgj7ZEYAGk8dyCi5aRi9cYP07bKEWrV8urU+GK/+PsTiRBqbpSnpNOhCP4nx57sDajyYrs5JyCO3clTb5buXmkuXoMGVBzOL32t9fKt/O09paFk8er1o80l++bI45/KQ/kDB9q6NC9L+f1rFkLj2IUvbqk1r/DoRkco7G0udpOlji59rX99zwHIXAgASPA/KwfOfaxtqqfZdA5OJCIyqVcy5eABUMmzS73yYwAgKS9ZzZK4dNwmARAVyqljnk6MEXCpFHuQYus4RP0ZlXU1tUGJxHB9Nh5AiULwFGJrARDh8MaEmsL1z00KJNWy1OeFAWXxUPe0UF0CsY1BTokdAyUIk2dQgIQZVlA4ILwAAABQBACdASoQABgAPu1iqU2ppaOiMAgBMB2JbACdMoR3DhPCIzA67wLmbvkQAPaRYGBuWU9N86pXpdI9rD3dTyymdYCGNPnxBcQFMcg6N9GOkjNUe5wM6ndStkA/fweI7I/95pTP6FNjCsd9lSufX/kx2VkhMMniY8HEDtYyAVz3zsPFIosBKMIrq6qnMANyYUZ8WvqgJjAjdB4ybQEJ+3JaUAliH10/W2Jfk8/0ybqJH2Dk34Mv1/+DWkAAAA=="
+ },
+ "intro-wallpaper": {
+  "w": 1225,
+  "h": 720,
+  "widths": [
+   480,
+   960,
+   1225
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRjwAAABXRUJQVlA4IDAAAADwAQCdASoQAAkAA4BaJZQAAudN7BV+4gAA/vEhTRMFEvTV+QtfUW6xk4j3igUAAAA="
+ }
+}

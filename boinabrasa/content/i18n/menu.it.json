@@ -1,0 +1,285 @@
+{
+  "sections": {
+    "apero": {
+      "title": "Salgados per l’aperitivo"
+    },
+    "kalt": {
+      "title": "Bevande fredde"
+    },
+    "saefte": {
+      "title": "Succhi di frutta tropicale",
+      "note": "a base di polpa di frutta"
+    },
+    "alkoholfrei": {
+      "title": "Cocktail analcolici"
+    },
+    "biere": {
+      "title": "Birre"
+    },
+    "aperitif": {
+      "title": "Aperitivi"
+    },
+    "cocktails": {
+      "title": "Cocktail"
+    },
+    "rotwein": {
+      "title": "Vino rosso",
+      "note": "75cl"
+    },
+    "weiss": {
+      "title": "Vino bianco, rosato e spumante"
+    },
+    "offen": {
+      "title": "Vino al bicchiere",
+      "note": "10cl"
+    },
+    "warm": {
+      "title": "Bevande calde"
+    },
+    "digestif": {
+      "title": "Grappa, cognac e distillati"
+    },
+    "likoere": {
+      "title": "Amari e liquori"
+    },
+    "desserts": {
+      "title": "Dessert brasiliani"
+    },
+    "klassisch": {
+      "title": "Dessert classici e gelati"
+    }
+  },
+  "items": {
+    "paodequeijo-s": {
+      "desc": "Panini brasiliani al formaggio, serviti caldi (attesa ca. 15 minuti) – porzione piccola, 8 pezzi"
+    },
+    "paodequeijo-l": {
+      "desc": "Panini brasiliani al formaggio, serviti caldi (attesa ca. 15 minuti) – porzione grande, 16 pezzi"
+    },
+    "coxinha-s": {
+      "desc": "Specialità brasiliane ripiene di pollo e fritte – porzione piccola, 6 pezzi"
+    },
+    "coxinha-l": {
+      "desc": "Specialità brasiliane ripiene di pollo e fritte – porzione grande, 12 pezzi"
+    },
+    "eptinger-100": {
+      "desc": "Acqua frizzante o naturale"
+    },
+    "eptinger-50": {
+      "desc": "Acqua frizzante o naturale"
+    },
+    "cola": {
+      "desc": "Normale / Zero"
+    },
+    "sprite": {
+      "desc": "alla spina"
+    },
+    "eistee-30": {
+      "desc": "alla spina",
+      "name": "Tè freddo"
+    },
+    "eistee-50": {
+      "desc": "alla spina",
+      "name": "Tè freddo"
+    },
+    "apfelschorle": {
+      "name": "Succo di mela frizzante"
+    },
+    "maracuja": {
+      "desc": "Frutto della passione"
+    },
+    "goiaba": {
+      "desc": "Guava"
+    },
+    "acerola": {
+      "desc": "Acerola"
+    },
+    "manga": {
+      "desc": "Mango"
+    },
+    "abacaxi": {
+      "desc": "Ananas"
+    },
+    "caju": {
+      "desc": "Anacardio"
+    },
+    "skol": {
+      "desc": "Birra brasiliana"
+    },
+    "weizen": {
+      "desc": "Birra di frumento"
+    },
+    "lager-30": {
+      "desc": "Birra alla spina"
+    },
+    "lager-50": {
+      "desc": "Birra alla spina"
+    },
+    "panache-30": {
+      "desc": "Quöllfrisch"
+    },
+    "panache-50": {
+      "desc": "Quöllfrisch"
+    },
+    "sonnwendlig": {
+      "desc": "Birra Appenzeller, birra analcolica"
+    },
+    "gespritzt": {
+      "desc": "Dolce o acidulo",
+      "name": "Vino bianco spruzzato"
+    },
+    "aperol": {
+      "desc": "Prosecco / Aperol / soda / fetta d’arancia fresca"
+    },
+    "hugo": {
+      "desc": "Prosecco / sciroppo di fiori di sambuco / soda / menta fresca / lime"
+    },
+    "cynar": {
+      "desc": "4cl di Cynar allungato con succo d’arancia"
+    },
+    "campari": {
+      "desc": "4cl di Campari allungato con succo d’arancia"
+    },
+    "caipirinha": {
+      "desc": "6cl di cachaça / lime fresco / zucchero"
+    },
+    "caipi-maracuja": {
+      "desc": "6cl di cachaça / frutto della passione fresco / sciroppo di frutto della passione / zucchero"
+    },
+    "caipiroska": {
+      "desc": "6cl di vodka / lime fresco / zucchero"
+    },
+    "caipiroska-maracuja": {
+      "desc": "6cl di vodka / frutto della passione fresco / sciroppo di frutto della passione / zucchero"
+    },
+    "mojito": {
+      "desc": "6cl di rum / lime fresco / menta fresca / zucchero"
+    },
+    "monkey47": {
+      "desc": "Gin tonic"
+    },
+    "hendrick": {
+      "desc": "Gin tonic"
+    },
+    "miolo": {
+      "desc": "Brasile · Cabernet Sauvignon, Merlot"
+    },
+    "esporao": {
+      "desc": "Portogallo · Cabernet Sauvignon, Alicante"
+    },
+    "antu": {
+      "desc": "Cile · Syrah"
+    },
+    "trapiche": {
+      "desc": "Argentina · Malbec"
+    },
+    "cerro": {
+      "desc": "Spagna-Rioja · Tempranillo"
+    },
+    "barbera": {
+      "desc": "Italia · Barbera"
+    },
+    "barolo": {
+      "desc": "Italia · Nebbiolo"
+    },
+    "primitivo": {
+      "desc": "Italia · Primitivo"
+    },
+    "amarone": {
+      "desc": "Italia · Molinara, Corvina, Rondinella"
+    },
+    "arneis": {
+      "desc": "Vino bianco · Italia · Arneis"
+    },
+    "bogle": {
+      "desc": "Vino bianco · USA-California · Chardonnay"
+    },
+    "rose": {
+      "desc": "Rosato · Spagna · Cabernet Sauvignon"
+    },
+    "miolo-brut": {
+      "desc": "Spumante · Brasile"
+    },
+    "ponte": {
+      "desc": "Spumante · Italia"
+    },
+    "moet": {
+      "desc": "Spumante · Francia"
+    },
+    "esporao-10": {
+      "desc": "Vino rosso · Portogallo · Cabernet Sauvignon, Alicante"
+    },
+    "primitivo-10": {
+      "desc": "Vino rosso · Italia · Primitivo"
+    },
+    "arneis-10": {
+      "desc": "Vino bianco · Italia · Arneis"
+    },
+    "ponte-10": {
+      "desc": "Spumante · Italia"
+    },
+    "kaffee": {
+      "name": "Caffè crema"
+    },
+    "tee": {
+      "desc": "Diverse varietà",
+      "name": "Tè"
+    },
+    "remy": {
+      "desc": "Cognac"
+    },
+    "hennessy": {
+      "desc": "Cognac"
+    },
+    "carlos": {
+      "desc": "Brandy"
+    },
+    "duque": {
+      "desc": "Brandy"
+    },
+    "jack": {
+      "desc": "Whisky"
+    },
+    "jw-black": {
+      "desc": "Whisky"
+    },
+    "pudim": {
+      "desc": "Budino alla brasiliana"
+    },
+    "mousse": {
+      "desc": "Mousse al frutto della passione"
+    },
+    "abacaxi-grelhado": {
+      "desc": "Ananas grigliato"
+    },
+    "papaya": {
+      "desc": "Crema di papaya, su richiesta arricchita con liquore di cassis (secondo disponibilità)"
+    },
+    "boinabrasa": {
+      "desc": "Cubetti di ananas caramellati, accompagnati da una pallina di gelato alla banana, una al cocco e una al mango e frutto della passione, serviti in modo speciale. Lasciatevi sorprendere!"
+    },
+    "brigadeiro": {
+      "desc": "Praline brasiliane tra tartufo e fudge"
+    },
+    "petit-gateau": {
+      "desc": "Tortino al cioccolato servito caldo con gelato alla vaniglia e panna (attesa ca. 15 minuti)"
+    },
+    "panna-cotta": {
+      "desc": "Panna cotta servita con salsa ai frutti di bosco"
+    },
+    "cafe-glace": {
+      "desc": "Due palline di gelato al moka con un ciuffo di panna"
+    },
+    "colonel": {
+      "desc": "Due palline di gelato al limone con vodka"
+    },
+    "bananensplit": {
+      "desc": "Un classico con una pallina di gelato al cioccolato, una alla vaniglia e una alla fragola, servito con salsa al cioccolato aggiuntiva e guarnito con un ciuffo di panna",
+      "name": "Banana split"
+    },
+    "kugel": {
+      "desc": "Cioccolato, vaniglia, stracciatella, limone, mango e frutto della passione, moka, fragola, cocco. Supplemento panna CHF 1",
+      "name": "Pallina di gelato"
+    }
+  }
+}

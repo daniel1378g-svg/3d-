@@ -1,0 +1,357 @@
+URL: https://www.boinabrasa.ch/en/privacy-policy
+TITLE: Datenschutz | BOINABRASA
+LANG: en-gb
+
+  
+
+中文
+Dolcebrigadeiro
+Catering
+Coupons
+Request for groups
+RESERVE A TABLE
+Home
+Prices & FAQ
+Our skewers
+Contact
+PRIVACY POLICY
+1. DATA PROTECTION AT A GLANCE
+General Information
+
+The following information provides a simple overview of what happens to your personal data when you visit this website. Personal data refers to all data that can personally identify you. Detailed information on data protection can be found in our data protection declaration listed below this text.
+
+Data Collection on this Website
+
+Who is responsible for data collection on this website?
+
+Data processing on this website is carried out by the website operator. You can find the contact details of the website operator in the imprint of this website.
+
+How do we collect your data?
+
+Your data is collected when you provide it to us. This may include data that you enter into a contact form, for example.
+
+Other data is automatically collected or consented to when visiting the website through our IT systems. These are primarily technical data (e.g., internet browser, operating system, or the time of page access). The collection of this data occurs automatically as soon as you enter this website.
+
+What do we use your data for?
+
+Some of the data is collected to ensure the proper functioning of the website. Other data may be used to analyze your user behavior.
+
+What rights do you have regarding your data?
+
+You have the right to receive free information about the origin, recipient, and purpose of your stored personal data at any time. You also have the right to request the correction or deletion of this data. If you have given consent for data processing, you can revoke this consent at any time for the future. Furthermore, under certain circumstances, you have the right to request the restriction of the processing of your personal data. You also have the right to lodge a complaint with the competent supervisory authority.
+
+For this purpose and for further questions regarding data protection, you can contact us at any time using the address provided in the imprint.
+
+Analysis Tools and Third-Party Tools
+
+When visiting this website, your surfing behavior may be statistically evaluated. This is mainly done with so-called analysis programs.
+
+Detailed information about these analysis programs can be found in the following data protection declaration.
+
+2. HOSTING AND CONTENT DELIVERY NETWORKS (CDN)
+External Hosting
+
+This website is hosted by an external service provider (hoster). The personal data collected on this website is stored on the hoster's servers. This may include IP addresses, contact inquiries, meta and communication data, contract data, contact details, names, website accesses, and other data generated via a website.
+
+The use of the hoster is for the purpose of fulfilling the contract with our potential and existing customers (Art. 6 para. 1 lit. b DSGVO) and in the interest of a secure, fast, and efficient provision of our online offer by a professional provider (Art. 6 para. 1 lit. f DSGVO).
+
+Our hoster will process your data only to the extent necessary to fulfill its performance obligations and will follow our instructions regarding this data.
+
+3. GENERAL INFORMATION AND MANDATORY INFORMATION
+Data Protection
+
+The operators of these pages take the protection of your personal data very seriously. We treat your personal data confidentially and in accordance with the statutory data protection regulations and this data protection declaration.
+
+When you use this website, various personal data is collected. Personal data is data that can be used to personally identify you. This data protection declaration explains what data we collect and what we use it for. It also explains how and for what purpose this is done.
+
+We would like to point out that data transmission over the Internet (e.g., communication by e-mail) may have security vulnerabilities. A complete protection of data against access by third parties is not possible.
+
+Controller's Contact Information
+
+The controller responsible for data processing on this website is:
+
+Julio Freaza
+Honeywell-Platz 1
+8157 Zurich Dielsdorf
+
+Phone: +41 (0) 438101212
+Email: info@boinabrasa.ch
+
+The controller is the natural or legal person who alone or jointly with others decides on the purposes and means of processing personal data (e.g., names, e-mail addresses, etc.).
+
+Notice regarding Data Transfer to the USA
+
+On our website, tools from companies based in the USA are integrated. When these tools are active, your personal data may be transferred to the US servers of the respective companies. We would like to point out that the USA is not a secure third country in terms of EU data protection law. US companies are obligated to disclose personal data to security authorities without the possibility for you as the data subject to legally challenge this. Therefore, it cannot be ruled out that US authorities (e.g., intelligence agencies) may process, evaluate, and permanently store your data located on US servers for monitoring purposes. We have no influence on these processing activities.
+
+Revocation of Your Consent for Data Processing
+
+Many data processing operations are only possible with your express consent. You can revoke your consent at any time. The legality of the data processing carried out prior to the revocation remains unaffected by the revocation.
+
+Right to Object to Data Collection in Special Cases and to Direct Marketing (Art. 21 GDPR)
+
+WHEN DATA PROCESSING IS BASED ON ART. 6 PARA. 1 LIT. E OR F GDPR, YOU HAVE THE RIGHT TO OBJECT TO THE PROCESSING OF YOUR PERSONAL DATA FOR REASONS ARISING FROM YOUR PARTICULAR SITUATION, INCLUDING PROFILING BASED ON THESE PROVISIONS. YOU CAN FIND THE RESPECTIVE LEGAL BASIS FOR PROCESSING IN THIS DATA PROTECTION DECLARATION. IF YOU OBJECT, WE WILL NO LONGER PROCESS YOUR AFFECTED PERSONAL DATA UNLESS WE CAN DEMONSTRATE COMPELLING LEGITIMATE GROUNDS FOR PROCESSING THAT OVERRIDE YOUR INTERESTS, RIGHTS, AND FREEDOMS, OR THE PROCESSING SERVES TO ASSERT, EXERCISE, OR DEFEND LEGAL CLAIMS (OBJECTION PURSUANT TO ART. 21 PARA. 1 GDPR).
+
+IF YOUR PERSONAL DATA IS PROCESSED FOR THE PURPOSE OF DIRECT ADVERTISING, YOU HAVE THE RIGHT TO OBJECT AT ANY TIME TO THE PROCESSING OF PERSONAL DATA CONCERNING YOU FOR THE PURPOSES OF SUCH ADVERTISING; THIS ALSO APPLIES TO PROFILING, INSOFAR AS IT IS RELATED TO SUCH DIRECT ADVERTISING. IF YOU OBJECT, YOUR PERSONAL DATA WILL SUBSEQUENTLY NO LONGER BE USED FOR THE PURPOSE OF DIRECT ADVERTISING (OBJECTION PURSUANT TO ART. 21 PARA. 2 GDPR).
+
+Right to Lodge a Complaint with the Competent Supervisory Authority
+
+In the case of violations of the GDPR, data subjects have the right to lodge a complaint with a supervisory authority, in particular in the member state of their habitual residence, place of work, or the place of the alleged violation. This right to lodge a complaint is without prejudice to other administrative or judicial remedies.
+
+Right to Data Portability
+
+You have the right to have data that we process automatically on the basis of your consent or in fulfillment of a contract handed over to you or to a third party in a common, machine-readable format. If you request the direct transfer of the data to another responsible party, this will only take place to the extent that it is technically feasible.
+
+SSL/TLS Encryption
+
+This site uses SSL or TLS encryption for security reasons and to protect the transmission of confidential content, such as orders or inquiries that you send to us as the site operator. You can recognize an encrypted connection in your browser's address line when it changes from "http://" to "https://" and a padlock symbol appears in your browser's address bar. If SSL or TLS encryption is activated, the data you transfer to us cannot be read by third parties.
+
+Encrypted Payment Transactions on this Website
+
+If, after the conclusion of a paid contract, there is an obligation to provide us with your payment details (e.g., account number for direct debit authorization), these details are required for payment processing.
+
+Payment transactions using common payment methods (Visa/MasterCard, direct debit) are only made via encrypted SSL or TLS connections. You can recognize an encrypted connection by the fact that the address line of the browser changes from "http://" to "https://" and by the padlock symbol in your browser line.
+
+With encrypted communication, your payment data that you transmit to us cannot be read by third parties.
+
+Information, Deletion, and Correction
+
+Within the framework of the applicable legal provisions, you have the right to free information about your stored personal data, its origin and recipients, and the purpose of data processing, and, if necessary, a right to correction or deletion of this data. For further questions on the subject of personal data, you can contact us at any time at the address provided in the imprint.
+
+Right to Restrict Processing
+
+You have the right to request the restriction of the processing of your personal data. To do so, you can contact us at any time at the address provided in the imprint. The right to restrict processing exists in the following cases:
+
+If you dispute the accuracy of your personal data stored by us, we usually need time to verify this. For the duration of the examination, you have the right to request the restriction of the processing of your personal data.
+If the processing of your personal data was/is unlawful, you can demand the restriction of data processing instead of deletion.
+If we no longer need your personal data, but you need it for the exercise, defense, or assertion of legal claims, you have the right to request the restriction of the processing of your personal data instead of deletion.
+If you have filed an objection pursuant to Art. 21 (1) GDPR, a balance must be struck between your interests and ours. As long as it is not yet clear whose interests outweigh the interests of both parties, you have the right to demand the restriction of the processing of your personal data.
+
+If you have restricted the processing of your personal data, these data – apart from their storage – may only be processed with your consent or for the assertion, exercise, or defense of legal claims or for the protection of the rights of another natural or legal person or for reasons of important public interest of the European Union or a member state.
+
+Objection to Promotional Emails
+
+We hereby object to the use of contact data published within the scope of the imprint obligation for sending unsolicited advertising and information materials. The operators of this website expressly reserve the right to take legal action in the event of unsolicited sending of advertising information, such as spam emails.
+
+4. DATA COLLECTION ON THIS WEBSITE
+Cookies
+
+Our websites use so-called "cookies." Cookies are small text files that do not harm your device. They are either temporarily stored for the duration of a session (session cookies) or permanently (persistent cookies) on your device. Session cookies are automatically deleted after your visit ends. Permanent cookies remain stored on your device until you delete them manually or your web browser deletes them automatically.
+
+Third-party cookies may also be stored on your device when you enter our site (third-party cookies). These allow us or you to use certain services of the third-party company (e.g., cookies for processing payment services).
+
+Cookies serve various functions. Many cookies are technically necessary because certain website functions would not work without them (e.g., the shopping cart function or video display). Other cookies are used to evaluate user behavior or display advertisements.
+
+Cookies that are necessary for the performance of the electronic communication process (necessary cookies) or for the provision of certain functions requested by you (functional cookies, e.g., for the shopping cart function) or for optimizing the website (e.g., cookies for measuring web audiences) are stored based on Art. 6(1)(f) GDPR, unless another legal basis is specified. The website operator has a legitimate interest in storing cookies for the technically error-free and optimized provision of its services. If consent to the storage of cookies has been requested, the storage of the relevant cookies is based exclusively on this consent (Art. 6(1)(a) GDPR); the consent can be revoked at any time.
+
+You can configure your browser to inform you about the setting of cookies and to allow cookies only in individual cases, to accept cookies for specific cases, or to exclude them in general and to activate the automatic deletion of cookies when closing the browser. If cookies are deactivated, the functionality of this website may be limited.
+
+If cookies are used by third-party companies or for analytical purposes, we will inform you separately in this privacy policy and, if necessary, request your consent.
+
+Server Log Files
+
+The provider of the pages automatically collects and stores information in so-called server log files, which your browser automatically transmits to us. These are:
+
+Browser type and browser version
+Operating system used
+Referrer URL
+Host name of the accessing computer
+Time of the server request
+IP address
+
+These data are not merged with other data sources.
+
+The collection of this data is based on Art. 6(1)(f) GDPR. The website operator has a legitimate interest in the technically error-free presentation and optimization of its website – for this purpose, the server log files must be recorded.
+
+Contact Form
+
+If you send us inquiries via the contact form, your details from the inquiry form, including the contact details you provided there, will be stored by us for the purpose of processing the inquiry and in case of follow-up questions. We will not share this data without your consent.
+
+The processing of this data is based on Art. 6(1)(b) GDPR if your inquiry is related to the performance of a contract or is necessary for the implementation of pre-contractual measures. In all other cases, the processing is based on our legitimate interest in the effective processing of the inquiries sent to us (Art. 6(1)(f) GDPR) or on your consent (Art. 6(1)(a) GDPR) if this has been requested.
+
+The data you enter in the contact form will remain with us until you request us to delete it, revoke your consent to store it, or the purpose for storing the data no longer applies (e.g., after we have completed processing your request). Mandatory statutory provisions - especially retention periods - remain unaffected.
+
+Table Reservation with SMS Confirmation (SMS Provider: Clickatell)
+
+Type of processed data:
+
+First and last name
+Phone number
+Email address (optional)
+Date and time of reservation
+Number of guests
+Special requirements or notes (optional)
+
+Purpose of data processing:
+
+The processing of your personal data is for the purpose of conducting and managing your table reservation at our restaurant and providing an SMS confirmation and, if necessary, sending reservation confirmations and relevant information via SMS through the SMS provider Clickatell. This information allows us to efficiently plan and organize our operations.
+
+Legal basis for processing:
+
+The processing of your data is based on your consent, which you have given when using our reservation tool with SMS confirmation (using Clickatell). You have the right to revoke your consent at any time by contacting us.
+
+Transmission of your data to the SMS provider Clickatell, Inc., 900 Island Dr #202, Redwood City, California, 94065, is solely for the purpose of SMS confirmation and in compliance with data protection regulations.
+
+https://www.clickatell.com/legal/general-terms-notices/privacy-notice/
+
+You can find further information about Clickatell at https://www.clickatell.com/legal/master-terms/ and in Google's privacy policy: https://www.clickatell.com/legal/general-terms-notices/privacy-notice/.
+
+Data security:
+
+We take appropriate security measures to protect your personal data from unauthorized access, loss, misuse, or alteration. Our SMS provider Clickatell also complies with the necessary security measures.
+
+Storage period:
+
+Your personal data will be stored for as long as it is necessary to fulfill the purpose or until you revoke your consent.
+
+Inquiry by Email, Phone, or Fax
+
+If you contact us by email, phone, or fax, your inquiry, including all personal data resulting from it (name, inquiry), will be stored by us for the purpose of processing your request and in case of follow-up questions. We will not share this data without your consent.
+
+The processing of this data is based on Art. 6(1)(b) GDPR if your inquiry is related to the performance of a contract or is necessary for the implementation of pre-contractual measures. In all other cases, the processing is based on our legitimate interest in the effective processing of the inquiries sent to us (Art. 6(1)(f) GDPR) or on your consent (Art. 6(1)(a) GDPR) if this has been requested.
+
+The data you send us via contact inquiries will remain with us until you request us to delete it, revoke your consent to store it, or the purpose for storing the data no longer applies (e.g., after we have completed processing your request). Mandatory statutory provisions - especially legal retention periods - remain unaffected.
+
+5. ANALYSIS TOOLS AND ADVERTISING
+Google Analytics
+
+This website utilizes features of the web analytics service Google Analytics. The provider is Google Ireland Limited ("Google"), Gordon House, Barrow Street, Dublin 4, Ireland.
+
+Google Analytics enables the website operator to analyze the behavior of website visitors. The website operator receives various usage data, such as page views, time spent on the site, operating systems used, and the origin of the user. This data is often aggregated by Google into a profile that is associated with the respective user or their device.
+
+Google Analytics uses technologies that allow the recognition of the user for the purpose of analyzing user behavior (e.g., cookies or device fingerprinting). The information collected by Google about the use of this website is usually transmitted to a Google server in the USA and stored there.
+
+The use of this analysis tool is based on Art. 6(1)(f) GDPR. The website operator has a legitimate interest in analyzing user behavior in order to optimize both its website and its advertising. If a corresponding consent has been requested (e.g., consent to store cookies), the processing is carried out exclusively based on Art. 6(1)(a) GDPR; the consent can be revoked at any time.
+
+IP Anonymization
+
+We have activated the IP anonymization function on this website. As a result, your IP address will be truncated by Google within member states of the European Union or other parties to the Agreement on the European Economic Area prior to transmission to the United States. Only in exceptional cases is the full IP address sent to a Google server in the USA and truncated there. On behalf of the operator of this website, Google will use this information to evaluate your use of the website, compile reports on website activity, and provide other services regarding website activity and internet usage to the website operator. The IP address transmitted by your browser as part of Google Analytics will not be merged with other data from Google.
+
+Browser Plugin
+
+You can prevent Google from collecting and processing your data by downloading and installing the browser plugin available at the following link: https://tools.google.com/dlpage/gaoptout?hl=de.
+
+For more information on how Google Analytics handles user data, please refer to Google's privacy policy: https://support.google.com/analytics/answer/6004245?hl=de.
+
+Data Processing Agreement
+
+We have entered into a data processing agreement with Google and fully implement the strict requirements of the German data protection authorities when using Google Analytics.
+
+Demographic Features with Google Analytics
+
+This website uses the "demographic features" function of Google Analytics to display suitable advertisements to website visitors within the Google advertising network. This allows reports to be created that contain statements on the age, gender, and interests of site visitors. This data comes from interest-based advertising by Google as well as visitor data from third-party providers. This data cannot be assigned to a specific individual. You can disable this feature at any time through the ad settings in your Google account or generally prohibit the collection of your data by Google Analytics as outlined in the section "Objection to Data Collection."
+
+Storage Duration
+
+Data stored by Google at the user and event level that is linked to cookies, user identifiers (e.g., User ID), or advertising IDs (e.g., DoubleClick cookies, Android advertising ID) will be anonymized or deleted after 14 months. For details, please refer to the following link: https://support.google.com/analytics/answer/7667196?hl=de.
+
+6. PLUGINS AND TOOLS
+Google Web Fonts
+
+This page uses web fonts provided by Google to ensure the uniform display of fonts. The Google Fonts are installed locally, and there is no connection to Google's servers.
+
+For more information about Google Web Fonts, please visit: https://developers.google.com/fonts/faq. You can also find information in Google's privacy policy: https://policies.google.com/privacy?hl=de.
+
+7. ECOMMERCE AND PAYMENT PROVIDERS
+Processing of Data (Customer and Contract Data)
+
+We only collect, process, and use personal data to the extent necessary for establishing, substantiating, or modifying the legal relationship (inventory data). This is done on the basis of Art. 6(1)(b) GDPR, which allows the processing of data to fulfill a contract or pre-contractual measures. We only collect, process, and use personal data about the use of this website (usage data) to the extent necessary to enable the user to use the service or to bill the user.
+
+The customer data collected will be deleted after the order is completed or the business relationship is terminated. Legal retention periods remain unaffected.
+
+Data Transmission upon Contract Conclusion for Services and Digital Content
+
+We only transmit personal data to third parties if this is necessary within the framework of contract processing, for example, to the bank responsible for processing payments.
+
+Further transmission of the data does not take place or only if you have expressly consented to the transmission. A transfer of your data to third parties without express consent, for example, for advertising purposes, does not occur.
+
+The basis for data processing is Art. 6(1)(b) GDPR, which allows the processing of data to fulfill a contract or pre-contractual measures.
+
+PayPal
+
+On this website, we offer payment via PayPal, among other things. The provider of this payment service is PayPal (Europe) S.à.r.l et Cie, S.C.A., 22-24 Boulevard Royal, L-2449 Luxembourg (hereinafter "PayPal").
+
+If you choose to pay via PayPal, the payment data you enter will be transmitted to PayPal.
+
+The transmission of your data to PayPal is based on Art. 6(1)(a) GDPR (consent) and Art. 6(1)(b) GDPR (processing for the performance of a contract). You have the option to revoke your consent to data processing at any time. Revocation does not affect the effectiveness of data processing operations carried out in the past.
+
+Home
+Privacy Policy
+About us
+About Churrasco
+Contact
+Reservations
+Prices & FAQ
+
+Copyright © 2026 Boinabrasa. Alle Rechte vorbehalten.
+
+Privacy Policy
+Imprint
+Terms and Conditions
+
+  
+
+We use cookies 
+
+We use cookies on our website. Some of them are essential for the operation of the site, while others help us to improve this site and the user experience (tracking cookies). You can decide for yourself whether you want to allow cookies or not. Please note that if you reject them, you may not be able to use all the functionalities of the site.
+
+OK
+DECLINE
+More information | Imprint
+
+--- IMAGES
+https://www.boinabrasa.ch/templates/boinabrasa/img/boinabrasa_stierkopf_logo.png
+https://www.boinabrasa.ch/media/mod_languages/images/en_gb.gif
+https://www.boinabrasa.ch/media/mod_languages/images/de_ch.gif
+https://www.boinabrasa.ch/images/headers/boinabrasa_preise.jpg
+
+--- IFRAMES
+
+
+--- LINKS
+ -> https://www.boinabrasa.ch/ch/
+ -> https://de-de.facebook.com/boinabrasadielsdorf/
+ -> https://www.instagram.com/boinabrasadielsdorf/
+ -> https://www.boinabrasa.ch/en/privacy-policy
+ -> https://www.boinabrasa.ch/ch/datenschutz
+中文 -> https://www.boinabrasa.ch/ch/?view=article&id=57:chinese&catid=2
+Dolcebrigadeiro -> https://www.boinabrasa.ch/en/dolcebrigadeiro-en
+Catering -> https://www.churrascocatering.ch/
+Coupons -> https://www.boinabrasa.ch/en/coupons-en
+Request for groups -> https://www.boinabrasa.ch/en/groups
+RESERVE A TABLE -> https://www.dielsdorf.boinabrasa.ch/en/
+Home -> https://boinabrasa.ch/
+Our skewers -> https://www.boinabrasa.ch/en/skewers
+Prices & FAQ -> https://www.boinabrasa.ch/en/prices
+Coupons -> https://www.boinabrasa.ch/en/coupons-en
+Catering -> https://www.churrascocatering.ch/
+Dolcebrigadeiro -> https://www.boinabrasa.ch/en/dolcebrigadeiro-en
+Contact -> https://www.boinabrasa.ch/en/contact
+Request for groups -> https://www.boinabrasa.ch/en/groups-2
+Home -> https://www.boinabrasa.ch/en/
+Prices & FAQ -> https://www.boinabrasa.ch/en/prices
+Our skewers -> https://www.boinabrasa.ch/en/skewers
+Contact -> https://www.boinabrasa.ch/en/contact
+https://www.clickatell.com/legal/general-terms-notices/privacy-notice/ -> https://www.clickatell.com/legal/general-terms-notices/privacy-notice/
+https://www.clickatell.com/legal/master-terms/ -> https://developers.google.com/fonts/faq
+https://www.clickatell.com/legal/general-terms-notices/privacy-notice/ -> https://www.clickatell.com/legal/general-terms-notices/privacy-notice/
+https://tools.google.com/dlpage/gaoptout?hl=de -> https://tools.google.com/dlpage/gaoptout?hl=de
+https://support.google.com/analytics/answer/6004245?hl=de -> https://support.google.com/analytics/answer/6004245?hl=de
+https://support.google.com/analytics/answer/7667196?hl=de -> https://support.google.com/analytics/answer/7667196?hl=de
+https://developers.google.com/fonts/faq -> https://developers.google.com/fonts/faq
+https://policies.google.com/privacy?hl=de -> https://policies.google.com/privacy?hl=de
+Home -> https://www.boinabrasa.ch/en/
+ -> https://www.boinabrasa.ch/ch/
+About us -> https://www.boinabrasa.ch/en/about-us
+About Churrasco -> https://www.boinabrasa.ch/en/churrasco
+Contact -> https://www.boinabrasa.ch/en/contact
+Reservations -> https://www.dielsdorf.boinabrasa.ch/en/
+Prices & FAQ -> https://www.boinabrasa.ch/en/prices
+Privacy Policy -> https://www.boinabrasa.ch/en/privacy-policy
+Imprint -> https://www.boinabrasa.ch/en/imprint
+Terms and Conditions -> https://www.boinabrasa.ch/en/terms-and-conditions
+ -> https://de-de.facebook.com/boinabrasadielsdorf/
+ -> https://www.instagram.com/boinabrasadielsdorf/
+OK -> https://www.boinabrasa.ch/en/privacy-policy?rCH=2
+DECLINE -> https://www.boinabrasa.ch/en/privacy-policy?rCH=-2
+More information -> https://boinabrasa.ch/en/privacy-policy
+Imprint -> https://boinabrasa.ch/en/imprint

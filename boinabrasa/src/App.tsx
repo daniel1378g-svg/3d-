@@ -1,0 +1,190 @@
+import { lazy, Suspense, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type ComponentType } from "react";
+import { cachedDict, HTML_LANG, loadDict, pathFor, routeFromSlug, type Anchor, type ArticleKey, type Lang, type PageKey } from "./i18n";
+import { useNavigate } from "./lib/router";
+import { PROPOSAL, PROPOSAL_TEXT, SiteContext, type Site } from "./site";
+import { useReducedMotion } from "./lib/motion";
+import { scrollTo, startScroll } from "./lib/scroll";
+import { ScrollTrigger } from "./lib/gsap";
+import { storage } from "./lib/utils";
+import { booking } from "./lib/store";
+import { applySeo } from "./seo";
+import { Header } from "./components/Header";
+import { MenuOverlay } from "./components/MenuOverlay";
+import { Footer } from "./components/Footer";
+import { Intro } from "./components/Intro";
+import { LanguageTransition, type LanguageTransitionHandle } from "./components/LanguageTransition";
+import { BookingSheet } from "./components/BookingSheet";
+import { Home } from "./pages/Home";
+
+const lazyPage = <K extends string>(load: () => Promise<Record<K, ComponentType>>, name: K) =>
+  lazy(() => load().then((m) => ({ default: m[name] })));
+
+const PAGES: Record<PageKey, ComponentType> = {
+  home: Home,
+  spiesse: lazyPage(() => import("./pages/Spiesse"), "Spiesse"),
+  preise: lazyPage(() => import("./pages/Preise"), "Preise"),
+  reservieren: lazyPage(() => import("./pages/Reservieren"), "Reservieren"),
+  gruppen: lazyPage(() => import("./pages/Gruppen"), "Gruppen"),
+  catering: lazyPage(() => import("./pages/Catering"), "Catering"),
+  gutscheine: lazyPage(() => import("./pages/Gutscheine"), "Gutscheine"),
+  ueber: lazyPage(() => import("./pages/Ueber"), "Ueber"),
+  churrasco: lazyPage(() => import("./pages/ChurrascoPage"), "ChurrascoPage"),
+  wissen: lazyPage(() => import("./pages/Wissen"), "Wissen"),
+  kontakt: lazyPage(() => import("./pages/Kontakt"), "Kontakt"),
+  impressum: lazyPage(() => import("./pages/Legal"), "Impressum"),
+  datenschutz: lazyPage(() => import("./pages/Legal"), "Datenschutz"),
+  agb: lazyPage(() => import("./pages/Legal"), "Agb"),
+  dolce: lazyPage(() => import("./pages/Dolce"), "Dolce"),
+};
+
+/** Where the visitor is (a section with data-anchor, or the page top) and how far into it, to come back after a switch. */
+function captureAnchor() {
+  const els = Array.from(document.querySelectorAll<HTMLElement>("[data-anchor]"));
+  const y = window.scrollY;
+  let best: { id: string; offset: number } | null = null;
+  for (const el of els) {
+    const top = el.getBoundingClientRect().top + y;
+    if (top <= y + 2) best = { id: el.dataset.anchor!, offset: y - top };
+  }
+  return best ?? { id: "", offset: y };
+}
+function restoreAnchor(a: { id: string; offset: number }) {
+  const el = a.id ? document.querySelector<HTMLElement>(`[data-anchor="${a.id}"]`) : null;
+  const top = el ? el.getBoundingClientRect().top + window.scrollY + a.offset : a.offset;
+  scrollTo(top, { immediate: true });
+  window.scrollTo(0, top);
+}
+
+export function Shell({ lang, slug }: { lang: Lang; slug: string }) {
+  const navigate = useNavigate();
+  const reduce = useReducedMotion();
+  const route = routeFromSlug(lang, slug);
+  const page = route?.page ?? "home";
+  const article = route?.article;
+  const t = cachedDict(lang)!;
+  const [switching, setSwitching] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [sheetOpen, setSheetOpen] = useState(false);
+  const transition = useRef<LanguageTransitionHandle>(null);
+  const [intro, setIntro] = useState(() => page === "home" && !storage("session").get("bb-intro"));
+
+  // document language, title, description, alternates
+  useEffect(() => {
+    document.documentElement.lang = HTML_LANG[lang];
+    applySeo(lang, page, article);
+    storage("local").set("bb-lang", lang);
+  }, [lang, page, article]);
+
+  useEffect(() => {
+    document.documentElement.classList.add("js-motion");
+    startScroll();
+  }, []);
+
+  // page changes: to the top (or to the hash), then let ScrollTrigger measure again
+  const firstNav = useRef(true);
+  const switchingRef = useRef(false);
+  useLayoutEffect(() => {
+    if (firstNav.current) { firstNav.current = false; return; }
+    if (switchingRef.current) return;
+    const hash = window.location.hash.replace(/^#/, "");
+    const el = hash && !__ARTIFACT__ ? document.getElementById(hash) : null;
+    if (el) scrollTo(el, { immediate: true });
+    else scrollTo(0, { immediate: true });
+    requestAnimationFrame(() => ScrollTrigger.refresh());
+  }, [page, article]);
+
+  const href = useCallback(
+    (p: PageKey, opts?: { anchor?: Anchor; article?: ArticleKey }) => pathFor(lang, p, opts?.article) + (opts?.anchor ? `#${opts.anchor}` : ""),
+    [lang],
+  );
+  const go = useCallback(
+    (p: PageKey, opts?: { anchor?: Anchor; article?: ArticleKey }) => {
+      setMenuOpen(false);
+      if (p === page && !opts?.article && opts?.anchor) {
+        const el = document.getElementById(opts.anchor);
+        if (el) scrollTo(el);
+        return;
+      }
+      navigate(href(p, opts));
+      if (opts?.anchor) {
+        const id = opts.anchor;
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          const el = document.getElementById(id);
+          if (el) scrollTo(el, { immediate: true });
+        }));
+      }
+    },
+    [navigate, href, page],
+  );
+
+  const requestLanguage = useCallback(
+    async (next: Lang) => {
+      if (next === lang || switchingRef.current) return;
+      switchingRef.current = true;
+      setSwitching(true);
+      setMenuOpen(false);
+      const anchor = captureAnchor();
+      const dict = loadDict(next);
+      await transition.current?.cover(next);
+      await dict;
+      navigate(pathFor(next, page, article));
+      await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+      restoreAnchor(anchor);
+      ScrollTrigger.refresh();
+      restoreAnchor(anchor);
+      await transition.current?.reveal();
+      switchingRef.current = false;
+      setSwitching(false);
+    },
+    [lang, navigate, page, article],
+  );
+
+  const openBooking = useCallback((guests?: number) => {
+    if (guests) booking.set({ guests });
+    setMenuOpen(false);
+    setSheetOpen(true);
+  }, []);
+
+  const endIntro = useCallback(() => {
+    storage("session").set("bb-intro", "1");
+    setIntro(false);
+  }, []);
+
+  const site: Site = useMemo(
+    () => ({ lang, t, page, article, requestLanguage, switching, go, href, openBooking, introDone: !intro, reduce }),
+    [lang, t, page, article, requestLanguage, switching, go, href, openBooking, intro, reduce],
+  );
+
+  if (!route) return <NotFoundRedirect lang={lang} />;
+  const Page = PAGES[page];
+
+  return (
+    <SiteContext.Provider value={site}>
+      {PROPOSAL && (
+        <p className="proposal-label" role="note" lang="pt-PT">
+          {PROPOSAL_TEXT}
+        </p>
+      )}
+      <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-12 focus:z-[960] focus:rounded-full focus:bg-ouro focus:px-5 focus:py-3 focus:text-carvao">
+        {t.a11y.skip}
+      </a>
+      <Header onMenu={() => setMenuOpen(true)} menuOpen={menuOpen} />
+      <MenuOverlay open={menuOpen} onClose={() => setMenuOpen(false)} />
+      <main id="main" tabIndex={-1} className="outline-none" data-page={page}>
+        <Suspense fallback={<div className="min-h-[100svh]" aria-busy="true" />}>
+          <Page />
+        </Suspense>
+      </main>
+      <Footer />
+      <BookingSheet open={sheetOpen} onClose={() => setSheetOpen(false)} />
+      <LanguageTransition ref={transition} />
+      {intro && <Intro onDone={endIntro} />}
+    </SiteContext.Provider>
+  );
+}
+
+function NotFoundRedirect({ lang }: { lang: Lang }) {
+  const navigate = useNavigate();
+  useEffect(() => navigate(pathFor(lang, "home"), { replace: true }), [lang, navigate]);
+  return null;
+}

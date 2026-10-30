@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.cache/
+artifact/
+# the captured live HTML is not needed in git; the .txt captures are enough
+content/raw/live/*.html
+# large originals that are only inputs for scripts/prepare_images.py and the video encode
+media/originals/*.mp4
+media/originals/*.pdf

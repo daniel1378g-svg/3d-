@@ -1,0 +1,208 @@
+{
+  "_comment": "Speise- und Getränkekarte, abgeschrieben aus www.boinabrasa.ch/images/menukarte/boinabrasa_menu_karte.pdf (Oktober 2026). Namen wie auf der Karte; `desc` ist der deutsche Untertitel der Karte und wird übersetzt (content/i18n/menu.<lang>.json). Preise in CHF inkl. 8,1 % MwSt.",
+  "sections": [
+    {
+      "id": "apero",
+      "title": "Apéro-Salgados",
+      "items": [
+        { "id": "paodequeijo-s", "name": "Pão de queijo", "desc": "Brasilianische Käsebrötchen, warm serviert (Wartezeit ca. 15 Minuten) – klein, 8 Stück", "price": "9" },
+        { "id": "paodequeijo-l", "name": "Pão de queijo", "desc": "Brasilianische Käsebrötchen, warm serviert (Wartezeit ca. 15 Minuten) – gross, 16 Stück", "price": "18" },
+        { "id": "coxinha-s", "name": "Coxinha", "desc": "Brasilianische Spezialitäten, mit Poulet gefüllt und frittiert – klein, 6 Stück", "price": "9" },
+        { "id": "coxinha-l", "name": "Coxinha", "desc": "Brasilianische Spezialitäten, mit Poulet gefüllt und frittiert – gross, 12 Stück", "price": "18" }
+      ]
+    },
+    {
+      "id": "kalt",
+      "title": "Kaltgetränke",
+      "items": [
+        { "id": "eptinger-100", "name": "Eptinger", "desc": "Wasser mit oder ohne Kohlensäure", "size": "100cl", "price": "11" },
+        { "id": "eptinger-50", "name": "Eptinger", "desc": "Wasser mit oder ohne Kohlensäure", "size": "50cl", "price": "6" },
+        { "id": "cola", "name": "Coca Cola", "desc": "Normal / Zero", "size": "33cl", "price": "5" },
+        { "id": "rivella", "name": "Rivella Rot", "size": "33cl", "price": "5" },
+        { "id": "fanta", "name": "Fanta", "size": "33cl", "price": "5" },
+        { "id": "sprite", "name": "Sprite", "desc": "im Offenausschank", "size": "30cl", "price": "4" },
+        { "id": "guarana", "name": "Guaraná", "size": "33cl", "price": "5" },
+        { "id": "eistee-30", "name": "Eistee", "desc": "im Offenausschank", "size": "30cl", "price": "4" },
+        { "id": "eistee-50", "name": "Eistee", "desc": "im Offenausschank", "size": "50cl", "price": "6" },
+        { "id": "apfelschorle", "name": "Apfelschorle", "size": "33cl", "price": "5" },
+        { "id": "redbull", "name": "Red Bull", "size": "25cl", "price": "5" },
+        { "id": "tonic", "name": "Schweppes Tonic", "size": "20cl", "price": "4" }
+      ]
+    },
+    {
+      "id": "saefte",
+      "title": "Tropische Fruchtsäfte",
+      "note": "aus Fruchtfleisch",
+      "items": [
+        { "id": "maracuja", "name": "Maracujá", "desc": "Passionsfrucht", "price": "9" },
+        { "id": "goiaba", "name": "Goiaba", "desc": "Guave", "price": "9" },
+        { "id": "acerola", "name": "Acerola", "desc": "Acerola", "price": "9" },
+        { "id": "manga", "name": "Manga", "desc": "Mango", "price": "9" },
+        { "id": "abacaxi", "name": "Abacaxi", "desc": "Ananas", "price": "9" },
+        { "id": "caju", "name": "Caju", "desc": "Cashew", "price": "9" }
+      ]
+    },
+    {
+      "id": "alkoholfrei",
+      "title": "Cocktails ohne Alkohol",
+      "items": [
+        { "id": "caipi-0", "name": "Caipirinha", "price": "10" },
+        { "id": "caipi-maracuja-0", "name": "Caipirinha Maracujá", "price": "10" }
+      ]
+    },
+    {
+      "id": "biere",
+      "title": "Biere",
+      "items": [
+        { "id": "skol", "name": "Skol", "desc": "Brasilianisches Bier", "size": "33cl, 4.7% Vol", "price": "7" },
+        { "id": "superbock", "name": "Superbock", "size": "33cl, 5.2% Vol", "price": "6" },
+        { "id": "dunkel", "name": "Quöllfrisch Dunkel", "size": "50cl, 5.2% Vol", "price": "8" },
+        { "id": "weizen", "name": "Appenzeller Weizenbier Bio", "desc": "Weizenbier", "size": "50cl, 5.2% Vol", "price": "8" },
+        { "id": "lager-30", "name": "Quöllfrisch Lager hell", "desc": "Gezapftes Bier", "size": "30cl, 4.8% Vol", "price": "5" },
+        { "id": "lager-50", "name": "Quöllfrisch Lager hell", "desc": "Gezapftes Bier", "size": "50cl, 4.8% Vol", "price": "7" },
+        { "id": "panache-30", "name": "Panaché", "desc": "Quöllfrisch", "size": "30cl, 4.8% Vol", "price": "5" },
+        { "id": "panache-50", "name": "Panaché", "desc": "Quöllfrisch", "size": "50cl, 4.8% Vol", "price": "7" },
+        { "id": "sonnwendlig", "name": "Sonnwendlig alkoholfrei", "desc": "Appenzeller Bier, alkoholfreies Bier", "size": "33cl, 0% Vol", "price": "5" }
+      ]
+    },
+    {
+      "id": "aperitif",
+      "title": "Aperitif",
+      "items": [
+        { "id": "gespritzt", "name": "Gespritzter Weisswein", "desc": "Süss oder sauer", "price": "10" },
+        { "id": "martini", "name": "Martini Bianco / Rosso", "size": "4cl, 15% Vol", "price": "8" },
+        { "id": "aperol", "name": "Aperol Spritz", "desc": "Prosecco / Aperol / Soda / frische Orangenscheibe", "price": "12" },
+        { "id": "hugo", "name": "Hugo", "desc": "Prosecco / Holunderblütensirup / Soda / frische Minze / Limette", "price": "12" },
+        { "id": "cynar", "name": "Cynar Orange", "desc": "4cl Cynar aufgefüllt mit Orangensaft", "price": "9" },
+        { "id": "campari", "name": "Campari Orange", "desc": "4cl Campari aufgefüllt mit Orangensaft", "price": "9" }
+      ]
+    },
+    {
+      "id": "cocktails",
+      "title": "Cocktails",
+      "items": [
+        { "id": "caipirinha", "name": "Caipirinha", "desc": "6cl Cachaça / frische Limette / Zucker", "price": "14" },
+        { "id": "caipi-maracuja", "name": "Caipirinha Maracujá", "desc": "6cl Cachaça / frische Passionsfrucht / Passionsfruchtsirup / Zucker", "price": "15" },
+        { "id": "caipiroska", "name": "Caipiroska", "desc": "6cl Vodka / frische Limette / Zucker", "price": "14" },
+        { "id": "caipiroska-maracuja", "name": "Caipiroska Maracujá", "desc": "6cl Vodka / frische Passionsfrucht / Passionsfruchtsirup / Zucker", "price": "15" },
+        { "id": "mojito", "name": "Mojito", "desc": "6cl Rum / frische Limette / frische Minze / Zucker", "price": "14" },
+        { "id": "monkey47", "name": "Gin Monkey ’47", "desc": "Gin-Tonic", "size": "5cl Gin, 20cl Tonic Water", "price": "14" },
+        { "id": "hendrick", "name": "Hendrick Gin", "desc": "Gin-Tonic", "size": "5cl Gin, 20cl Tonic Water", "price": "14" }
+      ]
+    },
+    {
+      "id": "rotwein",
+      "title": "Rotwein",
+      "note": "75cl",
+      "items": [
+        { "id": "miolo", "name": "Miolo Lote 43", "desc": "Brasilien · Cabernet Sauvignon, Merlot", "size": "75cl, D.O.", "price": "58" },
+        { "id": "esporao", "name": "Esporão Reserva", "desc": "Portugal · Cabernet Sauvignon, Alicante", "size": "75cl, DOC", "price": "54" },
+        { "id": "antu", "name": "Antu", "desc": "Chile · Syrah", "size": "75cl, D.O.", "price": "50" },
+        { "id": "trapiche", "name": "Trapiche Oak Cask", "desc": "Argentinien · Malbec", "size": "75cl", "price": "40" },
+        { "id": "cerro", "name": "Cerro Añón Reserva", "desc": "Spanien-Rioja · Tempranillo", "size": "75cl, DOCa", "price": "58" },
+        { "id": "barbera", "name": "Barbera d’Alba", "desc": "Italien · Barbera", "size": "75cl, DOC", "price": "48" },
+        { "id": "barolo", "name": "Barolo Le Coste di Monforte", "desc": "Italien · Nebbiolo", "size": "75cl, DOCG", "price": "78" },
+        { "id": "primitivo", "name": "Primitivo di Manduria", "desc": "Italien · Primitivo", "size": "75cl, DOP", "price": "42" },
+        { "id": "amarone", "name": "Amarone della Valpolicella Classico", "desc": "Italien · Molinara, Corvina, Rondinella", "size": "75cl, DOCG", "price": "78" }
+      ]
+    },
+    {
+      "id": "weiss",
+      "title": "Weisswein, Rosé & Schaumwein",
+      "items": [
+        { "id": "arneis", "name": "Roero Arneis DOCG", "desc": "Weisswein · Italien · Arneis", "size": "75cl", "price": "45" },
+        { "id": "bogle", "name": "Bogle Chardonnay", "desc": "Weisswein · USA-Kalifornien · Chardonnay", "size": "75cl", "price": "48" },
+        { "id": "rose", "name": "Dehesa de Luna Rosé", "desc": "Rosé · Spanien · Cabernet Sauvignon", "size": "75cl", "price": "40" },
+        { "id": "miolo-brut", "name": "Prosecco Miolo Brut Millesim IP", "desc": "Schaumwein · Brasilien", "size": "75cl", "price": "50" },
+        { "id": "ponte", "name": "Ponte Prosecco di Treviso", "desc": "Schaumwein · Italien", "size": "75cl", "price": "42" },
+        { "id": "moet", "name": "Champagne Moët & Chandon", "desc": "Schaumwein · Frankreich", "size": "75cl", "price": "96" }
+      ]
+    },
+    {
+      "id": "offen",
+      "title": "Wein offen",
+      "note": "10cl",
+      "items": [
+        { "id": "esporao-10", "name": "Esporão Reserva", "desc": "Rotwein · Portugal · Cabernet Sauvignon, Alicante", "size": "10cl, DOC", "price": "9" },
+        { "id": "primitivo-10", "name": "Primitivo di Manduria", "desc": "Rotwein · Italien · Primitivo", "size": "10cl, DOP", "price": "7" },
+        { "id": "arneis-10", "name": "Roero Arneis DOCG", "desc": "Weisswein · Italien · Arneis", "size": "10cl, DOCG", "price": "8" },
+        { "id": "ponte-10", "name": "Ponte Prosecco di Treviso", "desc": "Schaumwein · Italien", "size": "10cl", "price": "9" }
+      ]
+    },
+    {
+      "id": "warm",
+      "title": "Warmgetränke",
+      "items": [
+        { "id": "ristretto", "name": "Ristretto", "price": "4.50" },
+        { "id": "espresso", "name": "Espresso", "price": "4.50" },
+        { "id": "macchiato", "name": "Espresso Macchiato", "price": "5" },
+        { "id": "kaffee", "name": "Kaffee", "price": "5" },
+        { "id": "cappuccino", "name": "Cappuccino", "price": "6" },
+        { "id": "latte", "name": "Latte Macchiato", "price": "7" },
+        { "id": "corretto", "name": "Corretto Grappa", "price": "9" },
+        { "id": "tee", "name": "Tee", "desc": "Verschiedene Sorten", "price": "4" }
+      ]
+    },
+    {
+      "id": "digestif",
+      "title": "Grappa, Cognac & Spirituosen",
+      "items": [
+        { "id": "g-primitivo", "name": "Grappa di Primitivo", "size": "2cl, 40% Vol", "price": "8.50" },
+        { "id": "g-moscato", "name": "Grappa di Moscato", "size": "2cl, 40% Vol", "price": "8.50" },
+        { "id": "g-moscato-b", "name": "Grappa di Moscato Barrique", "size": "2cl, 40% Vol", "price": "9" },
+        { "id": "g-amarone", "name": "Grappa di Amarone Barrique", "size": "2cl, 40% Vol", "price": "9" },
+        { "id": "g-brunello", "name": "Grappa Brunello di Montalcino Barrique", "size": "2cl, 40% Vol", "price": "9.50" },
+        { "id": "remy", "name": "Rémy Martin", "desc": "Cognac", "size": "2cl, 40% Vol", "price": "9" },
+        { "id": "hennessy", "name": "Hennessy", "desc": "Cognac", "size": "2cl, 40% Vol", "price": "9" },
+        { "id": "carlos", "name": "Carlos I Imperial", "desc": "Brandy", "size": "2cl, 38% Vol", "price": "9" },
+        { "id": "duque", "name": "Gran Duque d’Alba", "desc": "Brandy", "size": "2cl, 40% Vol", "price": "9" },
+        { "id": "jack", "name": "Jack Daniels", "desc": "Whisky", "size": "4cl, 40% Vol", "price": "9" },
+        { "id": "jw-black", "name": "Johnnie Walker Black", "desc": "Whisky", "size": "4cl, 40% Vol", "price": "11" },
+        { "id": "tequila", "name": "Tequila Gold", "size": "2cl, 38% Vol", "price": "8" },
+        { "id": "ypioca", "name": "Ypióca Gold Cachaça", "size": "2cl, 38% Vol", "price": "8" },
+        { "id": "velho", "name": "Velho Barreiro Cachaça", "size": "2cl, 38% Vol", "price": "7" },
+        { "id": "williams", "name": "Williams", "size": "2cl, 38% Vol", "price": "7" }
+      ]
+    },
+    {
+      "id": "likoere",
+      "title": "Bitterliköre & Liköre",
+      "items": [
+        { "id": "fernet", "name": "Fernet Branca", "size": "2cl, 39% Vol", "price": "7" },
+        { "id": "averna", "name": "Averna", "size": "2cl, 29% Vol", "price": "7" },
+        { "id": "calvados", "name": "Calvados Morin", "size": "2cl, 41% Vol", "price": "7" },
+        { "id": "jaeger", "name": "Jägermeister", "size": "2cl, 35% Vol", "price": "7" },
+        { "id": "licor43", "name": "Licor 43", "size": "4cl, 31% Vol", "price": "8" },
+        { "id": "appenzeller", "name": "Appenzeller", "size": "2cl, 29% Vol", "price": "7" },
+        { "id": "ramazzotti", "name": "Ramazzotti", "size": "2cl, 30% Vol", "price": "7" },
+        { "id": "limoncello", "name": "Limoncello", "size": "4cl, 30% Vol", "price": "8" },
+        { "id": "amaretto", "name": "Amaretto Disaronno", "size": "2cl, 28% Vol", "price": "7" },
+        { "id": "baileys", "name": "Baileys", "size": "4cl, 17% Vol", "price": "8" }
+      ]
+    },
+    {
+      "id": "desserts",
+      "title": "Brasilianische Desserts",
+      "items": [
+        { "id": "pudim", "name": "Pudim", "desc": "Pudding nach brasilianischer Art", "price": "12" },
+        { "id": "mousse", "name": "Mousse de Maracujá", "desc": "Passionsfruchtmousse", "price": "12" },
+        { "id": "abacaxi-grelhado", "name": "Abacaxi grelhado", "desc": "Ananas grilliert", "price": "12" },
+        { "id": "papaya", "name": "Creme de Papaya", "desc": "Papayacreme, auf Wunsch mit Cassis-Likör verfeinert (nach Verfügbarkeit)", "price": "16" },
+        { "id": "boinabrasa", "name": "Boinabrasa", "desc": "Karamellisierte Ananaswürfelchen, begleitet von je einer Kugel Banana-, Kokosnuss- und Mango-Passionsfrucht-Glace, serviert nach spezieller Art. Lassen Sie sich überraschen!", "price": "16" },
+        { "id": "brigadeiro", "name": "Brigadeiro Gourmet", "desc": "Brasilianische Trüffel-Fudge-Pralinen", "price": "2.20", "unit": "piece" }
+      ]
+    },
+    {
+      "id": "klassisch",
+      "title": "Klassische Desserts & Glace",
+      "items": [
+        { "id": "petit-gateau", "name": "Petit Gâteau", "desc": "Schokoladenkuchen, serviert warm mit Vanilleglace und Rahm (Wartezeit ca. 15 Minuten)", "price": "14" },
+        { "id": "panna-cotta", "name": "Panna Cotta", "desc": "Panna Cotta serviert mit Beerensauce", "price": "12" },
+        { "id": "cafe-glace", "name": "Café Glacé", "desc": "Zwei Kugeln Mocca-Glace mit einer Rahmhaube", "price": "12" },
+        { "id": "colonel", "name": "Colonel", "desc": "Zwei Kugeln Zitronen-Glace mit Vodka", "price": "13" },
+        { "id": "bananensplit", "name": "Bananensplit", "desc": "Ein Klassiker mit je einer Kugel Schokolade-, Vanille- und Erdbeer-Glace, serviert mit zusätzlicher Schokoladensauce und garniert mit einer Rahmhaube", "price": "14" },
+        { "id": "kugel", "name": "Glace Kugel", "desc": "Schokolade, Vanille, Stracciatella, Zitronen, Mango-Passionsfrucht, Mocca, Erdbeere, Kokosnuss. Rahmzuschlag CHF 1", "price": "4.50", "unit": "scoop" }
+      ]
+    }
+  ]
+}

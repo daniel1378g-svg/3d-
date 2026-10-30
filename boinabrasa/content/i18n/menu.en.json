@@ -1,0 +1,287 @@
+{
+  "sections": {
+    "apero": {
+      "title": "Aperitif snacks (salgados)"
+    },
+    "kalt": {
+      "title": "Cold drinks"
+    },
+    "saefte": {
+      "title": "Tropical fruit juices",
+      "note": "made from fruit pulp"
+    },
+    "alkoholfrei": {
+      "title": "Alcohol-free cocktails"
+    },
+    "biere": {
+      "title": "Beers"
+    },
+    "aperitif": {
+      "title": "Aperitifs"
+    },
+    "cocktails": {
+      "title": "Cocktails"
+    },
+    "rotwein": {
+      "title": "Red wine",
+      "note": "75cl"
+    },
+    "weiss": {
+      "title": "White wine, rosé & sparkling wine"
+    },
+    "offen": {
+      "title": "Wine by the glass",
+      "note": "10cl"
+    },
+    "warm": {
+      "title": "Hot drinks"
+    },
+    "digestif": {
+      "title": "Grappa, cognac & spirits"
+    },
+    "likoere": {
+      "title": "Bitters & liqueurs"
+    },
+    "desserts": {
+      "title": "Brazilian desserts"
+    },
+    "klassisch": {
+      "title": "Classic desserts & ice cream"
+    }
+  },
+  "items": {
+    "paodequeijo-s": {
+      "desc": "Brazilian cheese buns, served warm (waiting time approx. 15 minutes) – small, 8 pieces"
+    },
+    "paodequeijo-l": {
+      "desc": "Brazilian cheese buns, served warm (waiting time approx. 15 minutes) – large, 16 pieces"
+    },
+    "coxinha-s": {
+      "desc": "Brazilian specialities, filled with chicken and deep-fried – small, 6 pieces"
+    },
+    "coxinha-l": {
+      "desc": "Brazilian specialities, filled with chicken and deep-fried – large, 12 pieces"
+    },
+    "eptinger-100": {
+      "desc": "Sparkling or still water"
+    },
+    "eptinger-50": {
+      "desc": "Sparkling or still water"
+    },
+    "cola": {
+      "desc": "Regular / Zero"
+    },
+    "sprite": {
+      "desc": "on tap"
+    },
+    "eistee-30": {
+      "name": "Iced tea",
+      "desc": "on tap"
+    },
+    "eistee-50": {
+      "name": "Iced tea",
+      "desc": "on tap"
+    },
+    "apfelschorle": {
+      "name": "Sparkling apple juice"
+    },
+    "maracuja": {
+      "desc": "Passion fruit"
+    },
+    "goiaba": {
+      "desc": "Guava"
+    },
+    "acerola": {
+      "desc": "Acerola"
+    },
+    "manga": {
+      "desc": "Mango"
+    },
+    "abacaxi": {
+      "desc": "Pineapple"
+    },
+    "caju": {
+      "desc": "Cashew"
+    },
+    "skol": {
+      "desc": "Brazilian beer"
+    },
+    "weizen": {
+      "desc": "Wheat beer"
+    },
+    "lager-30": {
+      "desc": "Draught beer"
+    },
+    "lager-50": {
+      "desc": "Draught beer"
+    },
+    "panache-30": {
+      "name": "Shandy",
+      "desc": "Quöllfrisch"
+    },
+    "panache-50": {
+      "name": "Shandy",
+      "desc": "Quöllfrisch"
+    },
+    "sonnwendlig": {
+      "desc": "Appenzeller Bier, alcohol-free beer"
+    },
+    "gespritzt": {
+      "name": "White wine spritzer",
+      "desc": "Sweet (with lemonade) or dry (with sparkling water)"
+    },
+    "aperol": {
+      "desc": "Prosecco / Aperol / soda / fresh orange slice"
+    },
+    "hugo": {
+      "desc": "Prosecco / elderflower syrup / soda / fresh mint / lime"
+    },
+    "cynar": {
+      "desc": "4cl Cynar topped up with orange juice"
+    },
+    "campari": {
+      "desc": "4cl Campari topped up with orange juice"
+    },
+    "caipirinha": {
+      "desc": "6cl cachaça / fresh lime / sugar"
+    },
+    "caipi-maracuja": {
+      "desc": "6cl cachaça / fresh passion fruit / passion fruit syrup / sugar"
+    },
+    "caipiroska": {
+      "desc": "6cl vodka / fresh lime / sugar"
+    },
+    "caipiroska-maracuja": {
+      "desc": "6cl vodka / fresh passion fruit / passion fruit syrup / sugar"
+    },
+    "mojito": {
+      "desc": "6cl rum / fresh lime / fresh mint / sugar"
+    },
+    "monkey47": {
+      "desc": "Gin and tonic"
+    },
+    "hendrick": {
+      "desc": "Gin and tonic"
+    },
+    "miolo": {
+      "desc": "Brazil · Cabernet Sauvignon, Merlot"
+    },
+    "esporao": {
+      "desc": "Portugal · Cabernet Sauvignon, Alicante"
+    },
+    "antu": {
+      "desc": "Chile · Syrah"
+    },
+    "trapiche": {
+      "desc": "Argentina · Malbec"
+    },
+    "cerro": {
+      "desc": "Spain, Rioja · Tempranillo"
+    },
+    "barbera": {
+      "desc": "Italy · Barbera"
+    },
+    "barolo": {
+      "desc": "Italy · Nebbiolo"
+    },
+    "primitivo": {
+      "desc": "Italy · Primitivo"
+    },
+    "amarone": {
+      "desc": "Italy · Molinara, Corvina, Rondinella"
+    },
+    "arneis": {
+      "desc": "White wine · Italy · Arneis"
+    },
+    "bogle": {
+      "desc": "White wine · USA, California · Chardonnay"
+    },
+    "rose": {
+      "desc": "Rosé · Spain · Cabernet Sauvignon"
+    },
+    "miolo-brut": {
+      "desc": "Sparkling wine · Brazil"
+    },
+    "ponte": {
+      "desc": "Sparkling wine · Italy"
+    },
+    "moet": {
+      "desc": "Sparkling wine · France"
+    },
+    "esporao-10": {
+      "desc": "Red wine · Portugal · Cabernet Sauvignon, Alicante"
+    },
+    "primitivo-10": {
+      "desc": "Red wine · Italy · Primitivo"
+    },
+    "arneis-10": {
+      "desc": "White wine · Italy · Arneis"
+    },
+    "ponte-10": {
+      "desc": "Sparkling wine · Italy"
+    },
+    "kaffee": {
+      "name": "Coffee"
+    },
+    "tee": {
+      "name": "Tea",
+      "desc": "Various kinds"
+    },
+    "remy": {
+      "desc": "Cognac"
+    },
+    "hennessy": {
+      "desc": "Cognac"
+    },
+    "carlos": {
+      "desc": "Brandy"
+    },
+    "duque": {
+      "desc": "Brandy"
+    },
+    "jack": {
+      "desc": "Whisky"
+    },
+    "jw-black": {
+      "desc": "Whisky"
+    },
+    "pudim": {
+      "desc": "Brazilian-style pudding"
+    },
+    "mousse": {
+      "desc": "Passion fruit mousse"
+    },
+    "abacaxi-grelhado": {
+      "desc": "Grilled pineapple"
+    },
+    "papaya": {
+      "desc": "Papaya cream, finished with cassis liqueur on request (subject to availability)"
+    },
+    "boinabrasa": {
+      "desc": "Caramelised pineapple cubes, accompanied by one scoop each of banana, coconut and mango-passion fruit ice cream, served in a special way. Let us surprise you!"
+    },
+    "brigadeiro": {
+      "desc": "Brazilian truffle-fudge chocolates"
+    },
+    "petit-gateau": {
+      "desc": "Chocolate cake, served warm with vanilla ice cream and cream (waiting time approx. 15 minutes)"
+    },
+    "panna-cotta": {
+      "desc": "Panna cotta served with berry sauce"
+    },
+    "cafe-glace": {
+      "desc": "Two scoops of mocha ice cream with a cream topping"
+    },
+    "colonel": {
+      "desc": "Two scoops of lemon ice cream with vodka"
+    },
+    "bananensplit": {
+      "name": "Banana split",
+      "desc": "A classic with one scoop each of chocolate, vanilla and strawberry ice cream, served with extra chocolate sauce and topped with cream"
+    },
+    "kugel": {
+      "name": "Scoop of ice cream",
+      "desc": "Chocolate, vanilla, stracciatella, lemon, mango-passion fruit, mocha, strawberry, coconut. Extra cream CHF 1"
+    }
+  }
+}

@@ -1,0 +1,539 @@
+{
+ "churrasco": {
+  "title": "Churrasco: o fogo da culinária brasileira",
+  "cover": "churrasco_grill",
+  "blocks": [
+   {
+    "t": "p",
+    "text": "**Churrasco** – só a palavra já soa como brasa em chamas e fogo chiando. E é bem provável que o nome venha justamente do chiado que a gordura faz ao pingar e queimar. No Brasil, na Península Ibérica (Portugal e Espanha) e em partes da América Latina, churrasco designa, com toda a propriedade, um modo de preparar carne que traz suas características, de forma poética, no próprio nome.\n\nNo sabor, churrasco é sinônimo de intensidade, paixão e, não menos importante, autenticidade. Nossa churrascaria se inspira nos gaúchos, imigrantes europeus no Brasil do século 19. Eles se reuniam em volta de grandes fogueiras e, juntos, em clima de confraternização, assavam ali seus espetos de carne. No restaurante, queremos oferecer aos nossos clientes esse mesmo clima de confraternização, servindo a eles os melhores espetos que já provaram."
+   },
+   {
+    "t": "h2",
+    "text": "O que é churrasco?"
+   },
+   {
+    "t": "p",
+    "text": "O **churrasco** une a arte tradicional da brasa ao requinte da culinária moderna. Na nossa churrascaria em Zurique, servimos churrasco no sistema de rodízio. Em linhas gerais, o preparo de um churrasco é assim:"
+   },
+   {
+    "t": "ul",
+    "items": [
+     "A carne é cortada em pedaços do tamanho de uma mão. As carnes preferidas para o churrasco são a de boi, a de frango, a de cordeiro e a de porco, além de vários tipos de linguiça. Entre os pratos de churrasco mais populares estão o filé-mignon e a coxa de frango.\n→ No churrasco brasileiro que servimos no nosso restaurante, os favoritos são a picanha e a coxa de frango.",
+     "Cerca de meia hora antes de ir para o fogo, os pedaços de carne são salpicados à mão com sal grosso e/ou marinados com bastante tempero.",
+     "Depois, os pedaços de carne são colocados em grandes espetos.",
+     "A carne vai primeiro ao fogo com a capa de gordura para baixo – sobre carvão ou fogo aberto. Depois, no churrasco de rodízio, os espetos são girados continuamente.",
+     "Antes de servir, quando as peças são maiores, é comum cortar a carne mais uma vez ao meio ou em várias partes menores – do tamanho de uma garfada. No nosso rodízio, levamos a carne direto às mesas e lá a cortamos em fatias pequenas.",
+     "Churrasco é uma experiência de grupo; por isso, tradicionalmente é servido numa travessa grande, da qual todos se servem. Na nossa churrascaria, os espetos são servidos direto na mesa, a cada cliente.",
+     "É comum servir acompanhamentos como saladas, pão de alho, polenta e salada de batata."
+    ]
+   },
+   {
+    "t": "p",
+    "text": "Dependendo da região, há certas diferenças nos tipos de carne, no preparo, nos ingredientes e na forma de servir."
+   },
+   {
+    "t": "img",
+    "id": "gaucho_zubereitung"
+   },
+   {
+    "t": "img",
+    "id": "gaucho_am_feuer"
+   },
+   {
+    "t": "h3",
+    "text": "Variações regionais do churrasco"
+   },
+   {
+    "t": "p",
+    "text": "Na Argentina, no Uruguai e no Paraguai, o **churrasco** é conhecido sobretudo como um bife de carne bovina, servido com salada e batata frita ou purê de batata. Já no Brasil, chama-se de churrasco qualquer carne assada na churrasqueira. As churrascarias são muito comuns no Brasil, têm preços acessíveis para a maioria da população e muitas vezes são o centro da vida social. Em muitas partes do mundo, restaurantes de churrasco seguem o modelo brasileiro – e o Boinabrasa também!"
+   },
+   {
+    "t": "h3",
+    "text": "Um jeito emocionante e divertido de assar carne"
+   },
+   {
+    "t": "p",
+    "text": "Em comparação com a grelha a carvão, muito comum na Europa, no churrasco a carne fica bem mais crocante e ganha um aroma intenso de brasa. Os apreciadores valorizam o toque tostado que a carne adquire e o aspecto da crosta marrom-avermelhada escura. Ela pede uma mordida firme, mas o sabor praticamente explode quando os dentes a atravessam. É aí que se percebe que a carne, embora bem crocante por fora, é deliciosamente suculenta por dentro!\n\nChurrasco não é gostoso só de comer, mas também de preparar. O churrasqueiro sente, literalmente, que está brincando com o fogo e preparando a carne do jeito que nossos antepassados faziam nas grandes festas. Claro que é preciso ter cuidado e manter uma distância segura! Quem nunca comeu churrasco deveria primeiro experimentar numa churrascaria, antes de tentar fazer em casa."
+   },
+   {
+    "t": "img",
+    "id": "schnitt_zubereitung"
+   },
+   {
+    "t": "img",
+    "id": "churrasco_grill"
+   },
+   {
+    "t": "h2",
+    "text": "Venha nos visitar na nossa churrascaria em Zurique!"
+   },
+   {
+    "t": "p",
+    "text": "Quem quer viver um churrasco autêntico com a família, os amigos ou os colegas está convidado, de coração, para o nosso restaurante de churrasco – ou seja, para a nossa churrascaria em Zurique! Nossa casa não só prepara a carne do jeito brasileiro, como também reúne a cultura dos gaúchos brasileiros no ambiente, nos uniformes e na nossa equipe sempre bem-humorada. Os espetos são as nossas estrelas, mas as sobremesas e bebidas também têm um toque sul-americano. Já provou cerveja brasileira? É ótima! Nossos buffets permitem provar praticamente de tudo – e por isso fazem tanto sucesso.\n\nBateu a curiosidade? Reserve hoje mesmo sua mesa na nossa churrascaria, traga algumas pessoas queridas e prepare-se para uma casa de carnes muito especial, com um toque culinário exótico. Esperamos a sua visita!"
+   }
+  ]
+ },
+ "about": {
+  "title": "A melhor churrascaria de Zurique e região",
+  "cover": "restaurant",
+  "blocks": [
+   {
+    "t": "p",
+    "text": "Venha você também viver uma experiência muito especial na nossa churrascaria."
+   },
+   {
+    "t": "p",
+    "text": "O restaurante Boinabrasa foi fundado em 2013 por nós – uma família brasileiro-suíça – e é administrado até hoje com paixão e sucesso. Nossa **churrascaria em Zurique** (Dielsdorf), com 140 lugares no salão e 40 no terraço, tem a capacidade ideal para qualquer tipo de evento e conta com várias vagas de estacionamento gratuitas para os clientes."
+   },
+   {
+    "t": "img",
+    "id": "schnitt_fleisch"
+   },
+   {
+    "t": "img",
+    "id": "salatplatte"
+   },
+   {
+    "t": "h2",
+    "text": "Uma casa de carnes fora do comum"
+   },
+   {
+    "t": "p",
+    "text": "Viva o churrasco"
+   },
+   {
+    "t": "p",
+    "text": "A força e os valores do nosso restaurante estão no preparo autêntico e tradicional do churrasco. O churrasco é uma tradição brasileira em que cortes suculentos de carne bovina, cordeiro, carne suína e filé de frango são enfiados em grandes espetos e assados na brasa. Essa tradição culinária tão especial começou no início do século 19, quando os gaúchos (imigrantes europeus que se estabeleceram na região do Rio Grande do Sul) se reuniam, acendiam uma fogueira, espetavam grandes pedaços de carne e os assavam lentamente."
+   },
+   {
+    "t": "p",
+    "text": "O grito “Boi na brasa!” anuncia que o boi já está sobre as brasas e traduz a alegria de esperar por uma delícia quentinha em boa companhia.\n\nComo **churrascaria** & bar, queremos compartilhar com você essa alegre expectativa e esse clima de confraternização! Por isso, oferecemos muito mais do que carnes: apresentamos delícias sul-americanas incomparáveis."
+   },
+   {
+    "t": "h3",
+    "text": "Rodízio de carnes à vontade: uma viagem gastronômica de Zurique ao Brasil"
+   },
+   {
+    "t": "p",
+    "text": "Na nossa churrascaria, nossos mestres churrasqueiros preparam carnes suculentas segundo a antiga receita gaúcha e as assam por igual em espetos giratórios. Em seguida, nossos simpáticos passadores levam a carne até a sua mesa, sem parar, rodada após rodada, até você ficar plenamente satisfeito. Os cortes à moda gaúcha brasileira são fatiados do espeto individualmente, direto para o seu prato. Essa forma tradicional de servir carne se chama rodízio, que ao pé da letra quer dizer “o que gira”. Com uma espécie de semáforo na mesa (botão verde e botão vermelho), nossos clientes sinalizam para a equipe quando querem receber carne e quando não.\n\nNossa cozinha trabalha exclusivamente com carnes da mais alta qualidade, de fornecedores de confiança:\n\nOrigem das carnes:"
+   },
+   {
+    "t": "ul",
+    "items": [
+     "CARNE BOVINA: Suíça, Irlanda e América do Sul",
+     "CORDEIRO: Nova Zelândia, Irlanda",
+     "CARNE SUÍNA: Suíça",
+     "AVES: Suíça",
+     "PEIXE: Espanha, Vietnã, Noruega"
+    ]
+   },
+   {
+    "t": "p",
+    "text": "Mas não são só os amantes de carne que podem fazer uma viagem gastronômica ao Brasil na nossa **churrascaria em Zurique** (Dielsdorf). Um buffet colorido e apetitoso, com cerca de 25 acompanhamentos e saladas, quentes e frios, faz parte do nosso menu à vontade. Ou seja, nosso restaurante oferece também aos vegetarianos uma grande variedade de sabores e experiências. O buffet e o rodízio de churrasco funcionam no sistema “coma à vontade”, com preços fixos em CHF."
+   },
+   {
+    "t": "h3",
+    "text": "Sabor e prazer do melhor: churrasco, buffet de acompanhamentos, saladas, sobremesas & bebidas"
+   },
+   {
+    "t": "p",
+    "text": "Seja a carne suculenta no estilo churrasco, sejam as combinações aromáticas do buffet: como churrascaria brasileira, fazemos questão de um ambiente autêntico. E isso não se vê só nos trajes gaúchos dos nossos passadores. Também nas sobremesas e bebidas, o cardápio do nosso restaurante traz saborosas opções sul-americanas. Descubra sobremesas brasileiras como abacaxi grelhado ou mousse de manga. Também temos sobremesas clássicas, como mousse de chocolate ou taças de sorvete.\nComo churrascaria & bar, também temos, é claro, uma ampla seleção de bebidas escolhidas a dedo no cardápio. Vinho brasileiro, cerveja brasileira, sucos de fruta deliciosos, drinques, licores ou aperitivos: se ficar difícil escolher, teremos prazer em ajudar de acordo com o seu gosto. (Sobremesas e bebidas são cobradas à parte.)"
+   },
+   {
+    "t": "h3",
+    "text": "A equipe do BOINABRASA aguarda a sua visita!"
+   },
+   {
+    "t": "p",
+    "text": "Fale com a gente se tiver dúvidas sobre o nosso cardápio ou se quiser reservar uma mesa no salão ou no terraço para uma noite na nossa **churrascaria**. Claro que, a qualquer momento, informamos os alérgenos presentes nos nossos pratos.\n\nJá estamos ansiosos para encantar você com as nossas delícias!"
+   }
+  ]
+ },
+ "picanha": {
+  "title": "Picanha & churrasco: uma relação especial",
+  "cover": "picanha_wissen",
+  "blocks": [
+   {
+    "t": "p",
+    "text": "Muito se discute – e até se filosofa – sobre qual seria, afinal, o melhor corte bovino. Os argentinos juram, entre outros, pelo entrecôte, alemães e americanos apostam cada vez mais no T-bone, e os franceses nunca se cansam do seu filé. Já os brasileiros acham especialmente saborosa a parte que fica logo abaixo do rabo: a **picanha**. Em alemão, ela também é chamada de Tafelspitz ou Schwanzstück; por ser a “tampa” da alcatra (Hüftdeckel), ainda faz parte do traseiro do boi e é conhecida sobretudo pela intensidade do sabor – porque a picanha tem gosto de carne bovina como nenhuma outra parte do animal. Isso se deve principalmente ao fato de a chamada capa de gordura não ser retirada no corte."
+   },
+   {
+    "t": "p",
+    "text": "Hoje, a picanha é tradicionalmente um dos pontos altos de muitas festas e churrascos sul-americanos. Com o espeto de picanha, os churrasqueiros da churrascaria Boinabrasa trazem esse destaque sul-americano para o prato dos suíços."
+   },
+   {
+    "t": "img",
+    "id": "picanha_roh_spiess"
+   },
+   {
+    "t": "h2",
+    "text": "Picanha, um destaque da arte brasileira do churrasco"
+   },
+   {
+    "t": "p",
+    "text": "Os brasileiros acham a picanha tão saborosa que a importam em grande quantidade da Argentina – afinal, cada boi tem só duas peças desse corte. Por isso mesmo, é tão importante prepará-la com perfeição – claro, no churrasco, esse preparo na brasa, intenso e crocante, que remonta aos gaúchos (imigrantes que foram para a América do Sul) e que até hoje é celebrado em muitas churrascarias do Brasil. Nossa churrascaria, inspirada no churrasco brasileiro, tem orgulho de oferecer esse corte especial no espeto. E nossos clientes não se cansam dele."
+   },
+   {
+    "t": "h3",
+    "text": "Por que a picanha faz tanto sucesso"
+   },
+   {
+    "t": "p",
+    "text": "Uma coisa se pode dizer com toda a razão: os brasileiros entendem muito de preparar com perfeição uma carne nobre. E, quando podem escolher qual corte bovino vão assar, muitas vezes a escolha recai sobre a picanha. Vamos reunir os fatos:"
+   },
+   {
+    "t": "ul",
+    "items": [
+     "Uma **picanha** costuma pesar cerca de 1,2 kg e é relativamente alta. Perfeita para assar no espeto sobre o fogo aberto – ou seja, para o churrasco!",
+     "A capa de gordura, também relativamente grossa, tem duas funções no churrasco: por um lado, protege a carne no fogo e a mantém suculenta e macia; por outro, a gordura derrete e penetra na carne, criando aquele sabor intenso e característico de carne bovina.",
+     "O churrasqueiro não precisa temperar muito a picanha: a carne leva apenas sal (esfregado com as mãos), e só alguns segundos antes de ir ao fogo.",
+     "Esse preparo, bem simples, é fácil de reproduzir na churrasqueira de casa. Por isso, a picanha é uma ótima porta de entrada para o mundo do churrasco."
+    ]
+   },
+   {
+    "t": "p",
+    "text": "Mesmo assim, o que manda é sempre o sabor. Uma mordida numa fatia de picanha costuma bastar para convencer. Essa explosão de sabor de carne na língua; os dentes atravessando a crosta crocante e chegando à carne suculenta e macia. Pronto: aconteceu – e você entende por que os brasileiros têm uma relação tão especial com esse corte bovino."
+   },
+   {
+    "t": "img",
+    "id": "picanha_am_tisch"
+   },
+   {
+    "t": "h3",
+    "text": "“Picanha” é o mesmo que “Tafelspitz”?"
+   },
+   {
+    "t": "p",
+    "text": "Nos países de língua alemã, quando se fala em “Tafelspitz”, geralmente é um corte sem a capa de gordura. E essa é uma diferença importante! Porque a capa de gordura é essencial para a suculência da picanha no churrasco à brasileira. Não é obrigatório comê-la; basta que, durante o rodízio – o “girar no espeto” –, a gordura vá umedecendo a carne. Às vezes, um pouco de gordura pinga e queima; aí faz aquele chiado gostoso – um som que provavelmente deu nome ao churrasco!"
+   },
+   {
+    "t": "p",
+    "text": "Nos países de língua alemã, o Tafelspitz é usado, por exemplo, em pratos como o bife rolê, e por isso a capa de gordura, vista como um incômodo, é retirada do corte. Toda vez que isso acontece, em algum lugar do Brasil um churrasqueiro bate na testa – pode ter certeza!"
+   },
+   {
+    "t": "h2",
+    "text": "Prove picanha em grupo numa churrascaria de rodízio"
+   },
+   {
+    "t": "p",
+    "text": "Churrasco é, pura e simplesmente, uma experiência de grupo. Traga sua família, seus colegas e amigos ao Boinabrasa, fique à vontade no nosso ambiente aconchegante de inspiração sul-americana e deixe-se mimar, rodada após rodada, pelos nossos churrasqueiros, que comandam a brasa, e pelos nossos passadores, que servem e cortam a carne na mesa. Além dos espetos de **picanha**, que recomendamos, servimos espetos de boi, frango, cordeiro e porco preparados no estilo do **churrasco**. Nas sobremesas e bebidas também há deliciosas opções sul-americanas – como a caipirinha original do Brasil. Descubra também sobremesas brasileiras muito queridas, como abacaxi grelhado ou mousse de manga. Está tudo pronto para a sua noite de churrasco brasileiro – esperamos a sua visita!"
+   }
+  ],
+  "date": "2021-10-08"
+ },
+ "maminha": {
+  "title": "Maminha: especialmente suculenta e saborosa",
+  "cover": "maminha_wissen",
+  "blocks": [
+   {
+    "t": "p",
+    "text": "Você se lembra da época em que a churrasqueira recebia sobretudo costeletas, salsichas e barriga de porco? E em que, quando se falava de carne no espeto, quase todo mundo pensava no clássico leitão? Felizmente, o sucesso do churrasco por aqui – e, principalmente, do tradicional churrasco à brasileira – ampliou muito o cardápio de delícias e trouxe aromas e experiências culinárias totalmente novos para o nosso dia a dia."
+   },
+   {
+    "t": "p",
+    "text": "Uma delícia especial nesse contexto é a **maminha** – e o **churrasco de maminha**. A maminha é um corte bovino formado principalmente por músculo, mas bem marmorizado, ou seja, com bastante gordura entre as camadas musculares. Essa gordura deixa a maminha especialmente saborosa, suculenta e macia. O formato marcante do corte lhe rendeu muitos nomes e o torna inconfundível. Por causa da forma triangular, em algumas regiões ela é chamada de “Frauenschuh” (sapato de mulher) – lembra um sapato de bico fino. Como vem da alcatra do boi, também é conhecida como “Hüftspitze” (ponta da alcatra). No sul da Alemanha e na Áustria, também é chamada de “Hüferschwanzel” ou “Hieferschwanzel”. E, por sua qualidade especialmente alta, em alguns lugares a maminha recebe o nome de “Bürgermeisterstück” (peça do prefeito) ou “Pfaffenstück” (peça do padre)."
+   },
+   {
+    "t": "img",
+    "id": "maminha_zubereitung"
+   },
+   {
+    "t": "h2",
+    "text": "Churrasco & maminha: uma combinação única"
+   },
+   {
+    "t": "p",
+    "text": "Voltando à época em que o churrasco ainda não era tão popular e variado como hoje: antigamente, a maminha era preparada sobretudo como carne de panela. Sem dúvida, também é uma delícia, mas acreditamos que assim não se faz plena justiça ao potencial da maminha. Porque é só no espeto, como **churrasco**, que esse corte mostra de verdade tudo o que tem de melhor. Na nossa churrascaria, não dividimos a **maminha**: nós a assamos inteira. Só depois de pronta cortamos a carne em fatias grossas ou finas – conforme a preferência dos nossos clientes. A vantagem é que, enquanto assa, a gordura pode liberar seu aroma único. Por um lado, a gordura garante a suculência das fibras da carne. Por outro, é um importante condutor de sabor, um realçador de sabor natural. Quando a gordura derrete no fogo ou pinga sobre a carne e o carvão, sabor e aroma se unem numa composição única. Isso faz da maminha uma verdadeira iguaria!\n\nEntão, quem até hoje considerava a carne de panela uma iguaria – e ela é, claro – precisa experimentar a maminha preparada desse jeito. Prometemos uma verdadeira revelação gastronômica!"
+   },
+   {
+    "t": "h2",
+    "text": "Maminha x picanha: qual é mais gostosa?"
+   },
+   {
+    "t": "p",
+    "text": "Na pergunta “maminha x picanha – qual dá mais prazer?”, as opiniões se dividem. Muita gente acha o sabor da **maminha e da picanha** parecido. As diferenças de sabor ficam mais evidentes, sem dúvida, quando se pode provar as duas lado a lado – como você pode fazer, claro, na nossa churrascaria. Quem compara a maciez vai perceber que tanto a picanha quanto a maminha são muito macias, sendo a picanha talvez um pouquinho mais “amanteigada”. Em compensação, a maminha costuma ser percebida como um pouco mais “carnuda”, ou seja, nossos clientes descrevem o sabor de carne do churrasco de maminha como mais acentuado. A diferença óbvia entre maminha e picanha é a proporção de gordura na carne. Então, quem faz questão de carne magra deve dar preferência à picanha.\n\n→ A maminha é a parte mais suculenta da região da alcatra. Mas a carne não é tão macia quanto a da picanha. No Brasil, a picanha é considerada, em geral, o corte bovino mais nobre. Mas, claro, os dois cortes são comidos com grande entusiasmo no churrasco."
+   },
+   {
+    "t": "h3",
+    "text": "Aproveite o estilo de vida e a culinária do Brasil"
+   },
+   {
+    "t": "p",
+    "text": "Venha ao nosso restaurante para um **churrasco com maminha**, picanha e muitos outros espetos – esperamos por você! Aqui você encontra pratos brasileiros autênticos: além das nossas especialidades da brasa, oferecemos, claro, outras delícias, sobremesas e bebidas que levam você à alegria de viver e aos sabores do Brasil!"
+   }
+  ],
+  "date": "2021-11-08"
+ },
+ "linguica": {
+  "title": "Linguiça no churrasco — a especialidade brasileira assada no espeto",
+  "cover": "brasiliansiche_wurst_wissen",
+  "blocks": [
+   {
+    "t": "p",
+    "text": "A linguiça é um embutido cru e defumado, feito de carne suína. A **linguiça** vem originalmente de Portugal e é parente do chouriço, um embutido com páprica. Imigrantes portugueses trouxeram para o país a receita desse embutido, hoje tipicamente brasileiro. O Brasil foi descoberto em 1500 pelo navegador português Pedro Álvares Cabral e foi colônia portuguesa até a independência, em 1822. Foi assim que o português se firmou como a língua do país e que muitos bens, mercadorias e alimentos de Portugal chegaram ao maior país da América do Sul."
+   },
+   {
+    "t": "h2",
+    "text": "Os ingredientes da linguiça brasileira de churrasco, de sabor suave e bem temperado"
+   },
+   {
+    "t": "p",
+    "text": "A carne suína usada para fazer a linguiça brasileira vem da parte de cima do pernil do porco e, por isso, é especialmente boa para defumar, fritar ou assar na brasa. A carne magra é cortada em pedaços grandes e temperada com especiarias como páprica, orégano e alho. O tempero típico sempre leva pimenta – do reino ou vermelha – e sal. Às vezes também se acrescentam cominho e canela antes de deixar a carne descansar. Depois, ela pode ser embutida na tripa. Uma variação de preparo da **linguiça brasileira** é deixá-la de molho numa salmoura durante a noite. Assim, o sabor fica mais acentuado, mas continua suave. Muitas vezes a linguiça é defumada, porque assim dura mais."
+   },
+   {
+    "t": "img",
+    "id": "brasilianische_wurst"
+   },
+   {
+    "t": "h3",
+    "text": "Descubra a variedade da culinária brasileira com a linguiça"
+   },
+   {
+    "t": "p",
+    "text": "Hoje, é impossível imaginar a culinária brasileira sem a linguiça. Ao lado da carne-seca, ela é o ingrediente mais importante de uma feijoada brasileira de verdade. A feijoada, o cozido brasileiro de feijão com carnes, ganha com a linguiça seu saboroso toque defumado. A linguiça adquire seu sabor típico, suave e bem temperado, na defumação. Por isso, combina não só com sopas, cozidos, massas ou sanduíches, mas também – e muito bem – com o nosso churrasco característico, que você pode saborear na nossa churrascaria num ambiente brasileiro autêntico. No churrasco, a carne ou a linguiça é temperada e depois assada no espeto, para continuar macia e suculenta. **Por isso, linguiça e churrasco combinam “muito bem”, como dizem os brasileiros.**"
+   },
+   {
+    "t": "h3",
+    "text": "Um tipo de linguiça inspirado na Itália: a linguiça tipo calabresa"
+   },
+   {
+    "t": "p",
+    "text": "A linguiça calabresa, parecida com a salsiccia di Calabria, era feita por imigrantes italianos da Calábria no bairro do Bixiga, em São Paulo, e temperada com pimenta calabresa. Esse tempero especial com pimenta calabresa deu à linguiça seu sabor picante característico e o nome de **linguiça calabresa**. Hoje ela é um tipo de linguiça muito popular no Brasil e foi definida por lei, pelo Ministério da Agricultura do Brasil, como um tipo próprio de linguiça. É feita exclusivamente de carne suína curada, com pimenta calabresa e, eventualmente, outros temperos que definem seu sabor especial. Pode ser usada na cozinha ou defumada. No Brasil, a calabresa, na versão defumada, é especialmente apreciada como cobertura de pizza."
+   },
+   {
+    "t": "h2",
+    "text": "Venha descobrir linguiça e carne no espeto — seja muito bem-vindo"
+   },
+   {
+    "t": "p",
+    "text": "Prove a nossa **linguiça no churrasco** ou outras especialidades brasileiras da brasa na nossa churrascaria e descubra com a gente a variedade da culinária brasileira. Servimos nossas carnes “na brasa”, ou seja, assadas sobre o carvão. Escolha entre vários espetos de carne suculentos e macios ou prove a nossa **linguiça brasileira** bem temperada, assada no espeto. Descubra o sabor do Brasil e aproveite uma noite em clima brasileiro na nossa casa. Seja muito bem-vindo!"
+   }
+  ],
+  "date": "2022-03-21"
+ },
+ "caipirinha": {
+  "title": "Caipirinha original do Brasil – pura alegria de viver",
+  "cover": "caipirinha_wissen",
+  "blocks": [
+   {
+    "t": "p",
+    "text": "O que seria de uma refeição brasileira sem a caipirinha, o drinque mais famoso do país? No Brasil, a bebida é servida na praia, na cidade, em todo bar e em todo restaurante. O sabor refrescante de limão, cachaça, açúcar, gelo e mais alguns ingredientes combina perfeitamente com churrasco."
+   },
+   {
+    "t": "p",
+    "text": "Poucos ingredientes se combinam no preparo, mas criam um sabor incomparável, que logo faz pensar em sol, clima de verão e na alegria de viver brasileira. Além de outros drinques, long drinks e uma seleção requintada de vinhos, no cardápio da nossa churrascaria você encontra a **caipirinha original brasileira**."
+   },
+   {
+    "t": "h2",
+    "text": "O ingrediente mágico do drinque: a cana-de-açúcar"
+   },
+   {
+    "t": "p",
+    "text": "No Brasil, a cana-de-açúcar era cultivada por escravizados em grandes plantações, e a planta logo se tornou uma mercadoria importante para os habitantes. Já no século 18, os trabalhadores escravizados gostavam de beber o caldo extraído da cana. Eles evitavam a fermentação fervendo o caldo e obtinham assim uma bebida que chamavam de garapa. A cana-de-açúcar é originária do Leste Asiático e chegou ao Oriente Médio e à Europa pelo comércio. Foram os portugueses que a trouxeram para a América do Sul com a colonização, e o Brasil é até hoje o maior produtor de cana-de-açúcar do mundo. O caldo da cana é transformado em aguardente, a cachaça, que é o ingrediente principal da **caipirinha** – que por aqui muitas vezes é chamada simplesmente de “caipi”. O nome caipirinha vem da palavra brasileira caipira, que quer dizer habitante do campo. Em alemão, por causa do feminino em português, diz-se “die Caipirinha”; mas na Suíça e na Alemanha também é comum o masculino, “der Caipirinha”. Originalmente uma bebida da população rural, hoje o drinque é conhecido e apreciado no mundo todo."
+   },
+   {
+    "t": "img",
+    "id": "brasiliansiche_caipirinha"
+   },
+   {
+    "t": "h2",
+    "text": "O drinque mais famoso do Brasil"
+   },
+   {
+    "t": "p",
+    "text": "A caipirinha continua até hoje entre os Contemporary Classics – os clássicos contemporâneos – da lista da International Bartenders Association, que tem mais de 60 países entre seus membros. Existem diversas variações no preparo da caipirinha, mas há uma só receita original, que é a forma típica de fazer o drinque. Ao contrário da Europa, onde é comum usar açúcar mascavo, no Brasil se usa exclusivamente açúcar branco refinado, que dá o sabor característico. Na Europa, o açúcar de cana costuma ter grãos grossos e cor levemente amarronzada, e por isso o açúcar mascavo se firmou por aqui. Mas um brasileiro nunca prepararia uma **caipirinha autêntica** com açúcar mascavo, para não alterar o sabor. Na nossa churrascaria, fazemos questão do verdadeiro jeito brasileiro de viver. Por isso, servimos a caipirinha exclusivamente na versão original brasileira, com açúcar branco. Com um socador, o limão cortado em quatro e o açúcar branco são amassados, e depois se completa com cachaça. É importante sempre retirar as pontas e o miolo do limão, para o drinque não ficar amargo demais. O teor alcoólico da cachaça é de no mínimo 38%. Diferentemente do rum, usa-se apenas caldo de cana puro, sem melaço nem xarope."
+   },
+   {
+    "t": "p",
+    "text": "Uma **caipirinha de verdade do Brasil** é completada com gelo em cubos. A versão europeia da receita usa gelo triturado. Como os brasileiros gostam de tomar a caipirinha bem gelada, mesmo com o calor que faz no Brasil, preferem gelo em cubos. O gelo em cubos mantém o copo e a bebida gelados por mais tempo. Limão fresco, gelo, açúcar branco e cachaça despertam na hora aquela sensação típica de calor, sol e prazer à brasileira."
+   },
+   {
+    "t": "h2",
+    "text": "Drinque assinatura do Boinabrasa – Caipirinha Maracujá"
+   },
+   {
+    "t": "p",
+    "text": "Para oferecer a você uma experiência autêntica na nossa churrascaria, **nossa caipirinha é preparada exclusivamente segundo a receita original.** Além dela, temos a nossa versão frutada da casa para essa bebida icônica: a Caipirinha Maracujá. Ela também é preparada segundo a receita original brasileira, mas, em vez de limão, leva maracujá fresco. É o maracujá que faz do nosso drinque assinatura algo especial: ao contrário de muitos outros, não usamos suco concentrado, e sim apenas o suco puro da fruta fresca, finalizado com um toque de xarope. Completada com cachaça e gelo, ela se torna uma versão especialmente frutada da caipirinha original, com o aroma incomparável do maracujá fresco. Passe a sua noite conosco na churrascaria, com excelentes espetos brasileiros e uma caipirinha típica, feita pela receita original brasileira – clássica ou na versão Caipirinha Maracujá. Os dois drinques também podem ser pedidos sem álcool."
+   },
+   {
+    "t": "h3",
+    "text": "Viva a alegria brasileira na nossa churrascaria"
+   },
+   {
+    "t": "p",
+    "text": "Saboreie aqui uma **caipirinha legítima do Brasil** com o seu churrasco e outras especialidades e sinta o clima do país mais bonito da América do Sul – esperamos a sua visita. Seja sozinho, com a família, com os amigos ou com os colegas de trabalho, num almoço ou jantar com os melhores espetos preparados no estilo churrasco: embarque numa viagem gastronômica e acompanhe sua refeição com uma caipirinha feita pela receita original. Teremos prazer em atender você no nosso ambiente aconchegante e autêntico. Mergulhe no sabor incomparável do Brasil e descubra o verdadeiro jeito brasileiro de viver."
+   }
+  ],
+  "date": "2022-02-16"
+ },
+ "gerichte": {
+  "title": "Pratos brasileiros com fogo e sabor",
+  "cover": "brasiliansiche_gerichte_tisch",
+  "blocks": [
+   {
+    "t": "p",
+    "text": "Hoje, no Brasil e na capital, Brasília, comer é muito mais do que simplesmente se alimentar — é, antes, celebrar o encontro num ambiente acolhedor. Por isso, os **pratos brasileiros** são preparados com carinho, feitos para muita gente e servidos para compartilhar, de modo que as delícias do país convidam a saborear juntos, em grupos maiores."
+   },
+   {
+    "t": "p",
+    "text": "A **culinária brasileira** é muito diversa: influências europeias, asiáticas e africanas – vindas da imigração europeia, da colonização e da escravidão de africanos – marcaram também na cozinha o único país de língua portuguesa das Américas. Ingredientes que podiam ser cozidos em grande quantidade e duram muito — como a nutritiva mandioca, o arroz e o feijão-preto — são a base dos pratos brasileiros. Por causa da mistura de várias cozinhas, não existe de fato uma **comida tipicamente brasileira** no sentido clássico. Cada região cozinha de um jeito muito diferente."
+   },
+   {
+    "t": "img",
+    "id": "brasiliansiche_gerichte_tisch"
+   },
+   {
+    "t": "h2",
+    "text": "O que a culinária brasileira tem de especial"
+   },
+   {
+    "t": "p",
+    "text": "Mas também há pratos que conquistaram o país inteiro. Entre eles está o prato nacional brasileiro, a feijoada (um cozido forte de carnes com o indispensável feijão-preto, acompanhado de arroz e farofa), que, dizem, é mais gostosa no Rio de Janeiro.\n\nO maior país da América do Sul reúne diversas influências culinárias e, além do prato nacional, a feijoada, há ainda vários **pratos tipicamente brasileiros** e bebidas para descobrir:"
+   },
+   {
+    "t": "ul",
+    "items": [
+     "Acarajé",
+     "Caipirinha",
+     "Churrasco",
+     "Farofa de mandioca",
+     "Moqueca baiana ou capixaba",
+     "Pão de queijo",
+     "Picanha",
+     "e muito mais"
+    ]
+   },
+   {
+    "t": "p",
+    "text": "Reproduzir 1:1 toda a variedade da culinária brasileira no nosso restaurante é praticamente impossível.\nEm compensação, nosso convidativo buffet, com 25 pratos e acompanhamentos quentes e frios, é bem completo e oferece um amplo panorama das influências culinárias das mais diversas regiões na cozinha brasileira – entre elas pratos e delícias alemães, espanhóis, italianos, portugueses, africanos e indígenas. Usamos produtos frescos, de primeira e da mais alta qualidade, e oferecemos uma seleção de opções vegetarianas e sem carne.\n\nFamosos mesmo são os **pratos e especialidades brasileiras com carne** — como o churrasco. Na nossa churrascaria, você pode conhecer esse prato tão querido preparado de forma autêntica. O churrasco é a arte brasileira da brasa: a carne é temperada segundo a receita brasileira, num processo pensado passo a passo, girada no espeto e assada – até chegar à mesa quente, crocante e suculenta. Na churrasqueira, a cozinha brasileira mostra grande requinte."
+   },
+   {
+    "t": "img",
+    "id": "brasiliansiche_gerichte_feijoada"
+   },
+   {
+    "t": "h2",
+    "text": "Especialidades brasileiras: carne do jeito dos churrasqueiros"
+   },
+   {
+    "t": "p",
+    "text": "O churrasco vem do Brasil, mas é consumido além das fronteiras do país, em toda a América Latina e também na Espanha e em Portugal. Dependendo da região, há diferenças sutis nos ingredientes, no preparo e na forma de servir. Ao contrário da Argentina, onde o churrasco é feito só com carne bovina, no Brasil churrasqueiros experientes preparam especialidades com vários tipos de carne:"
+   },
+   {
+    "t": "ul",
+    "items": [
+     "Aves, como o frango",
+     "Cordeiro",
+     "Carne bovina",
+     "Carne suína"
+    ]
+   },
+   {
+    "t": "p",
+    "text": "Os churrasqueiros são mestres da brasa com formação profissional, que comandam o fogo com habilidade e orgulho, seguindo uma tradição de séculos, como seus antepassados: os pedaços de carne, cortados com precisão, são espetados com o lado da gordura para baixo e assados por igual, de todos os lados, girando sem parar sobre o fogo aberto. Assim, a carne fica crocante por fora, macia por dentro e bem temperada. Os passadores trazem sempre mais carne direto à mesa, onde ela é cortada na hora, do espeto, em pedaços apetitosos do tamanho de uma garfada. Essa forma especial de servir a carne se chama rodízio – “o que gira”.\n\nAgora você certamente também quer provar churrasco — venha viver essa experiência na nossa churrascaria. Da carne bovina, servimos aos nossos clientes o espeto de picanha, um corte macíssimo da alcatra — bem à brasileira, com a capa de gordura preservada."
+   },
+   {
+    "t": "h3",
+    "text": "Delícias da brasa na nossa churrascaria"
+   },
+   {
+    "t": "p",
+    "text": "Na nossa churrascaria em Dielsdorf, Zurique, você vê com os próprios olhos – e sente no paladar – a grande arte do churrasco brasileiro, com até 10 variedades da brasa servidas direto na sua mesa farta. Esse tradicional **prato de carne brasileiro** é um dos grandes destaques da culinária do Brasil e combina maravilhosamente com os nossos 25 pratos quentes e frios do buffet. Você pode confiar na altíssima qualidade e na ótima procedência da nossa carne, que, conforme o tipo, compramos de parceiros selecionados de longa data.\n\nCom um prato grande só seu, cheio da culinária colorida e variada do Brasil, você vai se sentir no Rio de Janeiro. Esse ambiente autêntico é tão importante para nós quanto o atendimento atencioso e a alta qualidade dos nossos pratos."
+   },
+   {
+    "t": "h3",
+    "text": "Influências do mundo todo: vida colorida, cozinha colorida"
+   },
+   {
+    "t": "p",
+    "text": "Mas como as diversas culturas aparecem na cozinha do Brasil? Pimentas, banana-da-terra e leite de coco, por exemplo, são ingredientes da culinária africana que estão presentes em pratos brasileiros. É o caso da moqueca, especialidade brasileira com peixe, tomate, pimentão, coentro e azeite de dendê. Surgiram duas versões típicas: a moqueca baiana, com o azeite de dendê de origem africana, e a moqueca capixaba, feita tradicionalmente com azeite de oliva – que, por sua vez, é conhecido como um dos principais ingredientes da cozinha italiana.\n\nA mandioca, cuja farinha também faz parte da feijoada, o prato nacional, é de origem indígena, assim como os frutos do mar e os peixes dos pratos brasileiros. Em São Paulo, você vai se surpreender até com o sushi — os restaurantes japoneses lá são mais comuns do que em qualquer outro lugar do mundo fora do Japão.\n\nAs origens portuguesas aparecem na farta cozinha de Minas Gerais (a cozinha mineira), onde você também encontra doces de açúcar, leite e caramelo, além de deliciosos bolos e doces com frutas e coco."
+   },
+   {
+    "t": "h3",
+    "text": "Boinabrasa — comida tipicamente brasileira"
+   },
+   {
+    "t": "p",
+    "text": "Comandado por uma família brasileiro-suíça desde 2013: nosso restaurante BOINABRASA oferece a autêntica culinária e as carnes do Brasil no coração da Suíça — poupe-se da longa viagem ao Sul do Brasil e prove aqui **pratos brasileiros** e bebidas, num menu que combina um buffet selecionado no estilo “coma à vontade” com preços fixos em CHF. Claro que você também pode brindar com o clássico drinque brasileiro, a caipirinha — do jeito certo, com limão fresco, cachaça, açúcar branco e gelo. Também servimos drinques sem álcool, cerveja e vinho, além de sucos tropicais de manga e maracujá. Tem dúvidas sobre comida tipicamente brasileira? Teremos prazer em indicar qual bebida combina com cada prato e, se quiser, apresentar as recomendações da casa."
+   }
+  ],
+  "date": "2022-02-11"
+ },
+ "gaucho": {
+  "title": "“Gaucho-Grill”: significado culinário e história",
+  "cover": "gaucho_grill_wissen",
+  "blocks": [
+   {
+    "t": "p",
+    "text": "Quem se interessa por um “**Gaucho-Grill**” está em busca de uma viagem gastronômica pela América do Sul que termina numa carne crocante por fora e maravilhosamente suculenta por dentro, preparada segundo a tradicional arte sul-americana da brasa. Mas quem diz “Gaucho-Grill” usa um termo um tanto enganoso e, na maioria das vezes, se refere à carne bovina preparada à moda argentina. Com menos frequência, o termo é usado para o churrasco brasileiro – o jeito brasileiro de preparar carne que celebramos na nossa churrascaria Boinabrasa."
+   },
+   {
+    "t": "p",
+    "text": "O problema é a ideia equivocada de que o termo “gaúcho” se aplica a um único povo – os argentinos – e lembra, antes de tudo, os famosos bifes argentinos. Há também quem use esse termo para procurar uma churrasqueira ideal para preparar carne no estilo sul-americano.\n\nAqui, queremos desfazer alguns mal-entendidos – simplesmente porque não existe “o” Gaucho-Grill – e levar você numa pequena viagem gastronômica pela América do Sul."
+   },
+   {
+    "t": "h2",
+    "text": "Significado: nem todo gaúcho é igual"
+   },
+   {
+    "t": "p",
+    "text": "Nos países de língua alemã, o termo “Gauchos” costuma ser usado como sinônimo genérico de argentinos. No futebol, por exemplo, é bem comum chamar a seleção argentina de “Gauchos” – embora nos últimos anos esse uso seja cada vez mais visto como pejorativo e generalizante. Isso porque os gaúchos, historicamente descendentes de imigrantes ibéricos, estavam e estão espalhados por toda a América do Sul. Não só na Argentina, mas também no Brasil, no Paraguai, no Uruguai e na Bolívia, os gaúchos eram conhecidos como criadores de gado nos pampas; entre seus principais produtos estavam a carne-seca e o couro bovino – e, conforme o lugar, desenvolveram rituais e costumes culinários e culturais próprios. Hoje, os descendentes dos gaúchos vivem, em sua maioria, em povoados no interior e não têm muito a ver com a sociedade urbana moderna. Mas sua influência se sente em quase toda a América do Sul – e se saboreia!"
+   },
+   {
+    "t": "h3",
+    "text": "A arte gaúcha da brasa na Argentina"
+   },
+   {
+    "t": "p",
+    "text": "Os gaúchos argentinos adoram sua carne bovina. São famosos no mundo inteiro por isso: ela é um sucesso de exportação e está profundamente ligada à cultura do país. Para muitos argentinos, os gaúchos são simplesmente heróis populares, que marcaram a identidade do país.\n\nGraças aos gaúchos, os argentinos têm uma ideia muito própria de como assar carne. Com o termo “asado”, eles designam um método em que grandes pedaços de carne – ou, muitas vezes, animais inteiros, com couro e cabeça – são presos em forma de cruz nas chamadas cruzes de asado, de metal, colocadas em volta do fogo, onde assam durante horas. O mestre da brasa, o “asador”, geralmente também cuida de uma parrilla, uma grelha a carvão, onde se preparam também pedaços menores de carne. Os dois equipamentos às vezes são chamados internacionalmente de “**Gaucho-Grill**”, o que é simplesmente impreciso.\n\nPelo costume argentino, a carne é servida sem molhos nem marinadas e, no máximo, com um pouco de sal; assim, o sabor autêntico da carne fica em primeiro plano. Esse método vem da época em que os gaúchos criadores de gado ainda abatiam animais inteiros e os assavam por horas numa fogueira. Hoje, um asado autêntico é um acontecimento cultural, celebrado com a família e os amigos. As fogueiras muitas vezes atingem um tamanho impressionante e atraem pessoas da vizinhança para a festa."
+   },
+   {
+    "t": "h3",
+    "text": "Existe um “Gaucho-Grill” brasileiro?"
+   },
+   {
+    "t": "p",
+    "text": "Os gaúchos brasileiros criaram no século 19 uma forma muito especial de preparar carne sobre o fogo aberto – o churrasco – e celebravam isso em grande estilo em festas populares e familiares, aniversários e casamentos. Hoje há churrascarias em todo o Brasil, e continua sendo comum reunir a família e os amigos para comer nelas. Ali se preparam carnes de diversas origens, do bife bovino ao frango, passando pela copa-lombo e pela costelinha. Hoje, as churrascarias inspiram churrasqueiros no mundo todo – por exemplo, o nosso restaurante Boinabrasa, em Zurique. Não oferecemos apenas carne autêntica, preparada no estilo do churrasco brasileiro: queremos oferecer aos nossos clientes o mesmo clima de confraternização que os brasileiros tanto valorizam.\n\nUm churrasqueiro brasileiro nunca diria “Gaucho-Grill” – porque, assim como os gaúchos eram diversos e se espalharam por uma vasta área da América do Sul, os costumes dos seus churrasqueiros também se desenvolveram de formas muito diferentes. Por isso, é preciso distinguir claramente, por exemplo, entre o churrasco brasileiro e o “Gaucho-Grill” argentino.\n\nA propósito: a rigor, o churrasco também existe no Brasil, mas a palavra é usada de outra forma. Os argentinos costumam usar o termo apenas para um bife alto de carne bovina, geralmente o ribeye, com bastante gordura. Para os argentinos, um espeto de coxa de frango ou de copa-lombo, por exemplo, não é churrasco – ao contrário dos brasileiros, para quem toda carne assada na churrasqueira se chama churrasco. Esse mesmo foco na carne bovina, aliás, também existe no Paraguai e no Uruguai."
+   },
+   {
+    "t": "h3",
+    "text": "Termo confuso? Melhor abrir mão dele!"
+   },
+   {
+    "t": "p",
+    "text": "Então, quem usa o termo “**Gaucho-Grill**” pode ser facilmente mal compreendido. É melhor usar nomes como “churrasco brasileiro” ou “asado argentino” – senão, é preciso aguentar a pergunta: de quais “gaúchos”, exatamente, estamos falando? Cá entre nós, o melhor mesmo é deixar de lado o termo “gaúcho” quando se fala de comida, porque ele generaliza demais e ignora a diversidade cultural e culinária da América do Sul."
+   },
+   {
+    "t": "h2",
+    "text": "O Boinabrasa é um restaurante “Gaucho-Grill”?"
+   },
+   {
+    "t": "p",
+    "text": "Não – somos uma churrascaria no modelo brasileiro. Aliás, praticamente nenhum restaurante de inspiração sul-americana se chamaria de “Gaucho-Grill”. Esse termo foi criado sobretudo por empresas americanas que vendem churrasqueiras a carvão e, de algum jeito, acabou se firmando também nos países de língua alemã. Se sul-americanos parassem diante da nossa porta e lessem “Gaucho-Grill”, com razão coçariam a cabeça e perguntariam: que gaúchos? Argentinos ou brasileiros – ou talvez até paraguaios ou uruguaios? Da mesma forma, nossos clientes de língua alemã achariam que temos uma casa de carnes argentina – porque a maioria associa o termo “Gaucho” aos argentinos. Não: somos um restaurante de churrasco no modelo brasileiro!\n\nQuem quer provar a famosa carne preparada no estilo do churrasco brasileiro não precisa viajar para longe. No coração da Suíça, damos as boas-vindas a você na nossa churrascaria em Zurique (Dielsdorf). Viva com amigos e família um autêntico churrasco brasileiro num ambiente aconchegante e saboreie a carne única, crocante e suculenta, dos nossos churrasqueiros profissionais, com o atendimento de primeira dos nossos simpáticos passadores, que levam a carne até a sua mesa, rodada após rodada, até você ficar satisfeito e feliz. Já estamos ansiosos para levar você nessa viagem gastronômica!"
+   }
+  ],
+  "date": "2021-09-20"
+ },
+ "dolcebrigadeiro": {
+  "title": "Dolcebrigadeiro",
+  "cover": "header-dolcebrigadeiro",
+  "blocks": [
+   {
+    "t": "p",
+    "text": "Deixe-se seduzir por uma nova experiência com chocolate!"
+   },
+   {
+    "t": "p",
+    "text": "A Dolcebrigadeiro é especializada em brigadeiro gourmet e oferece um novo conceito em chocolate. Todos os produtos são feitos com receita própria, apenas com ingredientes naturais e o melhor chocolate."
+   },
+   {
+    "t": "p",
+    "text": "Nossos brigadeiros artesanais e doces especiais são uma forma deliciosa e criativa de celebrar e saborear!"
+   },
+   {
+    "t": "p",
+    "text": "Ideais como presentes originais ou como doces para empresas, casamentos, mesas de doces, aniversários e eventos de todo tipo."
+   }
+  ]
+ }
+}

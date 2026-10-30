@@ -1,0 +1,4 @@
+{
+  "_comment": "Real Google reviews only, copied with the restaurant's agreement or loaded through the Google Places API (which requires showing Google's attribution). Fields: author (as shown on Google), rating (1-5), date (yyyy-mm-dd), text (as written), lang (the review's language). Empty: the section links to the reviews on Google instead. Nothing here may be invented.",
+  "reviews": []
+}

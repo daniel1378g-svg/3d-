@@ -1,0 +1,539 @@
+{
+ "churrasco": {
+  "title": "Churrasco : le feu culinaire du Brésil",
+  "cover": "churrasco_grill",
+  "blocks": [
+   {
+    "t": "p",
+    "text": "**Churrasco** – le mot à lui seul évoque des braises ardentes et un feu qui grésille. Et l’appellation vient probablement de ce bruit précis que fait la graisse qui goutte et brûle. Au Brésil, dans la péninsule Ibérique (Portugal et Espagne) ainsi que dans certaines régions d’Amérique latine, le churrasco désigne donc fort justement une façon de préparer la viande qui porte poétiquement ses particularités dans son nom.\n\nCôté goût, le churrasco est synonyme d’intensité, de passion et, non des moindres, d’authenticité. Notre steakhouse de churrasco prend pour modèle ceux qu’on appelle les gauchos, des immigrants européens installés au Brésil au 19e siècle. Ils se réunissaient autour de grands feux sur lesquels ils grillaient ensemble leurs brochettes de viande, en joyeuse compagnie. Au restaurant, nous souhaitons offrir à nos hôtes cette atmosphère conviviale, tout en leur servant les meilleures brochettes de viande qu’ils aient jamais goûtées."
+   },
+   {
+    "t": "h2",
+    "text": "Qu’est-ce que le churrasco ?"
+   },
+   {
+    "t": "p",
+    "text": "La méthode **churrasco** allie l’art traditionnel de la grillade à la finesse culinaire moderne. Dans notre churrascaria à Zurich, nous proposons le churrasco rodizio. Voici, dans les grandes lignes, comment se déroule une grillade churrasco :"
+   },
+   {
+    "t": "ul",
+    "items": [
+     "La viande est découpée en morceaux de la taille d’une main. Les viandes les plus appréciées pour le churrasco sont le bœuf, le poulet, l’agneau et le porc, ainsi que différentes sortes de saucisses. Parmi les plats de churrasco les plus populaires figurent le filet de bœuf et la cuisse de poulet.\n→ Dans le churrasco brésilien que nous proposons dans notre restaurant, les plats les plus appréciés sont la Picanha (chapeau de rumsteck, Tafelspitz) et la Coxa de frango (cuisse de poulet).",
+     "Environ une demi-heure avant la cuisson, les morceaux de viande sont saupoudrés à la main de gros sel et/ou généreusement marinés.",
+     "Les morceaux de viande sont ensuite enfilés sur de grandes broches.",
+     "La viande est d’abord grillée côté gras vers le bas – soit sur du charbon de bois, soit sur un feu ouvert. Ensuite, dans le churrasco rodizio, les broches tournent en continu.",
+     "Avant de servir, il est d’usage, pour les gros steaks, de couper encore la viande en deux ou en plusieurs petits morceaux – en bouchées. Dans notre churrasco rodizio, nous apportons la viande directement aux tables et la découpons sur place en petites tranches.",
+     "Le churrasco est une expérience de groupe ; il est donc traditionnellement servi sur un grand plat où tous les convives se servent. Dans notre churrascaria, les brochettes sont servies directement à table, à chaque hôte individuellement.",
+     "Il est d’usage de servir des accompagnements, par exemple des salades, du pain à l’ail, de la polenta et de la salade de pommes de terre."
+    ]
+   },
+   {
+    "t": "p",
+    "text": "Selon les régions, il existe certaines différences dans les sortes de viande, la préparation de la viande, les ingrédients et le service."
+   },
+   {
+    "t": "img",
+    "id": "gaucho_zubereitung"
+   },
+   {
+    "t": "img",
+    "id": "gaucho_am_feuer"
+   },
+   {
+    "t": "h3",
+    "text": "Les variantes régionales du churrasco"
+   },
+   {
+    "t": "p",
+    "text": "En Argentine, en Uruguay et au Paraguay, on connaît surtout le **churrasco** comme un steak de bœuf, accompagné de salade et de frites ou de purée de pommes de terre. Au Brésil, en revanche, on appelle churrasco toute viande grillée sur une churrasqueira (le gril spécial à churrasco). Les restaurants appelés churrascarias sont très répandus au Brésil, abordables pour une large part de la population et souvent au cœur de la vie sociale. Dans de nombreuses régions du monde, les restaurants de churrasco s’inspirent du concept brésilien – Boinabrasa aussi !"
+   },
+   {
+    "t": "h3",
+    "text": "Une façon de griller passionnante et ludique"
+   },
+   {
+    "t": "p",
+    "text": "Par rapport au gril à charbon de bois très répandu en Europe, la viande grillée façon churrasco devient nettement plus croustillante et prend un arôme puissant et ardent. Les gourmets apprécient la note de grillé que prend la viande, ainsi que l’aspect de sa croûte brun rouge foncé. Elle demande une mâche ferme, mais la saveur explose littéralement lorsque les dents y pénètrent. C’est là, au plus tard, qu’on se rend compte que la viande, très croustillante à l’extérieur, est délicieusement juteuse à l’intérieur !\n\nLe churrasco n’est pas seulement un plaisir à manger, mais aussi à préparer. Le maître grilleur sent littéralement qu’il joue avec le feu et prépare la viande comme le faisaient déjà nos ancêtres lors de grandes fêtes. Bien sûr, la prudence est de mise et il faut garder une distance suffisante ! Si vous n’avez encore jamais mangé de churrasco, mieux vaut d’abord le découvrir dans une churrascaria avant de l’essayer vous-même à la maison."
+   },
+   {
+    "t": "img",
+    "id": "schnitt_zubereitung"
+   },
+   {
+    "t": "img",
+    "id": "churrasco_grill"
+   },
+   {
+    "t": "h2",
+    "text": "Rendez-nous visite dans notre churrascaria à Zurich !"
+   },
+   {
+    "t": "p",
+    "text": "Si vous souhaitez vivre un churrasco authentique en famille, entre amis ou entre collègues, nous vous invitons chaleureusement dans notre restaurant de churrasco, c’est-à-dire dans notre churrascaria à Zurich ! Notre steakhouse ne se contente pas de préparer la viande à la manière brésilienne : nous réunissons aussi la culture des gauchos brésiliens dans notre ambiance, nos tenues de service et notre personnel de bonne humeur. Les brochettes de churrasco sont nos vedettes, mais nos desserts et nos boissons ont eux aussi une touche sud-américaine. Avez-vous déjà goûté la bière brésilienne ? Elle est excellente ! Nos buffets vous permettent de goûter à peu près à tout – et c’est pourquoi ils sont si appréciés.\n\nVotre curiosité est éveillée ? Réservez dès aujourd’hui votre table dans notre churrascaria, venez avec quelques personnes qui vous sont chères et réjouissez-vous de découvrir un steakhouse d’un genre tout à fait particulier, à la fois gourmand et exotique. Nous nous réjouissons de votre visite !"
+   }
+  ]
+ },
+ "about": {
+  "title": "Le meilleur steakhouse de churrasco à Zurich & environs",
+  "cover": "restaurant",
+  "blocks": [
+   {
+    "t": "p",
+    "text": "Vivez, vous aussi, une expérience toute particulière dans notre churrascaria."
+   },
+   {
+    "t": "p",
+    "text": "Le restaurant Boinabrasa a été fondé en 2013 par nous – une famille brésilo-suisse – et il est dirigé jusqu’à aujourd’hui avec passion et succès. Avec 140 places à l’intérieur et 40 en terrasse, notre **steakhouse de churrasco à Zurich** (Dielsdorf) offre une capacité idéale pour tous types d’événements et dispose de plusieurs places de parc gratuites pour nos hôtes."
+   },
+   {
+    "t": "img",
+    "id": "schnitt_fleisch"
+   },
+   {
+    "t": "img",
+    "id": "salatplatte"
+   },
+   {
+    "t": "h2",
+    "text": "Un restaurant de steaks pas comme les autres"
+   },
+   {
+    "t": "p",
+    "text": "Vivre le churrasco"
+   },
+   {
+    "t": "p",
+    "text": "La force et les valeurs de notre restaurant résident dans la préparation authentique et traditionnelle du « churrasco ». Le churrasco est une tradition brésilienne de la grillade, dans laquelle de juteux morceaux de bœuf, d’agneau, de porc ainsi que des filets de poulet sont enfilés sur de grandes broches, puis grillés. Cette tradition culinaire particulière est née au début du 19e siècle, lorsque les gauchos (des immigrants européens établis dans la région du Rio Grande do Sul) se réunissaient, allumaient un feu, embrochaient de gros morceaux de viande et les faisaient griller lentement."
+   },
+   {
+    "t": "p",
+    "text": "L’exclamation « Boi na brasa! » signifie en quelque sorte « Le taureau est sur la braise ! » et, en guise d’annonce, incarne l’impatience de savourer un délicieux mets chaud dans une ambiance conviviale.\n\nCette joyeuse impatience et cette convivialité, nous aimerions les partager avec vous en tant que **steakhouse de churrasco** & bar ! Dans cet esprit, nous vous offrons bien plus que des steaks : nous vous présentons des délices sud-américains d’une saveur incomparable."
+   },
+   {
+    "t": "h3",
+    "text": "Steaks en rodizio à discrétion : une escapade culinaire de Zurich au Brésil"
+   },
+   {
+    "t": "p",
+    "text": "Dans notre churrascaria, nos maîtres grilleurs du churrasco – les « Churrasqueiros » – préparent une viande à steak juteuse selon une ancienne recette des gauchos et la grillent uniformément sur des broches tournantes. Ensuite, nos sympathiques « Passadores » vous apportent la viande à table, encore et encore, tour après tour, jusqu’à ce que vous soyez pleinement satisfaits. Les steaks gauchos brésiliens sont découpés de la broche individuellement, pour votre assiette. Cette façon traditionnelle de servir la viande s’appelle « rodizio », ce qui signifie littéralement « ce qui tourne ». Grâce à une sorte de système de feux à table (bouton vert & bouton rouge), nos hôtes peuvent signaler à notre personnel de service quand ils souhaitent être servis en viande et quand ils ne le souhaitent pas.\n\nNotre cuisine prépare exclusivement de la viande de première qualité, issue de partenaires de confiance :\n\nProvenance de la viande :"
+   },
+   {
+    "t": "ul",
+    "items": [
+     "BŒUF : Suisse, Irlande et Amérique du Sud",
+     "AGNEAU : Nouvelle-Zélande, Irlande",
+     "PORC : Suisse",
+     "VOLAILLE : Suisse",
+     "POISSON : Espagne, Vietnam, Norvège"
+    ]
+   },
+   {
+    "t": "p",
+    "text": "Mais les amateurs de viande ne sont pas les seuls à pouvoir faire un voyage culinaire au Brésil dans notre **steakhouse à Zurich**-Dielsdorf. Un buffet coloré et appétissant d’environ 25 accompagnements et salades chauds et froids fait partie de notre menu à discrétion. Notre restaurant offre donc aussi aux végétariens une grande variété de plaisirs et de saveurs. Le buffet et le churrasco rodizio sont conçus comme une formule à volonté à prix fixes en CHF."
+   },
+   {
+    "t": "h3",
+    "text": "Plaisir & saveurs d’exception : churrasco, buffet d’accompagnements, salades, desserts & boissons"
+   },
+   {
+    "t": "p",
+    "text": "Viande à steak juteuse façon churrasco ou compositions aromatiques du buffet : en tant que churrascaria brésilienne, nous tenons à une ambiance authentique. Elle ne se reflète pas seulement dans la tenue de gaucho de nos « Passadores ». Pour les desserts et les boissons aussi, la carte de notre restaurant vous propose de savoureuses options sud-américaines. Découvrez des desserts brésiliens comme l’ananas grillé ou la mousse à la mangue. Vous trouverez aussi chez nous des desserts classiques comme la mousse au chocolat ou les coupes glacées.\nEn tant que steakhouse de churrasco & bar, nous vous proposons bien sûr aussi un large choix de boissons sélectionnées sur notre carte. Vin brésilien, bière brésilienne, délicieux jus de fruits, cocktails, liqueurs ou apéritifs : si vous avez du mal à choisir, nous vous conseillons volontiers selon vos préférences personnelles. (Les desserts et les boissons sont facturés séparément.)"
+   },
+   {
+    "t": "h3",
+    "text": "L’équipe BOINABRASA se réjouit de votre visite !"
+   },
+   {
+    "t": "p",
+    "text": "N’hésitez pas à nous contacter si vous avez des questions sur notre menu ou si vous souhaitez réserver pour une soirée dans notre **steakhouse de churrasco** une table à l’intérieur ou sur la terrasse de notre restaurant. Nous vous renseignons bien entendu à tout moment sur les allergènes contenus dans nos plats.\n\nNous nous réjouissons déjà de vous régaler de nos délicieuses spécialités !"
+   }
+  ]
+ },
+ "picanha": {
+  "title": "Picanha & churrasco : une relation particulière",
+  "cover": "picanha_wissen",
+  "blocks": [
+   {
+    "t": "p",
+    "text": "On discute beaucoup en connaisseurs, et on philosophe aussi, pour savoir quelle « découpe » de bœuf est vraiment la meilleure. Les Argentins jurent entre autres par l’entrecôte, les Allemands et les Américains misent de plus en plus sur la découpe T-bone et les Français ne se lassent jamais de leur filet. Les Brésiliens, eux, trouvent particulièrement délicieuse la partie située sous la queue : la **Picanha**, aussi appelée en allemand Tafelspitz ou Schwanzstück, fait encore partie, en tant que « chapeau de rumsteck », de la cuisse ou de la hanche du bœuf et elle est surtout connue pour l’intensité de son goût – car la Picanha a le goût du bœuf comme aucun autre morceau de l’animal. Cela tient surtout au fait que la couche de gras n’est pas retirée à la découpe."
+   },
+   {
+    "t": "p",
+    "text": "Aujourd’hui, la Picanha fait traditionnellement partie des incontournables de nombreuses fêtes du gril et barbecues sud-américains. Avec la brochette de Picanha, les maîtres grilleurs de la churrascaria Boinabrasa apportent cet incontournable sud-américain dans les assiettes suisses."
+   },
+   {
+    "t": "img",
+    "id": "picanha_roh_spiess"
+   },
+   {
+    "t": "h2",
+    "text": "La Picanha, un incontournable de l’art brésilien du gril"
+   },
+   {
+    "t": "p",
+    "text": "Les Brésiliens trouvent la découpe Picanha si savoureuse qu’ils l’importent en masse d’Argentine – après tout, chaque bœuf n’offre que deux de ces morceaux. Il est d’autant plus important de préparer parfaitement ce steak – naturellement en churrasco, cette préparation ardente et croustillante qui remonte aux « gauchos » (immigrants en Amérique du Sud) et qui est aujourd’hui encore célébrée au Brésil dans de nombreuses churrascarias. Inspiré du churrasco « brasileiro », notre steakhouse est fier de proposer cette découpe particulière en brochette. Et nos hôtes n’en ont jamais assez."
+   },
+   {
+    "t": "h3",
+    "text": "Voilà pourquoi la Picanha est si appréciée"
+   },
+   {
+    "t": "p",
+    "text": "On peut l’affirmer à juste titre : les Brésiliens s’y connaissent dans la préparation parfaite d’un steak noble. Et lorsqu’ils ont le choix de la découpe de bœuf à griller, leur choix se porte souvent sur la Picanha. Rassemblons donc les faits :"
+   },
+   {
+    "t": "ul",
+    "items": [
+     "Une **Picanha** pèse en général environ 1,2 kg et elle est relativement épaisse. Parfait pour la cuisson à la broche sur un feu ouvert – autrement dit, le churrasco !",
+     "La couche de gras, elle aussi relativement épaisse, remplit deux fonctions dans le churrasco : d’une part, elle protège la viande pendant la cuisson et la garde juteuse et tendre. D’autre part, la graisse qui en fond pénètre dans le steak et lui donne ce goût de bœuf intense si caractéristique.",
+     "Le maître grilleur n’a pas besoin d’assaisonner beaucoup une Picanha : le steak est simplement salé (par « massage »), et ce, quelques secondes seulement avant d’aller sur la flamme.",
+     "Cette préparation somme toute assez simple se reproduit facilement sur le gril à la maison. C’est pourquoi la Picanha est une bonne porte d’entrée dans l’univers culinaire du churrasco."
+    ]
+   },
+   {
+    "t": "p",
+    "text": "Malgré tout : c’est le goût qui l’emporte toujours. Une bouchée de Picanha suffit généralement à convaincre. Cette explosion d’essence de bœuf sur la langue ; ces dents qui traversent une croûte croquante et croustillante pour atteindre une viande juteuse et tendre. Et c’est déjà fait : on comprend pourquoi les Brésiliens entretiennent une relation toute particulière avec cette découpe de bœuf."
+   },
+   {
+    "t": "img",
+    "id": "picanha_am_tisch"
+   },
+   {
+    "t": "h3",
+    "text": "La « Picanha » est-elle la même chose que le « Tafelspitz » ?"
+   },
+   {
+    "t": "p",
+    "text": "Dans les régions germanophones, quand on parle de « Tafelspitz », il s’agit le plus souvent d’une découpe sans couche de gras. C’est une différence importante ! Car la couche de gras est essentielle pour que la Picanha préparée en churrasco « brasileiro » reste juteuse. Il n’est pas indispensable de la manger : il suffit que, pendant le rodizio (la « rotation sur la broche »), la couche de gras arrose la viande. Parfois, un peu de graisse goutte et brûle ; cela grésille alors joliment – un bruit qui a probablement donné autrefois son nom au churrasco !"
+   },
+   {
+    "t": "p",
+    "text": "Dans les pays germanophones, le Tafelspitz est par exemple utilisé pour des roulades, raison pour laquelle on retire alors de la découpe la couche de gras, jugée gênante. Chaque fois que cela arrive, quelque part au Brésil, un Churrasqueiro se frappe le front – c’est garanti !"
+   },
+   {
+    "t": "h2",
+    "text": "Déguster la Picanha ensemble dans un restaurant de churrasco rodizio"
+   },
+   {
+    "t": "p",
+    "text": "Le churrasco, c’est tout simplement une expérience de groupe. Venez chez Boinabrasa avec votre famille, vos collègues et vos amis, installez-vous confortablement dans notre ambiance chaleureuse d’inspiration sud-américaine et laissez-vous gâter, tour après tour, par nos Churrasqueiros – les maîtres grilleurs – et nos Passadores – les serveurs et découpeurs. Outre les brochettes de **Picanha** que nous vous recommandons, nous proposons des brochettes de bœuf, de poulet, d’agneau et de porc préparées à la manière du **churrasco**. Pour les desserts et les boissons aussi, nous avons de délicieuses options sud-américaines – comme la Caipirinha originale du Brésil. Découvrez en outre des desserts brésiliens appréciés comme l’ananas grillé ou la mousse à la mangue. Tout est prêt pour votre soirée grillades à la brésilienne – nous nous réjouissons de votre visite !"
+   }
+  ],
+  "date": "2021-10-08"
+ },
+ "maminha": {
+  "title": "Maminha : particulièrement juteuse et aromatique",
+  "cover": "maminha_wissen",
+  "blocks": [
+   {
+    "t": "p",
+    "text": "Vous souvenez-vous de l’époque où l’on mettait surtout des côtelettes, des saucisses et de la poitrine sur le gril ? Et où, à l’évocation de viande à la broche, presque tout le monde pensait au classique cochon de lait ? L’essor triomphal de la grillade chez nous, et surtout le « churrasco » brésilien traditionnel, ont toutefois heureusement beaucoup enrichi la carte des délices – et apporté dans notre quotidien des arômes et des expériences culinaires entièrement nouveaux."
+   },
+   {
+    "t": "p",
+    "text": "Dans ce contexte, la **Maminha** et le **churrasco de Maminha** sont une délicieuse particularité. La Maminha est une découpe de bœuf composée principalement de muscle, mais très persillée, c’est-à-dire qu’elle contient beaucoup de gras entre les couches musculaires. Ce gras rend la Maminha particulièrement aromatique, juteuse et tendre. La forme frappante de cette découpe lui a valu de nombreux noms et la rend reconnaissable entre toutes. Ainsi, en raison de sa forme triangulaire, on l’appelle dans certaines régions « Frauenschuh » (soulier de dame) – elle rappelle une chaussure à bout pointu. Comme elle provient de la hanche du bœuf, on la désigne aussi sous le nom de « Hüftspitze » (pointe de hanche). Dans le sud de l’Allemagne ou en Autriche, on l’appelle aussi « Hüferschwanzel » ou « Hieferschwanzel ». Et en raison de sa qualité particulièrement élevée, la Maminha porte à certains endroits le nom de « Bürgermeisterstück » (morceau du bourgmestre) ou de « Pfaffenstück » (morceau du curé)."
+   },
+   {
+    "t": "img",
+    "id": "maminha_zubereitung"
+   },
+   {
+    "t": "h2",
+    "text": "Churrasco & Maminha : une combinaison unique"
+   },
+   {
+    "t": "p",
+    "text": "Pour revenir à l’époque où la grillade n’était pas encore aussi populaire et variée qu’aujourd’hui : autrefois, la Maminha se préparait surtout en braisé. C’est certes un délice aussi, mais nous pensons que cela ne rend pas pleinement justice au potentiel de la Maminha. Car ce n’est qu’en brochette, en **« churrasco »**, que ce morceau peut vraiment révéler toutes ses qualités. Dans notre churrascaria, nous ne découpons pas la **Maminha** : nous la grillons entière. Ce n’est qu’après la cuisson que nous la découpons en tranches épaisses ou fines – selon les préférences de nos hôtes. L’avantage : pendant la cuisson, le gras peut développer son arôme unique. D’une part, le gras garde les fibres de la viande juteuses. D’autre part, il est un important vecteur de goût, autrement dit un exhausteur de goût naturel. Lorsque le gras fond pendant la cuisson ou goutte, liquide, sur la viande et le charbon de bois, saveurs et arômes se mêlent en une composition unique. Cela fait de la Maminha un mets d’exception !\n\nSi vous pensiez jusqu’ici que le braisé était un délice – ce qu’il est, bien entendu –, vous devez absolument goûter la Maminha préparée de cette façon. Nous vous promettons un véritable « déclic » culinaire !"
+   },
+   {
+    "t": "h2",
+    "text": "Maminha ou Picanha : laquelle a le meilleur goût ?"
+   },
+   {
+    "t": "p",
+    "text": "Sur la question « Maminha ou Picanha – laquelle offre le plus de plaisir ? », les avis divergent. Beaucoup de gens trouvent que la **Maminha et la Picanha** ont un goût semblable. Les différences de goût apparaissent sans doute le plus nettement lorsqu’on peut goûter les deux côte à côte – comme, bien sûr, dans notre steakhouse. Si l’on compare la tendreté de la viande, on constate que la Picanha comme la Maminha sont très tendres, la Picanha étant peut-être un rien plus « fondante ». En revanche, la Maminha est souvent perçue comme un peu plus « charnue » : nos hôtes trouvent l’arôme de viande du churrasco de Maminha plus prononcé. La différence évidente entre la Maminha et la Picanha, c’est la part de gras dans la viande. Si vous tenez à une viande maigre, mieux vaut donc donner la préférence à la Picanha.\n\n→ La Maminha est la partie la plus juteuse de la viande dans la région de la hanche du bœuf. Mais sa chair n’est pas tout à fait aussi tendre que celle de la Picanha. Au Brésil, c’est surtout la Picanha qui est considérée comme le morceau de bœuf le plus noble. Bien sûr, les deux découpes se dégustent avec grand enthousiasme à la façon churrasco."
+   },
+   {
+    "t": "h3",
+    "text": "Savourer l’art de vivre & la cuisine du Brésil"
+   },
+   {
+    "t": "p",
+    "text": "Venez dans notre restaurant déguster le **churrasco de Maminha**, de Picanha et de nombreuses autres brochettes de viande – nous nous réjouissons de vous accueillir ! Chez nous, vous trouverez des plats et des mets brésiliens authentiques : outre nos spécialités du gril, nous vous proposons bien sûr aussi d’autres délices, desserts et boissons qui vous emmèneront dans la joie de vivre et les plaisirs du Brésil !"
+   }
+  ],
+  "date": "2021-11-08"
+ },
+ "linguica": {
+  "title": "Linguiça en churrasco — la spécialité brésilienne de saucisse grillée à la broche",
+  "cover": "brasiliansiche_wurst_wissen",
+  "blocks": [
+   {
+    "t": "p",
+    "text": "La Linguiça est une saucisse crue fumée, fabriquée à partir de viande de porc. La **Linguiça**, spécialité de saucisse, est originaire du Portugal et apparentée au chouriço, une saucisse au paprika. Des immigrants portugais ont apporté dans le pays la recette de cette saucisse aujourd’hui typiquement brésilienne. Le Brésil a été découvert en 1500 par l’explorateur portugais Pedro Alvares Cabral et a été une colonie portugaise jusqu’à son indépendance en 1822. C’est ainsi que le portugais s’est imposé comme langue nationale et que de nombreux biens, marchandises et denrées alimentaires du Portugal ont trouvé leur chemin jusqu’au plus grand pays d’Amérique du Sud."
+   },
+   {
+    "t": "h2",
+    "text": "Les ingrédients de la saucisse à griller brésilienne au goût doux et relevé"
+   },
+   {
+    "t": "p",
+    "text": "La viande de porc utilisée pour fabriquer la saucisse brésilienne Linguiça provient de la noix, c’est-à-dire du jambon du porc, et se prête donc particulièrement bien au fumage, à la poêle ou au gril. La viande maigre est coupée en gros morceaux et complétée d’épices comme le paprika, l’origan et l’ail. On l’assaisonne typiquement toujours de « pimenta » et de « sal », c’est-à-dire de poivre ou de piment et de sel. On ajoute parfois aussi du cumin et de la cannelle, avant de laisser reposer la viande. Elle peut ensuite être mise en boyau. Une variante de préparation de la **Linguiça brasileira** consiste à la faire mariner une nuit dans une saumure. Le goût de la saucisse devient ainsi plus prononcé, tout en restant doux. Très souvent, la saucisse est fumée, car elle se conserve ainsi plus longtemps."
+   },
+   {
+    "t": "img",
+    "id": "brasilianische_wurst"
+   },
+   {
+    "t": "h3",
+    "text": "Découvrir la diversité de la cuisine brésilienne avec la Linguiça brasileira"
+   },
+   {
+    "t": "p",
+    "text": "Aujourd’hui, la Linguiça brasileira est devenue indispensable dans la cuisine brésilienne. Avec la carne-seca, c’est-à-dire la viande séchée, cette saucisse brésilienne est l’ingrédient le plus important d’une Feijoada brésilienne authentique. La Feijoada est un ragoût brésilien de haricots à la viande, qui doit sa savoureuse note fumée à l’ajout de Linguiça. La saucisse doit son goût typique, doux et relevé, au fumage. C’est pourquoi elle convient non seulement aux soupes, ragoûts, pâtes ou sandwichs, mais aussi parfaitement à notre churrasco si caractéristique, que vous pouvez savourer dans notre steakhouse dans une atmosphère brésilienne authentique. Pour le churrasco, la viande ou la saucisse est marinée puis grillée à la broche, ce qui la garde tendre et juteuse. **La Linguiça et le churrasco vont donc « muito bem » ensemble, comme disent les Brésiliens, c’est-à-dire « à merveille ».**"
+   },
+   {
+    "t": "h3",
+    "text": "Une saucisse d’inspiration italienne : la Linguiça tipo Calabresa"
+   },
+   {
+    "t": "p",
+    "text": "La Linguiça calabresa est une saucisse semblable à la salsiccia di Calabria, fabriquée par des immigrants italiens venus de Calabre dans le quartier de Bixiga à São Paulo et assaisonnée de piment calabrais. L’assaisonnement particulier à la « pimenta calabresa » a donné à la saucisse son goût relevé caractéristique et son nom de **Linguiça calabresa**. Elle compte aujourd’hui parmi les saucisses appréciées au Brésil et a été reconnue comme une sorte de saucisse à part entière par une loi du ministère brésilien de l’Agriculture. Elle est fabriquée exclusivement à partir de porc saumuré, avec l’ajout de piment calabrais et éventuellement d’autres épices, qui déterminent le goût particulier de la saucisse. Elle peut être utilisée en cuisine ou fumée. Au Brésil, la Linguiça calabresa est particulièrement appréciée dans sa version fumée comme garniture de pizza."
+   },
+   {
+    "t": "h2",
+    "text": "Découvrir la Linguiça et la carne à la broche — soyez les bienvenus"
+   },
+   {
+    "t": "p",
+    "text": "Goûtez notre **churrasco de Linguiça** ou d’autres spécialités brésiliennes du gril dans notre churrascaria et découvrez chez nous la diversité de la cuisine brésilienne. Nous proposons notre viande de churrasco « na brasa », ce qui signifie « grillée sur le charbon de bois ». Choisissez parmi différentes brochettes de viande juteuses et tendres, ou décidez de goûter la **saucisse à griller brésilienne** Linguiça, grillée à la broche en churrasco. Découvrez le goût du Brésil, le « sabor do Brasil », et savourez une soirée aux couleurs du Brésil dans notre maison. Soyez les bienvenus !"
+   }
+  ],
+  "date": "2022-03-21"
+ },
+ "caipirinha": {
+  "title": "La Caipirinha originale du Brésil – la joie de vivre à l’état pur",
+  "cover": "caipirinha_wissen",
+  "blocks": [
+   {
+    "t": "p",
+    "text": "Que serait un repas brésilien sans Caipirinha, le cocktail le plus célèbre du pays ? Au Brésil, cette boisson appréciée est proposée à la plage, en ville, dans chaque bar et dans chaque restaurant. Son goût rafraîchissant de citron vert, de cachaça, de sucre, de glaçons et de quelques autres ingrédients s’accorde à merveille avec le churrasco."
+   },
+   {
+    "t": "p",
+    "text": "Sa préparation ne combine que relativement peu d’ingrédients, mais ceux-ci créent ce goût incomparable qui fait aussitôt penser au soleil, à l’été et à la joie de vivre brésilienne. Outre d’autres cocktails, des long drinks et une sélection raffinée de vins, vous trouverez sur la carte de notre steakhouse la **Caipirinha brésilienne originale**."
+   },
+   {
+    "t": "h2",
+    "text": "L’ingrédient magique du cocktail : la canne à sucre"
+   },
+   {
+    "t": "p",
+    "text": "Au Brésil, la canne à sucre était cultivée par des esclaves dans les grandes plantations du pays, et la plante est rapidement devenue une marchandise importante pour les habitants. Dès le 18e siècle, les travailleurs asservis buvaient volontiers le jus extrait de la canne. Ils en empêchaient la fermentation en le faisant bouillir et obtenaient ainsi un jus qu’ils appelaient « garapa ». La canne à sucre, cana de açúcar en portugais, est originaire d’Asie orientale et est parvenue par le commerce au Proche-Orient et en Europe. Ce sont finalement les Portugais qui ont apporté la plante en Amérique du Sud avec la colonisation, et le Brésil reste aujourd’hui le premier producteur mondial de canne à sucre. Le jus qui en est extrait est transformé en eau-de-vie, la cachaça, élément principal de la **Caipirinha**, souvent appelée chez nous simplement « Caipi ». Le nom Caipirinha dérive du mot brésilien caipira, qui signifie habitant de la campagne. Par analogie avec la forme féminine en portugais, on dit en allemand « die Caipirinha ». En Suisse et en Allemagne, on entend toutefois aussi « der Caipirinha ». Boisson à l’origine de la population rurale, elle est aujourd’hui connue et appréciée dans le monde entier."
+   },
+   {
+    "t": "img",
+    "id": "brasiliansiche_caipirinha"
+   },
+   {
+    "t": "h2",
+    "text": "Le cocktail le plus célèbre du Brésil"
+   },
+   {
+    "t": "p",
+    "text": "La Caipirinha figure aujourd’hui encore parmi les « Contemporary Classics », les classiques contemporains, sur la liste de l’International Bartenders Association, qui compte parmi ses membres plus de 60 pays du monde. Il existe diverses variantes de préparation du cocktail Caipirinha, mais il n’y a qu’une seule recette originale, selon laquelle la boisson est typiquement préparée. Contrairement à l’Europe, où l’on utilise couramment du sucre de canne brun, on n’utilise au Brésil que du sucre de canne blanc et fin, qui donne le goût caractéristique. En Europe, le sucre de canne est souvent à gros grains et légèrement brun, si bien que l’usage du sucre brun s’est imposé chez nous. Un Brésilien ne préparerait cependant jamais un **cocktail Caipirinha authentique** avec du sucre brun, pour ne pas en altérer le goût. Dans notre churrascaria, nous attachons la plus grande importance à un véritable art de vivre brésilien. C’est pourquoi nous vous servons la Caipirinha exclusivement dans sa version brésilienne originale, au sucre blanc. À l’aide d’un pilon, on écrase les citrons verts coupés en quartiers avec le sucre blanc, puis on complète avec de la cachaça. Il est important de toujours retirer les extrémités et le cœur des citrons verts, pour que le cocktail ne soit pas trop amer. La teneur en alcool de la cachaça est d’au moins 38 %. Contrairement au rhum, on n’utilise que du pur jus de canne à sucre, et ni mélasse ni sirop."
+   },
+   {
+    "t": "p",
+    "text": "Une **vraie Caipirinha du Brésil** se complète avec des glaçons. La variante européenne de la recette utilise de la glace pilée. Comme les Brésiliens aiment boire leur verre de Caipirinha bien glacé, même par les fortes chaleurs qui règnent au Brésil, ils préfèrent les glaçons pour leur cocktail. La glace en cubes rafraîchit plus longtemps le verre et la boisson. Le citron vert frais, la glace, le sucre blanc et la cachaça éveillent aussitôt une sensation typique de chaleur, de soleil et de plaisir à la brésilienne."
+   },
+   {
+    "t": "h2",
+    "text": "Le Signature Drink de Boinabrasa – la Caipirinha Maracuja"
+   },
+   {
+    "t": "p",
+    "text": "Pour vous offrir une expérience authentique dans notre steakhouse, **notre cocktail Caipirinha est préparé uniquement selon la recette originale.** Nous proposons par ailleurs notre propre variante fruitée de cette boisson culte : la Caipirinha Maracuja. Ce cocktail est lui aussi préparé selon la recette brésilienne originale, mais on y ajoute du fruit de la passion frais à la place du citron vert. Le fruit de la passion fait toute la différence de notre Signature Drink, car, contrairement à beaucoup d’autres, nous n’utilisons pas de jus concentré, mais exclusivement le jus pur du fruit frais, que nous arrondissons d’une pointe de sirop. En complétant avec de la cachaça et de la glace, on obtient une variante particulièrement fruitée de la Caipirinha originale, à l’arôme incomparable du fruit de la passion frais. Passez votre soirée chez nous, à la churrascaria, avec d’excellentes brochettes brésiliennes et une Caipirinha typique selon la recette brésilienne originale, classique ou en version Caipirinha Maracuja. Les deux cocktails peuvent aussi être commandés sans alcool."
+   },
+   {
+    "t": "h3",
+    "text": "La joie de vivre brésilienne à découvrir dans notre churrascaria"
+   },
+   {
+    "t": "p",
+    "text": "Savourez chez nous une **vraie Caipirinha do Brasil** avec votre churrasco et d’autres spécialités, et vivez l’art de vivre du plus beau pays d’Amérique du Sud – nous nous réjouissons de votre visite. Que vous souhaitiez déjeuner ou dîner seul, en famille, entre amis ou entre collègues, avec les meilleures brochettes de viande préparées façon churrasco, partez pour un voyage culinaire et accompagnez vos plats d’un cocktail Caipirinha selon la recette originale. C’est avec plaisir que nous vous servons dans notre atmosphère chaleureuse et authentique. Plongez dans le goût incomparable du Brésil et découvrez le véritable art de vivre brésilien."
+   }
+  ],
+  "date": "2022-02-16"
+ },
+ "gerichte": {
+  "title": "Plats brésiliens pleins de feu et de saveur",
+  "cover": "brasiliansiche_gerichte_tisch",
+  "blocks": [
+   {
+    "t": "p",
+    "text": "Aujourd’hui, au Brésil et dans sa capitale Brasilia, manger est bien plus que se nourrir — c’est plutôt l’occasion de célébrer un moment convivial dans une ambiance chaleureuse. C’est pourquoi les **plats brésiliens** sont préparés avec amour, cuisinés pour de nombreuses personnes et servis de façon à être facilement partagés, si bien que les délices du pays invitent à se régaler ensemble en grand groupe."
+   },
+   {
+    "t": "p",
+    "text": "La **cuisine brésilienne** est très variée, car les influences européennes, asiatiques et africaines – dues à l’immigration venue d’Europe, à la colonisation ainsi qu’à l’esclavage de personnes africaines – ont aussi marqué sur le plan culinaire le seul pays lusophone des Amériques. Des ingrédients pouvant être cuisinés en grandes quantités et se conservant longtemps — comme le manioc riche en nutriments, le riz et les haricots noirs — forment la base des plats du Brésil. Du fait du mélange de différentes cuisines, il n’existe pas vraiment de **cuisine typiquement brésilienne** au sens classique. On cuisine de manière très différente selon les régions."
+   },
+   {
+    "t": "img",
+    "id": "brasiliansiche_gerichte_tisch"
+   },
+   {
+    "t": "h2",
+    "text": "Les particularités de la cuisine brésilienne"
+   },
+   {
+    "t": "p",
+    "text": "Certains plats se sont toutefois imposés dans tout le pays. Parmi eux, le plat national brésilien, la Feijoada (un ragoût consistant de morceaux de viande avec les incontournables haricots noirs, accompagné de riz et de farine de manioc grillée), qui serait particulièrement délicieuse à Rio de Janeiro.\n\nLe plus grand pays d’Amérique du Sud réunit diverses influences culinaires, et il reste, outre le plat national Feijoada, quelques **plats typiquement brésiliens** et boissons à découvrir :"
+   },
+   {
+    "t": "ul",
+    "items": [
+     "Acarajé",
+     "Caipirinha",
+     "Churrasco",
+     "Cassava Farofa",
+     "Moqueca Baiana ou Capixaba",
+     "Pão de Queijo",
+     "Picanha",
+     "et bien d’autres"
+    ]
+   },
+   {
+    "t": "p",
+    "text": "Reproduire 1:1 toute la variété de la cuisine brésilienne dans notre restaurant est une tâche pour ainsi dire impossible.\nEn revanche, notre buffet attrayant de 25 mets et accompagnements chauds et froids est très copieux et offre un large aperçu des influences culinaires des régions les plus diverses sur la cuisine brésilienne – parmi lesquelles des plats et délices allemands, espagnols, italiens, portugais, africains et indigènes. Nous utilisons pour cela des produits frais de premier choix et de la plus haute qualité, et vous proposons un choix d’options végétariennes et sans viande.\n\nLes **plats et spécialités brésiliens à base de viande** sont célèbres — comme le churrasco. Vous pouvez découvrir ce plat brésilien apprécié, préparé de façon authentique, dans notre churrascaria. Le churrasco incarne l’art brésilien du gril : la viande y est assaisonnée selon une recette brésilienne, dans un déroulement réfléchi étape par étape, puis tournée à la broche et grillée – jusqu’à ce que cette délicieuse spécialité de viande soit servie chaude, croustillante et juteuse. Au gril, la cuisine brésilienne fait preuve d’un grand raffinement."
+   },
+   {
+    "t": "img",
+    "id": "brasiliansiche_gerichte_feijoada"
+   },
+   {
+    "t": "h2",
+    "text": "Spécialités brésiliennes : la viande à la manière des Churrasqueiros"
+   },
+   {
+    "t": "p",
+    "text": "Le churrasco vient certes du Brésil, mais il se mange au-delà des frontières du pays, dans toute l’Amérique latine ainsi qu’en Espagne et au Portugal. Selon les régions, il existe de subtiles différences dans les ingrédients, la préparation et le service. Contrairement à l’Argentine, où l’on n’utilise que du bœuf pour le churrasco, au Brésil, des Churrasqueiros expérimentés préparent des spécialités à partir de différentes sortes de viande :"
+   },
+   {
+    "t": "ul",
+    "items": [
+     "Volaille ou poulet",
+     "Agneau",
+     "Bœuf",
+     "Porc"
+    ]
+   },
+   {
+    "t": "p",
+    "text": "Les Churrasqueiros sont des maîtres grilleurs formés professionnellement, qui jouent avec le feu et des morceaux de viande finement découpés, avec savoir-faire et fierté, selon une tradition séculaire, comme leurs ancêtres avant eux : la viande est soigneusement embrochée, côté gras vers le bas, et grillée uniformément de tous les côtés, en continu, sur un feu ouvert. Elle reste ainsi croustillante à l’extérieur, tendre à l’intérieur, et savoureusement assaisonnée. Les Passadores apportent sans cesse de la viande aux convives, directement à table, où elle est découpée de la broche en morceaux appétissants, de la taille d’une bouchée. Cette façon particulière de servir la viande s’appelle le rodizio – « ce qui tourne ».\n\nVous avez sûrement envie, vous aussi, de goûter un jour au churrasco — n’hésitez pas à venir le découvrir dans notre steakhouse. Côté bœuf, nous servons à nos hôtes la brochette de « Picanha », un rumsteck d’une grande tendreté pris dans le Tafelspitz — à la vraie manière brésilienne, avec sa couche de gras conservée sur la viande."
+   },
+   {
+    "t": "h3",
+    "text": "Délices grillés dans notre churrascaria"
+   },
+   {
+    "t": "p",
+    "text": "Dans notre churrascaria à Zurich-Dielsdorf, vous découvrez de vos propres yeux et de votre propre palais le grand art du churrasco brésilien, avec jusqu’à 10 grillades différentes servies directement à votre table richement garnie. Ce **plat de viande brésilien** traditionnel compte parmi les grands incontournables de la cuisine du Brésil et se marie à merveille avec nos 25 mets chauds et froids du buffet. Vous pouvez compter sur la plus haute qualité et la meilleure provenance de notre viande, que nous achetons, selon la sorte, auprès de partenaires choisis et de longue date.\n\nAvec votre propre grande assiette, remplie de la cuisine colorée et variée du Brésil, vous vous sentirez comme à Rio de Janeiro. Cette ambiance authentique compte autant pour notre restaurant que le service attentionné et la grande qualité de nos plats."
+   },
+   {
+    "t": "h3",
+    "text": "Des influences du monde entier : vivre en couleurs, cuisiner en couleurs"
+   },
+   {
+    "t": "p",
+    "text": "Mais comment les cultures si diverses du Brésil se manifestent-elles dans sa cuisine ? Les piments, les bananes plantain et le lait de coco, par exemple, sont des ingrédients de la cuisine africaine que l’on retrouve dans les plats brésiliens. On les trouve notamment dans la Moqueca, spécialité brésilienne à base de poisson, de tomates, de poivrons, de coriandre et d’huile de palme. Deux variantes typiques en sont nées : la Moqueca Baiana, à l’huile de dendê africaine, et la Moqueca Capixaba, pour laquelle on utilise traditionnellement l’huile d’olive, que l’on connaît par ailleurs comme l’un des ingrédients principaux de la cuisine italienne.\n\nLe manioc, dont la farine entre aussi dans la composition du plat national Feijoada, est d’origine indigène, tout comme les fruits de mer et les poissons des plats brésiliens. À São Paulo, même les sushis vous surprendront — les restaurants japonais y sont plus nombreux que partout ailleurs dans le monde en dehors du Japon.\n\nLes origines portugaises se révèlent dans la cuisine consistante du Minas Gerais (cozinha mineira), où vous trouverez aussi des desserts à base de sucre, de lait et de caramel ainsi que de délicieux gâteaux et douceurs aux fruits et à la noix de coco."
+   },
+   {
+    "t": "h3",
+    "text": "Boinabrasa — une cuisine typiquement brésilienne"
+   },
+   {
+    "t": "p",
+    "text": "Entreprise familiale tenue par des Brésilo-Suisses depuis 2013 : notre restaurant BOINABRASA propose la cuisine authentique et les plats de viande du Brésil au cœur de la Suisse — épargnez-vous le long voyage vers le sud du Brésil et goûtez chez nous des **plats brésiliens** et des boissons dans notre menu, qui combine un buffet « à volonté » soigneusement composé et des prix fixes en CHF. Vous pouvez bien sûr aussi trinquer avec le cocktail brésilien classique, la Caipirinha — dans les règles de l’art, avec du citron vert frais, de la cachaça, du sucre blanc et de la glace. Mais vous pouvez aussi commander chez nous des cocktails sans alcool, de la bière et du vin, ainsi que des jus de fruits tropicaux à la mangue et au maracuja. Vous avez des questions sur la cuisine typiquement brésilienne ? Nous vous conseillons volontiers sur l’accord entre boissons et plats et, si vous le souhaitez, vous faisons découvrir les recommandations de la maison."
+   }
+  ],
+  "date": "2022-02-11"
+ },
+ "gaucho": {
+  "title": "« Gaucho-Grill » : signification culinaire et contexte",
+  "cover": "gaucho_grill_wissen",
+  "blocks": [
+   {
+    "t": "p",
+    "text": "Qui s’intéresse à un « **Gaucho-Grill** » cherche un voyage culinaire à travers l’Amérique du Sud, au bout duquel l’attend une viande croustillante à l’extérieur et merveilleusement juteuse à l’intérieur, préparée selon l’art traditionnel sud-américain du gril. Mais dire « Gaucho-Grill », c’est employer un terme plutôt trompeur, qui désigne le plus souvent du bœuf préparé à l’argentine. Le terme est plus rarement utilisé pour le churrasco brésilien – la façon brésilienne de préparer la viande que nous célébrons dans notre churrascaria Boinabrasa."
+   },
+   {
+    "t": "p",
+    "text": "Le problème, c’est l’idée reçue selon laquelle le terme « gaucho » ne s’appliquerait qu’à un seul groupe de population – les Argentins – et évoquerait avant tout les célèbres steaks de bœuf argentins. Certains utilisent aussi ce terme pour chercher un gril permettant de préparer au mieux la viande à la sud-américaine.\n\nNous voulons ici dissiper quelques malentendus – tout simplement parce que « le » Gaucho-Grill n’existe pas – et vous emmener dans un petit voyage culinaire à travers l’Amérique du Sud."
+   },
+   {
+    "t": "h2",
+    "text": "Signification : il y a gauchos et gauchos"
+   },
+   {
+    "t": "p",
+    "text": "Dans les régions germanophones, le terme « Gauchos » est le plus souvent utilisé comme désignation générale des Argentins. Dans le football, par exemple, il est tout à fait courant d’appeler l’équipe argentine les « Gauchos » – bien que ce terme soit de plus en plus considéré ces dernières années comme diffamatoire et généralisant. Car les gauchos, historiquement descendants d’immigrants ibériques, étaient et sont présents dans toute l’Amérique du Sud. Pas seulement en Argentine : au Brésil, au Paraguay, en Uruguay et en Bolivie aussi, les gauchos étaient connus comme éleveurs de bétail dans les pampas ; parmi leurs principales productions figuraient la viande séchée et le cuir de bœuf – et selon les endroits, ils ont développé certains rituels et coutumes culinaires et culturels. Les descendants des gauchos vivent aujourd’hui pour la plupart dans des établissements à la campagne et n’ont pas grand-chose à voir avec la société urbaine moderne. Leur influence se fait cependant sentir presque partout en Amérique du Sud – et se goûte aussi !"
+   },
+   {
+    "t": "h3",
+    "text": "L’art du gril des gauchos en Argentine"
+   },
+   {
+    "t": "p",
+    "text": "Les gauchos argentins aiment leur bœuf. Ils sont célèbres pour cela dans le monde entier : c’est un succès à l’exportation, profondément ancré dans la culture du pays. Pour beaucoup d’Argentins, les gauchos sont tout simplement des héros populaires, qui ont façonné l’identité du pays.\n\nGrâce aux gauchos, les Argentins ont leur propre conception de la grillade. Par le terme « Asado », ils désignent une méthode de cuisson dans laquelle de gros morceaux de viande – ou souvent même des animaux entiers, avec la peau et la tête – sont dressés en croix sur des croix d’asado métalliques autour d’un feu, où ils cuisent pendant des heures. Le maître grilleur, l’« Asador », s’occupe le plus souvent aussi d’une parrilla, un gril à charbon de bois avec grille, sur lequel on prépare aussi de plus petits morceaux de viande. Ces deux installations sont parfois appelées « **Gaucho-Grill** » à l’international, ce qui est tout simplement imprécis.\n\nSelon la coutume argentine, la viande est servie sans sauces ni marinades et tout au plus légèrement salée ; le goût authentique de la viande doit ainsi rester au premier plan. Cette méthode remonte à l’époque où les éleveurs gauchos abattaient encore des animaux entiers et les faisaient cuire pendant des heures sur un feu de camp. Aujourd’hui, un asado authentique est un événement culturel que l’on célèbre en famille et entre amis. Les feux atteignent souvent une taille impressionnante et attirent ainsi les gens des environs, qui viennent faire la fête."
+   },
+   {
+    "t": "h3",
+    "text": "Existe-t-il un « Gaucho-Grill » brésilien ?"
+   },
+   {
+    "t": "p",
+    "text": "Au 19e siècle, les gauchos brésiliens ont inventé une façon toute particulière de préparer la viande sur un feu ouvert – le churrasco – et l’ont célébrée en grand lors de fêtes populaires et familiales, d’anniversaires et de mariages. Aujourd’hui, on trouve des churrascarias, c’est-à-dire des restaurants de churrasco, dans tout le Brésil, et il est toujours d’usage d’y réunir famille et amis pour manger. On y prépare des viandes d’origines diverses, du steak de bœuf à la volaille, en passant par le cou de porc et les travers. Les churrascarias inspirent désormais des maîtres grilleurs du monde entier – par exemple notre restaurant Boinabrasa à Zurich. Nous ne proposons pas seulement une viande authentique, préparée façon churrasco brésilien. Nous souhaitons offrir à nos hôtes la même atmosphère conviviale à laquelle les Brésiliens tiennent tant.\n\nUn maître grilleur brésilien ne dirait jamais « Gaucho-Grill » – car autant les gauchos étaient divers et largement répartis en Amérique du Sud, autant les habitudes de leurs maîtres grilleurs se sont développées différemment. Il faut donc bien distinguer, par exemple, le churrasco brésilien et le « Gaucho-Grill » argentin.\n\nD’ailleurs, au sens strict, le churrasco existe aussi au Brésil, mais le mot y est utilisé différemment. Les Argentins n’emploient généralement ce terme que pour un gros steak de bœuf, le plus souvent le ribeye, à forte teneur en gras. Pour les Argentins, une brochette de cuisses de poulet ou de cou de porc n’est pas un churrasco – contrairement aux Brésiliens, chez qui toute viande grillée sur une churrasqueira (un gril à churrasco) est appelée churrasco. On retrouve d’ailleurs la même prédilection pour le bœuf au Paraguay et en Uruguay."
+   },
+   {
+    "t": "h3",
+    "text": "Confusion des termes ? Renonçons au terme !"
+   },
+   {
+    "t": "p",
+    "text": "Qui emploie le terme « **Gaucho-Grill** » risque donc fort d’être mal compris. Mieux vaut utiliser des désignations comme « churrasco brésilien » ou « asado argentin » – sinon, il faut s’attendre à ce qu’on vous demande de quels « gauchos » vous parlez exactement. Entre nous, le mieux est même de renoncer complètement au terme « gaucho » quand il s’agit de cuisine, car il est trop généralisant et occulte la diversité culturelle et culinaire de l’Amérique du Sud."
+   },
+   {
+    "t": "h2",
+    "text": "Boinabrasa est-il un restaurant « Gaucho-Grill » ?"
+   },
+   {
+    "t": "p",
+    "text": "Non – nous sommes une churrascaria tenue sur le modèle brésilien. D’ailleurs, pratiquement aucun restaurant d’inspiration sud-américaine ne se qualifierait de « Gaucho-Grill ». Ce terme a surtout été inventé par des spécialistes américains du marketing de grils à charbon de bois et s’est, d’une manière ou d’une autre, aussi établi dans les régions germanophones. Si des Sud-Américains se trouvaient devant notre porte et lisaient « Gaucho-Grill », ils se gratteraient la tête à juste titre et demanderaient : quels gauchos ? Argentins ou brésiliens – peut-être même paraguayens ou uruguayens ? De même, nos hôtes germanophones supposeraient que nous tenons un steakhouse argentin – parce que la plupart associent le terme de gaucho aux Argentins. Non : nous sommes un restaurant de churrasco sur le modèle brésilien !\n\nPour goûter la célèbre viande préparée à la manière du churrasco brésilien, nul besoin de partir bien loin. Au cœur de la Suisse, nous vous souhaitons chaleureusement la bienvenue dans notre steakhouse de churrasco à Zurich (Dielsdorf). Vivez chez nous, entre amis et en famille, un churrasco brésilien authentique dans une ambiance chaleureuse, et savourez la viande unique, croustillante et juteuse, de nos maîtres grilleurs du churrasco formés professionnellement, ainsi que le service de premier ordre de nos sympathiques « Passadores », qui vous apportent la viande à table, tour après tour, jusqu’à ce que vous soyez pleinement rassasiés et heureux. Nous nous réjouissons déjà de vous emmener dans ce voyage culinaire !"
+   }
+  ],
+  "date": "2021-09-20"
+ },
+ "dolcebrigadeiro": {
+  "title": "Dolcebrigadeiro",
+  "cover": "header-dolcebrigadeiro",
+  "blocks": [
+   {
+    "t": "p",
+    "text": "Laissez-vous séduire par une nouvelle expérience chocolatée !"
+   },
+   {
+    "t": "p",
+    "text": "Dolcebrigadeiro est spécialisé dans le « Brigadeiro » gourmet (Bree-gah-day-ro) et propose un nouveau concept chocolaté. Tous les produits sont issus de nos propres recettes et fabriqués uniquement avec des ingrédients naturels et le chocolat le plus fin."
+   },
+   {
+    "t": "p",
+    "text": "Nos Brigadeiros faits main (pralinés au chocolat façon truffe-fudge) et nos douceurs spéciales sont une manière délicieuse et créative de célébrer et de se régaler !"
+   },
+   {
+    "t": "p",
+    "text": "Idéal comme idée de cadeau originale ou comme douceurs pour les entreprises, mariages, sweet tables, anniversaires et événements en tout genre."
+   }
+  ]
+ }
+}
