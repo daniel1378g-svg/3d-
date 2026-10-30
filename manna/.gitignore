@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.cache/
+artifact/
+# full-size originals (236 MB) are not kept in git: `npm run fetch` downloads them again from the URLs in
+# content/assets.json; the optimized derivatives in public/ are committed
+media/originals/
+media/not-public/

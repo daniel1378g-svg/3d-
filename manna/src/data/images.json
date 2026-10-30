@@ -1,0 +1,423 @@
+{
+ "acai-becher-granola-fruit": {
+  "w": 3024,
+  "h": 4032,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alpha": false,
+  "category": "product",
+  "blur": "data:image/webp;base64,UklGRqYAAABXRUJQVlA4IJoAAACQBACdASoQABUAPu1iqU2ppaOiMAgBMB2JagCdMoADT4vsyOh6MQqSfRhl5wAA/rHYIJkdPICy2vE4lCQA71QKGLkFiCshjvvqKwCEnCmI1J/Ozw2Rw3nCtjD0YmPPEzWmYzY0Xf5gVyx4MVS25a93gKKAbxIb78CZpho80IpFMikYnQLLbD3ptvi/9BFOEEaBehaTFLkCgAAA"
+ },
+ "acai-becher-layers": {
+  "w": 809,
+  "h": 1280,
+  "widths": [
+   480,
+   809
+  ],
+  "alpha": false,
+  "category": "product",
+  "blur": "data:image/webp;base64,UklGRqoAAABXRUJQVlA4IJ4AAABwBACdASoQABkAPu1iqU2ppaOiMAgBMB2JZgCdEf/gPJOGgFKnlYj1cJHeAAD+79JGloDguPpxlIRsHZFthmq2xFTbIG67TGYOEJ9NvccHHlqprhR1bmszvve1Lqo981JrxQNPU60jjQB8YAnejmsea65cP7ux/NVnO4rkZ6UbS3xAHGE/qJZYM4V6pLEx0g6UHqjkakhZk7nZpKAAAA=="
+ },
+ "acai-bowl-blueberries": {
+  "w": 3024,
+  "h": 4032,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alpha": false,
+  "category": "product",
+  "blur": "data:image/webp;base64,UklGRr4AAABXRUJQVlA4ILIAAABQBACdASoQABUAPu1iqU2ppaOiMAgBMB2JYgCdAB8xzZhzVIe0H5VudEw4AP7nQTkSqO3iV3/lhD299duiRl2ofEAkCRT7HJoChJ0yNTc/VYx2eNzKZrLQzq/dOOOhPMG1Lv2/7ryawwpOgu4l7gW62MwbUeBSD/yq+5Hw9p35RIT+seJy7HygJ/7pv5/XzkIAM9zuIwZyUGV97XjQBZBDOWhDknvrbrw3rZeXfaq0gAAA"
+ },
+ "acai-mousse": {
+  "w": 3024,
+  "h": 4032,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alpha": false,
+  "category": "product-historical",
+  "blur": "data:image/webp;base64,UklGRoIAAABXRUJQVlA4IHYAAABQBACdASoQABUAPu1iqU2ppaOiMAgBMB2JQBdgBDvyhoMvlHt9idZFxU4gAP7vumZz98Qysd+90ZBsHOfFYbOOT1QsDIWxWEggvqaHXYV5DZu58CYDVuk0AdHn9JK4LNJ+D9neVQ8xIb5Na9Zoxpx5s97kV5AA"
+ },
+ "promo-mango-kokos-bowl": {
+  "w": 750,
+  "h": 1334,
+  "widths": [
+   480,
+   750
+  ],
+  "alpha": false,
+  "category": "promo",
+  "blur": "data:image/webp;base64,UklGRtQAAABXRUJQVlA4IMgAAADQBACdASoQABwAPu1iqU2ppaOiMAgBMB2JbACdLoAEJ4L+t/1Wq5BTY7s3bNZbYAD+53qaFQbcPLozSKf59TI+5vPwnGwLpoWTqFdid9NOPB/u/kJ1ywLPdnV7yxb5YI1CWntEW8AaVLR0P1Aaz21FTSkC/jPBU5BCFJu1bitA2DIoZoq5F3R809utT5m4FDSo093Ry5fYsjY//BRbXUryEogLf4Oy74RUD5Rm3lgEGERR/IA/8QHx7/thODKVy4qMcUMsNTAAAA=="
+ },
+ "mango-bowl": {
+  "w": 3024,
+  "h": 4032,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alpha": false,
+  "category": "product",
+  "blur": "data:image/webp;base64,UklGRngAAABXRUJQVlA4IGwAAADwAwCdASoQABUAPu1iqU2ppaOiMAgBMB2JbACdACPyF8IprDnthVTgAP7qz8ZHdnE2oODHnJ0CSHwz9qVQ0xmZCPpIwaeg7pO28rXR6BjTsZN/YDmZWJCmoGzzeRtV4fHw9JXyGCPzQZMAAAA="
+ },
+ "acai-becher-duo": {
+  "w": 3024,
+  "h": 4032,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alpha": false,
+  "category": "product",
+  "blur": "data:image/webp;base64,UklGRpYAAABXRUJQVlA4IIoAAAAQBACdASoQABUAPu1iqU2ppaOiMAgBMB2JQBadO4AQUTcMcv24QZtf3AD5MzTvF/7ZBuXFshrCEqyK9lkMrfTdHZpHzHsi0+vLSKvw0Usq1yZ67KmewyhEZNBs1zhwLkjuyMl1mCdPwyLdtIaz4bESFAtmwn+LpupxKCs7PLPN1i5kmWWVRyMEAAA="
+ },
+ "promo-bubble-waffle": {
+  "w": 576,
+  "h": 1056,
+  "widths": [
+   480,
+   576
+  ],
+  "alpha": false,
+  "category": "promo",
+  "blur": "data:image/webp;base64,UklGRsAAAABXRUJQVlA4ILQAAAAwBACdASoQAB0ALrV2u12jqampiYC0S1AE6Xrkq8PGLPnhyJyNlk4IXqIA/vKNSDy67Oj1WXp0BmkOjAfX8Q/wcXZ43QZ6Fnbl1XpqPc6bXgTLF3sheJpgAc0cPFZW+0Kdhyx1+85wNcpoNtJHZxw18KJDuvk2TNwY1ohm2sz/GqV9ceHz4fdQkqJSWgQfdmZZCWD3ae9Ku+KXi54n/N5fcHmVX6KK2ADwGPweefR5/7QIwAA="
+ },
+ "acai-becher-mango": {
+  "w": 3024,
+  "h": 4032,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alpha": false,
+  "category": "product",
+  "blur": "data:image/webp;base64,UklGRqYAAABXRUJQVlA4IJoAAAAQBACdASoQABUAPu1iqU2ppaOiMAgBMB2JQBOmUABiIygTIhyXNvSrAAD8aDw0G3t8Bft+csht4CaYV6jrRjJeXpblMvgk96H6py6OI30KBlm0xrQFSs9xfsx0KOrKNS33YLOT2LCsp7gh3lt5m4s0N0oDFb9bxYMBkatzRQeSI0CzrUvMnahlmjVP6pJ3MyCZDrHTaJwngAAA"
+ },
+ "granola": {
+  "w": 758,
+  "h": 751,
+  "widths": [
+   480,
+   758
+  ],
+  "alpha": false,
+  "category": "supplier",
+  "blur": "data:image/webp;base64,UklGRnAAAABXRUJQVlA4IGQAAAAwAgCdASoQABAAA4BaJZgCdAEQUJ52GCmOOAD+9V7Yvb1dq8Mgsn6dzC8RQXck2+JI+cWFSTZcUDe2kOygM3hEQ4Sq/mwIC5vhMGkB/vYe9gowyRgT2MtYBXZ9wO2QttR7aWAA"
+ },
+ "acai-saft": {
+  "w": 290,
+  "h": 338,
+  "widths": [
+   290
+  ],
+  "alpha": false,
+  "category": "product",
+  "blur": "data:image/webp;base64,UklGRooAAABXRUJQVlA4IH4AAAAwBACdASoQABMAPu1iqU2ppaOiMAgBMB2JZQDCoHACrFeXpNxlr3htugAA/uuvk/4vg9KHpBeY3v0Brm2NWcK01aWh1hTBvTXMpjc9dPt2PRXV0qpmYAZvTM26d6mPs1lS6HsQtElcCY/t2KRiirONRa3jEOIniMtNoyqUAAA="
+ },
+ "acai-becher-kiwi": {
+  "w": 1200,
+  "h": 1200,
+  "widths": [
+   480,
+   960,
+   1200
+  ],
+  "alpha": false,
+  "category": "product",
+  "blur": "data:image/webp;base64,UklGRooAAABXRUJQVlA4IH4AAABwAgCdASoQABAAA4BaJbACdH8Agoy7z3DfxCmAAP660JGsNb18qaj62ihjtqbv3mKGF9Exp6q6ctGe2EukOP5yQiV6GcwgBJcyMtvWrOAS2GIIRLyivzZcfFhX8EhxQj2vnAE1nQQjtVEISdtpVdCuPcDUVSy3/WiTBNcAAAA="
+ },
+ "pao-de-queijo": {
+  "w": 480,
+  "h": 360,
+  "widths": [
+   480
+  ],
+  "alpha": false,
+  "category": "product-historical",
+  "blur": "data:image/webp;base64,UklGRmgAAABXRUJQVlA4IFwAAAAwAgCdASoQAAwAA4BaJbACdAEPCt9qTwTYAAD+7bOd0kY8tp9omBpSYV9ENktJexnG/H56n9loTpqnwIf2OEGUrc+dEr829OxK67eeyfbt7cnNiJAvYmmBt5fAAA=="
+ },
+ "maiskuchen": {
+  "w": 735,
+  "h": 1102,
+  "widths": [
+   480,
+   735
+  ],
+  "alpha": false,
+  "category": "product-historical",
+  "blur": "data:image/webp;base64,UklGRrIAAABXRUJQVlA4IKYAAABwBACdASoQABgAPu1iqU2ppaOiMAgBMB2JbACdLpWAV6HADv/sskiey8Yh0AD+ryquASloyKq+oaMxQ+41kfs8Cq7TP77zf565HQ3a60qhOpzuvKpxoIz1bbzc8ksyEA6/s3+/eYGZflG46w3qfasd/keg4PRiG1ciEFzpSz/c1QISahlM0fXtRWyeT2EqdlZv5O8+bJtCI7n2224SfkQl/Ak8PAAA"
+ },
+ "brigadeiro-de-acai": {
+  "w": 333,
+  "h": 309,
+  "widths": [
+   333
+  ],
+  "alpha": false,
+  "category": "product-historical",
+  "blur": "data:image/webp;base64,UklGRn4AAABXRUJQVlA4IHIAAACQAgCdASoQAA8AA4BaJaACdAYvD2w8vkiH4E4SAAD+914QKjBlRq8EVR6ezQD+GliJsRWHEvBiBy261CrFiHBV2t0oXufQcy6VSsMQdvkplaSn37BIwiyAU1MLpIjMJIOPPC1D3BF1Zhft9vUrN0AAAAA="
+ },
+ "kiosk": {
+  "w": 4032,
+  "h": 3024,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alpha": false,
+  "category": "shop",
+  "blur": "data:image/webp;base64,UklGRm4AAABXRUJQVlA4IGIAAAAwAgCdASoQAAwAA4BaJQBOgMWvzmSqc5koAAD7w8Gck/mQPXxgLYK7se1Y4bEFrlHxxkqdEisR0dKqYdiEvvtSjzQHWFrKiCb4ENU6/PrLK/dC7HemAIY4LiRhpO2JKHIAAA=="
+ },
+ "kiosk-mall": {
+  "w": 3024,
+  "h": 4032,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alpha": false,
+  "category": "shop",
+  "blur": "data:image/webp;base64,UklGRoYAAABXRUJQVlA4IHoAAACwAwCdASoQABUAPu1iqU2ppaOiMAgBMB2JYwAAQr/xyHgw40NKsAD+7qEbry/VmpRsE80SLfQPN/3VwwhaHQ2ed2dCCGiCAcaeOwxpCiZQyEveHHybSZFGZ8lgoTzZHu4VaWlgI5DqAJdVOxXSPnUMw6v6O7qqylEAAA=="
+ },
+ "acai-bowl-banana": {
+  "w": 3024,
+  "h": 4032,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alpha": false,
+  "category": "product",
+  "blur": "data:image/webp;base64,UklGRr4AAABXRUJQVlA4ILIAAACQBACdASoQABUAPu1iqU2ppaOiMAgBMB2JbACdMoAlxBS7+kYvq2TntpZ6fSAA99BgEOmbYfiHAg4VSlM8VyX6FJphdzaV7I9Yqrjlnld+g/jS0+H6l5R5yroilsi9DSbcBMUQTaYgjyptyKyuvarZQfxslWRh9w4TvZn3iPSQvpef074wVTswammp5blnDQ+p/2QG2CBJbhlCka86XAKjUSuxRtVCa4L3PlX+LQ7cAAAA"
+ },
+ "bowls-duo": {
+  "w": 4032,
+  "h": 3024,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alpha": false,
+  "category": "product",
+  "blur": "data:image/webp;base64,UklGRnYAAABXRUJQVlA4IGoAAADwAQCdASoQAAwAA4BaJbACdACZDm/P7AAA/sErW2fNs87+0hsAvDGrqtsJdcbCwc+OCjvdkjtKhV0obdZOjX9RpTOQNH8wsTWboylc8r+r6z9xkK0hPzIKwD0LbNielt/tD/ATboMmYAAA"
+ },
+ "archhoefe": {
+  "w": 4032,
+  "h": 3024,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alpha": false,
+  "category": "location",
+  "blur": "data:image/webp;base64,UklGRmgAAABXRUJQVlA4IFwAAABQAgCdASoQAAwAA4BaJYwCdIExgvSA3eHFAAAA/fu1BlihDUm1Yajbnzu/Uh5c4Su3jGWDaX+NdqHn3YqwTPMIKZVCok4LtEPOwNsqazjlBvSP9W5Ym3mVxaAAAA=="
+ },
+ "coxinha": {
+  "w": 3024,
+  "h": 4032,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alpha": false,
+  "category": "product-historical",
+  "blur": "data:image/webp;base64,UklGRqAAAABXRUJQVlA4IJQAAABQBACdASoQABUAPu1iqU2ppaOiMAgBMB2JbACw8XgGyuKPl3B+NREb1o4gAP5JGnQfaUOtA+wK9vyz9sok98tR2XCb4bZ0nhgP2kDeHUcr2huAaFi0WlXpkCeMAhqz3D9iRC1UoLiHjIE0npZwBpiwhq47tezH5jPpeTcloxFsZWCHQBc6exdLnCfB27Da6wgNRKAA"
+ },
+ "caldo-de-cana": {
+  "w": 3024,
+  "h": 4032,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alpha": false,
+  "category": "product",
+  "blur": "data:image/webp;base64,UklGRrAAAABXRUJQVlA4IKQAAACwBACdASoQABUAPu1iqU2ppaOiMAgBMB2JbACdMoMYHYkkeAK9SV9hZdv5LF3gAP5YgL7n4bBU7OYhWfC8DIHKy5UOrgcmnahVtAx9XUbFoFIBG06AsAjkxHoDJEnzG6wq/AJOdurmbSQ/yNL9HePk4My0Dtr2VtTZM1QfKnDaJDV7DNoM5PVFhoIJb1syQZXfjUKLR+/7wUHphar3/uuOJAMAAA=="
+ },
+ "cuscuz-de-tapioca": {
+  "w": 3024,
+  "h": 4032,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alpha": false,
+  "category": "product-historical",
+  "blur": "data:image/webp;base64,UklGRngAAABXRUJQVlA4IGwAAAAQBACdASoQABUAPu1iqU2ppaOiMAgBMB2JQBOmUABVvwn+sPfPfDRgQADOAr0Gk4tsEDYJ1i3S7buZrOLHLH4Tjlsik4Kz46V/qe2PWi3kc3qCPfZOnMtHDAKWN1s3NORO7UrE5BsR8R+AAAA="
+ },
+ "schoggi-kuchen": {
+  "w": 3024,
+  "h": 4032,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alpha": false,
+  "category": "product-historical",
+  "blur": "data:image/webp;base64,UklGRogAAABXRUJQVlA4IHwAAABQBACdASoQABUAPu1iqU2ppaOiMAgBMB2JZQCw7YvW2++0cS8KtYuSwqUAAP7tWrfhv24rJlLvOuXMFsqAO3E7bDXp+wtx+FFJ6zOsIRaQ96YLMFG8A0s5KHoTN0EYu9dNzncP0KHU/L1aVlvp04X5ctOfxyXJmLdjW4AA"
+ },
+ "bowl-orange": {
+  "w": 3024,
+  "h": 4032,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alpha": false,
+  "category": "product",
+  "blur": "data:image/webp;base64,UklGRo4AAABXRUJQVlA4IIIAAAAwBACdASoQABUAPu1iqU2ppaOiMAgBMB2JbACdACPw4VNpMozdV6dQ2AAA/fBU82EVPVFf1OnncEEHdmMghZlgvzbKSNjG4G6ZoF9c3+PDg/zEsso6/NT97WoAl1tm0wAoTamKF4Vl6jf316IzJZ9ZqKha/zL5jMfNyCS7tdiFwAAA"
+ },
+ "guave-bowl": {
+  "w": 3024,
+  "h": 4032,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alpha": false,
+  "category": "product",
+  "blur": "data:image/webp;base64,UklGRswAAABXRUJQVlA4IMAAAADwBACdASoQABUAPu1iqU2ppaOiMAgBMB2JbACdMoR3AdBw+8sdSe5ZTvCOdeb4EoAA/ueiDGmdRgl1jPp2lVVuOcBUe80x3dCJ5WrnmIJEbjWERrHi/5h1eRnnZwobb8jVJbPNwVAn9n2Hn9qWDs9DfQFIGqcjYABErM0tF8ul/SKDTe6bZwPsAGG0Nrk1FN4ddpQTnE5/9/sG8ZP4OJR11CxJo5akJDNjRN1I1QOUJfIdpVr4wU6K3HmfGMYohAA="
+ },
+ "acai-bowl-blueberries-2": {
+  "w": 3024,
+  "h": 4032,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alpha": false,
+  "category": "product",
+  "blur": "data:image/webp;base64,UklGRsYAAABXRUJQVlA4ILoAAACwBACdASoQABUAPu1iqU2ppaOiMAgBMB2JaACdMoAlwRf7IYoVNJBjDNP1F7CQAP7nMvOhyL5FzZxEPQxu+xF6iti+5bg0vaH/r4K4sJSO3cUuU/vEhk8ixYoVywLXIT46ux9FxLzvvsHQ4azu4qKZqw1vS5vgcukFKx8poAm+W6Ozv0zo5Ikt9oUvGLT+6b+xofs30VpMrpa7kqw9sqJioVVcaA92g6u7Qh4FSD2sd57TS86Ppl4gAAA="
+ },
+ "acai-becher-granola": {
+  "w": 3024,
+  "h": 4032,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alpha": false,
+  "category": "product",
+  "blur": "data:image/webp;base64,UklGRqYAAABXRUJQVlA4IJoAAABwBACdASoQABUAPu1iqU2ppaOiMAgBMB2JbACdMoADT4vp67ncfV0T8oXKAAD+kMU39aI4Zfc2nrvCB4jlNRQxdZ3LH9Xk0hqiXrtnttBTvUAaDzInIuhg97OT4ixVkHWoMD2x7HPKij0fFcvlyF3Ab5sX0DfkLaBn9axCYqIhsnH/A1MvV5n8rfOTVeNE4QJd2Ducmbu2QAAA"
+ },
+ "acai-becher-duo-2": {
+  "w": 3024,
+  "h": 4032,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alpha": false,
+  "category": "product",
+  "blur": "data:image/webp;base64,UklGRpoAAABXRUJQVlA4II4AAAAwBACdASoQABUAPu1iqU2ppaOiMAgBMB2JQBdgO4AQUTcOEkzX4CrAKwAA+TM07xf+2QblxbIawoEUfXsshlb6bo7NJPCMm6WTU/7Cva/7wGmKMeXO9dRtr6l2ov9V5Cf5eY3HrDTNYY+3k+wwZZCYwr1hzqINb8LHzGhAqp/3Y1W1kQLCs5ojxgaMAAAA"
+ },
+ "maniok-kuchen": {
+  "w": 4032,
+  "h": 3024,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alpha": false,
+  "category": "product-historical",
+  "blur": "data:image/webp;base64,UklGRnIAAABXRUJQVlA4IGYAAAAwAgCdASoQAAwAA4BaJbACdEf/gXQuP8UloAD+uEVyR10KjCOjberLhuXo/702+43OW2u44PosdV9b40sxjTLvYh/h8dkYarYrmy7Wd5N/S3shAYX3E3/5HN4TEov9gndaSBQAAAA="
+ },
+ "acai-bowl-fruit": {
+  "w": 3024,
+  "h": 4032,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alpha": false,
+  "category": "product",
+  "blur": "data:image/webp;base64,UklGRqoAAABXRUJQVlA4IJ4AAAAwBACdASoQABUAPu1iqU2ppaOiMAgBMB2JbACdAYvC3rGJD1WG/lbu+8AA/pStMAGvlXNk06/6lpEr4Wg4j6egNMozNTLAEo1oeD79dnwj1JlY1PFODr6S6ycr7OWm/6gUpvbfjCaYyZvDz7J3+J8/qZEnP7BkkjOkLCxI5/4ObYHPtIevIfB7SNVFgBmt+enuma/welSa8g6xKgAAAA=="
+ },
+ "supplier-cups": {
+  "w": 1280,
+  "h": 853,
+  "widths": [
+   480,
+   960,
+   1280
+  ],
+  "alpha": false,
+  "category": "supplier",
+  "blur": "data:image/webp;base64,UklGRlQAAABXRUJQVlA4IEgAAABQAgCdASoQAAsAA4BaJYgCdH8Agjyl/gDYlyAA/vOB9HRlwzZ/h1BNPa3ZrdL3/vYweCAZwJnkFE+Ef7w+m2faivOwn7VUAAA="
+ },
+ "header-bowls": {
+  "w": 2000,
+  "h": 1199,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alpha": false,
+  "category": "brand",
+  "blur": "data:image/webp;base64,UklGRoAAAABXRUJQVlA4IHQAAABQAgCdASoQAAoAA4BaJYwC7BPAKhzlbYY4jAAA/vCh1InpqEdwkKB9d2VfdrlmamdCidTmsOOFHJgNyvVtWXdgUypHdD8ZCRLP04rVwtFNffakLtZVfBnEiw2id/PN/iRWWABhn894eXgnCi0G1PGYCfKgAA=="
+ },
+ "supplier-cups-wide": {
+  "w": 1920,
+  "h": 1080,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alpha": false,
+  "category": "supplier",
+  "blur": "data:image/webp;base64,UklGRlQAAABXRUJQVlA4IEgAAADQAQCdASoQAAkAA4BaJQBOj+ACNgyuaAD+84GSZbcJKzUibiRmPZM12jltS5K8qTLs9awa2+TPAyqnYXxVO3jDf24RUFwAAAA="
+ },
+ "acai-berries-stock": {
+  "w": 7331,
+  "h": 4887,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alpha": false,
+  "category": "stock",
+  "blur": "data:image/webp;base64,UklGRlAAAABXRUJQVlA4IEQAAACwAQCdASoQAAsAA4BaJQAAXKmjv7pgAP738QS24Rjgd80P8pQIXSBiPn1hhOjjhJ1YfXVacY59U/ZdzjLG/whxwcAAAA=="
+ },
+ "supplier-cups-fruit": {
+  "w": 1024,
+  "h": 682,
+  "widths": [
+   480,
+   960,
+   1024
+  ],
+  "alpha": false,
+  "category": "supplier",
+  "blur": "data:image/webp;base64,UklGRlQAAABXRUJQVlA4IEgAAAAwAgCdASoQAAsAA4BaJYwCdH8AFjH51q6RAAD+8eCoLxj9iWve4F8QN3R53qCPPXd4OJi4CiF6gy6DkisHJgyLkLb6NPBOwAA="
+ }
+}

@@ -1,0 +1,474 @@
+{
+ "checked": "2026-10-30",
+ "note": "Every image and clip on manna-acai.ch (home, range, about, contact). Captions are the site's own. 'public: false' assets are kept but not shown in the demo; see HANDOFF.md.",
+ "assets": [
+  {
+   "id": "acai-becher-granola-fruit",
+   "source": "https://manna-acai.ch/wp-content/uploads/2021/01/14ACBF67-E575-4E38-89EE-85C798E33AB0.jpeg",
+   "caption": "Açaí im Becher",
+   "category": "product",
+   "use": "cup story, explorer, gallery",
+   "public": true,
+   "file": "media/originals/acai-becher-granola-fruit.jpg"
+  },
+  {
+   "id": "acai-becher-layers",
+   "source": "https://manna-acai.ch/wp-content/uploads/2021/02/63125fe9-8038-483b-b432-40fa020f584b.jpeg",
+   "caption": "Açaí im Becher",
+   "category": "product",
+   "use": "hero, cup story, explorer",
+   "public": true,
+   "file": "media/originals/acai-becher-layers.jpg"
+  },
+  {
+   "id": "acai-bowl-blueberries",
+   "source": "https://manna-acai.ch/wp-content/uploads/2021/01/6341504F-244D-4B2B-BEBC-3A8118C12CAC.jpeg",
+   "caption": null,
+   "category": "product",
+   "use": "explorer (bowls), gallery",
+   "public": true,
+   "file": "media/originals/acai-bowl-blueberries.jpg"
+  },
+  {
+   "id": "acai-mousse",
+   "source": "https://manna-acai.ch/wp-content/uploads/2021/01/6D06155E-EA83-494C-B8B7-CE7F8CBE42AA.jpeg",
+   "caption": "Açaí Mousse",
+   "category": "product-historical",
+   "use": "gallery",
+   "public": true,
+   "file": "media/originals/acai-mousse.jpg"
+  },
+  {
+   "id": "promo-mango-kokos-bowl",
+   "source": "https://manna-acai.ch/wp-content/uploads/2021/02/72060756-1386-43E9-A569-433F5DFC2BB6.jpeg",
+   "caption": null,
+   "category": "promo",
+   "use": "gallery (promotional artwork, embedded text)",
+   "public": true,
+   "file": "media/originals/promo-mango-kokos-bowl.jpg"
+  },
+  {
+   "id": "mango-bowl",
+   "source": "https://manna-acai.ch/wp-content/uploads/2021/01/7CF0F20F-9F63-49B9-9837-0A63738DFF4B.jpeg",
+   "caption": "Mango Bowl",
+   "category": "product",
+   "use": "explorer (bowls & smoothies), gallery",
+   "public": true,
+   "file": "media/originals/mango-bowl.jpg"
+  },
+  {
+   "id": "acai-becher-duo",
+   "source": "https://manna-acai.ch/wp-content/uploads/2021/01/8390B327-DB2F-4A12-B7E4-DD861737F317.jpeg",
+   "caption": "Açaí im Becher",
+   "category": "product",
+   "use": "hero, gallery",
+   "public": true,
+   "file": "media/originals/acai-becher-duo.jpg"
+  },
+  {
+   "id": "promo-bubble-waffle",
+   "source": "https://manna-acai.ch/wp-content/uploads/2025/08/Bubble.png",
+   "caption": null,
+   "category": "promo",
+   "use": "waffles & frappés showcase",
+   "public": true,
+   "file": "media/originals/promo-bubble-waffle.png"
+  },
+  {
+   "id": "acai-becher-mango",
+   "source": "https://manna-acai.ch/wp-content/uploads/2021/01/D1652D9E-352D-4D22-9331-7A653A20526E.jpeg",
+   "caption": "Açaí im Becher",
+   "category": "product",
+   "use": "explorer, gallery",
+   "public": true,
+   "file": "media/originals/acai-becher-mango.jpg"
+  },
+  {
+   "id": "granola",
+   "source": "https://manna-acai.ch/wp-content/uploads/2021/01/Granola_sreflec_sem_fundo_RSZ.jpg",
+   "caption": "Granola",
+   "category": "supplier",
+   "use": "gallery (supplier product image)",
+   "public": true,
+   "file": "media/originals/granola.jpg"
+  },
+  {
+   "id": "acai-saft",
+   "source": "https://manna-acai.ch/wp-content/uploads/2021/02/IMG_2870.jpeg",
+   "caption": "Açaí-Saft",
+   "category": "product",
+   "use": "explorer (açaí juice & smoothie)",
+   "public": true,
+   "file": "media/originals/acai-saft.jpg"
+  },
+  {
+   "id": "acai-becher-kiwi",
+   "source": "https://manna-acai.ch/wp-content/uploads/2020/11/IMG_2872.jpeg",
+   "caption": "Açaí  im Becher",
+   "category": "product",
+   "use": "cup story, gallery",
+   "public": true,
+   "file": "media/originals/acai-becher-kiwi.jpg"
+  },
+  {
+   "id": "pao-de-queijo",
+   "source": "https://manna-acai.ch/wp-content/uploads/2021/02/IMG_5176.jpeg",
+   "caption": "Pão de Queijo",
+   "category": "product-historical",
+   "use": "gallery",
+   "public": true,
+   "file": "media/originals/pao-de-queijo.jpg"
+  },
+  {
+   "id": "maiskuchen",
+   "source": "https://manna-acai.ch/wp-content/uploads/2021/02/IMG_5177.jpeg",
+   "caption": "Maiskuchen",
+   "category": "product-historical",
+   "use": "gallery",
+   "public": true,
+   "file": "media/originals/maiskuchen.jpg"
+  },
+  {
+   "id": "brigadeiro-de-acai",
+   "source": "https://manna-acai.ch/wp-content/uploads/2021/02/IMG_5211.jpeg",
+   "caption": "Brigadeiro de Açaí",
+   "category": "product-historical",
+   "use": "gallery",
+   "public": true,
+   "file": "media/originals/brigadeiro-de-acai.jpg"
+  },
+  {
+   "id": "people-5344",
+   "source": "https://manna-acai.ch/wp-content/uploads/2021/02/IMG_5344.jpeg",
+   "caption": null,
+   "category": "people",
+   "use": "not public (identifiable people)",
+   "public": false,
+   "file": "media/not-public/people-5344.jpg"
+  },
+  {
+   "id": "people-5350",
+   "source": "https://manna-acai.ch/wp-content/uploads/2021/02/IMG_5350.jpeg",
+   "caption": null,
+   "category": "people",
+   "use": "not public (identifiable people incl. a child)",
+   "public": false,
+   "file": "media/not-public/people-5350.jpg"
+  },
+  {
+   "id": "kiosk",
+   "source": "https://manna-acai.ch/wp-content/uploads/2021/02/IMG_5362.jpeg",
+   "caption": null,
+   "category": "shop",
+   "use": "visit section, gallery",
+   "public": true,
+   "file": "media/originals/kiosk.jpg"
+  },
+  {
+   "id": "kiosk-mall",
+   "source": "https://manna-acai.ch/wp-content/uploads/2021/02/IMG_5394.jpeg",
+   "caption": null,
+   "category": "shop",
+   "use": "gallery",
+   "public": true,
+   "file": "media/originals/kiosk-mall.jpg"
+  },
+  {
+   "id": "acai-bowl-banana",
+   "source": "https://manna-acai.ch/wp-content/uploads/2021/02/IMG_5397.jpeg",
+   "caption": null,
+   "category": "product",
+   "use": "explorer, gallery",
+   "public": true,
+   "file": "media/originals/acai-bowl-banana.jpg"
+  },
+  {
+   "id": "bowls-duo",
+   "source": "https://manna-acai.ch/wp-content/uploads/2021/02/IMG_5425.jpeg",
+   "caption": null,
+   "category": "product",
+   "use": "gallery",
+   "public": true,
+   "file": "media/originals/bowls-duo.jpg"
+  },
+  {
+   "id": "archhoefe",
+   "source": "https://manna-acai.ch/wp-content/uploads/2021/02/IMG_5433.jpeg",
+   "caption": null,
+   "category": "location",
+   "use": "visit section, gallery",
+   "public": true,
+   "file": "media/originals/archhoefe.jpg"
+  },
+  {
+   "id": "people-5442",
+   "source": "https://manna-acai.ch/wp-content/uploads/2021/02/IMG_5442.jpeg",
+   "caption": null,
+   "category": "people",
+   "use": "not public (children)",
+   "public": false,
+   "file": "media/not-public/people-5442.jpg"
+  },
+  {
+   "id": "coxinha",
+   "source": "https://manna-acai.ch/wp-content/uploads/2021/02/IMG_5640.jpeg",
+   "caption": "Coxinha",
+   "category": "product-historical",
+   "use": "gallery",
+   "public": true,
+   "file": "media/originals/coxinha.jpg"
+  },
+  {
+   "id": "caldo-de-cana",
+   "source": "https://manna-acai.ch/wp-content/uploads/2021/02/IMG_5662.jpeg",
+   "caption": "frischgepresster Zuckerrohrsaft",
+   "category": "product",
+   "use": "explorer (Caldo de Cana), gallery",
+   "public": true,
+   "file": "media/originals/caldo-de-cana.jpg"
+  },
+  {
+   "id": "cuscuz-de-tapioca",
+   "source": "https://manna-acai.ch/wp-content/uploads/2021/02/IMG_5668.jpeg",
+   "caption": "Cuscuz de Tapioca",
+   "category": "product-historical",
+   "use": "gallery",
+   "public": true,
+   "file": "media/originals/cuscuz-de-tapioca.jpg"
+  },
+  {
+   "id": "people-5715",
+   "source": "https://manna-acai.ch/wp-content/uploads/2021/02/IMG_5715.jpeg",
+   "caption": null,
+   "category": "people",
+   "use": "not public (identifiable person)",
+   "public": false,
+   "file": "media/not-public/people-5715.jpg"
+  },
+  {
+   "id": "schoggi-kuchen",
+   "source": "https://manna-acai.ch/wp-content/uploads/2021/02/IMG_5814.jpeg",
+   "caption": "Schoggi Kuchen",
+   "category": "product-historical",
+   "use": "gallery",
+   "public": true,
+   "file": "media/originals/schoggi-kuchen.jpg"
+  },
+  {
+   "id": "bowl-orange",
+   "source": "https://manna-acai.ch/wp-content/uploads/2021/02/IMG_5842.jpeg",
+   "caption": null,
+   "category": "product",
+   "use": "explorer (bowls & smoothies), gallery",
+   "public": true,
+   "file": "media/originals/bowl-orange.jpg"
+  },
+  {
+   "id": "guave-bowl",
+   "source": "https://manna-acai.ch/wp-content/uploads/2021/02/IMG_5851.jpeg",
+   "caption": "Guave Bowl",
+   "category": "product",
+   "use": "explorer (bowls & smoothies), gallery",
+   "public": true,
+   "file": "media/originals/guave-bowl.jpg"
+  },
+  {
+   "id": "acai-bowl-blueberries-2",
+   "source": "https://manna-acai.ch/wp-content/uploads/2021/02/IMG_5856.jpeg",
+   "caption": null,
+   "category": "product",
+   "use": "gallery",
+   "public": true,
+   "file": "media/originals/acai-bowl-blueberries-2.jpg"
+  },
+  {
+   "id": "acai-becher-granola",
+   "source": "https://manna-acai.ch/wp-content/uploads/2021/02/IMG_5857.jpeg",
+   "caption": "Açaí im Becher",
+   "category": "product",
+   "use": "cup story (finished), gallery",
+   "public": true,
+   "file": "media/originals/acai-becher-granola.jpg"
+  },
+  {
+   "id": "acai-becher-duo-2",
+   "source": "https://manna-acai.ch/wp-content/uploads/2021/02/IMG_5860.jpeg",
+   "caption": "Açaí im Becher",
+   "category": "product",
+   "use": "gallery",
+   "public": true,
+   "file": "media/originals/acai-becher-duo-2.jpg"
+  },
+  {
+   "id": "people-5898",
+   "source": "https://manna-acai.ch/wp-content/uploads/2021/02/IMG_5898.jpeg",
+   "caption": null,
+   "category": "people",
+   "use": "not public (identifiable person)",
+   "public": false,
+   "file": "media/not-public/people-5898.jpg"
+  },
+  {
+   "id": "people-5900",
+   "source": "https://manna-acai.ch/wp-content/uploads/2021/02/IMG_5900.jpeg",
+   "caption": null,
+   "category": "people",
+   "use": "not public (identifiable people)",
+   "public": false,
+   "file": "media/not-public/people-5900.jpg"
+  },
+  {
+   "id": "maniok-kuchen",
+   "source": "https://manna-acai.ch/wp-content/uploads/2021/02/IMG_5942.jpeg",
+   "caption": "Maniok Kuchen",
+   "category": "product-historical",
+   "use": "gallery",
+   "public": true,
+   "file": "media/originals/maniok-kuchen.jpg"
+  },
+  {
+   "id": "acai-bowl-fruit",
+   "source": "https://manna-acai.ch/wp-content/uploads/2021/02/IMG_5949.jpeg",
+   "caption": null,
+   "category": "product",
+   "use": "explorer (bowls), gallery",
+   "public": true,
+   "file": "media/originals/acai-bowl-fruit.jpg"
+  },
+  {
+   "id": "logo-square",
+   "source": "https://manna-acai.ch/wp-content/uploads/2020/10/Logo-Manna-2.png",
+   "caption": null,
+   "category": "brand",
+   "use": "source only (logo on white)",
+   "public": false,
+   "file": "media/not-public/logo-square.png"
+  },
+  {
+   "id": "logo",
+   "source": "https://manna-acai.ch/wp-content/uploads/2021/01/Manna-Acaiteria-04.png",
+   "caption": null,
+   "category": "brand",
+   "use": "header, intro, footer, favicons",
+   "public": true,
+   "file": "media/originals/logo.png"
+  },
+  {
+   "id": "supplier-cups",
+   "source": "https://manna-acai.ch/wp-content/uploads/2020/11/PNG-image-2.png",
+   "caption": null,
+   "category": "supplier",
+   "use": "about (supplier cups, studio)",
+   "public": true,
+   "file": "media/originals/supplier-cups.png"
+  },
+  {
+   "id": "stock-layered-cups",
+   "source": "https://manna-acai.ch/wp-content/uploads/2020/11/PngItem_665096.png",
+   "caption": null,
+   "category": "stock",
+   "use": "not used (stock PNG from a clip-art site)",
+   "public": false,
+   "file": "media/not-public/stock-layered-cups.png"
+  },
+  {
+   "id": "whatsapp-qr",
+   "source": "https://manna-acai.ch/wp-content/uploads/2020/11/WhatsAppQR.jpeg",
+   "caption": null,
+   "category": "contact",
+   "use": "not used (the WhatsApp link no longer works)",
+   "public": false,
+   "file": "media/not-public/whatsapp-qr.jpg"
+  },
+  {
+   "id": "people-c248",
+   "source": "https://manna-acai.ch/wp-content/uploads/2021/02/c24868d7-8c3d-4646-9490-98fd143b613e.jpeg",
+   "caption": null,
+   "category": "people",
+   "use": "not public (identifiable people incl. a child)",
+   "public": false,
+   "file": "media/not-public/people-c248.jpg"
+  },
+  {
+   "id": "logo-small",
+   "source": "https://manna-acai.ch/wp-content/uploads/2020/10/cropped-Logo-Manna.png",
+   "caption": "Manna Açaí",
+   "category": "brand",
+   "use": "source only",
+   "public": false,
+   "file": "media/not-public/logo-small.png"
+  },
+  {
+   "id": "header-bowls",
+   "source": "https://manna-acai.ch/wp-content/uploads/2020/11/cropped-Manna-Bowls-scaled-1.jpg",
+   "caption": null,
+   "category": "brand",
+   "use": "about / range page header",
+   "public": true,
+   "file": "media/originals/header-bowls.jpg"
+  },
+  {
+   "id": "supplier-cups-wide",
+   "source": "https://manna-acai.ch/wp-content/uploads/2020/11/cropped-PNG-image-2.png",
+   "caption": "Açaí",
+   "category": "supplier",
+   "use": "gallery (supplier studio image)",
+   "public": true,
+   "file": "media/originals/supplier-cups-wide.png"
+  },
+  {
+   "id": "acai-berries-stock",
+   "source": "https://manna-acai.ch/wp-content/uploads/2020/11/dreamstime_112854629.jpg",
+   "caption": "Die Açaíbeere",
+   "category": "stock",
+   "use": "about (the açaí berry, labelled as a stock photo)",
+   "public": true,
+   "file": "media/originals/acai-berries-stock.jpg"
+  },
+  {
+   "id": "people-e139",
+   "source": "https://manna-acai.ch/wp-content/uploads/2021/02/e1398033-5418-4b40-afb7-8f333ded184c.jpeg",
+   "caption": null,
+   "category": "people",
+   "use": "not public (identifiable person)",
+   "public": false,
+   "file": "media/not-public/people-e139.jpg"
+  },
+  {
+   "id": "people-f26f",
+   "source": "https://manna-acai.ch/wp-content/uploads/2021/02/f26f5f01-261d-4079-aa5d-27e2876855f6.jpeg",
+   "caption": null,
+   "category": "people",
+   "use": "not public (child)",
+   "public": false,
+   "file": "media/not-public/people-f26f.jpg"
+  },
+  {
+   "id": "supplier-cups-fruit",
+   "source": "https://manna-acai.ch/wp-content/uploads/2021/02/fbe587a4-e6b3-4f44-98f6-342e40431182.jpeg",
+   "caption": "Açaí",
+   "category": "supplier",
+   "use": "gallery (supplier studio image)",
+   "public": true,
+   "file": "media/originals/supplier-cups-fruit.jpg"
+  },
+  {
+   "id": "clip-caldo-de-cana",
+   "source": "https://manna-acai.ch/wp-content/uploads/2021/01/IMG_0147.mp4",
+   "caption": null,
+   "category": "video",
+   "use": "explorer (Caldo de Cana): sugarcane pressed in the shop",
+   "public": true,
+   "file": "media/originals/clip-caldo-de-cana.mp4"
+  },
+  {
+   "id": "clip-acai-becher",
+   "source": "https://manna-acai.ch/wp-content/uploads/2021/01/trim.088FD72D-A8EF-4EBB-9EA0-658D8FBA6F19.mov",
+   "caption": null,
+   "category": "video",
+   "use": "cup story: a cup being layered at the counter",
+   "public": true,
+   "file": "media/originals/clip-acai-becher.mov"
+  }
+ ]
+}
