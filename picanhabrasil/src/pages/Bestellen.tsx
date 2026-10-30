@@ -7,7 +7,7 @@ export function Bestellen() {
   const { t } = useSite();
   return (
     <>
-      <PageHero kicker={t.order.kicker} title={t.nav.bestellen} lead={t.order.lead} image="prato-picanha" />
+      <PageHero kicker={t.order.kicker} title={t.nav.bestellen} lead={t.order.lead} image="banner-brasilianisch" />
       <Order asPage />
       <MenuTeaser />
     </>

@@ -1,5 +1,4 @@
-// Groups and celebrations: the restaurant asks groups to call, so this is a phone call, with the one photo of a
-// real birthday table at the restaurant.
+// Groups and celebrations: for groups the way in is a phone call (no group service is published beyond that).
 import { useSite } from "@/site";
 import { PHONE } from "@/content/facts";
 import { Img } from "../Img";
@@ -17,10 +16,13 @@ export function Groups() {
             <p className="lead mt-5 max-w-[38rem] text-creme/85">{t.groups.lead}</p>
             <a className="pill pill-cream mt-8" href={PHONE.href}><IconPhone size={18} />{PHONE.display}</a>
           </div>
-          <figure className="relative mx-auto w-full max-w-[380px] rotate-[3deg] rounded-[28px] bg-creme p-3 shadow-[0_40px_80px_-30px_rgba(0,0,0,0.8)] transition-transform duration-500 hover:rotate-0">
-            <Img id="grupo" sizes="380px" className="aspect-[4/5] w-full rounded-[20px]" position="50% 70%" />
-            <figcaption className="px-2 pb-1 pt-3 text-sm text-tinta/75">{t.groups.photo}</figcaption>
-          </figure>
+          <div aria-hidden="true" className="mx-auto grid w-full max-w-[420px] grid-cols-2 gap-4">
+            {[["cutout-coxinha", "-rotate-6"], ["cutout-bier", "rotate-3 translate-y-6"], ["cutout-picanha", "rotate-2 -translate-y-2"], ["cutout-pudim", "-rotate-3 translate-y-4"]].map(([id, cls]) => (
+              <div key={id} className={`grid aspect-square place-items-center rounded-[28px] bg-creme/[0.07] p-6 ring-1 ring-creme/10 transition-transform duration-500 hover:rotate-0 ${cls}`}>
+                <Img id={id} alt="" sizes="180px" fit="contain" className="w-full drop-shadow-[0_18px_22px_rgba(0,0,0,0.5)]" />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

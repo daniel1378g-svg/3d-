@@ -1,5 +1,5 @@
-// Opening hours (today highlighted, live status in Zürich time), address and routes. The map is a drawn street
-// card rather than an embedded map: no third-party map loads until the visitor asks for one.
+// Opening hours (today highlighted, status in Zürich time from the published hours), address and routes. No map is
+// embedded (no third-party map loads until the visitor asks for one) and none is drawn: the card links to the maps.
 import { useSite } from "@/site";
 import { ADDRESS, APPLE_MAPS_URL, MAPS_URL, OSM_URL, PHONE } from "@/content/facts";
 import { zurichNow } from "@/lib/time";
@@ -25,26 +25,20 @@ export function HoursCard({ className }: { className?: string }) {
         ))}
       </dl>
       <p className="mt-4 text-sm opacity-80">{t.hours.kitchen}</p>
+      <p className="mt-1 text-sm opacity-70">{t.hours.basis}</p>
     </div>
   );
 }
 
-function StreetCard() {
+function AddressCard() {
   const { t } = useSite();
   return (
-    <a href={MAPS_URL} target="_blank" rel="noopener" className="group relative block overflow-hidden rounded-[28px] bg-[#e9dfcc] ring-1 ring-tinta/10" aria-label={`${t.location.mapLabel} – ${t.cta.openMaps} ${t.a11y.newTab}`}>
-      <svg viewBox="0 0 600 300" className="block w-full" aria-hidden="true">
-        <rect width="600" height="300" fill="#e9dfcc" />
-        {[[-20, 70, 640, 40], [-20, 210, 640, 56], [120, -20, 34, 360], [420, -20, 30, 360]].map(([x, y, w, h], i) => (
-          <rect key={i} x={x} y={y} width={w} height={h} fill="#fbf6ec" transform={i === 3 ? "rotate(8 435 150)" : undefined} />
-        ))}
-        <path d="M-20 160 C 150 140 300 175 620 150" stroke="#fbf6ec" strokeWidth="22" fill="none" />
-        {Array.from({ length: 18 }, (_, i) => <rect key={i} x={20 + (i % 6) * 100} y={i < 6 ? 12 : i < 12 ? 118 : 250} width="70" height={i < 6 ? 46 : i < 12 ? 30 : 40} rx="6" fill="#d9ccb3" />)}
-        <text x="300" y="155" textAnchor="middle" className="font-display" fontSize="15" fontWeight="700" letterSpacing="3" fill="#8b7b62">MATTENGASSE</text>
-      </svg>
-      <span className="absolute left-1/2 top-[44%] -translate-x-1/2 -translate-y-full text-boi drop-shadow-lg transition-transform duration-300 group-hover:-translate-y-[115%]"><IconPin size={52} /></span>
-      <span className="absolute left-1/2 top-[44%] h-3 w-8 -translate-x-1/2 rounded-full bg-black/20 blur-[2px]" />
-      <span className="pill pill-dark pill-sm absolute bottom-4 left-4">{t.cta.openMaps}<IconExternal size={15} /></span>
+    <a href={MAPS_URL} target="_blank" rel="noopener" className="group relative block overflow-hidden rounded-[28px] bg-mato-2 p-7 text-creme" aria-label={`${t.location.mapLabel} – ${t.cta.openMaps} ${t.a11y.newTab}`}>
+      <span aria-hidden="true" className="absolute -right-16 -top-16 h-56 w-56 rotate-45 rounded-[36px] bg-mato opacity-70 transition-transform duration-700 group-hover:rotate-[60deg]" />
+      <span aria-hidden="true" className="absolute -right-6 -top-6 h-28 w-28 rotate-45 rounded-[20px] bg-[#f2c94c] opacity-90 transition-transform duration-700 group-hover:rotate-[30deg]" />
+      <IconPin size={40} className="relative text-ouro" />
+      <span className="display relative mt-10 block text-[clamp(2.4rem,5vw,3.6rem)]">{ADDRESS.street}<br />{ADDRESS.zip} {ADDRESS.city}</span>
+      <span className="pill pill-cream pill-sm relative mt-6">{t.cta.openMaps}<IconExternal size={15} /></span>
     </a>
   );
 }
@@ -67,7 +61,7 @@ export function HoursLocation() {
               <span className="flex items-start gap-3"><IconPin className="mt-0.5 text-brasa" />{ADDRESS.street}, {ADDRESS.zip} {ADDRESS.city}</span>
               <a className="flex items-center gap-3 link-u" href={PHONE.href}><IconPhone className="text-brasa" />{PHONE.display}</a>
             </address>
-            <div className="mt-8"><StreetCard /></div>
+            <div className="mt-8"><AddressCard /></div>
             <div className="mt-6 flex flex-wrap items-center gap-2">
               <span className="kicker mr-1 text-tinta/75">{t.location.routeWith}</span>
               <a className="chip text-tinta" href={MAPS_URL} target="_blank" rel="noopener">Google Maps</a>

@@ -1,5 +1,5 @@
-// Floating header: the logo in a glass capsule on the left; on the right a capsule with "Tisch reservieren", the
-// language button (opens the list of five languages) and the menu button. It compacts once the page scrolls.
+// Floating header: the badge and name in a glass capsule on the left; on the right a capsule with "Tisch reservieren",
+// the language button (opens the list of five languages) and the menu button. It compacts once the page scrolls.
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { LANGS, NATIVE, SHORT, fill, type Lang } from "@/i18n";
@@ -7,23 +7,21 @@ import { useSite } from "@/site";
 import { asset, cn } from "@/lib/utils";
 import { EASE_OUT } from "@/lib/motion";
 import { IconMenu } from "./icons";
-import { BULL_OUTLINE, BULL_VIEWBOX } from "@/brand/bull";
 
 export function Logo({ className, compact }: { className?: string; compact?: boolean }) {
   return (
-    <>
-      {/* narrow phones: the bull alone (the wordmark is in the hero, the intro and the footer) */}
-      <svg viewBox={BULL_VIEWBOX} aria-hidden="true" className="h-8 w-8 text-boi min-[440px]:hidden"><path d={BULL_OUTLINE} fill="currentColor" /></svg>
+    <span className="flex items-center gap-2.5">
       <img
-      src={asset("/brand/logo.webp")}
-      alt=""
-      width={500}
-      height={123}
-      className={cn("h-auto select-none max-[439px]:hidden", compact ? "w-[124px] sm:w-[150px]" : "w-[132px] sm:w-[178px]", className)}
-      draggable={false}
-      data-logo
-    />
-    </>
+        src={asset("/brand/logo.webp")}
+        alt=""
+        width={297}
+        height={270}
+        className={cn("h-auto select-none transition-[width] duration-300", compact ? "w-[46px]" : "w-[52px] sm:w-[60px]", className)}
+        draggable={false}
+        data-logo
+      />
+      <span className="display-wide hidden text-[0.95rem] leading-none text-creme min-[440px]:block">Picanha<br /><span className="text-ouro">Brasil</span></span>
+    </span>
   );
 }
 
@@ -80,7 +78,7 @@ export function LanguageMenu({ align = "right", onPicked }: { align?: "left" | "
                   )}
                 >
                   <span>{NATIVE[l]}</span>
-                  <span className="kicker opacity-60">{SHORT[l]}</span>
+                  <span className="kicker opacity-75">{SHORT[l]}</span>
                 </button>
               </li>
             ))}
@@ -107,7 +105,7 @@ export function Header({ onMenu, menuOpen }: { onMenu: () => void; menuOpen: boo
           href={href("home")}
           onClick={(e) => { e.preventDefault(); go("home"); }}
           aria-label={t.a11y.homeLink}
-          className={cn("glass pointer-events-auto flex shrink-0 items-center rounded-full transition-[padding] duration-300", compact ? "px-3 py-2 sm:px-4 sm:py-2.5" : "px-3 py-2.5 sm:px-5 sm:py-3")}
+          className={cn("glass pointer-events-auto flex shrink-0 items-center rounded-full transition-[padding] duration-300", compact ? "px-2.5 py-1.5 sm:px-3" : "px-2.5 py-2 sm:px-4")}
           data-header-logo
         >
           <Logo compact={compact} />

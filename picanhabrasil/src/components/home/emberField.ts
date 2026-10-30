@@ -84,12 +84,16 @@ void main() {
 
   // the coal bed: lower part of the screen, perspective-squashed rows
   float bed = smoothstep(0.62, 0.0, uv.y);
-  vec2 cq = vec2(q.x * 5.5, (q.y * 9.0) / (0.55 + uv.y * 1.2));
+  vec2 cq = vec2(q.x * 8.5, (q.y * 13.0) / (0.5 + uv.y * 1.4));
+  cq += (vec2(fbm(cq * 0.7), fbm(cq * 0.7 + 4.3)) - 0.5) * 1.6;   // warp the cells into irregular lumps
   vec3 v = voronoi(cq + vec2(0.0, t * 0.015));
   float id = hash1(v.yz);
   float breathe = 0.55 + 0.45 * sin(t * (0.6 + id * 1.3) + id * 40.0);
-  float crack = smoothstep(0.12, 0.0, v.x);                 // glowing gaps between coals
-  float body = smoothstep(0.0, 0.5, v.x) * (0.25 + 0.75 * fbm(cq * 2.2 + id * 13.0)); // coal surface
+  float edgeNoise = fbm(cq * 3.1 + id * 7.0);
+  float gap = 0.05 + 0.09 * edgeNoise;                           // cracks vary in width along their length
+  float crack = smoothstep(gap, 0.0, v.x) * (0.45 + 0.55 * smoothstep(0.25, 0.7, edgeNoise));
+  float hot = step(0.62, id);                                    // some lumps glow through, most are dark
+  float body = smoothstep(0.0, 0.45, v.x) * (0.15 + 0.85 * fbm(cq * 2.6 + id * 13.0)) * (0.35 + hot * 1.1); // coal surface
   float glow = fbm(q * 3.0 + vec2(0.0, -t * 0.25)) * 0.9;
   float temp = bed * (crack * (0.55 + 0.5 * breathe) + body * 0.18 * breathe + glow * 0.25);
   temp += heat * (bed * 0.9 + 0.25) * (0.6 + crack);

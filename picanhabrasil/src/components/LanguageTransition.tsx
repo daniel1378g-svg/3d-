@@ -33,7 +33,7 @@ export const LanguageTransition = forwardRef<LanguageTransitionHandle>(function 
       if (reduce) {
         gsap.set(curtain.current, { "--cs": `${Math.max(window.innerWidth, window.innerHeight) * 7}px`, clipPath: "inset(0 0 0 0)", opacity: 0 });
         gsap.set(bull.current, { opacity: 0 });
-        await play(gsap.timeline({ paused: true }).to(curtain.current, { opacity: 1, duration: 0.22, ease: "power1.out" }));
+        await play(gsap.timeline({ paused: true }).to(curtain.current, { opacity: 1, duration: 0.12, ease: "power1.out" }));
         return;
       }
       // start from the badge in the header
@@ -48,14 +48,15 @@ export const LanguageTransition = forwardRef<LanguageTransitionHandle>(function 
       gsap.set(bull.current, { opacity: 1, x: sx - size / 2, y: sy - size / 2, width: size, height: size, scale: startW / size, rotate: -8, transformOrigin: "50% 50%" });
       const cx = vw / 2 - size / 2, cy = vh * 0.42 - size / 2;
       const tl = gsap.timeline({ paused: true });
-      tl.fromTo(dim.current, { opacity: 0 }, { opacity: 0.45, duration: 0.3, ease: "power1.out" }, 0)
-        .to(bull.current, { x: cx, duration: 0.75, ease: "power3.inOut" }, 0.05)
-        .to(bull.current, { y: cy - vh * 0.06, duration: 0.42, ease: "power2.out" }, 0.05)
-        .to(bull.current, { y: cy, duration: 0.33, ease: "power2.in" }, 0.47)
-        .to(bull.current, { scale: 1, rotate: 0, duration: 0.75, ease: "power3.inOut" }, 0.05)
-        .to(curtain.current, { "--cx": `${vw / 2}px`, "--cy": `${vh * 0.42}px`, duration: 0.75, ease: "power3.inOut" }, 0.05)
-        .to(curtain.current, { "--cs": `${size * 0.9}px`, duration: 0.6, ease: "power2.inOut" }, 0.1)
-        .to(curtain.current, { "--cs": `${Math.max(vw, vh) * 7}px`, duration: 0.55, ease: "power3.in" }, 0.68);
+      // cover: 0.5 s
+      tl.fromTo(dim.current, { opacity: 0 }, { opacity: 0.4, duration: 0.15, ease: "power1.out" }, 0)
+        .to(bull.current, { x: cx, duration: 0.38, ease: "power3.inOut" }, 0)
+        .to(bull.current, { y: cy - vh * 0.05, duration: 0.2, ease: "power2.out" }, 0)
+        .to(bull.current, { y: cy, duration: 0.18, ease: "power2.in" }, 0.2)
+        .to(bull.current, { scale: 1, rotate: 0, duration: 0.38, ease: "power3.inOut" }, 0)
+        .to(curtain.current, { "--cx": `${vw / 2}px`, "--cy": `${vh * 0.42}px`, duration: 0.38, ease: "power3.inOut" }, 0)
+        .to(curtain.current, { "--cs": `${size * 0.9}px`, duration: 0.3, ease: "power2.inOut" }, 0.02)
+        .to(curtain.current, { "--cs": `${Math.max(vw, vh) * 7}px`, duration: 0.2, ease: "power3.in" }, 0.3);
       await play(tl);
       gsap.set(dim.current, { opacity: 0 });
     },
@@ -68,23 +69,24 @@ export const LanguageTransition = forwardRef<LanguageTransitionHandle>(function 
         gsap.set([curtain.current, bull.current, word.current, dim.current], { clearProps: "opacity,clipPath" });
       };
       if (reduce) {
-        await play(gsap.timeline({ paused: true }).to(curtain.current, { opacity: 0, duration: 0.25, ease: "power1.out" }));
+        await play(gsap.timeline({ paused: true }).to(curtain.current, { opacity: 0, duration: 0.12, ease: "power1.out" }));
         done();
         return;
       }
       const vw = window.innerWidth;
       const letters = word.current?.querySelectorAll("[data-l]") ?? [];
       const tl = gsap.timeline({ paused: true });
+      // reveal: 0.45 s, the content is usable as soon as the curtain has passed
       tl.set(word.current, { opacity: 1 })
-        .fromTo(letters, { yPercent: 100, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.45, stagger: 0.025, ease: "expo.out" }, 0)
-        .to(bull.current, { x: `+=${vw * 0.75}`, rotate: 10, duration: 0.85, ease: "power3.in" }, 0.35)
-        .to(letters, { yPercent: -100, opacity: 0, duration: 0.35, stagger: 0.015, ease: "power3.in" }, 0.55)
-        .fromTo(curtain.current, { clipPath: "inset(0 0% 0 0%)" }, { clipPath: "inset(0 0% 0 100%)", duration: 0.7, ease: "power3.inOut" }, 0.62);
+        .fromTo(letters, { yPercent: 100, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.2, stagger: 0.01, ease: "expo.out" }, 0)
+        .to(bull.current, { x: `+=${vw * 0.75}`, rotate: 10, duration: 0.42, ease: "power3.in" }, 0.05)
+        .to(letters, { yPercent: -100, opacity: 0, duration: 0.16, stagger: 0.006, ease: "power3.in" }, 0.16)
+        .fromTo(curtain.current, { clipPath: "inset(0 0% 0 0%)" }, { clipPath: "inset(0 0% 0 100%)", duration: 0.32, ease: "power3.inOut" }, 0.13);
       // the content that is on screen rises back in, a little stagger
       const visible = Array.from(document.querySelectorAll<HTMLElement>("main h1, main h2, main [data-lang-stagger]"))
         .filter((n) => { const b = n.getBoundingClientRect(); return b.bottom > 0 && b.top < window.innerHeight; })
         .slice(0, 8);
-      tl.fromTo(visible, { y: 26, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, stagger: 0.06, ease: "expo.out", clearProps: "transform,opacity" }, 0.78);
+      gsap.fromTo(visible, { y: 18, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, stagger: 0.04, ease: "expo.out", delay: 0.22, clearProps: "transform,opacity" });
       await play(tl);
       done();
     },

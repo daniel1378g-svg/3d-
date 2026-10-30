@@ -1,159 +1,184 @@
-# Boinabrasa · hand-off
+# Picanha Brasil · hand-off
 
-**Preview:** https://claude.ai/artifact/94YKFc5f13SzEBt6CiLJAw (private; share it from the page's Share menu).
-In the preview, pages open by name at the end of the address: `#de`, `#pt-precos`, `#en-book-a-table`,
-`#fr-histoires-picanha`, `#zh`…
+**Preview:** https://claude.ai/artifact/61Cwyb4YYVB17bMgEFwZ6Q (private; share it from the page's Share menu). Pages open by
+name after `#`: `#de`, `#en-menu`, `#pt-reservar`, `#fr-commander`, `#it-note-legali`.
 
-This is a design proposal. The live site at boinabrasa.ch was not touched. The logo, photos and texts belong to
-Boinabrasa GmbH, so the new site can only go live with the owners' agreement. Until then every page shows the fixed
-band "Proposta de design · não é o site oficial", and the footer says the same in the page's language.
+An **unofficial design proposal** for Picanha Brasil, Mattengasse 9, 8005 Zürich. The live site
+(picanha-brasil.ch) was not touched. Every page carries the fixed band "Proposta de design · não é o site oficial",
+plus the notice in the page's language (band on wide screens, menu, footer). The demo is `noindex`, has no sitemap and
+emits no Restaurant structured data until an authorised launch (`VITE_PROPOSAL=0`).
 
 ## What is built
 
-**Home**, in this order: first-visit intro → 3D hero → facts band → »Boi na brasa!« (about) → how the rodízio works →
-meat explorer → prices → reservation → groups & company events → catering → gift vouchers → Google reviews →
-gallery → opening hours & directions → FAQ → contact → footer.
+**Home**, in order:
 
-**Pages** (all five languages): Unsere Spiesse, Preise & Karte (prices, the whole drinks/apéro/dessert card from
-the PDF, allergens, group packages, FAQ), Tisch reservieren, Anfrage für Gruppen (the live form's three steps),
-Catering, Gutscheine, Über uns, Über Churrasco, Wissen & Genuss (the six articles), Kontakt, Impressum,
-Datenschutzerklärung, AGB, Dolcebrigadeiro, and the Chinese page (中文) as on the live site.
+- first-visit intro (1.6 s measured, skippable, once per session, none with reduced motion)
+- ember hero
+- facts band
+- about (published facts only)
+- the "Prato" plate story and plate picker
+- menu teaser (5 categories)
+- reservation
+- pick-up & delivery with postcode check
+- groups (by phone)
+- Google reviews
+- gallery
+- opening hours & directions
+- FAQ
+- contact
+- footer
 
-### The 3D hero (src/three)
+**Pages** in all five languages (de-CH default, en, pt-BR, fr-CH, it-CH), each with its own URL:
 
-A vertical skewer with four pieces of picanha, folded into the C shape the restaurant uses (see its own clip), fat
-cap on the outside. The sequence (≈18 s, once per session, skippable, pausable):
+| Page | URLs |
+|---|---|
+| Full menu | `/de/karte`, `/en/menu`, `/pt/cardapio`, `/fr/carte`, `/it/menu` |
+| Reservation | `/de/reservieren`, `/en/book-a-table`, … |
+| Ordering & delivery | `/de/bestellen`, `/en/order`, … |
+| Imprint & privacy | `/de/impressum`, `/en/imprint`, … |
 
-| Phase | Time | What happens |
+### Signature interactions
+
+- **Ember hero** (`src/components/home/emberField.ts`, `Hero.tsx`):
+  - **Rendering:** one fragment shader on one full-screen triangle, plain WebGL 2, no library. Warped Voronoi coals with glowing cracks of varying width, smoke, heat haze, two layers of sparks.
+  - **Interaction:**
+    - The pointer is a heat source and the sparks lean towards it.
+    - A click or tap sends a heat pulse.
+    - With nobody pointing, the heat wanders on its own.
+    - The site's food cut-outs float with pointer parallax; tapping one tosses it.
+  - **Cost control:**
+    - Rendered at 60 % of CSS pixels (38 % on phones / ≤ 4 cores), lowered further when frames run long.
+    - Stops off screen and in hidden tabs.
+    - Pause button.
+  - **Fallbacks:** reduced motion shows one still frame with nothing floating; without WebGL, a painted gradient. Title and buttons never wait for the graphics.
+- **Language switch** (`LanguageTransition.tsx`):
+  - **Sequence:** the badge flies from the header to the centre, the flag rhombus swells into a green curtain, "Willkommen / Bem-vindos / …", then the curtain wipes away.
+  - **Timing:** cover 0.5 s + reveal 0.45 s.
+  - **What it keeps:** route, scroll position (anchored to the section in the upper third of the screen), the chosen dish/side and the reservation being built.
+  - **Repeated switches:** a switch requested during another replaces its target instead of stacking.
+- **Prato** (`Prato.tsx`, `PlateArt.tsx`):
+  - **On scroll:** an overhead SVG plate fills step by step (main, rice, beans, fries or cassava).
+  - **As a picker:**
+    - choose one of the 9 real mains, the published portion (only Picanha and Carne Seca have 150 g / 200 g) and the published side variant
+    - Feijoada shows its own four published variants
+    - the price comes from the menu data
+  - **Labelling:** marked "Illustration – kein Foto"; it works fully without animation.
+- **Reservation table** (`TableViz.tsx`): the table morphs with the party size (1–2, 3–4, 5–6, 7–10, 11+). It is labelled as an illustration, not an assigned table.
+
+## Sources (checked 30.10.2026)
+
+| What | Where | Evidence in repo |
 |---|---|---|
-| Glut | 0–2.6 s | darkness, embers rise, the fire light comes up, the camera moves in |
-| Grill | 2.6–7 s | raw → grey → Maillard brown → crust, fat white → gold; edges first, irregular; the meat shrinks a little, steam |
-| Messer | 7–9.2 s | the knife comes in from the left along the cut plane and presses into the meat |
-| Schnitt | 9.2–12.2 s | the edge goes down, sawing; the seam opens around the blade, the slice peels and hangs, pink side out |
-| Teller | 12.2–14.4 s | the slice comes free and falls in slow motion, turns pink side up, lands on the plate |
-| Boinabrasa | 14.4–18.4 s | the camera circles to the final shot; the bull switches on as a red neon sign behind the skewer; the headline rises |
+| Page, logo, banner, address, phone, e-mail | https://picanha-brasil.ch (rendered in Chromium) | `content/raw/picanha-brasil.ch.html` |
+| Menu: 5 categories, 54 dishes, 89 prices | data loaded by `<food-shop shopid="58JN5J">` from `data.bigbites.ch/restaurant/58JN5J/foods` | `content/raw/foods.json` → `content/menu.json` (`scripts/build_menu.py`, integer centimes) |
+| Hours (= kitchen hours), delivery zones and fees, payment, pick-up/delivery | `data.bigbites.ch/restaurant/58JN5J` | `content/raw/58JN5J.json` → `src/content/facts.ts` |
+| Reservation notes (30-minute hold, CHF 5.00 fee) | `customerSettings.reservationNote`, shown in `<reservation-shop>` | `content/raw/customerSettings.json`; exact wording in `facts.ts` (`RESERVATION_NOTE_DE`) |
+| Reservation form fields | the rendered widget (first name, last name, phone, e-mail, number of people, free date-time, comments) | `content/raw/widgets.txt` |
+| Google rating 4.5, "women-led" attribute | Google Maps place card (limited view, no review texts) | read on 30.10.2026 |
+| Reviews (3) | supplied by the client on 30.10.2026 | `content/reviews.json`, verbatim |
+| Secondary site | https://restaurantepicanhabrasil.com | `content/raw/rpb_*.txt` |
 
-Then it idles (slow sway, pointer moves camera and key light, scroll pulls the camera back). "Noch eine Scheibe"
-turns the skewer once; while the cut faces away the slice is put back, and the carving plays again.
+Research was read-only: no reservation, order or message was submitted.
 
-How it is made: each piece is a rounded cross-section swept along an arc, deformed by smooth noise. The carved
-piece is built twice from the same surface function: the main body (with the pink face already under the slice)
-and the slice (its top the original crust, its bottom the cut plane, its margin discarded so it ends in a knife
-edge). The meat shader (MeshPhysicalMaterial + GLSL) computes colour, roughness, juice clear coat, relief, salt,
-pepper and the doneness gradient of the cut face from distances stored per vertex. The peel is a vertex-shader
-bend around the knife edge, driven by a damped spring; the fall is a rigid transform with gravity timing.
-Embers, smoke, the bokeh background, the plate, the knife (30 cm blade with a real bevel, white handle) and the
-neon sign are all generated in code. Post-processing on desktop: bloom, vignette, warm grade, grain.
+## Asset inventory
 
-Phones and weak devices get a lighter path (fewer vertices and particles, no shadows, no bloom, cheaper noise),
-the pixel ratio adapts to the measured frame time, rendering stops when the hero is off screen, reduced motion
-shows one still frame, and without WebGL a still rendered from the scene (`public/poster/`) takes its place.
+| Asset | Source | Used in |
+|---|---|---|
+| Logo (badge "Picanha Brasil · Restaurante") | picanha-brasil.ch (`58JN5J-logo.png`) | header, intro, language switch, about, footer, favicons |
+| Banner "brasilianisch" (Brazilian dishes, top view) | picanha-brasil.ch (category banner of the platform) | menu/order/reservation page heroes, gallery |
+| Cut-outs: picanha, coxinha, pudim, bier, getraenke | picanha-brasil.ch (ordering widget category images) | hero (4), menu teaser and menu page (5), groups, gallery |
+| bigbites logo | platform | not used (platform branding, not restaurant content) |
+| 4 photos from the secondary site (facade, birthday table, picanha plate, feijoada) | restaurantepicanhabrasil.com | **not used**; kept in `media/needs-owner-confirmation/` until the owners confirm they are theirs |
 
-**What a dedicated 3D asset would improve.** Close up, the procedural meat reads as very good CG, not as a
-photograph: the fold is more regular than real picanha, the crust relief is noise rather than seared fibre, the
-raw stage looks waxy. A scanned or sculpted picanha (GLB with baked albedo/normal/roughness for raw and grilled
-states, plus a sculpted slice) would close that gap; the engine already separates geometry, materials and the
-timeline, so such an asset can replace `meatGeometry.ts` while keeping the cut, peel and fall logic.
-
-### Reservation
-
-Party size, date and time, with the table illustration morphing with the party size (1–2 small table, 3–4 round,
-5–6 large round, 7–10 long, 11–12 banquet, 13+ two long tables; chairs and place settings spring into place). It is
-an illustration, not a table assignment. **Nothing is booked on this site.** "Weiter zum Reservierungssystem" opens
-the restaurant's own system (VikRestaurants on dielsdorf.boinabrasa.ch) at its search step with people, date and
-time filled in:
-`https://www.dielsdorf.boinabrasa.ch/de/?option=com_vikrestaurants&view=search&date=12.11.2026&hourmin=19:0&people=4`
-— checked on 30.10.2026: the system answers "Ein Tisch für 4 Person(en) wurde gefunden! Wählen Sie einen Raum".
-Only that system knows availability and confirms. The booking system exists in German and English only; the other
-languages hand off to English. 1 person: the online form starts at 2, so the site offers the phone. From 12: the
-group request (both offered for exactly 12). The calendar greys out Monday–Wednesday (opening hours), past days,
-days beyond the system's 120-day window and the closing days the system itself announces (1–3 January 2027).
-The New Year's Eve offer (CHF 190.–) is copied from the booking site and links to its own date.
-
-### Content
-
-Captured on 30.10.2026 from boinabrasa.ch (all pages in German and English), the booking site, the voucher shop
-and the catering site (captures in `content/raw/live/*.txt`). German texts are verbatim; the menu card was
-transcribed from the PDF (75 items, 15 sections). Photos: all photos of the live site, the voucher motifs of the
-shop and the restaurant's catering photos (59 images, WebP), plus the restaurant's own clip (webclip.mp4) in the
-rodízio story. Alt texts were written for every photo in five languages.
-
-### Languages
-
-German (de-CH) is the source. English, Brazilian Portuguese, Swiss French and Swiss Italian were translated for this
-proposal (516 interface strings, 9 long texts, the menu), each by a separate pass with a checker: the dictionaries
-are typed against the German one (a missing key fails the build), `npm run check` compares every article block,
-list, image, placeholder and number. Result: 0 errors, 0 warnings. Legal texts are not machine-translated: German
-and the live site's own English versions, with a note in the other languages. The language switch plays the
-transition (the bull leaves the header, its silhouette fills the screen, "Willkommen / Welcome / Bem-vindos /
-Bienvenue / Benvenuti", the curtain wipes away) and keeps the scroll position and the reservation being built.
-
-## Checks
-
-- **TypeScript:** `tsc --noEmit` clean.
-- **Accessibility:** axe-core (WCAG 2.1 A/AA) on 9 pages across the five languages: 0 violations after fixes (calendar
-  semantics, contrast of dimmed text). Keyboard: skip link first; menu and booking sheet move focus in, trap it,
-  close on Escape and return focus; calendar, meat list and gallery work with arrow keys. Reduced motion: no
-  intro animation, no 3D motion (still frame), no smooth scroll, crossfades instead of slides. Touch targets 44 px
-  on touch screens.
-- **Layout:** all 15 pages in all five languages plus sample articles (81 pages) at 390 px: no horizontal scroll, an
-  h1 on every page, no runtime errors. The home page was also reviewed at 1440 and 1280 px; the header fits at 390 px.
-- **Language switch:** DE → PT on the home page: address `/pt/`, `lang="pt-BR"`, title and content in Portuguese,
-  section top 114 px before → 115 px after.
-- **Hand-off URL:** produced by the UI and opened on the live booking system (see above).
-- **3D performance:** this container has no GPU; in its software renderer (SwiftShader) the desktop path runs at
-  2.7 fps and the phone path at 5.2 fps, with the adaptive pixel ratio stepping down as designed. These numbers say
-  nothing about real devices: **frame rates on real phones and laptops still have to be measured** (Chrome DevTools
-  performance panel, Safari on an iPhone). Lighthouse was not run.
+Images are WebP derivatives (`scripts/prepare_images.py`); the originals stay in `media/originals/`. The banner and
+cut-outs are generic platform images, not photos of this restaurant's food. The drinks cut-out shows third-party
+brands (Coca-Cola, Fanta, Sprite) as on the original site.
 
 ## Decisions
 
-- **Google reviews:** no review text is shown. Google Maps' review panel could not be read from here (and getting
-  around its bot check is not acceptable); third-party aggregators could not be verified as current, local.ch has
-  no reviews. The section links to the restaurant's reviews on Google (read and write). The carousel (swipe,
-  arrows, stars, Google attribution) is built and fills itself from `content/reviews.json` once real reviews are
-  copied there with the owners' agreement, or loaded through the Google Places API (which requires its attribution).
-- **No dish photos invented:** the meat explorer shows the site's photos where it has them (picanha, maminha,
-  costela, linguiça) and an illustrated card for the other six cuts.
-- **Forms:** contact and group request validate in five languages. Without a form service they compose an e-mail
-  to info@boinabrasa.ch (site) or show the finished message to copy (preview, where mailto links are unreliable).
-  The live group form shows a calendar of likely availability from its booking system; that data is not
-  reachable here, so the new form shows none and says only the restaurant's confirmation counts.
-- **Vouchers:** the motif and amount picker previews the card; buying happens in the official shop, where motif and
-  amount are chosen again (the shop takes no parameters).
-- **Catering:** the live site's text, plus the catering site's claim (30–500 people), three steps and hotline,
-  with a link to churrascocatering.ch. The client logos on that site were not used.
-- **Opening hours** follow the live site. Arrival times offered: Thu–Sat 18:00–20:30, Sunday 12:30–15:00 and
-  18:00–20:30, in 15-minute steps ("Letzte reservierbare Ankunft").
-- **SEO:** each page and language is prerendered with its own title, description, canonical, hreflang, Open Graph;
-  the home pages carry Restaurant JSON-LD (address, geo from the site's own map link, hours, phone, prices, menu,
-  booking). German titles and descriptions are the live site's (two typos fixed). `dist/_redirects` maps the old
-  Joomla addresses (including the blog and the English pages) to the new ones with 301s.
-- **Fonts** come from Google Fonts (Archivo, Fraunces); for the real site they should be self-hosted (privacy, speed).
-- **Analytics and cookies:** none on the new site; the privacy statement copied from the live site still mentions
-  Google Analytics and has to be rewritten before launch.
+- **Reservation:**
+  - The official widget can't be pre-filled (a web component with no URL parameters), so the page collects only preferences (people, date, time) and hands off to `picanha-brasil.ch/#reservation` with a copyable summary and the phone number.
+  - No personal data is asked for.
+  - Times offered are every 30 minutes inside the published hours, as a preference. No booking window, no maximum party size and no last-seating rule are published, so none are applied.
+  - The page never says a reservation is confirmed.
+- **Fee:** the policy is shown next to the button, with the total for the party ("For 4 guests: CHF 20.–, requested via TWINT after booking…"). The exact German wording is in a disclosure in the other languages.
+- **Ordering:**
+  - The zones are listed exactly as published.
+  - The postcode check answers only from that list. 8005 Zürich, the restaurant's own postcode, is not in it, so the check says delivery is not confirmed and offers pick-up and the phone.
+  - All orders hand off to `picanha-brasil.ch/#order`.
+- **Reviews:**
+  - The three supplied reviews are shown word for word in English, the language they were given in.
+  - The interface around them is translated.
+  - Name, rating, relative date ("2 years ago", as Google showed it), Local Guide line, meal and sub-scores are as supplied.
+  - There is no auto-rotation, and links go to the reviews on Google.
+- **Legal:**
+  - The official site's imprint belongs to its platform (bigbites.ch, c/o Logmin GmbH), so it is linked and attributed rather than copied.
+  - No company name is shown: none is published on the restaurant's site. Directories list "PICANHA BRASIL GmbH", but this could not be confirmed.
+  - The demo operator's identity was not supplied.
+- **Not built:** rodízio, catering, vouchers, events beyond "call us". The official site offers none of them.
+- **Dietary labels:** none (none are published). The "what is there without meat" FAQ was removed for the same reason.
+- **Stack:** this Vite + React 19 + TypeScript + Tailwind 4 setup, Motion 12, GSAP 3 (ScrollTrigger), Lenis. No three.js, no Lottie (no designer animation files; the player would add weight for nothing).
+- **Fonts:** Archivo and Fraunces come from Google Fonts. Self-host them for a real launch.
 
-## Open questions for the owners
+## Discrepancies and open questions for the owners
 
-1. May the site go live with these texts, photos and logo? Is there a **vector logo** (SVG/AI/PDF)? The bull used in
-   the transitions is traced from the 146 px PNG.
-2. **Reviews:** copy a selection of Google reviews (with permission) or connect the Places API?
-3. **Times:** the booking system's own settings offer Sunday lunch until 14:00 and evenings until 20:00–20:30; the
-   site says Sunday lunch until 15:00. Which is right? local.ch lists Wednesday as open and Sunday until 16:30: update?
-4. **Gaucho article:** "Churrasco gibt es streng genommen auch in Brasilien" — the context suggests Argentina (all
-   three translators flagged it). The translations follow the German as written.
-5. **Photos:** some photos look like stock (caipirinha, feijoada, the Brazilian dishes table, raw maminha and picanha
-   on slate). Are they licensed for the new site? Are there photos of the other cuts (alcatra, presunto, costelinha,
-   coxa, coração, grilled pineapple, grill cheese)?
-6. **Forms:** which service should receive contact and group requests (Formspree, the host, bexio)?
-7. **Translations:** English, Portuguese, French and Italian need a native review before launch.
-8. **Booking parameters:** the hand-off relies on the system's search URL (`view=search&date&hourmin&people`); if the
-   system is updated, this should be checked again.
+1. **Two websites, two price lists.**
+   - restaurantepicanhabrasil.com shows higher prices (Picanha small CHF 34 vs 30, starter Picanha CHF 32 vs 28, Coxinha CHF 6 vs 4) and a different booking system (resmio).
+   - This proposal uses only picanha-brasil.ch and says so next to the prices.
+   - Which list is current, and are the online-ordering prices different from dine-in?
+2. **Fee wording.** "eine Aufwandsgebühr von CHF 5.00 pro Person … wird von der Schlussrechnung abgezogen und bleibt in jedem Fall geschuldet" reads as a per-person charge requested for every booking, credited against the bill, and kept if the guest doesn't come. It is translated that way, with the original wording available. Please confirm.
+3. **Feijoada.**
+   - The menu note says mains come "with rice, beans and fries or cassava".
+   - The Feijoada entry instead lists four variants: with rice / fried banana / collard greens / vinaigrette salad.
+   - The proposal shows the four variants as published. Is one of them chosen, or are they all included?
+4. **Delivery to 8005.** The restaurant's own postcode is not in the delivery list. Intentional?
+5. **Reviews.**
+   - The three supplied reviews could not be cross-checked on Google from here: Google shows automated browsers a limited view.
+   - Please confirm the source and permission, ideally with the review links.
+   - The secondary site's testimonials ("Mariana S.", …) and its "4.8 from 540 reviews" were not used: they could not be verified, and Google showed 4.5.
+6. **Photos.** May the four photos from the secondary site be used? Are there genuine photos of the dishes?
+7. **Legal entity and demo operator** for an imprint, if the proposal is published.
+8. **Translations** need a native review (notes from the translation pass: Swiss French typography, "NPA", Italian "Lei", cut names such as "Aiguillette de rumsteck").
+
+## Checks (30.10.2026, this container: Chromium headless, SwiftShader, no GPU)
+
+| Check | Result |
+|---|---|
+| `tsc --noEmit` | passed |
+| `npm run check` (all dictionaries vs German: keys, array lengths, placeholders; menu: every localized field, prices as positive integer centimes) | 0 errors |
+| `npm test` (node:test; Zürich time incl. summer/winter and the DST switch on 29.03.2026, split hours, time preferences, centimes and fee totals, menu counts and variants, delivery matching, translation keys, routes) | 9/9 passed |
+| 25 pages × 360 px and 390 px: no horizontal overflow, one h1, no console errors | passed |
+| Home (fr) at 768, 1024, 1440 px: no overflow | passed |
+| Intro ≤ 2 s (measured 1.6 s), released scroll, once per session; none with reduced motion | passed |
+| No WebGL: gradient fallback, title and buttons present, no errors | passed |
+| Language switch DE→PT: URL, `lang`, chosen dish and side kept, section position kept (±40 px); rapid EN→FR settles on FR, overlay released | passed |
+| Menu search hit and empty state; published prices on the menu page | passed |
+| Delivery check 8050 → CHF 17; 8005 → "not confirmed" | passed |
+| Reservation hand-off disabled until date and time; link to picanha-brasil.ch/#reservation; CHF 5 × 4 = CHF 20; original wording present | passed |
+| Keyboard: first Tab reaches the skip link | passed |
+| axe-core WCAG 2.0/2.1/2.2 A/AA on 6 pages in 5 languages | 0 violations |
+| Frame rate in the software renderer: 1440 px, hero on screen | 49 fps (adaptive resolution stepped down) |
+| Frame rate in the software renderer: 390 px, 4× CPU throttle | 56 fps |
+| Frame rate after scrolling away | 60 fps (hero stopped) |
+| LCP (lab) | 0.83 s desktop, 0.79 s phone |
+| CLS (lab) | 0.029 desktop, 0 phone |
+
+Not run:
+
+- real phones and laptops (frame rates there still have to be measured)
+- Lighthouse
+- field data
+- screen-reader walkthrough
 
 ## Skills used
 
-`threejs-shaders`, `threejs-react-three-fiber` (decided against R3F: one imperative timeline with its own frame
-loop, adaptive resolution and no per-frame React work), `gsap-scrolltrigger`, `animate` and `emil-design-eng`
-(curves, durations, transform/opacity only, reduced motion, press feedback), `mobile-native` (dvh/svh, tap
-highlight, 16 px inputs, touch-action, safe areas), `artifact-design` (preview contract), `accessibility-review`
-(the audit above).
+| Skill | How it was used |
+|---|---|
+| `animation-performance` | transform/opacity only, pointer motion written to `style.transform` (no React state per frame), loops stopped off screen, no `transition: all` |
+| `gsap-performance` | stagger instead of separate tweens, ScrollTriggers killed on cleanup |
+| `threejs-shaders` | GLSL conventions for the ember shader; plain WebGL 2 instead of three.js |
+| `artifact-design` | the claude.ai preview |
+| `21st-ui` | read; its MCP server is not connected in this session, so the catalog could not be searched |
+| `lottie-animations` | read and decided against (see Decisions) |
+
+`threejs-animation` and `threejs-interaction` were not loaded, as the site has no three.js scene.

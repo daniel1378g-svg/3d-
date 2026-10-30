@@ -12,8 +12,8 @@ export default defineConfig(({ mode }) => {
     plugins: [react(), tailwindcss()],
     resolve: { alias: { "@": fileURLToPath(new URL("./src", import.meta.url)), "@content": fileURLToPath(new URL("./content", import.meta.url)) } },
     define: { __ARTIFACT__: JSON.stringify(artifact) },
-    server: { host: "127.0.0.1", port: 5230 },
-    preview: { host: "127.0.0.1", port: 4230 },
+    server: { host: "127.0.0.1", port: 5240 },
+    preview: { host: "127.0.0.1", port: 4240 },
     build: artifact
       ? {
           outDir: ".cache/artifact-build",

@@ -22,9 +22,9 @@ function DishRow({ d }: { d: Dish }) {
       <div className="flex items-baseline justify-between gap-4">
         <h3 className="font-display text-[1.3rem] font-bold leading-tight text-tinta" style={{ fontStretch: "86%" }} lang={d.nameI18n ? undefined : "pt-BR"}>
           {name}
-          {d.nameI18n && name !== d.name && <span className="ml-2 text-[0.85rem] font-normal text-tinta/55" lang="pt-BR">{d.name}</span>}
+          {d.nameI18n && name !== d.name && <span className="ml-2 text-[0.85rem] font-normal text-tinta/75" lang="pt-BR">{d.name}</span>}
         </h3>
-        {single && <p className="shrink-0 font-display text-[1.25rem] font-bold tabular text-vinho">{chf(d.variants[0].price)}</p>}
+        {single && <p className="shrink-0 font-display text-[1.25rem] font-bold tabular text-vinho">{chf(d.variants[0].cents)}</p>}
       </div>
       {desc && <p className="mt-1 text-[0.95rem] text-tinta/70">{desc}{single && d.variants[0].label ? ` · ${d.variants[0].label[lang]}` : ""}</p>}
       {!desc && single && d.variants[0].label && <p className="mt-1 text-[0.95rem] text-tinta/70">{d.variants[0].label[lang]}</p>}
@@ -33,7 +33,7 @@ function DishRow({ d }: { d: Dish }) {
           {d.variants.map((v, i) => (
             <li key={i} className="inline-flex items-baseline gap-2 rounded-full bg-tinta/[0.06] px-3 py-1.5 text-[0.9rem] text-tinta">
               <span>{v.label?.[lang]}</span>
-              <span className="font-display font-bold tabular text-vinho">{chf(v.price)}</span>
+              <span className="font-display font-bold tabular text-vinho">{chf(v.cents)}</span>
             </li>
           ))}
         </ul>

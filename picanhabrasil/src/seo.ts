@@ -26,7 +26,7 @@ export function jsonLd(lang: Lang) {
   const opening = Object.entries(HOURS).flatMap(([d, slots]) =>
     slots.map(([a, b]) => ({ "@type": "OpeningHoursSpecification", dayOfWeek: `https://schema.org/${DAY[Number(d)]}`, opens: hhmm(a), closes: hhmm(b) })),
   );
-  const prices = MENU.flatMap((s) => s.items.flatMap((i) => i.variants.map((v) => v.price)));
+  const prices = MENU.flatMap((s) => s.items.flatMap((i) => i.variants.map((v) => v.cents / 100)));
   return {
     "@context": "https://schema.org",
     "@type": "Restaurant",
@@ -34,7 +34,7 @@ export function jsonLd(lang: Lang) {
     name: NAME,
     url: `${ORIGIN}${pathFor(lang, "home")}`,
     logo: `${ORIGIN}/brand/logo.png`,
-    image: [`${ORIGIN}/images/fachada-680.webp`, `${ORIGIN}/images/prato-picanha-1600.webp`],
+    image: [`${ORIGIN}/images/banner-brasilianisch-1500.webp`],
     telephone: PHONE.intl,
     email: EMAIL,
     servesCuisine: ["Brazilian"],
@@ -61,7 +61,7 @@ export function headTags(lang: Lang, t: Dict, page: PageKey) {
     `<meta property="og:site_name" content="${NAME}" />`,
     `<meta property="og:title" content="${esc(meta.title)}" />`,
     `<meta property="og:description" content="${esc(meta.description)}" />`,
-    `<meta property="og:image" content="${ORIGIN}/images/prato-picanha-1600.webp" />`,
+    `<meta property="og:image" content="${ORIGIN}/images/banner-brasilianisch-1500.webp" />`,
     `<meta property="og:locale" content="${HTML_LANG[lang].replace("-", "_")}" />`,
     page === "home" ? `<script type="application/ld+json">${JSON.stringify(jsonLd(lang))}</script>` : "",
   ].filter(Boolean).join("\n    ");

@@ -7,8 +7,8 @@ import { useSite } from "@/site";
 import { EASE_IN_OUT, EASE_OUT } from "@/lib/motion";
 import { resumeScroll, stopScroll } from "@/lib/scroll";
 import { useFocusTrap } from "@/lib/focusTrap";
-import { ADDRESS, EMAIL, PHONE, SOCIAL } from "@/content/facts";
-import { IconClose, IconFacebook, IconInstagram } from "./icons";
+import { ADDRESS, EMAIL, PHONE } from "@/content/facts";
+import { IconClose } from "./icons";
 
 type Item = { label: string; page: PageKey; anchor?: Anchor };
 
@@ -43,15 +43,15 @@ export function MenuOverlay({ open, onClose }: { open: boolean; onClose: () => v
 
   const items: Item[] = [
     { label: t.nav.home, page: "home" },
-    { label: t.nav.rodizio, page: "home", anchor: "rodizio" },
-    { label: t.nav.spiesse, page: "spiesse" },
-    { label: t.nav.preiseShort, page: "preise" },
-    { label: t.nav.gruppenShort, page: "gruppen" },
-    { label: t.nav.catering, page: "catering" },
-    { label: t.nav.gutscheine, page: "gutscheine" },
-    { label: t.nav.ueber, page: "ueber" },
-    { label: t.nav.wissen, page: "wissen" },
-    { label: t.nav.kontakt, page: "kontakt" },
+    { label: t.nav.prato, page: "home", anchor: "prato" },
+    { label: t.nav.karte, page: "karte" },
+    { label: t.nav.reservieren, page: "reservieren" },
+    { label: t.nav.bestellen, page: "bestellen" },
+    { label: t.nav.gruppen, page: "home", anchor: "gruppen" },
+    { label: t.nav.bewertungen, page: "home", anchor: "bewertungen" },
+    { label: t.nav.oeffnungszeiten, page: "home", anchor: "oeffnungszeiten" },
+    { label: t.nav.faq, page: "home", anchor: "faq" },
+    { label: t.nav.kontakt, page: "home", anchor: "kontakt" },
   ];
 
   return (
@@ -88,7 +88,7 @@ export function MenuOverlay({ open, onClose }: { open: boolean; onClose: () => v
                       href={href(it.page, { anchor: it.anchor })}
                       data-first={i === 0 ? "" : undefined}
                       onClick={(e) => { e.preventDefault(); go(it.page, { anchor: it.anchor }); onClose(); }}
-                      className="display group inline-flex items-baseline gap-4 py-1 text-[clamp(2.6rem,7.4vw,6.4rem)] text-creme transition-colors hover:text-ouro"
+                      className="display group inline-flex items-baseline gap-4 py-1 text-[clamp(2.2rem,6vw,5.2rem)] text-creme transition-colors hover:text-ouro"
                     >
                       <span className="kicker translate-y-[-0.4em] text-[0.72rem] text-ouro/70">{String(i + 1).padStart(2, "0")}</span>
                       {it.label}
@@ -120,10 +120,7 @@ export function MenuOverlay({ open, onClose }: { open: boolean; onClose: () => v
                   <br />
                   <a className="link-u" href={PHONE.href}>{PHONE.display}</a> · <a className="link-u" href={`mailto:${EMAIL}`}>{EMAIL}</a>
                 </address>
-                <div className="flex gap-2">
-                  <a className="icon-btn" href={SOCIAL.instagram} target="_blank" rel="noopener" aria-label={`Instagram ${t.a11y.newTab}`}><IconInstagram /></a>
-                  <a className="icon-btn" href={SOCIAL.facebook} target="_blank" rel="noopener" aria-label={`Facebook ${t.a11y.newTab}`}><IconFacebook /></a>
-                </div>
+                <p className="text-sm text-creme/70">{t.proposal}</p>
               </motion.div>
             </div>
           </div>

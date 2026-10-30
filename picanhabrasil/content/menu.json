@@ -1,5 +1,7 @@
 {
- "_source": "picanha-brasil.ch ordering widget (data.bigbites.ch/restaurant/58JN5J/foods), captured 30.10.2026. Prices in CHF.",
+ "_source": "picanha-brasil.ch ordering widget (data.bigbites.ch/restaurant/58JN5J/foods), captured 2026-10-30. Prices in integer centimes (CHF).",
+ "checked": "2026-10-30",
+ "sourceUrl": "https://picanha-brasil.ch/#order",
  "sections": [
   {
    "id": "vorspeisen",
@@ -28,7 +30,7 @@
         "fr": "Picanha (aiguillette de rumsteck)",
         "it": "Picanha (codone di manzo)"
        },
-       "price": 28
+       "cents": 2800
       },
       {
        "label": {
@@ -38,7 +40,7 @@
         "fr": "Carne seca (viande séchée)",
         "it": "Carne seca (carne secca)"
        },
-       "price": 25
+       "cents": 2500
       }
      ]
     },
@@ -62,7 +64,7 @@
         "fr": "Frango (poulet)",
         "it": "Frango (pollo)"
        },
-       "price": 4
+       "cents": 400
       }
      ]
     },
@@ -86,7 +88,7 @@
         "fr": "Queijo (fromage)",
         "it": "Queijo (formaggio)"
        },
-       "price": 10
+       "cents": 1000
       },
       {
        "label": {
@@ -96,7 +98,7 @@
         "fr": "Frango (poulet)",
         "it": "Frango (pollo)"
        },
-       "price": 10
+       "cents": 1000
       },
       {
        "label": {
@@ -106,7 +108,7 @@
         "fr": "Carne (bœuf)",
         "it": "Carne (manzo)"
        },
-       "price": 10
+       "cents": 1000
       },
       {
        "label": {
@@ -116,7 +118,7 @@
         "fr": "Mixte",
         "it": "Misto"
        },
-       "price": 12
+       "cents": 1200
       }
      ]
     },
@@ -134,7 +136,7 @@
      "variants": [
       {
        "label": null,
-       "price": 3
+       "cents": 300
       }
      ]
     },
@@ -152,7 +154,7 @@
      "variants": [
       {
        "label": null,
-       "price": 17
+       "cents": 1700
       }
      ]
     },
@@ -170,7 +172,7 @@
      "variants": [
       {
        "label": null,
-       "price": 17
+       "cents": 1700
       }
      ]
     },
@@ -194,7 +196,7 @@
         "fr": "Porção pequena (petite)",
         "it": "Porção pequena (piccola)"
        },
-       "price": 8
+       "cents": 800
       },
       {
        "label": {
@@ -204,7 +206,7 @@
         "fr": "Porção grande (grande)",
         "it": "Porção grande (grande)"
        },
-       "price": 14
+       "cents": 1400
       }
      ]
     },
@@ -222,7 +224,7 @@
      "variants": [
       {
        "label": null,
-       "price": 5
+       "cents": 500
       }
      ]
     },
@@ -240,7 +242,7 @@
      "variants": [
       {
        "label": null,
-       "price": 6
+       "cents": 600
       }
      ]
     },
@@ -264,7 +266,7 @@
      "variants": [
       {
        "label": null,
-       "price": 18
+       "cents": 1800
       }
      ]
     }
@@ -309,7 +311,7 @@
         "fr": "Avec frites",
         "it": "Con patatine"
        },
-       "price": 30
+       "cents": 3000
       },
       {
        "label": {
@@ -319,7 +321,7 @@
         "fr": "Avec manioc",
         "it": "Con manioca"
        },
-       "price": 30
+       "cents": 3000
       }
      ]
     },
@@ -343,7 +345,7 @@
         "fr": "Avec frites",
         "it": "Con patatine"
        },
-       "price": 35
+       "cents": 3500
       },
       {
        "label": {
@@ -353,7 +355,7 @@
         "fr": "Avec manioc",
         "it": "Con manioca"
        },
-       "price": 35
+       "cents": 3500
       }
      ]
     },
@@ -377,7 +379,7 @@
         "fr": "Avec frites",
         "it": "Con patatine"
        },
-       "price": 30
+       "cents": 3000
       },
       {
        "label": {
@@ -387,7 +389,7 @@
         "fr": "Avec manioc",
         "it": "Con manioca"
        },
-       "price": 30
+       "cents": 3000
       }
      ]
     },
@@ -411,7 +413,7 @@
         "fr": "Avec frites",
         "it": "Con patatine"
        },
-       "price": 35
+       "cents": 3500
       },
       {
        "label": {
@@ -421,7 +423,7 @@
         "fr": "Avec manioc",
         "it": "Con manioca"
        },
-       "price": 35
+       "cents": 3500
       }
      ]
     },
@@ -445,7 +447,7 @@
         "fr": "Avec frites",
         "it": "Con patatine"
        },
-       "price": 38
+       "cents": 3800
       },
       {
        "label": {
@@ -455,7 +457,7 @@
         "fr": "Avec manioc",
         "it": "Con manioca"
        },
-       "price": 38
+       "cents": 3800
       }
      ]
     },
@@ -479,7 +481,7 @@
         "fr": "Avec frites",
         "it": "Con patatine"
        },
-       "price": 25
+       "cents": 2500
       },
       {
        "label": {
@@ -489,7 +491,7 @@
         "fr": "Avec manioc",
         "it": "Con manioca"
        },
-       "price": 25
+       "cents": 2500
       }
      ]
     },
@@ -513,7 +515,7 @@
         "fr": "Avec frites",
         "it": "Con patatine"
        },
-       "price": 25
+       "cents": 2500
       },
       {
        "label": {
@@ -523,7 +525,7 @@
         "fr": "Avec manioc",
         "it": "Con manioca"
        },
-       "price": 25
+       "cents": 2500
       }
      ]
     },
@@ -547,7 +549,7 @@
         "fr": "Avec frites",
         "it": "Con patatine"
        },
-       "price": 25
+       "cents": 2500
       },
       {
        "label": {
@@ -557,7 +559,7 @@
         "fr": "Avec manioc",
         "it": "Con manioca"
        },
-       "price": 25
+       "cents": 2500
       }
      ]
     },
@@ -581,7 +583,7 @@
         "fr": "Avec frites",
         "it": "Con patatine"
        },
-       "price": 30
+       "cents": 3000
       },
       {
        "label": {
@@ -591,7 +593,7 @@
         "fr": "Avec manioc",
         "it": "Con manioca"
        },
-       "price": 30
+       "cents": 3000
       }
      ]
     },
@@ -615,7 +617,7 @@
         "fr": "Avec frites",
         "it": "Con patatine"
        },
-       "price": 30
+       "cents": 3000
       },
       {
        "label": {
@@ -625,7 +627,7 @@
         "fr": "Avec manioc",
         "it": "Con manioca"
        },
-       "price": 30
+       "cents": 3000
       }
      ]
     },
@@ -649,7 +651,7 @@
         "fr": "Avec riz",
         "it": "Con riso"
        },
-       "price": 28
+       "cents": 2800
       },
       {
        "label": {
@@ -659,7 +661,7 @@
         "fr": "Avec bananes frites",
         "it": "Con banane fritte"
        },
-       "price": 28
+       "cents": 2800
       },
       {
        "label": {
@@ -669,7 +671,7 @@
         "fr": "Avec chou",
         "it": "Con cavolo"
        },
-       "price": 28
+       "cents": 2800
       },
       {
        "label": {
@@ -679,7 +681,7 @@
         "fr": "Avec salade vinaigrette",
         "it": "Con insalata vinaigrette"
        },
-       "price": 28
+       "cents": 2800
       }
      ]
     }
@@ -712,7 +714,7 @@
      "variants": [
       {
        "label": null,
-       "price": 8
+       "cents": 800
       }
      ]
     },
@@ -730,7 +732,7 @@
      "variants": [
       {
        "label": null,
-       "price": 8
+       "cents": 800
       }
      ]
     },
@@ -748,7 +750,7 @@
      "variants": [
       {
        "label": null,
-       "price": 8
+       "cents": 800
       }
      ]
     }
@@ -781,7 +783,7 @@
         "fr": "0,33 l",
         "it": "0,33 l"
        },
-       "price": 5
+       "cents": 500
       }
      ]
     },
@@ -799,7 +801,7 @@
         "fr": "0,33 l",
         "it": "0,33 l"
        },
-       "price": 5
+       "cents": 500
       }
      ]
     },
@@ -817,7 +819,7 @@
         "fr": "0,33 l",
         "it": "0,33 l"
        },
-       "price": 5
+       "cents": 500
       }
      ]
     },
@@ -835,7 +837,7 @@
         "fr": "0,33 l",
         "it": "0,33 l"
        },
-       "price": 5
+       "cents": 500
       }
      ]
     },
@@ -853,7 +855,7 @@
         "fr": "0,33 l",
         "it": "0,33 l"
        },
-       "price": 7
+       "cents": 700
       }
      ]
     },
@@ -871,7 +873,7 @@
         "fr": "0,33 l",
         "it": "0,33 l"
        },
-       "price": 5
+       "cents": 500
       }
      ]
     },
@@ -889,7 +891,7 @@
         "fr": "0,33 l",
         "it": "0,33 l"
        },
-       "price": 4
+       "cents": 400
       }
      ]
     },
@@ -907,7 +909,7 @@
         "fr": "0,33 l",
         "it": "0,33 l"
        },
-       "price": 4
+       "cents": 400
       }
      ]
     },
@@ -925,7 +927,7 @@
         "fr": "0,33 l",
         "it": "0,33 l"
        },
-       "price": 7
+       "cents": 700
       }
      ]
     },
@@ -955,7 +957,7 @@
         "fr": "Caju",
         "it": "Caju"
        },
-       "price": 8
+       "cents": 800
       },
       {
        "label": {
@@ -965,7 +967,7 @@
         "fr": "Cajá",
         "it": "Cajá"
        },
-       "price": 8
+       "cents": 800
       },
       {
        "label": {
@@ -975,7 +977,7 @@
         "fr": "Maracujá",
         "it": "Maracujá"
        },
-       "price": 8
+       "cents": 800
       },
       {
        "label": {
@@ -985,7 +987,7 @@
         "fr": "Laranja",
         "it": "Laranja"
        },
-       "price": 8
+       "cents": 800
       }
      ]
     },
@@ -1015,7 +1017,7 @@
         "fr": "Açaí",
         "it": "Açaí"
        },
-       "price": 8
+       "cents": 800
       },
       {
        "label": {
@@ -1025,7 +1027,7 @@
         "fr": "Goiaba",
         "it": "Goiaba"
        },
-       "price": 8
+       "cents": 800
       },
       {
        "label": {
@@ -1035,7 +1037,7 @@
         "fr": "Cupuaçu",
         "it": "Cupuaçu"
        },
-       "price": 8
+       "cents": 800
       },
       {
        "label": {
@@ -1045,7 +1047,7 @@
         "fr": "Limão",
         "it": "Limão"
        },
-       "price": 8
+       "cents": 800
       },
       {
        "label": {
@@ -1055,7 +1057,7 @@
         "fr": "Graviola",
         "it": "Graviola"
        },
-       "price": 8
+       "cents": 800
       }
      ]
     },
@@ -1085,7 +1087,7 @@
         "fr": "Acerola",
         "it": "Acerola"
        },
-       "price": 8
+       "cents": 800
       },
       {
        "label": {
@@ -1095,7 +1097,7 @@
         "fr": "Manga",
         "it": "Manga"
        },
-       "price": 8
+       "cents": 800
       }
      ]
     },
@@ -1125,7 +1127,7 @@
         "fr": "Caju",
         "it": "Caju"
        },
-       "price": 10
+       "cents": 1000
       },
       {
        "label": {
@@ -1135,7 +1137,7 @@
         "fr": "Cajá",
         "it": "Cajá"
        },
-       "price": 10
+       "cents": 1000
       },
       {
        "label": {
@@ -1145,7 +1147,7 @@
         "fr": "Maracujá",
         "it": "Maracujá"
        },
-       "price": 10
+       "cents": 1000
       },
       {
        "label": {
@@ -1155,7 +1157,7 @@
         "fr": "Laranja",
         "it": "Laranja"
        },
-       "price": 10
+       "cents": 1000
       }
      ]
     },
@@ -1185,7 +1187,7 @@
         "fr": "Açaí",
         "it": "Açaí"
        },
-       "price": 10
+       "cents": 1000
       },
       {
        "label": {
@@ -1195,7 +1197,7 @@
         "fr": "Goiaba",
         "it": "Goiaba"
        },
-       "price": 10
+       "cents": 1000
       },
       {
        "label": {
@@ -1205,7 +1207,7 @@
         "fr": "Cupuaçu",
         "it": "Cupuaçu"
        },
-       "price": 10
+       "cents": 1000
       },
       {
        "label": {
@@ -1215,7 +1217,7 @@
         "fr": "Limão",
         "it": "Limão"
        },
-       "price": 10
+       "cents": 1000
       },
       {
        "label": {
@@ -1225,7 +1227,7 @@
         "fr": "Graviola",
         "it": "Graviola"
        },
-       "price": 10
+       "cents": 1000
       }
      ]
     },
@@ -1255,7 +1257,7 @@
         "fr": "Acerola",
         "it": "Acerola"
        },
-       "price": 10
+       "cents": 1000
       },
       {
        "label": {
@@ -1265,7 +1267,7 @@
         "fr": "Manga",
         "it": "Manga"
        },
-       "price": 10
+       "cents": 1000
       }
      ]
     },
@@ -1295,7 +1297,7 @@
         "fr": "Citron vert",
         "it": "Lime"
        },
-       "price": 7
+       "cents": 700
       },
       {
        "label": {
@@ -1305,7 +1307,7 @@
         "fr": "Orange",
         "it": "Arancia"
        },
-       "price": 7
+       "cents": 700
       }
      ]
     }
@@ -1344,7 +1346,7 @@
         "fr": "0,33 l",
         "it": "0,33 l"
        },
-       "price": 5
+       "cents": 500
       }
      ]
     },
@@ -1362,7 +1364,7 @@
         "fr": "0,33 l",
         "it": "0,33 l"
        },
-       "price": 5
+       "cents": 500
       }
      ]
     },
@@ -1380,7 +1382,7 @@
         "fr": "0,33 l",
         "it": "0,33 l"
        },
-       "price": 5
+       "cents": 500
       }
      ]
     },
@@ -1398,7 +1400,7 @@
         "fr": "0,33 l",
         "it": "0,33 l"
        },
-       "price": 7
+       "cents": 700
       }
      ]
     },
@@ -1416,7 +1418,7 @@
         "fr": "0,33 l",
         "it": "0,33 l"
        },
-       "price": 7
+       "cents": 700
       }
      ]
     },
@@ -1434,7 +1436,7 @@
         "fr": "0,33 l",
         "it": "0,33 l"
        },
-       "price": 5
+       "cents": 500
       }
      ]
     },
@@ -1452,7 +1454,7 @@
         "fr": "0,4 l",
         "it": "0,4 l"
        },
-       "price": 17
+       "cents": 1700
       }
      ]
     },
@@ -1470,7 +1472,7 @@
         "fr": "0,4 l",
         "it": "0,4 l"
        },
-       "price": 17
+       "cents": 1700
       }
      ]
     },
@@ -1488,7 +1490,7 @@
         "fr": "0,4 l",
         "it": "0,4 l"
        },
-       "price": 17
+       "cents": 1700
       }
      ]
     },
@@ -1506,7 +1508,7 @@
         "fr": "0,1 l",
         "it": "0,1 l"
        },
-       "price": 8
+       "cents": 800
       }
      ]
     },
@@ -1524,7 +1526,7 @@
         "fr": "0,1 l",
         "it": "0,1 l"
        },
-       "price": 8
+       "cents": 800
       }
      ]
     },
@@ -1542,7 +1544,7 @@
         "fr": "0,1 l",
         "it": "0,1 l"
        },
-       "price": 8
+       "cents": 800
       }
      ]
     },
@@ -1560,7 +1562,7 @@
         "fr": "0,1 l",
         "it": "0,1 l"
        },
-       "price": 8
+       "cents": 800
       }
      ]
     },
@@ -1578,7 +1580,7 @@
         "fr": "0,1 l",
         "it": "0,1 l"
        },
-       "price": 8
+       "cents": 800
       }
      ]
     }

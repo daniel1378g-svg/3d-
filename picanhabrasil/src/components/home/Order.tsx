@@ -5,7 +5,7 @@ import { useMemo, useState, type FormEvent } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { fill } from "@/i18n";
 import { useSite } from "@/site";
-import { DELIVERY_MIN, DELIVERY_ZONES, URLS, ADDRESS } from "@/content/facts";
+import { DELIVERY_MIN, DELIVERY_ZONES, deliveryZoneFor, URLS } from "@/content/facts";
 import { EASE_OUT } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 import { IconCard, IconClock, IconExternal, IconPin } from "../icons";
@@ -19,22 +19,20 @@ export function Order({ asPage }: { asPage?: boolean }) {
   const check = (e: FormEvent) => {
     e.preventDefault();
     const z = zip.trim();
-    if (!/^\d{4}$/.test(z)) { setResult({ kind: "invalid", text: o.zipInvalid }); return; }
-    const n = Number(z);
-    const zone = DELIVERY_ZONES.find((x) => x.places.some((p) => p.zip === n));
-    if (!zone) { setResult({ kind: "none", text: fill(o.zipNotFound, { zip: z }) }); return; }
-    const place = zone.places.filter((p) => p.zip === n).map((p) => `${p.zip} ${p.city}`).join(" / ");
-    setResult({ kind: "found", zip: n, text: fill(o.zipFound, { place, fee: zone.fee, min: DELIVERY_MIN }) });
+    const hit = deliveryZoneFor(z);
+    if (hit === "invalid") { setResult({ kind: "invalid", text: o.zipInvalid }); return; }
+    if (!hit) { setResult({ kind: "none", text: fill(o.zipNotFound, { zip: z }) }); return; }
+    const place = hit.places.map((p) => `${p.zip} ${p.city}`).join(" / ");
+    setResult({ kind: "found", zip: Number(z), text: fill(o.zipFound, { place, fee: hit.fee, min: DELIVERY_MIN }) });
   };
   const rows = useMemo(() => DELIVERY_ZONES.flatMap((z) => z.places.map((p) => ({ ...p, fee: z.fee }))), []);
-  const H = asPage ? "h2" : "h2";
 
   return (
     <section id="bestellen" data-anchor="bestellen" className="skin-ouro relative overflow-hidden py-24 md:py-32" aria-labelledby="order-title">
       <div className="gutter">
         <div className="wrap">
           <p className="kicker text-vinho" data-lang-stagger>{o.kicker}</p>
-          <H id="order-title" className="display mt-3 text-[clamp(3.2rem,9vw,9rem)] text-carvao">{o.title}</H>
+          <h2 id="order-title" className="display mt-3 text-[clamp(3.2rem,9vw,9rem)] text-carvao">{asPage ? t.nav.bestellen : o.title}</h2>
           <p className="lead mt-5 max-w-[44rem] text-carvao/85">{o.lead}</p>
           <div className="mt-8 flex flex-wrap items-center gap-3">
             <a className="pill pill-dark" href={URLS.order} target="_blank" rel="noopener">{t.cta.orderNow}<IconExternal size={16} /><span className="sr-only">{t.a11y.newTab}</span></a>
@@ -45,7 +43,6 @@ export function Order({ asPage }: { asPage?: boolean }) {
             <div className="rounded-[var(--radius-card)] bg-carvao p-6 text-creme">
               <p className="kicker flex items-center gap-2 text-ouro"><IconPin size={16} />{o.pickupTitle}</p>
               <p className="mt-3 text-creme/85">{o.pickupText}</p>
-              <p className="mt-2 text-sm text-creme/60">{ADDRESS.street}, {ADDRESS.zip} {ADDRESS.city}</p>
             </div>
             <div className="rounded-[var(--radius-card)] bg-vinho p-6 text-creme">
               <p className="kicker text-ouro">{o.deliveryTitle}</p>

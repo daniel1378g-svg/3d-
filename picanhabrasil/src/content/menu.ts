@@ -4,14 +4,18 @@ import data from "@content/menu.json";
 import type { Lang } from "@/i18n";
 
 type L10n = Record<Lang, string>;
-export type Variant = { label: L10n | null; price: number };
+/** price in integer centimes, as published (CHF) */
+export type Variant = { label: L10n | null; cents: number };
 export type Dish = { id: string; name: string; nameI18n: L10n | null; desc: L10n | null; variants: Variant[] };
 export type Section = { id: string; title: L10n; titlePt: string; note: L10n | null; cutout: string; items: Dish[] };
 
-export const MENU = (data as unknown as { sections: Section[] }).sections;
+const DATA = data as unknown as { sections: Section[]; checked: string; sourceUrl: string };
+export const MENU = DATA.sections;
+export const MENU_CHECKED = DATA.checked;
+export const MENU_SOURCE = DATA.sourceUrl;
 export const SECTION_IDS = MENU.map((s) => s.id);
 export const dishName = (d: Dish, lang: Lang) => d.nameI18n?.[lang] ?? d.name;
-export const minPrice = (d: Dish) => Math.min(...d.variants.map((v) => v.price));
+export const minCents = (d: Dish) => Math.min(...d.variants.map((v) => v.cents));
 export const findDish = (id: string) => MENU.flatMap((s) => s.items).find((d) => d.id === id);
-/** "28.–" / "4.50" in Swiss style */
-export const chf = (n: number) => (Number.isInteger(n) ? `${n}.–` : n.toFixed(2));
+/** centimes → "28.–" / "4.50", the Swiss menu style */
+export const chf = (cents: number) => (cents % 100 === 0 ? `${cents / 100}.–` : (cents / 100).toFixed(2));

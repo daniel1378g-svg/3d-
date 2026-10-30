@@ -12,12 +12,14 @@ import { Img } from "../Img";
 import { Reveal } from "../Reveal";
 import { IconChevronLeft, IconChevronRight, IconClose } from "../icons";
 
+// every picture on picanha-brasil.ch (the logo is in the header, intro and about section)
 const PHOTOS = [
-  { id: "fachada", ratio: "aspect-[680/516]", rot: -3 },
-  { id: "prato-picanha", ratio: "aspect-[16/9]", rot: 2 },
-  { id: "grupo", ratio: "aspect-[760/1351]", rot: -2 },
-  { id: "feijoada", ratio: "aspect-[760/956]", rot: 3 },
-  { id: "banner-brasilianisch", ratio: "aspect-[3/2]", rot: -1.5 },
+  { id: "banner-brasilianisch", ratio: "aspect-[3/2]", rot: -1.5, fit: "cover" as const },
+  { id: "cutout-picanha", ratio: "aspect-square", rot: 2, fit: "contain" as const },
+  { id: "cutout-coxinha", ratio: "aspect-square", rot: -2, fit: "contain" as const },
+  { id: "cutout-pudim", ratio: "aspect-square", rot: 3, fit: "contain" as const },
+  { id: "cutout-getraenke", ratio: "aspect-square", rot: -3, fit: "contain" as const },
+  { id: "cutout-bier", ratio: "aspect-square", rot: 1.5, fit: "contain" as const },
 ];
 
 export function Gallery() {
@@ -56,7 +58,7 @@ export function Gallery() {
                   style={{ rotate: reduce ? "0deg" : `${p.rot}deg` }}
                   aria-label={fill(t.gallery.open, { name: alt(p.id, lang) })}
                 >
-                  <Img id={p.id} alt="" sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 90vw" className={`${p.ratio} w-full rounded-[18px]`} />
+                  <Img id={p.id} alt="" fit={p.fit} sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 90vw" className={`${p.ratio} w-full rounded-[18px] ${p.fit === "contain" ? "bg-creme-2 p-8" : ""}`} />
                 </button>
               </Reveal>
             ))}
@@ -85,7 +87,7 @@ export function Gallery() {
             <div className="relative flex min-h-0 flex-1 items-center justify-center">
               <AnimatePresence mode="wait">
                 <motion.figure key={open} initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.25, ease: EASE_OUT }} className="flex max-h-full flex-col items-center">
-                  <Img id={PHOTOS[open].id} sizes="100vw" fit="contain" className="max-h-[78dvh] w-[min(1100px,92vw)]" imgClassName="max-h-[78dvh]" />
+                  <Img id={PHOTOS[open].id} sizes="100vw" fit="contain" className={PHOTOS[open].fit === "contain" ? "max-h-[60dvh] w-[min(420px,80vw)]" : "max-h-[78dvh] w-[min(1100px,92vw)]"} imgClassName="max-h-[78dvh]" />
                   <figcaption className="mt-3 max-w-[60ch] text-center text-sm text-creme/80">{alt(PHOTOS[open].id, lang)}</figcaption>
                 </motion.figure>
               </AnimatePresence>

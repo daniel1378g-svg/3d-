@@ -15,11 +15,13 @@ import { startEmberField, type EmberField } from "./emberField";
 import { URLS } from "@/content/facts";
 
 /** cut-outs: position (% of the hero), size, depth (parallax strength), resting tilt */
+/** cut-outs: position (% of the hero), size, depth (parallax strength), resting tilt. They sit in the right half,
+ * away from the headline; phones keep two. */
 const FLOATERS = [
-  { id: "cutout-picanha", x: 76, y: 30, w: "clamp(120px,15vw,216px)", depth: 1, rot: -8, cls: "" },
-  { id: "cutout-coxinha", x: 9, y: 66, w: "clamp(86px,10vw,166px)", depth: 0.6, rot: 10, cls: "max-sm:top-[74%]" },
-  { id: "cutout-pudim", x: 84, y: 72, w: "clamp(96px,11vw,200px)", depth: 0.8, rot: 4, cls: "" },
-  { id: "cutout-bier", x: 14, y: 20, w: "clamp(70px,8vw,150px)", depth: 0.35, rot: -12, cls: "max-sm:hidden" },
+  { id: "cutout-picanha", x: 77, y: 31, w: "clamp(112px,15vw,216px)", depth: 1, rot: -8, cls: "max-sm:!left-[80%] max-sm:!top-[15%] max-sm:!w-[96px]" },
+  { id: "cutout-coxinha", x: 91, y: 52, w: "clamp(86px,9.5vw,166px)", depth: 0.6, rot: 10, cls: "max-md:hidden" },
+  { id: "cutout-pudim", x: 70, y: 57, w: "clamp(90px,10vw,200px)", depth: 0.8, rot: 4, cls: "max-md:!left-[86%] max-md:!top-[89%]" },
+  { id: "cutout-bier", x: 92, y: 20, w: "clamp(70px,7vw,150px)", depth: 0.35, rot: -12, cls: "max-md:hidden" },
 ] as const;
 
 export function Hero() {
@@ -145,6 +147,7 @@ export function Hero() {
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(120%_70%_at_50%_100%,#c2410c_0%,#7c1d0a_28%,#2a0d07_55%,#0b0706_80%)]" aria-hidden="true" />
       {webgl && <canvas ref={canvas} className="absolute inset-0 -z-10 h-full w-full" role="img" aria-label={t.hero.bgLabel} />}
       <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[45%] bg-gradient-to-b from-carvao/90 to-transparent" aria-hidden="true" />
+      <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(75%_55%_at_22%_78%,rgba(11,7,6,0.7),transparent_70%)]" aria-hidden="true" />
 
       {/* floating food from the restaurant's site */}
       {FLOATERS.map((f, i) => (
@@ -163,12 +166,12 @@ export function Hero() {
         </div>
       ))}
 
-      <div data-hero-copy className="gutter relative z-10 w-full pb-[clamp(28px,6vh,72px)]">
+      <div data-hero-copy className="gutter relative z-10 w-full pb-[clamp(28px,6vh,72px)] pt-[calc(var(--header-h)+28px)]">
         <div className="wrap">
           <p className="kicker text-ouro" data-rise data-lang-stagger>{t.hero.kicker}</p>
           <h1 id="hero-title" aria-label={t.hero.h1} className="mt-3">
-            {word("PICANHA", "display text-[clamp(4.2rem,17vw,17rem)] leading-[0.82] text-creme")}
-            {word("BRASIL", "display -mt-[0.04em] text-[clamp(4.2rem,17vw,17rem)] leading-[0.82] text-transparent [-webkit-text-stroke:2px_var(--color-ouro)]")}
+            {word("PICANHA", "display text-[clamp(4.2rem,min(15vw,20vh),15rem)] leading-[0.82] text-creme")}
+            {word("BRASIL", "display -mt-[0.04em] text-[clamp(4.2rem,min(15vw,20vh),15rem)] leading-[0.82] text-transparent [-webkit-text-stroke:2px_var(--color-ouro)]")}
           </h1>
           <div className="mt-6 grid gap-6 md:grid-cols-[1fr_auto] md:items-end">
             <div>
@@ -188,7 +191,7 @@ export function Hero() {
                     {paused ? <IconPlay size={18} /> : <IconPause size={18} />}
                   </button>
                 )}
-                {!reduce && webgl && <span className="text-sm text-creme/70">{touch ? t.hero.interactTouch : t.hero.interact}</span>}
+                {!reduce && webgl && <span className="glass rounded-full px-3 py-2 text-sm text-creme/85">{touch ? t.hero.interactTouch : t.hero.interact}</span>}
               </div>
             </div>
           </div>

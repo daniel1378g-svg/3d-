@@ -68,26 +68,25 @@ export function Intro({ onDone }: { onDone: () => void }) {
     const tl = gsap.timeline({ onComplete: finish });
     tlRef.current = tl;
     if (reduce) {
-      tl.set(q("[data-letter], [data-tag], [data-badge]"), { opacity: 1 })
-        .to(el, { opacity: 0, duration: 0.35, delay: 0.7, ease: "power1.out" });
+      // reduced motion: no cinematic sequence at all
+      tl.set(el, { opacity: 0 });
     } else {
+      // 1.9 s in total: badge 0–0.55, name 0.15–0.75, exit through the diamond 1.05–1.9
       el.style.setProperty("--ms", "0px");
-      tl.fromTo(q("[data-badge]"), { opacity: 0, scale: 0.86, rotate: -6, filter: "brightness(0.2) drop-shadow(0 0 26px rgba(255,140,50,0.95))" },
-          { opacity: 1, scale: 1, rotate: 0, duration: 1.1, ease: "power2.out" }, 0.15)
-        .to(q("[data-badge]"), { filter: "brightness(1) drop-shadow(0 0 14px rgba(255,190,80,0.35))", duration: 0.9, ease: "sine.inOut" }, 0.7)
-        .fromTo(q("[data-letter]"), { yPercent: 105, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.8, stagger: 0.045, ease: "expo.out" }, 0.8)
-        .fromTo(q("[data-tag]"), { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.6, stagger: 0.12, ease: "power2.out" }, 1.45)
-        .addLabel("exit", 2.55)
-        .to(q("[data-letter]"), { yPercent: -110, opacity: 0, duration: 0.5, stagger: 0.02, ease: "power3.in" }, "exit")
-        .to(q("[data-tag]"), { opacity: 0, duration: 0.3 }, "exit")
-        .to(q("[data-badge]"), { scale: 3.2, opacity: 0, duration: 1.1, ease: "power3.in" }, "exit+=0.1")
-        .to(el, { "--ms": `${Math.max(window.innerWidth, window.innerHeight) * 5}px`, duration: 1.25, ease: "power3.in" }, "exit+=0.18")
-        .to(el, { opacity: 0, duration: 0.25 }, "exit+=1.25");
+      tl.fromTo(q("[data-badge]"), { opacity: 0, scale: 0.86, rotate: -6, filter: "brightness(0.3) drop-shadow(0 0 22px rgba(255,140,50,0.9))" },
+          { opacity: 1, scale: 1, rotate: 0, filter: "brightness(1) drop-shadow(0 0 12px rgba(255,190,80,0.3))", duration: 0.55, ease: "power2.out" }, 0)
+        .fromTo(q("[data-letter]"), { yPercent: 105, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.45, stagger: 0.018, ease: "expo.out" }, 0.15)
+        .fromTo(q("[data-tag]"), { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.3, stagger: 0.06, ease: "power2.out" }, 0.45)
+        .addLabel("exit", 1.05)
+        .to(q("[data-letter], [data-tag]"), { yPercent: -60, opacity: 0, duration: 0.3, stagger: 0.008, ease: "power3.in" }, "exit")
+        .to(q("[data-badge]"), { scale: 2.6, opacity: 0, duration: 0.6, ease: "power3.in" }, "exit+=0.05")
+        .to(el, { "--ms": `${Math.max(window.innerWidth, window.innerHeight) * 5}px`, duration: 0.7, ease: "power3.in" }, "exit+=0.1")
+        .to(el, { opacity: 0, duration: 0.15 }, "exit+=0.7");
     }
     const skip = () => {
       if (reduce || tl.time() >= tl.labels.exit) return;
       tl.seek("exit");
-      tl.timeScale(1.6);
+      tl.timeScale(1.5);
     };
     const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") skip(); };
     window.addEventListener("keydown", onKey);

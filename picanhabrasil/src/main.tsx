@@ -1,8 +1,8 @@
-import { StrictMode, useEffect } from "react";
+import { StrictMode, useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { Router, useLocation, useNavigate } from "./lib/router";
 import { Shell } from "./App";
-import { isLang, LANGS, loadDict, pathFor, SLUGS, type Lang, type PageKey } from "./i18n";
+import { cachedDict, isLang, LANGS, loadDict, pathFor, SLUGS, type Lang, type PageKey } from "./i18n";
 import { storage } from "./lib/utils";
 import "./index.css";
 
@@ -22,10 +22,16 @@ function Routes() {
   const navigate = useNavigate();
   const [, first, ...rest] = pathname.split("/");
   const lang = isLang(first) ? first : null;
+  // arriving in another language without the switch (back button, edited address): load its dictionary first
+  const [, loaded] = useState(0);
+  const missing = !!lang && !cachedDict(lang);
+  useEffect(() => {
+    if (missing) loadDict(lang!).then(() => loaded((n) => n + 1));
+  }, [missing, lang]);
   useEffect(() => {
     if (!lang) navigate(pathFor(preferredLang(), "home"), { replace: true });
   }, [lang, navigate]);
-  if (!lang) return null;
+  if (!lang || missing) return null;
   return <Shell lang={lang} slug={rest.join("/")} />;
 }
 

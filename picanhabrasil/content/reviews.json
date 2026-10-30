@@ -1,4 +1,34 @@
 {
-  "_comment": "Real Google reviews only, copied with the owners' agreement or loaded through the Places API (which requires its attribution). Fields: author, rating (1-5), date (YYYY-MM-DD), text (verbatim), lang (de, en, pt, ...). Empty on purpose: no review text could be verified from here.",
-  "reviews": []
+  "_comment": "Google reviews supplied by the client on 2026-10-30, copied exactly (text, name, rating, the relative date as Google showed it). They could not be cross-checked against Google from here (Google Maps shows only a limited view to automated browsers); see HANDOFF.md. Do not edit the texts.",
+  "supplied": "2026-10-30",
+  "source": "Google Maps",
+  "reviews": [
+    {
+      "author": "Kinga",
+      "rating": 5,
+      "posted": "2 years ago",
+      "meta": ["Local Guide: 153 reviews · 279 photos"],
+      "lang": "en",
+      "text": "A real Brazilian restaurant. A small, inconspicuous place from the street with delicious food. If you have never had contact with Brazilian cuisine, this is the perfect place.\n\nDelicious appetizers, main courses and desserts. I recommend trying the appetizer in the form of a donut filled with meat and covered with potato mass. Very well-done steaks with onions, fries and perfectly cooked rice.\n\nDesserts are also Brazilian, very light and filling. There's definitely nothing to complain about. Very nice service.",
+      "scores": { "food": 5, "service": 5, "atmosphere": 5 }
+    },
+    {
+      "author": "Manoel Cação",
+      "rating": 5,
+      "posted": "5 months ago",
+      "meta": ["Meal: Lunch | CHF 50–60", "Wait time: No wait"],
+      "lang": "en",
+      "text": "I have been there. As a Brazilian looking for a Brazilian restaurant, to have a meal like at home. Sounds like a food prepared from mom.\n\nSpecial flavour and a small piece of Brazil in Zurich.\n\nReally recommend the restaurant.\n\nGood food, great people to serve. Well treated.",
+      "scores": { "food": 5, "service": 5, "atmosphere": 5 }
+    },
+    {
+      "author": "Kaesar Romanova",
+      "rating": 5,
+      "posted": "5 months ago",
+      "meta": ["Local Guide: 38 reviews · 12 photos", "Meal: Dinner | CHF 40–50"],
+      "lang": "en",
+      "text": "Authentic Brazilian cuisine! Brazilian Chef! Amazing service! The restaurant’s atmosphere made me feel like I was in Brazil! It’s become my favorite place in Zurich!",
+      "scores": null
+    }
+  ]
 }

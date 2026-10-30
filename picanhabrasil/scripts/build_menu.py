@@ -114,7 +114,7 @@ for c in raw:
     sid, title = SECTION[c["id"]]
     items = []
     for f in c["foods"]:
-        variants = [{"label": tr(STYLE, d["style"]), "price": d["price"]} for d in f["food_details"]]
+        variants = [{"label": tr(STYLE, d["style"]), "cents": round(d["price"] * 100)} for d in f["food_details"]]
         items.append({
             "id": slug(f["name"]),
             "name": f["name"],
@@ -125,7 +125,9 @@ for c in raw:
     sections.append({"id": sid, "title": title, "titlePt": c["name"], "note": SECTION_NOTE.get(c["id"]), "cutout": f"cutout-{c['img']}", "items": items})
 
 out = {
-    "_source": "picanha-brasil.ch ordering widget (data.bigbites.ch/restaurant/58JN5J/foods), captured 30.10.2026. Prices in CHF.",
+    "_source": "picanha-brasil.ch ordering widget (data.bigbites.ch/restaurant/58JN5J/foods), captured 2026-10-30. Prices in integer centimes (CHF).",
+    "checked": "2026-10-30",
+    "sourceUrl": "https://picanha-brasil.ch/#order",
     "sections": sections,
 }
 (ROOT / "content/menu.json").write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")

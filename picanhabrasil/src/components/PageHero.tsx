@@ -15,7 +15,7 @@ export function PageHero({ kicker, title, lead, image, children, skin = "skin-ca
       <div className="gutter relative">
         <div className="wrap">
           <p className="kicker text-ouro" data-lang-stagger>{kicker}</p>
-          <h1 className="display mt-4 max-w-[18ch] text-[clamp(3.2rem,9vw,9.5rem)] text-creme">{title}</h1>
+          <h1 className="display mt-4 max-w-[18ch] text-[clamp(2.4rem,9vw,9.5rem)] text-creme [hyphens:auto] [overflow-wrap:anywhere]">{title}</h1>
           {lead && <p className="lead measure mt-6 text-creme/85">{lead}</p>}
           {children}
         </div>

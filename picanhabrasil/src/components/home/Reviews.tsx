@@ -1,30 +1,47 @@
-// Google reviews. Google's public place card shows the rating (read on 30.10.2026) but no review texts could be read
-// from here, and none is invented: the section shows the rating and links to the reviews on Google (read and write).
-// The carousel takes real reviews from content/reviews.json (author, stars, date, text, language) as soon as the
-// owners provide a selection or the Places API is connected; it stays hidden while the file is empty.
-import { useRef, useState } from "react";
+// Google reviews: the three reviews the client supplied, word for word (content/reviews.json), as a stack of cards
+// you can swipe, drag or step through with buttons and arrow keys. No automatic rotation. The texts stay in their
+// original language (marked with lang); only the interface around them is translated. Above them, Google's
+// aggregate rating as read on the check date, with links to read and write reviews on Google.
+import { useRef, useState, type KeyboardEvent } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import reviewsData from "@content/reviews.json";
 import { fill, LOCALE } from "@/i18n";
 import { useSite } from "@/site";
 import { GOOGLE_RATING, GOOGLE_REVIEWS_URL } from "@/content/facts";
 import { EASE_OUT } from "@/lib/motion";
+import { cn } from "@/lib/utils";
 import { IconChevronLeft, IconChevronRight, IconExternal, IconGoogle, IconStar } from "../icons";
 
-type Review = { author: string; rating: number; date: string; text: string; lang: string };
-const REVIEWS = (reviewsData as { reviews: Review[] }).reviews;
+type Review = { author: string; rating: number; posted: string; meta: string[]; lang: string; text: string; scores: { food: number; service: number; atmosphere: number } | null };
+const DATA = reviewsData as { supplied: string; reviews: Review[] };
+const REVIEWS = DATA.reviews;
+const TILT = [-2.5, 1.8, -1.2];
+
+function Stars({ n, label, size = 18 }: { n: number; label: string; size?: number }) {
+  return (
+    <span className="flex gap-0.5 text-[#e8a33d]" role="img" aria-label={label}>
+      {Array.from({ length: 5 }, (_, k) => <IconStar key={k} size={size} filled={k < n} />)}
+    </span>
+  );
+}
 
 function Carousel() {
   const { t, lang, reduce } = useSite();
+  const r = t.reviews;
   const [i, setI] = useState(0);
   const [dir, setDir] = useState(1);
   const start = useRef<{ x: number; t: number } | null>(null);
   const go = (d: number) => { setDir(d); setI((x) => (x + d + REVIEWS.length) % REVIEWS.length); };
-  const r = REVIEWS[i];
+  const onKey = (e: KeyboardEvent) => {
+    if (e.key === "ArrowRight") { e.preventDefault(); go(1); }
+    if (e.key === "ArrowLeft") { e.preventDefault(); go(-1); }
+  };
+  const rev = REVIEWS[i];
+  const asOf = new Intl.DateTimeFormat(LOCALE[lang], { day: "numeric", month: "long", year: "numeric" }).format(new Date(DATA.supplied));
   return (
-    <div className="mt-14" role="region" aria-roledescription="carousel" aria-label={t.reviews.carousel}>
+    <div className="mt-14 grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end" role="region" aria-roledescription="carousel" aria-label={r.carousel} onKeyDown={onKey}>
       <div
-        className="relative min-h-[260px] touch-pan-y select-none"
+        className="relative min-h-[360px] touch-pan-y select-none"
         onPointerDown={(e) => { start.current = { x: e.clientX, t: performance.now() }; }}
         onPointerUp={(e) => {
           if (!start.current) return;
@@ -34,61 +51,88 @@ function Carousel() {
           start.current = null;
         }}
       >
+        {/* the next cards peek out behind */}
+        {!reduce && [2, 1].map((k) => (
+          <div key={k} aria-hidden="true" className="absolute inset-0 rounded-[var(--radius-card)] bg-creme/90" style={{ transform: `translate(${k * 10}px, ${k * 12}px) rotate(${TILT[(i + k) % 3]}deg)`, opacity: 0.25 + 0.2 * (2 - k) }} />
+        ))}
         <AnimatePresence mode="popLayout" initial={false} custom={dir}>
           <motion.figure
             key={i}
-            custom={dir}
-            className="rounded-[var(--radius-card)] bg-creme p-8 text-tinta"
-            initial={reduce ? { opacity: 0 } : { opacity: 0, transform: `translateX(${dir * 60}px) rotate(${dir * 2}deg)` }}
-            animate={{ opacity: 1, transform: "translateX(0px) rotate(0deg)" }}
-            exit={reduce ? { opacity: 0 } : { opacity: 0, transform: `translateX(${-dir * 60}px) rotate(${-dir * 2}deg)` }}
+            className="relative rounded-[var(--radius-card)] bg-creme p-7 text-tinta shadow-[0_30px_60px_-30px_rgba(0,0,0,0.7)] md:p-10"
+            initial={reduce ? { opacity: 0 } : { opacity: 0, transform: `translateX(${dir * 80}px) rotate(${dir * 4}deg)` }}
+            animate={{ opacity: 1, transform: `translateX(0px) rotate(${reduce ? 0 : TILT[i % 3] / 2}deg)` }}
+            exit={reduce ? { opacity: 0 } : { opacity: 0, transform: `translateX(${-dir * 80}px) rotate(${-dir * 4}deg)` }}
             transition={{ duration: 0.45, ease: EASE_OUT }}
-            aria-live="polite"
+            aria-roledescription="slide"
+            aria-label={fill(t.gallery.count, { n: i + 1, total: REVIEWS.length })}
           >
-            <span className="flex gap-0.5 text-[#e8a33d]" role="img" aria-label={fill(t.reviews.stars, { n: r.rating })}>
-              {Array.from({ length: 5 }, (_, k) => <IconStar key={k} filled={k < r.rating} />)}
-            </span>
-            <blockquote className="mt-4 text-[1.15rem] leading-relaxed" lang={r.lang}>{r.text}</blockquote>
-            <figcaption className="mt-5 flex items-center gap-3 text-sm">
-              <IconGoogle size={18} />
-              <strong>{r.author}</strong>
-              <span className="opacity-60">{new Intl.DateTimeFormat(LOCALE[lang], { month: "long", year: "numeric" }).format(new Date(r.date))}</span>
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <Stars n={rev.rating} label={fill(r.stars, { n: rev.rating })} size={22} />
+              <span className="kicker flex items-center gap-2 text-[0.66rem] text-tinta/70"><IconGoogle size={16} />Google</span>
+            </div>
+            <blockquote lang={rev.lang} className="mt-5 max-w-[60ch] text-[1.08rem] leading-relaxed md:text-[1.18rem]">
+              {rev.text.split("\n\n").map((p) => <p key={p} className="mt-3 first:mt-0">{p}</p>)}
+            </blockquote>
+            <figcaption className="mt-6 border-t border-tinta/10 pt-4 text-sm">
+              <p><strong className="text-[1rem]">{rev.author}</strong> <span className="text-tinta/65" lang="en">· {rev.posted}</span></p>
+              {rev.meta.length > 0 && <p className="mt-1 text-tinta/65" lang="en">{rev.meta.join(" · ")}</p>}
+              {rev.scores && (
+                <ul className="mt-2 flex flex-wrap gap-2">
+                  {(["food", "service", "atmosphere"] as const).map((k) => (
+                    <li key={k} className="rounded-full bg-tinta/[0.06] px-3 py-1">{r.scores[k]}: <span className="tabular">{rev.scores![k]}/5</span></li>
+                  ))}
+                </ul>
+              )}
+              <p className="mt-3 text-[0.75rem] text-tinta/75">{fill(r.asShown, { date: asOf })}{rev.lang !== lang ? ` · ${r.original}` : ""}</p>
             </figcaption>
           </motion.figure>
         </AnimatePresence>
       </div>
-      <div className="mt-5 flex items-center gap-2">
+      <div className="flex items-center gap-2 lg:flex-col">
         <button type="button" className="icon-btn" onClick={() => go(-1)} aria-label={t.a11y.prev}><IconChevronLeft /></button>
         <button type="button" className="icon-btn" onClick={() => go(1)} aria-label={t.a11y.next}><IconChevronRight /></button>
-        <span className="ml-2 text-sm text-creme/70 tabular">{i + 1} / {REVIEWS.length}</span>
+        <span className="ml-2 text-sm text-creme/70 tabular lg:ml-0" aria-live="polite">{i + 1} / {REVIEWS.length}</span>
       </div>
+      <ol className="flex gap-2 lg:col-span-2" aria-label={r.carousel}>
+        {REVIEWS.map((x, k) => (
+          <li key={x.author}>
+            <button type="button" onClick={() => { setDir(k > i ? 1 : -1); setI(k); }} aria-current={k === i ? "true" : undefined} className={cn("rounded-full px-3 py-1.5 text-sm transition-colors", k === i ? "bg-creme text-tinta" : "bg-creme/10 text-creme/80 hover:bg-creme/20")}>
+              {x.author}
+            </button>
+          </li>
+        ))}
+      </ol>
     </div>
   );
 }
 
 export function Reviews() {
   const { t, lang } = useSite();
+  const r = t.reviews;
+  const rating = GOOGLE_RATING.value.toLocaleString(LOCALE[lang]);
+  const checked = new Intl.DateTimeFormat(LOCALE[lang], { day: "numeric", month: "long", year: "numeric" }).format(new Date(GOOGLE_RATING.checked));
   return (
     <section id="bewertungen" data-anchor="bewertungen" className="skin-vinho relative overflow-hidden py-24 md:py-32" aria-labelledby="reviews-title">
       <div className="gutter">
         <div className="wrap">
-          <p className="kicker flex items-center gap-2 text-ouro" data-lang-stagger><IconGoogle size={16} />{t.reviews.kicker}</p>
-          <h2 id="reviews-title" className="display mt-3 text-[clamp(3rem,8vw,8rem)]">{t.reviews.title}</h2>
-          <div className="mt-8 flex flex-wrap items-center gap-6">
-            <p className="display text-[clamp(5rem,14vw,11rem)] leading-none text-ouro tabular" aria-hidden="true">{GOOGLE_RATING.value.toLocaleString(LOCALE[lang])}</p>
-            <div>
-              <span className="flex gap-1 text-[#f2b33d]" role="img" aria-label={fill(t.reviews.ratingLabel, { rating: GOOGLE_RATING.value.toLocaleString(LOCALE[lang]) })}>
-                {Array.from({ length: 5 }, (_, k) => <IconStar key={k} size={30} filled={k < Math.round(GOOGLE_RATING.value - 0.01)} half={k === 4 && GOOGLE_RATING.value % 1 >= 0.5} />)}
-              </span>
-              <p className="mt-2 flex items-center gap-2 text-sm text-creme/80"><IconGoogle size={16} />{t.reviews.via} · {fill(t.reviews.checked, { date: new Intl.DateTimeFormat(LOCALE[lang], { day: "numeric", month: "long", year: "numeric" }).format(new Date(GOOGLE_RATING.checked)) })}</p>
+          <p className="kicker flex items-center gap-2 text-ouro" data-lang-stagger><IconGoogle size={16} />{r.kicker}</p>
+          <div className="mt-3 flex flex-wrap items-end justify-between gap-8">
+            <h2 id="reviews-title" className="display text-[clamp(3rem,8vw,8rem)]">{r.title}</h2>
+            <div className="flex items-center gap-5">
+              <p className="display text-[clamp(4.5rem,10vw,8rem)] leading-none text-ouro tabular" aria-hidden="true">{rating}</p>
+              <div>
+                <span className="flex gap-1 text-[#f2b33d]" role="img" aria-label={fill(r.ratingLabel, { rating })}>
+                  {Array.from({ length: 5 }, (_, k) => <IconStar key={k} size={26} filled={k < Math.floor(GOOGLE_RATING.value)} half={k === Math.floor(GOOGLE_RATING.value) && GOOGLE_RATING.value % 1 >= 0.5} />)}
+                </span>
+                <p className="mt-2 text-sm text-creme/80">{r.via} · {fill(r.checked, { date: checked })}</p>
+              </div>
             </div>
           </div>
-          <p className="lead mt-6 max-w-[42rem] text-creme/85">{fill(t.reviews.lead, { rating: GOOGLE_RATING.value.toLocaleString(LOCALE[lang]) })}</p>
+          <Carousel />
           <div className="mt-10 flex flex-wrap gap-3">
-            <a className="pill pill-cream" href={GOOGLE_REVIEWS_URL} target="_blank" rel="noopener"><IconGoogle size={18} />{t.reviews.read}<IconExternal size={16} /><span className="sr-only">{t.a11y.newTab}</span></a>
-            <a className="pill pill-ghost text-creme" href={GOOGLE_REVIEWS_URL} target="_blank" rel="noopener">{t.reviews.write}<span className="sr-only">{t.a11y.newTab}</span></a>
+            <a className="pill pill-cream" href={GOOGLE_REVIEWS_URL} target="_blank" rel="noopener"><IconGoogle size={18} />{r.read}<IconExternal size={16} /><span className="sr-only">{t.a11y.newTab}</span></a>
+            <a className="pill pill-ghost text-creme" href={GOOGLE_REVIEWS_URL} target="_blank" rel="noopener">{r.write}<span className="sr-only">{t.a11y.newTab}</span></a>
           </div>
-          {REVIEWS.length > 0 ? <Carousel /> : <p className="mt-10 max-w-[46rem] rounded-[20px] bg-carvao/30 p-5 text-sm text-creme/70 ring-1 ring-creme/10">{t.reviews.none}</p>}
         </div>
       </div>
     </section>

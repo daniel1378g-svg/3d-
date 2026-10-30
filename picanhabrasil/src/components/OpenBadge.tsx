@@ -1,4 +1,5 @@
-// "Jetzt geöffnet · bis 23:00 Uhr" / "Jetzt geschlossen · öffnet morgen um 18:00 Uhr", in Dielsdorf time.
+// "Jetzt geöffnet · bis 22:00 Uhr" / "Jetzt geschlossen · öffnet heute um 17:30 Uhr", in Zürich time, from the
+// published regular hours (no live status, no holidays): the title and a hidden note say so.
 import { useEffect, useState } from "react";
 import { fill } from "@/i18n";
 import { useSite } from "@/site";
@@ -29,12 +30,13 @@ export function OpenBadge({ className }: { className?: string }) {
   const s = useOpenStatus();
   const { head, tail } = statusText(t, s);
   return (
-    <p className={cn("inline-flex flex-wrap items-center gap-x-2 gap-y-1 rounded-full bg-creme/[0.07] px-4 py-2 text-sm", className)} aria-live="polite">
+    <p className={cn("inline-flex flex-wrap items-center gap-x-2 gap-y-1 rounded-full bg-creme/[0.07] px-4 py-2 text-sm", className)} title={t.hours.basis}>
       <span className={cn("relative inline-block h-2.5 w-2.5 rounded-full", s.open ? "bg-[#4cc38a]" : "bg-brasa")} aria-hidden="true">
         {s.open && <span className="absolute inset-0 animate-ping rounded-full bg-[#4cc38a] opacity-60 motion-reduce:hidden" />}
       </span>
       <strong className="font-semibold">{head}</strong>
       <span className="opacity-80">· {tail}</span>
+      <span className="sr-only"> ({t.hours.basis})</span>
     </p>
   );
 }

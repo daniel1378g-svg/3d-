@@ -27,14 +27,15 @@ const PAGES: Record<PageKey, ComponentType> = {
   impressum: lazyPage(() => import("./pages/Legal"), "Legal"),
 };
 
-/** Where the visitor is (a section with data-anchor, or the page top) and how far into it, to come back after a switch. */
+/** Where the visitor is (the section in the upper third of the screen, or the page top) and how far into it, to
+ * come back to the same place after a switch even when the translated text above it is longer or shorter. */
 function captureAnchor() {
   const els = Array.from(document.querySelectorAll<HTMLElement>("[data-anchor]"));
   const y = window.scrollY;
   let best: { id: string; offset: number } | null = null;
   for (const el of els) {
     const top = el.getBoundingClientRect().top + y;
-    if (top <= y + 2) best = { id: el.dataset.anchor!, offset: y - top };
+    if (top <= y + window.innerHeight * 0.35) best = { id: el.dataset.anchor!, offset: y - top };
   }
   return best ?? { id: "", offset: y };
 }
@@ -106,9 +107,13 @@ export function Shell({ lang, slug }: { lang: Lang; slug: string }) {
     [navigate, href, page],
   );
 
+  // a switch asked for while one is running replaces the target instead of stacking a second animation
+  const pendingLang = useRef<Lang | null>(null);
+  const latestRequest = useRef<(l: Lang) => void>(() => {});
   const requestLanguage = useCallback(
     async (next: Lang) => {
-      if (next === lang || switchingRef.current) return;
+      if (switchingRef.current) { pendingLang.current = next; return; }
+      if (next === lang) return;
       switchingRef.current = true;
       setSwitching(true);
       setMenuOpen(false);
@@ -124,9 +129,14 @@ export function Shell({ lang, slug }: { lang: Lang; slug: string }) {
       await transition.current?.reveal();
       switchingRef.current = false;
       setSwitching(false);
+      const queued = pendingLang.current;
+      pendingLang.current = null;
+      if (queued && queued !== next) requestAnimationFrame(() => latestRequest.current(queued));
     },
     [lang, navigate, page],
   );
+
+  latestRequest.current = requestLanguage;
 
   const openBooking = useCallback((guests?: number) => {
     if (guests) booking.set({ guests });
@@ -152,6 +162,7 @@ export function Shell({ lang, slug }: { lang: Lang; slug: string }) {
       {PROPOSAL && (
         <p className="proposal-label" role="note" lang="pt-PT">
           {PROPOSAL_TEXT}
+          {lang !== "pt" && <span lang={HTML_LANG[lang]} className="max-lg:hidden"> · {t.proposal.split(" – ")[0]}</span>}
         </p>
       )}
       <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-12 focus:z-[960] focus:rounded-full focus:bg-ouro focus:px-5 focus:py-3 focus:text-carvao">

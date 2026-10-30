@@ -9,12 +9,15 @@ import { useSite } from "@/site";
 import { useStore, booking } from "@/lib/store";
 import { cn } from "@/lib/utils";
 import { EASE_OUT } from "@/lib/motion";
-import { arrivalSlots, BOOKING_DAYS_AHEAD, isOpenDay, PHONE, RESERVATION, URLS } from "@/content/facts";
+import { CALENDAR_DAYS, isOpenDay, PHONE, preferenceTimes, RESERVATION, RESERVATION_NOTE_DE, URLS } from "@/content/facts";
+import { chf } from "@/content/menu";
 import { TableViz } from "./TableViz";
 import { IconCalendar, IconChevronLeft, IconChevronRight, IconClock, IconExternal, IconMinus, IconPhone, IconPlus, IconUsers } from "../icons";
 
-const MAX_GUESTS = 60;
-const GROUP_FROM = 10;
+/** the counter needs an end; it is not a booking limit (none is published) */
+const MAX_GUESTS = 99;
+/** from 11 the table illustration shows a group arrangement, and the restaurant asks groups to call */
+const GROUP_FROM = 11;
 
 /** Today's date in Zürich as yyyy-mm-dd. */
 function zurichToday() {
@@ -36,7 +39,7 @@ function dayState(day: string, today: string, last: string): DayState {
 function Calendar({ value, onChange }: { value: string | null; onChange: (d: string) => void }) {
   const { t, lang } = useSite();
   const today = zurichToday();
-  const last = addDays(today, BOOKING_DAYS_AHEAD);
+  const last = addDays(today, CALENDAR_DAYS);
   const [month, setMonth] = useState(() => (value ?? today).slice(0, 7));
   const grid = useRef<HTMLDivElement>(null);
   const [y, m] = month.split("-").map(Number);
@@ -116,7 +119,7 @@ export function Reservation({ variant = "section" }: { variant?: "section" | "sh
   const [copied, setCopied] = useState(false);
   const setGuests = (n: number) => booking.set({ guests: Math.max(1, Math.min(MAX_GUESTS, n)) });
   const weekday = date ? fromIso(date).getDay() : null;
-  const slots = useMemo(() => (weekday === null ? [] : arrivalSlots(weekday)), [weekday]);
+  const slots = useMemo(() => (weekday === null ? [] : preferenceTimes(weekday)), [weekday]);
   const guestLabel = fill(guests === 1 ? r.guestOne : r.guestMany, { n: guests });
   const longDate = date ? new Intl.DateTimeFormat(LOCALE[lang], { weekday: "long", day: "numeric", month: "long", year: "numeric" }).format(fromIso(date)) : "";
   const ready = !!date && !!time;
@@ -125,7 +128,7 @@ export function Reservation({ variant = "section" }: { variant?: "section" | "sh
 
   const pickDate = (d: string) => {
     const wd = fromIso(d).getDay();
-    const keep = time && arrivalSlots(wd).some((s) => s.times.some(([h, m]) => `${h}:${String(m).padStart(2, "0")}` === time));
+    const keep = time && preferenceTimes(wd).some((s) => s.times.some(([h, m]) => `${h}:${String(m).padStart(2, "0")}` === time));
     booking.set({ date: d, time: keep ? time : null });
   };
   const copy = async () => {
@@ -141,15 +144,15 @@ export function Reservation({ variant = "section" }: { variant?: "section" | "sh
   );
 
   return (
-    <div className={cn("grid gap-8", !sheet && "lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] lg:gap-14")}>
-      <div className={cn("order-2 flex flex-col gap-8", !sheet && "lg:order-1")}>
+    <div className={cn("grid grid-cols-1 gap-8", !sheet && "lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] lg:gap-14")}>
+      <div className={cn("order-2 flex min-w-0 flex-col gap-8", !sheet && "lg:order-1")}>
         {/* 1 guests */}
         <section aria-labelledby={`rs-guests-${variant}`}>
           {step(1, <IconUsers size={16} />, r.guestsLabel)}
           <span id={`rs-guests-${variant}`} className="sr-only">{r.guestsLabel}</span>
           <div className="flex items-center gap-3">
             <button type="button" className="icon-btn h-14 w-14 bg-creme/10 disabled:opacity-30" onClick={() => setGuests(guests - 1)} disabled={guests <= 1} aria-label={r.fewer}><IconMinus /></button>
-            <div className="min-w-[9.5rem] flex-1 text-center">
+            <div className="min-w-0 flex-1 text-center">
               <AnimatePresence mode="popLayout" initial={false}>
                 <motion.output
                   key={guests}
@@ -216,7 +219,7 @@ export function Reservation({ variant = "section" }: { variant?: "section" | "sh
           )}
           <div className="mt-4 flex flex-wrap gap-2">
             <a
-              className={cn("pill", !ready && "pointer-events-none opacity-40")}
+              className={cn("pill max-w-full whitespace-normal text-center leading-tight", !ready && "pointer-events-none opacity-40")}
               href={ready ? URLS.reservation : undefined}
               target="_blank"
               rel="noopener"
@@ -239,15 +242,22 @@ export function Reservation({ variant = "section" }: { variant?: "section" | "sh
             <div className="rounded-[18px] bg-vinho/60 p-4 text-[0.88rem] text-creme/90">
               <p className="kicker mb-1 text-ouro">{r.feeTitle}</p>
               <p>{r.fee}</p>
-              <p className="mt-2 font-semibold">{fill(r.feeTotal, { n: guests, sum: guests * RESERVATION.feePerPerson })}</p>
+              <p className="mt-2 font-semibold">{fill(r.feeTotal, { n: guestLabel, sum: chf(guests * RESERVATION.feeCents).replace(".–", "") })}</p>
             </div>
           </div>
-          <p className="mt-2 text-[0.75rem] text-creme/60">{r.noteSource}</p>
+          <p className="mt-2 text-[0.75rem] text-creme/80">{r.noteSource}</p>
+          {lang !== "de" && (
+            <details className="mt-2 text-[0.8rem] text-creme/75">
+              <summary className="cursor-pointer">{r.feeOriginal}</summary>
+              <p lang="de-CH" className="mt-2">{RESERVATION_NOTE_DE.info}</p>
+              <p lang="de-CH" className="mt-1">{RESERVATION_NOTE_DE.fee}</p>
+            </details>
+          )}
           <p className="mt-3 text-[0.85rem] text-creme/70">{r.noConfirm}</p>
         </section>
       </div>
 
-      <div className={cn("order-1 flex flex-col gap-6", !sheet && "lg:sticky lg:top-28 lg:order-2 lg:self-start")}>
+      <div className={cn("order-1 flex min-w-0 flex-col gap-6", !sheet && "lg:sticky lg:top-28 lg:order-2 lg:self-start")}>
         <TableViz guests={guests} className={sheet ? "mx-auto w-full max-w-[520px]" : ""} />
       </div>
     </div>

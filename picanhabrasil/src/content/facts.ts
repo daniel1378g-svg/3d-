@@ -1,8 +1,6 @@
 // Facts, identical in every language, taken from picanha-brasil.ch and the data its own reservation and ordering
 // widgets load (data.bigbites.ch/restaurant/58JN5J, captured 30.10.2026; see content/raw). Change them here only.
 export const NAME = "Picanha Brasil";
-/** company name as listed in the Swiss directories (local.ch, search.ch) for this address */
-export const LEGAL_NAME = "PICANHA BRASIL GmbH";
 export const ADDRESS = { street: "Mattengasse 9", zip: "8005", city: "Zürich", district: "Kreis 5", country: "CH" } as const;
 export const PHONE = { display: "+41 43 366 93 91", intl: "+41 43 366 93 91", href: "tel:+41433669391" } as const;
 export const EMAIL = "info@picanha-brasil.ch";
@@ -41,31 +39,34 @@ export const HOURS: Record<number, [number, number][]> = {
 export const isOpenDay = (weekday: number) => HOURS[weekday].length > 0;
 
 /**
- * Arrival times offered by this proposal: every 30 minutes inside the opening hours, the last one an hour before
- * closing. The official form takes any date and time; the restaurant confirms.
+ * Time preferences offered by this proposal: every 30 minutes inside the published opening hours. They are a
+ * preference to carry over, not booking slots: the official form takes any date and time, and only the restaurant
+ * decides whether a table is free. No last-seating rule is published, so none is applied.
  */
-export function arrivalSlots(weekday: number): { label: "lunch" | "dinner" | "allDay"; times: [number, number][] }[] {
+export function preferenceTimes(weekday: number): { label: "lunch" | "dinner" | "allDay"; times: [number, number][] }[] {
   const steps = (from: number, to: number) => {
     const out: [number, number][] = [];
-    for (let m = from; m <= to; m += 30) out.push([Math.floor(m / 60), m % 60]);
+    for (let m = from; m < to; m += 30) out.push([Math.floor(m / 60), m % 60]);
     return out;
   };
   const slots = HOURS[weekday];
-  if (slots.length === 1) {
-    const [a, b] = slots[0];
-    return [{ label: "allDay", times: steps(a, b - 60) }];
-  }
-  return [{ label: "lunch", times: steps(slots[0][0], slots[0][1] - 60) }, { label: "dinner", times: steps(slots[1][0], slots[1][1] - 60) }];
+  if (slots.length === 1) return [{ label: "allDay", times: steps(slots[0][0], slots[0][1]) }];
+  return [{ label: "lunch", times: steps(slots[0][0], slots[0][1]) }, { label: "dinner", times: steps(slots[1][0], slots[1][1]) }];
 }
 
-/** From the reservation widget's note (customerSettings.reservationNote). */
+/** From the reservation widget's note (customerSettings.reservationNote); the exact wording is RESERVATION_NOTE_DE. */
+export const RESERVATION_NOTE_DE = {
+  info: "Die reservierten Plätze sind für maximal 30 Minuten reserviert, danach werden sie wieder freigegeben.",
+  fee: "Leider müssen wir ab dem 1. Februar 2024 wegen häufigem Nichterscheinen eine Aufwandsgebühr von CHF 5.00 pro Person verlangen (wird nach der Reservation per TWINT angefordert). Die Gebühr wird von der Schlussrechnung abgezogen und bleibt in jedem Fall geschuldet",
+} as const;
 export const RESERVATION = {
   holdMinutes: 30,
-  feePerPerson: 5,
+  /** centimes per person */
+  feeCents: 500,
   feeSince: "2024-02-01",
 } as const;
-/** online reservations up to this many days ahead in this proposal's calendar (the official form sets no limit) */
-export const BOOKING_DAYS_AHEAD = 90;
+/** how far this proposal's calendar can be paged (a display range only: the official form publishes no limit) */
+export const CALENDAR_DAYS = 365;
 
 /** Delivery zones exactly as the ordering widget lists them (fee in CHF, minimum order CHF 50). */
 export const DELIVERY_MIN = 50;
@@ -78,11 +79,18 @@ export const DELIVERY_ZONES: { fee: number; places: { zip: number; city: string 
   { fee: 25, places: [{ zip: 8302, city: "Kloten" }] },
   { fee: 28, places: [{ zip: 8953, city: "Dietikon" }] },
 ];
+/**
+ * The published zone for an exact 4-digit postcode, or null. Only postcodes the ordering widget lists match: a town
+ * name alone never implies coverage of its other postcodes (8005 Zürich, for instance, is not in the list).
+ */
+export function deliveryZoneFor(input: string): { fee: number; places: { zip: number; city: string }[] } | null | "invalid" {
+  const z = input.trim();
+  if (!/^\d{4}$/.test(z)) return "invalid";
+  const n = Number(z);
+  const zone = DELIVERY_ZONES.find((x) => x.places.some((p) => p.zip === n));
+  return zone ? { fee: zone.fee, places: zone.places.filter((p) => p.zip === n) } : null;
+}
+
 /** payment on delivery or pick-up, as the ordering widget lists it */
 export const PAYMENT = ["card", "twint"] as const;
 
-/** Dishes with a published photo of the restaurant's own (see HANDOFF.md for the sources). */
-export const DISH_PHOTOS: Record<string, string> = {
-  "picanha-porcao-pequena": "prato-picanha",
-  feijoada: "feijoada",
-};

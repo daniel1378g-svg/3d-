@@ -1,9 +1,9 @@
 // Who they are, in the facts the restaurant publishes: the address, the menu's shape, the opening days, the
-// delivery area – and Google's "women-led" attribute. The facade photo leans in as it scrolls.
+// delivery area – and Google's "women-led" attribute. The badge from the site's logo leans in as it scrolls.
 import { useEffect, useRef } from "react";
 import { useSite } from "@/site";
 import { gsap } from "@/lib/gsap";
-import { Img } from "../Img";
+import { asset } from "@/lib/utils";
 import { Reveal } from "../Reveal";
 
 export function About() {
@@ -27,22 +27,23 @@ export function About() {
             </p>
             <dl className="mt-12 grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-4">
               {t.about.stats.map((s, i) => (
-                <Reveal key={s.label} delay={i * 80} className="border-t border-creme/15 pt-4">
-                  <dt className="sr-only">{s.label}</dt>
-                  <dd>
-                    <span className="display block text-[3.6rem] text-brasa" aria-hidden="true">{s.n}</span>
-                    <span className="text-sm text-creme/75">{s.n} {s.label}</span>
-                  </dd>
+                <Reveal key={s.label} delay={i * 80} className="flex flex-col border-t border-creme/15 pt-4">
+                  <dt className="text-sm text-creme/75 [order:2]">{s.label}</dt>
+                  <dd className="display text-[3.6rem] text-brasa [order:1]">{s.n}</dd>
                 </Reveal>
               ))}
             </dl>
           </div>
-          <div ref={photo} className="relative mx-auto w-full max-w-[460px]">
-            <div className="rounded-[30px] bg-creme p-3 shadow-[0_40px_80px_-30px_rgba(0,0,0,0.8)]">
-              <Img id="fachada" sizes="(min-width: 1024px) 460px, 90vw" className="aspect-[680/516] w-full rounded-[22px]" />
-              <p className="px-2 pb-1 pt-3 font-display text-sm font-bold uppercase tracking-[0.14em] text-tinta">Mattengasse 9 · 8005 Zürich</p>
+          <figure className="mx-auto w-full max-w-[460px]">
+          <div ref={photo} className="relative">
+            <div className="relative grid aspect-square place-items-center">
+              <div aria-hidden="true" className="absolute inset-[6%] rotate-45 rounded-[48px] bg-mato" />
+              <div aria-hidden="true" className="absolute inset-[22%] rotate-45 rounded-[32px] bg-[#f2c94c]" />
+              <img src={asset("/brand/logo.webp")} alt="Picanha Brasil · Restaurante" width={297} height={270} className="relative w-[62%] drop-shadow-[0_24px_30px_rgba(0,0,0,0.45)]" />
             </div>
           </div>
+          <figcaption className="mt-8 text-center font-display text-sm font-bold uppercase tracking-[0.14em] text-creme/80">Mattengasse 9 · 8005 Zürich</figcaption>
+          </figure>
         </div>
       </div>
     </section>

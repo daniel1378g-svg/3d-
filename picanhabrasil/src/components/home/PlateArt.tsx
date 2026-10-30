@@ -117,17 +117,27 @@ function Main({ k, large }: { k: MainKey; large: boolean }) {
   const cx = 250, cy = 140;
   switch (k) {
     case "picanha": {
+      // fanned slices seen from above: each a wide slab whose cut face goes from a browned edge to a pink centre,
+      // with the golden fat cap along the top
       const n = large ? 5 : 4;
       return (
         <g>
+          <defs>
+            <radialGradient id="pic-cut" cx="50%" cy="55%" r="60%">
+              <stop offset="0%" stopColor="#d9707a" />
+              <stop offset="55%" stopColor="#c0505a" />
+              <stop offset="80%" stopColor="#8c4a3a" />
+              <stop offset="100%" stopColor="#5a2614" />
+            </radialGradient>
+          </defs>
           {Array.from({ length: n }, (_, i) => {
-            const x = cx - 52 + i * (104 / (n - 1)), y = cy + Math.sin(i) * 6;
+            const x = cx - 70 + i * (140 / (n - 1)), y = cy + 6 - Math.abs(i - (n - 1) / 2) * 6;
             return (
-              <g key={i} transform={`rotate(${-18 + i * 4} ${x} ${y})`}>
-                <path d={`M${x - 16} ${y - 52} C${x + 10} ${y - 58} ${x + 22} ${y - 30} ${x + 20} ${y + 6} C${x + 18} ${y + 40} ${x + 4} ${y + 58} ${x - 14} ${y + 54} C${x - 26} ${y + 30} ${x - 28} ${y - 20} ${x - 16} ${y - 52}Z`} fill="#8a3a22" />
-                <path d={`M${x - 10} ${y - 40} C${x + 6} ${y - 44} ${x + 12} ${y - 22} ${x + 11} ${y + 4} C${x + 10} ${y + 30} ${x + 2} ${y + 42} ${x - 8} ${y + 40} C${x - 16} ${y + 22} ${x - 18} ${y - 18} ${x - 10} ${y - 40}Z`} fill="#c8574a" />
-                <path d={`M${x - 10} ${y - 30} C${x} ${y - 32} ${x + 4} ${y - 14} ${x + 3} ${y + 4} C${x + 2} ${y + 20} ${x - 2} ${y + 28} ${x - 6} ${y + 28}`} fill="none" stroke="#e48a7c" strokeWidth="5" strokeLinecap="round" opacity="0.7" />
-                <path d={`M${x - 16} ${y - 52} C${x + 10} ${y - 58} ${x + 22} ${y - 30} ${x + 20} ${y - 22}`} fill="none" stroke="#f0c766" strokeWidth="7" strokeLinecap="round" />
+              <g key={i} transform={`rotate(${-22 + i * (44 / (n - 1))} ${x} ${y + 60})`}>
+                <path d={`M${x - 30} ${y - 46} C${x - 10} ${y - 58} ${x + 18} ${y - 56} ${x + 32} ${y - 42} C${x + 38} ${y - 10} ${x + 34} ${y + 30} ${x + 22} ${y + 52} C${x} ${y + 60} ${x - 22} ${y + 56} ${x - 30} ${y + 46} C${x - 38} ${y + 10} ${x - 36} ${y - 26} ${x - 30} ${y - 46}Z`} fill="url(#pic-cut)" stroke="#4a1c0e" strokeWidth="2.5" />
+                <path d={`M${x - 30} ${y - 46} C${x - 10} ${y - 58} ${x + 18} ${y - 56} ${x + 32} ${y - 42} C${x + 18} ${y - 46} ${x - 12} ${y - 48} ${x - 30} ${y - 38}Z`} fill="#f3cf7a" stroke="#d9a74a" strokeWidth="1.5" />
+                <path d={`M${x - 26} ${y - 40} C${x - 8} ${y - 46} ${x + 14} ${y - 45} ${x + 28} ${y - 38}`} stroke="#b9772f" strokeWidth="1.5" fill="none" opacity="0.7" />
+                {[[-12, -6], [6, 12], [-4, 28], [14, -14]].map(([dx, dy], k) => <path key={k} d={`M${x + dx - 8} ${y + dy} q 8 -3 16 0`} stroke="#e48a92" strokeWidth="2" fill="none" opacity="0.5" />)}
               </g>
             );
           })}

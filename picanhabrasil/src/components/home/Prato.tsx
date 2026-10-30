@@ -1,17 +1,14 @@
 // "Ein Prato. Ein ganzer Teller." The menu's own rule – every main comes with rice, beans and fries or cassava –
 // told as a plate that fills while you scroll (main, rice, beans, side, one after the other), then becomes a picker:
 // choose the dish, the portion and the side, and the plate, the price and the photo (where the restaurant has one)
-// follow. Prices come from content/menu.json.
+// follow. Prices come from content/menu.json. No dish photo is shown: the official site has none of these dishes.
 import { useEffect, useMemo, useRef, useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
 import { fill } from "@/i18n";
 import { useSite } from "@/site";
 import { ScrollTrigger } from "@/lib/gsap";
-import { EASE_OUT } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 import { chf, findDish } from "@/content/menu";
 import { URLS } from "@/content/facts";
-import { Img } from "../Img";
 import { IconArrow, IconExternal } from "../icons";
 import { PlateArt, type MainKey, type SideKey } from "./PlateArt";
 
@@ -29,7 +26,6 @@ const MENU_ID: Record<MainKey, [string, string?]> = {
   feijoada: ["feijoada"],
 };
 const FEIJOADA_SIDES: SideKey[] = ["rice", "banana", "kale", "vinaigrette"];
-const PHOTO: Partial<Record<MainKey, string>> = { picanha: "prato-picanha", feijoada: "feijoada" };
 
 export function Prato() {
   const { t, lang, reduce, openBooking, go, href } = useSite();
@@ -62,12 +58,11 @@ export function Prato() {
   const hasPortions = !!MENU_ID[main][1];
   const dish = findDish(MENU_ID[main][hasPortions && large ? 1 : 0]!)!;
   const variantIdx = feijoada ? FEIJOADA_SIDES.indexOf(side) : side === "cassava" ? 1 : 0;
-  const price = dish.variants[variantIdx]?.price ?? dish.variants[0].price;
+  const price = dish.variants[variantIdx]?.cents ?? dish.variants[0].cents;
   const variantLabel = dish.variants[variantIdx]?.label?.[lang] ?? "";
   const dishName = p.dishes[main].name;
   const sidesText = feijoada ? variantLabel : `${p.parts.rice}, ${p.parts.beans}, ${side === "cassava" ? p.parts.cassava : p.parts.fries}`;
   const label = fill(p.plateLabel, { dish: dishName, sides: sidesText });
-  const photo = PHOTO[main];
   const feijoadaSideLabels = useMemo(() => findDish("feijoada")!.variants.map((v) => v.label?.[lang] ?? ""), [lang]);
 
   const seg = <T extends string>(name: string, options: { v: T; label: string }[], value: T, set: (v: T) => void) => (
@@ -116,7 +111,7 @@ export function Prato() {
                         <span className="block font-display text-[1.1rem] font-bold leading-tight" style={{ fontStretch: "88%" }}>{p.dishes[m].name}</span>
                         <span className={cn("block text-[0.82rem]", main === m ? "text-creme/70" : "text-tinta/65")}>{p.dishes[m].note}</span>
                       </span>
-                      {m === "feijoada" && <span className={cn("kicker shrink-0 rounded-full px-2 py-1 text-[0.6rem]", main === m ? "bg-ouro text-tinta" : "bg-mato text-creme")}>Sa·So</span>}
+                      {m === "feijoada" && <span className={cn("kicker shrink-0 rounded-full px-2 py-1 text-[0.6rem]", main === m ? "bg-ouro text-tinta" : "bg-mato-2 text-creme")}>Sa·So</span>}
                     </button>
                   ))}
                 </div>
@@ -138,21 +133,7 @@ export function Prato() {
             <div className="order-1 lg:order-2 lg:sticky lg:top-28">
               <div className="relative mx-auto max-w-[560px]">
                 <PlateArt main={main} side={side} large={large} shown={shown} reduce={reduce} label={label} />
-                <AnimatePresence>
-                  {photo && shown >= 4 && (
-                    <motion.figure
-                      key={photo}
-                      initial={reduce ? { opacity: 0 } : { opacity: 0, rotate: 8, y: 30 }}
-                      animate={{ opacity: 1, rotate: 4, y: 0 }}
-                      exit={{ opacity: 0, rotate: 10, y: 20 }}
-                      transition={{ duration: 0.5, ease: EASE_OUT }}
-                      className="absolute -bottom-6 -right-2 w-[38%] rounded-[18px] bg-creme p-2 shadow-[0_20px_40px_-18px_rgba(0,0,0,0.5)] sm:-right-6"
-                    >
-                      <Img id={photo} sizes="220px" className="aspect-[4/5] w-full rounded-[12px]" />
-                      <figcaption className="px-1 pt-1.5 text-[0.7rem] text-tinta/70">{p.photo}</figcaption>
-                    </motion.figure>
-                  )}
-                </AnimatePresence>
+
               </div>
               <div className="mt-10 flex flex-wrap items-end justify-between gap-4 rounded-[24px] bg-tinta p-5 text-creme" aria-live="polite">
                 <div>
@@ -162,7 +143,7 @@ export function Prato() {
                 </div>
                 <p className="display text-[2.6rem] text-ouro tabular"><span className="sr-only">{p.price}: </span>CHF {chf(price)}</p>
               </div>
-              <p className="mt-2 text-xs text-tinta/60">{p.illustration}</p>
+              <p className="mt-2 text-xs text-tinta/75">{p.illustration}</p>
               <div className="mt-5 flex flex-wrap gap-2">
                 <button type="button" className="pill pill-dark" onClick={() => openBooking()}>{p.reserveThis}<IconArrow size={16} className="arrow" /></button>
                 <a className="pill pill-ghost text-tinta" href={URLS.order} target="_blank" rel="noopener">{p.orderThis}<IconExternal size={15} /><span className="sr-only">{t.a11y.newTab}</span></a>
