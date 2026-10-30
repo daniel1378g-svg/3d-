@@ -1,0 +1,4 @@
+{
+  "_comment": "Real Google reviews only, copied with the owners' agreement or loaded through the Places API (which requires its attribution). Fields: author, rating (1-5), date (YYYY-MM-DD), text (verbatim), lang (de, en, pt, ...). Empty on purpose: no review text could be verified from here.",
+  "reviews": []
+}

@@ -1,0 +1,318 @@
+{
+    "uid": "58JN5J",
+    "name": "Picanha Brasil",
+    "logo": "58JN5J-logo.png",
+    "banner": null,
+    "url": "picanha-brasil.ch",
+    "opening_hours": [
+        {
+            "weekday": 1,
+            "open_time": "11:00:00",
+            "close_time": "14:30:00"
+        },
+        {
+            "weekday": 1,
+            "open_time": "17:30:00",
+            "close_time": "22:00:00"
+        },
+        {
+            "weekday": 2,
+            "open_time": "11:00:00",
+            "close_time": "14:30:00"
+        },
+        {
+            "weekday": 2,
+            "open_time": "17:30:00",
+            "close_time": "22:00:00"
+        },
+        {
+            "weekday": 3,
+            "open_time": "11:00:00",
+            "close_time": "14:30:00"
+        },
+        {
+            "weekday": 3,
+            "open_time": "17:30:00",
+            "close_time": "22:00:00"
+        },
+        {
+            "weekday": 4,
+            "open_time": "11:00:00",
+            "close_time": "14:30:00"
+        },
+        {
+            "weekday": 4,
+            "open_time": "17:30:00",
+            "close_time": "22:00:00"
+        },
+        {
+            "weekday": 5,
+            "open_time": "11:00:00",
+            "close_time": "14:30:00"
+        },
+        {
+            "weekday": 5,
+            "open_time": "17:30:00",
+            "close_time": "22:00:00"
+        },
+        {
+            "weekday": 6,
+            "open_time": "11:00:00",
+            "close_time": "22:00:00"
+        },
+        {
+            "weekday": 7,
+            "open_time": "11:00:00",
+            "close_time": "22:00:00"
+        }
+    ],
+    "kitchen_hours": [
+        {
+            "weekday": 1,
+            "open_time": "11:00:00",
+            "close_time": "14:30:00"
+        },
+        {
+            "weekday": 1,
+            "open_time": "17:30:00",
+            "close_time": "22:00:00"
+        },
+        {
+            "weekday": 2,
+            "open_time": "11:00:00",
+            "close_time": "14:30:00"
+        },
+        {
+            "weekday": 2,
+            "open_time": "17:30:00",
+            "close_time": "22:00:00"
+        },
+        {
+            "weekday": 3,
+            "open_time": "11:00:00",
+            "close_time": "14:30:00"
+        },
+        {
+            "weekday": 3,
+            "open_time": "17:30:00",
+            "close_time": "22:00:00"
+        },
+        {
+            "weekday": 4,
+            "open_time": "11:00:00",
+            "close_time": "14:30:00"
+        },
+        {
+            "weekday": 4,
+            "open_time": "17:30:00",
+            "close_time": "22:00:00"
+        },
+        {
+            "weekday": 5,
+            "open_time": "11:00:00",
+            "close_time": "14:30:00"
+        },
+        {
+            "weekday": 5,
+            "open_time": "17:30:00",
+            "close_time": "22:00:00"
+        },
+        {
+            "weekday": 6,
+            "open_time": "11:00:00",
+            "close_time": "22:00:00"
+        },
+        {
+            "weekday": 7,
+            "open_time": "11:00:00",
+            "close_time": "22:00:00"
+        }
+    ],
+    "orderTimes": [
+        "13:15",
+        "13:30",
+        "13:45",
+        "14:00",
+        "14:15",
+        "14:30",
+        "17:45",
+        "18:00",
+        "18:15",
+        "18:30",
+        "18:45",
+        "19:00",
+        "19:15",
+        "19:30",
+        "19:45",
+        "20:00",
+        "20:15",
+        "20:30",
+        "20:45",
+        "21:00",
+        "21:15",
+        "21:30",
+        "21:45",
+        "22:00"
+    ],
+    "address": {
+        "first_name": null,
+        "last_name": null,
+        "additional": null,
+        "street": "Mattengasse 9",
+        "city": "Zürich",
+        "zip_code": "8005",
+        "phone": "+41 43 366 93 91",
+        "email": "info@picanha-brasil.ch",
+        "created_at": "2021-12-24T12:09:51.000000Z",
+        "updated_at": "2021-12-24T12:09:51.000000Z",
+        "deleted_at": null
+    },
+    "zones": [
+        {
+            "zone": "PIcanha_Brasil_58JN5J_Z3",
+            "delivery_fee": 17,
+            "delivery_min_amt": 50,
+            "plz": [
+                {
+                    "id": 5029,
+                    "plz": 8050,
+                    "location": "Zürich",
+                    "canton": "ZH",
+                    "latitude": 47.41177269689468,
+                    "longitude": 8.552769846730346
+                }
+            ]
+        },
+        {
+            "zone": "PIcanha_Brasil_58JN5J_Z4",
+            "delivery_fee": 18,
+            "delivery_min_amt": 50,
+            "plz": [
+                {
+                    "id": 1040,
+                    "plz": 8304,
+                    "location": "Wallisellen",
+                    "canton": "ZH",
+                    "latitude": 47.4173788751,
+                    "longitude": 8.59488571027
+                }
+            ]
+        },
+        {
+            "zone": "PIcanha_Brasil_58JN5J_Z2",
+            "delivery_fee": 20,
+            "delivery_min_amt": 50,
+            "plz": [
+                {
+                    "id": 4476,
+                    "plz": 8952,
+                    "location": "Schlieren",
+                    "canton": "ZH",
+                    "latitude": 47.3950341589,
+                    "longitude": 8.44900159582
+                },
+                {
+                    "id": 5028,
+                    "plz": 8048,
+                    "location": "Zürich",
+                    "canton": "ZH",
+                    "latitude": 47.3894536346504,
+                    "longitude": 8.483901271670728
+                }
+            ]
+        },
+        {
+            "zone": "PIcanha_Brasil_58JN5J_Z6",
+            "delivery_fee": 21,
+            "delivery_min_amt": 50,
+            "plz": [
+                {
+                    "id": 1013,
+                    "plz": 8152,
+                    "location": "Glattbrugg",
+                    "canton": "ZH",
+                    "latitude": 47.4331951784,
+                    "longitude": 8.56291078584
+                },
+                {
+                    "id": 1014,
+                    "plz": 8152,
+                    "location": "Opfikon",
+                    "canton": "ZH",
+                    "latitude": 47.4310687244,
+                    "longitude": 8.58076681399
+                }
+            ]
+        },
+        {
+            "zone": "PIcanha_Brasil_58JN5J_Z7",
+            "delivery_fee": 22,
+            "delivery_min_amt": 50,
+            "plz": [
+                {
+                    "id": 4403,
+                    "plz": 8600,
+                    "location": "Dübendorf",
+                    "canton": "ZH",
+                    "latitude": 47.393670057,
+                    "longitude": 8.6202371759
+                }
+            ]
+        },
+        {
+            "zone": "PIcanha_Brasil_58JN5J_Z5",
+            "delivery_fee": 25,
+            "delivery_min_amt": 50,
+            "plz": [
+                {
+                    "id": 1039,
+                    "plz": 8302,
+                    "location": "Kloten",
+                    "canton": "ZH",
+                    "latitude": 47.4579816503,
+                    "longitude": 8.58493072704
+                }
+            ]
+        },
+        {
+            "zone": "PIcanha_Brasil_58JN5J_Z1",
+            "delivery_fee": 28,
+            "delivery_min_amt": 50,
+            "plz": [
+                {
+                    "id": 4477,
+                    "plz": 8953,
+                    "location": "Dietikon",
+                    "canton": "ZH",
+                    "latitude": 47.4020366508,
+                    "longitude": 8.39806487525
+                }
+            ]
+        }
+    ],
+    "payment_methods": [
+        {
+            "id": 3,
+            "name": "Kartenzahlung (bei Erhalt)"
+        },
+        {
+            "id": 4,
+            "name": "Twint (bei Erhalt)"
+        }
+    ],
+    "delivery_methods": [
+        {
+            "id": 1,
+            "name": "Abholung"
+        },
+        {
+            "id": 2,
+            "name": "Lieferung"
+        }
+    ],
+    "categories": [
+        {
+            "name": "Brasilianisch"
+        }
+    ]
+}

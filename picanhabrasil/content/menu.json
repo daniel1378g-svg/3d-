@@ -1,0 +1,1588 @@
+{
+ "_source": "picanha-brasil.ch ordering widget (data.bigbites.ch/restaurant/58JN5J/foods), captured 30.10.2026. Prices in CHF.",
+ "sections": [
+  {
+   "id": "vorspeisen",
+   "title": {
+    "de": "Vorspeisen",
+    "en": "Starters",
+    "pt": "Tira-gosto",
+    "fr": "Entrées",
+    "it": "Antipasti"
+   },
+   "titlePt": "TIRA-GOSTO",
+   "note": null,
+   "cutout": "cutout-coxinha",
+   "items": [
+    {
+     "id": "a-palito",
+     "name": "À Palito",
+     "nameI18n": null,
+     "desc": null,
+     "variants": [
+      {
+       "label": {
+        "de": "Picanha (Rindshuft)",
+        "en": "Picanha (beef rump cap)",
+        "pt": "Picanha",
+        "fr": "Picanha (aiguillette de rumsteck)",
+        "it": "Picanha (codone di manzo)"
+       },
+       "price": 28
+      },
+      {
+       "label": {
+        "de": "Carne-Seca (Trockenfleisch)",
+        "en": "Carne seca (dried beef)",
+        "pt": "Carne-seca",
+        "fr": "Carne seca (viande séchée)",
+        "it": "Carne seca (carne secca)"
+       },
+       "price": 25
+      }
+     ]
+    },
+    {
+     "id": "coxinha",
+     "name": "Coxinha",
+     "nameI18n": null,
+     "desc": {
+      "de": "Teigtaschen panniert & frittiert",
+      "en": "Breaded & fried savoury dough pockets",
+      "pt": "Salgado empanado e frito",
+      "fr": "Chaussons panés et frits",
+      "it": "Fagottini impanati e fritti"
+     },
+     "variants": [
+      {
+       "label": {
+        "de": "Frango (Poulet)",
+        "en": "Frango (chicken)",
+        "pt": "Frango",
+        "fr": "Frango (poulet)",
+        "it": "Frango (pollo)"
+       },
+       "price": 4
+      }
+     ]
+    },
+    {
+     "id": "pastel",
+     "name": "Pastel",
+     "nameI18n": null,
+     "desc": {
+      "de": "Teigtaschen frittiert",
+      "en": "Fried pastry pockets",
+      "pt": "Pastel frito",
+      "fr": "Chaussons frits",
+      "it": "Fagottini fritti"
+     },
+     "variants": [
+      {
+       "label": {
+        "de": "Queijo (Käse)",
+        "en": "Queijo (cheese)",
+        "pt": "Queijo",
+        "fr": "Queijo (fromage)",
+        "it": "Queijo (formaggio)"
+       },
+       "price": 10
+      },
+      {
+       "label": {
+        "de": "Frango (Poulet)",
+        "en": "Frango (chicken)",
+        "pt": "Frango",
+        "fr": "Frango (poulet)",
+        "it": "Frango (pollo)"
+       },
+       "price": 10
+      },
+      {
+       "label": {
+        "de": "Carne (Rindfleisch)",
+        "en": "Carne (beef)",
+        "pt": "Carne",
+        "fr": "Carne (bœuf)",
+        "it": "Carne (manzo)"
+       },
+       "price": 10
+      },
+      {
+       "label": {
+        "de": "Gemischt",
+        "en": "Mixed",
+        "pt": "Misto",
+        "fr": "Mixte",
+        "it": "Misto"
+       },
+       "price": 12
+      }
+     ]
+    },
+    {
+     "id": "ovo-frito",
+     "name": "Ovo Frito",
+     "nameI18n": null,
+     "desc": {
+      "de": "Spiegelei",
+      "en": "Fried egg",
+      "pt": "Ovo frito",
+      "fr": "Œuf au plat",
+      "it": "Uovo al tegamino"
+     },
+     "variants": [
+      {
+       "label": null,
+       "price": 3
+      }
+     ]
+    },
+    {
+     "id": "caldo-de-costela-e-mandioca",
+     "name": "Caldo de costela e mandioca",
+     "nameI18n": null,
+     "desc": {
+      "de": "Rindfleischrippen mit Maniok Suppe",
+      "en": "Beef rib and cassava soup",
+      "pt": "Caldo de costela com mandioca",
+      "fr": "Soupe de côtes de bœuf au manioc",
+      "it": "Zuppa di costine di manzo e manioca"
+     },
+     "variants": [
+      {
+       "label": null,
+       "price": 17
+      }
+     ]
+    },
+    {
+     "id": "caldo-de-milho-com-camarao",
+     "name": "Caldo de milho com camarão",
+     "nameI18n": null,
+     "desc": {
+      "de": "Crevetten-Mais-Suppe",
+      "en": "Prawn and corn soup",
+      "pt": "Caldo de milho com camarão",
+      "fr": "Soupe de maïs aux crevettes",
+      "it": "Zuppa di mais e gamberi"
+     },
+     "variants": [
+      {
+       "label": null,
+       "price": 17
+      }
+     ]
+    },
+    {
+     "id": "batata-ou-mandioca-frita",
+     "name": "Batata ou mandioca frita",
+     "nameI18n": null,
+     "desc": {
+      "de": "Frittierte Kartoffeln oder Maniok",
+      "en": "Fried potatoes or cassava",
+      "pt": "Batata ou mandioca frita",
+      "fr": "Pommes de terre ou manioc frits",
+      "it": "Patate o manioca fritte"
+     },
+     "variants": [
+      {
+       "label": {
+        "de": "Porção Pequena (kleine Portion)",
+        "en": "Porção pequena (small)",
+        "pt": "Porção pequena",
+        "fr": "Porção pequena (petite)",
+        "it": "Porção pequena (piccola)"
+       },
+       "price": 8
+      },
+      {
+       "label": {
+        "de": "Porção Grande (grosse Portion)",
+        "en": "Porção grande (large)",
+        "pt": "Porção grande",
+        "fr": "Porção grande (grande)",
+        "it": "Porção grande (grande)"
+       },
+       "price": 14
+      }
+     ]
+    },
+    {
+     "id": "banana-frita",
+     "name": "Banana Frita",
+     "nameI18n": null,
+     "desc": {
+      "de": "Frittierte Banane",
+      "en": "Fried banana",
+      "pt": "Banana frita",
+      "fr": "Banane frite",
+      "it": "Banana fritta"
+     },
+     "variants": [
+      {
+       "label": null,
+       "price": 5
+      }
+     ]
+    },
+    {
+     "id": "salada-simples",
+     "name": "Salada Simples",
+     "nameI18n": null,
+     "desc": {
+      "de": "Salat",
+      "en": "Salad",
+      "pt": "Salada",
+      "fr": "Salade",
+      "it": "Insalata"
+     },
+     "variants": [
+      {
+       "label": null,
+       "price": 6
+      }
+     ]
+    },
+    {
+     "id": "salada-da-casa-haussalat",
+     "name": "Salada da casa (Haussalat)",
+     "nameI18n": {
+      "de": "Salada da casa (Haussalat)",
+      "en": "Salada da casa (house salad)",
+      "pt": "Salada da casa",
+      "fr": "Salada da casa (salade maison)",
+      "it": "Salada da casa (insalata della casa)"
+     },
+     "desc": {
+      "de": "Ovo, queijo parmesão e peito de frango (Ei, Käse, Parmesan, Pouletbrust)",
+      "en": "Egg, cheese, parmesan and chicken breast",
+      "pt": "Ovo, queijo parmesão e peito de frango",
+      "fr": "Œuf, fromage, parmesan et blanc de poulet",
+      "it": "Uovo, formaggio, parmigiano e petto di pollo"
+     },
+     "variants": [
+      {
+       "label": null,
+       "price": 18
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "hauptspeisen",
+   "title": {
+    "de": "Hauptspeisen",
+    "en": "Main courses",
+    "pt": "Pratos principais",
+    "fr": "Plats principaux",
+    "it": "Piatti principali"
+   },
+   "titlePt": "PRATOS PRINCIPALES",
+   "note": {
+    "de": "Alle Gerichte sind pro Person und werden mit Reis, Bohnen und Pommes oder Maniok serviert.",
+    "en": "Every dish is for one person and comes with rice, beans and fries or cassava.",
+    "pt": "Todos os pratos são individuais e são servidos com arroz, feijão e batata frita ou mandioca.",
+    "fr": "Chaque plat est pour une personne et servi avec riz, haricots et frites ou manioc.",
+    "it": "Ogni piatto è per una persona ed è servito con riso, fagioli e patatine o manioca."
+   },
+   "cutout": "cutout-picanha",
+   "items": [
+    {
+     "id": "picanha-porcao-pequena",
+     "name": "Picanha: Porção pequena",
+     "nameI18n": null,
+     "desc": {
+      "de": "Rindshüft, kleine Portion, 150g, mit Reis und Bohnen",
+      "en": "Beef rump cap, small portion, 150 g, with rice and beans",
+      "pt": "Picanha, porção pequena, 150 g, com arroz e feijão",
+      "fr": "Aiguillette de rumsteck, petite portion, 150 g, avec riz et haricots",
+      "it": "Codone di manzo, porzione piccola, 150 g, con riso e fagioli"
+     },
+     "variants": [
+      {
+       "label": {
+        "de": "Mit Pommes",
+        "en": "With fries",
+        "pt": "Com batata frita",
+        "fr": "Avec frites",
+        "it": "Con patatine"
+       },
+       "price": 30
+      },
+      {
+       "label": {
+        "de": "Mit Maniok",
+        "en": "With cassava",
+        "pt": "Com mandioca",
+        "fr": "Avec manioc",
+        "it": "Con manioca"
+       },
+       "price": 30
+      }
+     ]
+    },
+    {
+     "id": "picanha-porcao-grande",
+     "name": "Picanha: Porção grande",
+     "nameI18n": null,
+     "desc": {
+      "de": "Rindshüft, grosse Portion, 200g, mit Reis und Bohnen",
+      "en": "Beef rump cap, large portion, 200 g, with rice and beans",
+      "pt": "Picanha, porção grande, 200 g, com arroz e feijão",
+      "fr": "Aiguillette de rumsteck, grande portion, 200 g, avec riz et haricots",
+      "it": "Codone di manzo, porzione grande, 200 g, con riso e fagioli"
+     },
+     "variants": [
+      {
+       "label": {
+        "de": "Mit Pommes",
+        "en": "With fries",
+        "pt": "Com batata frita",
+        "fr": "Avec frites",
+        "it": "Con patatine"
+       },
+       "price": 35
+      },
+      {
+       "label": {
+        "de": "Mit Maniok",
+        "en": "With cassava",
+        "pt": "Com mandioca",
+        "fr": "Avec manioc",
+        "it": "Con manioca"
+       },
+       "price": 35
+      }
+     ]
+    },
+    {
+     "id": "carne-seca-porcao-pequena",
+     "name": "Carne Seca: Porção pequena",
+     "nameI18n": null,
+     "desc": {
+      "de": "Trockenfleisch, kleine Portion, 150g, mit Reis und Bohnen",
+      "en": "Dried salted beef, small portion, 150 g, with rice and beans",
+      "pt": "Carne seca, porção pequena, 150 g, com arroz e feijão",
+      "fr": "Viande séchée, petite portion, 150 g, avec riz et haricots",
+      "it": "Carne secca, porzione piccola, 150 g, con riso e fagioli"
+     },
+     "variants": [
+      {
+       "label": {
+        "de": "Mit Pommes",
+        "en": "With fries",
+        "pt": "Com batata frita",
+        "fr": "Avec frites",
+        "it": "Con patatine"
+       },
+       "price": 30
+      },
+      {
+       "label": {
+        "de": "Mit Maniok",
+        "en": "With cassava",
+        "pt": "Com mandioca",
+        "fr": "Avec manioc",
+        "it": "Con manioca"
+       },
+       "price": 30
+      }
+     ]
+    },
+    {
+     "id": "carne-seca-porcao-grande",
+     "name": "Carne Seca: Porção grande",
+     "nameI18n": null,
+     "desc": {
+      "de": "Trockenfleisch, grosse Portion, 200g, mit Reis und Bohnen",
+      "en": "Dried salted beef, large portion, 200 g, with rice and beans",
+      "pt": "Carne seca, porção grande, 200 g, com arroz e feijão",
+      "fr": "Viande séchée, grande portion, 200 g, avec riz et haricots",
+      "it": "Carne secca, porzione grande, 200 g, con riso e fagioli"
+     },
+     "variants": [
+      {
+       "label": {
+        "de": "Mit Pommes",
+        "en": "With fries",
+        "pt": "Com batata frita",
+        "fr": "Avec frites",
+        "it": "Con patatine"
+       },
+       "price": 35
+      },
+      {
+       "label": {
+        "de": "Mit Maniok",
+        "en": "With cassava",
+        "pt": "Com mandioca",
+        "fr": "Avec manioc",
+        "it": "Con manioca"
+       },
+       "price": 35
+      }
+     ]
+    },
+    {
+     "id": "bisteca",
+     "name": "Bisteca",
+     "nameI18n": null,
+     "desc": {
+      "de": "Rinderkotelett, 380g, mit Reis und Bohnen",
+      "en": "Beef chop, 380 g, with rice and beans",
+      "pt": "Bisteca bovina, 380 g, com arroz e feijão",
+      "fr": "Côte de bœuf, 380 g, avec riz et haricots",
+      "it": "Costata di manzo, 380 g, con riso e fagioli"
+     },
+     "variants": [
+      {
+       "label": {
+        "de": "Mit Pommes",
+        "en": "With fries",
+        "pt": "Com batata frita",
+        "fr": "Avec frites",
+        "it": "Con patatine"
+       },
+       "price": 38
+      },
+      {
+       "label": {
+        "de": "Mit Maniok",
+        "en": "With cassava",
+        "pt": "Com mandioca",
+        "fr": "Avec manioc",
+        "it": "Con manioca"
+       },
+       "price": 38
+      }
+     ]
+    },
+    {
+     "id": "peito-de-frango",
+     "name": "Peito de Frango",
+     "nameI18n": null,
+     "desc": {
+      "de": "Pouletbrust, 180g, mit Reis und Bohnen",
+      "en": "Chicken breast, 180 g, with rice and beans",
+      "pt": "Peito de frango, 180 g, com arroz e feijão",
+      "fr": "Blanc de poulet, 180 g, avec riz et haricots",
+      "it": "Petto di pollo, 180 g, con riso e fagioli"
+     },
+     "variants": [
+      {
+       "label": {
+        "de": "Mit Pommes",
+        "en": "With fries",
+        "pt": "Com batata frita",
+        "fr": "Avec frites",
+        "it": "Con patatine"
+       },
+       "price": 25
+      },
+      {
+       "label": {
+        "de": "Mit Maniok",
+        "en": "With cassava",
+        "pt": "Com mandioca",
+        "fr": "Avec manioc",
+        "it": "Con manioca"
+       },
+       "price": 25
+      }
+     ]
+    },
+    {
+     "id": "figado-acebolado",
+     "name": "Figado acebolado",
+     "nameI18n": null,
+     "desc": {
+      "de": "Rinderleber, 180g, mit Reis und Bohnen",
+      "en": "Beef liver with onions, 180 g, with rice and beans",
+      "pt": "Fígado bovino acebolado, 180 g, com arroz e feijão",
+      "fr": "Foie de bœuf aux oignons, 180 g, avec riz et haricots",
+      "it": "Fegato di manzo con cipolle, 180 g, con riso e fagioli"
+     },
+     "variants": [
+      {
+       "label": {
+        "de": "Mit Pommes",
+        "en": "With fries",
+        "pt": "Com batata frita",
+        "fr": "Avec frites",
+        "it": "Con patatine"
+       },
+       "price": 25
+      },
+      {
+       "label": {
+        "de": "Mit Maniok",
+        "en": "With cassava",
+        "pt": "Com mandioca",
+        "fr": "Avec manioc",
+        "it": "Con manioca"
+       },
+       "price": 25
+      }
+     ]
+    },
+    {
+     "id": "file-de-peixe",
+     "name": "Filé de Peixe",
+     "nameI18n": null,
+     "desc": {
+      "de": "Fischfilet, 180g, mit Reis und Bohnen",
+      "en": "Fish fillet, 180 g, with rice and beans",
+      "pt": "Filé de peixe, 180 g, com arroz e feijão",
+      "fr": "Filet de poisson, 180 g, avec riz et haricots",
+      "it": "Filetto di pesce, 180 g, con riso e fagioli"
+     },
+     "variants": [
+      {
+       "label": {
+        "de": "Mit Pommes",
+        "en": "With fries",
+        "pt": "Com batata frita",
+        "fr": "Avec frites",
+        "it": "Con patatine"
+       },
+       "price": 25
+      },
+      {
+       "label": {
+        "de": "Mit Maniok",
+        "en": "With cassava",
+        "pt": "Com mandioca",
+        "fr": "Avec manioc",
+        "it": "Con manioca"
+       },
+       "price": 25
+      }
+     ]
+    },
+    {
+     "id": "camarao",
+     "name": "Camarão",
+     "nameI18n": null,
+     "desc": {
+      "de": "Crevetten mit Knoblauch, 9 Stk, mit Reis und Bohnen",
+      "en": "Garlic prawns, 9 pieces, with rice and beans",
+      "pt": "Camarão ao alho, 9 unidades, com arroz e feijão",
+      "fr": "Crevettes à l'ail, 9 pièces, avec riz et haricots",
+      "it": "Gamberi all'aglio, 9 pezzi, con riso e fagioli"
+     },
+     "variants": [
+      {
+       "label": {
+        "de": "Mit Pommes",
+        "en": "With fries",
+        "pt": "Com batata frita",
+        "fr": "Avec frites",
+        "it": "Con patatine"
+       },
+       "price": 30
+      },
+      {
+       "label": {
+        "de": "Mit Maniok",
+        "en": "With cassava",
+        "pt": "Com mandioca",
+        "fr": "Avec manioc",
+        "it": "Con manioca"
+       },
+       "price": 30
+      }
+     ]
+    },
+    {
+     "id": "bacalhau",
+     "name": "Bacalhau",
+     "nameI18n": null,
+     "desc": {
+      "de": "Stockfisch mit Peperoni, mit Reis und Bohnen",
+      "en": "Salt cod with peppers, with rice and beans",
+      "pt": "Bacalhau com pimentão, com arroz e feijão",
+      "fr": "Morue aux poivrons, avec riz et haricots",
+      "it": "Baccalà con peperoni, con riso e fagioli"
+     },
+     "variants": [
+      {
+       "label": {
+        "de": "Mit Pommes",
+        "en": "With fries",
+        "pt": "Com batata frita",
+        "fr": "Avec frites",
+        "it": "Con patatine"
+       },
+       "price": 30
+      },
+      {
+       "label": {
+        "de": "Mit Maniok",
+        "en": "With cassava",
+        "pt": "Com mandioca",
+        "fr": "Avec manioc",
+        "it": "Con manioca"
+       },
+       "price": 30
+      }
+     ]
+    },
+    {
+     "id": "feijoada",
+     "name": "Feijoada",
+     "nameI18n": null,
+     "desc": {
+      "de": "Bohneneintopf - Nur Samstags und Sonntags",
+      "en": "Black bean and meat stew – Saturdays and Sundays only",
+      "pt": "Feijoada – só aos sábados e domingos",
+      "fr": "Ragoût de haricots noirs – samedi et dimanche uniquement",
+      "it": "Stufato di fagioli neri – solo sabato e domenica"
+     },
+     "variants": [
+      {
+       "label": {
+        "de": "Mit Reis",
+        "en": "With rice",
+        "pt": "Com arroz",
+        "fr": "Avec riz",
+        "it": "Con riso"
+       },
+       "price": 28
+      },
+      {
+       "label": {
+        "de": "Mit frittierten Bananen",
+        "en": "With fried banana",
+        "pt": "Com banana frita",
+        "fr": "Avec bananes frites",
+        "it": "Con banane fritte"
+       },
+       "price": 28
+      },
+      {
+       "label": {
+        "de": "Mit Kohl",
+        "en": "With collard greens",
+        "pt": "Com couve",
+        "fr": "Avec chou",
+        "it": "Con cavolo"
+       },
+       "price": 28
+      },
+      {
+       "label": {
+        "de": "Mit Salat Vinaigrette",
+        "en": "With vinaigrette salad",
+        "pt": "Com vinagrete",
+        "fr": "Avec salade vinaigrette",
+        "it": "Con insalata vinaigrette"
+       },
+       "price": 28
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "desserts",
+   "title": {
+    "de": "Desserts",
+    "en": "Desserts",
+    "pt": "Sobremesas",
+    "fr": "Desserts",
+    "it": "Dessert"
+   },
+   "titlePt": "SOBREMEASAS",
+   "note": null,
+   "cutout": "cutout-pudim",
+   "items": [
+    {
+     "id": "mousse-de-maracuja",
+     "name": "Mousse de maracujá",
+     "nameI18n": null,
+     "desc": {
+      "de": "Passionsfruchtmousse",
+      "en": "Passion fruit mousse",
+      "pt": "Mousse de maracujá",
+      "fr": "Mousse aux fruits de la passion",
+      "it": "Mousse al frutto della passione"
+     },
+     "variants": [
+      {
+       "label": null,
+       "price": 8
+      }
+     ]
+    },
+    {
+     "id": "pudim",
+     "name": "Pudim",
+     "nameI18n": null,
+     "desc": {
+      "de": "Kondensmilchpudding",
+      "en": "Condensed milk flan",
+      "pt": "Pudim de leite condensado",
+      "fr": "Flan au lait concentré",
+      "it": "Budino al latte condensato"
+     },
+     "variants": [
+      {
+       "label": null,
+       "price": 8
+      }
+     ]
+    },
+    {
+     "id": "bolo",
+     "name": "Bolo",
+     "nameI18n": null,
+     "desc": {
+      "de": "Kuchen",
+      "en": "Cake",
+      "pt": "Bolo",
+      "fr": "Gâteau",
+      "it": "Torta"
+     },
+     "variants": [
+      {
+       "label": null,
+       "price": 8
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ohne-alkohol",
+   "title": {
+    "de": "Getränke ohne Alkohol",
+    "en": "Soft drinks & juices",
+    "pt": "Bebidas sem álcool",
+    "fr": "Boissons sans alcool",
+    "it": "Bevande analcoliche"
+   },
+   "titlePt": "BEBIDAS SEM ÀLCOOL",
+   "note": null,
+   "cutout": "cutout-getraenke",
+   "items": [
+    {
+     "id": "coca-cola",
+     "name": "Coca Cola",
+     "nameI18n": null,
+     "desc": null,
+     "variants": [
+      {
+       "label": {
+        "de": "0,33 l",
+        "en": "0.33 l",
+        "pt": "0,33 l",
+        "fr": "0,33 l",
+        "it": "0,33 l"
+       },
+       "price": 5
+      }
+     ]
+    },
+    {
+     "id": "coca-cola-zero",
+     "name": "Coca Cola Zero",
+     "nameI18n": null,
+     "desc": null,
+     "variants": [
+      {
+       "label": {
+        "de": "0,33 l",
+        "en": "0.33 l",
+        "pt": "0,33 l",
+        "fr": "0,33 l",
+        "it": "0,33 l"
+       },
+       "price": 5
+      }
+     ]
+    },
+    {
+     "id": "ice-tea",
+     "name": "Ice Tea",
+     "nameI18n": null,
+     "desc": null,
+     "variants": [
+      {
+       "label": {
+        "de": "0,33 l",
+        "en": "0.33 l",
+        "pt": "0,33 l",
+        "fr": "0,33 l",
+        "it": "0,33 l"
+       },
+       "price": 5
+      }
+     ]
+    },
+    {
+     "id": "fanta-laranja",
+     "name": "Fanta Laranja",
+     "nameI18n": null,
+     "desc": null,
+     "variants": [
+      {
+       "label": {
+        "de": "0,33 l",
+        "en": "0.33 l",
+        "pt": "0,33 l",
+        "fr": "0,33 l",
+        "it": "0,33 l"
+       },
+       "price": 5
+      }
+     ]
+    },
+    {
+     "id": "fanta-uva",
+     "name": "Fanta Uva",
+     "nameI18n": null,
+     "desc": null,
+     "variants": [
+      {
+       "label": {
+        "de": "0,33 l",
+        "en": "0.33 l",
+        "pt": "0,33 l",
+        "fr": "0,33 l",
+        "it": "0,33 l"
+       },
+       "price": 7
+      }
+     ]
+    },
+    {
+     "id": "sprite",
+     "name": "Sprite",
+     "nameI18n": null,
+     "desc": null,
+     "variants": [
+      {
+       "label": {
+        "de": "0,33 l",
+        "en": "0.33 l",
+        "pt": "0,33 l",
+        "fr": "0,33 l",
+        "it": "0,33 l"
+       },
+       "price": 5
+      }
+     ]
+    },
+    {
+     "id": "arkina",
+     "name": "Arkina",
+     "nameI18n": null,
+     "desc": null,
+     "variants": [
+      {
+       "label": {
+        "de": "0,33 l",
+        "en": "0.33 l",
+        "pt": "0,33 l",
+        "fr": "0,33 l",
+        "it": "0,33 l"
+       },
+       "price": 4
+      }
+     ]
+    },
+    {
+     "id": "rahzunser",
+     "name": "Rähzünser",
+     "nameI18n": null,
+     "desc": null,
+     "variants": [
+      {
+       "label": {
+        "de": "0,33 l",
+        "en": "0.33 l",
+        "pt": "0,33 l",
+        "fr": "0,33 l",
+        "it": "0,33 l"
+       },
+       "price": 4
+      }
+     ]
+    },
+    {
+     "id": "guarana",
+     "name": "Guarana",
+     "nameI18n": null,
+     "desc": null,
+     "variants": [
+      {
+       "label": {
+        "de": "0,33 l",
+        "en": "0.33 l",
+        "pt": "0,33 l",
+        "fr": "0,33 l",
+        "it": "0,33 l"
+       },
+       "price": 7
+      }
+     ]
+    },
+    {
+     "id": "diverse-safte-i",
+     "name": "Diverse Säfte I",
+     "nameI18n": {
+      "de": "Diverse Säfte I",
+      "en": "Juices I",
+      "pt": "Sucos I",
+      "fr": "Jus I",
+      "it": "Succhi I"
+     },
+     "desc": {
+      "de": "0,4 l",
+      "en": "0.4 l",
+      "pt": "0,4 l",
+      "fr": "0,4 l",
+      "it": "0,4 l"
+     },
+     "variants": [
+      {
+       "label": {
+        "de": "Caju",
+        "en": "Caju",
+        "pt": "Caju",
+        "fr": "Caju",
+        "it": "Caju"
+       },
+       "price": 8
+      },
+      {
+       "label": {
+        "de": "Cajá",
+        "en": "Cajá",
+        "pt": "Cajá",
+        "fr": "Cajá",
+        "it": "Cajá"
+       },
+       "price": 8
+      },
+      {
+       "label": {
+        "de": "Maracujá",
+        "en": "Maracujá",
+        "pt": "Maracujá",
+        "fr": "Maracujá",
+        "it": "Maracujá"
+       },
+       "price": 8
+      },
+      {
+       "label": {
+        "de": "Laranja",
+        "en": "Laranja",
+        "pt": "Laranja",
+        "fr": "Laranja",
+        "it": "Laranja"
+       },
+       "price": 8
+      }
+     ]
+    },
+    {
+     "id": "diverse-safte-ii",
+     "name": "Diverse Säfte II",
+     "nameI18n": {
+      "de": "Diverse Säfte II",
+      "en": "Juices II",
+      "pt": "Sucos II",
+      "fr": "Jus II",
+      "it": "Succhi II"
+     },
+     "desc": {
+      "de": "0,4 l",
+      "en": "0.4 l",
+      "pt": "0,4 l",
+      "fr": "0,4 l",
+      "it": "0,4 l"
+     },
+     "variants": [
+      {
+       "label": {
+        "de": "Açaí",
+        "en": "Açaí",
+        "pt": "Açaí",
+        "fr": "Açaí",
+        "it": "Açaí"
+       },
+       "price": 8
+      },
+      {
+       "label": {
+        "de": "Goiaba",
+        "en": "Goiaba",
+        "pt": "Goiaba",
+        "fr": "Goiaba",
+        "it": "Goiaba"
+       },
+       "price": 8
+      },
+      {
+       "label": {
+        "de": "Cupuaçu",
+        "en": "Cupuaçu",
+        "pt": "Cupuaçu",
+        "fr": "Cupuaçu",
+        "it": "Cupuaçu"
+       },
+       "price": 8
+      },
+      {
+       "label": {
+        "de": "Limão",
+        "en": "Limão",
+        "pt": "Limão",
+        "fr": "Limão",
+        "it": "Limão"
+       },
+       "price": 8
+      },
+      {
+       "label": {
+        "de": "Graviola",
+        "en": "Graviola",
+        "pt": "Graviola",
+        "fr": "Graviola",
+        "it": "Graviola"
+       },
+       "price": 8
+      }
+     ]
+    },
+    {
+     "id": "diverse-safte-iii",
+     "name": "Diverse Säfte III",
+     "nameI18n": {
+      "de": "Diverse Säfte III",
+      "en": "Juices III",
+      "pt": "Sucos III",
+      "fr": "Jus III",
+      "it": "Succhi III"
+     },
+     "desc": {
+      "de": "0,4 l",
+      "en": "0.4 l",
+      "pt": "0,4 l",
+      "fr": "0,4 l",
+      "it": "0,4 l"
+     },
+     "variants": [
+      {
+       "label": {
+        "de": "Acerola",
+        "en": "Acerola",
+        "pt": "Acerola",
+        "fr": "Acerola",
+        "it": "Acerola"
+       },
+       "price": 8
+      },
+      {
+       "label": {
+        "de": "Manga",
+        "en": "Manga",
+        "pt": "Manga",
+        "fr": "Manga",
+        "it": "Manga"
+       },
+       "price": 8
+      }
+     ]
+    },
+    {
+     "id": "diverse-safte-i-mit-milch",
+     "name": "Diverse Säfte I (mit Milch)",
+     "nameI18n": {
+      "de": "Diverse Säfte I (mit Milch)",
+      "en": "Juices I (with milk)",
+      "pt": "Sucos I (com leite)",
+      "fr": "Jus I (au lait)",
+      "it": "Succhi I (con latte)"
+     },
+     "desc": {
+      "de": "0,4 l",
+      "en": "0.4 l",
+      "pt": "0,4 l",
+      "fr": "0,4 l",
+      "it": "0,4 l"
+     },
+     "variants": [
+      {
+       "label": {
+        "de": "Caju",
+        "en": "Caju",
+        "pt": "Caju",
+        "fr": "Caju",
+        "it": "Caju"
+       },
+       "price": 10
+      },
+      {
+       "label": {
+        "de": "Cajá",
+        "en": "Cajá",
+        "pt": "Cajá",
+        "fr": "Cajá",
+        "it": "Cajá"
+       },
+       "price": 10
+      },
+      {
+       "label": {
+        "de": "Maracujá",
+        "en": "Maracujá",
+        "pt": "Maracujá",
+        "fr": "Maracujá",
+        "it": "Maracujá"
+       },
+       "price": 10
+      },
+      {
+       "label": {
+        "de": "Laranja",
+        "en": "Laranja",
+        "pt": "Laranja",
+        "fr": "Laranja",
+        "it": "Laranja"
+       },
+       "price": 10
+      }
+     ]
+    },
+    {
+     "id": "diverse-safte-ii-mit-milch",
+     "name": "Diverse Säfte II (mit Milch)",
+     "nameI18n": {
+      "de": "Diverse Säfte II (mit Milch)",
+      "en": "Juices II (with milk)",
+      "pt": "Sucos II (com leite)",
+      "fr": "Jus II (au lait)",
+      "it": "Succhi II (con latte)"
+     },
+     "desc": {
+      "de": "0,4 l",
+      "en": "0.4 l",
+      "pt": "0,4 l",
+      "fr": "0,4 l",
+      "it": "0,4 l"
+     },
+     "variants": [
+      {
+       "label": {
+        "de": "Açaí",
+        "en": "Açaí",
+        "pt": "Açaí",
+        "fr": "Açaí",
+        "it": "Açaí"
+       },
+       "price": 10
+      },
+      {
+       "label": {
+        "de": "Goiaba",
+        "en": "Goiaba",
+        "pt": "Goiaba",
+        "fr": "Goiaba",
+        "it": "Goiaba"
+       },
+       "price": 10
+      },
+      {
+       "label": {
+        "de": "Cupuaçu",
+        "en": "Cupuaçu",
+        "pt": "Cupuaçu",
+        "fr": "Cupuaçu",
+        "it": "Cupuaçu"
+       },
+       "price": 10
+      },
+      {
+       "label": {
+        "de": "Limão",
+        "en": "Limão",
+        "pt": "Limão",
+        "fr": "Limão",
+        "it": "Limão"
+       },
+       "price": 10
+      },
+      {
+       "label": {
+        "de": "Graviola",
+        "en": "Graviola",
+        "pt": "Graviola",
+        "fr": "Graviola",
+        "it": "Graviola"
+       },
+       "price": 10
+      }
+     ]
+    },
+    {
+     "id": "diverse-safte-iii-mit-milch",
+     "name": "Diverse Säfte III (mit Milch)",
+     "nameI18n": {
+      "de": "Diverse Säfte III (mit Milch)",
+      "en": "Juices III (with milk)",
+      "pt": "Sucos III (com leite)",
+      "fr": "Jus III (au lait)",
+      "it": "Succhi III (con latte)"
+     },
+     "desc": {
+      "de": "0,4 l",
+      "en": "0.4 l",
+      "pt": "0,4 l",
+      "fr": "0,4 l",
+      "it": "0,4 l"
+     },
+     "variants": [
+      {
+       "label": {
+        "de": "Acerola",
+        "en": "Acerola",
+        "pt": "Acerola",
+        "fr": "Acerola",
+        "it": "Acerola"
+       },
+       "price": 10
+      },
+      {
+       "label": {
+        "de": "Manga",
+        "en": "Manga",
+        "pt": "Manga",
+        "fr": "Manga",
+        "it": "Manga"
+       },
+       "price": 10
+      }
+     ]
+    },
+    {
+     "id": "frischgepresste-safte",
+     "name": "Frischgepresste Säfte",
+     "nameI18n": {
+      "de": "Frischgepresste Säfte",
+      "en": "Freshly squeezed juice",
+      "pt": "Suco natural espremido na hora",
+      "fr": "Jus fraîchement pressé",
+      "it": "Spremuta fresca"
+     },
+     "desc": {
+      "de": "0,4 l",
+      "en": "0.4 l",
+      "pt": "0,4 l",
+      "fr": "0,4 l",
+      "it": "0,4 l"
+     },
+     "variants": [
+      {
+       "label": {
+        "de": "Limette",
+        "en": "Lime",
+        "pt": "Limão",
+        "fr": "Citron vert",
+        "it": "Lime"
+       },
+       "price": 7
+      },
+      {
+       "label": {
+        "de": "Orange",
+        "en": "Orange",
+        "pt": "Laranja",
+        "fr": "Orange",
+        "it": "Arancia"
+       },
+       "price": 7
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "mit-alkohol",
+   "title": {
+    "de": "Alkoholische Getränke",
+    "en": "Beer, cocktails & wine",
+    "pt": "Bebidas alcoólicas",
+    "fr": "Boissons alcoolisées",
+    "it": "Bevande alcoliche"
+   },
+   "titlePt": "BEBIDA ALCOÓLICA",
+   "note": {
+    "de": "Kein Verkauf von Alkohol an Minderjährige.",
+    "en": "No alcohol is sold to minors.",
+    "pt": "Proibida a venda de bebidas alcoólicas a menores.",
+    "fr": "Pas de vente d'alcool aux mineurs.",
+    "it": "Nessuna vendita di alcolici ai minorenni."
+   },
+   "cutout": "cutout-bier",
+   "items": [
+    {
+     "id": "bier-super-bock",
+     "name": "Bier: Super Bock",
+     "nameI18n": null,
+     "desc": null,
+     "variants": [
+      {
+       "label": {
+        "de": "0,33 l",
+        "en": "0.33 l",
+        "pt": "0,33 l",
+        "fr": "0,33 l",
+        "it": "0,33 l"
+       },
+       "price": 5
+      }
+     ]
+    },
+    {
+     "id": "bier-sagres",
+     "name": "Bier: Sagres",
+     "nameI18n": null,
+     "desc": null,
+     "variants": [
+      {
+       "label": {
+        "de": "0,33 l",
+        "en": "0.33 l",
+        "pt": "0,33 l",
+        "fr": "0,33 l",
+        "it": "0,33 l"
+       },
+       "price": 5
+      }
+     ]
+    },
+    {
+     "id": "bier-feldschlosschen",
+     "name": "Bier: Feldschlösschen",
+     "nameI18n": null,
+     "desc": null,
+     "variants": [
+      {
+       "label": {
+        "de": "0,33 l",
+        "en": "0.33 l",
+        "pt": "0,33 l",
+        "fr": "0,33 l",
+        "it": "0,33 l"
+       },
+       "price": 5
+      }
+     ]
+    },
+    {
+     "id": "bier-skol",
+     "name": "Bier: Skol",
+     "nameI18n": null,
+     "desc": null,
+     "variants": [
+      {
+       "label": {
+        "de": "0,33 l",
+        "en": "0.33 l",
+        "pt": "0,33 l",
+        "fr": "0,33 l",
+        "it": "0,33 l"
+       },
+       "price": 7
+      }
+     ]
+    },
+    {
+     "id": "bier-brahma",
+     "name": "Bier: Brahma",
+     "nameI18n": null,
+     "desc": null,
+     "variants": [
+      {
+       "label": {
+        "de": "0,33 l",
+        "en": "0.33 l",
+        "pt": "0,33 l",
+        "fr": "0,33 l",
+        "it": "0,33 l"
+       },
+       "price": 7
+      }
+     ]
+    },
+    {
+     "id": "bier-heineken",
+     "name": "Bier: Heineken",
+     "nameI18n": null,
+     "desc": null,
+     "variants": [
+      {
+       "label": {
+        "de": "0,33 l",
+        "en": "0.33 l",
+        "pt": "0,33 l",
+        "fr": "0,33 l",
+        "it": "0,33 l"
+       },
+       "price": 5
+      }
+     ]
+    },
+    {
+     "id": "cocktail-capirinha",
+     "name": "Cocktail: Capirinha",
+     "nameI18n": null,
+     "desc": null,
+     "variants": [
+      {
+       "label": {
+        "de": "0,4 l",
+        "en": "0.4 l",
+        "pt": "0,4 l",
+        "fr": "0,4 l",
+        "it": "0,4 l"
+       },
+       "price": 17
+      }
+     ]
+    },
+    {
+     "id": "cocktail-aperol",
+     "name": "Cocktail: Aperol",
+     "nameI18n": null,
+     "desc": null,
+     "variants": [
+      {
+       "label": {
+        "de": "0,4 l",
+        "en": "0.4 l",
+        "pt": "0,4 l",
+        "fr": "0,4 l",
+        "it": "0,4 l"
+       },
+       "price": 17
+      }
+     ]
+    },
+    {
+     "id": "cocktail-pina-colada",
+     "name": "Cocktail: Piña colada",
+     "nameI18n": null,
+     "desc": null,
+     "variants": [
+      {
+       "label": {
+        "de": "0,4 l",
+        "en": "0.4 l",
+        "pt": "0,4 l",
+        "fr": "0,4 l",
+        "it": "0,4 l"
+       },
+       "price": 17
+      }
+     ]
+    },
+    {
+     "id": "wein-senza-parole-primitivo",
+     "name": "Wein: Senza Parole Primitivo",
+     "nameI18n": null,
+     "desc": null,
+     "variants": [
+      {
+       "label": {
+        "de": "0,1 l",
+        "en": "0.1 l",
+        "pt": "0,1 l",
+        "fr": "0,1 l",
+        "it": "0,1 l"
+       },
+       "price": 8
+      }
+     ]
+    },
+    {
+     "id": "wein-senza-parole-negro-amaro",
+     "name": "Wein: Senza Parole Negro Amaro",
+     "nameI18n": null,
+     "desc": null,
+     "variants": [
+      {
+       "label": {
+        "de": "0,1 l",
+        "en": "0.1 l",
+        "pt": "0,1 l",
+        "fr": "0,1 l",
+        "it": "0,1 l"
+       },
+       "price": 8
+      }
+     ]
+    },
+    {
+     "id": "wein-real-talento-tinto",
+     "name": "Wein: Real Talento tinto",
+     "nameI18n": null,
+     "desc": null,
+     "variants": [
+      {
+       "label": {
+        "de": "0,1 l",
+        "en": "0.1 l",
+        "pt": "0,1 l",
+        "fr": "0,1 l",
+        "it": "0,1 l"
+       },
+       "price": 8
+      }
+     ]
+    },
+    {
+     "id": "wein-lideranca-tinto",
+     "name": "Wein: Lideranca tinto",
+     "nameI18n": null,
+     "desc": null,
+     "variants": [
+      {
+       "label": {
+        "de": "0,1 l",
+        "en": "0.1 l",
+        "pt": "0,1 l",
+        "fr": "0,1 l",
+        "it": "0,1 l"
+       },
+       "price": 8
+      }
+     ]
+    },
+    {
+     "id": "wein-senza-parole-bianco",
+     "name": "Wein: Senza Parole Bianco",
+     "nameI18n": null,
+     "desc": null,
+     "variants": [
+      {
+       "label": {
+        "de": "0,1 l",
+        "en": "0.1 l",
+        "pt": "0,1 l",
+        "fr": "0,1 l",
+        "it": "0,1 l"
+       },
+       "price": 8
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

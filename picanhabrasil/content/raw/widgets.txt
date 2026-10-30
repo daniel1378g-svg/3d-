@@ -1,0 +1,339 @@
+=== RESERVATION-SHOP
+INFO
+Die reservierten Plätze sind für maximal 30 Minuten reserviert, danach werden sie wieder freigegeben.
+
+ACHTUNG
+Leider müssen wir ab dem 1. Februar 2024 wegen häufigem Nichterscheinen eine Aufwandsgebühr von CHF 5.00 pro Person verlangen (wird nach der Reservation per TWINT angefordert). Die Gebühr wird von der Schlussrechnung abgezogen und bleibt in jedem Fall geschuldet
+Opening hours:
+Mo - Fr11:00-14:3017:30-22:00
+Sa - Su11:00-22:00
+First name *
+Last name *
+Phone *
+E-mail *
+The e-mail address is only required for the reservation confirmation and will not be transmitted to the restaurant
+Number of people *
+Date and time *
+Comments
+Send reservation
+
+© 2026  
+=== FOOD-SHOP
+Delivery CHF 17.00 &
+Minimum order CHF 50.00:
+Zürich
+Delivery CHF 18.00 &
+Minimum order CHF 50.00:
+Wallisellen
+Delivery CHF 20.00 &
+Minimum order CHF 50.00:
+Schlieren, 
+Zürich
+Delivery CHF 21.00 &
+Minimum order CHF 50.00:
+Glattbrugg, 
+Opfikon
+Delivery CHF 22.00 &
+Minimum order CHF 50.00:
+Dübendorf
+Delivery CHF 25.00 &
+Minimum order CHF 50.00:
+Kloten
+Delivery CHF 28.00 &
+Minimum order CHF 50.00:
+Dietikon
+Kitchen hours:
+Mo - Fr11:00-14:3017:30-22:00
+Sa - Su11:00-22:00
+Delivery to address
+Pick up at the restaurant
+TIRA-GOSTO
+PRATOS PRINCIPALES
+SOBREMEASAS
+BEBIDAS SEM ÀLCOOL
+BEBIDA ALCOÓLICA
+TIRA-GOSTO
+Vorspeisen
+À Palito
+PICANHA (RINDSHUFT)
+CHF 28.00
+CARNE-SECA (TROCKENFLEISCH)
+CHF 25.00
+Coxinha
+Teigtaschen panniert & frittiert
+FRANGO (POULET)
+CHF 4.00
+Pastel
+Teigtaschen frittiert
+QUEIJO (KÄSE)
+CHF 10.00
+FRANGO (POULET)
+CHF 10.00
+CARNE (RINDFLEISCH)
+CHF 10.00
+GEMISCHT
+CHF 12.00
+Ovo Frito
+Spiegelei
+ 
+CHF 3.00
+Caldo de costela e mandioca
+Rindfleischrippen mit Maniok Suppe
+ 
+CHF 17.00
+Caldo de milho com camarão
+Crevetten-Mais-Suppe
+ 
+CHF 17.00
+Batata ou mandioca frita
+Frittierte Kartoffeln oder Maniok
+PORÇÃO PEQUENA (KLEINE PORTION)
+CHF 8.00
+PORÇÃO GRANDE (GROSSE PORTION)
+CHF 14.00
+Banana Frita
+Frittierte Banane
+ 
+CHF 5.00
+Salada Simples
+Salat
+ 
+CHF 6.00
+Salada da casa (Haussalat)
+Ovo, queijo parmesão e peito de frango (Ei, Käse, Parmesan, Pouletbrust)
+ 
+CHF 18.00
+PRATOS PRINCIPALES
+Hauptspeisen. Alle Gerichte sind pro Person und werden mit Reis, Bohnen und Pommes oder Maniok serviert. Todos os Pratos são individuais e serão servidos com Arroz, Feijão e batata frita ou mandioca.
+Picanha: Porção pequena
+Rindshüft, kleine Portion, 150g, mit Reis und Bohnen
+MIT POMMES
+CHF 30.00
+MIT MANIOK
+CHF 30.00
+Picanha: Porção grande
+Rindshüft, grosse Portion, 200g, mit Reis und Bohnen
+MIT POMMES
+CHF 35.00
+MIT MANIOK
+CHF 35.00
+Carne Seca: Porção pequena
+Trockenfleisch, kleine Portion, 150g, mit Reis und Bohnen
+MIT POMMES
+CHF 30.00
+MIT MANIOK
+CHF 30.00
+Carne Seca: Porção grande
+Trockenfleisch, grosse Portion, 200g, mit Reis und Bohnen
+MIT POMMES
+CHF 35.00
+MIT MANIOK
+CHF 35.00
+Bisteca
+Rinderkotelett, 380g, mit Reis und Bohnen
+MIT POMMES
+CHF 38.00
+MIT MANIOK
+CHF 38.00
+Peito de Frango
+Pouletbrust, 180g, mit Reis und Bohnen
+MIT POMMES
+CHF 25.00
+MIT MANIOK
+CHF 25.00
+Figado acebolado
+Rinderleber, 180g, mit Reis und Bohnen
+MIT POMMES
+CHF 25.00
+MIT MANIOK
+CHF 25.00
+Filé de Peixe
+Fischfilet, 180g, mit Reis und Bohnen
+MIT POMMES
+CHF 25.00
+MIT MANIOK
+CHF 25.00
+Camarão
+Crevetten mit Knoblauch, 9 Stk, mit Reis und Bohnen
+MIT POMMES
+CHF 30.00
+MIT MANIOK
+CHF 30.00
+Bacalhau
+Stockfisch mit Peperoni, mit Reis und Bohnen
+MIT POMMES
+CHF 30.00
+MIT MANIOK
+CHF 30.00
+Feijoada
+Bohneneintopf - Nur Samstags und Sonntags
+MIT REIS
+CHF 28.00
+MIT FRITTIERTEN BANANEN
+CHF 28.00
+MIT KOHL
+CHF 28.00
+MIT SALAT VINAIGRETTE
+CHF 28.00
+SOBREMEASAS
+Desserts
+Mousse de maracujá
+Passionsfruchtmousse
+ 
+CHF 8.00
+Pudim
+Kondensmilchpudding
+ 
+CHF 8.00
+Bolo
+Kuchen
+ 
+CHF 8.00
+BEBIDAS SEM ÀLCOOL
+Getränke ohne Alkohol
+Coca Cola
+0.33L
+CHF 5.00
+Coca Cola Zero
+0.33L
+CHF 5.00
+Ice Tea
+0.33L
+CHF 5.00
+Fanta Laranja
+0.33L
+CHF 5.00
+Fanta Uva
+0.33L
+CHF 7.00
+Sprite
+0.33L
+CHF 5.00
+Arkina
+0.33L
+CHF 4.00
+Rähzünser
+0.33L
+CHF 4.00
+Guarana
+0.33L
+CHF 7.00
+Diverse Säfte I
+0.4l
+CAJU
+CHF 8.00
+CAJÁ
+CHF 8.00
+MARACUJÁ
+CHF 8.00
+LARANJA
+CHF 8.00
+Diverse Säfte II
+0.4l
+AÇAÍ
+CHF 8.00
+GOIABA
+CHF 8.00
+CUPUAÇU
+CHF 8.00
+LIMÃO
+CHF 8.00
+GRAVIOLA
+CHF 8.00
+Diverse Säfte III
+0.4l
+ACEROLA
+CHF 8.00
+MANGA
+CHF 8.00
+Diverse Säfte I (mit Milch)
+0.4l
+CAJU
+CHF 10.00
+CAJÁ
+CHF 10.00
+MARACUJÁ
+CHF 10.00
+LARANJA
+CHF 10.00
+Diverse Säfte II (mit Milch)
+0.4l
+AÇAÍ
+CHF 10.00
+GOIABA
+CHF 10.00
+CUPUAÇU
+CHF 10.00
+LIMÃO
+CHF 10.00
+GRAVIOLA
+CHF 10.00
+Diverse Säfte III (mit Milch)
+0.4l
+ACEROLA
+CHF 10.00
+MANGA
+CHF 10.00
+Frischgepresste Säfte
+0.4l
+LIMETTE
+CHF 7.00
+ORANGE
+CHF 7.00
+BEBIDA ALCOÓLICA
+Alkoholische Getränke. Kein Verkauf von Alkohol an Minderjährige.
+Bier: Super Bock
+0.33L
+CHF 5.00
+Bier: Sagres
+0.33L
+CHF 5.00
+Bier: Feldschlösschen
+0.33L
+CHF 5.00
+Bier: Skol
+0.33L
+CHF 7.00
+Bier: Brahma
+0.33L
+CHF 7.00
+Bier: Heineken
+0.33L
+CHF 5.00
+Cocktail: Capirinha
+0.4L
+CHF 17.00
+Cocktail: Aperol
+0.4L
+CHF 17.00
+Cocktail: Piña colada
+0.4L
+CHF 17.00
+Wein: Senza Parole Primitivo
+0.1L
+CHF 8.00
+Wein: Senza Parole Negro Amaro
+0.1L
+CHF 8.00
+Wein: Real Talento tinto
+0.1L
+CHF 8.00
+Wein: Lideranca tinto
+0.1L
+CHF 8.00
+Wein: Senza Parole Bianco
+0.1L
+CHF 8.00
+
+No alcohol sales to individuals under 16 years old. Spirits and alcopops are only sold to individuals over 18 years old.
+
+The restaurant is happy to provide you with information about allergens and the origin of the meat directly at +41 43 366 93 91.
+
+© 2026  
+
+Your order
+Add products to proceed
+Products
+CHF 0.00
+Total
+CHF 0.00

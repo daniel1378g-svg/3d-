@@ -1,0 +1,99 @@
+{
+ "banner-brasilianisch": {
+  "w": 1500,
+  "h": 1000,
+  "widths": [
+   480,
+   960,
+   1500
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRoAAAABXRUJQVlA4IHQAAABwAgCdASoQAAsAA4BaJbACdAYuRzGetgnJyI0AAP6I+khLXHVCDh4myxPEtPHjDTf+sMtd+6313I+IK/8sUrsINO35EF0p2I21vyyCJ9Mrq2gdavzghufl/DnrA3GhrL9lTGCPZxNqbbha1wLkk7iN54AAAA=="
+ },
+ "cutout-bier": {
+  "w": 182,
+  "h": 179,
+  "widths": [
+   182
+  ],
+  "alpha": true,
+  "blur": "data:image/webp;base64,UklGRngBAABXRUJQVlA4WAoAAAAQAAAADwAADwAAQUxQSMsAAAAJgGLb2rLlPs/v7u5JcZK7E1nMwB0iicYAyJ6cBO3PNK/uMADX9/d/DBExAQD538YO5162rBuyJ4CgPZ2Z7TMah8cX9kAA5Eb/u11v0/16DAAIbtQbqsyhsL9Ip0kSQYeA1CRXqTRGlQJIYgx/SAKgP20/JELaCAYBAKEVSYg3FPgKIIn8SSQBUAEAmCWQ5CPIxe+/wZCkXIyGRGXPujUfQd8a3e9IkvgXQiSTSfH7M7p4TsQSZiYilsnNA2VVvSNrZweJ8/vr0935IQBWUDgghgAAAHACAJ0BKhAAEAADgFolsAJ0ME9IisfkNfnKQwAA/o+3AD98TOo41truV8lHLktb01qAudFG3+XweB7r3JKfSl5uC2JhnQAVfibVP5M+klZCs4/63Y/s3hBAwe8EKClC4n/vtPIr/hH/hvQ8QLc/fy9r7FrK1+5nt1kr33EZPLR2REC4AAAA"
+ },
+ "cutout-coxinha": {
+  "w": 166,
+  "h": 165,
+  "widths": [
+   166
+  ],
+  "alpha": true,
+  "blur": "data:image/webp;base64,UklGRkwBAABXRUJQVlA4WAoAAAAQAAAADwAADwAAQUxQSLAAAAABgFrbtmpnX1AfFGoKMxVAbUSijspIDVHMkll+GZkCmJk93nv25xoiYgIArTE3AAsFBQAaGOdHAvpwEQbQiK3xj6uRLbIPFkhf0VH4zH85DisVPuIfSaGnY9aYfjoWe5J/HMWElCoW992+zUrouD8nFYk8d9NJJXzBAr3z5fydCqx40pf65xKCHSNjB6QXEceLKEpO/7L4rBaA0samJ8+/vh6zvUqjWCVS9Z1dTcm4BVZQOCB2AAAAkAIAnQEqEAAQAAOAWiWwAnS6AAN7x4hEZWt/XYAA/rXesRbg1kt6eOQivxbWKfxndAyE6YlVa8k1LgjHH+sMDV6zXeN67FjdRrlxUPt1+O9wjksUDp1Knf+xhd/3n7JT0fxDQo0DP6uo1TkjwXmA15riC+6AAA=="
+ },
+ "cutout-getraenke": {
+  "w": 211,
+  "h": 188,
+  "widths": [
+   211
+  ],
+  "alpha": true,
+  "blur": "data:image/webp;base64,UklGRiABAABXRUJQVlA4WAoAAAAQAAAADwAADQAAQUxQSIgAAAABgFtte7IsONTMQE3FGu4OlW/htNSsYJWvwKFzqNyllDfJC7/kWyEiJkBfLmdr7XZrsN2eLocKyaP4xbCkb0oZY4xzjoCZEXIUZDy8FKOYWYkxjG2k+G5SvA8pzidQJmS/ISIA0D84NxsrnRkiImecM0AbIUQXL1b7+OfLJFcqyO9Yc7wa9iwEVlA4IHIAAACQAgCdASoQAA4AA4BaJbACdDiAN5ABdAYLS8BAAAD4Qq8SwWscoxlXaz64IMvbYE/l1klFlqggFvXgMq5IBRFJfpDXV2uzdiuj1vRcsbaA6CQ1z3fDDUFqFthkjXd3Cv+N22/ncskMlka0rtt8KO4AAAA="
+ },
+ "cutout-picanha": {
+  "w": 216,
+  "h": 185,
+  "widths": [
+   216
+  ],
+  "alpha": true,
+  "blur": "data:image/webp;base64,UklGRkABAABXRUJQVlA4WAoAAAAQAAAADwAADQAAQUxQSKcAAAABgFvbtmpl3/t/ROrukjF+HziRZgx6cMs1ZZC7ExI5NEABHrnbu+8stIeImABXcLww1VotJb3T736A+5l0SUkv5V3GUTCYbaqR5PwGAbAIbHukVGoh5nccgLujLo0SfoHFERwmtEz4Awhhy7uSW7N/jE4l1E34yzhJk3dZb2Z/RDYvybtNPuJg8EnPH+U3AHHEZ7UkeaX29qdf4KpWXpKc5JTqGauWFwBWUDggcgAAAPABAJ0BKhAADgADgFolsAJ0Bi1/Jwtc4AD+76Kz1LzSi8B08/M1nR69F9alxJBA+xYV25MTCNHdh/Abug5JAXkNLsj259a+prAmDGFGWUOMBmSpNIwdl1xBmkVGxCyu2exNvnozS1Z7hTO8OasD0ffgAA=="
+ },
+ "cutout-pudim": {
+  "w": 220,
+  "h": 148,
+  "widths": [
+   220
+  ],
+  "alpha": true,
+  "blur": "data:image/webp;base64,UklGRj4BAABXRUJQVlA4WAoAAAAQAAAADwAACgAAQUxQSI0AAAABgFvb1rLofh+ukUNGEw6xR+6Seg10MdaBFUA0UsbU4G7fu6M9RMQE4Hei1Gsk3VCADdB654GkuWxBA7CgRooxwpeQUoDG1nyQ5DvXsEIj9kT59SkX2qZsqs5P/hbeewCFPfn4g5TTTcC/5bv8Q/LAd0JSzO9P88GKQuHwiv+fepQG4sVxo92dzgY5CwAAVlA4IIoAAABQAwCdASoQAAsAA4BaJbACdLoAEJXpAH6zH1X/1BRzHtW0AAD+4NLUOAa0KAjD/WWugzHY14GJjC/veZkuMcKHZs2S604+Z2zSTWZzmqCKUYSyPT9Miwk2fDGGhdvFMV3eI3oOvsX1OZP9vj7RCcxXtE+LY1nxojhv629SjKO9vL6fZN34yJmAAAA="
+ },
+ "fachada": {
+  "w": 680,
+  "h": 516,
+  "widths": [
+   480,
+   680
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRnwAAABXRUJQVlA4IHAAAABQAgCdASoQAAwAA4BaJQBdgMW0wEn1SmgigTAA/rQt7SPJFQ6wSJfhI+s7RCU+yZE+VdMW8Yd//5T9Oval/oolYaXJ1WSuqVFqcX79xjHeyowdXhOhpj1Yjd4PRq2817ED14NM42b+cPLDPf2VwAAA"
+ },
+ "feijoada": {
+  "w": 760,
+  "h": 956,
+  "widths": [
+   480,
+   760
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRqQAAABXRUJQVlA4IJgAAABwBACdASoQABQAPu1iqU2ppaOiMAgBMB2JbACdMoMYAEgvEiFhb8uLXY92AADeKwiMPjtKrDextYX3l5XNG1Y+kRbiDRsS/x9rCAUIsfpSC2Nn9DwUEFy31J2Fu/qQdzqdN9UFgBLXbAeLuIP7nbm2BsTFn/1Ga8Qvked2TkdLX0UuRbcOb+NIBcOoauButjML+npARuAAAA=="
+ },
+ "grupo": {
+  "w": 760,
+  "h": 1351,
+  "widths": [
+   480,
+   760
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRsgAAABXRUJQVlA4ILwAAAAQBACdASoQABwALrV2u12jqampiYC0SgCdAYvhWeAWRaR1K5+aBLOWAAD+7iHpRSnQZ8XfcOr1wVPQ0mYXKR6cXGcdANP3cJCGn21536ahP2fpoBLpVlL4/xXxCjVVanDh0R5taaldiihH1aoWmwA5wkA9Xd0/sE8YdbQgIlGYQO1G+lcFEYjXZYBPCGLgi5YvnH/Tfxymxc9uFM5D2iRM4riPFJ9gEWhFVC40ZveNATCTzhWnXyNHseAAAA=="
+ },
+ "prato-picanha": {
+  "w": 1920,
+  "h": 1080,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alpha": false,
+  "blur": "data:image/webp;base64,UklGRnAAAABXRUJQVlA4IGQAAADwAQCdASoQAAkAA4BaJZgCdAYrdMcP8gAA/uJHAgGiWYM17RSCqPpRnVzY0xuVoffeg6jXY1Nl6TPev1Gfr048Lx9kaRJCOJh8XuSddb/397WMLdsdpoSS155Gg1kVf79cAAAA"
+ }
+}

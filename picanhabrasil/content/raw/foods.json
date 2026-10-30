@@ -1,0 +1,816 @@
+[
+    {
+        "id": 88,
+        "name": "TIRA-GOSTO",
+        "description": "Vorspeisen",
+        "img": "coxinha",
+        "sort": 100,
+        "foods": [
+            {
+                "name": "À Palito",
+                "description": null,
+                "food_details": [
+                    {
+                        "uid": "K9YCR4NVRV",
+                        "price": 28,
+                        "style": "Picanha (Rindshuft)"
+                    },
+                    {
+                        "uid": "6N6056O164",
+                        "price": 25,
+                        "style": "Carne-Seca (Trockenfleisch)"
+                    }
+                ]
+            },
+            {
+                "name": "Coxinha",
+                "description": "Teigtaschen panniert & frittiert",
+                "food_details": [
+                    {
+                        "uid": "8DYYIE8XIN",
+                        "price": 4,
+                        "style": "Frango (Poulet)"
+                    }
+                ]
+            },
+            {
+                "name": "Pastel",
+                "description": "Teigtaschen frittiert",
+                "food_details": [
+                    {
+                        "uid": "M0CS6A4Z2L",
+                        "price": 10,
+                        "style": "Queijo (Käse)"
+                    },
+                    {
+                        "uid": "CVV1E2UHSK",
+                        "price": 10,
+                        "style": "Frango (Poulet)"
+                    },
+                    {
+                        "uid": "YE8UHEPYQS",
+                        "price": 10,
+                        "style": "Carne (Rindfleisch)"
+                    },
+                    {
+                        "uid": "PBN4ANYRBU",
+                        "price": 12,
+                        "style": "Gemischt"
+                    }
+                ]
+            },
+            {
+                "name": "Ovo Frito",
+                "description": "Spiegelei",
+                "food_details": [
+                    {
+                        "uid": "NFH22YKBEI",
+                        "price": 3,
+                        "style": null
+                    }
+                ]
+            },
+            {
+                "name": "Caldo de costela e mandioca",
+                "description": "Rindfleischrippen mit Maniok Suppe",
+                "food_details": [
+                    {
+                        "uid": "56FXKNTQ0M",
+                        "price": 17,
+                        "style": null
+                    }
+                ]
+            },
+            {
+                "name": "Caldo de milho com camarão",
+                "description": "Crevetten-Mais-Suppe",
+                "food_details": [
+                    {
+                        "uid": "RLSHOAC2VA",
+                        "price": 17,
+                        "style": null
+                    }
+                ]
+            },
+            {
+                "name": "Batata ou mandioca frita",
+                "description": "Frittierte Kartoffeln oder Maniok",
+                "food_details": [
+                    {
+                        "uid": "EHMNPB3NA5",
+                        "price": 8,
+                        "style": "Porção Pequena (kleine Portion)"
+                    },
+                    {
+                        "uid": "PMRTJJEESM",
+                        "price": 14,
+                        "style": "Porção Grande (grosse Portion)"
+                    }
+                ]
+            },
+            {
+                "name": "Banana Frita",
+                "description": "Frittierte Banane",
+                "food_details": [
+                    {
+                        "uid": "COZ4NMLJ4A",
+                        "price": 5,
+                        "style": null
+                    }
+                ]
+            },
+            {
+                "name": "Salada Simples",
+                "description": "Salat",
+                "food_details": [
+                    {
+                        "uid": "MKK6PDOU7A",
+                        "price": 6,
+                        "style": null
+                    }
+                ]
+            },
+            {
+                "name": "Salada da casa (Haussalat)",
+                "description": "Ovo, queijo parmesão e peito de frango (Ei, Käse, Parmesan, Pouletbrust)",
+                "food_details": [
+                    {
+                        "uid": "2RVJLVK0N4",
+                        "price": 18,
+                        "style": null
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": 89,
+        "name": "PRATOS PRINCIPALES",
+        "description": "Hauptspeisen. Alle Gerichte sind pro Person und werden mit Reis, Bohnen und Pommes oder Maniok serviert. Todos os Pratos são individuais e serão servidos com Arroz, Feijão e batata frita ou mandioca.",
+        "img": "picanha",
+        "sort": 200,
+        "foods": [
+            {
+                "name": "Picanha: Porção pequena",
+                "description": "Rindshüft, kleine Portion, 150g, mit Reis und Bohnen",
+                "food_details": [
+                    {
+                        "uid": "XV8HN7HZFC",
+                        "price": 30,
+                        "style": "Mit Pommes"
+                    },
+                    {
+                        "uid": "TXKUYPJEZH",
+                        "price": 30,
+                        "style": "Mit Maniok"
+                    }
+                ]
+            },
+            {
+                "name": "Picanha: Porção grande",
+                "description": "Rindshüft, grosse Portion, 200g, mit Reis und Bohnen",
+                "food_details": [
+                    {
+                        "uid": "WCHEHOH98L",
+                        "price": 35,
+                        "style": "Mit Pommes"
+                    },
+                    {
+                        "uid": "Y7S9YCZ0HE",
+                        "price": 35,
+                        "style": "Mit Maniok"
+                    }
+                ]
+            },
+            {
+                "name": "Carne Seca: Porção pequena",
+                "description": "Trockenfleisch, kleine Portion, 150g, mit Reis und Bohnen",
+                "food_details": [
+                    {
+                        "uid": "ZNPQPDYZWH",
+                        "price": 30,
+                        "style": "Mit Pommes"
+                    },
+                    {
+                        "uid": "NMHJR5XKIB",
+                        "price": 30,
+                        "style": "Mit Maniok"
+                    }
+                ]
+            },
+            {
+                "name": "Carne Seca: Porção grande",
+                "description": "Trockenfleisch, grosse Portion, 200g, mit Reis und Bohnen",
+                "food_details": [
+                    {
+                        "uid": "YV47L2MYJ8",
+                        "price": 35,
+                        "style": "Mit Pommes"
+                    },
+                    {
+                        "uid": "3QL6ZD2ZUD",
+                        "price": 35,
+                        "style": "Mit Maniok"
+                    }
+                ]
+            },
+            {
+                "name": "Bisteca",
+                "description": "Rinderkotelett, 380g, mit Reis und Bohnen",
+                "food_details": [
+                    {
+                        "uid": "Y47K4Q0XNN",
+                        "price": 38,
+                        "style": "Mit Pommes"
+                    },
+                    {
+                        "uid": "GQGGAC11S4",
+                        "price": 38,
+                        "style": "Mit Maniok"
+                    }
+                ]
+            },
+            {
+                "name": "Peito de Frango",
+                "description": "Pouletbrust, 180g, mit Reis und Bohnen",
+                "food_details": [
+                    {
+                        "uid": "M3K4229NKE",
+                        "price": 25,
+                        "style": "Mit Pommes"
+                    },
+                    {
+                        "uid": "192UD7A00F",
+                        "price": 25,
+                        "style": "Mit Maniok"
+                    }
+                ]
+            },
+            {
+                "name": "Figado acebolado",
+                "description": "Rinderleber, 180g, mit Reis und Bohnen",
+                "food_details": [
+                    {
+                        "uid": "SFMQI2WHHV",
+                        "price": 25,
+                        "style": "Mit Pommes"
+                    },
+                    {
+                        "uid": "9Z320AXSC3",
+                        "price": 25,
+                        "style": "Mit Maniok"
+                    }
+                ]
+            },
+            {
+                "name": "Filé de Peixe",
+                "description": "Fischfilet, 180g, mit Reis und Bohnen",
+                "food_details": [
+                    {
+                        "uid": "6XDR3KTCW3",
+                        "price": 25,
+                        "style": "Mit Pommes"
+                    },
+                    {
+                        "uid": "7UQ6NVFMS6",
+                        "price": 25,
+                        "style": "Mit Maniok"
+                    }
+                ]
+            },
+            {
+                "name": "Camarão",
+                "description": "Crevetten mit Knoblauch, 9 Stk, mit Reis und Bohnen",
+                "food_details": [
+                    {
+                        "uid": "0VVXVTN56U",
+                        "price": 30,
+                        "style": "Mit Pommes"
+                    },
+                    {
+                        "uid": "DTMC8WXZM4",
+                        "price": 30,
+                        "style": "Mit Maniok"
+                    }
+                ]
+            },
+            {
+                "name": "Bacalhau",
+                "description": "Stockfisch mit Peperoni, mit Reis und Bohnen",
+                "food_details": [
+                    {
+                        "uid": "UPE8MMH4KG",
+                        "price": 30,
+                        "style": "Mit Pommes"
+                    },
+                    {
+                        "uid": "12Y2P6OQZW",
+                        "price": 30,
+                        "style": "Mit Maniok"
+                    }
+                ]
+            },
+            {
+                "name": "Feijoada",
+                "description": "Bohneneintopf - Nur Samstags und Sonntags",
+                "food_details": [
+                    {
+                        "uid": "LAJNNWWS9U",
+                        "price": 28,
+                        "style": "Mit Reis"
+                    },
+                    {
+                        "uid": "V7W29VE3D4",
+                        "price": 28,
+                        "style": "Mit frittierten Bananen"
+                    },
+                    {
+                        "uid": "K7TCFH4IZQ",
+                        "price": 28,
+                        "style": "Mit Kohl"
+                    },
+                    {
+                        "uid": "7FEJDMCRUW",
+                        "price": 28,
+                        "style": "Mit Salat Vinaigrette"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": 90,
+        "name": "SOBREMEASAS",
+        "description": "Desserts",
+        "img": "pudim",
+        "sort": 300,
+        "foods": [
+            {
+                "name": "Mousse de maracujá",
+                "description": "Passionsfruchtmousse",
+                "food_details": [
+                    {
+                        "uid": "CHKNNJAPB0",
+                        "price": 8,
+                        "style": null
+                    }
+                ]
+            },
+            {
+                "name": "Pudim",
+                "description": "Kondensmilchpudding",
+                "food_details": [
+                    {
+                        "uid": "45NO6OBLXX",
+                        "price": 8,
+                        "style": null
+                    }
+                ]
+            },
+            {
+                "name": "Bolo",
+                "description": "Kuchen",
+                "food_details": [
+                    {
+                        "uid": "JBKE0MMCSC",
+                        "price": 8,
+                        "style": null
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": 91,
+        "name": "BEBIDAS SEM ÀLCOOL",
+        "description": "Getränke ohne Alkohol",
+        "img": "getraenke",
+        "sort": 400,
+        "foods": [
+            {
+                "name": "Coca Cola",
+                "description": null,
+                "food_details": [
+                    {
+                        "uid": "C4UXKZ1D3M",
+                        "price": 5,
+                        "style": "0.33l"
+                    }
+                ]
+            },
+            {
+                "name": "Coca Cola Zero",
+                "description": null,
+                "food_details": [
+                    {
+                        "uid": "2PLHWU864N",
+                        "price": 5,
+                        "style": "0.33l"
+                    }
+                ]
+            },
+            {
+                "name": "Ice Tea",
+                "description": null,
+                "food_details": [
+                    {
+                        "uid": "D5EOV4X6C1",
+                        "price": 5,
+                        "style": "0.33l"
+                    }
+                ]
+            },
+            {
+                "name": "Fanta Laranja",
+                "description": null,
+                "food_details": [
+                    {
+                        "uid": "LM8YN0TS9V",
+                        "price": 5,
+                        "style": "0.33l"
+                    }
+                ]
+            },
+            {
+                "name": "Fanta Uva",
+                "description": null,
+                "food_details": [
+                    {
+                        "uid": "WN0QNK9TCZ",
+                        "price": 7,
+                        "style": "0.33l"
+                    }
+                ]
+            },
+            {
+                "name": "Sprite",
+                "description": null,
+                "food_details": [
+                    {
+                        "uid": "QCCTELS4YY",
+                        "price": 5,
+                        "style": "0.33l"
+                    }
+                ]
+            },
+            {
+                "name": "Arkina",
+                "description": null,
+                "food_details": [
+                    {
+                        "uid": "XSPV46ZNRF",
+                        "price": 4,
+                        "style": "0.33l"
+                    }
+                ]
+            },
+            {
+                "name": "Rähzünser",
+                "description": null,
+                "food_details": [
+                    {
+                        "uid": "HYIVF0IAVZ",
+                        "price": 4,
+                        "style": "0.33l"
+                    }
+                ]
+            },
+            {
+                "name": "Guarana",
+                "description": null,
+                "food_details": [
+                    {
+                        "uid": "OEGRSCGY57",
+                        "price": 7,
+                        "style": "0.33l"
+                    }
+                ]
+            },
+            {
+                "name": "Diverse Säfte I",
+                "description": "0.4l",
+                "food_details": [
+                    {
+                        "uid": "W4R8QJQ91R",
+                        "price": 8,
+                        "style": "Caju"
+                    },
+                    {
+                        "uid": "GVNRQ0DSUM",
+                        "price": 8,
+                        "style": "Cajá"
+                    },
+                    {
+                        "uid": "2155J8EXU5",
+                        "price": 8,
+                        "style": "Maracujá"
+                    },
+                    {
+                        "uid": "VIQGJZTPML",
+                        "price": 8,
+                        "style": "Laranja"
+                    }
+                ]
+            },
+            {
+                "name": "Diverse Säfte II",
+                "description": "0.4l",
+                "food_details": [
+                    {
+                        "uid": "7I8U84S5M5",
+                        "price": 8,
+                        "style": "Açaí"
+                    },
+                    {
+                        "uid": "EZ0TIJC26M",
+                        "price": 8,
+                        "style": "Goiaba"
+                    },
+                    {
+                        "uid": "GCDKY5892A",
+                        "price": 8,
+                        "style": "Cupuaçu"
+                    },
+                    {
+                        "uid": "0STG8Z1HR7",
+                        "price": 8,
+                        "style": "Limão"
+                    },
+                    {
+                        "uid": "QYYIGAF4KT",
+                        "price": 8,
+                        "style": "Graviola"
+                    }
+                ]
+            },
+            {
+                "name": "Diverse Säfte III",
+                "description": "0.4l",
+                "food_details": [
+                    {
+                        "uid": "OGC7KDVKM6",
+                        "price": 8,
+                        "style": "Acerola"
+                    },
+                    {
+                        "uid": "5CTIIX0WC0",
+                        "price": 8,
+                        "style": "Manga"
+                    }
+                ]
+            },
+            {
+                "name": "Diverse Säfte I (mit Milch)",
+                "description": "0.4l",
+                "food_details": [
+                    {
+                        "uid": "PF2XZAE6T8",
+                        "price": 10,
+                        "style": "Caju"
+                    },
+                    {
+                        "uid": "AVI1ZQP6SN",
+                        "price": 10,
+                        "style": "Cajá"
+                    },
+                    {
+                        "uid": "9ANQVX0CTQ",
+                        "price": 10,
+                        "style": "Maracujá"
+                    },
+                    {
+                        "uid": "DUSKI7UMQD",
+                        "price": 10,
+                        "style": "Laranja"
+                    }
+                ]
+            },
+            {
+                "name": "Diverse Säfte II (mit Milch)",
+                "description": "0.4l",
+                "food_details": [
+                    {
+                        "uid": "5DZLX74I6C",
+                        "price": 10,
+                        "style": "Açaí"
+                    },
+                    {
+                        "uid": "LDKC56Z1O8",
+                        "price": 10,
+                        "style": "Goiaba"
+                    },
+                    {
+                        "uid": "IPUV08E4TU",
+                        "price": 10,
+                        "style": "Cupuaçu"
+                    },
+                    {
+                        "uid": "TGLANFXY43",
+                        "price": 10,
+                        "style": "Limão"
+                    },
+                    {
+                        "uid": "J5DWADFR2K",
+                        "price": 10,
+                        "style": "Graviola"
+                    }
+                ]
+            },
+            {
+                "name": "Diverse Säfte III (mit Milch)",
+                "description": "0.4l",
+                "food_details": [
+                    {
+                        "uid": "7D5LJE9C06",
+                        "price": 10,
+                        "style": "Acerola"
+                    },
+                    {
+                        "uid": "FDMAVPVTSX",
+                        "price": 10,
+                        "style": "Manga"
+                    }
+                ]
+            },
+            {
+                "name": "Frischgepresste Säfte",
+                "description": "0.4l",
+                "food_details": [
+                    {
+                        "uid": "ISMPU9JJZS",
+                        "price": 7,
+                        "style": "Limette"
+                    },
+                    {
+                        "uid": "BUAOM0YPJR",
+                        "price": 7,
+                        "style": "Orange"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": 92,
+        "name": "BEBIDA ALCOÓLICA",
+        "description": "Alkoholische Getränke. Kein Verkauf von Alkohol an Minderjährige.",
+        "img": "bier",
+        "sort": 500,
+        "foods": [
+            {
+                "name": "Bier: Super Bock",
+                "description": null,
+                "food_details": [
+                    {
+                        "uid": "2TL9L73AR5",
+                        "price": 5,
+                        "style": "0.33l"
+                    }
+                ]
+            },
+            {
+                "name": "Bier: Sagres",
+                "description": null,
+                "food_details": [
+                    {
+                        "uid": "EL2A5RGS42",
+                        "price": 5,
+                        "style": "0.33l"
+                    }
+                ]
+            },
+            {
+                "name": "Bier: Feldschlösschen",
+                "description": null,
+                "food_details": [
+                    {
+                        "uid": "SGJM32YFAH",
+                        "price": 5,
+                        "style": "0.33l"
+                    }
+                ]
+            },
+            {
+                "name": "Bier: Skol",
+                "description": null,
+                "food_details": [
+                    {
+                        "uid": "QJJ7ZZA73W",
+                        "price": 7,
+                        "style": "0.33l"
+                    }
+                ]
+            },
+            {
+                "name": "Bier: Brahma",
+                "description": null,
+                "food_details": [
+                    {
+                        "uid": "BC19SIG4NR",
+                        "price": 7,
+                        "style": "0.33l"
+                    }
+                ]
+            },
+            {
+                "name": "Bier: Heineken",
+                "description": null,
+                "food_details": [
+                    {
+                        "uid": "D1KP0HAGYO",
+                        "price": 5,
+                        "style": "0.33l"
+                    }
+                ]
+            },
+            {
+                "name": "Cocktail: Capirinha",
+                "description": null,
+                "food_details": [
+                    {
+                        "uid": "V7RNQQ0DTU",
+                        "price": 17,
+                        "style": "0.4l"
+                    }
+                ]
+            },
+            {
+                "name": "Cocktail: Aperol",
+                "description": null,
+                "food_details": [
+                    {
+                        "uid": "8Y47Q12X8T",
+                        "price": 17,
+                        "style": "0.4l"
+                    }
+                ]
+            },
+            {
+                "name": "Cocktail: Piña colada",
+                "description": null,
+                "food_details": [
+                    {
+                        "uid": "N3A3FU9VQ9",
+                        "price": 17,
+                        "style": "0.4l"
+                    }
+                ]
+            },
+            {
+                "name": "Wein: Senza Parole Primitivo",
+                "description": null,
+                "food_details": [
+                    {
+                        "uid": "GM1U2Z11WF",
+                        "price": 8,
+                        "style": "0.1l"
+                    }
+                ]
+            },
+            {
+                "name": "Wein: Senza Parole Negro Amaro",
+                "description": null,
+                "food_details": [
+                    {
+                        "uid": "DSEW5781B2",
+                        "price": 8,
+                        "style": "0.1l"
+                    }
+                ]
+            },
+            {
+                "name": "Wein: Real Talento tinto",
+                "description": null,
+                "food_details": [
+                    {
+                        "uid": "J3WYIXXFTN",
+                        "price": 8,
+                        "style": "0.1l"
+                    }
+                ]
+            },
+            {
+                "name": "Wein: Lideranca tinto",
+                "description": null,
+                "food_details": [
+                    {
+                        "uid": "I6C48YVI6R",
+                        "price": 8,
+                        "style": "0.1l"
+                    }
+                ]
+            },
+            {
+                "name": "Wein: Senza Parole Bianco",
+                "description": null,
+                "food_details": [
+                    {
+                        "uid": "XJXPPVHMGF",
+                        "price": 8,
+                        "style": "0.1l"
+                    }
+                ]
+            }
+        ]
+    }
+]

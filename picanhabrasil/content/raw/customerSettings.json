@@ -1,0 +1,15 @@
+{
+    "isOrderEnabled": "1",
+    "isReservationEnabled": "1",
+    "isSoundEnabled": "1",
+    "isPrintingEnabled": "1",
+    "isFindableInSearch": "1",
+    "hasKitchenHoursOverridden": "0",
+    "slogan": "Mattengasse 9, 8005 Zürich<br \/>\nDer Preis für die Lieferung hängt von den Kilometern ab.",
+    "note": null,
+    "confirmationEmail": "info@picanha-brasil.ch",
+    "confirmOrder": "0",
+    "locale": "de_CH",
+    "reservationNote": "<strong>INFO<\/strong><br \/>\nDie reservierten Plätze sind für maximal 30 Minuten reserviert, danach werden sie wieder freigegeben.<br \/>\n<br \/>\n<strong>ACHTUNG<\/strong><br \/>\nLeider müssen wir ab dem 1. Februar 2024 wegen häufigem Nichterscheinen eine Aufwandsgebühr von CHF 5.00 pro Person verlangen (wird nach der Reservation per TWINT angefordert). Die Gebühr wird von der Schlussrechnung abgezogen und bleibt in jedem Fall geschuldet",
+    "info": null
+}
