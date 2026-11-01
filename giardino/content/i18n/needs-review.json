@@ -1,0 +1,18 @@
+{
+ "about": "Curated review list for the new site's translations, read by scripts/export-content.mjs: a unit listed here gets status \"needs-review\" and this note. Keys are \"<lang>:<key>\" (or \"*:<key>\" for en, fr and it). Units whose German numbers are missing in a translation are flagged automatically. Background: content/i18n/divergence-report.md, section C.",
+ "units": {
+  "fr:home.hero.outro": "Adds «unique» (DE: «ist ein Erlebnis»), copied from the live French page. Suggest «… est une expérience pour les amoureux de la cuisine italienne».",
+  "it:home.hero.outro": "Says «il posto ideale» (DE: «ist ein Erlebnis»), copied from the live Italian page. Suggest «… è un’esperienza per gli amanti della cucina italiana».",
+  "it:home.story.title": "«la pizzeria del buon gusto» (of good taste) does not mean «die aparte Pizzeria» (distinctive). It is the restaurant's own Italian line; owners to decide.",
+  "en:meta.descriptions.reserve": "«daily from 10:00 to 23:00»: the source says «jeweils von 10 bis 23 Uhr», and Wednesday is Ruhetag. Drop «daily» unless the owners confirm.",
+  "fr:meta.descriptions.reserve": "«tous les jours de 10 h à 23 h»: the source says «jeweils von 10 bis 23 Uhr», and Wednesday is Ruhetag. Drop «tous les jours» unless the owners confirm.",
+  "it:meta.descriptions.reserve": "«ogni giorno dalle 10 alle 23»: the source says «jeweils von 10 bis 23 Uhr», and Wednesday is Ruhetag. Drop «ogni giorno» unless the owners confirm.",
+  "en:home.reserve.body": "«daily from 10:00 to 23:00»: see meta.descriptions.reserve.",
+  "fr:home.reserve.body": "«tous les jours de 10 h à 23 h»: see meta.descriptions.reserve.",
+  "it:home.reserve.body": "«ogni giorno dalle 10 alle 23»: see meta.descriptions.reserve.",
+  "en:reserve.phoneBody": "Adds «daily». The source says «jeweils von 10 bis 23 Uhr», and the live English page says only «from 10:00 to 23:00».",
+  "fr:reserve.phoneBody": "Adds «tous les jours». The source says «jeweils von 10 bis 23 Uhr», and the live French page says only «de 10h00 à 23h00».",
+  "fr:hours.closureText": "Typography: «du 1 novembre» → «du 1er novembre»; «le vendredi, 18 décembre» → «le vendredi 18 décembre».",
+  "it:hours.closureText": "Typography: «dal 1 novembre» → «dal 1° novembre»."
+ }
+}

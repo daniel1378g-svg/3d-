@@ -1,0 +1,16 @@
+node_modules/
+dist/
+dist-server/
+.cache/
+artifact/
+data/
+# full-size originals (≈ 240 MB) are not kept in git: `npm run fetch` downloads them again from the sources listed in
+# content/assets.json; the web copies in public/ are committed
+media/originals/
+# re-encoded film cuts (prepare_video.py) – the PDFs and the video are not rehosted in dist/ (BRIEF §15)
+media/video/
+# 300-dpi page renders of the menu PDFs (scripts/render-pdfs.sh) – reproducible, ≈ 100 MB
+content/raw/pdf/*/
+
+# full font sources (scripts/subset-fonts.sh downloads them again); the licences ship in public/fonts/
+media/fonts/*.ttf

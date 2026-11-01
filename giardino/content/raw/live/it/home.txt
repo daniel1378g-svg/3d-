@@ -1,0 +1,121 @@
+URL: https://pizzeriagiardino.ch/it
+FINAL: https://pizzeriagiardino.ch/it
+TITLE: Pizzeria Giardino Leukerbad | Pizza, Pasta, Penne, Risotto, Restaurant, Essen, Familien, Kinder, Glutenfreie Pizzeria, Glutenfreie Pizzeria im Wallis | Leukerbad | Giardino - la pizzeria del buon gusto a Leukerbad
+DESCRIPTION: Pizzeria Giardino Leukerbad - Treten Sie ein und erleben Sie ein Stück Italien inmitten unserem prächtigen Bergpanorama.  Im Sommer sind wir der Treffpunk für alle. Wir bieten eine gemütliche, sonnenverwöhnte Terrasse an, von welcher Sie freie Sicht auf die Gemmi und Torrent haben.
+
+== HEADER (navigation, badges) ==
+Deutsch Français English Italiano
+Mangia e divertiti
+Kids
+La casa
+Prenotazione
+Partner Albergos
+Impronta
+Meta Home
+Lavoro
+Come arrivare
+Tour virtuale
+Leukerbad Therme
+Stampa
+Contatto
+[image https://pizzeriagiardino.ch/data/Cache//2/29/29f/29f7/_src29f786f67147c22604ca0bc6ee1f3192_pard41f122b3f5daa56f9f2f05dd8]
+Deutsch Français English Italiano
+Home
+Lavoro
+Come arrivare
+Tour virtuale
+Leukerbad Therme
+Stampa
+Contatto
+[image https://pizzeriagiardino.ch/templates/pizzeriagiardino/img/tripadvisor_ruhmeshalle.jpg]
+[image templates/pizzeriagiardino/img/best_of_swiss_gastro_activity.png]
+Buoni
+[image templates/pizzeriagiardino/img/logo.png]
+Mangia e divertiti
+Kids
+La casa
+Prenotazione
+Partner Albergos
+[image addons/phpThump/phpThumb.php?src=../../data/Ressources/1750944045-2025-06-20_giardino-8915_2048px.jpg&f=jpeg&w=52&h=52&q]
+[image addons/phpThump/phpThumb.php?src=../../data/Ressources/1750943878-2025-06-20_giardino_70200.-8618_2048px.jpg&f=jpeg&w=52]
+[image addons/phpThump/phpThumb.php?src=../../data/Ressources/1750943367-2025-06-20_giardino_luft--4_2048px.jpg&f=jpeg&w=52&h=5]
+[image addons/phpThump/phpThumb.php?src=../../data/Ressources/1750943817-2025-06-20_giardino_70200.-8355_2048px.jpg&f=jpeg&w=52]
+[image addons/phpThump/phpThumb.php?src=../../data/Ressources/1750941788-2025-06-20_giardino_70200.-8649_2048px.jpg&f=jpeg&w=52]
+[image addons/phpThump/phpThumb.php?src=../../data/Ressources/1750941506-2025-06-20_giardino-8899_2048px.jpg&f=jpeg&w=52&h=52&q]
+[image addons/phpThump/phpThumb.php?src=../../data/Ressources/1750941448-2025-06-20_giardino-8920_2048px.jpg&f=jpeg&w=52&h=52&q]
+[image addons/phpThump/phpThumb.php?src=../../data/Ressources/1474895677-5DSR6281.jpg&f=jpeg&w=52&h=52&q=5&zc=1]
+[image addons/phpThump/phpThumb.php?src=../../data/Ressources/1474895697-5DSR6211.jpg&f=jpeg&w=52&h=52&q=5&zc=1]
+[image addons/phpThump/phpThumb.php?src=../../data/Ressources/1474895684-5DSR6265-HDR.jpg&f=jpeg&w=52&h=52&q=5&zc=1]
+[image addons/phpThump/phpThumb.php?src=../../data/Ressources/1474895692-5DSR6223.jpg&f=jpeg&w=52&h=52&q=5&zc=1]
+
+== MAIN ==
+Giardino - la pizzeria del buon gusto a Leukerbad
+Un pezzo di Italia nel cuore di Bäderdorf. La Pizzeria Giardino, incorniciata da uno spettacolare scenario di montagna, è il posto ideale per gli amanti della cucina italiana. Vivamente consigliata anche per famiglie con bambini. Le aree gioco al coperto e all'esterno sono una vera attrazione per i più piccoli.
+L'eleganza di classe gioca abilmente con il legno dando al Giardino un tocco accogliente e un carattere unico con particolare attenzione ai dettagli.
+La terrazza soleggiata con ampia vista sul Gemmi e sul Torrent rende il sogno italiano assolutamente perfetto.
+
+== SIDEBAR ==
+Nel centro di Leukerbad
+Ci potete trovare nella Thermenstrasse 9 a Leukerbad. Come arrivare
+Prenotazione
+Prenota ora un tavolo nella Pizzeria Giardino.
+Orari d'apertura
+Siamo aperti dalle 11:00 alle 23:00
+chiusi il mercoledi.
+Pasti caldi dalle 11:30 alle 15:00 e dalle 17:00 alle 21:30.
+VACANZE AZIENDALI AUTUNNO
+Avremo vacanze aziendali dall' 01 novembre 2026 al 17 dicembre 2026 e non vediamo l'ora di accogliervi di nuovo venerdi 18 dicembre 2026
+
+== FOOTER ==
+Pizzeria Giardino
+Pascal & Anja Loretan
+Thermenstrasse 9
+3954 Leukerbad
+Tel. +41 (0)27 530 05 84
+info@pizzeriagiardino.ch
+© 2026 |
+webdesign, webentwicklung und hosting powered by indual |
+|
+Impronta
+[image templates/pizzeriagiardino/img/wir_logo_white.png]
+[image templates/pizzeriagiardino/img/food4family.png]
+[image templates/pizzeriagiardino/img/tripadvisor.png]
+[image templates/pizzeriagiardino/img/logo_zoeliakie.png]
+[image templates/pizzeriagiardino/img/google_logo.png]
+[image templates/pizzeriagiardino/img/logo_babyfriendly_small.png]
+[image templates/pizzeriagiardino/img/logo_facebook.png]
+[image templates/pizzeriagiardino/img/logo_foursquare.png]
+[script inline]
+[script https://pizzeriagiardino.ch/scripts/jquery.min.js] [script https://pizzeriagiardino.ch/scripts/jquery.bxslider.fitvids.js] [script https://pizzeriagiardino.ch/scripts/jquery.bxslider.min.js] [script https://pizzeriagiardino.ch/addons/fancybox3/jquery.fancybox.min.js] [script https://pizzeriagiardino.ch/addons/video-js/video.js] [script https://pizzeriagiardino.ch/scripts/indual_cms.min.js] [script https://pizzeriagiardino.ch/templates/pizzeriagiardino/js/functions2.min.js] [script https://pizzeriagiardino.ch/templates/pizzeriagiardino/js/slick.min.js]
+
+== PHOTOS (data/Ressources) ==
+1474895677-5DSR6281.jpg
+1474895684-5DSR6265-HDR.jpg
+1474895692-5DSR6223.jpg
+1474895697-5DSR6211.jpg
+1750941448-2025-06-20_giardino-8920_2048px.jpg
+1750941506-2025-06-20_giardino-8899_2048px.jpg
+1750941788-2025-06-20_giardino_70200.-8649_2048px.jpg
+1750943367-2025-06-20_giardino_luft--4_2048px.jpg
+1750943817-2025-06-20_giardino_70200.-8355_2048px.jpg
+1750943878-2025-06-20_giardino_70200.-8618_2048px.jpg
+1750944045-2025-06-20_giardino-8915_2048px.jpg
+
+== EMBEDS ==
+video data/Ressources/1756717407-giardino_video_full_length.mp4
+
+== EXTERNAL LINKS ==
+http://www.bestofswissgastro.ch/guide/pizzeria-giardino/
+http://www.tripadvisor.de/Restaurant_Review-g198859-d3640075-Reviews-Pizzeria_Giardino-Leukerbad_Valais_Swiss_Alps.html
+http://www.wir.ch/
+http://www.zoeliakie.ch/
+https://foursquare.com/v/pizzeria-giardino/4e457acfd4c065cb6b922e71/
+https://g.co/kgs/BCibBDs
+https://plus.google.com/+PizzeriaGiardinoLeukerbad/
+https://social.babyfreundlich.ch/ort/leukerbad/pizzeria-giardino/
+https://www.facebook.com/pages/Pizzeria-Giardino/140821139297172/
+https://www.felizzio.com/en/pizzeriagiardino/shop
+https://www.food4family.ch/restaurantsuche/wallis/giardino/
+https://www.indual.ch
+https://www.myswitzerland.com/de-ch/wellness-destinaton-quality.html
+https://www.tripadvisor.ch/Restaurant_Review-g198859-d3640075-Reviews-Pizzeria_Giardino-Leukerbad_Canton_of_Valais_Swiss_Alps.html

@@ -1,0 +1,852 @@
+{
+ "note": "Read-only capture of pizzeriagiardino.ch (GET only). Pages marked 'cached' come from the audit crawl of 01.11.2026; redirect routes were requested without following the redirect.",
+ "routes": [
+  {
+   "lang": "de",
+   "slug": "home",
+   "url": "https://pizzeriagiardino.ch/de",
+   "status": 200,
+   "final": "https://pizzeriagiardino.ch/de",
+   "origin": "audit crawl 2026-11-01 (cached)",
+   "title": "Pizzeria Giardino Leukerbad | Pizza, Pasta, Penne, Risotto, Restaurant, Essen, Familien, Kinder, Glutenfreie Pizzeria, Glutenfreie Pizzeria im Wallis | Leukerbad | Giardino - die aparte Pizzeria in Leukerbad",
+   "bytes": 37307,
+   "sha256": "9bd102b5cccd92f7cea8e4ba76a3c1a0815b39ab87116fa54aefd2163400b677",
+   "files": [
+    "de/home.html",
+    "de/home.txt"
+   ]
+  },
+  {
+   "lang": "de",
+   "slug": "essen-geniessen",
+   "url": "https://pizzeriagiardino.ch/de/essen-geniessen",
+   "status": 200,
+   "final": "https://pizzeriagiardino.ch/de/essen-geniessen",
+   "origin": "audit crawl 2026-11-01 (cached)",
+   "title": "Pizzeria Giardino Leukerbad | Pizza, Pasta, Penne, Risotto, Restaurant, Essen, Familien, Kinder, Glutenfreie Pizzeria, Glutenfreie Pizzeria im Wallis | Leukerbad | Kulinarische Gaumenfreuden",
+   "bytes": 36067,
+   "sha256": "ceb133104eba1a407dbbe75922743b6fe6e0e22a6099df35ba0d068e3c725427",
+   "files": [
+    "de/essen-geniessen.html",
+    "de/essen-geniessen.txt"
+   ]
+  },
+  {
+   "lang": "de",
+   "slug": "kids",
+   "url": "https://pizzeriagiardino.ch/de/kids",
+   "status": 200,
+   "final": "https://pizzeriagiardino.ch/de/kids",
+   "origin": "audit crawl 2026-11-01 (cached)",
+   "title": "Pizzeria Giardino Leukerbad | Pizza, Pasta, Penne, Risotto, Restaurant, Essen, Familien, Kinder, Glutenfreie Pizzeria, Glutenfreie Pizzeria im Wallis | Leukerbad | Ein Restaurant ohne Kinderlachen ist nur ein Lokal ...",
+   "bytes": 38089,
+   "sha256": "68b895a136e5cea0289ae10bb428c4be27b05bc9653087f847c44f4255600a38",
+   "files": [
+    "de/kids.html",
+    "de/kids.txt"
+   ]
+  },
+  {
+   "lang": "de",
+   "slug": "gastgeber",
+   "url": "https://pizzeriagiardino.ch/de/gastgeber",
+   "status": 200,
+   "final": "https://pizzeriagiardino.ch/de/gastgeber",
+   "origin": "audit crawl 2026-11-01 (cached)",
+   "title": "Pizzeria Giardino Leukerbad | Pizza, Pasta, Penne, Risotto, Restaurant, Essen, Familien, Kinder, Glutenfreie Pizzeria, Glutenfreie Pizzeria im Wallis | Leukerbad | Gast sein ist gut - sich zu Hause fühlen noch besser!",
+   "bytes": 24713,
+   "sha256": "bed11a24115ffe9169baf71f73739815b31f106586a50ce41496f7d4810d7475",
+   "files": [
+    "de/gastgeber.html",
+    "de/gastgeber.txt"
+   ]
+  },
+  {
+   "lang": "de",
+   "slug": "reservation",
+   "url": "https://pizzeriagiardino.ch/de/reservation",
+   "status": 200,
+   "final": "https://pizzeriagiardino.ch/de/reservation",
+   "origin": "audit crawl 2026-11-01 (cached)",
+   "title": "Pizzeria Giardino Leukerbad | Pizza, Pasta, Penne, Risotto, Restaurant, Essen, Familien, Kinder, Glutenfreie Pizzeria, Glutenfreie Pizzeria im Wallis | Leukerbad | Tischreservation",
+   "bytes": 22694,
+   "sha256": "3fdd34edf8556008d470e4559c4fba01e1b781660f66a39c453d35cfbd770d27",
+   "files": [
+    "de/reservation.html",
+    "de/reservation.txt"
+   ]
+  },
+  {
+   "lang": "de",
+   "slug": "partnerhotels",
+   "url": "https://pizzeriagiardino.ch/de/partnerhotels",
+   "status": 200,
+   "final": "https://pizzeriagiardino.ch/de/partnerhotels",
+   "origin": "audit crawl 2026-11-01 (cached)",
+   "title": "Pizzeria Giardino Leukerbad | Pizza, Pasta, Penne, Risotto, Restaurant, Essen, Familien, Kinder, Glutenfreie Pizzeria, Glutenfreie Pizzeria im Wallis | Leukerbad",
+   "bytes": 21793,
+   "sha256": "6c22675e2118d4a6afc8fec364dc48da1ef0f4618dd4b500a574f8256272542a",
+   "files": [
+    "de/partnerhotels.html",
+    "de/partnerhotels.txt"
+   ]
+  },
+  {
+   "lang": "de",
+   "slug": "impressum",
+   "url": "https://pizzeriagiardino.ch/de/impressum",
+   "status": 200,
+   "final": "https://pizzeriagiardino.ch/de/impressum",
+   "origin": "audit crawl 2026-11-01 (cached)",
+   "title": "Pizzeria Giardino Leukerbad | Pizza, Pasta, Penne, Risotto, Restaurant, Essen, Familien, Kinder, Glutenfreie Pizzeria, Glutenfreie Pizzeria im Wallis | Leukerbad | Impressum",
+   "bytes": 19618,
+   "sha256": "8c9a8150884d3a2db183b143507a7ba7f3f8e251ac743cdf0d9b86abfd7b971a",
+   "files": [
+    "de/impressum.html",
+    "de/impressum.txt"
+   ]
+  },
+  {
+   "lang": "de",
+   "slug": "datenschutz",
+   "url": "https://pizzeriagiardino.ch/de/datenschutz",
+   "status": 200,
+   "final": "https://pizzeriagiardino.ch/de/datenschutz",
+   "origin": "audit crawl 2026-11-01 (cached)",
+   "title": "Pizzeria Giardino Leukerbad | Pizza, Pasta, Penne, Risotto, Restaurant, Essen, Familien, Kinder, Glutenfreie Pizzeria, Glutenfreie Pizzeria im Wallis | Leukerbad | Datenschutzerklärung und Einwilligung (DSGVO)",
+   "bytes": 49305,
+   "sha256": "03954220480b74b912d641fbfd386942bb7f30314c6ac962e5f3e88966fc33aa",
+   "files": [
+    "de/datenschutz.html",
+    "de/datenschutz.txt"
+   ]
+  },
+  {
+   "lang": "de",
+   "slug": "allgemein_jobs",
+   "url": "https://pizzeriagiardino.ch/de/allgemein/jobs",
+   "status": 200,
+   "final": "https://pizzeriagiardino.ch/de/allgemein/jobs",
+   "origin": "audit crawl 2026-11-01 (cached)",
+   "title": "Pizzeria Giardino Leukerbad | Pizza, Pasta, Penne, Risotto, Restaurant, Essen, Familien, Kinder, Glutenfreie Pizzeria, Glutenfreie Pizzeria im Wallis | Leukerbad | Jobs",
+   "bytes": 19625,
+   "sha256": "048d77dfd996300830080f6d6e1fbc4ede1a932ff85840afed9b48bc9602eb08",
+   "files": [
+    "de/allgemein_jobs.html",
+    "de/allgemein_jobs.txt"
+   ]
+  },
+  {
+   "lang": "de",
+   "slug": "allgemein_anreise",
+   "url": "https://pizzeriagiardino.ch/de/allgemein/anreise",
+   "status": 200,
+   "final": "https://pizzeriagiardino.ch/de/allgemein/anreise",
+   "origin": "audit crawl 2026-11-01 (cached)",
+   "title": "Pizzeria Giardino Leukerbad | Pizza, Pasta, Penne, Risotto, Restaurant, Essen, Familien, Kinder, Glutenfreie Pizzeria, Glutenfreie Pizzeria im Wallis | Leukerbad | Anreise",
+   "bytes": 21157,
+   "sha256": "2825d9fde07ea6835302527d6298a16a6cad5d26f8cd71fdf57eb214c02b22cc",
+   "files": [
+    "de/allgemein_anreise.html",
+    "de/allgemein_anreise.txt"
+   ]
+  },
+  {
+   "lang": "de",
+   "slug": "allgemein_rundgang",
+   "url": "https://pizzeriagiardino.ch/de/allgemein/rundgang",
+   "status": 200,
+   "final": "https://pizzeriagiardino.ch/de/allgemein/rundgang",
+   "origin": "audit crawl 2026-11-01 (cached)",
+   "title": "Pizzeria Giardino Leukerbad | Pizza, Pasta, Penne, Risotto, Restaurant, Essen, Familien, Kinder, Glutenfreie Pizzeria, Glutenfreie Pizzeria im Wallis | Leukerbad | Rundgang",
+   "bytes": 19390,
+   "sha256": "605d7d0b914b7f1b8a04354ad10d4c32d957baf49f3cb46bd09c1ced8a998976",
+   "files": [
+    "de/allgemein_rundgang.html",
+    "de/allgemein_rundgang.txt"
+   ]
+  },
+  {
+   "lang": "de",
+   "slug": "allgemein_impressionen",
+   "url": "https://pizzeriagiardino.ch/de/allgemein/impressionen",
+   "status": 200,
+   "final": "https://pizzeriagiardino.ch/de/allgemein/impressionen",
+   "origin": "audit crawl 2026-11-01 (cached)",
+   "title": "Pizzeria Giardino Leukerbad | Pizza, Pasta, Penne, Risotto, Restaurant, Essen, Familien, Kinder, Glutenfreie Pizzeria, Glutenfreie Pizzeria im Wallis | Leukerbad | Impressionen",
+   "bytes": 55823,
+   "sha256": "5262eb143b43e3099ccc45cb1f729ed248b51013b55ab1e216cc4dbccce36dda",
+   "files": [
+    "de/allgemein_impressionen.html",
+    "de/allgemein_impressionen.txt"
+   ]
+  },
+  {
+   "lang": "de",
+   "slug": "allgemein_presse",
+   "url": "https://pizzeriagiardino.ch/de/allgemein/presse",
+   "status": 200,
+   "final": "https://pizzeriagiardino.ch/de/allgemein/presse",
+   "origin": "audit crawl 2026-11-01 (cached)",
+   "title": "Pizzeria Giardino Leukerbad | Pizza, Pasta, Penne, Risotto, Restaurant, Essen, Familien, Kinder, Glutenfreie Pizzeria, Glutenfreie Pizzeria im Wallis | Leukerbad | Presse",
+   "bytes": 24257,
+   "sha256": "82e71a2012b80584a81b64143a83e662d8b8e5cef2aac081a07af9a4ad70aca8",
+   "files": [
+    "de/allgemein_presse.html",
+    "de/allgemein_presse.txt"
+   ]
+  },
+  {
+   "lang": "de",
+   "slug": "allgemein_kontakt",
+   "url": "https://pizzeriagiardino.ch/de/allgemein/kontakt",
+   "status": 200,
+   "final": "https://pizzeriagiardino.ch/de/allgemein/kontakt",
+   "origin": "audit crawl 2026-11-01 (cached)",
+   "title": "Pizzeria Giardino Leukerbad | Pizza, Pasta, Penne, Risotto, Restaurant, Essen, Familien, Kinder, Glutenfreie Pizzeria, Glutenfreie Pizzeria im Wallis | Leukerbad | Kontakt",
+   "bytes": 23361,
+   "sha256": "b8ba8a4cad29d526181c97ad7a840f507b7cbccbb4daddec27dc157ef60ae250",
+   "files": [
+    "de/allgemein_kontakt.html",
+    "de/allgemein_kontakt.txt"
+   ]
+  },
+  {
+   "lang": "en",
+   "slug": "home",
+   "url": "https://pizzeriagiardino.ch/en",
+   "status": 200,
+   "final": "https://pizzeriagiardino.ch/en",
+   "origin": "audit crawl 2026-11-01 (cached)",
+   "title": "Pizzeria Giardino Leukerbad | Pizza, Pasta, Penne, Risotto, Restaurant, Essen, Familien, Kinder, Glutenfreie Pizzeria, Glutenfreie Pizzeria im Wallis | Leukerbad | Giardino - the distinctive Pizzeria in Leukerbad",
+   "bytes": 35886,
+   "sha256": "cd01b59c268a7a6d068e1e747ace2af697a05536ce91e36f0512c224383c2996",
+   "files": [
+    "en/home.html",
+    "en/home.txt"
+   ]
+  },
+  {
+   "lang": "en",
+   "slug": "eat-enjoy",
+   "url": "https://pizzeriagiardino.ch/en/eat-enjoy",
+   "status": 200,
+   "final": "https://pizzeriagiardino.ch/en/eat-enjoy",
+   "origin": "audit crawl 2026-11-01 (cached)",
+   "title": "Pizzeria Giardino Leukerbad | Pizza, Pasta, Penne, Risotto, Restaurant, Essen, Familien, Kinder, Glutenfreie Pizzeria, Glutenfreie Pizzeria im Wallis | Leukerbad | Culinary delights",
+   "bytes": 34631,
+   "sha256": "ae55e72534fc2d7ad7208eed88a13699ce19970ab2a6a480d28cae6e7514ef44",
+   "files": [
+    "en/eat-enjoy.html",
+    "en/eat-enjoy.txt"
+   ]
+  },
+  {
+   "lang": "en",
+   "slug": "kids",
+   "url": "https://pizzeriagiardino.ch/en/kids",
+   "status": 200,
+   "final": "https://pizzeriagiardino.ch/en/kids",
+   "origin": "audit crawl 2026-11-01 (cached)",
+   "title": "Pizzeria Giardino Leukerbad | Pizza, Pasta, Penne, Risotto, Restaurant, Essen, Familien, Kinder, Glutenfreie Pizzeria, Glutenfreie Pizzeria im Wallis | Leukerbad | A restaurant without children???s laughter is just a place to eat ...",
+   "bytes": 36719,
+   "sha256": "6f17a0ea704eb5c6264c426d4ab4b130457017d96f2869f000221f2c160b0535",
+   "files": [
+    "en/kids.html",
+    "en/kids.txt"
+   ]
+  },
+  {
+   "lang": "en",
+   "slug": "host",
+   "url": "https://pizzeriagiardino.ch/en/host",
+   "status": 200,
+   "final": "https://pizzeriagiardino.ch/en/host",
+   "origin": "audit crawl 2026-11-01 (cached)",
+   "title": "Pizzeria Giardino Leukerbad | Pizza, Pasta, Penne, Risotto, Restaurant, Essen, Familien, Kinder, Glutenfreie Pizzeria, Glutenfreie Pizzeria im Wallis | Leukerbad | It is nice being a guest - but feeling at home is even better!",
+   "bytes": 23364,
+   "sha256": "7368debf552d0346497f62e8709dcc4469b040a499a5c39f1d2cbda5e9f9d97a",
+   "files": [
+    "en/host.html",
+    "en/host.txt"
+   ]
+  },
+  {
+   "lang": "en",
+   "slug": "bookings",
+   "url": "https://pizzeriagiardino.ch/en/bookings",
+   "status": 200,
+   "final": "https://pizzeriagiardino.ch/en/bookings",
+   "origin": "audit crawl 2026-11-01 (cached)",
+   "title": "Pizzeria Giardino Leukerbad | Pizza, Pasta, Penne, Risotto, Restaurant, Essen, Familien, Kinder, Glutenfreie Pizzeria, Glutenfreie Pizzeria im Wallis | Leukerbad | Table bookings",
+   "bytes": 21295,
+   "sha256": "7524c451d61c57afb4499de45369b2640a17a6299347de56551a905bc000229f",
+   "files": [
+    "en/bookings.html",
+    "en/bookings.txt"
+   ]
+  },
+  {
+   "lang": "en",
+   "slug": "partner-hotels",
+   "url": "https://pizzeriagiardino.ch/en/partner-hotels",
+   "status": 200,
+   "final": "https://pizzeriagiardino.ch/en/partner-hotels",
+   "origin": "audit crawl 2026-11-01 (cached)",
+   "title": "Pizzeria Giardino Leukerbad | Pizza, Pasta, Penne, Risotto, Restaurant, Essen, Familien, Kinder, Glutenfreie Pizzeria, Glutenfreie Pizzeria im Wallis | Leukerbad",
+   "bytes": 20373,
+   "sha256": "2308003c40d2df81968816ea7dff42e01919839d58b170b17537d40f6025fe96",
+   "files": [
+    "en/partner-hotels.html",
+    "en/partner-hotels.txt"
+   ]
+  },
+  {
+   "lang": "en",
+   "slug": "imprint",
+   "url": "https://pizzeriagiardino.ch/en/imprint",
+   "status": 200,
+   "final": "https://pizzeriagiardino.ch/en/imprint",
+   "origin": "audit crawl 2026-11-01 (cached)",
+   "title": "Pizzeria Giardino Leukerbad | Pizza, Pasta, Penne, Risotto, Restaurant, Essen, Familien, Kinder, Glutenfreie Pizzeria, Glutenfreie Pizzeria im Wallis | Leukerbad | Imprint",
+   "bytes": 18214,
+   "sha256": "a0f949b687b721b27bafeaa512886228fd90e9cc37ee341ebd750b84f95f6796",
+   "files": [
+    "en/imprint.html",
+    "en/imprint.txt"
+   ]
+  },
+  {
+   "lang": "en",
+   "slug": "meta_jobs",
+   "url": "https://pizzeriagiardino.ch/en/meta/jobs",
+   "status": 200,
+   "final": "https://pizzeriagiardino.ch/en/meta/jobs",
+   "origin": "audit crawl 2026-11-01 (cached)",
+   "title": "Pizzeria Giardino Leukerbad | Pizza, Pasta, Penne, Risotto, Restaurant, Essen, Familien, Kinder, Glutenfreie Pizzeria, Glutenfreie Pizzeria im Wallis | Leukerbad | Jobs",
+   "bytes": 18278,
+   "sha256": "e356b2a38dc2158eb897be6d653d56f8c447e590cd8b08c8769d21d758148f03",
+   "files": [
+    "en/meta_jobs.html",
+    "en/meta_jobs.txt"
+   ]
+  },
+  {
+   "lang": "en",
+   "slug": "meta_arrival",
+   "url": "https://pizzeriagiardino.ch/en/meta/arrival",
+   "status": 200,
+   "final": "https://pizzeriagiardino.ch/en/meta/arrival",
+   "origin": "audit crawl 2026-11-01 (cached)",
+   "title": "Pizzeria Giardino Leukerbad | Pizza, Pasta, Penne, Risotto, Restaurant, Essen, Familien, Kinder, Glutenfreie Pizzeria, Glutenfreie Pizzeria im Wallis | Leukerbad | Arrival",
+   "bytes": 19772,
+   "sha256": "f1721f92b451a1d9e60de3a76619b154a4d1bfa010ad8b3e9ecf592fcb8ecf4f",
+   "files": [
+    "en/meta_arrival.html",
+    "en/meta_arrival.txt"
+   ]
+  },
+  {
+   "lang": "en",
+   "slug": "meta_virtual-tour",
+   "url": "https://pizzeriagiardino.ch/en/meta/virtual-tour",
+   "status": 200,
+   "final": "https://pizzeriagiardino.ch/en/meta/virtual-tour",
+   "origin": "audit crawl 2026-11-01 (cached)",
+   "title": "Pizzeria Giardino Leukerbad | Pizza, Pasta, Penne, Risotto, Restaurant, Essen, Familien, Kinder, Glutenfreie Pizzeria, Glutenfreie Pizzeria im Wallis | Leukerbad | Virtual tour",
+   "bytes": 18064,
+   "sha256": "de4c74feac5d117009224fe817d2d680833a58593fd940895df5d2b3ff1fbd41",
+   "files": [
+    "en/meta_virtual-tour.html",
+    "en/meta_virtual-tour.txt"
+   ]
+  },
+  {
+   "lang": "en",
+   "slug": "meta_press",
+   "url": "https://pizzeriagiardino.ch/en/meta/press",
+   "status": 200,
+   "final": "https://pizzeriagiardino.ch/en/meta/press",
+   "origin": "audit crawl 2026-11-01 (cached)",
+   "title": "Pizzeria Giardino Leukerbad | Pizza, Pasta, Penne, Risotto, Restaurant, Essen, Familien, Kinder, Glutenfreie Pizzeria, Glutenfreie Pizzeria im Wallis | Leukerbad | Press",
+   "bytes": 20213,
+   "sha256": "f2908977918629e963fc4230566063eadf19e9aa5143f49e618cc9dd4335e8e3",
+   "files": [
+    "en/meta_press.html",
+    "en/meta_press.txt"
+   ]
+  },
+  {
+   "lang": "en",
+   "slug": "meta_contact",
+   "url": "https://pizzeriagiardino.ch/en/meta/contact",
+   "status": 200,
+   "final": "https://pizzeriagiardino.ch/en/meta/contact",
+   "origin": "audit crawl 2026-11-01 (cached)",
+   "title": "Pizzeria Giardino Leukerbad | Pizza, Pasta, Penne, Risotto, Restaurant, Essen, Familien, Kinder, Glutenfreie Pizzeria, Glutenfreie Pizzeria im Wallis | Leukerbad | Contact",
+   "bytes": 21892,
+   "sha256": "fa5367adcdc2dcc1a1efca6327da6984b0c4d33e5b6842b420dbd6624f5fe75a",
+   "files": [
+    "en/meta_contact.html",
+    "en/meta_contact.txt"
+   ]
+  },
+  {
+   "lang": "fr",
+   "slug": "home",
+   "url": "https://pizzeriagiardino.ch/fr",
+   "status": 200,
+   "final": "https://pizzeriagiardino.ch/fr",
+   "origin": "audit crawl 2026-11-01 (cached)",
+   "title": "Pizzeria Giardino Leukerbad | Pizza, Pasta, Penne, Risotto, Restaurant, Essen, Familien, Kinder, Glutenfreie Pizzeria, Glutenfreie Pizzeria im Wallis | Leukerbad | Giardino - la pizzeria insolite de Leukerbad",
+   "bytes": 36148,
+   "sha256": "8a983dbca2f6846af6c34baaab76e6866410d2d0f39925560902764e696a2526",
+   "files": [
+    "fr/home.html",
+    "fr/home.txt"
+   ]
+  },
+  {
+   "lang": "fr",
+   "slug": "manger-et-savourer",
+   "url": "https://pizzeriagiardino.ch/fr/manger-et-savourer",
+   "status": 200,
+   "final": "https://pizzeriagiardino.ch/fr/manger-et-savourer",
+   "origin": "audit crawl 2026-11-01 (cached)",
+   "title": "Pizzeria Giardino Leukerbad | Pizza, Pasta, Penne, Risotto, Restaurant, Essen, Familien, Kinder, Glutenfreie Pizzeria, Glutenfreie Pizzeria im Wallis | Leukerbad | Plaisirs culinaires",
+   "bytes": 34844,
+   "sha256": "ed3fb6b81f4fb66d2b0a9caa5791e225934a4f870833214aeda99169b3e04928",
+   "files": [
+    "fr/manger-et-savourer.html",
+    "fr/manger-et-savourer.txt"
+   ]
+  },
+  {
+   "lang": "fr",
+   "slug": "enfants",
+   "url": "https://pizzeriagiardino.ch/fr/enfants",
+   "status": 200,
+   "final": "https://pizzeriagiardino.ch/fr/enfants",
+   "origin": "audit crawl 2026-11-01 (cached)",
+   "title": "Pizzeria Giardino Leukerbad | Pizza, Pasta, Penne, Risotto, Restaurant, Essen, Familien, Kinder, Glutenfreie Pizzeria, Glutenfreie Pizzeria im Wallis | Leukerbad | Un restaurant sans rires d???enfants n???est rien d???autre qu???un local ???",
+   "bytes": 36990,
+   "sha256": "7f7a60b7294be1785344ae2c4f6bfe58ac4dfb0e7e48a5dc1041c2584a895a3b",
+   "files": [
+    "fr/enfants.html",
+    "fr/enfants.txt"
+   ]
+  },
+  {
+   "lang": "fr",
+   "slug": "hotes",
+   "url": "https://pizzeriagiardino.ch/fr/hotes",
+   "status": 200,
+   "final": "https://pizzeriagiardino.ch/fr/hotes",
+   "origin": "audit crawl 2026-11-01 (cached)",
+   "title": "Pizzeria Giardino Leukerbad | Pizza, Pasta, Penne, Risotto, Restaurant, Essen, Familien, Kinder, Glutenfreie Pizzeria, Glutenfreie Pizzeria im Wallis | Leukerbad | ??tre reçu comme un hôte, c???est bien - se sentir comme à la maison, c???est encore mieux!",
+   "bytes": 23720,
+   "sha256": "a352ed0ed9c4f553811481762cadb2c52fcfa43f4a3e30cbcb890f36945c9555",
+   "files": [
+    "fr/hotes.html",
+    "fr/hotes.txt"
+   ]
+  },
+  {
+   "lang": "fr",
+   "slug": "reservation",
+   "url": "https://pizzeriagiardino.ch/fr/reservation",
+   "status": 200,
+   "final": "https://pizzeriagiardino.ch/fr/reservation",
+   "origin": "audit crawl 2026-11-01 (cached)",
+   "title": "Pizzeria Giardino Leukerbad | Pizza, Pasta, Penne, Risotto, Restaurant, Essen, Familien, Kinder, Glutenfreie Pizzeria, Glutenfreie Pizzeria im Wallis | Leukerbad | Réservation de table",
+   "bytes": 21449,
+   "sha256": "60dfece655f2238599429d4ebf549490f2fd92b0a27bef1ac87b7e2c515c9117",
+   "files": [
+    "fr/reservation.html",
+    "fr/reservation.txt"
+   ]
+  },
+  {
+   "lang": "fr",
+   "slug": "hotel-partner",
+   "url": "https://pizzeriagiardino.ch/fr/hotel-partner",
+   "status": 200,
+   "final": "https://pizzeriagiardino.ch/fr/hotel-partner",
+   "origin": "audit crawl 2026-11-01 (cached)",
+   "title": "Pizzeria Giardino Leukerbad | Pizza, Pasta, Penne, Risotto, Restaurant, Essen, Familien, Kinder, Glutenfreie Pizzeria, Glutenfreie Pizzeria im Wallis | Leukerbad",
+   "bytes": 20620,
+   "sha256": "6e9b7d10f8986faa5ad3b9337d83893b53d5b69e479718bde6d542787a675534",
+   "files": [
+    "fr/hotel-partner.html",
+    "fr/hotel-partner.txt"
+   ]
+  },
+  {
+   "lang": "fr",
+   "slug": "empreinte",
+   "url": "https://pizzeriagiardino.ch/fr/empreinte",
+   "status": 200,
+   "final": "https://pizzeriagiardino.ch/fr/empreinte",
+   "origin": "audit crawl 2026-11-01 (cached)",
+   "title": "Pizzeria Giardino Leukerbad | Pizza, Pasta, Penne, Risotto, Restaurant, Essen, Familien, Kinder, Glutenfreie Pizzeria, Glutenfreie Pizzeria im Wallis | Leukerbad | Empreinte",
+   "bytes": 18379,
+   "sha256": "16848bf4ba54c5741ef92eb546d6faabedd6bd573906fdb10c1ca7eee48aed19",
+   "files": [
+    "fr/empreinte.html",
+    "fr/empreinte.txt"
+   ]
+  },
+  {
+   "lang": "fr",
+   "slug": "meta_emplois",
+   "url": "https://pizzeriagiardino.ch/fr/meta/emplois",
+   "status": 200,
+   "final": "https://pizzeriagiardino.ch/fr/meta/emplois",
+   "origin": "audit crawl 2026-11-01 (cached)",
+   "title": "Pizzeria Giardino Leukerbad | Pizza, Pasta, Penne, Risotto, Restaurant, Essen, Familien, Kinder, Glutenfreie Pizzeria, Glutenfreie Pizzeria im Wallis | Leukerbad | Emplois",
+   "bytes": 18414,
+   "sha256": "626d217cffe0b620e86ae444910f3ef4f1fa3d4c8709b84ae0744b47a6702c14",
+   "files": [
+    "fr/meta_emplois.html",
+    "fr/meta_emplois.txt"
+   ]
+  },
+  {
+   "lang": "fr",
+   "slug": "meta_arrivee",
+   "url": "https://pizzeriagiardino.ch/fr/meta/arrivee",
+   "status": 200,
+   "final": "https://pizzeriagiardino.ch/fr/meta/arrivee",
+   "origin": "audit crawl 2026-11-01 (cached)",
+   "title": "Pizzeria Giardino Leukerbad | Pizza, Pasta, Penne, Risotto, Restaurant, Essen, Familien, Kinder, Glutenfreie Pizzeria, Glutenfreie Pizzeria im Wallis | Leukerbad | Arrivée",
+   "bytes": 19918,
+   "sha256": "51d25f6b09376bcca2851f04d4e11a3c8f4b991a5912d6087cc730a389b992c8",
+   "files": [
+    "fr/meta_arrivee.html",
+    "fr/meta_arrivee.txt"
+   ]
+  },
+  {
+   "lang": "fr",
+   "slug": "meta_tour-virtuel",
+   "url": "https://pizzeriagiardino.ch/fr/meta/tour-virtuel",
+   "status": 200,
+   "final": "https://pizzeriagiardino.ch/fr/meta/tour-virtuel",
+   "origin": "audit crawl 2026-11-01 (cached)",
+   "title": "Pizzeria Giardino Leukerbad | Pizza, Pasta, Penne, Risotto, Restaurant, Essen, Familien, Kinder, Glutenfreie Pizzeria, Glutenfreie Pizzeria im Wallis | Leukerbad | Tour virtuel",
+   "bytes": 18209,
+   "sha256": "5c27cca1aa01f1bfeaee4c019504a3b9e41a6f813368a0efaaec52803181551d",
+   "files": [
+    "fr/meta_tour-virtuel.html",
+    "fr/meta_tour-virtuel.txt"
+   ]
+  },
+  {
+   "lang": "fr",
+   "slug": "meta_presse",
+   "url": "https://pizzeriagiardino.ch/fr/meta/presse",
+   "status": 200,
+   "final": "https://pizzeriagiardino.ch/fr/meta/presse",
+   "origin": "audit crawl 2026-11-01 (cached)",
+   "title": "Pizzeria Giardino Leukerbad | Pizza, Pasta, Penne, Risotto, Restaurant, Essen, Familien, Kinder, Glutenfreie Pizzeria, Glutenfreie Pizzeria im Wallis | Leukerbad | Presse",
+   "bytes": 20363,
+   "sha256": "74b3520b17c5b1f41195b1901c96082ac20e0a35e4ce91a20cc0b9de0ee13a6f",
+   "files": [
+    "fr/meta_presse.html",
+    "fr/meta_presse.txt"
+   ]
+  },
+  {
+   "lang": "fr",
+   "slug": "meta_contact",
+   "url": "https://pizzeriagiardino.ch/fr/meta/contact",
+   "status": 200,
+   "final": "https://pizzeriagiardino.ch/fr/meta/contact",
+   "origin": "audit crawl 2026-11-01 (cached)",
+   "title": "Pizzeria Giardino Leukerbad | Pizza, Pasta, Penne, Risotto, Restaurant, Essen, Familien, Kinder, Glutenfreie Pizzeria, Glutenfreie Pizzeria im Wallis | Leukerbad | Contact",
+   "bytes": 22139,
+   "sha256": "cd862c6aca9afab75657ccd00bcca463129900ccd3e338c982ce32ca80cb5e87",
+   "files": [
+    "fr/meta_contact.html",
+    "fr/meta_contact.txt"
+   ]
+  },
+  {
+   "lang": "it",
+   "slug": "home",
+   "url": "https://pizzeriagiardino.ch/it",
+   "status": 200,
+   "final": "https://pizzeriagiardino.ch/it",
+   "origin": "audit crawl 2026-11-01 (cached)",
+   "title": "Pizzeria Giardino Leukerbad | Pizza, Pasta, Penne, Risotto, Restaurant, Essen, Familien, Kinder, Glutenfreie Pizzeria, Glutenfreie Pizzeria im Wallis | Leukerbad | Giardino - la pizzeria del buon gusto a Leukerbad",
+   "bytes": 36196,
+   "sha256": "8c25dc0c087051a7f3ebda1bb703b9449e61aeb3479281d66b018d52c3c4716d",
+   "files": [
+    "it/home.html",
+    "it/home.txt"
+   ]
+  },
+  {
+   "lang": "it",
+   "slug": "mangia-e-divertiti",
+   "url": "https://pizzeriagiardino.ch/it/mangia-e-divertiti",
+   "status": 200,
+   "final": "https://pizzeriagiardino.ch/it/mangia-e-divertiti",
+   "origin": "audit crawl 2026-11-01 (cached)",
+   "title": "Pizzeria Giardino Leukerbad | Pizza, Pasta, Penne, Risotto, Restaurant, Essen, Familien, Kinder, Glutenfreie Pizzeria, Glutenfreie Pizzeria im Wallis | Leukerbad | I piaceri del palato",
+   "bytes": 34911,
+   "sha256": "ced3a36bc7faf38394550035152ccbc86930af27b5fcfe39643819aace01942f",
+   "files": [
+    "it/mangia-e-divertiti.html",
+    "it/mangia-e-divertiti.txt"
+   ]
+  },
+  {
+   "lang": "it",
+   "slug": "kids",
+   "url": "https://pizzeriagiardino.ch/it/kids",
+   "status": 200,
+   "final": "https://pizzeriagiardino.ch/it/kids",
+   "origin": "audit crawl 2026-11-01 (cached)",
+   "title": "Pizzeria Giardino Leukerbad | Pizza, Pasta, Penne, Risotto, Restaurant, Essen, Familien, Kinder, Glutenfreie Pizzeria, Glutenfreie Pizzeria im Wallis | Leukerbad | Un ristorante senza le risate dei bambini non ha vita ...",
+   "bytes": 36860,
+   "sha256": "7f2bd3fbf0d3b8bdb73b5a9cb793f0e73c84f95032c9bd05cb614bd4064b6209",
+   "files": [
+    "it/kids.html",
+    "it/kids.txt"
+   ]
+  },
+  {
+   "lang": "it",
+   "slug": "la-casa",
+   "url": "https://pizzeriagiardino.ch/it/la-casa",
+   "status": 200,
+   "final": "https://pizzeriagiardino.ch/it/la-casa",
+   "origin": "audit crawl 2026-11-01 (cached)",
+   "title": "Pizzeria Giardino Leukerbad | Pizza, Pasta, Penne, Risotto, Restaurant, Essen, Familien, Kinder, Glutenfreie Pizzeria, Glutenfreie Pizzeria im Wallis | Leukerbad | Sentirsi ospiti è bello - ma sentirsi come a casa è ancora meglio!",
+   "bytes": 23594,
+   "sha256": "0df67d7821e8e04ff511085333e0d4f815ad9087ee9bd6eb497d38422cb5aca5",
+   "files": [
+    "it/la-casa.html",
+    "it/la-casa.txt"
+   ]
+  },
+  {
+   "lang": "it",
+   "slug": "prenotazione",
+   "url": "https://pizzeriagiardino.ch/it/prenotazione",
+   "status": 200,
+   "final": "https://pizzeriagiardino.ch/it/prenotazione",
+   "origin": "audit crawl 2026-11-01 (cached)",
+   "title": "Pizzeria Giardino Leukerbad | Pizza, Pasta, Penne, Risotto, Restaurant, Essen, Familien, Kinder, Glutenfreie Pizzeria, Glutenfreie Pizzeria im Wallis | Leukerbad | Prenotazione tavolo",
+   "bytes": 21484,
+   "sha256": "dbe093e7b448f22cb729101818e735dc9c808e33c0adb886bd0cad4f9969a12b",
+   "files": [
+    "it/prenotazione.html",
+    "it/prenotazione.txt"
+   ]
+  },
+  {
+   "lang": "it",
+   "slug": "partner-albergos",
+   "url": "https://pizzeriagiardino.ch/it/partner-albergos",
+   "status": 200,
+   "final": "https://pizzeriagiardino.ch/it/partner-albergos",
+   "origin": "audit crawl 2026-11-01 (cached)",
+   "title": "Pizzeria Giardino Leukerbad | Pizza, Pasta, Penne, Risotto, Restaurant, Essen, Familien, Kinder, Glutenfreie Pizzeria, Glutenfreie Pizzeria im Wallis | Leukerbad",
+   "bytes": 20526,
+   "sha256": "9db161d1df05636caef45efb9f888b4eb2669d3dd584f4417557c3ca0bbafb06",
+   "files": [
+    "it/partner-albergos.html",
+    "it/partner-albergos.txt"
+   ]
+  },
+  {
+   "lang": "it",
+   "slug": "impronta",
+   "url": "https://pizzeriagiardino.ch/it/impronta",
+   "status": 200,
+   "final": "https://pizzeriagiardino.ch/it/impronta",
+   "origin": "audit crawl 2026-11-01 (cached)",
+   "title": "Pizzeria Giardino Leukerbad | Pizza, Pasta, Penne, Risotto, Restaurant, Essen, Familien, Kinder, Glutenfreie Pizzeria, Glutenfreie Pizzeria im Wallis | Leukerbad | Impress",
+   "bytes": 18364,
+   "sha256": "407db7c3e0b3403cf9fbbff592992ef2c435ea1ba0a9af4cfac85016947655c6",
+   "files": [
+    "it/impronta.html",
+    "it/impronta.txt"
+   ]
+  },
+  {
+   "lang": "it",
+   "slug": "meta_lavoro",
+   "url": "https://pizzeriagiardino.ch/it/meta/lavoro",
+   "status": 200,
+   "final": "https://pizzeriagiardino.ch/it/meta/lavoro",
+   "origin": "audit crawl 2026-11-01 (cached)",
+   "title": "Pizzeria Giardino Leukerbad | Pizza, Pasta, Penne, Risotto, Restaurant, Essen, Familien, Kinder, Glutenfreie Pizzeria, Glutenfreie Pizzeria im Wallis | Leukerbad | Lavoro",
+   "bytes": 18396,
+   "sha256": "9482736182a63e7ed95b453a2e3d3e7d80a21589fa68f678c6529ae0d7c1511e",
+   "files": [
+    "it/meta_lavoro.html",
+    "it/meta_lavoro.txt"
+   ]
+  },
+  {
+   "lang": "it",
+   "slug": "meta_come-arrivare",
+   "url": "https://pizzeriagiardino.ch/it/meta/come-arrivare",
+   "status": 200,
+   "final": "https://pizzeriagiardino.ch/it/meta/come-arrivare",
+   "origin": "audit crawl 2026-11-01 (cached)",
+   "title": "Pizzeria Giardino Leukerbad | Pizza, Pasta, Penne, Risotto, Restaurant, Essen, Familien, Kinder, Glutenfreie Pizzeria, Glutenfreie Pizzeria im Wallis | Leukerbad | Come arrivare",
+   "bytes": 19939,
+   "sha256": "a12043797264d782bc1a70bd2b77cab30ea2bbfa02ff31fe6dba113dd2f53e91",
+   "files": [
+    "it/meta_come-arrivare.html",
+    "it/meta_come-arrivare.txt"
+   ]
+  },
+  {
+   "lang": "it",
+   "slug": "meta_tour-virtuale",
+   "url": "https://pizzeriagiardino.ch/it/meta/tour-virtuale",
+   "status": 200,
+   "final": "https://pizzeriagiardino.ch/it/meta/tour-virtuale",
+   "origin": "audit crawl 2026-11-01 (cached)",
+   "title": "Pizzeria Giardino Leukerbad | Pizza, Pasta, Penne, Risotto, Restaurant, Essen, Familien, Kinder, Glutenfreie Pizzeria, Glutenfreie Pizzeria im Wallis | Leukerbad | Tour virtuale",
+   "bytes": 18219,
+   "sha256": "2228d013e430cc3629954724e59d7639a52c1525393b1a691498e992e0f15d26",
+   "files": [
+    "it/meta_tour-virtuale.html",
+    "it/meta_tour-virtuale.txt"
+   ]
+  },
+  {
+   "lang": "it",
+   "slug": "meta_stampa",
+   "url": "https://pizzeriagiardino.ch/it/meta/stampa",
+   "status": 200,
+   "final": "https://pizzeriagiardino.ch/it/meta/stampa",
+   "origin": "audit crawl 2026-11-01 (cached)",
+   "title": "Pizzeria Giardino Leukerbad | Pizza, Pasta, Penne, Risotto, Restaurant, Essen, Familien, Kinder, Glutenfreie Pizzeria, Glutenfreie Pizzeria im Wallis | Leukerbad | Stampa",
+   "bytes": 20381,
+   "sha256": "5212737586b31b32aa3c2f7d9836ac492d3b0620c52f2a0e4f8bbc934dc0beb6",
+   "files": [
+    "it/meta_stampa.html",
+    "it/meta_stampa.txt"
+   ]
+  },
+  {
+   "lang": "it",
+   "slug": "meta_contatto",
+   "url": "https://pizzeriagiardino.ch/it/meta/contatto",
+   "status": 200,
+   "final": "https://pizzeriagiardino.ch/it/meta/contatto",
+   "origin": "audit crawl 2026-11-01 (cached)",
+   "title": "Pizzeria Giardino Leukerbad | Pizza, Pasta, Penne, Risotto, Restaurant, Essen, Familien, Kinder, Glutenfreie Pizzeria, Glutenfreie Pizzeria im Wallis | Leukerbad | Contatto",
+   "bytes": 22137,
+   "sha256": "739f6a3a8047fcc2750d3ae24e5d2eadaa4715c54a0522cbc6e15746b73c2afd",
+   "files": [
+    "it/meta_contatto.html",
+    "it/meta_contatto.txt"
+   ]
+  },
+  {
+   "lang": "de",
+   "slug": "allgemein",
+   "url": "https://pizzeriagiardino.ch/de/allgemein",
+   "status": 301,
+   "location": "https://pizzeriagiardino.ch/de",
+   "origin": "fetched 2026-11-01",
+   "files": [
+    "de/allgemein.txt"
+   ]
+  },
+  {
+   "lang": "de",
+   "slug": "allgemein_leukerbad-therme",
+   "url": "https://pizzeriagiardino.ch/de/allgemein/leukerbad-therme",
+   "status": 301,
+   "location": "http://www.leukerbad-therme.ch/",
+   "origin": "fetched 2026-11-01",
+   "files": [
+    "de/allgemein_leukerbad-therme.txt"
+   ]
+  },
+  {
+   "lang": "en",
+   "slug": "meta",
+   "url": "https://pizzeriagiardino.ch/en/meta",
+   "status": 301,
+   "location": "https://pizzeriagiardino.ch/en",
+   "origin": "fetched 2026-11-01",
+   "files": [
+    "en/meta.txt"
+   ]
+  },
+  {
+   "lang": "en",
+   "slug": "meta_leukerbad-therme",
+   "url": "https://pizzeriagiardino.ch/en/meta/leukerbad-therme",
+   "status": 301,
+   "location": "http://www.leukerbad-therme.ch/en/index.php",
+   "origin": "fetched 2026-11-01",
+   "files": [
+    "en/meta_leukerbad-therme.txt"
+   ]
+  },
+  {
+   "lang": "fr",
+   "slug": "meta",
+   "url": "https://pizzeriagiardino.ch/fr/meta",
+   "status": 301,
+   "location": "https://pizzeriagiardino.ch/fr",
+   "origin": "fetched 2026-11-01",
+   "files": [
+    "fr/meta.txt"
+   ]
+  },
+  {
+   "lang": "fr",
+   "slug": "meta_leukerbad-therme",
+   "url": "https://pizzeriagiardino.ch/fr/meta/leukerbad-therme",
+   "status": 301,
+   "location": "http://www.leukerbad-therme.ch/fr/index.php",
+   "origin": "fetched 2026-11-01",
+   "files": [
+    "fr/meta_leukerbad-therme.txt"
+   ]
+  },
+  {
+   "lang": "it",
+   "slug": "meta",
+   "url": "https://pizzeriagiardino.ch/it/meta",
+   "status": 301,
+   "location": "https://pizzeriagiardino.ch/it",
+   "origin": "fetched 2026-11-01",
+   "files": [
+    "it/meta.txt"
+   ]
+  },
+  {
+   "lang": "it",
+   "slug": "meta_leukerbad-therme",
+   "url": "https://pizzeriagiardino.ch/it/meta/leukerbad-therme",
+   "status": 301,
+   "location": "http://www.leukerbad-therme.ch/it/index.php",
+   "origin": "fetched 2026-11-01",
+   "files": [
+    "it/meta_leukerbad-therme.txt"
+   ]
+  },
+  {
+   "lang": null,
+   "slug": "root",
+   "url": "https://pizzeriagiardino.ch/",
+   "status": 301,
+   "location": "/de",
+   "origin": "fetched 2026-11-01",
+   "files": []
+  }
+ ]
+}

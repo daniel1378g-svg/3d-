@@ -1,0 +1,62 @@
+url,found_on,status,final_url,result,note
+http://www.wir.ch/en/,live:en/eat-enjoy,404,https://www.wir.ch/en/,dead,English WIR page; the WIR site no longer has /en/; HTTP 404
+https://about.pinterest.com/de/privacy-policy,live:de/datenschutz,404,https://about.pinterest.com/de/privacy-policy/,dead,HTTP 404
+https://www.food4family.ch/restaurantsuche/wallis/giardino/,live: all 50 pages (header/footer),,,dead,food4family.ch no longer resolves (no DNS); DNS lookup failed (EAI_AGAIN)
+https://www.trustyou.com/wp-content/uploads/2018/05/2017-01-19-TY-Privacy-Policy.pdf,live:de/datenschutz,404,,dead,HTTP 404
+http://optout.networkadvertising.org/,live:de/datenschutz,200,https://thenai.org/how-to-opt-out/,redirect-generic,lands on another site: thenai.org
+http://www.c-and-a.com/ch/de/shop/familienfreundliche-restaurants,live:de/allgemein_presse,200,https://www.c-and-a.com/ch/de/shop/ferien-mit-kindern,redirect-generic,"C&A article taken down; the address redirects to a general shop page; redirected (301, 301)"
+https://plus.google.com/+PizzeriaGiardinoLeukerbad/,live: all 50 pages (header/footer),200,https://workspaceupdates.googleblog.com/2023/04/new-community-features-for-google-chat-and-an-update-currents%20.html,redirect-generic,Google+ was shut down in 2019; lands on another site: workspaceupdates.googleblog.com
+https://twitter.com/de/privacy,live:de/datenschutz,200,https://x.com/de/privacy,redirect-generic,lands on another site: x.com
+https://twitter.com/personalization,live:de/datenschutz,200,https://x.com/personalization,redirect-generic,lands on another site: x.com
+http://www.aboutads.info/choices,live:de/datenschutz,429,https://optout.aboutads.info/,unverifiable,HTTP 429 (blocks automated requests; check in a browser)
+http://www.bestofswissgastro.ch/guide/pizzeria-giardino/,live: all 50 pages (header/footer) | src:src/content/restaurant.ts,503,,unverifiable,HTTP 503 on 2026-11-01
+http://www.tripadvisor.de/Restaurant_Review-g198859-d3640075-Reviews-Pizzeria_Giardino-Leukerbad_Valais_Swiss_Alps.html,live: all 50 pages (header/footer),403,https://www.tripadvisor.de/Restaurant_Review-g198859-d3640075-Reviews-Pizzeria_Giardino-Leukerbad_Valais_Swiss_Alps.html,unverifiable,HTTP 403 (blocks automated requests; check in a browser)
+https://www.facebook.com/pages/Pizzeria-Giardino/140821139297172/,live: all 50 pages (header/footer) | src:src/content/restaurant.ts,200,https://www.facebook.com/login/?next=https%3A%2F%2Fwww.facebook.com%2FPascalPizzeriaGiardino%2F,unverifiable,login wall on www.facebook.com (continues to /PascalPizzeriaGiardino/); check in a browser
+https://www.facebook.com/settings?tab=ads,live:de/datenschutz,200,https://www.facebook.com/login.php?next=https%3A%2F%2Fwww.facebook.com%2Fsettings%3Ftab%3Dads,unverifiable,login wall on www.facebook.com (continues to /settings?tab=ads); check in a browser
+https://www.tripadvisor.ch/Restaurant_Review-g198859-d3640075-Reviews-Pizzeria_Giardino-Leukerbad_Canton_of_Valais_Swiss_Alps.html,live: all 50 pages (header/footer) | src:src/content/restaurant.ts,403,,unverifiable,HTTP 403 (blocks automated requests; check in a browser)
+http://instagram.com/about/legal/privacy/,live:de/datenschutz,200,https://privacycenter.instagram.com/policy/?entry_point=ig_help_center_data_policy_redirect,ok,"redirected (301, 301, 301)"
+http://www.christianpfammatter.ch,live:de/impressum live:en/imprint live:fr/empreinte live:it/impronta | src:src/content/restaurant.ts,200,,ok,
+http://www.hoteljob-schweiz.de,live:en/meta_jobs live:fr/meta_emplois live:it/meta_lavoro,200,https://hoteljob-schweiz.de/,ok,redirected (301)
+http://www.hoteljob-schweiz.de/jobanzeige_extern.php?uid=4037,live:en/meta_jobs (iframe) live:fr/meta_emplois (iframe) live:it/meta_lavoro (iframe),200,https://hoteljob-schweiz.de/pages/job/integrate_jobs?uid=4037,ok,"redirected (301, 301)"
+http://www.indual.ch,live:de/impressum live:en/imprint live:fr/empreinte live:it/impronta,200,https://www.indual.ch/,ok,redirected (301)
+http://www.wir.ch,live:de/essen-geniessen,200,https://www.wir.ch/de/privatkunden/,ok,"redirected (301, 307, 307)"
+http://www.wir.ch/,live: all 50 pages (header/footer),200,https://www.wir.ch/de/privatkunden/,ok,"redirected (301, 307, 307)"
+http://www.wir.ch/fr/,live:fr/manger-et-savourer,200,https://www.wir.ch/fr/clients-prives/,ok,"redirected (301, 307)"
+http://www.wir.ch/it/,live:it/mangia-e-divertiti,200,https://www.wir.ch/it/clienti-privati/,ok,"redirected (301, 307)"
+http://www.youronlinechoices.com/uk/your-ad-choices/,live:de/datenschutz,200,https://www.youronlinechoices.com/uk/your-ad-choices,ok,"redirected (301, 301)"
+http://www.zoeliakie.ch/,live: all 50 pages (header/footer),200,https://www.zoeliakie.ch/de/startseite.html,ok,"redirected (301, 302, 302)"
+https://foursquare.com/v/pizzeria-giardino/4e457acfd4c065cb6b922e71/,live: all 50 pages (header/footer) | src:src/content/restaurant.ts,200,https://app.foursquare.com/login?continue=%2Fv%2Fpizzeria-giardino%2F4e457acfd4c065cb6b922e71,ok,"redirected (308, 302)"
+https://g.co/kgs/BCibBDs,live: all 50 pages (header/footer) | src:src/content/restaurant.ts,200,"https://www.google.com/search?sca_esv=031453346484e3fe&cs=1&output=search&kgmid=/g/1hhh48x9j&q=Restaurant+Pizzeria+Giardino&shndl=30&shem=lcuae,lspt25,uaasie&source=sh/x/loc/uni/m1/1&kgs=b32cd1d2cd5ab2fb",ok,redirected (302)
+https://hoteljob-schweiz.de/pizzeria-giardino-leukerbad-jobs-4037.htm,live:de/allgemein_jobs | src:src/content/restaurant.ts,200,,ok,
+"https://maps.apple.com/?q=Pizzeria%20Giardino&address=Thermenstrasse%209%2C%203954%20Leukerbad%2C%20Switzerland&ll=46.379218212986665,7.627061464418041",src:src/content/restaurant.ts,200,https://maps.apple.com/place?address=Thermenstrasse%209%2C%203954%20Leukerbad%2C%20Switzerland&coordinate=46.379218212986665%2C7.627061464418041&name=Pizzeria%20Giardino,ok,redirected (301)
+https://my.matterport.com/show/?m=W51AKaLxmne,live:de/allgemein_rundgang live:de/allgemein_rundgang (iframe) | src:src/content/restaurant.ts,403,,ok,"player page HTTP 403; tour confirmed via Matterport oEmbed (HTTP 200, title «Pizzeria Giardino 2022»)"
+https://my.matterport.com/show/?m=W51AKaLxmne&lang=en,live:en/meta_virtual-tour live:en/meta_virtual-tour (iframe) | src:src/content/restaurant.ts,403,,ok,"player page HTTP 403; tour confirmed via Matterport oEmbed (HTTP 200, title «Pizzeria Giardino 2022»)"
+https://my.matterport.com/show/?m=W51AKaLxmne&lang=fr,live:fr/meta_tour-virtuel live:fr/meta_tour-virtuel (iframe) | src:src/content/restaurant.ts,403,,ok,"player page HTTP 403; tour confirmed via Matterport oEmbed (HTTP 200, title «Pizzeria Giardino 2022»)"
+https://my.matterport.com/show/?m=W51AKaLxmne&lang=it,live:it/meta_tour-virtuale live:it/meta_tour-virtuale (iframe) | src:src/content/restaurant.ts,403,,ok,"player page HTTP 403; tour confirmed via Matterport oEmbed (HTTP 200, title «Pizzeria Giardino 2022»)"
+https://privacy.fusedeck.net/de/CRIkzvXsvg,live:de/datenschutz,200,,ok,
+https://social.babyfreundlich.ch/ort/leukerbad/pizzeria-giardino/,live: all 50 pages (header/footer) | src:src/content/restaurant.ts,200,,ok,
+https://support.google.com/analytics/answer/6004245?hl=de,live:de/datenschutz,200,,ok,
+https://tools.google.com/dlpage/gaoptout?hl=de,live:de/datenschutz,200,,ok,
+https://tripadvisor.mediaroom.com/CHDE-privacy-policy,live:de/datenschutz,200,,ok,
+https://viktoria-leukerbad.ch,live:de/partnerhotels live:en/partner-hotels live:fr/hotel-partner live:it/partner-albergos | src:src/content/restaurant.ts,200,,ok,
+https://www.dodeley.com/impressum?language=de,live:de/datenschutz,200,,ok,
+https://www.facebook.com/business/help/651294705016616,live:de/datenschutz,200,https://www.facebook.com/business/help/742478679120153,ok,redirected (302)
+https://www.facebook.com/policy.php,live:de/datenschutz,200,https://www.facebook.com/privacy/policy/?entry_point=data_policy_redirect&entry=0,ok,redirected (302)
+https://www.felizzio.com/de/pizzeriagiardino/shop,live:de/allgemein_anreise live:de/allgemein_impressionen live:de/allgemein_jobs live:de/allgemein_kontakt live:de/allgemein_presse live:de/allgemein_rundgang live:de/datenschutz live:de/essen-geniessen live:de/gastgeber live:de/home live:de/impressum live:de/kids live:de/partnerhotels live:de/reservation | src:src/content/restaurant.ts,200,,ok,
+https://www.felizzio.com/en/pizzeriagiardino/shop,live:en/bookings live:en/eat-enjoy live:en/home live:en/host live:en/imprint live:en/kids live:en/meta_arrival live:en/meta_contact live:en/meta_jobs live:en/meta_press live:en/meta_virtual-tour live:en/partner-hotels live:it/home live:it/impronta live:it/kids live:it/la-casa live:it/mangia-e-divertiti live:it/meta_come-arrivare live:it/meta_contatto live:it/meta_lavoro live:it/meta_stampa live:it/meta_tour-virtuale live:it/partner-albergos live:it/prenotazione | src:src/content/restaurant.ts,200,,ok,
+https://www.felizzio.com/fr/pizzeriagiardino/shop,live:fr/empreinte live:fr/enfants live:fr/home live:fr/hotel-partner live:fr/hotes live:fr/manger-et-savourer live:fr/meta_arrivee live:fr/meta_contact live:fr/meta_emplois live:fr/meta_presse live:fr/meta_tour-virtuel live:fr/reservation | src:src/content/restaurant.ts,200,,ok,
+https://www.felizzio.com/it/pizzeriagiardino/shop,src:src/content/restaurant.ts,200,,ok,
+https://www.google.com/maps/search/?api=1&query=Pizzeria%20Giardino%2C%20Thermenstrasse%209%2C%203954%20Leukerbad,src:src/content/restaurant.ts,200,,ok,
+https://www.google.de/intl/de/policies/privacy,live:de/datenschutz,200,https://www.google.de/intl/de/policies/privacy/,ok,redirected (301)
+https://www.google.de/intl/de/policies/privacy/,live:de/datenschutz,200,,ok,
+https://www.heilquelle.ch,live:de/partnerhotels live:en/partner-hotels live:fr/hotel-partner live:it/partner-albergos | src:src/content/restaurant.ts,200,,ok,
+https://www.hotel-paradis.ch,live:de/partnerhotels live:en/partner-hotels live:fr/hotel-partner live:it/partner-albergos | src:src/content/restaurant.ts,200,,ok,
+https://www.indual.ch,live: all 50 pages (header/footer),200,,ok,
+https://www.indual.ch/webseiten/professionelles-webdesign-aus-dem-wallis,live:de/impressum live:en/imprint live:fr/empreinte live:it/impronta,200,,ok,
+https://www.leukerbad.ch/therme,src:src/content/restaurant.ts src:src/routes.ts,200,,ok,
+https://www.myswitzerland.com/de-ch/wellness-destinaton-quality.html,live: all 50 pages (header/footer) | src:src/content/restaurant.ts,200,,ok,
+https://www.privacyshield.gov/participant?id=a2zt0000000GnywAAC&status=Active),live:de/datenschutz,200,https://www.privacyshield.gov/ps/participant?id=a2zt0000000GnywAAC&status=Active),ok,redirected (301)
+https://www.privacyshield.gov/participant?id=a2zt0000000TORzAAO&status=Active,live:de/datenschutz,200,https://www.privacyshield.gov/ps/participant?id=a2zt0000000TORzAAO&status=Active,ok,redirected (301)
+https://www.wir.ch/,src:src/content/restaurant.ts src:src/home/Sections.tsx,200,https://www.wir.ch/de/privatkunden/,ok,"redirected (307, 307)"
+https://www.youtube.com/watch?v=ml0f9Xh8waU,live:de/allgemein_presse live:en/meta_press live:fr/meta_presse live:it/meta_stampa | src:src/content/restaurant.ts,429,https://www.google.com/sorry/index?continue=https://www.youtube.com/watch%3Fv%3Dml0f9Xh8waU&q=EhD9o-ciCsPMAAEdYnUKAgIaGMfhntcGIjDZdTJK9Z3U5hfAHVJDXPnVd0op10eNvZZ_ZfAIL2Vzr9-Zr7wP-HuON5IGohE2aYIyAnJSWgFDYIWqhZWusv3BzAE,ok,watch page HTTP 429; video confirmed via YouTube oEmbed (HTTP 200)
+https://www.zoeliakie.ch/,src:src/content/restaurant.ts,200,https://www.zoeliakie.ch/de/startseite.html,ok,"redirected (302, 302)"

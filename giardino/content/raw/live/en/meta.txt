@@ -1,0 +1,4 @@
+URL: https://pizzeriagiardino.ch/en/meta
+STATUS: 301
+LOCATION: https://pizzeriagiardino.ch/en
+NOTE: requested 2026-11-01 without following the redirect (GET).

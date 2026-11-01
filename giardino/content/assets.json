@@ -1,0 +1,1831 @@
+{
+ "note": "Every original photograph of pizzeriagiardino.ch (crawled 01.11.2026): 47 distinct files in data/Ressources (4 more are byte-identical re-uploads; one of the 47 is the Family Destination graphic) plus the two full-screen site backgrounds that exist only as 3200 px cache copies – 48 photographs and 1 graphic. liveOn = pages of the live site; usedOn = places on the new site (every page exists in de/en/fr/it). Consent notes are for the owners.",
+ "counts": {
+  "photographs": 48,
+  "placed": 48,
+  "placedOutsideGallery": 45,
+  "graphics": 1,
+  "consentToConfirm": 6
+ },
+ "assets": [
+  {
+   "id": "interior-bar",
+   "source": "https://pizzeriagiardino.ch/data/Ressources/1355477987-_J7A0250_1_2_3_4_5_fused.jpg",
+   "file": "1355477987-_J7A0250_1_2_3_4_5_fused.jpg",
+   "year": 2012,
+   "category": "ambience",
+   "alt": {
+    "de": "Gaststube mit Holzdecke, Hängeleuchten und Bar",
+    "en": "Dining room with a timber ceiling, pendant lights and the bar",
+    "fr": "Salle au plafond de bois, avec suspensions et bar",
+    "it": "Sala con soffitto in legno, lampade a sospensione e bar"
+   },
+   "liveOn": [
+    "de/allgemein/impressionen"
+   ],
+   "people": null,
+   "note": null,
+   "hero": false,
+   "focus": "50% 50%",
+   "original": {
+    "width": 1600,
+    "height": 1066,
+    "bytes": 1095088,
+    "sha256": "7acad1a50e2bf29b6a54bcd5c5c9a5e78a3c23cb82c29ff2f6c7e45db151f7b8"
+   },
+   "rights": "© Pizzeria Giardino – published on pizzeriagiardino.ch; used only for this unofficial design proposal",
+   "credit": "Christian Pfammatter, Visp",
+   "creditNote": "The Impressum credits Christian Pfammatter for the photography without naming the photos; attributed to the 2012 and 2016 sets – to confirm with the owners",
+   "consent": null,
+   "usedOn": [
+    "gallery (all photographs, with lightbox)",
+    "home: GalleryTeaser",
+    "tour"
+   ]
+  },
+  {
+   "id": "interior-room",
+   "source": "https://pizzeriagiardino.ch/data/Ressources/1355478039-_J7A0132_3_4_5_7_8_9_fused.jpg",
+   "file": "1355478039-_J7A0132_3_4_5_7_8_9_fused.jpg",
+   "year": 2012,
+   "category": "ambience",
+   "alt": {
+    "de": "Blick durch die Gaststube zur Bar und zu den Fenstern",
+    "en": "View across the dining room to the bar and the windows",
+    "fr": "Vue de la salle vers le bar et les fenêtres",
+    "it": "Vista della sala verso il bar e le finestre"
+   },
+   "liveOn": [
+    "de/allgemein/impressionen"
+   ],
+   "people": null,
+   "note": null,
+   "hero": false,
+   "focus": "50% 50%",
+   "original": {
+    "width": 1600,
+    "height": 1066,
+    "bytes": 1074472,
+    "sha256": "e536d22c4463d4966f7d135b8e3166fb59189fab7b38d00048c35f53c8ec266a"
+   },
+   "rights": "© Pizzeria Giardino – published on pizzeriagiardino.ch; used only for this unofficial design proposal",
+   "credit": "Christian Pfammatter, Visp",
+   "creditNote": "The Impressum credits Christian Pfammatter for the photography without naming the photos; attributed to the 2012 and 2016 sets – to confirm with the owners",
+   "consent": null,
+   "usedOn": [
+    "gallery (all photographs, with lightbox)",
+    "jobs"
+   ]
+  },
+  {
+   "id": "entrance-bar",
+   "source": "https://pizzeriagiardino.ch/data/Ressources/1355506397-_J7A0168_69_70_71_72_73_74_fused.jpg",
+   "file": "1355506397-_J7A0168_69_70_71_72_73_74_fused.jpg",
+   "year": 2012,
+   "category": "ambience",
+   "alt": {
+    "de": "Eingangsbereich mit Stehtischen und Barhockern",
+    "en": "Entrance area with high tables and bar stools",
+    "fr": "Entrée avec tables hautes et tabourets de bar",
+    "it": "Ingresso con tavoli alti e sgabelli"
+   },
+   "liveOn": [
+    "de/reservation",
+    "en/bookings",
+    "fr/reservation",
+    "it/prenotazione"
+   ],
+   "people": null,
+   "note": null,
+   "hero": false,
+   "focus": "50% 50%",
+   "original": {
+    "width": 1600,
+    "height": 1066,
+    "bytes": 984833,
+    "sha256": "1c5f46a2a985840e431569a5fbee6bf678f6a4cc0bc6582095713b014c898bf4"
+   },
+   "rights": "© Pizzeria Giardino – published on pizzeriagiardino.ch; used only for this unofficial design proposal",
+   "credit": "Christian Pfammatter, Visp",
+   "creditNote": "The Impressum credits Christian Pfammatter for the photography without naming the photos; attributed to the 2012 and 2016 sets – to confirm with the owners",
+   "consent": null,
+   "usedOn": [
+    "gallery (all photographs, with lightbox)"
+   ]
+  },
+  {
+   "id": "interior-stone",
+   "source": "https://pizzeriagiardino.ch/data/Ressources/1355506659-_J7A0256_57_58_59_60_fused.jpg",
+   "file": "1355506659-_J7A0256_57_58_59_60_fused.jpg",
+   "year": 2012,
+   "category": "ambience",
+   "alt": {
+    "de": "Gaststube mit Natursteinwand und gedeckten Tischen",
+    "en": "Dining room with a natural stone wall and laid tables",
+    "fr": "Salle avec mur de pierre naturelle et tables dressées",
+    "it": "Sala con parete in pietra naturale e tavoli apparecchiati"
+   },
+   "liveOn": [
+    "de/reservation",
+    "en/bookings",
+    "fr/reservation",
+    "it/prenotazione",
+    "de/allgemein/impressionen"
+   ],
+   "people": null,
+   "note": null,
+   "hero": false,
+   "focus": "50% 50%",
+   "original": {
+    "width": 1600,
+    "height": 1066,
+    "bytes": 1063897,
+    "sha256": "d868749a3cc34a258137d2e408e130eee248914729c9fcbba0e45b2b12352151"
+   },
+   "rights": "© Pizzeria Giardino – published on pizzeriagiardino.ch; used only for this unofficial design proposal",
+   "credit": "Christian Pfammatter, Visp",
+   "creditNote": "The Impressum credits Christian Pfammatter for the photography without naming the photos; attributed to the 2012 and 2016 sets – to confirm with the owners",
+   "consent": null,
+   "usedOn": [
+    "gallery (all photographs, with lightbox)",
+    "reserve"
+   ]
+  },
+  {
+   "id": "detail-bottle-light",
+   "source": "https://pizzeriagiardino.ch/data/Cache/2/29/29f/29f7/_src29f786f67147c22604ca0bc6ee1f3192_pard41f122b3f5daa56f9f2f05dd8554b49_dat1355416127.jpeg",
+   "file": "_src29f786f67147c22604ca0bc6ee1f3192_pard41f122b3f5daa56f9f2f05dd8554b49_dat1355416127.jpeg",
+   "year": 2012,
+   "category": "ambience",
+   "alt": {
+    "de": "Hängeleuchte aus roten Aperitif-Fläschchen über der Gaststube",
+    "en": "Pendant light made of small red aperitif bottles above the dining room",
+    "fr": "Suspension faite de petites bouteilles rouges d’apéritif au-dessus de la salle",
+    "it": "Lampada a sospensione fatta di bottigliette rosse da aperitivo sopra la sala"
+   },
+   "liveOn": [
+    "site background (de, en, fr, it)"
+   ],
+   "people": null,
+   "note": "Full-screen background of the current site; only the 3200 px cache copy is online, the original file is not linked.",
+   "hero": true,
+   "focus": "70% 30%",
+   "original": {
+    "width": 3200,
+    "height": 2400,
+    "bytes": 464622,
+    "sha256": "c02e4306e76021179f50050189064d6eb8df2d788836b0fa82e6e423631820c3"
+   },
+   "rights": "© Pizzeria Giardino – published on pizzeriagiardino.ch; used only for this unofficial design proposal",
+   "credit": "Christian Pfammatter, Visp",
+   "creditNote": "The Impressum credits Christian Pfammatter for the photography without naming the photos; attributed to the 2012 and 2016 sets – to confirm with the owners",
+   "consent": null,
+   "usedOn": [
+    "gallery (all photographs, with lightbox)",
+    "home: Carta",
+    "home: Story"
+   ]
+  },
+  {
+   "id": "detail-mini-bottles",
+   "source": "https://pizzeriagiardino.ch/data/Cache/c/c4/c4a/c4a4/_srcc4a4a0297bcc29a9ad80ae23b02d7871_pard41f122b3f5daa56f9f2f05dd8554b49_dat1355416005.jpeg",
+   "file": "_srcc4a4a0297bcc29a9ad80ae23b02d7871_pard41f122b3f5daa56f9f2f05dd8554b49_dat1355416005.jpeg",
+   "year": 2012,
+   "category": "ambience",
+   "alt": {
+    "de": "Regal «1 Meter» mit Miniaturflaschen von Likören und Bränden",
+    "en": "A “1 Meter” shelf of miniature liqueur and spirit bottles",
+    "fr": "Étagère «1 Meter» de mignonnettes de liqueurs et d’eaux-de-vie",
+    "it": "Mensola «1 Meter» con bottigliette mignon di liquori e distillati"
+   },
+   "liveOn": [
+    "site background (de, en, fr, it)"
+   ],
+   "people": null,
+   "note": "Full-screen background of the current site; only the 3200 px cache copy is online.",
+   "hero": false,
+   "focus": "45% 55%",
+   "original": {
+    "width": 3200,
+    "height": 2400,
+    "bytes": 358699,
+    "sha256": "447537a0291bf657c2afc80aa16bbb94964454d81954cc69f14a85fd6737954e"
+   },
+   "rights": "© Pizzeria Giardino – published on pizzeriagiardino.ch; used only for this unofficial design proposal",
+   "credit": "Christian Pfammatter, Visp",
+   "creditNote": "The Impressum credits Christian Pfammatter for the photography without naming the photos; attributed to the 2012 and 2016 sets – to confirm with the owners",
+   "consent": null,
+   "usedOn": [
+    "gallery (all photographs, with lightbox)",
+    "home: GalleryTeaser"
+   ]
+  },
+  {
+   "id": "family-destination",
+   "source": "https://pizzeriagiardino.ch/data/Ressources/1450684058-family.png",
+   "file": "1450684058-family.png",
+   "year": 2015,
+   "category": "kids",
+   "alt": {
+    "de": "Thermi, das Maskottchen der «Family Destination» Leukerbad",
+    "en": "Thermi, mascot of the Leukerbad “Family Destination”",
+    "fr": "Thermi, la mascotte de la «Family Destination» Loèche-les-Bains",
+    "it": "Thermi, la mascotte della «Family Destination» Leukerbad"
+   },
+   "liveOn": [
+    "de/kids",
+    "en/kids",
+    "fr/enfants",
+    "it/kids"
+   ],
+   "people": null,
+   "note": "Graphic (label of the destination), not a photograph.",
+   "hero": false,
+   "focus": "50% 50%",
+   "original": {
+    "width": 800,
+    "height": 802,
+    "bytes": 253316,
+    "sha256": "6e4b1f89fe99caf3af79f0598e34b43aaf41c8e1239251b538d5b0a014c7ac8a"
+   },
+   "rights": "Leukerbad «Family Destination» label with the mascot Thermi – a destination graphic, not the restaurant's photograph; shown as on the live Kids page",
+   "credit": null,
+   "creditNote": "graphic of the destination label; no photographer",
+   "consent": null,
+   "usedOn": [
+    "home: Family",
+    "kids"
+   ]
+  },
+  {
+   "id": "terrace-flowers",
+   "source": "https://pizzeriagiardino.ch/data/Ressources/1474895677-5DSR6281.jpg",
+   "file": "1474895677-5DSR6281.jpg",
+   "year": 2016,
+   "category": "terrace",
+   "alt": {
+    "de": "Sonnenterrasse mit pinkfarbenen Blumen und Sonnenschirmen",
+    "en": "Sun terrace with pink flowers and parasols",
+    "fr": "Terrasse ensoleillée avec fleurs roses et parasols",
+    "it": "Terrazza soleggiata con fiori rosa e ombrelloni"
+   },
+   "liveOn": [
+    "de",
+    "en",
+    "fr",
+    "it"
+   ],
+   "people": "guests in the background, not identifiable",
+   "note": null,
+   "hero": false,
+   "focus": "50% 50%",
+   "original": {
+    "width": 1600,
+    "height": 825,
+    "bytes": 1357736,
+    "sha256": "acd65e99f4e62750de835f1b008b58c258dcc99c7fea4b9cbfeceb6af20be7f2"
+   },
+   "rights": "© Pizzeria Giardino – published on pizzeriagiardino.ch; used only for this unofficial design proposal",
+   "credit": "Christian Pfammatter, Visp",
+   "creditNote": "The Impressum credits Christian Pfammatter for the photography without naming the photos; attributed to the 2012 and 2016 sets – to confirm with the owners",
+   "consent": "consent to confirm with owners",
+   "consentWhy": "guests at the tables, small but recognisable to people who know them",
+   "usedOn": [
+    "gallery (all photographs, with lightbox)",
+    "home: GalleryTeaser"
+   ]
+  },
+  {
+   "id": "terrace-view",
+   "source": "https://pizzeriagiardino.ch/data/Ressources/1474895684-5DSR6265-HDR.jpg",
+   "file": "1474895684-5DSR6265-HDR.jpg",
+   "year": 2016,
+   "category": "terrace",
+   "alt": {
+    "de": "Terrasse unter dem Glasdach mit Blick in die Berge und dem Schild «Pizzeria»",
+    "en": "Terrace under the glass roof with a view of the mountains and the “Pizzeria” sign",
+    "fr": "Terrasse sous le toit vitré, vue sur les montagnes et panneau «Pizzeria»",
+    "it": "Terrazza sotto il tetto in vetro, con vista sulle montagne e l’insegna «Pizzeria»"
+   },
+   "liveOn": [
+    "de",
+    "en",
+    "fr",
+    "it",
+    "de/allgemein/impressionen"
+   ],
+   "people": "guests at tables, small",
+   "note": null,
+   "hero": true,
+   "focus": "50% 60%",
+   "original": {
+    "width": 1600,
+    "height": 825,
+    "bytes": 1226774,
+    "sha256": "8a6d1cdb88419836a4a65e5912d4ea658ffd03ef5c20fab42bf98c0bcb1816da"
+   },
+   "rights": "© Pizzeria Giardino – published on pizzeriagiardino.ch; used only for this unofficial design proposal",
+   "credit": "Christian Pfammatter, Visp",
+   "creditNote": "The Impressum credits Christian Pfammatter for the photography without naming the photos; attributed to the 2012 and 2016 sets – to confirm with the owners",
+   "consent": "consent to confirm with owners",
+   "consentWhy": "guests at the tables, small but recognisable to people who know them",
+   "usedOn": [
+    "JSON-LD image (launch mode)",
+    "gallery (all photographs, with lightbox)",
+    "home: Story"
+   ]
+  },
+  {
+   "id": "door-hours",
+   "source": "https://pizzeriagiardino.ch/data/Ressources/1474895692-5DSR6223.jpg",
+   "file": "1474895692-5DSR6223.jpg",
+   "year": 2016,
+   "category": "ambience",
+   "alt": {
+    "de": "Giardino-Logo auf der Eingangstür: Öffnungszeiten 11.00–23.00 Uhr, Mittwoch Ruhetag",
+    "en": "The Giardino logo on the entrance door: open 11.00–23.00, closed on Wednesdays",
+    "fr": "Logo Giardino sur la porte d’entrée : ouvert de 11 h à 23 h, fermé le mercredi",
+    "it": "Logo Giardino sulla porta d’ingresso: aperto dalle 11.00 alle 23.00, chiuso il mercoledì"
+   },
+   "liveOn": [
+    "de",
+    "en",
+    "fr",
+    "it"
+   ],
+   "people": null,
+   "note": null,
+   "hero": false,
+   "focus": "40% 50%",
+   "original": {
+    "width": 1600,
+    "height": 893,
+    "bytes": 656371,
+    "sha256": "45f107846a85ef70ac627193e2d493c15d2b52af562179066f782bb2c5763e8b"
+   },
+   "rights": "© Pizzeria Giardino – published on pizzeriagiardino.ch; used only for this unofficial design proposal",
+   "credit": "Christian Pfammatter, Visp",
+   "creditNote": "The Impressum credits Christian Pfammatter for the photography without naming the photos; attributed to the 2012 and 2016 sets – to confirm with the owners",
+   "consent": null,
+   "usedOn": [
+    "404",
+    "gallery (all photographs, with lightbox)",
+    "home: GalleryTeaser"
+   ]
+  },
+  {
+   "id": "entrance-terrace",
+   "source": "https://pizzeriagiardino.ch/data/Ressources/1474895697-5DSR6211.jpg",
+   "file": "1474895697-5DSR6211.jpg",
+   "year": 2016,
+   "category": "terrace",
+   "alt": {
+    "de": "Eingang mit Terrasse, Pflanzen und Schild «Giardino»",
+    "en": "Entrance with terrace, plants and the “Giardino” sign",
+    "fr": "Entrée avec terrasse, plantes et enseigne «Giardino»",
+    "it": "Ingresso con terrazza, piante e insegna «Giardino»"
+   },
+   "liveOn": [
+    "de",
+    "en",
+    "fr",
+    "it",
+    "de/gastgeber",
+    "en/host",
+    "fr/hotes",
+    "it/la-casa"
+   ],
+   "people": null,
+   "note": null,
+   "hero": false,
+   "focus": "50% 50%",
+   "original": {
+    "width": 1600,
+    "height": 893,
+    "bytes": 1121186,
+    "sha256": "6f8158ff2712a8fc2b6b6eb0905c053f1194de949ff54eca93701b4498645649"
+   },
+   "rights": "© Pizzeria Giardino – published on pizzeriagiardino.ch; used only for this unofficial design proposal",
+   "credit": "Christian Pfammatter, Visp",
+   "creditNote": "The Impressum credits Christian Pfammatter for the photography without naming the photos; attributed to the 2012 and 2016 sets – to confirm with the owners",
+   "consent": null,
+   "usedOn": [
+    "gallery (all photographs, with lightbox)",
+    "hosts"
+   ]
+  },
+  {
+   "id": "pirate-masts",
+   "source": "https://pizzeriagiardino.ch/data/Ressources/1474898022-5DSR6307.jpg",
+   "file": "1474898022-5DSR6307.jpg",
+   "year": 2016,
+   "category": "kids",
+   "alt": {
+    "de": "Masten des Piratenschiffs vor den Felswänden über Leukerbad",
+    "en": "Masts of the pirate ship against the cliffs above Leukerbad",
+    "fr": "Mâts du bateau de pirates devant les falaises au-dessus de Loèche-les-Bains",
+    "it": "Alberi della nave dei pirati davanti alle pareti rocciose sopra Leukerbad"
+   },
+   "liveOn": [
+    "de/allgemein/impressionen"
+   ],
+   "people": null,
+   "note": null,
+   "hero": false,
+   "focus": "50% 50%",
+   "original": {
+    "width": 1600,
+    "height": 815,
+    "bytes": 830081,
+    "sha256": "937cbb6fb6537bcd215d2060ebda58df37e016e4f750541c15646138491d067c"
+   },
+   "rights": "© Pizzeria Giardino – published on pizzeriagiardino.ch; used only for this unofficial design proposal",
+   "credit": "Christian Pfammatter, Visp",
+   "creditNote": "The Impressum credits Christian Pfammatter for the photography without naming the photos; attributed to the 2012 and 2016 sets – to confirm with the owners",
+   "consent": null,
+   "usedOn": [
+    "gallery (all photographs, with lightbox)",
+    "kids: pirate ship"
+   ]
+  },
+  {
+   "id": "door-lettering",
+   "source": "https://pizzeriagiardino.ch/data/Ressources/1474898047-5DSR6219.jpg",
+   "file": "1474898047-5DSR6219.jpg",
+   "year": 2016,
+   "category": "ambience",
+   "alt": {
+    "de": "Schriftzug «Giardino Pizzeria» auf der Glastür",
+    "en": "“Giardino Pizzeria” lettering on the glass door",
+    "fr": "Inscription «Giardino Pizzeria» sur la porte vitrée",
+    "it": "Scritta «Giardino Pizzeria» sulla porta a vetri"
+   },
+   "liveOn": [
+    "de/gastgeber",
+    "en/host",
+    "fr/hotes",
+    "it/la-casa",
+    "de/allgemein/impressionen"
+   ],
+   "people": null,
+   "note": "Uploaded twice on the current site (1474898047 and 1474899873); identical files.",
+   "hero": false,
+   "focus": "50% 50%",
+   "original": {
+    "width": 1600,
+    "height": 893,
+    "bytes": 621455,
+    "sha256": "893337c12f6fac60add2ea55793abba9e2f6525e27866f4d767ed276493cfda4"
+   },
+   "rights": "© Pizzeria Giardino – published on pizzeriagiardino.ch; used only for this unofficial design proposal",
+   "credit": "Christian Pfammatter, Visp",
+   "creditNote": "The Impressum credits Christian Pfammatter for the photography without naming the photos; attributed to the 2012 and 2016 sets – to confirm with the owners",
+   "consent": null,
+   "usedOn": [
+    "gallery (all photographs, with lightbox)",
+    "hosts"
+   ]
+  },
+  {
+   "id": "terrace-roof",
+   "source": "https://pizzeriagiardino.ch/data/Ressources/1474898052-5DSR6200.jpg",
+   "file": "1474898052-5DSR6200.jpg",
+   "year": 2016,
+   "category": "terrace",
+   "alt": {
+    "de": "Blumen auf der Terrasse unter dem Glasdach",
+    "en": "Flowers on the terrace under the glass roof",
+    "fr": "Fleurs sur la terrasse sous le toit vitré",
+    "it": "Fiori sulla terrazza sotto il tetto in vetro"
+   },
+   "liveOn": [
+    "de/allgemein/impressionen"
+   ],
+   "people": null,
+   "note": null,
+   "hero": false,
+   "focus": "50% 50%",
+   "original": {
+    "width": 1600,
+    "height": 893,
+    "bytes": 1158703,
+    "sha256": "5f59aa362f6a63fccca4a2083afd5a3d6730877677d64430d307ca31bb31ffb0"
+   },
+   "rights": "© Pizzeria Giardino – published on pizzeriagiardino.ch; used only for this unofficial design proposal",
+   "credit": "Christian Pfammatter, Visp",
+   "creditNote": "The Impressum credits Christian Pfammatter for the photography without naming the photos; attributed to the 2012 and 2016 sets – to confirm with the owners",
+   "consent": null,
+   "usedOn": [
+    "gallery (all photographs, with lightbox)"
+   ]
+  },
+  {
+   "id": "terrace-blooms",
+   "source": "https://pizzeriagiardino.ch/data/Ressources/1474898055-5DSR6195.jpg",
+   "file": "1474898055-5DSR6195.jpg",
+   "year": 2016,
+   "category": "terrace",
+   "alt": {
+    "de": "Pinkfarbene Blüten vor der Terrasse",
+    "en": "Pink blooms in front of the terrace",
+    "fr": "Fleurs roses devant la terrasse",
+    "it": "Fiori rosa davanti alla terrazza"
+   },
+   "liveOn": [
+    "de/allgemein/impressionen"
+   ],
+   "people": "guests far out of focus in the background, not identifiable",
+   "note": null,
+   "hero": false,
+   "focus": "50% 50%",
+   "original": {
+    "width": 1600,
+    "height": 893,
+    "bytes": 811715,
+    "sha256": "bd150682580eba145f5209f4c29ef4d96cf5e9668d1626bad2d47b51885075f1"
+   },
+   "rights": "© Pizzeria Giardino – published on pizzeriagiardino.ch; used only for this unofficial design proposal",
+   "credit": "Christian Pfammatter, Visp",
+   "creditNote": "The Impressum credits Christian Pfammatter for the photography without naming the photos; attributed to the 2012 and 2016 sets – to confirm with the owners",
+   "consent": null,
+   "usedOn": [
+    "gallery (all photographs, with lightbox)"
+   ]
+  },
+  {
+   "id": "toy-cars",
+   "source": "https://pizzeriagiardino.ch/data/Ressources/1474898106-5DSR5947.jpg",
+   "file": "1474898106-5DSR5947.jpg",
+   "year": 2016,
+   "category": "kids",
+   "alt": {
+    "de": "Spielzeugautos und Pylonen im Spielzimmer",
+    "en": "Toy cars and traffic cones in the playroom",
+    "fr": "Petites voitures et cônes dans la salle de jeux",
+    "it": "Macchinine e coni nella sala giochi"
+   },
+   "liveOn": [
+    "de/allgemein/impressionen"
+   ],
+   "people": null,
+   "note": null,
+   "hero": false,
+   "focus": "50% 50%",
+   "original": {
+    "width": 1600,
+    "height": 1066,
+    "bytes": 861360,
+    "sha256": "cbeb0b7617548a9eb9764fdd1eb75cf946a30740a5f15f32bd49cd26273807cf"
+   },
+   "rights": "© Pizzeria Giardino – published on pizzeriagiardino.ch; used only for this unofficial design proposal",
+   "credit": "Christian Pfammatter, Visp",
+   "creditNote": "The Impressum credits Christian Pfammatter for the photography without naming the photos; attributed to the 2012 and 2016 sets – to confirm with the owners",
+   "consent": null,
+   "usedOn": [
+    "gallery (all photographs, with lightbox)",
+    "kids: playroom"
+   ]
+  },
+  {
+   "id": "pirate-kids",
+   "source": "https://pizzeriagiardino.ch/data/Ressources/1474898970-5DSR6139.jpg",
+   "file": "1474898970-5DSR6139.jpg",
+   "year": 2016,
+   "category": "kids",
+   "alt": {
+    "de": "Kinder auf dem Piratenschiff",
+    "en": "Children on the pirate ship",
+    "fr": "Enfants sur le bateau de pirates",
+    "it": "Bambini sulla nave dei pirati"
+   },
+   "liveOn": [
+    "de/kids",
+    "en/kids",
+    "fr/enfants",
+    "it/kids"
+   ],
+   "people": "identifiable children – published on the current site; consent should be reconfirmed",
+   "note": null,
+   "hero": false,
+   "focus": "50% 50%",
+   "original": {
+    "width": 1600,
+    "height": 943,
+    "bytes": 942487,
+    "sha256": "4679f3b34cc5e449bcb484dfea964d1bf70f63d89b2972700d09c147ad887898"
+   },
+   "rights": "© Pizzeria Giardino – published on pizzeriagiardino.ch; used only for this unofficial design proposal",
+   "credit": "Christian Pfammatter, Visp",
+   "creditNote": "The Impressum credits Christian Pfammatter for the photography without naming the photos; attributed to the 2012 and 2016 sets – to confirm with the owners",
+   "consent": "consent to confirm with owners",
+   "consentWhy": "identifiable children",
+   "usedOn": [
+    "gallery (all photographs, with lightbox)",
+    "kids: 2016 archive"
+   ]
+  },
+  {
+   "id": "pirate-climb",
+   "source": "https://pizzeriagiardino.ch/data/Ressources/1474898973-5DSR6113.jpg",
+   "file": "1474898973-5DSR6113.jpg",
+   "year": 2016,
+   "category": "kids",
+   "alt": {
+    "de": "Ein Kind klettert am Piratenschiff",
+    "en": "A child climbing the pirate ship",
+    "fr": "Un enfant grimpe sur le bateau de pirates",
+    "it": "Un bambino si arrampica sulla nave dei pirati"
+   },
+   "liveOn": [
+    "de/kids",
+    "en/kids",
+    "fr/enfants",
+    "it/kids"
+   ],
+   "people": "identifiable child – published on the current site; consent should be reconfirmed",
+   "note": null,
+   "hero": false,
+   "focus": "50% 50%",
+   "original": {
+    "width": 1600,
+    "height": 988,
+    "bytes": 986232,
+    "sha256": "30e1e9b5a8a6331fca5a92877ac0cbb437906b6cf63baa3dd6db2e7a97744a60"
+   },
+   "rights": "© Pizzeria Giardino – published on pizzeriagiardino.ch; used only for this unofficial design proposal",
+   "credit": "Christian Pfammatter, Visp",
+   "creditNote": "The Impressum credits Christian Pfammatter for the photography without naming the photos; attributed to the 2012 and 2016 sets – to confirm with the owners",
+   "consent": "consent to confirm with owners",
+   "consentWhy": "identifiable child",
+   "usedOn": [
+    "gallery (all photographs, with lightbox)",
+    "kids: 2016 archive"
+   ]
+  },
+  {
+   "id": "pirate-slide",
+   "source": "https://pizzeriagiardino.ch/data/Ressources/1474898981-5DSR6101.jpg",
+   "file": "1474898981-5DSR6101.jpg",
+   "year": 2016,
+   "category": "kids",
+   "alt": {
+    "de": "Ein Kind auf der roten Rutsche des Piratenschiffs",
+    "en": "A child on the pirate ship’s red slide",
+    "fr": "Un enfant sur le toboggan rouge du bateau de pirates",
+    "it": "Un bambino sullo scivolo rosso della nave dei pirati"
+   },
+   "liveOn": [
+    "de/kids",
+    "en/kids",
+    "fr/enfants",
+    "it/kids"
+   ],
+   "people": "identifiable child – published on the current site; consent should be reconfirmed",
+   "note": null,
+   "hero": false,
+   "focus": "50% 50%",
+   "original": {
+    "width": 1600,
+    "height": 988,
+    "bytes": 1556070,
+    "sha256": "4bb5197c6d282fdb20207802ef2b19557916a9662db450facc5c0faec1f09807"
+   },
+   "rights": "© Pizzeria Giardino – published on pizzeriagiardino.ch; used only for this unofficial design proposal",
+   "credit": "Christian Pfammatter, Visp",
+   "creditNote": "The Impressum credits Christian Pfammatter for the photography without naming the photos; attributed to the 2012 and 2016 sets – to confirm with the owners",
+   "consent": "consent to confirm with owners",
+   "consentWhy": "identifiable child",
+   "usedOn": [
+    "gallery (all photographs, with lightbox)",
+    "kids: 2016 archive"
+   ]
+  },
+  {
+   "id": "ship-mountains",
+   "source": "https://pizzeriagiardino.ch/data/Ressources/1750941286-2025-06-20_giardino-8940_2048px.jpg",
+   "file": "1750941286-2025-06-20_giardino-8940_2048px.jpg",
+   "year": 2025,
+   "category": "kids",
+   "alt": {
+    "de": "Spielplatz mit Piratenschiff und Rutsche vor den Bergen",
+    "en": "Playground with pirate ship and slide in front of the mountains",
+    "fr": "Aire de jeux avec bateau de pirates et toboggan devant les montagnes",
+    "it": "Parco giochi con nave dei pirati e scivolo davanti alle montagne"
+   },
+   "liveOn": [
+    "de/kids",
+    "en/kids",
+    "fr/enfants",
+    "it/kids"
+   ],
+   "people": null,
+   "note": null,
+   "hero": false,
+   "focus": "50% 50%",
+   "original": {
+    "width": 6720,
+    "height": 4480,
+    "bytes": 1979438,
+    "sha256": "a3d81b4a6630f2e5fce239f25147fa82b9c61722c701a4b3583f173fcd04c6ba"
+   },
+   "rights": "© Pizzeria Giardino – published on pizzeriagiardino.ch; used only for this unofficial design proposal",
+   "credit": null,
+   "creditNote": "uncredited on the live site (2025 photo and drone set)",
+   "consent": null,
+   "usedOn": [
+    "gallery (all photographs, with lightbox)",
+    "kids: pirate ship"
+   ]
+  },
+  {
+   "id": "ship-slide",
+   "source": "https://pizzeriagiardino.ch/data/Ressources/1750941305-2025-06-20_giardino-8933_2048px.jpg",
+   "file": "1750941305-2025-06-20_giardino-8933_2048px.jpg",
+   "year": 2025,
+   "category": "kids",
+   "alt": {
+    "de": "Piratenschiff mit Rutsche unter den Felswänden",
+    "en": "Pirate ship with slide beneath the cliffs",
+    "fr": "Bateau de pirates avec toboggan au pied des falaises",
+    "it": "Nave dei pirati con scivolo ai piedi delle pareti rocciose"
+   },
+   "liveOn": [
+    "de/kids",
+    "en/kids",
+    "fr/enfants",
+    "it/kids"
+   ],
+   "people": null,
+   "note": null,
+   "hero": false,
+   "focus": "50% 50%",
+   "original": {
+    "width": 6720,
+    "height": 4480,
+    "bytes": 2289813,
+    "sha256": "cde41cbdc861f884d179b73ddc1e1c307e9a930778d209a9a5f741ae6e5b8974"
+   },
+   "rights": "© Pizzeria Giardino – published on pizzeriagiardino.ch; used only for this unofficial design proposal",
+   "credit": null,
+   "creditNote": "uncredited on the live site (2025 photo and drone set)",
+   "consent": null,
+   "usedOn": [
+    "gallery (all photographs, with lightbox)",
+    "kids: pirate ship"
+   ]
+  },
+  {
+   "id": "ship-cliffs",
+   "source": "https://pizzeriagiardino.ch/data/Ressources/1750941318-2025-06-20_giardino-8931_2048px.jpg",
+   "file": "1750941318-2025-06-20_giardino-8931_2048px.jpg",
+   "year": 2025,
+   "category": "kids",
+   "alt": {
+    "de": "Piratenschiff und Spielplatz, dahinter die Felswände über Leukerbad",
+    "en": "Pirate ship and playground, with the cliffs above Leukerbad behind",
+    "fr": "Bateau de pirates et aire de jeux, avec les falaises au-dessus de Loèche-les-Bains",
+    "it": "Nave dei pirati e parco giochi, sullo sfondo le pareti rocciose sopra Leukerbad"
+   },
+   "liveOn": [
+    "de/kids",
+    "en/kids",
+    "fr/enfants",
+    "it/kids",
+    "de/allgemein/impressionen"
+   ],
+   "people": null,
+   "note": "Uploaded twice on the current site (1750941318 and 1750943528); identical files.",
+   "hero": true,
+   "focus": "50% 40%",
+   "original": {
+    "width": 6720,
+    "height": 4480,
+    "bytes": 2283517,
+    "sha256": "4cfefaed0b5bba7a170a96facef0849ece824141eb2510dfa0134d00c0f7f66d"
+   },
+   "rights": "© Pizzeria Giardino – published on pizzeriagiardino.ch; used only for this unofficial design proposal",
+   "credit": null,
+   "creditNote": "uncredited on the live site (2025 photo and drone set)",
+   "consent": null,
+   "usedOn": [
+    "gallery (all photographs, with lightbox)",
+    "home: Family",
+    "home: Story",
+    "kids",
+    "kids: pirate ship",
+    "og:image"
+   ]
+  },
+  {
+   "id": "ship-above",
+   "source": "https://pizzeriagiardino.ch/data/Ressources/1750941350-2025-06-20_giardino_70200.-8591_2048px.jpg",
+   "file": "1750941350-2025-06-20_giardino_70200.-8591_2048px.jpg",
+   "year": 2025,
+   "category": "kids",
+   "alt": {
+    "de": "Spielplatz mit Piratenschiff von oben",
+    "en": "Playground and pirate ship from above",
+    "fr": "Aire de jeux et bateau de pirates vus d’en haut",
+    "it": "Parco giochi e nave dei pirati visti dall’alto"
+   },
+   "liveOn": [
+    "de/kids",
+    "en/kids",
+    "fr/enfants",
+    "it/kids"
+   ],
+   "people": null,
+   "note": null,
+   "hero": false,
+   "focus": "50% 50%",
+   "original": {
+    "width": 6720,
+    "height": 4480,
+    "bytes": 3811959,
+    "sha256": "41c00b724311ed24b5694316bcd754e57cd2755419fb0924c951b7d5d8f3b7ce"
+   },
+   "rights": "© Pizzeria Giardino – published on pizzeriagiardino.ch; used only for this unofficial design proposal",
+   "credit": null,
+   "creditNote": "uncredited on the live site (2025 photo and drone set)",
+   "consent": null,
+   "usedOn": [
+    "gallery (all photographs, with lightbox)",
+    "kids: pirate ship"
+   ]
+  },
+  {
+   "id": "playroom-football",
+   "source": "https://pizzeriagiardino.ch/data/Ressources/1750941424-2025-06-20_giardino-8895_2048px.jpg",
+   "file": "1750941424-2025-06-20_giardino-8895_2048px.jpg",
+   "year": 2025,
+   "category": "kids",
+   "alt": {
+    "de": "Spielzimmer mit Tischfussball",
+    "en": "Playroom with table football",
+    "fr": "Salle de jeux avec baby-foot",
+    "it": "Sala giochi con calcio balilla"
+   },
+   "liveOn": [
+    "de/kids",
+    "en/kids",
+    "fr/enfants",
+    "it/kids"
+   ],
+   "people": null,
+   "note": null,
+   "hero": false,
+   "focus": "50% 50%",
+   "original": {
+    "width": 6720,
+    "height": 4480,
+    "bytes": 913453,
+    "sha256": "3337054ef05e8ad28e55bab3d726e5688346393baa4d5fc22acc7399718b4cab"
+   },
+   "rights": "© Pizzeria Giardino – published on pizzeriagiardino.ch; used only for this unofficial design proposal",
+   "credit": null,
+   "creditNote": "uncredited on the live site (2025 photo and drone set)",
+   "consent": null,
+   "usedOn": [
+    "gallery (all photographs, with lightbox)",
+    "kids: playroom"
+   ]
+  },
+  {
+   "id": "playroom-climber",
+   "source": "https://pizzeriagiardino.ch/data/Ressources/1750941448-2025-06-20_giardino-8920_2048px.jpg",
+   "file": "1750941448-2025-06-20_giardino-8920_2048px.jpg",
+   "year": 2025,
+   "category": "kids",
+   "alt": {
+    "de": "Spielzimmer mit Kletterturm und Rutsche",
+    "en": "Playroom with climbing tower and slide",
+    "fr": "Salle de jeux avec tour d’escalade et toboggan",
+    "it": "Sala giochi con torre per arrampicarsi e scivolo"
+   },
+   "liveOn": [
+    "de",
+    "en",
+    "fr",
+    "it",
+    "de/kids",
+    "en/kids",
+    "fr/enfants",
+    "it/kids"
+   ],
+   "people": null,
+   "note": null,
+   "hero": true,
+   "focus": "50% 50%",
+   "original": {
+    "width": 6720,
+    "height": 4480,
+    "bytes": 1324021,
+    "sha256": "71ff4bd550d57ede0b9a3978b6ae6a8ff8bb614da3c23684b3f55438209a3738"
+   },
+   "rights": "© Pizzeria Giardino – published on pizzeriagiardino.ch; used only for this unofficial design proposal",
+   "credit": null,
+   "creditNote": "uncredited on the live site (2025 photo and drone set)",
+   "consent": null,
+   "usedOn": [
+    "gallery (all photographs, with lightbox)",
+    "home: Carta",
+    "home: Family",
+    "kids: playroom"
+   ]
+  },
+  {
+   "id": "playroom-mural",
+   "source": "https://pizzeriagiardino.ch/data/Ressources/1750941455-2025-06-20_giardino-8921_2048px.jpg",
+   "file": "1750941455-2025-06-20_giardino-8921_2048px.jpg",
+   "year": 2025,
+   "category": "kids",
+   "alt": {
+    "de": "Spielzimmer mit Wandbild und Spielblöcken",
+    "en": "Playroom with a mural and play blocks",
+    "fr": "Salle de jeux avec fresque murale et blocs de jeu",
+    "it": "Sala giochi con murale e blocchi da gioco"
+   },
+   "liveOn": [
+    "de/kids",
+    "en/kids",
+    "fr/enfants",
+    "it/kids"
+   ],
+   "people": null,
+   "note": null,
+   "hero": false,
+   "focus": "50% 50%",
+   "original": {
+    "width": 6720,
+    "height": 4480,
+    "bytes": 1920130,
+    "sha256": "aa340eb6b8bfed9a8b2ec079eca5d035e4cecbedd29dde5ee7eb1e25397922f3"
+   },
+   "rights": "© Pizzeria Giardino – published on pizzeriagiardino.ch; used only for this unofficial design proposal",
+   "credit": null,
+   "creditNote": "uncredited on the live site (2025 photo and drone set)",
+   "consent": null,
+   "usedOn": [
+    "gallery (all photographs, with lightbox)",
+    "kids: playroom"
+   ]
+  },
+  {
+   "id": "playroom-ride-on",
+   "source": "https://pizzeriagiardino.ch/data/Ressources/1750941506-2025-06-20_giardino-8899_2048px.jpg",
+   "file": "1750941506-2025-06-20_giardino-8899_2048px.jpg",
+   "year": 2025,
+   "category": "kids",
+   "alt": {
+    "de": "Schwarzes Rutschauto im Spielzimmer",
+    "en": "Black ride-on car in the playroom",
+    "fr": "Porteur noir dans la salle de jeux",
+    "it": "Macchinina cavalcabile nera nella sala giochi"
+   },
+   "liveOn": [
+    "de",
+    "en",
+    "fr",
+    "it",
+    "de/kids",
+    "en/kids",
+    "fr/enfants",
+    "it/kids"
+   ],
+   "people": null,
+   "note": null,
+   "hero": false,
+   "focus": "50% 50%",
+   "original": {
+    "width": 6720,
+    "height": 4480,
+    "bytes": 1221518,
+    "sha256": "f638b6dfde71b21f86966d80e13074a9029bc2629ef87fa74493e9c20264a74e"
+   },
+   "rights": "© Pizzeria Giardino – published on pizzeriagiardino.ch; used only for this unofficial design proposal",
+   "credit": null,
+   "creditNote": "uncredited on the live site (2025 photo and drone set)",
+   "consent": null,
+   "usedOn": [
+    "gallery (all photographs, with lightbox)",
+    "home: Family",
+    "kids: playroom"
+   ]
+  },
+  {
+   "id": "dish-chicken-risotto",
+   "source": "https://pizzeriagiardino.ch/data/Ressources/1750941770-2025-06-20_giardino_70200.-8347_2048px.jpg",
+   "file": "1750941770-2025-06-20_giardino_70200.-8347_2048px.jpg",
+   "year": 2025,
+   "category": "food",
+   "alt": {
+    "de": "Pouletbrust mit Risotto und dunkler Sauce",
+    "en": "Chicken breast with risotto and a dark sauce",
+    "fr": "Poitrine de poulet, risotto et sauce brune",
+    "it": "Petto di pollo con risotto e salsa scura"
+   },
+   "liveOn": [
+    "de/essen-geniessen",
+    "en/eat-enjoy",
+    "fr/manger-et-savourer",
+    "it/mangia-e-divertiti"
+   ],
+   "people": null,
+   "note": null,
+   "hero": false,
+   "focus": "50% 50%",
+   "original": {
+    "width": 6720,
+    "height": 4480,
+    "bytes": 1420502,
+    "sha256": "e99eea28536d477ed69c7d598c4e2f4df1ddd387a0296f960f149bd4ce65b850"
+   },
+   "rights": "© Pizzeria Giardino – published on pizzeriagiardino.ch; used only for this unofficial design proposal",
+   "credit": null,
+   "creditNote": "uncredited on the live site (2025 photo and drone set)",
+   "consent": null,
+   "usedOn": [
+    "gallery (all photographs, with lightbox)",
+    "home: Carta",
+    "home: Kitchen (dish journey)"
+   ]
+  },
+  {
+   "id": "dish-spaghetti-bacon",
+   "source": "https://pizzeriagiardino.ch/data/Ressources/1750941771-2025-06-20_giardino_70200.-8361_2048px.jpg",
+   "file": "1750941771-2025-06-20_giardino_70200.-8361_2048px.jpg",
+   "year": 2025,
+   "category": "food",
+   "alt": {
+    "de": "Spaghetti mit Speck in cremiger Sauce",
+    "en": "Spaghetti with bacon in a creamy sauce",
+    "fr": "Spaghettis au lard, sauce crémeuse",
+    "it": "Spaghetti con pancetta in salsa cremosa"
+   },
+   "liveOn": [
+    "de/essen-geniessen",
+    "en/eat-enjoy",
+    "fr/manger-et-savourer",
+    "it/mangia-e-divertiti"
+   ],
+   "people": null,
+   "note": null,
+   "hero": false,
+   "focus": "50% 50%",
+   "original": {
+    "width": 6720,
+    "height": 4480,
+    "bytes": 1347424,
+    "sha256": "a104427a8de3972ae270cd7fb50f771f64b269d02a823f7211b302b14c6838c8"
+   },
+   "rights": "© Pizzeria Giardino – published on pizzeriagiardino.ch; used only for this unofficial design proposal",
+   "credit": null,
+   "creditNote": "uncredited on the live site (2025 photo and drone set)",
+   "consent": null,
+   "usedOn": [
+    "gallery (all photographs, with lightbox)",
+    "home: Kitchen (dish journey)"
+   ]
+  },
+  {
+   "id": "dessert-coupe",
+   "source": "https://pizzeriagiardino.ch/data/Ressources/1750941788-2025-06-20_giardino_70200.-8645_2048px.jpg",
+   "file": "1750941788-2025-06-20_giardino_70200.-8645_2048px.jpg",
+   "year": 2025,
+   "category": "food",
+   "alt": {
+    "de": "Glace mit Früchten und Waffelröllchen",
+    "en": "Ice cream with fruit and a rolled wafer",
+    "fr": "Glace aux fruits et cigarette russe",
+    "it": "Gelato con frutta e cialda arrotolata"
+   },
+   "liveOn": [
+    "de/essen-geniessen",
+    "en/eat-enjoy",
+    "fr/manger-et-savourer",
+    "it/mangia-e-divertiti"
+   ],
+   "people": null,
+   "note": null,
+   "hero": false,
+   "focus": "50% 50%",
+   "original": {
+    "width": 6720,
+    "height": 4480,
+    "bytes": 617831,
+    "sha256": "3cbf6e725c32d9b56730337be0ef7fff9537ea72f1caea909768821a1de625e0"
+   },
+   "rights": "© Pizzeria Giardino – published on pizzeriagiardino.ch; used only for this unofficial design proposal",
+   "credit": null,
+   "creditNote": "uncredited on the live site (2025 photo and drone set)",
+   "consent": null,
+   "usedOn": [
+    "gallery (all photographs, with lightbox)",
+    "home: Carta",
+    "home: Kitchen (dish journey)"
+   ]
+  },
+  {
+   "id": "dessert-panna-cotta",
+   "source": "https://pizzeriagiardino.ch/data/Ressources/1750941788-2025-06-20_giardino_70200.-8649_2048px.jpg",
+   "file": "1750941788-2025-06-20_giardino_70200.-8649_2048px.jpg",
+   "year": 2025,
+   "category": "food",
+   "alt": {
+    "de": "Panna Cotta mit Beerensauce im Glas",
+    "en": "Panna cotta with berry sauce in a glass",
+    "fr": "Panna cotta et coulis de baies en verrine",
+    "it": "Panna cotta con salsa ai frutti di bosco nel bicchiere"
+   },
+   "liveOn": [
+    "de",
+    "en",
+    "fr",
+    "it",
+    "de/essen-geniessen",
+    "en/eat-enjoy",
+    "fr/manger-et-savourer",
+    "it/mangia-e-divertiti"
+   ],
+   "people": null,
+   "note": null,
+   "hero": false,
+   "focus": "50% 50%",
+   "original": {
+    "width": 6720,
+    "height": 4480,
+    "bytes": 509839,
+    "sha256": "09d3920f7a4a71aed93154e2b0552bb95db61f0b368b22f9cabe414976413bab"
+   },
+   "rights": "© Pizzeria Giardino – published on pizzeriagiardino.ch; used only for this unofficial design proposal",
+   "credit": null,
+   "creditNote": "uncredited on the live site (2025 photo and drone set)",
+   "consent": null,
+   "usedOn": [
+    "gallery (all photographs, with lightbox)",
+    "home: Kitchen (dish journey)"
+   ]
+  },
+  {
+   "id": "pizza-egg",
+   "source": "https://pizzeriagiardino.ch/data/Ressources/1750941839-2025-06-20_giardino_70200.-8539_2048px.jpg",
+   "file": "1750941839-2025-06-20_giardino_70200.-8539_2048px.jpg",
+   "year": 2025,
+   "category": "food",
+   "alt": {
+    "de": "Pizza mit Ei, Peperoni, Artischocken, Sardellen und Schinken",
+    "en": "Pizza with egg, bell peppers, artichokes, anchovies and ham",
+    "fr": "Pizza à l’œuf, poivrons, artichauts, anchois et jambon",
+    "it": "Pizza con uovo, peperoni, carciofi, acciughe e prosciutto"
+   },
+   "liveOn": [
+    "de/essen-geniessen",
+    "en/eat-enjoy",
+    "fr/manger-et-savourer",
+    "it/mangia-e-divertiti"
+   ],
+   "people": null,
+   "note": null,
+   "hero": false,
+   "focus": "50% 50%",
+   "original": {
+    "width": 5742,
+    "height": 3828,
+    "bytes": 950867,
+    "sha256": "c76d617d4f1eb8ef1015c4c381f6fc7072d5a6decef2d6a55ea37e3b94533b85"
+   },
+   "rights": "© Pizzeria Giardino – published on pizzeriagiardino.ch; used only for this unofficial design proposal",
+   "credit": null,
+   "creditNote": "uncredited on the live site (2025 photo and drone set)",
+   "consent": null,
+   "usedOn": [
+    "gallery (all photographs, with lightbox)",
+    "home: Kitchen (dish journey)"
+   ]
+  },
+  {
+   "id": "starter-salmon",
+   "source": "https://pizzeriagiardino.ch/data/Ressources/1750942100-2025-06-20_giardino_70200.-8456_2048px.jpg",
+   "file": "1750942100-2025-06-20_giardino_70200.-8456_2048px.jpg",
+   "year": 2025,
+   "category": "food",
+   "alt": {
+    "de": "Rauchlachs mit Dillsenfsauce, Kapernäpfeln, Kirschtomaten und Zitrone auf einer Schieferplatte",
+    "en": "Smoked salmon with dill-mustard sauce, caper berries, cherry tomatoes and lemon on a slate",
+    "fr": "Saumon fumé, sauce aneth-moutarde, câpres, tomates cerises et citron sur une ardoise",
+    "it": "Salmone affumicato con salsa all’aneto e senape, capperi, pomodorini e limone su ardesia"
+   },
+   "liveOn": [
+    "de/essen-geniessen",
+    "en/eat-enjoy",
+    "fr/manger-et-savourer",
+    "it/mangia-e-divertiti"
+   ],
+   "people": null,
+   "note": null,
+   "hero": true,
+   "focus": "50% 50%",
+   "original": {
+    "width": 6720,
+    "height": 4480,
+    "bytes": 1064128,
+    "sha256": "715cca203244bc2a1381aba059165dd4722f796d09e47232c68a793cb1b1fc4b"
+   },
+   "rights": "© Pizzeria Giardino – published on pizzeriagiardino.ch; used only for this unofficial design proposal",
+   "credit": null,
+   "creditNote": "uncredited on the live site (2025 photo and drone set)",
+   "consent": null,
+   "usedOn": [
+    "gallery (all photographs, with lightbox)",
+    "home: Carta",
+    "home: Kitchen (dish journey)"
+   ]
+  },
+  {
+   "id": "dish-prawns",
+   "source": "https://pizzeriagiardino.ch/data/Ressources/1750942250-2025-06-20_giardino_70200.-8412_2048px.jpg",
+   "file": "1750942250-2025-06-20_giardino_70200.-8412_2048px.jpg",
+   "year": 2025,
+   "category": "food",
+   "alt": {
+    "de": "Spaghetti mit Riesencrevetten in einem türkisfarbenen Teller",
+    "en": "Spaghetti with king prawns in a turquoise bowl",
+    "fr": "Spaghettis aux grosses crevettes dans une assiette turquoise",
+    "it": "Spaghetti con gamberoni in un piatto turchese"
+   },
+   "liveOn": [
+    "de/essen-geniessen",
+    "en/eat-enjoy",
+    "fr/manger-et-savourer",
+    "it/mangia-e-divertiti"
+   ],
+   "people": null,
+   "note": null,
+   "hero": true,
+   "focus": "50% 50%",
+   "original": {
+    "width": 6720,
+    "height": 4480,
+    "bytes": 1149020,
+    "sha256": "126d02b2593a71fce3662b6a6623834d7454323ca526bef54fa96db89782c1fb"
+   },
+   "rights": "© Pizzeria Giardino – published on pizzeriagiardino.ch; used only for this unofficial design proposal",
+   "credit": null,
+   "creditNote": "uncredited on the live site (2025 photo and drone set)",
+   "consent": null,
+   "usedOn": [
+    "gallery (all photographs, with lightbox)",
+    "home: Carta",
+    "home: Kitchen (dish journey)"
+   ]
+  },
+  {
+   "id": "dish-pesto",
+   "source": "https://pizzeriagiardino.ch/data/Ressources/1750942299-2025-06-20_giardino_70200.-8377_2048px.jpg",
+   "file": "1750942299-2025-06-20_giardino_70200.-8377_2048px.jpg",
+   "year": 2025,
+   "category": "food",
+   "alt": {
+    "de": "Spaghetti mit grünem Pesto",
+    "en": "Spaghetti with green pesto",
+    "fr": "Spaghettis au pesto vert",
+    "it": "Spaghetti al pesto verde"
+   },
+   "liveOn": [
+    "de/essen-geniessen",
+    "en/eat-enjoy",
+    "fr/manger-et-savourer",
+    "it/mangia-e-divertiti"
+   ],
+   "people": null,
+   "note": null,
+   "hero": false,
+   "focus": "50% 50%",
+   "original": {
+    "width": 6720,
+    "height": 4480,
+    "bytes": 1073051,
+    "sha256": "a696f51794d44d48586bf5d26a609501e76d3c07db97fed636958c5871db1142"
+   },
+   "rights": "© Pizzeria Giardino – published on pizzeriagiardino.ch; used only for this unofficial design proposal",
+   "credit": null,
+   "creditNote": "uncredited on the live site (2025 photo and drone set)",
+   "consent": null,
+   "usedOn": [
+    "gallery (all photographs, with lightbox)",
+    "home: Kitchen (dish journey)"
+   ]
+  },
+  {
+   "id": "pizza-ham-rocket",
+   "source": "https://pizzeriagiardino.ch/data/Ressources/1750942387-2025-06-20_giardino_70200.-8531_2048px.jpg",
+   "file": "1750942387-2025-06-20_giardino_70200.-8531_2048px.jpg",
+   "year": 2025,
+   "category": "food",
+   "alt": {
+    "de": "Pizza mit Rohschinken, Rucola und Grana-Spänen",
+    "en": "Pizza with cured ham, rocket and grana shavings",
+    "fr": "Pizza au jambon cru, roquette et copeaux de grana",
+    "it": "Pizza con prosciutto crudo, rucola e scaglie di grana"
+   },
+   "liveOn": [
+    "de/essen-geniessen",
+    "en/eat-enjoy",
+    "fr/manger-et-savourer",
+    "it/mangia-e-divertiti"
+   ],
+   "people": null,
+   "note": null,
+   "hero": true,
+   "focus": "50% 50%",
+   "original": {
+    "width": 6720,
+    "height": 4480,
+    "bytes": 1105521,
+    "sha256": "f3f085c450d2b8fa08cd848f0da7234bfbc51cd7f0ae8bb375a29d5c5ce0319e"
+   },
+   "rights": "© Pizzeria Giardino – published on pizzeriagiardino.ch; used only for this unofficial design proposal",
+   "credit": null,
+   "creditNote": "uncredited on the live site (2025 photo and drone set)",
+   "consent": null,
+   "usedOn": [
+    "gallery (all photographs, with lightbox)",
+    "home: GalleryTeaser",
+    "home: Kitchen (dish journey)"
+   ]
+  },
+  {
+   "id": "aerial-village",
+   "source": "https://pizzeriagiardino.ch/data/Ressources/1750943367-2025-06-20_giardino_luft--4_2048px.jpg",
+   "file": "1750943367-2025-06-20_giardino_luft--4_2048px.jpg",
+   "year": 2025,
+   "category": "terrace",
+   "alt": {
+    "de": "Luftaufnahme: das Giardino mit dem Spielplatz, dahinter Leukerbad unter den Felswänden",
+    "en": "Aerial view: Giardino and its playground, with Leukerbad and the cliffs behind",
+    "fr": "Vue aérienne : le Giardino et son aire de jeux, avec Loèche-les-Bains au pied des falaises",
+    "it": "Veduta aerea: il Giardino con il parco giochi, sullo sfondo Leukerbad ai piedi delle pareti rocciose"
+   },
+   "liveOn": [
+    "de",
+    "en",
+    "fr",
+    "it",
+    "de/allgemein/impressionen"
+   ],
+   "people": null,
+   "note": null,
+   "hero": true,
+   "focus": "58% 62%",
+   "original": {
+    "width": 5272,
+    "height": 3948,
+    "bytes": 2379195,
+    "sha256": "6034b578c2ab63739ce8683e2a6771054288d4fa846c88c7fcbda38ecd33c970"
+   },
+   "rights": "© Pizzeria Giardino – published on pizzeriagiardino.ch; used only for this unofficial design proposal",
+   "credit": null,
+   "creditNote": "uncredited on the live site (2025 photo and drone set)",
+   "consent": null,
+   "usedOn": [
+    "gallery (all photographs, with lightbox)",
+    "home: Hero",
+    "visit"
+   ]
+  },
+  {
+   "id": "aerial-front",
+   "source": "https://pizzeriagiardino.ch/data/Ressources/1750943391-2025-06-20_giardino_luft--22_2048px.jpg",
+   "file": "1750943391-2025-06-20_giardino_luft--22_2048px.jpg",
+   "year": 2025,
+   "category": "terrace",
+   "alt": {
+    "de": "Luftaufnahme von Haus, Terrasse und Spielplatz",
+    "en": "Aerial view of the building, terrace and playground",
+    "fr": "Vue aérienne de la maison, de la terrasse et de l’aire de jeux",
+    "it": "Veduta aerea della casa, della terrazza e del parco giochi"
+   },
+   "liveOn": [
+    "de/allgemein/impressionen"
+   ],
+   "people": null,
+   "note": null,
+   "hero": false,
+   "focus": "50% 50%",
+   "original": {
+    "width": 4024,
+    "height": 3016,
+    "bytes": 1253272,
+    "sha256": "198d59080ad97995080c8baf4c1e04b5d3b9b8fcd8cce5b0729efd9a29b6b6c8"
+   },
+   "rights": "© Pizzeria Giardino – published on pizzeriagiardino.ch; used only for this unofficial design proposal",
+   "credit": null,
+   "creditNote": "uncredited on the live site (2025 photo and drone set)",
+   "consent": null,
+   "usedOn": [
+    "gallery (all photographs, with lightbox)",
+    "home: GalleryTeaser",
+    "visit"
+   ]
+  },
+  {
+   "id": "ship-portrait",
+   "source": "https://pizzeriagiardino.ch/data/Ressources/1750943490-2025-06-20_giardino_70200.-8600_2048px.jpg",
+   "file": "1750943490-2025-06-20_giardino_70200.-8600_2048px.jpg",
+   "year": 2025,
+   "category": "kids",
+   "alt": {
+    "de": "Piratenschiff, dahinter Häuser von Leukerbad und die Berge",
+    "en": "Pirate ship with houses of Leukerbad and the mountains behind",
+    "fr": "Bateau de pirates, avec des maisons de Loèche-les-Bains et les montagnes",
+    "it": "Nave dei pirati, sullo sfondo case di Leukerbad e le montagne"
+   },
+   "liveOn": [
+    "de/allgemein/impressionen"
+   ],
+   "people": null,
+   "note": null,
+   "hero": false,
+   "focus": "50% 50%",
+   "original": {
+    "width": 4480,
+    "height": 6720,
+    "bytes": 2972993,
+    "sha256": "c3af22c555ddb4863c823096cd601f8ba88c9cdad317cc00363094ad3889c9cd"
+   },
+   "rights": "© Pizzeria Giardino – published on pizzeriagiardino.ch; used only for this unofficial design proposal",
+   "credit": null,
+   "creditNote": "uncredited on the live site (2025 photo and drone set)",
+   "consent": null,
+   "usedOn": [
+    "gallery (all photographs, with lightbox)",
+    "kids: pirate ship"
+   ]
+  },
+  {
+   "id": "playroom-slide",
+   "source": "https://pizzeriagiardino.ch/data/Ressources/1750943509-2025-06-20_giardino-8900_2048px.jpg",
+   "file": "1750943509-2025-06-20_giardino-8900_2048px.jpg",
+   "year": 2025,
+   "category": "kids",
+   "alt": {
+    "de": "Spielzimmer mit Rutsche und rotem Rutschauto",
+    "en": "Playroom with slide and a red ride-on car",
+    "fr": "Salle de jeux avec toboggan et porteur rouge",
+    "it": "Sala giochi con scivolo e macchinina rossa"
+   },
+   "liveOn": [
+    "de/allgemein/impressionen"
+   ],
+   "people": null,
+   "note": null,
+   "hero": false,
+   "focus": "50% 50%",
+   "original": {
+    "width": 6720,
+    "height": 4480,
+    "bytes": 1487042,
+    "sha256": "4a6e2a7fadfb0447485ab8e62823ec9279b9e35522f75492278c5f0ce92d10e5"
+   },
+   "rights": "© Pizzeria Giardino – published on pizzeriagiardino.ch; used only for this unofficial design proposal",
+   "credit": null,
+   "creditNote": "uncredited on the live site (2025 photo and drone set)",
+   "consent": null,
+   "usedOn": [
+    "gallery (all photographs, with lightbox)",
+    "kids: playroom"
+   ]
+  },
+  {
+   "id": "hosts",
+   "source": "https://pizzeriagiardino.ch/data/Ressources/1750943766-2025-06-20_giardino-8915_2048px.jpg",
+   "file": "1750943766-2025-06-20_giardino-8915_2048px.jpg",
+   "year": 2025,
+   "category": "hosts",
+   "alt": {
+    "de": "Pascal und Anja Loretan an der Bar des Giardino",
+    "en": "Pascal and Anja Loretan at the Giardino bar",
+    "fr": "Pascal et Anja Loretan au bar du Giardino",
+    "it": "Pascal e Anja Loretan al bar del Giardino"
+   },
+   "liveOn": [
+    "de",
+    "en",
+    "fr",
+    "it",
+    "de/gastgeber",
+    "en/host",
+    "fr/hotes",
+    "it/la-casa",
+    "de/allgemein/impressionen"
+   ],
+   "people": "the hosts (identified from the Gastgeber page and the rro.ch interview; please confirm)",
+   "note": "Uploaded twice on the current site (1750943766 and 1750944045); identical files.",
+   "hero": true,
+   "focus": "62% 45%",
+   "original": {
+    "width": 5945,
+    "height": 3963,
+    "bytes": 1366125,
+    "sha256": "3443d831a28fcb6c020578b8a6049357da9aa32e79f025c20718c14ed7741f45"
+   },
+   "rights": "© Pizzeria Giardino – published on pizzeriagiardino.ch; used only for this unofficial design proposal",
+   "credit": null,
+   "creditNote": "uncredited on the live site (2025 photo and drone set)",
+   "consent": "consent to confirm with owners",
+   "consentWhy": "the hosts, identifiable",
+   "usedOn": [
+    "gallery (all photographs, with lightbox)",
+    "home: Hosts",
+    "hosts",
+    "press"
+   ]
+  },
+  {
+   "id": "pizza-rocket",
+   "source": "https://pizzeriagiardino.ch/data/Ressources/1750943817-2025-06-20_giardino_70200.-8355_2048px.jpg",
+   "file": "1750943817-2025-06-20_giardino_70200.-8355_2048px.jpg",
+   "year": 2025,
+   "category": "food",
+   "alt": {
+    "de": "Pizza mit Rucola, Kirschtomaten und Mozzarella",
+    "en": "Pizza with rocket, cherry tomatoes and mozzarella",
+    "fr": "Pizza à la roquette, tomates cerises et mozzarella",
+    "it": "Pizza con rucola, pomodorini e mozzarella"
+   },
+   "liveOn": [
+    "de",
+    "en",
+    "fr",
+    "it",
+    "de/allgemein/impressionen"
+   ],
+   "people": null,
+   "note": null,
+   "hero": true,
+   "focus": "50% 50%",
+   "original": {
+    "width": 6720,
+    "height": 4480,
+    "bytes": 1478083,
+    "sha256": "e1caef5c54e553b9ddcc59bd456801f1befa6024ad7397cb42288c5f648e3713"
+   },
+   "rights": "© Pizzeria Giardino – published on pizzeriagiardino.ch; used only for this unofficial design proposal",
+   "credit": null,
+   "creditNote": "uncredited on the live site (2025 photo and drone set)",
+   "consent": null,
+   "usedOn": [
+    "JSON-LD image (launch mode)",
+    "gallery (all photographs, with lightbox)",
+    "home: Carta",
+    "home: Kitchen (dish journey)",
+    "og:image"
+   ]
+  },
+  {
+   "id": "detail-spaghetti",
+   "source": "https://pizzeriagiardino.ch/data/Ressources/1750943817-2025-06-20_giardino_70200.-8370_2048px.jpg",
+   "file": "1750943817-2025-06-20_giardino_70200.-8370_2048px.jpg",
+   "year": 2025,
+   "category": "food",
+   "alt": {
+    "de": "Spaghetti in einem türkisblauen Teller, daneben Gabel und Messer",
+    "en": "Spaghetti in a turquoise bowl beside a fork and knife",
+    "fr": "Spaghettis dans une assiette turquoise, à côté d’une fourchette et d’un couteau",
+    "it": "Spaghetti in un piatto turchese accanto a forchetta e coltello"
+   },
+   "liveOn": [
+    "de/allgemein/impressionen"
+   ],
+   "people": null,
+   "note": null,
+   "hero": false,
+   "focus": "50% 50%",
+   "original": {
+    "width": 3677,
+    "height": 5515,
+    "bytes": 1021983,
+    "sha256": "8f9d9bb29c995b7ff3b4a24a4a7cf6990105d4b53403368141954a6e2f0c0d51"
+   },
+   "rights": "© Pizzeria Giardino – published on pizzeriagiardino.ch; used only for this unofficial design proposal",
+   "credit": null,
+   "creditNote": "uncredited on the live site (2025 photo and drone set)",
+   "consent": null,
+   "usedOn": [
+    "gallery (all photographs, with lightbox)",
+    "home: Kitchen (dish journey)"
+   ]
+  },
+  {
+   "id": "dish-schnitzel",
+   "source": "https://pizzeriagiardino.ch/data/Ressources/1750943817-2025-06-20_giardino_70200.-8379_2048px.jpg",
+   "file": "1750943817-2025-06-20_giardino_70200.-8379_2048px.jpg",
+   "year": 2025,
+   "category": "food",
+   "alt": {
+    "de": "Paniertes Schnitzel mit Zitrone und Pommes Frites",
+    "en": "Breaded schnitzel with lemon and French fries",
+    "fr": "Escalope panée, citron et pommes frites",
+    "it": "Cotoletta impanata con limone e patatine fritte"
+   },
+   "liveOn": [
+    "de/allgemein/impressionen"
+   ],
+   "people": null,
+   "note": null,
+   "hero": false,
+   "focus": "50% 50%",
+   "original": {
+    "width": 4480,
+    "height": 6720,
+    "bytes": 613105,
+    "sha256": "f210e2942d4d6213ca93eebbae081ff9a6f70267b9dd1e6530af00dd811d3754"
+   },
+   "rights": "© Pizzeria Giardino – published on pizzeriagiardino.ch; used only for this unofficial design proposal",
+   "credit": null,
+   "creditNote": "uncredited on the live site (2025 photo and drone set)",
+   "consent": null,
+   "usedOn": [
+    "gallery (all photographs, with lightbox)",
+    "home: Kitchen (dish journey)"
+   ]
+  },
+  {
+   "id": "dish-lasagne",
+   "source": "https://pizzeriagiardino.ch/data/Ressources/1750943817-2025-06-20_giardino_70200.-8445_2048px.jpg",
+   "file": "1750943817-2025-06-20_giardino_70200.-8445_2048px.jpg",
+   "year": 2025,
+   "category": "food",
+   "alt": {
+    "de": "Lasagne in der Auflaufform mit Kirschtomate",
+    "en": "Lasagne in a baking dish with a cherry tomato",
+    "fr": "Lasagnes dans un plat à gratin avec une tomate cerise",
+    "it": "Lasagne nella pirofila con un pomodorino"
+   },
+   "liveOn": [
+    "de/allgemein/impressionen"
+   ],
+   "people": null,
+   "note": null,
+   "hero": false,
+   "focus": "50% 50%",
+   "original": {
+    "width": 6720,
+    "height": 4480,
+    "bytes": 879253,
+    "sha256": "3d3311a3068c8b251150d548dc21692fd46182e31561d250ae7c0049b00d3515"
+   },
+   "rights": "© Pizzeria Giardino – published on pizzeriagiardino.ch; used only for this unofficial design proposal",
+   "credit": null,
+   "creditNote": "uncredited on the live site (2025 photo and drone set)",
+   "consent": null,
+   "usedOn": [
+    "gallery (all photographs, with lightbox)",
+    "home: Kitchen (dish journey)"
+   ]
+  },
+  {
+   "id": "dish-penne",
+   "source": "https://pizzeriagiardino.ch/data/Ressources/1750943818-2025-06-20_giardino_70200.-8406_2048px.jpg",
+   "file": "1750943818-2025-06-20_giardino_70200.-8406_2048px.jpg",
+   "year": 2025,
+   "category": "food",
+   "alt": {
+    "de": "Penne mit Tomatensauce in einem gemusterten Teller",
+    "en": "Penne with tomato sauce in a patterned bowl",
+    "fr": "Penne à la sauce tomate dans une assiette décorée",
+    "it": "Penne al pomodoro in un piatto decorato"
+   },
+   "liveOn": [
+    "de/allgemein/impressionen"
+   ],
+   "people": null,
+   "note": null,
+   "hero": false,
+   "focus": "50% 50%",
+   "original": {
+    "width": 6720,
+    "height": 4480,
+    "bytes": 1450928,
+    "sha256": "a36be75cd52c52c0d270d1067460be6103ff0a1a6c7615139d0f6ce809244e5b"
+   },
+   "rights": "© Pizzeria Giardino – published on pizzeriagiardino.ch; used only for this unofficial design proposal",
+   "credit": null,
+   "creditNote": "uncredited on the live site (2025 photo and drone set)",
+   "consent": null,
+   "usedOn": [
+    "gallery (all photographs, with lightbox)",
+    "home: Kitchen (dish journey)"
+   ]
+  },
+  {
+   "id": "garden-view",
+   "source": "https://pizzeriagiardino.ch/data/Ressources/1750943878-2025-06-20_giardino_70200.-8618_2048px.jpg",
+   "file": "1750943878-2025-06-20_giardino_70200.-8618_2048px.jpg",
+   "year": 2025,
+   "category": "terrace",
+   "alt": {
+    "de": "Blick durch das Laub auf die Pizzeria, das Hotel Heilquelle und die Berge",
+    "en": "View through the leaves to the pizzeria, Hotel Heilquelle and the mountains",
+    "fr": "Vue à travers le feuillage sur la pizzeria, l’hôtel Heilquelle et les montagnes",
+    "it": "Vista tra le foglie sulla pizzeria, l’hotel Heilquelle e le montagne"
+   },
+   "liveOn": [
+    "de",
+    "en",
+    "fr",
+    "it",
+    "de/allgemein/impressionen"
+   ],
+   "people": null,
+   "note": null,
+   "hero": true,
+   "focus": "62% 55%",
+   "original": {
+    "width": 6452,
+    "height": 4301,
+    "bytes": 2893165,
+    "sha256": "c9cb29adb72e6d54adfc70c7c54af4d6e16a9ad0210fea8e7538a6d7e7852ea8"
+   },
+   "rights": "© Pizzeria Giardino – published on pizzeriagiardino.ch; used only for this unofficial design proposal",
+   "credit": null,
+   "creditNote": "uncredited on the live site (2025 photo and drone set)",
+   "consent": null,
+   "usedOn": [
+    "JSON-LD image (launch mode)",
+    "gallery (all photographs, with lightbox)",
+    "home: GalleryTeaser",
+    "og:image",
+    "visit"
+   ]
+  },
+  {
+   "id": "aerial-terrace",
+   "source": "https://pizzeriagiardino.ch/data/Ressources/1750943915-2025-06-20_giardino_luft--5_2048px.jpg",
+   "file": "1750943915-2025-06-20_giardino_luft--5_2048px.jpg",
+   "year": 2025,
+   "category": "terrace",
+   "alt": {
+    "de": "Luftaufnahme von Terrasse, Spielplatz und Nachbarhäusern",
+    "en": "Aerial view of the terrace, playground and neighbouring buildings",
+    "fr": "Vue aérienne de la terrasse, de l’aire de jeux et des maisons voisines",
+    "it": "Veduta aerea della terrazza, del parco giochi e delle case vicine"
+   },
+   "liveOn": [
+    "de/allgemein/impressionen"
+   ],
+   "people": null,
+   "note": null,
+   "hero": false,
+   "focus": "50% 50%",
+   "original": {
+    "width": 5272,
+    "height": 3948,
+    "bytes": 2438904,
+    "sha256": "50547a233ddda5d64fbee59377bb48c68968869f13922dda0d71aa333f8d1e07"
+   },
+   "rights": "© Pizzeria Giardino – published on pizzeriagiardino.ch; used only for this unofficial design proposal",
+   "credit": null,
+   "creditNote": "uncredited on the live site (2025 photo and drone set)",
+   "consent": null,
+   "usedOn": [
+    "gallery (all photographs, with lightbox)",
+    "home: VisitSection"
+   ]
+  },
+  {
+   "id": "dish-penne-chili",
+   "source": "https://pizzeriagiardino.ch/data/Ressources/1750943969-2025-06-20_giardino_70200.-8568_2048px.jpg",
+   "file": "1750943969-2025-06-20_giardino_70200.-8568_2048px.jpg",
+   "year": 2025,
+   "category": "food",
+   "alt": {
+    "de": "Penne mit Tomatensauce und einer Chilischote",
+    "en": "Penne with tomato sauce and a chilli pepper",
+    "fr": "Penne à la sauce tomate et un piment",
+    "it": "Penne al pomodoro con un peperoncino"
+   },
+   "liveOn": [
+    "de/allgemein/impressionen"
+   ],
+   "people": null,
+   "note": null,
+   "hero": false,
+   "focus": "50% 50%",
+   "original": {
+    "width": 4301,
+    "height": 6452,
+    "bytes": 759725,
+    "sha256": "411554e5b977eb62c55a194effa322aac0b34fa4bdf13650cd194c1fe8a79f11"
+   },
+   "rights": "© Pizzeria Giardino – published on pizzeriagiardino.ch; used only for this unofficial design proposal",
+   "credit": null,
+   "creditNote": "uncredited on the live site (2025 photo and drone set)",
+   "consent": null,
+   "usedOn": [
+    "gallery (all photographs, with lightbox)",
+    "home: Kitchen (dish journey)"
+   ]
+  }
+ ]
+}

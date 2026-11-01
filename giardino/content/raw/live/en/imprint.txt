@@ -1,0 +1,114 @@
+URL: https://pizzeriagiardino.ch/en/imprint
+FINAL: https://pizzeriagiardino.ch/en/imprint
+TITLE: Pizzeria Giardino Leukerbad | Pizza, Pasta, Penne, Risotto, Restaurant, Essen, Familien, Kinder, Glutenfreie Pizzeria, Glutenfreie Pizzeria im Wallis | Leukerbad | Imprint
+DESCRIPTION: Pizzeria Giardino Leukerbad - Treten Sie ein und erleben Sie ein Stück Italien inmitten unserem prächtigen Bergpanorama.  Im Sommer sind wir der Treffpunk für alle. Wir bieten eine gemütliche, sonnenverwöhnte Terrasse an, von welcher Sie freie Sicht auf die Gemmi und Torrent haben.
+
+== HEADER (navigation, badges) ==
+Deutsch Français English Italiano
+Eat & Enjoy
+Kids
+Host
+Bookings
+Partner Hotels
+Imprint
+Meta Home
+Jobs
+Arrival
+Virtual tour
+Leukerbad Therme
+Press
+Contact
+[image https://pizzeriagiardino.ch/data/Cache//c/c4/c4a/c4a4/_srcc4a4a0297bcc29a9ad80ae23b02d7871_pard41f122b3f5daa56f9f2f05dd8]
+Deutsch Français English Italiano
+Home
+Jobs
+Arrival
+Virtual tour
+Leukerbad Therme
+Press
+Contact
+[image https://pizzeriagiardino.ch/templates/pizzeriagiardino/img/tripadvisor_ruhmeshalle.jpg]
+[image templates/pizzeriagiardino/img/best_of_swiss_gastro_activity.png]
+Vouchers
+[image templates/pizzeriagiardino/img/logo.png]
+Eat & Enjoy
+Kids
+Host
+Bookings
+Partner Hotels
+
+== MAIN ==
+Imprint
+Responsible for the content
+Pizzeria Giardino
+Pascal & Anja Loretan
+Thermenstrasse 9
+3954 Leukerbad
+Tel. +41 (0)27 530 05 84
+info@pizzeriagiardino.ch
+Web design, web development and hosting
+indual GmbH
+Grundbielstrasse 1
+3902 Brig-Glis
+Professional responsive web design from Valais
+Photography
+Christian Pfammatter , 3930 Visp
+
+== SIDEBAR ==
+In the center of Leukerbad
+You will find us at Thermenstrasse 9 in Leukerbad. View map
+Reserve a table
+Reserve a table now in the Pizzeria Giardino.
+Our opening hours
+Open from 11:00am to 11:00pm
+Closed on wednesday
+Hot meals served from 11:30am to 3:00pm and from 5:00pm to 9:30pm.
+COMPANY HOLIDAYS AUTUMN
+We are closed from November 01, 2026 to December 17th, 2026 and look forward to welcoming you again on Friday, December 18th, 2026
+
+== FOOTER ==
+Pizzeria Giardino
+Pascal & Anja Loretan
+Thermenstrasse 9
+3954 Leukerbad
+Tel. +41 (0)27 530 05 84
+info@pizzeriagiardino.ch
+© 2026 |
+webdesign, webentwicklung und hosting powered by indual |
+|
+Imprint
+[image templates/pizzeriagiardino/img/wir_logo_white.png]
+[image templates/pizzeriagiardino/img/food4family.png]
+[image templates/pizzeriagiardino/img/tripadvisor.png]
+[image templates/pizzeriagiardino/img/logo_zoeliakie.png]
+[image templates/pizzeriagiardino/img/google_logo.png]
+[image templates/pizzeriagiardino/img/logo_babyfriendly_small.png]
+[image templates/pizzeriagiardino/img/logo_facebook.png]
+[image templates/pizzeriagiardino/img/logo_foursquare.png]
+[script inline]
+[script https://pizzeriagiardino.ch/scripts/jquery.min.js] [script https://pizzeriagiardino.ch/scripts/jquery.bxslider.fitvids.js] [script https://pizzeriagiardino.ch/scripts/jquery.bxslider.min.js] [script https://pizzeriagiardino.ch/scripts/indual_cms.min.js] [script https://pizzeriagiardino.ch/templates/pizzeriagiardino/js/functions2.min.js] [script https://pizzeriagiardino.ch/templates/pizzeriagiardino/js/slick.min.js]
+
+== PHOTOS (data/Ressources) ==
+
+
+== EMBEDS ==
+
+
+== EXTERNAL LINKS ==
+http://www.bestofswissgastro.ch/guide/pizzeria-giardino/
+http://www.christianpfammatter.ch
+http://www.indual.ch
+http://www.tripadvisor.de/Restaurant_Review-g198859-d3640075-Reviews-Pizzeria_Giardino-Leukerbad_Valais_Swiss_Alps.html
+http://www.wir.ch/
+http://www.zoeliakie.ch/
+https://foursquare.com/v/pizzeria-giardino/4e457acfd4c065cb6b922e71/
+https://g.co/kgs/BCibBDs
+https://plus.google.com/+PizzeriaGiardinoLeukerbad/
+https://social.babyfreundlich.ch/ort/leukerbad/pizzeria-giardino/
+https://www.facebook.com/pages/Pizzeria-Giardino/140821139297172/
+https://www.felizzio.com/en/pizzeriagiardino/shop
+https://www.food4family.ch/restaurantsuche/wallis/giardino/
+https://www.indual.ch
+https://www.indual.ch/webseiten/professionelles-webdesign-aus-dem-wallis
+https://www.myswitzerland.com/de-ch/wellness-destinaton-quality.html
+https://www.tripadvisor.ch/Restaurant_Review-g198859-d3640075-Reviews-Pizzeria_Giardino-Leukerbad_Canton_of_Valais_Swiss_Alps.html

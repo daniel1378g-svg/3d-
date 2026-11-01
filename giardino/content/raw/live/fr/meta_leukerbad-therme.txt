@@ -1,0 +1,4 @@
+URL: https://pizzeriagiardino.ch/fr/meta/leukerbad-therme
+STATUS: 301
+LOCATION: http://www.leukerbad-therme.ch/fr/index.php
+NOTE: requested 2026-11-01 without following the redirect (GET).

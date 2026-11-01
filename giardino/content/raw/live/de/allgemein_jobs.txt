@@ -1,0 +1,110 @@
+URL: https://pizzeriagiardino.ch/de/allgemein/jobs
+FINAL: https://pizzeriagiardino.ch/de/allgemein/jobs
+TITLE: Pizzeria Giardino Leukerbad | Pizza, Pasta, Penne, Risotto, Restaurant, Essen, Familien, Kinder, Glutenfreie Pizzeria, Glutenfreie Pizzeria im Wallis | Leukerbad | Jobs
+DESCRIPTION: Pizzeria Giardino Leukerbad - Treten Sie ein und erleben Sie ein Stück Italien inmitten unserem prächtigen Bergpanorama.  Im Sommer sind wir der Treffpunk für alle. Wir bieten eine gemütliche, sonnenverwöhnte Terrasse an, von welcher Sie freie Sicht auf die Gemmi und Torrent haben.
+
+== HEADER (navigation, badges) ==
+Deutsch Français English Italiano
+Essen & Geniessen
+Kids
+Gastgeber
+Reservation
+Partnerhotels
+Datenschutz
+Impressum
+Allgemein Home
+Jobs
+Anreise
+Rundgang
+Impressionen
+Leukerbad Therme
+Presse
+Kontakt
+[image https://pizzeriagiardino.ch/data/Cache//c/c4/c4a/c4a4/_srcc4a4a0297bcc29a9ad80ae23b02d7871_pard41f122b3f5daa56f9f2f05dd8]
+Deutsch Français English Italiano
+Home
+Jobs
+Anreise
+Rundgang
+Impressionen
+Leukerbad Therme
+Presse
+Kontakt
+[image https://pizzeriagiardino.ch/templates/pizzeriagiardino/img/tripadvisor_ruhmeshalle.jpg]
+[image templates/pizzeriagiardino/img/best_of_swiss_gastro_activity.png]
+Gutscheine
+[image templates/pizzeriagiardino/img/logo.png]
+Essen & Geniessen
+Kids
+Gastgeber
+Reservation
+Partnerhotels
+
+== MAIN ==
+Jobs
+Zur Unterstützung unseres Teams suchen wir eine kompetente und belastbare Servicemitarbeiterin sowie eine Küchenhilfe oder einen Hilfskoch: www.hoteljob-schweiz.de
+Senden Sie Ihre Bewerbung an: info@pizzeriagiardino.ch
+[script https://hoteljob-schweiz.de/jobanzeige_extern.php?uid=4037&js=1&ssl=1]
+powered by Hoteljob-Schweiz / Pizzeria Giardino Leukerbad
+
+== SIDEBAR ==
+Im Zentrum von Leukerbad
+Sie finden uns an der Thermenstrasse 9 in Leukerbad. Zum Lageplan
+Tischreservation
+Reservieren Sie sich jetzt einen Tisch in der Pizzeria Giardino.
+Unsere Öffnungszeiten
+[script https://api.myls.ch/js/business-hours.js?entity_id=MjMxMg==&locale=de&text_color=333333&mode=standar]
+Mittwoch Ruhetag
+Spezielle Öffnungszeiten
+Warme Küche von 11:30 bis 15:00 Uhr und 17:00 bis 21:30 Uhr.
+[script https://api.myls.ch/js/holidays-hours.js?entity_id=MjMxMg==&locale=de&text_color=333333&mode=standar]
+BETRIEBSFERIEN HERBST
+Wir haben vom 01. November 2026 bis am 17. Dezember 2026 Betriebsferien und freuen uns Sie am Freitag den 18. Dezember 2026 wieder zu begrüßen
+
+== FOOTER ==
+Pizzeria Giardino
+Pascal & Anja Loretan
+Thermenstrasse 9
+3954 Leukerbad
+Tel. +41 (0)27 530 05 84
+info@pizzeriagiardino.ch
+© 2026 |
+webdesign, webentwicklung und hosting powered by indual |
+Datenschutz
+|
+Impressum
+[image templates/pizzeriagiardino/img/wir_logo_white.png]
+[image templates/pizzeriagiardino/img/food4family.png]
+[image templates/pizzeriagiardino/img/tripadvisor.png]
+[image templates/pizzeriagiardino/img/logo_zoeliakie.png]
+[image templates/pizzeriagiardino/img/google_logo.png]
+[image templates/pizzeriagiardino/img/logo_babyfriendly_small.png]
+[image templates/pizzeriagiardino/img/logo_facebook.png]
+[image templates/pizzeriagiardino/img/logo_foursquare.png]
+[script inline]
+[script https://pizzeriagiardino.ch/scripts/jquery.min.js] [script https://pizzeriagiardino.ch/scripts/jquery.bxslider.fitvids.js] [script https://pizzeriagiardino.ch/scripts/jquery.bxslider.min.js] [script https://pizzeriagiardino.ch/scripts/indual_cms.min.js] [script https://pizzeriagiardino.ch/templates/pizzeriagiardino/js/functions2.min.js] [script https://pizzeriagiardino.ch/templates/pizzeriagiardino/js/slick.min.js]
+
+== PHOTOS (data/Ressources) ==
+
+
+== EMBEDS ==
+script https://hoteljob-schweiz.de/jobanzeige_extern.php?uid=4037&js=1&ssl=1
+script https://api.myls.ch/js/business-hours.js?entity_id=MjMxMg==&locale=de&text_color=333333&mode=standard&day_name=full
+script https://api.myls.ch/js/holidays-hours.js?entity_id=MjMxMg==&locale=de&text_color=333333&mode=standard&max_limit=5
+
+== EXTERNAL LINKS ==
+http://www.bestofswissgastro.ch/guide/pizzeria-giardino/
+http://www.tripadvisor.de/Restaurant_Review-g198859-d3640075-Reviews-Pizzeria_Giardino-Leukerbad_Valais_Swiss_Alps.html
+http://www.wir.ch/
+http://www.zoeliakie.ch/
+https://foursquare.com/v/pizzeria-giardino/4e457acfd4c065cb6b922e71/
+https://g.co/kgs/BCibBDs
+https://hoteljob-schweiz.de/pizzeria-giardino-leukerbad-jobs-4037.htm
+https://plus.google.com/+PizzeriaGiardinoLeukerbad/
+https://social.babyfreundlich.ch/ort/leukerbad/pizzeria-giardino/
+https://www.facebook.com/pages/Pizzeria-Giardino/140821139297172/
+https://www.felizzio.com/de/pizzeriagiardino/shop
+https://www.food4family.ch/restaurantsuche/wallis/giardino/
+https://www.indual.ch
+https://www.myswitzerland.com/de-ch/wellness-destinaton-quality.html
+https://www.tripadvisor.ch/Restaurant_Review-g198859-d3640075-Reviews-Pizzeria_Giardino-Leukerbad_Canton_of_Valais_Swiss_Alps.html
