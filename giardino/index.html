@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="de-CH">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Pizzeria Giardino Leukerbad</title>
+    <meta name="description" content="Pizzeria Giardino, Thermenstrasse 9, 3954 Leukerbad." />
+    <meta name="theme-color" content="#f5f0e6" />
+    <!--robots-->
+    <link rel="icon" href="/favicon.ico" sizes="16x16" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/brand/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/brand/favicon-48.png" />
+    <link rel="apple-touch-icon" href="/brand/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <!--preload-->
+    <link rel="preload" href="/fonts/manrope.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/cormorant-garamond-roman.woff2" as="font" type="font/woff2" crossorigin fetchpriority="low" />
+    <!--head-->
+    <script>
+      (function () {
+        try {
+          var d = document.documentElement;
+          d.classList.add("js");
+          // the entrance (pure CSS, ≤ 1.2 s from the first frame) plays once per session and never with reduced
+          // motion (BRIEF §7); scroll reveals start only once the app runs (html.motion-ok), so no content ever
+          // waits for JavaScript
+          var seen = false;
+          try { seen = !!sessionStorage.getItem("giardino-intro"); } catch (e) {}
+          if (!seen && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) d.classList.add("intro");
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"><!--app--></div>
+    <script type="module" src="/src/entry-client.tsx"></script>
+  </body>
+</html>

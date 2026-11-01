@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Olive branch – scene test</title>
+    <style>
+      html, body { margin: 0; background: #f5f0e6; }
+      body.dark { background: #29381b; }
+      #c { width: 1000px; height: 800px; display: block; }
+    </style>
+  </head>
+  <body>
+    <canvas id="c" width="1000" height="800"></canvas>
+    <script type="module">
+      // ?poster=1 renders one deterministic frame with a transparent background (scripts/render-branch.cjs)
+      import { createOlive } from "/src/three/olive.ts";
+      const p = new URLSearchParams(location.search);
+      if (p.has("dark")) document.body.classList.add("dark");
+      const canvas = document.getElementById("c");
+      const W = Number(p.get("w") ?? 1000), H = Number(p.get("h") ?? 800);
+      canvas.style.width = W + "px"; canvas.style.height = H + "px";
+      const o = createOlive(canvas, { dpr: Number(p.get("dpr") ?? 2), quality: "high" });
+      o.resize(W, H);
+      if (p.has("pointer")) { const [x, y] = p.get("pointer").split(",").map(Number); o.setPointer(x, y); }
+      o.renderAt(Number(p.get("t") ?? 0));
+      window.__ready = true;
+    </script>
+  </body>
+</html>
