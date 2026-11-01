@@ -1,0 +1,555 @@
+{
+ "date": "2026-11-01T22:47:41.596Z",
+ "routes": [
+  {
+   "url": "/de/allgemein/anreise",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/de/allgemein/impressionen",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/de/allgemein/jobs",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/de/allgemein/kontakt",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/de/allgemein/presse",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/de/allgemein/rundgang",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/de/datenschutz",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/de/essen-geniessen",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/de/gastgeber",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/de/impressum",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/de",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/de/kids",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/de/partnerhotels",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/de/reservation",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/de/reservation/status",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/en/bookings",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/en/bookings/status",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/en/eat-enjoy",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/en/host",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/en/imprint",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/en",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/en/kids",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/en/meta/arrival",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/en/meta/contact",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/en/meta/impressions",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/en/meta/jobs",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/en/meta/press",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/en/meta/virtual-tour",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/en/partner-hotels",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/en/privacy",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/fr/enfants",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/fr/hotels-partenaires",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/fr/hotes",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/fr",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/fr/manger-et-savourer",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/fr/mentions-legales",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/fr/meta/arrivee",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/fr/meta/contact",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/fr/meta/emplois",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/fr/meta/impressions",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/fr/meta/presse",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/fr/meta/tour-virtuel",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/fr/protection-des-donnees",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/fr/reservation",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/fr/reservation/statut",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/it/alberghi-partner",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/it",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/it/kids",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/it/la-casa",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/it/mangia-e-divertiti",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/it/meta/come-arrivare",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/it/meta/contatto",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/it/meta/impressioni",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/it/meta/lavoro",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/it/meta/stampa",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/it/meta/tour-virtuale",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/it/note-legali",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/it/prenotazione",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/it/prenotazione/stato",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  },
+  {
+   "url": "/it/protezione-dei-dati",
+   "status": 200,
+   "errors": [],
+   "axe": [],
+   "german": [],
+   "cookies": 0
+  }
+ ],
+ "switch": {
+  "durationMs": 628,
+  "animationMs": 618,
+  "cls": 0,
+  "clsIncludingInput": 0.0017820142706725824,
+  "url": "/en/eat-enjoy?m=drinks&q=gin",
+  "search": "gin",
+  "lang": "en",
+  "scrolled": true,
+  "remembered": "en",
+  "back": {
+   "url": "/de/essen-geniessen?m=drinks&q=gin",
+   "lang": "de-CH"
+  },
+  "ok": true,
+  "reservationKept": {
+   "picked": "2026-12-18",
+   "url": "/fr/reservation",
+   "draft": "2026-12-18",
+   "summary": "ven. 18 décembre",
+   "ok": true
+  },
+  "reduced": {
+   "ms": 139,
+   "logoFlight": false,
+   "motionClass": false
+  }
+ },
+ "reservation": {
+  "month": "Dezember 2026",
+  "firstFree": "2026-12-18",
+  "wednesdaysBlocked": true,
+  "closureBlocked": true,
+  "mailto": true,
+  "tel": true,
+  "confirmedWordInFlow": false
+ },
+ "keyboard": {
+  "skipLinkFirst": true,
+  "focusRing": true,
+  "panelOpensOnCurrent": "de-CH",
+  "arrowMoves": "en",
+  "escapeClosesAndReturns": true
+ },
+ "nojs": {
+  "menu": 51,
+  "reservationForm": true,
+  "hoursAndPhone": true,
+  "closureNotice": true,
+  "imprint": true
+ },
+ "fallback": {
+  "noWebgl": {
+   "poster": true,
+   "live": false
+  },
+  "reducedMotion": {
+   "live": false,
+   "motionOk": false
+  }
+ },
+ "totals": {
+  "routes": 60,
+  "httpOrConsoleErrors": 0,
+  "axeCriticalSerious": 0,
+  "axeOther": 0,
+  "germanHits": 0,
+  "thirdPartyRequests": [],
+  "cookies": 0
+ }
+}

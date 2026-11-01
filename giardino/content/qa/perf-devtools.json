@@ -1,0 +1,46 @@
+{
+ "method": "devtools",
+ "conditions": "Lighthouse mobile emulation 412×823 @1.75x with applied throttling (devtools method): 4× CPU slowdown, 562.5 ms request latency, 1474 kbit/s down; headless Chromium without GPU (WebGL → poster); median of 3 runs",
+ "runs": 3,
+ "routes": {
+  "/de": {
+   "lcpS": 2.46,
+   "cls": 0,
+   "tbtMs": 270,
+   "fcpS": 2.08,
+   "speedIndexS": 2.33,
+   "performance": 0.9,
+   "accessibility": 1,
+   "bestPractices": 1,
+   "scriptKB": 150,
+   "totalKB": 685,
+   "lcpElement": "div.hero__media > div.img > picture > img"
+  },
+  "/de/essen-geniessen": {
+   "lcpS": 1.9,
+   "cls": 0,
+   "tbtMs": 185,
+   "fcpS": 1.9,
+   "speedIndexS": 1.92,
+   "performance": 0.96,
+   "accessibility": 1,
+   "bestPractices": 1,
+   "scriptKB": 118,
+   "totalKB": 377,
+   "lcpElement": "main#main > header.menu-head > div.wrap > p.lead"
+  },
+  "/de/reservation": {
+   "lcpS": 2.13,
+   "cls": 0,
+   "tbtMs": 135,
+   "fcpS": 1.86,
+   "speedIndexS": 1.91,
+   "performance": 0.97,
+   "accessibility": 1,
+   "bestPractices": 1,
+   "scriptKB": 123,
+   "totalKB": 428,
+   "lcpElement": "div.page-head__media > div.img > picture > img"
+  }
+ }
+}
