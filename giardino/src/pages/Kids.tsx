@@ -3,7 +3,7 @@ import { useSite } from "@/site";
 import { PageHead } from "@/components/PageHead";
 import { Img, useAlt } from "@/components/Img";
 import { useLightbox } from "@/components/Lightbox";
-import { Link } from "@/components/Link";
+import { Link, NewTabMark } from "@/components/Link";
 import { MenuSection } from "./Menu";
 import { MENUS } from "@/content/menu";
 import { Arrow, Download } from "@/components/icons";
@@ -64,7 +64,7 @@ export default function Kids() {
           <p className="muted" style={{ fontSize: 14 }}>{kids.footnotes[0][lang]}</p>
           <div style={{ display: "flex", gap: 14, flexWrap: "wrap", marginTop: 28 }}>
             <Link href={href("menu", { search: "?m=kids" })} className="btn">{t.kids.menuLink}<Arrow /></Link>
-            <a href={kids.pdf.href.replace(/^\//, pre)} className="btn btn--ghost" target="_blank" rel="noopener"><Download />PDF</a>
+            <a href={kids.pdf.href.replace(/^\//, pre)} className="btn btn--ghost" target="_blank" rel="noopener"><Download />PDF<NewTabMark /></a>
           </div>
         </div>
       </section>

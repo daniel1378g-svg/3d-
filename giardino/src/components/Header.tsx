@@ -6,7 +6,6 @@ import { useEffect, useId, useRef, useState, type KeyboardEvent, type MouseEvent
 import { LANGS, LANG_NAMES, HTML_LANG, preloadDicts, type Lang } from "@/i18n";
 import { useSite } from "@/site";
 import { loadGsap } from "@/lib/gsap";
-import { useLocation } from "@/lib/router";
 import { pathFor } from "@/routes";
 import { RESTAURANT } from "@/content/restaurant";
 import { Link } from "./Link";
@@ -57,7 +56,12 @@ export function Header({ deep, menuOpen, onToggleMenu, progressRef, clone = fals
           <Link href={href("reserve")} className="btn btn--accent btn--reserve" tabIndex={clone ? -1 : undefined} aria-current={page === "reserve" ? "page" : undefined}>
             {t.cta.reserve}
           </Link>
-          <button type="button" className="icon-btn menu-toggle" aria-expanded={menuOpen} aria-controls="mobile-nav" onClick={onToggleMenu} tabIndex={clone ? -1 : undefined}>
+          {/* without JavaScript the menu button is a link to the site map in the footer */}
+          <a className="icon-btn menu-toggle nojs-only" href="#footer-title" tabIndex={clone ? -1 : undefined}>
+            <MenuIcon />
+            <span className="sr-only">{t.a11y.openMenu}</span>
+          </a>
+          <button type="button" className="icon-btn menu-toggle js-only" aria-expanded={menuOpen} aria-controls="mobile-nav" onClick={onToggleMenu} tabIndex={clone ? -1 : undefined}>
             {menuOpen ? <Close /> : <MenuIcon />}
             <span className="sr-only">{menuOpen ? t.a11y.closeMenu : t.a11y.openMenu}</span>
           </button>
@@ -74,8 +78,7 @@ export function Header({ deep, menuOpen, onToggleMenu, progressRef, clone = fals
  * simply open the same page in the other language; with JavaScript the click plays the logo transition instead.
  */
 export function LanguageMenu({ disabled = false }: { disabled?: boolean }) {
-  const { t, lang, page, requestLanguage, switching, hydrated } = useSite();
-  const loc = useLocation();
+  const { t, lang, page, requestLanguage, switching } = useSite();
   const [open, setOpen] = useState(false);
   const btn = useRef<HTMLButtonElement>(null);
   const items = useRef<(HTMLAnchorElement | null)[]>([]);
@@ -94,9 +97,8 @@ export function LanguageMenu({ disabled = false }: { disabled?: boolean }) {
     return () => document.removeEventListener("pointerdown", away);
   }, [open, lang]);
 
-  // the same page, section and query in the other language (query and hash only after hydration: the pre-rendered
-  // HTML has none)
-  const target = (l: Lang) => (page === "notFound" ? `/${l}` : pathFor(l, page)) + (hydrated ? loc.search + loc.hash : "");
+  // the same page in the other language (the click itself carries query, section and form state, see App)
+  const target = (l: Lang) => (page === "notFound" ? `/${l}` : pathFor(l, page));
   const choose = (e: MouseEvent<HTMLAnchorElement>, l: Lang) => {
     if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return; // new tab or window: let the browser do it
     e.preventDefault();
@@ -124,10 +126,20 @@ export function LanguageMenu({ disabled = false }: { disabled?: boolean }) {
 
   return (
     <div className="lang" ref={wrap} onKeyDown={onKey} onBlur={(e) => !wrap.current?.contains(e.relatedTarget as Node) && setOpen(false)}>
+      {/* without JavaScript: the four languages as plain links */}
+      <ul className="lang__nojs nojs-only" aria-label={t.a11y.chooseLanguage}>
+        {LANGS.map((l) => (
+          <li key={l}>
+            <a href={target(l)} hrefLang={HTML_LANG[l]} lang={HTML_LANG[l]} aria-current={l === lang ? "true" : undefined} tabIndex={disabled ? -1 : undefined}>
+              {l.toUpperCase()}
+            </a>
+          </li>
+        ))}
+      </ul>
       <button
         ref={btn}
         type="button"
-        className="icon-btn lang__btn"
+        className="icon-btn lang__btn js-only"
         aria-expanded={open}
         aria-controls={id}
         disabled={switching}

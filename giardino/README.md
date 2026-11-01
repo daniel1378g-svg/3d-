@@ -24,7 +24,8 @@ npm test               # 53 tests: hours and slots, validation, the API and staf
 npm run check          # dictionaries complete in 4 languages (+ Swiss/fr-CH rules); every menu line vs. the PDFs
 npm run qa             # browser QA of dist/: axe, German leaks, requests, cookies, language switch, keyboard,
                        # no-JS, fallbacks; screenshots → content/qa/ (run after `npm run build`)
-LIGHTHOUSE=… npm run perf   # Lighthouse on /de, /de/essen-geniessen, /de/reservation → content/qa/perf.json
+LIGHTHOUSE=… npm run perf   # Lighthouse on /de, /de/essen-geniessen, /de/reservation over HTTP/2 (local
+                            # self-signed TLS) → content/qa/perf-*.json; PERF_METHOD=devtools, PERF_PROTOCOL=h1
 npm run build:artifact # the claude.ai preview → artifact/ (index.html, app.js, files.json)
 ```
 
@@ -49,13 +50,16 @@ npm run build:artifact # the claude.ai preview → artifact/ (index.html, app.js
   optional note to the guest, contact messages. Only this view can set a request to «confirmed».
 - Storage: SQLite in `DATA_DIR` (default `./data`). Name, phone, e-mail and notes are blanked 30 days after the
   reservation date (`RETENTION_DAYS`), messages are deleted after 90 days.
-- Settings (environment): `PORT` (4340), `HOST`, `DATA_DIR`, `DIST_DIR`, `STAFF_USER` (giardino), `STAFF_PASSWORD`
+- Settings (environment): `PORT` (4340), `HOST`, `DATA_DIR`, `DIST_DIR`, `TLS_CERT` + `TLS_KEY` (PEM files: HTTPS
+  with HTTP/2 served by Node itself, HTTP/1.1 kept for old clients), `STAFF_USER` (giardino), `STAFF_PASSWORD`
   (the staff view stays closed while unset), `STAFF_TOKEN` (optional JSON API), `NOTIFY_WEBHOOK_URL` (optional ping
   without personal data on every new request), `PUBLIC_ORIGIN`, `TRUST_PROXY`, `SECRET` (generated into
   `DATA_DIR/secret` if unset).
 
-Run it behind HTTPS (a reverse proxy or the host's TLS). Rate limits, CSRF protection for the staff view and a strict
-Content-Security-Policy are built in.
+Serve it over HTTPS with HTTP/2 – behind a reverse proxy or the host's TLS, or with `TLS_CERT`/`TLS_KEY` directly. One
+multiplexed connection matters on slow mobile networks: Lighthouse's simulated LCP on the home page is about a second
+better over HTTP/2 than over HTTP/1.1 (content/qa/perf-*.json). Rate limits, CSRF protection for the staff view and a
+strict Content-Security-Policy are built in.
 
 ## Where to edit
 

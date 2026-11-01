@@ -3,6 +3,7 @@
 import type { AnchorHTMLAttributes, MouseEvent } from "react";
 import { useSite } from "@/site";
 import { useLocation } from "@/lib/router";
+import { External } from "./icons";
 
 type Props = AnchorHTMLAttributes<HTMLAnchorElement> & { href: string };
 
@@ -45,13 +46,23 @@ export function toArtifactHash(href: string) {
   return "#" + (u.pathname.replace(/^\/|\/$/g, "").split("/").filter(Boolean).join("-") || "de");
 }
 
-/** External links open in a new tab and say so to screen readers. */
-export function ExtLink({ href, children, className, label }: { href: string; children: React.ReactNode; className?: string; label?: string }) {
+/** Anything that opens in a new tab says so: a visible mark (BRIEF §11) and a note for screen readers. */
+export function NewTabMark() {
   const { t } = useSite();
+  return (
+    <>
+      <External className="ext-mark" />
+      <span className="sr-only"> ({t.a11y.newTab})</span>
+    </>
+  );
+}
+
+/** External links open in a new tab, marked as such. */
+export function ExtLink({ href, children, className, label }: { href: string; children: React.ReactNode; className?: string; label?: string }) {
   return (
     <a href={href} target="_blank" rel="noopener noreferrer" className={className} aria-label={label}>
       {children}
-      <span className="sr-only"> ({t.a11y.newTab})</span>
+      <NewTabMark />
     </a>
   );
 }

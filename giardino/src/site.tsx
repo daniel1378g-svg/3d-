@@ -18,7 +18,6 @@ export type Site = {
   requestLanguage: (next: Lang) => void;
   switching: boolean;
   reduced: boolean;
-  hydrated: boolean;
 };
 export const SiteContext = createContext<Site | null>(null);
 export function useSite() {
@@ -38,6 +37,16 @@ export const ARTIFACT = __ARTIFACT__;
  * VITE_API_BASE if the owners host the API elsewhere.
  */
 export const API_BASE: string | null = PROPOSAL || ARTIFACT ? null : (import.meta.env.VITE_API_BASE as string | undefined) ?? "/api";
+
+/**
+ * True after hydration, for the few attributes that must differ from the pre-rendered HTML afterwards. Local state on
+ * purpose: a flag in the site context would re-render every component right after hydration.
+ */
+export function useHydrated() {
+  const [h, setH] = useState(false);
+  useEffect(() => setH(true), []);
+  return h;
+}
 
 /** Zurich wall-clock time, refreshed every minute; null on the server and before hydration. */
 export function useNow(): Now | null {

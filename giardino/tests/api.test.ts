@@ -1,6 +1,7 @@
 // The launch-mode server end to end: reservation requests, status, staff review, messages, the no-JavaScript forms,
 // rate limits, retention, static serving with redirects and the security headers. Each server runs on a free port
 // with its own temporary data and site folders and a controllable clock.
+import type { Server as NetServer } from "node:net";
 import { test, before, after } from "node:test";
 import assert from "node:assert/strict";
 import { mkdirSync, mkdtempSync, rmSync, statSync, writeFileSync, readFileSync } from "node:fs";
@@ -111,7 +112,7 @@ const request1 = (patch: Record<string, unknown> = {}) => ({
   ...patch,
 });
 
-async function listen(server: Server) {
+async function listen(server: NetServer) {
   await new Promise<void>((r) => server.listen(0, "127.0.0.1", () => r()));
   return `http://127.0.0.1:${(server.address() as AddressInfo).port}`;
 }

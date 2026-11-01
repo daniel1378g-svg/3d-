@@ -3,7 +3,7 @@
 //
 //   every route × locale    HTTP 200, no console errors, axe-core (WCAG 2.2 AA tags) critical/serious = 0,
 //                           no German on en/fr/it pages (text outside lang="de" elements), third-party requests and
-//                           cookies counted, screenshots at 360×800, 768×1024 and 1440×900
+//                           cookies counted; no sideways scrolling and screenshots at 360×800, 768×1024, 1440×900
 //   language switch         duration (click → logo settled), CLS during the switch, state kept (page, ?m, ?q, scroll
 //                           section, reservation draft), back returns to the previous language, reduced-motion crossfade
 //   reservation             Wednesdays and 01.11.–17.12.2026 not selectable, first free day 18.12.2026, mailto + tel
@@ -117,20 +117,30 @@ async function startServer() {
   await ctx.close();
   console.log("");
 
-  // ---- screenshots -----------------------------------------------------------------------------------------------
-  if (SHOTS) {
-    for (const [w, h] of [[360, 800], [768, 1024], [1440, 900]]) {
-      const c = await browser.newContext({ viewport: { width: w, height: h }, deviceScaleFactor: 1, reducedMotion: "reduce" });
-      const page = await c.newPage();
-      for (const r of list) {
-        await page.goto(BASE + r.url, { waitUntil: "networkidle" });
-        await page.waitForTimeout(250);
+  // ---- three widths: no sideways scrolling anywhere (all sections rendered), screenshots ------------------------
+  report.overflow = [];
+  for (const [w, h] of [[360, 800], [768, 1024], [1440, 900]]) {
+    const c = await browser.newContext({ viewport: { width: w, height: h }, deviceScaleFactor: 1, reducedMotion: "reduce" });
+    const page = await c.newPage();
+    for (const r of list) {
+      await page.goto(BASE + r.url, { waitUntil: "networkidle" });
+      await page.waitForTimeout(250);
+      if (SHOTS) {
         const dir = path.join(QA, r.lang);
         fs.mkdirSync(dir, { recursive: true });
         await page.screenshot({ path: path.join(dir, `${slugName(r.url)}-${w}.jpg`), type: "jpeg", quality: 55 });
       }
-      await c.close();
+      const sideways = await page.evaluate(async () => {
+        document.querySelectorAll(".cv").forEach((e) => (e.style.contentVisibility = "visible"));
+        await new Promise((res) => requestAnimationFrame(() => res()));
+        window.scrollTo(300, 0);
+        const x = window.scrollX;
+        window.scrollTo(0, 0);
+        return x;
+      });
+      if (sideways > 0) report.overflow.push({ url: r.url, width: w, px: sideways });
     }
+    await c.close();
   }
 
   const phase = async (name, fn) => {
@@ -323,6 +333,7 @@ async function startServer() {
     axeOther: report.routes.reduce((n, r) => n + r.axe.filter((v) => !["critical", "serious"].includes(v.impact)).length, 0),
     germanHits: germanBad.reduce((n, r) => n + r.german.length, 0),
     thirdPartyRequests: [...thirdParty],
+    sidewaysScroll: report.overflow.length,
     cookies: Math.max(0, ...report.routes.map((r) => r.cookies)),
   };
   fs.mkdirSync(QA, { recursive: true });
@@ -331,7 +342,8 @@ async function startServer() {
   for (const r of bad) console.log("✗", r.url, r.status, r.errors.slice(0, 3));
   for (const r of axeBad) console.log("✗ axe", r.url, r.axe.filter((v) => ["critical", "serious"].includes(v.impact)).map((v) => `${v.id}(${v.nodes}) ${v.target}`).join("; "));
   for (const r of germanBad) console.log("✗ german", r.url, r.german.slice(0, 4).join(" | "));
-  process.exit(bad.length || axeBad.length || germanBad.length ? 1 : 0);
+  for (const o of report.overflow) console.log("✗ sideways scroll", o.url, `${o.width}px wide: ${o.px}px`);
+  process.exit(bad.length || axeBad.length || germanBad.length || report.overflow.length ? 1 : 0);
 })().catch((e) => {
   console.error(e);
   process.exit(1);

@@ -18,10 +18,15 @@ for i, x in enumerate(assets, 1):
     used = ", ".join(x.get("usedOn") or []) or "–"
     rows.append(f"| {i} | `{x['id']}` | {x.get('year', '')} | {o.get('width', '?')}×{o.get('height', '?')} | {used} | {x.get('credit') or 'uncredited'} | {'⚠ ' + x['consent'] if x.get('consent') else ''} |")
 
-# performance lines
-perf_lines = []
-for method, label in (("simulate", "Lighthouse default (simulated throttling, Lantern)"), ("devtools", "applied throttling (devtools method, same 4× CPU / Slow 4G)")):
-    f = p(f"content/qa/perf-{method}.json")
+# performance lines: HTTP/2 (as production serves it) first, local HTTP/1.1 for comparison
+perf_lines, a11y_scores, bp_scores = [], [], []
+for suffix, method, label in (
+    ("", "simulate", "HTTP/2 · Lighthouse default (simulated throttling)"),
+    ("", "devtools", "HTTP/2 · applied throttling (devtools method)"),
+    ("-h1", "simulate", "HTTP/1.1 · Lighthouse default (simulated throttling)"),
+    ("-h1", "devtools", "HTTP/1.1 · applied throttling (devtools method)"),
+):
+    f = p(f"content/qa/perf-{method}{suffix}.json")
     if not os.path.exists(f):
         perf_lines.append(f"  {label}: not run")
         continue
@@ -32,6 +37,8 @@ for method, label in (("simulate", "Lighthouse default (simulated throttling, La
         tbt_ok = "✔" if v["tbtMs"] <= 200 else "✘"
         parts.append(f"{route} LCP {v['lcpS']:.2f} s {lcp_ok}, CLS {v['cls']:.2f} ✔, TBT {v['tbtMs']} ms {tbt_ok}")
     perf_lines.append(f"  {label}: " + "; ".join(parts))
+    a11y_scores += [v["accessibility"] for v in d["routes"].values()]
+    bp_scores += [v["bestPractices"] for v in d["routes"].values() if v.get("bestPractices") is not None]
 
 # first-route JS: the chunks the home page loads before hydration
 assets_dir = p("dist/assets")
@@ -43,8 +50,15 @@ def gz(name_prefix):
 index = max((len(gzip.compress(open(os.path.join(assets_dir, f), "rb").read(), 9)) for f in os.listdir(assets_dir) if re.match(r"index-[\w-]+\.js$", f)), default=0)
 first_js = (index + gz("Home") + gz("Img") + gz("Flow") + gz("Film")) / 1024
 
+def score(xs):
+    """the lowest Lighthouse category score of all runs, as 0–100 (\"min–max\" when they differ)"""
+    if not xs:
+        return "not run"
+    lo, hi = round(min(xs) * 100), round(max(xs) * 100)
+    return str(lo) if lo == hi else f"{lo}–{hi}"
+
 s = r["switch"]
-shots = sum(len(files) for _, _, files in os.walk(p("content/qa")) if files) - 3
+shots = sum(1 for _, _, files in os.walk(p("content/qa")) for f in files if f.endswith(".jpg"))
 values = {
     "ASSETS": "\n".join(rows),
     "SWITCH_MS": str(s.get("durationMs")),
@@ -67,6 +81,9 @@ values = {
     "KEYBOARD_OK": tick(all(r["keyboard"].get(k) for k in ("skipLinkFirst", "escapeClosesAndReturns")) and r["keyboard"].get("arrowMoves")),
     "FOCUS_OK": tick(r["keyboard"].get("focusRing")),
     "SHOTS": f"✔ ({shots} files)",
+    "SIDEWAYS": str(len(r.get("overflow", []))),
+    "LH_A11Y": score(a11y_scores),
+    "LH_BP": score(bp_scores),
     "TESTS": sys.argv[1] if len(sys.argv) > 1 else "not run",
 }
 for k, v in values.items():

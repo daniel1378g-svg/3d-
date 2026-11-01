@@ -1,6 +1,6 @@
 // Anreise (directions, hours, closures, map on request) and Kontakt (the contact form of the current site).
 import { useId, useState, type FormEvent } from "react";
-import { useSite, API_BASE } from "@/site";
+import { useSite, useHydrated, API_BASE } from "@/site";
 import { PageHead } from "@/components/PageHead";
 import { Img } from "@/components/Img";
 import { HoursList, ClosureNotices, OpeningStatus } from "@/components/Hours";
@@ -77,7 +77,7 @@ export default function Visit() {
             <div>
               <h2 id="spa" className="display h-m">{v.spaTitle}</h2>
               <p className="lead" style={{ marginTop: 12 }}>{v.spaBody}</p>
-              <ExtLink href={LEUKERBAD_THERME.href} className="textlink" >{t.nav.spa}<Arrow /></ExtLink>
+              <ExtLink href={LEUKERBAD_THERME.href} className="textlink" >{t.nav.spa}</ExtLink>
             </div>
             <div>
               <h2 className="display h-m">{v.hotelsTitle}</h2>
@@ -98,7 +98,8 @@ type Status = "idle" | "sending" | "sent" | "error";
  * form). Launch mode: POST /api/messages, or a plain form post when JavaScript is off.
  */
 export function ContactPage() {
-  const { t, lang, hydrated } = useSite();
+  const { t, lang } = useSite();
+  const hydrated = useHydrated();
   const c = t.contactPage;
   const id = useId();
   const [f, setF] = useState({ message: "", name: "", address: "", zipCity: "", phone: "", email: "", consent: false, website: "" });

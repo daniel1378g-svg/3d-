@@ -7,6 +7,7 @@ import { useState } from "react";
 import { createPortal } from "react-dom";
 import { useSite, PROPOSAL } from "@/site";
 import { Close, Film as FilmIcon } from "./icons";
+import { NewTabMark } from "./Link";
 import { useGsap } from "@/lib/gsap";
 
 const pre = __ARTIFACT__ ? "" : "/";
@@ -29,7 +30,7 @@ export function FilmBand({ id }: { id: string }) {
   }, [reduced, gsap]);
 
   return (
-    <section className="film on-dark" id={id} ref={section} aria-labelledby="film-title">
+    <section className="film on-dark cv-touch" id={id} ref={section} aria-labelledby="film-title">
       <div className="film__mask">
         <img src={FILM.poster} width={1280} height={720} alt="" loading="lazy" decoding="async" />
         <div className="film__veil" aria-hidden="true" />
@@ -44,6 +45,7 @@ export function FilmBand({ id }: { id: string }) {
             <a className="btn btn--light" href={FILM_LIVE} target="_blank" rel="noopener noreferrer">
               <FilmIcon />
               {t.cta.film}
+              <NewTabMark />
             </a>
           ) : (
             <button type="button" className="btn btn--light" onClick={() => setOpen(true)} aria-haspopup="dialog">

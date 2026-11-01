@@ -8,7 +8,7 @@ import { useQueryParam } from "@/lib/router";
 import { MENUS, TAG_INFO, FILTER_TAGS, SCOOP_CHF, CREAM_CHF, type Item, type Menu as MenuT, type MenuId, type Section, type Tag, type Size } from "@/content/menu";
 import { fmtAmount, fmtBytes, fmtChf, fmtDecimal, fmtSize, fold } from "@/lib/format";
 import { Close, Download, Search, ArrowUp, ChevronLeft, Chevron } from "@/components/icons";
-import { scrollToAnchor } from "@/components/Link";
+import { scrollToAnchor, NewTabMark } from "@/components/Link";
 import { useReveals } from "@/lib/reveal";
 import type { Lang } from "@/i18n";
 
@@ -247,6 +247,7 @@ export default function MenuPage() {
                   <a className="textlink" href={x.pdf.href.replace(/^\//, pre)} target="_blank" rel="noopener" style={{ fontSize: 14.5 }}>
                     <Download />
                     <span>{x.title[lang]}<br /><small className="muted" style={{ fontWeight: 400 }}><span lang="de">{x.pdf.file}</span>{t.menu.pdfLink("", fmtBytes(x.pdf.bytes, lang), x.pdf.pages)}</small></span>
+                    <NewTabMark />
                   </a>
                 </li>
               ))}

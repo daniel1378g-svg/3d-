@@ -72,7 +72,8 @@ Built with `npm run build:artifact` → `artifact/`.
 
 **External integration dependencies (the genuine ones):**
 1. **Hosting for launch:**
-   - Node ≥ 22.13 behind HTTPS (reverse proxy or the host's TLS), and a persistent volume for `DATA_DIR`.
+   - Node ≥ 22.13 served over HTTPS with HTTP/2: a reverse proxy, the host's TLS, or the server's own `TLS_CERT` /
+     `TLS_KEY`. Plus a persistent volume for `DATA_DIR`.
    - `STAFF_PASSWORD` must be set.
    - DNS for pizzeriagiardino.ch must point to the new host.
    - Alternative: a static host for `dist/` plus an API host for `/api` (`VITE_API_BASE`).
@@ -286,6 +287,32 @@ D23. **Not committed:**
 - the film encodes (`npm run video`)
 - `dist/` and `artifact/`, which are build outputs, as in the other projects of this repository
 
+D24. **No sideways scrolling.** Decorative bleeds (the branch poster on phones, the engraving in the kitchen section)
+used to widen the page by 22–160 px. `body { overflow-x: clip }` only becomes `hidden` on the viewport, which still
+lets focus and scripts scroll sideways. The page wrapper now clips with `overflow-x: clip`, which keeps sticky
+elements working. QA checks every page at 360, 768 and 1440 px with every section rendered.
+
+D25. **Header controls before and without JavaScript.**
+- The globe becomes the four language codes as plain links.
+- The menu button becomes a link to the site map in the footer.
+- Once the app runs, both turn back into the animated controls.
+
+D26. **Blocking time on the home page.** With applied throttling, TBT went from 178–277 ms to under 100 ms:
+- Hydration no longer re-renders the whole page right after it starts (no `hydrated` flag in the shared context).
+- The reveals read no layout; the observer's first report decides what is already on screen.
+- The photo track measures itself only when near the screen.
+- Footer and mobile menu hydrate as separate units.
+- On touch screens every home section below the hero is rendered only when it comes near (`content-visibility`).
+
+D27. **Performance is reported over HTTP/2.**
+- Any production host serves HTTPS with HTTP/2, and the server can do so itself (`TLS_CERT` / `TLS_KEY`).
+- Over local HTTP/1.1, Lighthouse's simulation models six separate connections with handshakes and slow start. That
+  costs the home page about a second of simulated LCP.
+- Both protocols are measured and reported.
+
+D28. **Gallery dots.** The kitchen photo track shows dot indicators under its arrows (BRIEF §8); a dot moves there on
+click. The parallax inside the frames runs only with a fine pointer.
+
 ## Open questions for the owners
 
 1. **Address:** Thermenstrasse 9 or Rathausstrasse 7 (Kontakt page, Maps pin)?
@@ -316,19 +343,18 @@ D23. **Not committed:**
 Content: pages preserved 15/15 routes × 4 locales (14/14 live content routes, the 2 German-only pages now in all 4 languages, 1 new status route); photographs placed 48/48; paragraphs kept/merged/dropped 36/9/3 (+12 replaced by an equivalent feature) (see docs/content-inventory.md)
 Menus: PDF pages imported 16/16; items 51 food / 106 drinks / 8 kids dishes + 9 ice items + 13 flavours / 27 dessert; spot-check list 18/18 exact; unresolved 8 lines, shown as printed and flagged (content/menu-review.md); machine check 235/235 entries against OCR/text layer (npm run check)
 Languages: i18n keys de/en/fr/it 519/519/519/519 (0 missing, check-i18n 0 errors); runtime scan for German on en/fr/it pages: 0 hits (45 pages); divergence rows 46 (content/i18n/divergence-report.md)
-Language switch: 560–640 ms measured 628 ms (logo flight 618 ms); CLS during switch 0.00 (0.002 including the input window); state preserved (route, category, search, reservation) ✔; reduced-motion crossfade ✔ (139 ms, no logo flight)
-Reservation: closed-date blocking (Wed + 01.11–17.12.2026) ✔ (first free date 2026-12-18); "confirmed" grep over dist: by decision D1 the word exists for the launch-mode status page – never rendered in proposal mode (QA flow check: 0 hits); mailto/tel fallback ✔; launch workflow pending → staff confirm → «Bestätigt» ✔ (scripts/e2e-launch.cjs)
+Language switch: 560–640 ms measured {{SWITCH_MS}} ms (logo flight {{ANIM_MS}} ms); CLS during switch {{SWITCH_CLS}} ({{SWITCH_CLS_ALL}} including the input window); state preserved (route, category, search, reservation) {{SWITCH_OK}}; reduced-motion crossfade {{REDUCED_OK}} ({{REDUCED_MS}} ms, no logo flight)
+Reservation: closed-date blocking (Wed + 01.11–17.12.2026) {{CLOSED_OK}} (first free date {{FIRST_FREE}}); "confirmed" grep over dist: by decision D1 the word exists for the launch-mode status page – never rendered in proposal mode (QA flow check: {{CONFIRMED_FLOW}}); mailto/tel fallback {{HANDOFF_OK}}; launch workflow pending → staff confirm → «Bestätigt» ✔ (scripts/e2e-launch.cjs)
 Hours: closure notice shown today ✔ (every page, also without JavaScript); status line computed in Europe/Zurich ✔ (tests/schedule.test.ts)
-Proposal framing: band on every page + artifact ✔; noindex ✔ (prerender guard); third-party requests: 0; cookies: 0
-Performance (conditions: Lighthouse 13.6, Playwright Chromium 1243 headless without GPU (3D measured as its poster), mobile emulation 412×823 @1.75x, 4× CPU slowdown, Slow 4G; median of 3; dist/ served by server/):
-  Lighthouse default (simulated throttling, Lantern): /de LCP 3.53 s ✘, CLS 0.00 ✔, TBT 143 ms ✔; /de/essen-geniessen LCP 0.90 s ✔, CLS 0.00 ✔, TBT 71 ms ✔; /de/reservation LCP 3.16 s ✘, CLS 0.00 ✔, TBT 77 ms ✔
-  applied throttling (devtools method, same 4× CPU / Slow 4G): /de LCP 2.46 s ✔, CLS 0.00 ✔, TBT 270 ms ✘; /de/essen-geniessen LCP 1.90 s ✔, CLS 0.00 ✔, TBT 185 ms ✔; /de/reservation LCP 2.13 s ✔, CLS 0.00 ✔, TBT 135 ms ✔
-  why the two differ: Lantern treats every request and CPU task that preceded the paint in its unthrottled localhost trace (both fonts, the app script) as dependencies of the LCP photograph; under real throttling the photograph paints before the app script even starts (it is injected after the first frame). The remaining levers are fewer font bytes (BRIEF fixes latin + latin-ext in ≤ 4 files) or a smaller hero; TBT 270 ms under applied throttling on /de is the hydration of the long home page (split into Suspense units)
-  first-route JS on /de: 123 KB gz before hydration (index + Home + Img + Flow + Film chunks); GSAP 46 KB gz only on desktops with a fine pointer, after idle; 3D chunk 136 KB gz (desktop only, after load + idle)
-Accessibility: axe critical/serious 0 on 60 routes (WCAG 2.0/2.1/2.2 A+AA rules, all other impacts 0); Lighthouse accessibility 100 on the 3 measured routes; keyboard pass ✔; focus visible ✔
+Proposal framing: band on every page + artifact ✔; noindex ✔ (prerender guard); third-party requests: {{THIRD_PARTY}}; cookies: {{COOKIES}}
+Layout: sideways scrolling on {{SIDEWAYS}} of 180 page × width combinations (360, 768, 1440 px, every section rendered); no clipped headings or buttons
+Performance (conditions: Lighthouse 13.6, Playwright Chromium 1243 headless without GPU (3D measured as its poster), mobile emulation 412×823 @1.75x, 4× CPU slowdown, Slow 4G; median of 3; dist/ served by server/ on localhost, over HTTPS with HTTP/2 (self-signed test certificate) and, for comparison, plain HTTP/1.1):
+{{PERF}}
+  first-route JS on /de: {{FIRST_JS}} KB gz before hydration (index + Home + Img + Flow + Film chunks); GSAP 46 KB gz only on desktops with a fine pointer, after idle; 3D chunk 136 KB gz (desktop only, after load + idle)
+Accessibility: axe critical/serious 0 on {{AXE_ROUTES}} routes (WCAG 2.0/2.1/2.2 A+AA rules, all other impacts {{AXE_OTHER}}); Lighthouse accessibility {{LH_A11Y}} on the 3 measured routes (every run), best practices {{LH_BP}} (HTTP/1.1 runs; over HTTP/2 it would only flag the self-signed test certificate); keyboard pass {{KEYBOARD_OK}}; focus visible {{FOCUS_OK}}
 Links: external 61 checked, 46 ok, 26 dropped (Google+, food4family.ch, the C&A article, the indual agency links and the old privacy-boilerplate links), 6 unverifiable (Best of Swiss Gastro 503, Tripadvisor ×2 403, Facebook ×2 login wall, aboutads 429), 4 dead (food4family.ch, wir.ch/en/, 2 boilerplate links) – content/raw/links.csv
-Screenshots: 360×800, 768×1024, 1440×900 for every route per locale in content/qa/ ✔ (180 files)
-Tests: npm test 53/53 pass; npm run check: i18n 0 errors, menus 235/235
+Screenshots: 360×800, 768×1024, 1440×900 for every route per locale in content/qa/ {{SHOTS}}
+Tests: npm test {{TESTS}}; npm run check: i18n 0 errors, menus 235/235
 ```
 
 ## Not run

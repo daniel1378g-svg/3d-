@@ -94,7 +94,8 @@ function sameOrigin(req: IncomingMessage, publicOrigin: string | null) {
   try {
     const o = new URL(origin);
     if (publicOrigin && o.origin === new URL(publicOrigin).origin) return true;
-    return o.host === req.headers.host;
+    // HTTP/2 carries the host as :authority
+    return o.host === (req.headers.host ?? req.headers[":authority"]);
   } catch {
     return false;
   }

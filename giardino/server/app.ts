@@ -1,6 +1,8 @@
 // The Giardino server: the pre-rendered website, the reservation-request API and the staff review area in one Node
 // process with no dependencies beyond Node itself. createServer() is used by the CLI (index.ts) and by the tests.
 import { createServer as createHttpServer, type IncomingMessage, type Server, type ServerResponse } from "node:http";
+import { createSecureServer, type Http2SecureServer } from "node:http2";
+import { readFileSync } from "node:fs";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { addDays, zurichNow } from "../shared/schedule.ts";
@@ -32,7 +34,8 @@ export type Ctx = {
 };
 
 export type App = {
-  server: Server;
+  /** node:http server, or the HTTP/2 + TLS server when TLS_CERT/TLS_KEY are set (same listen/close API) */
+  server: Server | Http2SecureServer;
   store: Store;
   site: StaticSite | null;
   options: Options;
@@ -51,7 +54,9 @@ export function createServer(partial: Partial<Options> = {}): App {
   const store = openStore(join(opts.dataDir, "giardino.sqlite"));
   const site = existsSync(opts.distDir) ? new StaticSite(opts.distDir) : null;
   const csp = buildCsp(site?.scriptHashes ?? []);
-  const https = !!opts.publicOrigin?.startsWith("https://");
+  const tls = opts.tlsCert && opts.tlsKey ? { cert: readFileSync(opts.tlsCert), key: readFileSync(opts.tlsKey) } : null;
+  // HSTS when the site is served over HTTPS (behind a proxy: PUBLIC_ORIGIN https://…, or TLS terminated here)
+  const https = !!opts.publicOrigin?.startsWith("https://") || !!tls;
   const limiter = new RateLimiter();
 
   const notify = (n: Notice) => {
@@ -89,9 +94,16 @@ export function createServer(partial: Partial<Options> = {}): App {
     }
   };
 
-  const server = createHttpServer(handler);
-  server.headersTimeout = 20_000;
-  server.requestTimeout = 30_000;
+  // plain HTTP/1.1 (behind a TLS proxy, the usual set-up) or, with TLS_CERT and TLS_KEY, HTTPS with HTTP/2 – which
+  // lets browsers fetch the page, CSS, fonts and the hero photograph over one connection. The compatibility API
+  // passes request/response objects that behave like node:http's for everything used here.
+  const server: Server | Http2SecureServer = tls
+    ? createSecureServer({ ...tls, allowHTTP1: true }, handler as unknown as Parameters<typeof createSecureServer>[1])
+    : createHttpServer(handler);
+  if ("headersTimeout" in server) {
+    server.headersTimeout = 20_000;
+    server.requestTimeout = 30_000;
+  } else server.setTimeout(30_000);
 
   const purge = () => {
     const now = opts.now();
@@ -124,7 +136,7 @@ export function createServer(partial: Partial<Options> = {}): App {
       };
       if (!server.listening) return finish();
       server.close(() => finish());
-      server.closeAllConnections();
+      if ("closeAllConnections" in server) server.closeAllConnections();
     });
 
   return { server, store, site, options: opts, csp, purge, close };

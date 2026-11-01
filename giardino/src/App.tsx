@@ -1,5 +1,5 @@
 // The shell around every page: band, header, page (with transitions), footer, language switch, live announcements.
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { Suspense, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { flushSync } from "react-dom";
 import { Router, useLocation, useNavigate, type Loc } from "@/lib/router";
 import { cachedDict, isLang, loadDict, HTML_LANG, LANG_NAMES, type Lang } from "@/i18n";
@@ -39,8 +39,6 @@ function Shell() {
   const loc = useLocation();
   const navigate = useNavigate();
   const reduced = usePrefersReducedMotion();
-  const [hydrated, setHydrated] = useState(false);
-  useEffect(() => setHydrated(true), []);
 
   // what the router wants vs. what can be shown (dictionary and page chunk loaded)
   const want = resolve(loc.pathname);
@@ -226,8 +224,9 @@ function Shell() {
 
   // ---- motion flag on <html> -----------------------------------------------------------------------------------
   useEffect(() => {
-    document.documentElement.classList.toggle("motion-ok", !reduced);
+    // html.motion-ok (scroll reveals) is added by useReveals once it knows what is already on screen
     document.documentElement.classList.toggle("no-motion", reduced);
+    if (reduced) document.documentElement.classList.remove("motion-ok");
   }, [reduced]);
 
   const href = useCallback(
@@ -235,8 +234,8 @@ function Shell() {
     [lang],
   );
   const site: Site = useMemo(
-    () => ({ lang, t, page, href, go, requestLanguage, switching: !!fx, reduced, hydrated }),
-    [lang, t, page, href, go, requestLanguage, fx, reduced, hydrated],
+    () => ({ lang, t, page, href, go, requestLanguage, switching: !!fx, reduced }),
+    [lang, t, page, href, go, requestLanguage, fx, reduced],
   );
 
   return (
@@ -244,12 +243,17 @@ function Shell() {
       <a className="skip-link" href="#main">{t.a11y.skip}</a>
       <ProposalBand />
       <Header deep={deep} menuOpen={menuOpen} onToggleMenu={() => setMenuOpen((o) => !o)} progressRef={progress} />
-      <MobileNav open={menuOpen} onClose={() => setMenuOpen(false)} />
+      {/* separate hydration units (React yields between them), so the first hydration task stays short */}
+      <Suspense fallback={null}>
+        <MobileNav open={menuOpen} onClose={() => setMenuOpen(false)} />
+      </Suspense>
       <div className="page" data-fade={fade || undefined}>
         <main id="main" tabIndex={-1} lang={HTML_LANG[lang]}>
           <Page key={`${lang}-${page}`} />
         </main>
-        <Footer />
+        <Suspense fallback={null}>
+          <Footer />
+        </Suspense>
       </div>
       <ReserveBar />
       {fx && (

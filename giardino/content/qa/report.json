@@ -1,5 +1,5 @@
 {
- "date": "2026-11-01T22:47:41.596Z",
+ "date": "2026-11-01T23:22:54.486Z",
  "routes": [
   {
    "url": "/de/allgemein/anreise",
@@ -483,8 +483,8 @@
   }
  ],
  "switch": {
-  "durationMs": 628,
-  "animationMs": 618,
+  "durationMs": 630,
+  "animationMs": 621,
   "cls": 0,
   "clsIncludingInput": 0.0017820142706725824,
   "url": "/en/eat-enjoy?m=drinks&q=gin",
@@ -505,7 +505,7 @@
    "ok": true
   },
   "reduced": {
-   "ms": 139,
+   "ms": 140,
    "logoFlight": false,
    "motionClass": false
   }
@@ -550,6 +550,8 @@
   "axeOther": 0,
   "germanHits": 0,
   "thirdPartyRequests": [],
+  "sidewaysScroll": 0,
   "cookies": 0
- }
+ },
+ "overflow": []
 }

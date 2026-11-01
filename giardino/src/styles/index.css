@@ -171,6 +171,9 @@ p { margin: 0; }
 
 /* language selector: a disclosure with four links */
 .lang { position: relative; }
+.lang__nojs { display: flex; gap: 2px; margin: 0; padding: 0; list-style: none; font-size: 12.5px; font-weight: 640; letter-spacing: 0.08em; }
+.lang__nojs a { display: inline-grid; place-items: center; min-width: 32px; min-height: 44px; }
+.lang__nojs a[aria-current="true"] { text-decoration: underline; text-underline-offset: 4px; }
 .lang__panel {
   position: absolute; right: 0; top: calc(100% + 10px); min-width: 230px; padding: 8px; z-index: 5; color: var(--ink);
   background: var(--ivory); border: 1px solid var(--line); box-shadow: var(--shadow-deep); border-radius: 4px;
@@ -194,7 +197,9 @@ p { margin: 0; }
 .langfx__logo { position: absolute; top: 0; left: 0; z-index: 3; will-change: transform; }
 .langfx__logo img { height: 100%; width: auto; }
 .langfx__line { position: absolute; left: 0; right: 0; height: 1px; background: var(--brass); transform-origin: left; transform: scaleX(0); }
-.page { transition: opacity 0.3s var(--ease-out); }
+/* nothing may widen the page: decorative bleeds (branch, engravings) are clipped here; `clip` keeps sticky children
+   working and, unlike body overflow (which only becomes viewport `hidden`), leaves no programmatic sideways scroll */
+.page { transition: opacity 0.3s var(--ease-out); overflow-x: clip; }
 .page[data-fade="out"] { opacity: 0; transition: opacity 0.14s var(--ease-in-out); }
 /* page transitions: a 250 ms crossfade (150 ms with reduced motion) through the View Transitions API */
 ::view-transition-old(root), ::view-transition-new(root) { animation-duration: 250ms; animation-timing-function: var(--ease-out); }
@@ -236,6 +241,10 @@ html[data-vt="reduced"]::view-transition-old(root), html[data-vt="reduced"]::vie
 .textlink:hover::after { transform: scaleX(0); transform-origin: right; }
 .textlink svg { width: 16px; height: 16px; transition: transform 0.18s var(--ease-out); }
 .textlink:hover svg { transform: translateX(4px); }
+/* new tab / external site: a small arrow-out-of-box after the text (BRIEF §11) */
+.ext-mark { display: inline-block; width: 0.78em; height: 0.78em; margin-left: 0.3em; vertical-align: -0.04em; opacity: 0.72; flex: none; transition: transform 0.18s var(--ease-out); }
+.btn .ext-mark, .textlink .ext-mark { width: 15px; height: 15px; margin-left: 0; }
+a:hover > .ext-mark, .textlink:hover .ext-mark { transform: translate(1.5px, -1.5px); }
 
 .chip { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1px solid var(--line); background: transparent; font-size: 14px; font-weight: 520; transition: background-color 0.25s, border-color 0.25s, color 0.25s, transform 0.2s var(--ease-out); }
 .chip:hover { border-color: color-mix(in srgb, var(--ink) 40%, transparent); }
@@ -340,6 +349,9 @@ html[data-vt="reduced"]::view-transition-old(root), html[data-vt="reduced"]::vie
 @media (max-width: 760px) { .engraving { display: none; } }
 /* sections far below the first screen are rendered only when they come near (less style/layout work at load) */
 .cv { content-visibility: auto; contain-intrinsic-size: auto 1100px; }
+/* the sections with scroll-driven motion are measured by ScrollTrigger on desktops; on touch screens and small
+   screens nothing is scroll-driven, so they too are rendered only when they come near */
+@media (max-width: 900px), (pointer: coarse) { .cv-touch { content-visibility: auto; contain-intrinsic-size: auto 1200px; } }
 
 /* story ---------------------------------------------------------------------------------------------------------- */
 .story__intro { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(24px, 6vw, 120px); align-items: end; margin-bottom: clamp(56px, 8vw, 120px); }
@@ -383,6 +395,10 @@ html[data-vt="reduced"]::view-transition-old(root), html[data-vt="reduced"]::vie
 .journey { margin-top: clamp(64px, 9vw, 140px); }
 .journey__bar { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 28px; }
 .journey__controls { display: flex; gap: 10px; }
+.track__dots { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; margin-top: 6px; }
+.track__dots span { width: 22px; height: 22px; display: grid; place-items: center; cursor: pointer; }
+.track__dots span::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: 0.3; transition: opacity 0.15s, transform 0.15s var(--ease-out); }
+.track__dots span.is-on::before { opacity: 0.9; transform: scale(1.35); }
 .round-btn { width: 54px; height: 54px; border-radius: 50%; border: 1px solid currentColor; display: inline-flex; align-items: center; justify-content: center; background: transparent; opacity: 0.85; transition: background-color 0.3s, color 0.3s, opacity 0.3s, transform 0.2s var(--ease-out); }
 .round-btn:hover { opacity: 1; background: var(--ivory); color: var(--ink); }
 .round-btn:active { transform: scale(0.94); }
@@ -397,9 +413,10 @@ html[data-vt="reduced"]::view-transition-old(root), html[data-vt="reduced"]::vie
 .card--wide .card__media { aspect-ratio: 5 / 4; }
 .card__media img { transform: scale(1.12) translateX(var(--px, 0)); transition: transform 0.9s var(--ease-out); }
 .card:hover .card__media img { transform: scale(1.16) translateX(var(--px, 0)); }
-.card__cap { display: flex; justify-content: space-between; gap: 16px; margin-top: 14px; font-size: 14.5px; }
-.card__cap span { color: color-mix(in srgb, currentColor 72%, transparent); }
-.card__cap a { white-space: nowrap; }
+/* caption above its link: narrow (tall) cards never squeeze the description into a word column */
+.card__cap { display: grid; gap: 8px; margin-top: 14px; font-size: 14.5px; }
+.card__cap span { color: color-mix(in srgb, currentColor 72%, transparent); text-wrap: pretty; }
+.card__cap a { white-space: nowrap; justify-self: start; }
 
 /* carta index */
 .carta { display: grid; grid-template-columns: minmax(0, 1fr); }
@@ -491,10 +508,11 @@ html[data-vt="reduced"]::view-transition-old(root), html[data-vt="reduced"]::vie
 .visit { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: clamp(32px, 6vw, 110px); }
 .visit__photo { aspect-ratio: 5 / 4; }
 .hours { display: grid; gap: 0; }
-.hours__row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 16px; padding: 14px 0; border-top: 1px solid var(--line); align-items: baseline; }
+/* label and times side by side; in a narrow column (footer, sidebar) the times move under the label, never over it */
+.hours__row { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 16px; padding: 14px 0; border-top: 1px solid var(--line); }
 .hours__row:last-child { border-bottom: 1px solid var(--line); }
 .hours__row dt { font-weight: 540; }
-.hours__row dd { margin: 0; text-align: right; }
+.hours__row dd { margin: 0 0 0 auto; text-align: right; }
 .section--dark .hours__row { border-color: var(--line-light); }
 .closure { position: relative; padding: 22px 24px 22px 28px; background: color-mix(in srgb, var(--brass) 15%, var(--ivory)); border-left: 3px solid var(--brass); }
 .closure h3 { font-family: var(--serif); font-size: 22px; margin-bottom: 6px; }

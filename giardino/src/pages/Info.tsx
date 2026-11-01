@@ -6,7 +6,7 @@ import { ClickToLoad } from "@/components/ClickToLoad";
 import { Link, ExtLink } from "@/components/Link";
 import { Img } from "@/components/Img";
 import { HOTELS, JOBS, PRESS, TOUR, CREDITS, RESTAURANT, OFFICIAL } from "@/content/restaurant";
-import { Arrow, Phone, Mail, External } from "@/components/icons";
+import { Arrow, Phone, Mail } from "@/components/icons";
 import { useReveals } from "@/lib/reveal";
 import type { NavKey } from "@/routes";
 
@@ -48,7 +48,7 @@ export function Jobs() {
           <a className="textlink" href={`mailto:${RESTAURANT.email}`}><Mail />{RESTAURANT.email}</a>
         </p>
         <p style={{ marginTop: 18 }}>
-          <ExtLink href={JOBS.href} className="textlink">{j.listing}<External /></ExtLink>
+          <ExtLink href={JOBS.href} className="textlink">{j.listing}</ExtLink>
         </p>
       </PageHead>
     </>

@@ -10,7 +10,7 @@ import { BOOKING, HOURS, addDays, closureOn, dayState, parseYmd, slotsFor, upcom
 import { validateContact, type FieldError, type Seating, type Wish, WISHES } from "@shared/reservation";
 import { fmtDayLong, fmtDate, fmtTime, monthName, weekdayNames } from "@/lib/format";
 import { RESTAURANT } from "@/content/restaurant";
-import { Link } from "@/components/Link";
+import { Link, NewTabMark } from "@/components/Link";
 import { Arrow, ArrowLeft, Check, Minus, Plus, Phone, Mail, ChevronLeft, Chevron } from "@/components/icons";
 import type { Dict } from "@/i18n";
 import { NoJsForm } from "./NoJsForm";
@@ -511,7 +511,7 @@ function ContactStep({ draft, set, errors }: { draft: Draft; set: (p: Partial<Dr
             <input type="checkbox" checked={draft.consent} onChange={(e) => { set({ consent: e.target.checked }); setTouched((x) => ({ ...x, consent: true })); }} aria-invalid={!!err("consent")} aria-describedby={`${id}-consent-e`} />
             <span>
               {t.reserve.contact.consent}{" "}
-              <Link href={href("privacy")} className="link" target="_blank">{t.reserve.contact.privacyLink}</Link> <span className="req" aria-hidden="true">*</span>
+              <Link href={href("privacy")} className="link" target="_blank">{t.reserve.contact.privacyLink}<NewTabMark /></Link> <span className="req" aria-hidden="true">*</span>
             </span>
           </label>
           <span id={`${id}-consent-e`}>{err("consent") && <span className="error">{msg(err("consent"))}</span>}</span>

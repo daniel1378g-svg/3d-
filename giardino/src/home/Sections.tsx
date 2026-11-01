@@ -8,7 +8,7 @@
 import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { useSite } from "@/site";
 import { Img, useAlt } from "@/components/Img";
-import { Link, ExtLink } from "@/components/Link";
+import { Link, ExtLink, NewTabMark } from "@/components/Link";
 import { Track } from "@/components/Track";
 import { useLightbox } from "@/components/Lightbox";
 import { HoursList, ClosureNotices, OpeningStatus } from "@/components/Hours";
@@ -49,7 +49,7 @@ export function Story() {
   }, [reduced, gsap]);
 
   return (
-    <section className="section grain" id={ANCHORS.story} ref={root} aria-labelledby="story-title">
+    <section className="section grain cv-touch" id={ANCHORS.story} ref={root} aria-labelledby="story-title">
       <div className="engraving" aria-hidden="true" style={{ left: -140, top: 40, width: 620, height: 480 }} />
       <div className="wrap">
         <div className="story__intro">
@@ -126,7 +126,7 @@ export function Kitchen() {
     return () => ctx.revert();
   }, [reduced, gsap]);
   return (
-    <section className="section section--dark grain" id={ANCHORS.kitchen} aria-labelledby="kitchen-title">
+    <section className="section section--dark grain cv-touch" id={ANCHORS.kitchen} aria-labelledby="kitchen-title">
       <div className="engraving" aria-hidden="true" style={{ right: -160, top: 60, width: 700, height: 540 }} />
       <div className="wrap">
         <p className="kicker">{t.home.kitchen.kicker}</p>
@@ -212,7 +212,7 @@ export function Carta() {
     go(href("menu", { search: q.trim() ? `?q=${encodeURIComponent(q.trim())}` : "" }));
   };
   return (
-    <section className="section" id={ANCHORS.menu} aria-labelledby="carta-title" onPointerMove={onMove}>
+    <section className="section cv-touch" id={ANCHORS.menu} aria-labelledby="carta-title" onPointerMove={onMove}>
       <div className="wrap">
         <div className="section__head section__head--split">
           <div>
@@ -254,6 +254,7 @@ export function Carta() {
           {MENUS.map((m) => (
             <a key={m.id} href={m.pdf.href.replace(/^\//, pre)} className="link" target="_blank" rel="noopener">
               {m.title[lang]} (PDF)
+              <NewTabMark />
             </a>
           ))}
         </p>
@@ -298,7 +299,7 @@ export function Hosts() {
     };
   }, [reduced, gsap]);
   return (
-    <section className="section section--paper grain" id={ANCHORS.hosts} aria-labelledby="hosts-title">
+    <section className="section section--paper grain cv-touch" id={ANCHORS.hosts} aria-labelledby="hosts-title">
       <div className="wrap hosts">
         <Img id="hosts" className="hosts__portrait arch" sizes="(min-width: 900px) 44vw, 92vw" />
         <div>
@@ -327,7 +328,7 @@ export function Family() {
   const { t, href } = useSite();
   const alt = useAlt();
   return (
-    <section className="section" id={ANCHORS.family} aria-labelledby="family-title">
+    <section className="section cv-touch" id={ANCHORS.family} aria-labelledby="family-title">
       <div className="wrap family">
         <div className="family__a" style={{ position: "relative" }} data-reveal="mask">
           <Img id="ship-cliffs" className="arch" sizes="(min-width: 900px) 40vw, 92vw" style={{ height: "100%" }} />
@@ -473,13 +474,13 @@ export function Services() {
               {VOUCHERS.options.map((n) => <span key={n}>{n}.–</span>)}
               <span>…</span>
             </div>
-            <ExtLink href={VOUCHERS.href(lang)} className="textlink">{t.cta.vouchers}<Arrow /></ExtLink>
+            <ExtLink href={VOUCHERS.href(lang)} className="textlink">{t.cta.vouchers}</ExtLink>
           </article>
           <article className="service" data-reveal data-delay="80">
             <Coins className="service__icon" />
             <h3>{t.home.services.wir.title}</h3>
             <p>{t.home.services.wir.body}</p>
-            <ExtLink href="https://www.wir.ch/" className="textlink">wir.ch<Arrow /></ExtLink>
+            <ExtLink href="https://www.wir.ch/" className="textlink">wir.ch</ExtLink>
           </article>
           <article className="service" data-reveal data-delay="160">
             <Bed className="service__icon" />

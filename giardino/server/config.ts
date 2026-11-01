@@ -37,6 +37,9 @@ export type Options = {
   retentionDays: number;
   /** HMAC secret for tokens and CSRF; generated into DATA_DIR/secret when not given */
   secret: string | null;
+  /** PEM files: with both, the server speaks HTTPS with HTTP/2 (and HTTP/1.1 for old clients) itself */
+  tlsCert: string | null;
+  tlsKey: string | null;
   now: () => Date;
   limits: Limits;
   log: (line: string) => void;
@@ -57,6 +60,8 @@ export function defaults(): Options {
     retentionDays: 30,
     secret: null,
     now: () => new Date(),
+    tlsCert: null,
+    tlsKey: null,
     limits: DEFAULT_LIMITS,
     log: (line) => console.log(`[giardino] ${line}`),
   };
@@ -82,6 +87,8 @@ export function fromEnv(env: NodeJS.ProcessEnv = process.env): Options {
   o.trustProxy = env.TRUST_PROXY === "true" ? 1 : int(env.TRUST_PROXY, 0);
   o.retentionDays = int(env.RETENTION_DAYS, o.retentionDays);
   o.secret = nonEmpty(env.SECRET);
+  o.tlsCert = nonEmpty(env.TLS_CERT);
+  o.tlsKey = nonEmpty(env.TLS_KEY);
   // a fixed clock for tests only – never in production
   const fake = env.NODE_ENV === "test" ? nonEmpty(env.GIARDINO_FAKE_NOW) : null;
   if (fake) {

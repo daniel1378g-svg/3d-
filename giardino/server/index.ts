@@ -8,7 +8,7 @@ export { createServer };
 const options = fromEnv(process.env);
 const app = createServer(options);
 app.server.listen(options.port, options.host, () => {
-  const where = `http://${options.host}:${options.port}`;
+  const where = `${options.tlsCert && options.tlsKey ? "https" : "http"}://${options.host}:${options.port}`;
   options.log(`listening on ${where}`);
   options.log(app.site ? `site: ${options.distDir} (${app.site.rules.length} redirects)` : `no site at ${options.distDir} – API and staff area only`);
   options.log(`data: ${options.dataDir}`);
