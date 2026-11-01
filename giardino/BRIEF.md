@@ -49,10 +49,10 @@ No PDF contains English or Italian. Known ambiguities to carry as unresolved, ne
 ## 3. Order of work (each phase ends with its definition of done, `npm run build && npm run check && npm test` green, one commit)
 
 - **Phase 0 – Audit (read-only).** Capture all routes × 4 locales as HTML and text under `content/raw/live/<lang>/<slug>.{html,txt}`; download every original photo and the video poster to `media/originals/` with checksums; render all 16 PDF pages at 300 dpi to `content/raw/pdf/<menu>/p-NN.png`; run a link check over every external href (GET, follow redirects, 10 s timeout) into `content/raw/links.csv`. DoD: `docs/content-inventory.md` lists every page, paragraph, photo, embed, file and link with its destination in the new site (kept / merged / replaced / dropped + reason).
-- **Phase 1 – Data.** `content/menu.json`, `content/hours.json`, `content/facts.json`, `content/i18n/{de,fr,it,en}.json`, `content/assets.json`, `content/menu-review.md`. DoD: every PDF line present or listed as unresolved; `check-i18n` passes; prices spot-checked (§6).
+- **Phase 1 – Data.** `content/menu.json`, `content/hours.json`, `content/facts.json`, `content/i18n/{de,fr,it,en}.json`, `content/assets.json`, `content/menu-review.md`. DoD: every PDF line present or listed as unresolved; `check-i18n` passes; prices spot-checked (§5).
 - **Phase 2 – Static site.** Every route in every locale, pre-rendered, no motion, no 3D; menus, hours, closure notice, reservation request, galleries, legal; axe and Lighthouse baselines recorded. DoD: all §14 checks pass without motion.
-- **Phase 3 – Art direction and motion.** Type, palette, composition, the motion system, the language switch. DoD: budgets in §9 and §13 met; re-measured.
-- **Phase 4 – Signature 3D.** Home page only, deferred, poster fallback. DoD: §8 budgets met; the site is identical in content with the chunk blocked.
+- **Phase 3 – Art direction and motion.** Type, palette, composition, the motion system, the language switch. DoD: budgets in §8 and §13 met; re-measured.
+- **Phase 4 – Signature 3D.** Home page only, deferred, poster fallback. DoD: §7 budgets met; the site is identical in content with the chunk blocked.
 - **Phase 5 – Hand-off.** Artifact preview with band, README.md, HANDOFF.md with the verification report. If time runs out, ship phases 0–2 and 5 and say so in the first line of HANDOFF.md.
 
 ## 4. Content and data rules
