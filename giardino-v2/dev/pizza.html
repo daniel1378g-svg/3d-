@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pizza scene · dev</title>
+    <style>
+      html, body { margin: 0; height: 100%; background: #1b1b1b; }
+      canvas { display: block; width: 100vw; height: 100vh; }
+      body.poster { background: transparent; }
+    </style>
+  </head>
+  <body>
+    <canvas id="c"></canvas>
+    <script type="module">
+      // Renders the 3D pizza alone. ?poster=1: seen from straight above on a transparent ground, for the fallback still.
+      import { createPizza } from "../src/three/pizza.ts";
+      const poster = new URLSearchParams(location.search).has("poster");
+      if (poster) document.body.classList.add("poster");
+      const engine = createPizza(document.getElementById("c"), {
+        logo: "/brand/logo.png",
+        autoSpin: !poster,
+        poster,
+        onFirstFrame: () => setTimeout(() => (window.__ready = true), 600),
+      });
+      window.__nudge = (d) => engine.nudge(d);
+    </script>
+  </body>
+</html>

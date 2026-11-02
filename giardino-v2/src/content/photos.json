@@ -1,0 +1,1002 @@
+[
+ {
+  "id": "interior-bar",
+  "w": 1600,
+  "h": 1066,
+  "widths": [
+   480,
+   960,
+   1440,
+   1600
+  ],
+  "group": "restaurant",
+  "year": 2012,
+  "focus": "50% 50%",
+  "alt": {
+   "de": "Gaststube mit Holzdecke, Hängeleuchten und Bar",
+   "en": "Dining room with a timber ceiling, pendant lights and the bar",
+   "fr": "Salle au plafond de bois, avec suspensions et bar",
+   "it": "Sala con soffitto in legno, lampade a sospensione e bar"
+  },
+  "credit": "Christian Pfammatter, Visp",
+  "people": null
+ },
+ {
+  "id": "interior-room",
+  "w": 1600,
+  "h": 1066,
+  "widths": [
+   480,
+   960,
+   1440,
+   1600
+  ],
+  "group": "restaurant",
+  "year": 2012,
+  "focus": "50% 50%",
+  "alt": {
+   "de": "Blick durch die Gaststube zur Bar und zu den Fenstern",
+   "en": "View across the dining room to the bar and the windows",
+   "fr": "Vue de la salle vers le bar et les fenêtres",
+   "it": "Vista della sala verso il bar e le finestre"
+  },
+  "credit": "Christian Pfammatter, Visp",
+  "people": null
+ },
+ {
+  "id": "entrance-bar",
+  "w": 1600,
+  "h": 1066,
+  "widths": [
+   480,
+   960,
+   1440,
+   1600
+  ],
+  "group": "restaurant",
+  "year": 2012,
+  "focus": "50% 50%",
+  "alt": {
+   "de": "Eingangsbereich mit Stehtischen und Barhockern",
+   "en": "Entrance area with high tables and bar stools",
+   "fr": "Entrée avec tables hautes et tabourets de bar",
+   "it": "Ingresso con tavoli alti e sgabelli"
+  },
+  "credit": "Christian Pfammatter, Visp",
+  "people": null
+ },
+ {
+  "id": "interior-stone",
+  "w": 1600,
+  "h": 1066,
+  "widths": [
+   480,
+   960,
+   1440,
+   1600
+  ],
+  "group": "restaurant",
+  "year": 2012,
+  "focus": "50% 50%",
+  "alt": {
+   "de": "Gaststube mit Natursteinwand und gedeckten Tischen",
+   "en": "Dining room with a natural stone wall and laid tables",
+   "fr": "Salle avec mur de pierre naturelle et tables dressées",
+   "it": "Sala con parete in pietra naturale e tavoli apparecchiati"
+  },
+  "credit": "Christian Pfammatter, Visp",
+  "people": null
+ },
+ {
+  "id": "detail-bottle-light",
+  "w": 2400,
+  "h": 1800,
+  "widths": [
+   480,
+   960,
+   1440,
+   1600,
+   2400
+  ],
+  "group": "restaurant",
+  "year": 2012,
+  "focus": "70% 30%",
+  "alt": {
+   "de": "Hängeleuchte aus roten Aperitif-Fläschchen über der Gaststube",
+   "en": "Pendant light made of small red aperitif bottles above the dining room",
+   "fr": "Suspension faite de petites bouteilles rouges d’apéritif au-dessus de la salle",
+   "it": "Lampada a sospensione fatta di bottigliette rosse da aperitivo sopra la sala"
+  },
+  "credit": "Christian Pfammatter, Visp",
+  "people": null
+ },
+ {
+  "id": "detail-mini-bottles",
+  "w": 2400,
+  "h": 1800,
+  "widths": [
+   480,
+   960,
+   1440,
+   2400
+  ],
+  "group": "restaurant",
+  "year": 2012,
+  "focus": "45% 55%",
+  "alt": {
+   "de": "Regal «1 Meter» mit Miniaturflaschen von Likören und Bränden",
+   "en": "A “1 Meter” shelf of miniature liqueur and spirit bottles",
+   "fr": "Étagère «1 Meter» de mignonnettes de liqueurs et d’eaux-de-vie",
+   "it": "Mensola «1 Meter» con bottigliette mignon di liquori e distillati"
+  },
+  "credit": "Christian Pfammatter, Visp",
+  "people": null
+ },
+ {
+  "id": "terrace-flowers",
+  "w": 1600,
+  "h": 825,
+  "widths": [
+   480,
+   960,
+   1440,
+   1600
+  ],
+  "group": "restaurant",
+  "year": 2016,
+  "focus": "50% 50%",
+  "alt": {
+   "de": "Sonnenterrasse mit pinkfarbenen Blumen und Sonnenschirmen",
+   "en": "Sun terrace with pink flowers and parasols",
+   "fr": "Terrasse ensoleillée avec fleurs roses et parasols",
+   "it": "Terrazza soleggiata con fiori rosa e ombrelloni"
+  },
+  "credit": "Christian Pfammatter, Visp",
+  "people": "guests in the background, not identifiable"
+ },
+ {
+  "id": "terrace-view",
+  "w": 1600,
+  "h": 825,
+  "widths": [
+   480,
+   960,
+   1440,
+   1600
+  ],
+  "group": "restaurant",
+  "year": 2016,
+  "focus": "50% 60%",
+  "alt": {
+   "de": "Terrasse unter dem Glasdach mit Blick in die Berge und dem Schild «Pizzeria»",
+   "en": "Terrace under the glass roof with a view of the mountains and the “Pizzeria” sign",
+   "fr": "Terrasse sous le toit vitré, vue sur les montagnes et panneau «Pizzeria»",
+   "it": "Terrazza sotto il tetto in vetro, con vista sulle montagne e l’insegna «Pizzeria»"
+  },
+  "credit": "Christian Pfammatter, Visp",
+  "people": "guests at tables, small"
+ },
+ {
+  "id": "door-hours",
+  "w": 1600,
+  "h": 893,
+  "widths": [
+   480,
+   960,
+   1440,
+   1600
+  ],
+  "group": "restaurant",
+  "year": 2016,
+  "focus": "40% 50%",
+  "alt": {
+   "de": "Giardino-Logo auf der Eingangstür: Öffnungszeiten 11.00–23.00 Uhr, Mittwoch Ruhetag",
+   "en": "The Giardino logo on the entrance door: open 11.00–23.00, closed on Wednesdays",
+   "fr": "Logo Giardino sur la porte d’entrée : ouvert de 11 h à 23 h, fermé le mercredi",
+   "it": "Logo Giardino sulla porta d’ingresso: aperto dalle 11.00 alle 23.00, chiuso il mercoledì"
+  },
+  "credit": "Christian Pfammatter, Visp",
+  "people": null
+ },
+ {
+  "id": "entrance-terrace",
+  "w": 1600,
+  "h": 893,
+  "widths": [
+   480,
+   960,
+   1440,
+   1600
+  ],
+  "group": "restaurant",
+  "year": 2016,
+  "focus": "50% 50%",
+  "alt": {
+   "de": "Eingang mit Terrasse, Pflanzen und Schild «Giardino»",
+   "en": "Entrance with terrace, plants and the “Giardino” sign",
+   "fr": "Entrée avec terrasse, plantes et enseigne «Giardino»",
+   "it": "Ingresso con terrazza, piante e insegna «Giardino»"
+  },
+  "credit": "Christian Pfammatter, Visp",
+  "people": null
+ },
+ {
+  "id": "pirate-masts",
+  "w": 1600,
+  "h": 815,
+  "widths": [
+   480,
+   960,
+   1440,
+   1600
+  ],
+  "group": "families",
+  "year": 2016,
+  "focus": "50% 50%",
+  "alt": {
+   "de": "Masten des Piratenschiffs vor den Felswänden über Leukerbad",
+   "en": "Masts of the pirate ship against the cliffs above Leukerbad",
+   "fr": "Mâts du bateau de pirates devant les falaises au-dessus de Loèche-les-Bains",
+   "it": "Alberi della nave dei pirati davanti alle pareti rocciose sopra Leukerbad"
+  },
+  "credit": "Christian Pfammatter, Visp",
+  "people": null
+ },
+ {
+  "id": "door-lettering",
+  "w": 1600,
+  "h": 893,
+  "widths": [
+   480,
+   960,
+   1440,
+   1600
+  ],
+  "group": "restaurant",
+  "year": 2016,
+  "focus": "50% 50%",
+  "alt": {
+   "de": "Schriftzug «Giardino Pizzeria» auf der Glastür",
+   "en": "“Giardino Pizzeria” lettering on the glass door",
+   "fr": "Inscription «Giardino Pizzeria» sur la porte vitrée",
+   "it": "Scritta «Giardino Pizzeria» sulla porta a vetri"
+  },
+  "credit": "Christian Pfammatter, Visp",
+  "people": null
+ },
+ {
+  "id": "terrace-roof",
+  "w": 1600,
+  "h": 893,
+  "widths": [
+   480,
+   960,
+   1440,
+   1600
+  ],
+  "group": "restaurant",
+  "year": 2016,
+  "focus": "50% 50%",
+  "alt": {
+   "de": "Blumen auf der Terrasse unter dem Glasdach",
+   "en": "Flowers on the terrace under the glass roof",
+   "fr": "Fleurs sur la terrasse sous le toit vitré",
+   "it": "Fiori sulla terrazza sotto il tetto in vetro"
+  },
+  "credit": "Christian Pfammatter, Visp",
+  "people": null
+ },
+ {
+  "id": "terrace-blooms",
+  "w": 1600,
+  "h": 893,
+  "widths": [
+   480,
+   960,
+   1440,
+   1600
+  ],
+  "group": "restaurant",
+  "year": 2016,
+  "focus": "50% 50%",
+  "alt": {
+   "de": "Pinkfarbene Blüten vor der Terrasse",
+   "en": "Pink blooms in front of the terrace",
+   "fr": "Fleurs roses devant la terrasse",
+   "it": "Fiori rosa davanti alla terrazza"
+  },
+  "credit": "Christian Pfammatter, Visp",
+  "people": "guests far out of focus in the background, not identifiable"
+ },
+ {
+  "id": "toy-cars",
+  "w": 1600,
+  "h": 1066,
+  "widths": [
+   480,
+   960,
+   1440,
+   1600
+  ],
+  "group": "families",
+  "year": 2016,
+  "focus": "50% 50%",
+  "alt": {
+   "de": "Spielzeugautos und Pylonen im Spielzimmer",
+   "en": "Toy cars and traffic cones in the playroom",
+   "fr": "Petites voitures et cônes dans la salle de jeux",
+   "it": "Macchinine e coni nella sala giochi"
+  },
+  "credit": "Christian Pfammatter, Visp",
+  "people": null
+ },
+ {
+  "id": "ship-mountains",
+  "w": 2400,
+  "h": 1600,
+  "widths": [
+   480,
+   960,
+   1440,
+   2400
+  ],
+  "group": "families",
+  "year": 2025,
+  "focus": "50% 50%",
+  "alt": {
+   "de": "Spielplatz mit Piratenschiff und Rutsche vor den Bergen",
+   "en": "Playground with pirate ship and slide in front of the mountains",
+   "fr": "Aire de jeux avec bateau de pirates et toboggan devant les montagnes",
+   "it": "Parco giochi con nave dei pirati e scivolo davanti alle montagne"
+  },
+  "credit": null,
+  "people": null
+ },
+ {
+  "id": "ship-slide",
+  "w": 2400,
+  "h": 1600,
+  "widths": [
+   480,
+   960,
+   1440,
+   2400
+  ],
+  "group": "families",
+  "year": 2025,
+  "focus": "50% 50%",
+  "alt": {
+   "de": "Piratenschiff mit Rutsche unter den Felswänden",
+   "en": "Pirate ship with slide beneath the cliffs",
+   "fr": "Bateau de pirates avec toboggan au pied des falaises",
+   "it": "Nave dei pirati con scivolo ai piedi delle pareti rocciose"
+  },
+  "credit": null,
+  "people": null
+ },
+ {
+  "id": "ship-cliffs",
+  "w": 2400,
+  "h": 1600,
+  "widths": [
+   480,
+   960,
+   1440,
+   1600,
+   2400
+  ],
+  "group": "families",
+  "year": 2025,
+  "focus": "50% 40%",
+  "alt": {
+   "de": "Piratenschiff und Spielplatz, dahinter die Felswände über Leukerbad",
+   "en": "Pirate ship and playground, with the cliffs above Leukerbad behind",
+   "fr": "Bateau de pirates et aire de jeux, avec les falaises au-dessus de Loèche-les-Bains",
+   "it": "Nave dei pirati e parco giochi, sullo sfondo le pareti rocciose sopra Leukerbad"
+  },
+  "credit": null,
+  "people": null
+ },
+ {
+  "id": "ship-above",
+  "w": 2400,
+  "h": 1600,
+  "widths": [
+   480,
+   960,
+   1440,
+   2400
+  ],
+  "group": "families",
+  "year": 2025,
+  "focus": "50% 50%",
+  "alt": {
+   "de": "Spielplatz mit Piratenschiff von oben",
+   "en": "Playground and pirate ship from above",
+   "fr": "Aire de jeux et bateau de pirates vus d’en haut",
+   "it": "Parco giochi e nave dei pirati visti dall’alto"
+  },
+  "credit": null,
+  "people": null
+ },
+ {
+  "id": "playroom-football",
+  "w": 2400,
+  "h": 1600,
+  "widths": [
+   480,
+   960,
+   1440,
+   2400
+  ],
+  "group": "families",
+  "year": 2025,
+  "focus": "50% 50%",
+  "alt": {
+   "de": "Spielzimmer mit Tischfussball",
+   "en": "Playroom with table football",
+   "fr": "Salle de jeux avec baby-foot",
+   "it": "Sala giochi con calcio balilla"
+  },
+  "credit": null,
+  "people": null
+ },
+ {
+  "id": "playroom-climber",
+  "w": 2400,
+  "h": 1600,
+  "widths": [
+   480,
+   960,
+   1440,
+   1600,
+   2400
+  ],
+  "group": "families",
+  "year": 2025,
+  "focus": "50% 50%",
+  "alt": {
+   "de": "Spielzimmer mit Kletterturm und Rutsche",
+   "en": "Playroom with climbing tower and slide",
+   "fr": "Salle de jeux avec tour d’escalade et toboggan",
+   "it": "Sala giochi con torre per arrampicarsi e scivolo"
+  },
+  "credit": null,
+  "people": null
+ },
+ {
+  "id": "playroom-mural",
+  "w": 2400,
+  "h": 1600,
+  "widths": [
+   480,
+   960,
+   1440,
+   2400
+  ],
+  "group": "families",
+  "year": 2025,
+  "focus": "50% 50%",
+  "alt": {
+   "de": "Spielzimmer mit Wandbild und Spielblöcken",
+   "en": "Playroom with a mural and play blocks",
+   "fr": "Salle de jeux avec fresque murale et blocs de jeu",
+   "it": "Sala giochi con murale e blocchi da gioco"
+  },
+  "credit": null,
+  "people": null
+ },
+ {
+  "id": "playroom-ride-on",
+  "w": 2400,
+  "h": 1600,
+  "widths": [
+   480,
+   960,
+   1440,
+   2400
+  ],
+  "group": "families",
+  "year": 2025,
+  "focus": "50% 50%",
+  "alt": {
+   "de": "Schwarzes Rutschauto im Spielzimmer",
+   "en": "Black ride-on car in the playroom",
+   "fr": "Porteur noir dans la salle de jeux",
+   "it": "Macchinina cavalcabile nera nella sala giochi"
+  },
+  "credit": null,
+  "people": null
+ },
+ {
+  "id": "dish-chicken-risotto",
+  "w": 2400,
+  "h": 1600,
+  "widths": [
+   480,
+   960,
+   1440,
+   2400
+  ],
+  "group": "food",
+  "year": 2025,
+  "focus": "50% 50%",
+  "alt": {
+   "de": "Pouletbrust mit Risotto und dunkler Sauce",
+   "en": "Chicken breast with risotto and a dark sauce",
+   "fr": "Poitrine de poulet, risotto et sauce brune",
+   "it": "Petto di pollo con risotto e salsa scura"
+  },
+  "credit": null,
+  "people": null
+ },
+ {
+  "id": "dish-spaghetti-bacon",
+  "w": 2400,
+  "h": 1600,
+  "widths": [
+   480,
+   960,
+   1440,
+   2400
+  ],
+  "group": "food",
+  "year": 2025,
+  "focus": "50% 50%",
+  "alt": {
+   "de": "Spaghetti mit Speck in cremiger Sauce",
+   "en": "Spaghetti with bacon in a creamy sauce",
+   "fr": "Spaghettis au lard, sauce crémeuse",
+   "it": "Spaghetti con pancetta in salsa cremosa"
+  },
+  "credit": null,
+  "people": null
+ },
+ {
+  "id": "dessert-coupe",
+  "w": 2400,
+  "h": 1600,
+  "widths": [
+   480,
+   960,
+   1440,
+   2400
+  ],
+  "group": "food",
+  "year": 2025,
+  "focus": "50% 50%",
+  "alt": {
+   "de": "Glace mit Früchten und Waffelröllchen",
+   "en": "Ice cream with fruit and a rolled wafer",
+   "fr": "Glace aux fruits et cigarette russe",
+   "it": "Gelato con frutta e cialda arrotolata"
+  },
+  "credit": null,
+  "people": null
+ },
+ {
+  "id": "dessert-panna-cotta",
+  "w": 2400,
+  "h": 1600,
+  "widths": [
+   480,
+   960,
+   1440,
+   2400
+  ],
+  "group": "food",
+  "year": 2025,
+  "focus": "50% 50%",
+  "alt": {
+   "de": "Panna Cotta mit Beerensauce im Glas",
+   "en": "Panna cotta with berry sauce in a glass",
+   "fr": "Panna cotta et coulis de baies en verrine",
+   "it": "Panna cotta con salsa ai frutti di bosco nel bicchiere"
+  },
+  "credit": null,
+  "people": null
+ },
+ {
+  "id": "pizza-egg",
+  "w": 2400,
+  "h": 1600,
+  "widths": [
+   480,
+   960,
+   1440,
+   2400
+  ],
+  "group": "food",
+  "year": 2025,
+  "focus": "50% 50%",
+  "alt": {
+   "de": "Pizza mit Ei, Peperoni, Artischocken, Sardellen und Schinken",
+   "en": "Pizza with egg, bell peppers, artichokes, anchovies and ham",
+   "fr": "Pizza à l’œuf, poivrons, artichauts, anchois et jambon",
+   "it": "Pizza con uovo, peperoni, carciofi, acciughe e prosciutto"
+  },
+  "credit": null,
+  "people": null
+ },
+ {
+  "id": "starter-salmon",
+  "w": 2400,
+  "h": 1600,
+  "widths": [
+   480,
+   960,
+   1440,
+   1600,
+   2400
+  ],
+  "group": "food",
+  "year": 2025,
+  "focus": "50% 50%",
+  "alt": {
+   "de": "Rauchlachs mit Dillsenfsauce, Kapernäpfeln, Kirschtomaten und Zitrone auf einer Schieferplatte",
+   "en": "Smoked salmon with dill-mustard sauce, caper berries, cherry tomatoes and lemon on a slate",
+   "fr": "Saumon fumé, sauce aneth-moutarde, câpres, tomates cerises et citron sur une ardoise",
+   "it": "Salmone affumicato con salsa all’aneto e senape, capperi, pomodorini e limone su ardesia"
+  },
+  "credit": null,
+  "people": null
+ },
+ {
+  "id": "dish-prawns",
+  "w": 2400,
+  "h": 1600,
+  "widths": [
+   480,
+   960,
+   1440,
+   1600,
+   2400
+  ],
+  "group": "food",
+  "year": 2025,
+  "focus": "50% 50%",
+  "alt": {
+   "de": "Spaghetti mit Riesencrevetten in einem türkisfarbenen Teller",
+   "en": "Spaghetti with king prawns in a turquoise bowl",
+   "fr": "Spaghettis aux grosses crevettes dans une assiette turquoise",
+   "it": "Spaghetti con gamberoni in un piatto turchese"
+  },
+  "credit": null,
+  "people": null
+ },
+ {
+  "id": "dish-pesto",
+  "w": 2400,
+  "h": 1600,
+  "widths": [
+   480,
+   960,
+   1440,
+   2400
+  ],
+  "group": "food",
+  "year": 2025,
+  "focus": "50% 50%",
+  "alt": {
+   "de": "Spaghetti mit grünem Pesto",
+   "en": "Spaghetti with green pesto",
+   "fr": "Spaghettis au pesto vert",
+   "it": "Spaghetti al pesto verde"
+  },
+  "credit": null,
+  "people": null
+ },
+ {
+  "id": "pizza-ham-rocket",
+  "w": 2400,
+  "h": 1600,
+  "widths": [
+   480,
+   960,
+   1440,
+   1600,
+   2400
+  ],
+  "group": "food",
+  "year": 2025,
+  "focus": "50% 50%",
+  "alt": {
+   "de": "Pizza mit Rohschinken, Rucola und Grana-Spänen",
+   "en": "Pizza with cured ham, rocket and grana shavings",
+   "fr": "Pizza au jambon cru, roquette et copeaux de grana",
+   "it": "Pizza con prosciutto crudo, rucola e scaglie di grana"
+  },
+  "credit": null,
+  "people": null
+ },
+ {
+  "id": "aerial-village",
+  "w": 2400,
+  "h": 1797,
+  "widths": [
+   480,
+   960,
+   1440,
+   1600,
+   2400
+  ],
+  "group": "restaurant",
+  "year": 2025,
+  "focus": "58% 62%",
+  "alt": {
+   "de": "Luftaufnahme: das Giardino mit dem Spielplatz, dahinter Leukerbad unter den Felswänden",
+   "en": "Aerial view: Giardino and its playground, with Leukerbad and the cliffs behind",
+   "fr": "Vue aérienne : le Giardino et son aire de jeux, avec Loèche-les-Bains au pied des falaises",
+   "it": "Veduta aerea: il Giardino con il parco giochi, sullo sfondo Leukerbad ai piedi delle pareti rocciose"
+  },
+  "credit": null,
+  "people": null
+ },
+ {
+  "id": "aerial-front",
+  "w": 2400,
+  "h": 1799,
+  "widths": [
+   480,
+   960,
+   1440,
+   2400
+  ],
+  "group": "restaurant",
+  "year": 2025,
+  "focus": "50% 50%",
+  "alt": {
+   "de": "Luftaufnahme von Haus, Terrasse und Spielplatz",
+   "en": "Aerial view of the building, terrace and playground",
+   "fr": "Vue aérienne de la maison, de la terrasse et de l’aire de jeux",
+   "it": "Veduta aerea della casa, della terrazza e del parco giochi"
+  },
+  "credit": null,
+  "people": null
+ },
+ {
+  "id": "ship-portrait",
+  "w": 2400,
+  "h": 3600,
+  "widths": [
+   480,
+   960,
+   1440,
+   2400
+  ],
+  "group": "families",
+  "year": 2025,
+  "focus": "50% 50%",
+  "alt": {
+   "de": "Piratenschiff, dahinter Häuser von Leukerbad und die Berge",
+   "en": "Pirate ship with houses of Leukerbad and the mountains behind",
+   "fr": "Bateau de pirates, avec des maisons de Loèche-les-Bains et les montagnes",
+   "it": "Nave dei pirati, sullo sfondo case di Leukerbad e le montagne"
+  },
+  "credit": null,
+  "people": null
+ },
+ {
+  "id": "playroom-slide",
+  "w": 2400,
+  "h": 1600,
+  "widths": [
+   480,
+   960,
+   1440,
+   2400
+  ],
+  "group": "families",
+  "year": 2025,
+  "focus": "50% 50%",
+  "alt": {
+   "de": "Spielzimmer mit Rutsche und rotem Rutschauto",
+   "en": "Playroom with slide and a red ride-on car",
+   "fr": "Salle de jeux avec toboggan et porteur rouge",
+   "it": "Sala giochi con scivolo e macchinina rossa"
+  },
+  "credit": null,
+  "people": null
+ },
+ {
+  "id": "hosts",
+  "w": 2400,
+  "h": 1600,
+  "widths": [
+   480,
+   960,
+   1440,
+   1600,
+   2400
+  ],
+  "group": "restaurant",
+  "year": 2025,
+  "focus": "62% 45%",
+  "alt": {
+   "de": "Pascal und Anja Loretan an der Bar des Giardino",
+   "en": "Pascal and Anja Loretan at the Giardino bar",
+   "fr": "Pascal et Anja Loretan au bar du Giardino",
+   "it": "Pascal e Anja Loretan al bar del Giardino"
+  },
+  "credit": null,
+  "people": "the hosts (identified from the Gastgeber page and the rro.ch interview; please confirm)"
+ },
+ {
+  "id": "pizza-rocket",
+  "w": 2400,
+  "h": 1600,
+  "widths": [
+   480,
+   960,
+   1440,
+   1600,
+   2400
+  ],
+  "group": "food",
+  "year": 2025,
+  "focus": "50% 50%",
+  "alt": {
+   "de": "Pizza mit Rucola, Kirschtomaten und Mozzarella",
+   "en": "Pizza with rocket, cherry tomatoes and mozzarella",
+   "fr": "Pizza à la roquette, tomates cerises et mozzarella",
+   "it": "Pizza con rucola, pomodorini e mozzarella"
+  },
+  "credit": null,
+  "people": null
+ },
+ {
+  "id": "detail-spaghetti",
+  "w": 2400,
+  "h": 3600,
+  "widths": [
+   480,
+   960,
+   1440,
+   2400
+  ],
+  "group": "food",
+  "year": 2025,
+  "focus": "50% 50%",
+  "alt": {
+   "de": "Spaghetti in einem türkisblauen Teller, daneben Gabel und Messer",
+   "en": "Spaghetti in a turquoise bowl beside a fork and knife",
+   "fr": "Spaghettis dans une assiette turquoise, à côté d’une fourchette et d’un couteau",
+   "it": "Spaghetti in un piatto turchese accanto a forchetta e coltello"
+  },
+  "credit": null,
+  "people": null
+ },
+ {
+  "id": "dish-schnitzel",
+  "w": 2400,
+  "h": 3600,
+  "widths": [
+   480,
+   960,
+   1440,
+   2400
+  ],
+  "group": "food",
+  "year": 2025,
+  "focus": "50% 50%",
+  "alt": {
+   "de": "Paniertes Schnitzel mit Zitrone und Pommes Frites",
+   "en": "Breaded schnitzel with lemon and French fries",
+   "fr": "Escalope panée, citron et pommes frites",
+   "it": "Cotoletta impanata con limone e patatine fritte"
+  },
+  "credit": null,
+  "people": null
+ },
+ {
+  "id": "dish-lasagne",
+  "w": 2400,
+  "h": 1600,
+  "widths": [
+   480,
+   960,
+   1440,
+   2400
+  ],
+  "group": "food",
+  "year": 2025,
+  "focus": "50% 50%",
+  "alt": {
+   "de": "Lasagne in der Auflaufform mit Kirschtomate",
+   "en": "Lasagne in a baking dish with a cherry tomato",
+   "fr": "Lasagnes dans un plat à gratin avec une tomate cerise",
+   "it": "Lasagne nella pirofila con un pomodorino"
+  },
+  "credit": null,
+  "people": null
+ },
+ {
+  "id": "dish-penne",
+  "w": 2400,
+  "h": 1600,
+  "widths": [
+   480,
+   960,
+   1440,
+   2400
+  ],
+  "group": "food",
+  "year": 2025,
+  "focus": "50% 50%",
+  "alt": {
+   "de": "Penne mit Tomatensauce in einem gemusterten Teller",
+   "en": "Penne with tomato sauce in a patterned bowl",
+   "fr": "Penne à la sauce tomate dans une assiette décorée",
+   "it": "Penne al pomodoro in un piatto decorato"
+  },
+  "credit": null,
+  "people": null
+ },
+ {
+  "id": "garden-view",
+  "w": 2400,
+  "h": 1600,
+  "widths": [
+   480,
+   960,
+   1440,
+   1600,
+   2400
+  ],
+  "group": "restaurant",
+  "year": 2025,
+  "focus": "62% 55%",
+  "alt": {
+   "de": "Blick durch das Laub auf die Pizzeria, das Hotel Heilquelle und die Berge",
+   "en": "View through the leaves to the pizzeria, Hotel Heilquelle and the mountains",
+   "fr": "Vue à travers le feuillage sur la pizzeria, l’hôtel Heilquelle et les montagnes",
+   "it": "Vista tra le foglie sulla pizzeria, l’hotel Heilquelle e le montagne"
+  },
+  "credit": null,
+  "people": null
+ },
+ {
+  "id": "aerial-terrace",
+  "w": 2400,
+  "h": 1797,
+  "widths": [
+   480,
+   960,
+   1440,
+   2400
+  ],
+  "group": "restaurant",
+  "year": 2025,
+  "focus": "50% 50%",
+  "alt": {
+   "de": "Luftaufnahme von Terrasse, Spielplatz und Nachbarhäusern",
+   "en": "Aerial view of the terrace, playground and neighbouring buildings",
+   "fr": "Vue aérienne de la terrasse, de l’aire de jeux et des maisons voisines",
+   "it": "Veduta aerea della terrazza, del parco giochi e delle case vicine"
+  },
+  "credit": null,
+  "people": null
+ },
+ {
+  "id": "dish-penne-chili",
+  "w": 2400,
+  "h": 3600,
+  "widths": [
+   480,
+   960,
+   1440,
+   2400
+  ],
+  "group": "food",
+  "year": 2025,
+  "focus": "50% 50%",
+  "alt": {
+   "de": "Penne mit Tomatensauce und einer Chilischote",
+   "en": "Penne with tomato sauce and a chilli pepper",
+   "fr": "Penne à la sauce tomate et un piment",
+   "it": "Penne al pomodoro con un peperoncino"
+  },
+  "credit": null,
+  "people": null
+ }
+]

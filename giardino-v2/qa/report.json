@@ -1,0 +1,542 @@
+{
+ "date": "2026-11-02T01:21:52.226Z",
+ "passed": 107,
+ "total": 107,
+ "results": [
+  {
+   "name": "de/home: loads, lang, title, one h1, no errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "de/home: axe serious/critical",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "de/menu: loads, lang, title, one h1, no errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "de/menu: axe serious/critical",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "de/families: loads, lang, title, one h1, no errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "de/families: axe serious/critical",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "de/story: loads, lang, title, one h1, no errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "de/story: axe serious/critical",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "de/visit: loads, lang, title, one h1, no errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "de/visit: axe serious/critical",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "de/gallery: loads, lang, title, one h1, no errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "de/gallery: axe serious/critical",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "de/hotels: loads, lang, title, one h1, no errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "de/hotels: axe serious/critical",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "de/jobs: loads, lang, title, one h1, no errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "de/jobs: axe serious/critical",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "de/press: loads, lang, title, one h1, no errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "de/press: axe serious/critical",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "de/imprint: loads, lang, title, one h1, no errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "de/imprint: axe serious/critical",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "de/privacy: loads, lang, title, one h1, no errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "de/privacy: axe serious/critical",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "fr/home: loads, lang, title, one h1, no errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "fr/home: axe serious/critical",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "fr/menu: loads, lang, title, one h1, no errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "fr/menu: axe serious/critical",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "fr/families: loads, lang, title, one h1, no errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "fr/families: axe serious/critical",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "fr/story: loads, lang, title, one h1, no errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "fr/story: axe serious/critical",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "fr/visit: loads, lang, title, one h1, no errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "fr/visit: axe serious/critical",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "fr/gallery: loads, lang, title, one h1, no errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "fr/gallery: axe serious/critical",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "fr/hotels: loads, lang, title, one h1, no errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "fr/hotels: axe serious/critical",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "fr/jobs: loads, lang, title, one h1, no errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "fr/jobs: axe serious/critical",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "fr/press: loads, lang, title, one h1, no errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "fr/press: axe serious/critical",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "fr/imprint: loads, lang, title, one h1, no errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "fr/imprint: axe serious/critical",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "fr/privacy: loads, lang, title, one h1, no errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "fr/privacy: axe serious/critical",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "en/home: loads, lang, title, one h1, no errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "en/home: axe serious/critical",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "en/menu: loads, lang, title, one h1, no errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "en/menu: axe serious/critical",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "en/families: loads, lang, title, one h1, no errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "en/families: axe serious/critical",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "en/story: loads, lang, title, one h1, no errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "en/story: axe serious/critical",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "en/visit: loads, lang, title, one h1, no errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "en/visit: axe serious/critical",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "en/gallery: loads, lang, title, one h1, no errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "en/gallery: axe serious/critical",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "en/hotels: loads, lang, title, one h1, no errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "en/hotels: axe serious/critical",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "en/jobs: loads, lang, title, one h1, no errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "en/jobs: axe serious/critical",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "en/press: loads, lang, title, one h1, no errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "en/press: axe serious/critical",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "en/imprint: loads, lang, title, one h1, no errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "en/imprint: axe serious/critical",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "en/privacy: loads, lang, title, one h1, no errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "en/privacy: axe serious/critical",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "it/home: loads, lang, title, one h1, no errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "it/home: axe serious/critical",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "it/menu: loads, lang, title, one h1, no errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "it/menu: axe serious/critical",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "it/families: loads, lang, title, one h1, no errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "it/families: axe serious/critical",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "it/story: loads, lang, title, one h1, no errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "it/story: axe serious/critical",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "it/visit: loads, lang, title, one h1, no errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "it/visit: axe serious/critical",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "it/gallery: loads, lang, title, one h1, no errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "it/gallery: axe serious/critical",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "it/hotels: loads, lang, title, one h1, no errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "it/hotels: axe serious/critical",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "it/jobs: loads, lang, title, one h1, no errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "it/jobs: axe serious/critical",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "it/press: loads, lang, title, one h1, no errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "it/press: axe serious/critical",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "it/imprint: loads, lang, title, one h1, no errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "it/imprint: axe serious/critical",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "it/privacy: loads, lang, title, one h1, no errors",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "it/privacy: axe serious/critical",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "no horizontal scroll at 390px (de, all pages)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "no horizontal scroll at 768px (fr, all pages)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "no horizontal scroll at 1440px (it, all pages)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "language switch en→de keeps #hours in place",
+   "ok": true,
+   "detail": "offset -76.3 → -76.6, /de/, de-CH"
+  },
+  {
+   "name": "language switch de→fr keeps #reviews in place",
+   "ok": true,
+   "detail": "offset -76.0 → -76.1, /fr/, fr-CH"
+  },
+  {
+   "name": "language switch fr→it keeps #offerings in place",
+   "ok": true,
+   "detail": "offset -76.3 → -76.4, /it/, it-CH"
+  },
+  {
+   "name": "language switch it→en keeps #gallery in place",
+   "ok": true,
+   "detail": "offset -76.2 → -76.7, /en/, en"
+  },
+  {
+   "name": "choosing the current language does nothing",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "no errors during repeated switches",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "intro plays once, Escape skips it, no replay in the session",
+   "ok": true,
+   "detail": "{\"shown\":true,\"gone\":true,\"again\":false}"
+  },
+  {
+   "name": "mobile menu traps focus, locks scroll, Escape returns focus",
+   "ok": true,
+   "detail": "{\"trapped\":true,\"locked\":true,\"back\":\"dialog\"}"
+  },
+  {
+   "name": "drawer: tel:+41275300584, Escape closes, focus back",
+   "ok": true,
+   "detail": "{\"tel\":\"tel:+41275300584\",\"title\":\"Réserver une table\",\"closed\":true,\"focusBack\":true}"
+  },
+  {
+   "name": "closure notice shown only while it applies (today 2026-11-02)",
+   "ok": true,
+   "detail": "shown=true, expected=true"
+  },
+  {
+   "name": "status names the reopening date during the closure",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "menu PDFs: the four live files, new tab, noopener",
+   "ok": true,
+   "detail": "[\"124\",\"158\",\"159\",\"15a\"]"
+  },
+  {
+   "name": "lightbox: Enter opens, → advances, Escape closes, focus back",
+   "ok": true,
+   "detail": "{\"c1\":\"01 / 15Foto \",\"c2\":\"02 / 15Foto \",\"back\":\"Foto vergrössern: Pizza mit Ru\"}"
+  },
+  {
+   "name": "skip link first, focuses the main content",
+   "ok": true,
+   "detail": "{\"first\":\"Skip to content\",\"target\":\"main\"}"
+  },
+  {
+   "name": "contact: required fields flagged, focus on first, e-mail checked, hand-off without false success",
+   "ok": true,
+   "detail": "{\"errs\":[\"message\",\"name\",\"email\",\"consent\"],\"focus\":\"message\",\"emailMsg\":\"Diese E-Mail-Adresse scheint unvollständig.\",\"status\":\"Ihr E-Mail-Programm sollte sich jetzt mit Ihrer Nachricht öf\"}"
+  },
+  {
+   "name": "reduced motion: no intro, no pinned hero, grid gallery, fade switch",
+   "ok": true,
+   "detail": "{\"intro\":false,\"sticky\":0,\"grid\":true,\"transform\":\"none\"}"
+  }
+ ]
+}
