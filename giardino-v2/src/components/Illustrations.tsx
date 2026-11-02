@@ -1,6 +1,5 @@
-// Small drawn ingredients that drift behind the food scenes for depth (decorative, aria-hidden), and the circular
-// text stamp that turns with the scroll. Drawn for this site in the logo's greens, the tomato red of the dishes and
-// the pale gold.
+// Decorative pieces (aria-hidden): the drawn olive sprig, the circular text stamp that turns with the scroll, and
+// dishes cut out of the restaurant's own photographs.
 import { useEffect, useId, useRef } from "react";
 import { useReduced } from "@/lib/useMedia";
 import { cn } from "@/lib/utils";
@@ -67,7 +66,7 @@ export function Stamp({ text, className, children, tone = "gold" }: { text: stri
 }
 
 /** Real ingredients and dishes cut out of the restaurant's own photographs (scripts/cutouts.py). Decorative. */
-const CUTOUTS = { tomato: [305, 234], capers: [243, 615], pesto: [800, 411], pizza: [900, 504], "panna-cotta": [700, 318] } as const;
+const CUTOUTS = { pesto: [800, 411], pizza: [900, 504], "panna-cotta": [700, 318] } as const;
 export function Cutout({ name, className }: { name: keyof typeof CUTOUTS; className?: string }) {
   const [w, h] = CUTOUTS[name];
   return <img src={`${import.meta.env.BASE_URL}cutouts/${name}.webp`} alt="" aria-hidden="true" width={w} height={h} loading="lazy" decoding="async" className={className} />;

@@ -10,7 +10,7 @@ import { useFinePointer, useReduced } from "@/lib/useMedia";
 import { MaskPhoto, SplitReveal, FadeIn } from "@/components/Reveal";
 import { PillButton, PillLink } from "@/components/ui/Pill";
 import { IconArrow } from "@/components/icons";
-import { Stamp, Cutout } from "@/components/Illustrations";
+import { Stamp } from "@/components/Illustrations";
 import { Medallion } from "@/components/Brand";
 
 const COLLAGE = [
@@ -31,7 +31,6 @@ export function Delights({ compact = false }: { compact?: boolean }) {
       gsap.utils.toArray<HTMLElement>(".dl-par").forEach((el, i) => {
         gsap.fromTo(el, { yPercent: 5 + (i % 3) * 3 }, { yPercent: -5 - (i % 3) * 3, ease: "none", scrollTrigger: { trigger: el, start: "top bottom", end: "bottom top", scrub: true } });
       });
-      gsap.fromTo(".dl-fly", { xPercent: -20, yPercent: 30, rotate: -12 }, { xPercent: 180, yPercent: -40, rotate: 14, ease: "none", scrollTrigger: { trigger: root.current, start: "top bottom", end: "bottom top", scrub: true } });
     },
     root,
     [reduce, fine],
@@ -44,7 +43,6 @@ export function Delights({ compact = false }: { compact?: boolean }) {
   ];
   return (
     <section id="delights" data-anchor data-nav="delights" ref={root} className="tex-leaf relative overflow-hidden bg-olive py-24 text-white md:py-36" aria-labelledby="delights-title">
-      <Cutout name="tomato" className="dl-fly pointer-events-none absolute left-0 top-[44%] z-10 w-[min(150px,22vw)] drop-shadow-[0_24px_30px_rgba(0,0,0,0.35)]" />
       <div className="container-x relative">
         <p className="eyebrow text-gold">Cucina</p>
         <SplitReveal as="h2" id="delights-title" text={TX.delightsTitle[lang]} className="mt-4 fs-xxl font-extrabold" />

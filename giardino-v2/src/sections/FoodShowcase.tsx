@@ -77,8 +77,6 @@ export function FoodShowcase({ standalone = false }: { standalone?: boolean }) {
       for (let i = 1; i < 4; i++) tl.fromTo(`.fs-frame-${i}`, { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.12, ease: "power2.inOut" }, i / 4 - 0.07);
       for (let i = 1; i < 4; i++) tl.fromTo(`.fs-frame-${i} img`, { scale: 1.18 }, { scale: 1, duration: 0.2 }, i / 4 - 0.07);
       tl.fromTo(".fs-depth-1", { yPercent: 40, rotate: -8 }, { yPercent: -70, rotate: 10, duration: 1 }, 0)
-        .fromTo(".fs-depth-2", { xPercent: -30, yPercent: 50, rotate: 6 }, { xPercent: 50, yPercent: -20, rotate: -8, duration: 1 }, 0)
-        .fromTo(".fs-depth-3", { yPercent: 120, rotate: -4 }, { yPercent: -160, rotate: 12, duration: 1 }, 0)
         .to({}, { duration: 0.04 });
     },
     stage,
@@ -151,8 +149,6 @@ export function FoodShowcase({ standalone = false }: { standalone?: boolean }) {
         </ol>
         {/* ingredients and a dish cut out of the restaurant's photographs, at three depths */}
         <Cutout name="pesto" className="fs-depth-1 pointer-events-none absolute left-[34%] top-[60%] w-[min(360px,30vw)] opacity-25 blur-[4px]" />
-        <Cutout name="tomato" className="fs-depth-2 pointer-events-none absolute -left-4 top-[78%] w-[min(150px,22vw)] opacity-90 blur-[1px]" />
-        <Cutout name="capers" className="fs-depth-3 pointer-events-none absolute right-[3%] top-[70%] w-[min(84px,12vw)]" />
 
         <div className={cn("container-x relative grid h-full items-center gap-6", desktop ? "grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)]" : "grid-rows-[auto_1fr] content-start pt-[calc(var(--band-h)+96px)]")}>
           <div className={desktop ? "" : "min-h-[40svh]"}>

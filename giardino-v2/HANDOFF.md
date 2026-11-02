@@ -77,7 +77,8 @@ real name, logo and photographs (repository CLAUDE.md). The production build in 
 - **The 3D pizza** is a labelled illustration (rocket, cherry tomatoes, mozzarella, the Giardino logo printed on the plate
   rim). three.js loads only near the block, only with a real GPU and without reduced motion; it renders only while
   something moves and only on screen. Otherwise a still of the same pizza from above turns in steps (buttons and ← →).
-- **Ingredient cutouts** were cut from the restaurant's own photographs (`scripts/cutouts.py`, rembg), not drawn.
+- **Depth layer in the food scene:** a blurred pasta dish cut from the restaurant's own photograph (`scripts/cutouts.py`,
+  rembg). The small flying ingredients (tomato, caper berries) were removed on request.
 - **The gold statement** starts each word at 25 % opacity, as briefed, and reaches full contrast at its reading
   position; the sentence is also the section's accessible name. Automated contrast checks exclude it for that reason;
   starting at about 50 % would pass them if preferred.
