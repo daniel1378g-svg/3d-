@@ -1,0 +1,113 @@
+[
+ {
+  "cid": 3,
+  "name": "Pizzeria Choucas",
+  "files": [
+   "_a3x7690.jpg",
+   "terasse_pizzeria_choucas.jpg",
+   "dessert_ansicht.jpg",
+   "pizza_ansicht.jpg",
+   "_a3x7699.jpg"
+  ],
+  "total": 5
+ },
+ {
+  "cid": 2,
+  "name": "Oasis Steakhouse",
+  "files": [
+   "steakhouse.jpg",
+   "steakhouse2.jpg",
+   "tbone2.jpg",
+   "tbone3.jpg",
+   "weinoasis.jpg",
+   "_a3x1806.jpg",
+   "_a3x1812.jpg",
+   "_a3x1817.jpg",
+   "_a3x1835.jpg",
+   "_a3x1837.jpg"
+  ],
+  "total": 10
+ },
+ {
+  "cid": 4,
+  "name": "Umbau 2007",
+  "files": [
+   "pict0006.jpg",
+   "pict0007.jpg",
+   "pict0008.jpg",
+   "pict0009.jpg",
+   "pict0014.jpg",
+   "pict0017.jpg",
+   "pict0027.jpg",
+   "pict0030.jpg",
+   "pict0033.jpg",
+   "pict0034.jpg"
+  ],
+  "total": 10
+ },
+ {
+  "cid": 6,
+  "name": "Choucalino Club",
+  "files": [
+   "img_1173.jpg",
+   "pizzabacken5.jpg",
+   "_mg_1996_verkleinert.jpg",
+   "choucalino.jpg",
+   "choucalinogrillfb.jpg",
+   "nicole.jpg"
+  ],
+  "total": 6
+ },
+ {
+  "cid": 8,
+  "name": "Events",
+  "files": [
+   "magier.jpg",
+   "zaubershow_maerz2011.jpg",
+   "dsc06772_800x6001.jpg"
+  ],
+  "total": 3
+ },
+ {
+  "cid": 10,
+  "name": "vor 30 Jahren",
+  "files": [],
+  "total": 0
+ },
+ {
+  "cid": 11,
+  "name": "Mitarbeiterausflüge",
+  "files": [
+   "zauber.jpg"
+  ],
+  "total": 1
+ },
+ {
+  "cid": 17,
+  "name": "Spezialitäten",
+  "files": [
+   "pinchitosfacebook.jpg",
+   "tapasweb.jpg",
+   "ribsweb.jpg"
+  ],
+  "total": 3
+ },
+ {
+  "cid": 14,
+  "name": "Best of Swiss Gastro 2012",
+  "files": [
+   "bob.jpg",
+   "bosg2.jpg",
+   "dsc01691.jpg",
+   "dsc01694.jpg",
+   "dsc01699.jpg",
+   "dsc01700.jpg",
+   "dsc01710.jpg",
+   "dsc01716.jpg",
+   "dsc01724.jpg",
+   "dsc01731.jpg",
+   "bestofgroupfoto.jpg"
+  ],
+  "total": 11
+ }
+]
