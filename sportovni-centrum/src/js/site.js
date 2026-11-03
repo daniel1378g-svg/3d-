@@ -2,7 +2,8 @@
    Progressive enhancement: every link works and every section is visible without this file.
    The inline boot script in <head> adds .js/.js-motion and a minimal menu handler; if this file has
    not finished within 3 s it drops .js-motion (reveals become visible) – the layout never swaps.
-   window.__scReady is set only after every feature below has been set up. */
+   window.__scNavReady is set only when the navigation set up without errors (until then the boot
+   handler keeps the menu working); window.__scReady is set once every feature has been set up. */
 (() => {
   "use strict";
   const doc = document.documentElement;
@@ -51,6 +52,7 @@
     items.forEach((item) => {
       const btn = toggleOf(item);
       btn.addEventListener("click", (e) => {
+        if (!window.__scNavReady) return; // set-up failed: the boot handler keeps driving the menu
         const isOpen = btn.getAttribute("aria-expanded") === "true";
         // A pointer click on a dropdown that hover just opened pins it open instead of closing it.
         if (desktop.matches && isOpen && e.detail > 0 && item.dataset.hoverOpen) { delete item.dataset.hoverOpen; return; }
@@ -62,6 +64,8 @@
         clearTimeout(hoverTimer);
         hoverTimer = setTimeout(() => {
           if (item.classList.contains("is-open")) return;
+          // Another dropdown holds keyboard focus: leave it (and the user's place) alone.
+          if (items.some((it) => it !== item && it.classList.contains("is-open") && it.contains(document.activeElement))) return;
           closeAll(item);
           setItem(item, true, { viaHover: true });
         }, 60);
@@ -104,7 +108,7 @@
       }
     };
     if (navToggle) {
-      navToggle.addEventListener("click", () => setPanel(!isPanelOpen()));
+      navToggle.addEventListener("click", () => { if (window.__scNavReady) setPanel(!isPanelOpen()); });
       nav.addEventListener("click", (e) => {
         const link = e.target.closest("a[href]");
         // Links that open a new window (the reservation system) leave the panel as it is.
@@ -116,9 +120,9 @@
         if (e.key !== "Escape") return;
         const open = items.find((it) => it.classList.contains("is-open"));
         if (!open) return;
-        const hadFocus = open.contains(document.activeElement);
+        const inPanel = open.querySelector(".subnav").contains(document.activeElement);
         setItem(open, false);
-        if (hadFocus) toggleOf(open).focus();
+        if (inPanel) toggleOf(open).focus();
         return;
       }
       if (!isPanelOpen()) return;
@@ -130,10 +134,13 @@
         else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
       }
     });
+    // Take over whatever the boot handler opened before this script arrived.
+    if (isPanelOpen() && !desktop.matches) { nav.classList.remove("is-open"); setPanel(true); }
+    window.__scNavReady = true;
     // Crossing the breakpoint (window resize, tablet rotation): close menus without losing focus.
     onChange(desktop, () => {
       const focusedItem = items.find((it) => it.contains(document.activeElement));
-      const focusInNav = nav.contains(document.activeElement);
+      const focusInNav = nav.contains(document.activeElement) || document.activeElement === navToggle;
       if (isPanelOpen()) setPanel(false, { restoreFocus: false });
       closeAll();
       if (!focusInNav) return;
@@ -196,6 +203,7 @@
       height: t.dataset.height,
     }));
     let index = 0;
+    let lastDir = 1;
     let opener = null;
 
     const show = (i, dir = 0) => {
@@ -212,11 +220,16 @@
       caption.textContent = s.caption;
       counter.textContent = counterText.replace("{n}", index + 1).replace("{total}", slides.length);
       if (dir && !reduceMotion.matches) { void img.offsetWidth; img.classList.add("is-swapping"); }
-      // Warm the next photo in the direction of travel only (WebP: smaller than the JPEG, universally supported).
-      const next = slides[(index + (dir < 0 ? -1 : 1) + slides.length) % slides.length];
-      const pre = new Image();
-      pre.src = next.webp || next.src;
+      lastDir = dir < 0 ? -1 : 1;
     };
+    // Once a photo is shown, warm the next one (direction of travel) in the format <picture> chose.
+    img.addEventListener("load", () => {
+      if (!dialog.open) return;
+      const next = slides[(index + lastDir + slides.length) % slides.length];
+      const ext = (img.currentSrc || "").split("?")[0].split(".").pop();
+      const pre = new Image();
+      pre.src = (ext === "avif" && next.avif) || (ext === "webp" && next.webp) || next.src;
+    });
 
     triggers.forEach((t, i) => t.addEventListener("click", (e) => {
       e.preventDefault();
@@ -257,6 +270,7 @@
       pointers.delete(e.pointerId);
       if (!tracking || e.type === "pointercancel") { tracking = false; return; }
       tracking = false;
+      if (window.visualViewport && window.visualViewport.scale > 1.01) return; // zoomed in: the drag pans
       const dx = e.clientX - startX, dy = e.clientY - startY;
       if (Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy) * 1.3) {
         swipedAt = performance.now();

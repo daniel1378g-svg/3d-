@@ -15,6 +15,7 @@ export function vlna(s = "") {
   for (let i = 0; i < 3; i++) { // repeated for chains such as "a v Semilech"
     out = out.replace(/(^|[\s(„"])([aikosuvzAIKOSUVZ])[ \t]+(?=\S)/g, `$1$2${NBSP}`);
   }
+  out = out.replace(/(\d\.)[ \t]+([-–])[ \t]+(?=\d)/g, `$1${NBSP}$2${NBSP}`); // "1. - 3. tříd" stays together
   return out.replace(/(^|\s)(\d{1,2}\.)[ \t]+(?=[\p{L}\d])/gu, `$1$2${NBSP}`);
 }
 export const text = (s) => esc(vlna(s));
@@ -22,8 +23,20 @@ export const text = (s) => esc(vlna(s));
 // Links allowed in content: web, mail, phone, in-page and site-relative. Anything else is dropped.
 const SAFE_URL = /^(https?:\/\/|mailto:|tel:|#|\/(?!\/))/i;
 
+// Interface labels every page needs (content/site.json → "ui"); a missing one fails the build.
+const REQUIRED_UI = ["skipLink", "mainNav", "breadcrumbs", "submenu", "menuOpen", "menuClose", "newWindow", "partnersLabel", "toTop", "currentPage",
+  "lightbox.open", "lightbox.counter", "lightbox.close", "lightbox.prev", "lightbox.next"];
+
 export function createRenderer({ site, images, base = "/" }) {
   const ui = site.ui;
+  for (const key of REQUIRED_UI) {
+    const value = key.split(".").reduce((o, k) => (o && Object.hasOwn(o, k) ? o[k] : undefined), ui);
+    if (typeof value !== "string" || !value.trim()) throw new Error(`content/site.json: ui.${key} is missing or empty`);
+  }
+  for (const key of ["lightbox.open", "lightbox.counter"]) {
+    const value = ui.lightbox[key.split(".")[1]];
+    if (!value.includes("{n}") || !value.includes("{total}")) throw new Error(`content/site.json: ui.${key} must contain {n} and {total}`);
+  }
   const abs = (href) => {
     if (!SAFE_URL.test(href)) throw new Error(`Unsupported link "${href}" in content – use https://, mailto:, tel:, # or a /path`);
     return /^\/(?!\/)/.test(href) ? site.origin + href : href;
@@ -41,7 +54,7 @@ export function createRenderer({ site, images, base = "/" }) {
     .replace(/&lt;\/a&gt;/g, "</a>");
 
   const pick = (map, key, where) => {
-    if (!map[key]) throw new Error(`Unknown icon "${key}" at ${where} – use one of: ${Object.keys(map).join(", ")}`);
+    if (!Object.hasOwn(map, key)) throw new Error(`Unknown icon "${key}" at ${where} – use one of: ${Object.keys(map).join(", ")}`);
     return map[key]();
   };
   const imageMeta = (rel, where) => {
@@ -214,7 +227,6 @@ export function createRenderer({ site, images, base = "/" }) {
     <div>
       <ul class="disciplines" aria-label="${esc(o.disciplinesLabel)}">
         ${o.disciplines.map((d, i) => `<li class="discipline" data-reveal style="--i:${i}">
-          ${lanes({ cls: "discipline-lanes", count: 4, green: -1, width: 400, height: 300, cx: 220, cy: 330, r0: 70, step: 26 })}
           <span class="discipline-num" aria-hidden="true">${String(i + 1).padStart(2, "0")}</span>
           ${pick(discIcon, d.icon, `overview.disciplines[${i}].icon`)}
           <h3>${text(d.label)}</h3>

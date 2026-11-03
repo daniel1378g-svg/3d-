@@ -36,7 +36,7 @@ const banner = `<div role="note" id="nahled-banner" style="position:fixed;left:0
 </div>
 <script>(function(){var b=document.getElementById("nahled-banner");function f(){document.body.style.paddingBottom=b.offsetHeight+"px";document.documentElement.style.setProperty("--nb",b.offsetHeight+"px")}f();addEventListener("resize",f)})()</script>`;
 html = html.replace("</body>", `${banner}\n</body>`);
-html = html.replace("</head>", "<style>@media (max-width:1079.98px){.site-nav{bottom:var(--nb,0px)}}</style>\n</head>");
+html = html.replace("</head>", "<style>@media (max-width:67.49em){.site-nav{height:calc(100dvh - 100% - var(--nb,0px))}}</style>\n</head>");
 html = html.replace("<title>", "<title>[Návrh] ");
 
 mkdirSync(join(root, "preview"), { recursive: true });

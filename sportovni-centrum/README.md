@@ -223,44 +223,56 @@ the same page. The reservation system and `www.semily.cz` are unchanged (see bel
 
 ## Verification
 
-`npm run qa` (Playwright Chromium + axe-core 4.10) currently passes **93 of 93** checks:
+`npm run qa` (Playwright Chromium + axe-core 4.10) passes **103 of 103** checks:
 
 - **Responsive:** 320, 375, 414, 768, 1024, 1280 and 1920 px have no horizontal overflow, no
   clipped text, all targets are at least 24×24 px, body text is 17–18 px, and there are no
-  console or network errors.
+  console or network errors. With a 32 px browser default text size there is no overflow and the
+  mobile panel starts at the header's real bottom edge.
 - **Structure:** `lang="cs"`, the original `<title>`, canonical URL, one H1, no skipped heading
   levels, alt text and dimensions on every image, eager hero and lazy below-the-fold images,
-  landmarks, no empty links, working in-page anchors, new-window links announced, real `mailto:`
-  and `tel:` links, and Czech no-break spaces.
+  landmarks, no empty links, working in-page anchors, new-window links announced, and real
+  `mailto:`/`tel:` links. Czech no-break spaces follow one-letter words and ordinals.
 - **axe-core** WCAG 2.0/2.1/2.2 A + AA + best practice: 0 violations.
-- **Keyboard (desktop):**
+- **Keyboard and pointer (desktop):**
   - The skip link is the first stop and moves focus to the content.
-  - Dropdowns open with Enter, Tab moves into them, and Escape closes and returns focus.
-  - Dropdowns also open on hover, close when the pointer leaves or on an outside click, and a
-    click after hovering pins them open.
-  - Mixed mouse and keyboard use never drops focus.
-  - Every focus stop has a visible ring and is never hidden under the sticky header.
-- **Mobile menu:** opens with focus inside, the current group is pre-expanded, groups expand on
-  tap, all 30 links are present, focus is trapped, the page behind is inert, and Escape closes
-  and returns focus. Rotating to desktop while it is open keeps focus.
+  - Dropdowns open with Enter, Tab moves into them, and Escape closes them and returns focus.
+  - They also open on hover and close on pointer-leave or an outside click. A click after
+    hovering pins them open.
+  - Hovering another item never takes a dropdown away from keyboard focus.
+  - Every focus stop has a visible ring and is never under the sticky header.
+- **Mobile menu:** focus moves inside, the current group is pre-expanded, groups expand on tap,
+  all 30 links are present, focus is trapped, the page behind is inert, and Escape closes and
+  returns focus. Rotating to desktop keeps focus, including when the toggle itself is focused.
 - **Anchors:** "Jak probíhají tréninky" lands below the sticky header.
 - **Lightbox:**
-  - Opens by tap or Enter, with caption and alt text, and the arrows wrap around.
-  - A swipe advances to the next photo.
-  - Focus stays inside, and Escape returns it to the photo.
-  - The photo stays inside its frame and the controls are uncovered at 844×390, at 320×215
-    (400 % zoom) and at 1280×600.
+  - Opens by tap or Enter, with caption and alt text; arrows wrap around and a swipe advances.
+  - Focus stays inside and returns to the photo on close.
+  - The photo stays inside its frame and the controls are uncovered at 844×390, 320×215 (400 %
+    zoom) and 1280×600.
+  - Only the image format it displays is downloaded and preloaded.
 - **Print:** every section is visible without scrolling first.
 - **Resilience:**
-  - Reduced motion: everything is visible with no movement and no smooth scrolling.
-  - JavaScript off, phone and desktop: all content is visible, all 30 navigation links are
-    reachable, and dropdowns open on hover via CSS.
-  - `site.js` blocked: the menu works from first paint and all content appears after 3 s.
-  - `site.js` 4 s late: layout shift 0.
+  - Reduced motion: everything is visible, with no movement and no smooth scrolling.
+  - JavaScript off (phone and desktop): all content is visible, all 30 navigation links are
+    reachable by Tab, and dropdowns open on hover.
+  - `site.js` blocked: the boot menu works (modal panel on phones; dropdowns close with Escape or
+    an outside click) and all content appears after 3 s.
+  - `site.js` 4 s late: layout shift 0. A menu opened before it arrives is taken over correctly.
+  - Navigation set-up error (injected): the menu keeps working.
 - **Page weight** (uncompressed, measured locally): about 380 KB on a phone (8 requests) and about
   400 KB on desktop (12 requests), with layout shift 0.
 
-The redesign was also reviewed by five independent reviewers (content fidelity, accessibility,
-visual design, motion and performance, engineering). Each finding was then checked by a skeptical
-verifier. All 33 confirmed findings were fixed, and each has a matching QA check where it can be
-automated.
+**Independent review.**
+1. Five reviewers (content fidelity, accessibility, visual design, motion and performance,
+   engineering) each reviewed the build, and every finding was checked by a skeptical verifier:
+   33 were confirmed and 17 rejected.
+2. All 33 were fixed. A second round re-tested every one against the new build with its own
+   Playwright scripts: 23 were fully fixed, and the 10 partial fixes plus 12 small regressions
+   it found were then fixed too.
+3. Every browser-facing item now has a regression check in `scripts/qa.mjs`. The rest (news
+   sync, image script, `BASE` and content validation) fail loudly with a clear message.
+
+Not automated: pinch-zoom inside the lightbox (the stage allows `pinch-zoom`, and swipes are
+ignored while zoomed in). The reviewers checked it through the DevTools touch protocol, but it is
+worth a quick try on a real phone.

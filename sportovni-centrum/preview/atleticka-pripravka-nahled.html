@@ -123,6 +123,11 @@ body {
 img, svg { display: block; max-width: 100%; }
 img { height: auto; }
 h1, h2, h3, h4 { margin: 0; line-height: 1.12; font-weight: 750; letter-spacing: -0.015em; text-wrap: balance; }
+/* Very large text settings: a word that cannot fit may break (Czech hyphenation where supported). */
+h1, h2, h3, h4 { overflow-wrap: break-word; hyphens: auto; }
+/* Single-column grids never grow wider than the screen because of long words. */
+.hero-grid, .overview-grid, .facts-list, .training-panels, .cta-band, .news-wrap, .footer-main, .related-list, .gallery-grid > li, .contact-row { min-width: 0; }
+.hero-grid, .overview-grid, .facts-list, .training-panels, .cta-band, .news-wrap, .footer-main, .related-list { grid-template-columns: minmax(0, 1fr); }
 p { margin: 0 0 1em; text-wrap: pretty; }
 p:last-child { margin-bottom: 0; }
 ul, ol { margin: 0; padding: 0; }
@@ -200,6 +205,7 @@ button { font: inherit; color: inherit; }
   justify-content: center;
   gap: 0.65rem;
   min-height: 3.25rem;
+  max-width: 100%;
   padding: 0.8rem 1.4rem;
   border: 2px solid var(--btn-border);
   border-radius: 999px;
@@ -296,7 +302,7 @@ a:hover .icon-arrow--external, a:focus-visible .icon-arrow--external { transform
   transition: background-color var(--t-control), border-color var(--t-control);
 }
 .nav-toggle:hover { border-color: var(--blue-600); background: var(--blue-50); }
-@media (max-width: 359.98px) {
+@media (max-width: 22.49em) {
   .header-inner { gap: 0.75rem; }
   .nav-toggle { padding-inline: 0.8rem; }
   .nav-toggle [data-nav-label] { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
@@ -364,8 +370,14 @@ a:hover .icon-arrow--external, a:focus-visible .icon-arrow--external { transform
 /* Mobile & tablet navigation (panel) */
 @media (max-width: 67.49em) {
   .site-nav {
-    position: fixed;
-    inset: var(--header-h) 0 0 0;
+    /* Anchored to the sticky header's real bottom edge, so it never covers the header or the
+       toggle, whatever the text size. */
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    height: calc(100vh - 100%);
+    height: calc(100dvh - 100%);
     z-index: 90;
     overflow-y: auto;
     overscroll-behavior: contain;
@@ -571,22 +583,22 @@ a:hover .icon-arrow--external, a:focus-visible .icon-arrow--external { transform
 
 /* Track-line draw (decorative, once). Paths use pathLength="1". */
 .js-motion .draw path { stroke-dasharray: 1; stroke-dashoffset: 1; }
-.js-motion .draw.is-in path { animation: draw 900ms var(--ease-in-out) 200ms forwards; }
-.js-motion .draw.is-in path:nth-child(2) { animation-delay: 260ms; }
-.js-motion .draw.is-in path:nth-child(3) { animation-delay: 320ms; }
-.js-motion .draw.is-in path:nth-child(4) { animation-delay: 380ms; }
-.js-motion .draw.is-in path:nth-child(5) { animation-delay: 440ms; }
-.js-motion .draw.is-in path:nth-child(6) { animation-delay: 500ms; }
+.js-motion .draw.is-in path { animation: draw 600ms var(--ease-in-out) 100ms forwards; }
+.js-motion .draw.is-in path:nth-child(2) { animation-delay: 140ms; }
+.js-motion .draw.is-in path:nth-child(3) { animation-delay: 180ms; }
+.js-motion .draw.is-in path:nth-child(4) { animation-delay: 220ms; }
+.js-motion .draw.is-in path:nth-child(5) { animation-delay: 260ms; }
+.js-motion .draw.is-in path:nth-child(6) { animation-delay: 300ms; }
 @keyframes draw { to { stroke-dashoffset: 0; } }
 
 /* Hero entrance (short, readable immediately) */
 .js-motion .hero [data-enter] {
   opacity: 0;
   transform: translateY(16px);
-  animation: enter 620ms var(--ease-out) forwards;
-  animation-delay: calc(var(--i, 0) * 70ms + 60ms);
+  animation: enter 560ms var(--ease-out) forwards;
+  animation-delay: calc(var(--i, 0) * 60ms + 40ms);
 }
-.js-motion .hero .hero-photo[data-enter] img { animation: photo-settle 620ms var(--ease-out) both; animation-delay: inherit; }
+.js-motion .hero .hero-photo[data-enter] img { animation: photo-settle 560ms var(--ease-out) both; animation-delay: calc(var(--i, 0) * 60ms + 40ms); }
 @keyframes enter { to { opacity: 1; transform: none; } }
 @keyframes photo-settle { from { transform: scale(1.04); } to { transform: none; } }
 
@@ -732,14 +744,6 @@ a:hover .icon-arrow--external, a:focus-visible .icon-arrow--external { transform
 .discipline:hover svg.pictogram { transform: translateX(4px) rotate(-2deg); }
 .discipline h3 { font-size: var(--step-2); font-stretch: 110%; font-weight: 800; letter-spacing: 0; }
 @media (max-width: 420px) { .discipline h3 { font-size: 1.25rem; font-stretch: 100%; } }
-.discipline-lanes {
-  position: absolute; z-index: -1;
-  right: -22%; bottom: -6%;
-  width: 110%;
-  opacity: 0.22;
-  color: var(--white);
-}
-.discipline-lanes path { fill: none; stroke: currentColor; stroke-width: 2; }
 .disciplines-caption { margin-top: 1rem; color: var(--ink-2); font-size: var(--step--1); }
 
 /* Training & locations ------------------------------------------------------------------- */
@@ -930,6 +934,7 @@ body.lightbox-open { overflow: hidden; }
 .related-link {
   position: relative;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
@@ -1015,7 +1020,7 @@ body.lightbox-open { overflow: hidden; }
 .phone-list a { display: inline-block; padding-block: 0.3rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .footer-links { display: flex; flex-direction: column; gap: 0.4rem; margin-top: 1.5rem; }
 .footer-aside { display: grid; gap: 2rem; align-content: start; }
-.footer-card { padding: 1.5rem; border: 1px solid rgb(255 255 255 / 0.12); border-radius: var(--radius-lg); background: rgb(255 255 255 / 0.03); }
+.footer-card { position: relative; padding: 1.5rem; border: 1px solid rgb(255 255 255 / 0.12); border-radius: var(--radius-lg); background: #0c2036; } /* opaque: the lane graphic never runs behind text */
 .footer-card .footer-title { font-size: var(--step-1); margin-bottom: 0.5rem; }
 .footer-card p { color: #b8cde0; font-size: var(--step--1); }
 .social-link { display: inline-flex; align-items: center; gap: 0.85rem; color: var(--white); text-decoration: none; font-weight: 650; padding: 0.25rem 0; }
@@ -1080,12 +1085,13 @@ body.lightbox-open { overflow: hidden; }
   a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 0.8em; }
 }
 </style>
-<script>(function(d,w){var e=d.documentElement;e.className=e.className.replace('no-js','js');if('IntersectionObserver' in w&&!w.matchMedia('(prefers-reduced-motion: reduce)').matches){e.classList.add('js-motion')}setTimeout(function(){if(!w.__scReady)e.classList.remove('js-motion')},3000);d.addEventListener('click',function(v){if(w.__scReady||!v.target.closest)return;var b=v.target.closest('[data-nav-toggle],.sub-toggle');if(!b)return;var o=b.getAttribute('aria-expanded')!=='true';b.setAttribute('aria-expanded',String(o));if(b.hasAttribute('data-nav-toggle')){var n=d.getElementById(b.getAttribute('aria-controls'));if(n)n.classList.toggle('is-open',o)}else{var i=b.closest('.nav-item');if(i)i.classList.toggle('is-open',o)}});d.addEventListener('keydown',function(v){if(w.__scReady||v.key!=='Escape')return;var b=d.querySelector('[data-nav-toggle][aria-expanded="true"]');if(b){b.click();b.focus()}})})(document,window)</script>
+<script>(function(d,w){var e=d.documentElement;e.className=e.className.replace('no-js','js');if('IntersectionObserver' in w&&!w.matchMedia('(prefers-reduced-motion: reduce)').matches)e.classList.add('js-motion');setTimeout(function(){if(!w.__scReady)e.classList.remove('js-motion')},3000);function q(s){return d.querySelector(s)}function panel(b,o){var n=d.getElementById(b.getAttribute('aria-controls'));if(!n)return;b.setAttribute('aria-expanded',String(o));n.classList.toggle('is-open',o);d.body.classList.toggle('nav-open',o);var l=b.querySelector('[data-nav-label]');if(l)l.textContent=o?l.getAttribute('data-close'):l.getAttribute('data-open');['main','footer','.skip-link','.brand'].forEach(function(s){var x=q(s);if(x)x.inert=o});if(o){var a=n.querySelector('a[href]');if(a)a.focus()}else b.focus()}function sub(i,o){var b=i.querySelector('.sub-toggle');b.setAttribute('aria-expanded',String(o));i.classList.toggle('is-open',o)}function shut(){[].forEach.call(d.querySelectorAll('.nav-item.is-open'),function(i){sub(i,false)})}d.addEventListener('click',function(v){if(w.__scNavReady||!v.target.closest)return;var b=v.target.closest('[data-nav-toggle]');if(b)return panel(b,b.getAttribute('aria-expanded')!=='true');var t=v.target.closest('.sub-toggle');if(t){var i=t.closest('.nav-item'),o=t.getAttribute('aria-expanded')!=='true';shut();return sub(i,o)}if(!v.target.closest('[data-nav]'))shut()});d.addEventListener('keydown',function(v){if(w.__scNavReady||v.key!=='Escape')return;var b=q('[data-nav-toggle][aria-expanded="true"]');if(b&&b.offsetParent)return panel(b,false);var i=q('.nav-item.is-open');if(i){var f=i.querySelector('.subnav').contains(d.activeElement);sub(i,false);if(f)i.querySelector('.sub-toggle').focus()}})})(document,window)</script>
 <script>/* Sportovní centrum Semily – shared interactions (no dependencies).
    Progressive enhancement: every link works and every section is visible without this file.
    The inline boot script in <head> adds .js/.js-motion and a minimal menu handler; if this file has
    not finished within 3 s it drops .js-motion (reveals become visible) – the layout never swaps.
-   window.__scReady is set only after every feature below has been set up. */
+   window.__scNavReady is set only when the navigation set up without errors (until then the boot
+   handler keeps the menu working); window.__scReady is set once every feature has been set up. */
 (() => {
   "use strict";
   const doc = document.documentElement;
@@ -1134,6 +1140,7 @@ body.lightbox-open { overflow: hidden; }
     items.forEach((item) => {
       const btn = toggleOf(item);
       btn.addEventListener("click", (e) => {
+        if (!window.__scNavReady) return; // set-up failed: the boot handler keeps driving the menu
         const isOpen = btn.getAttribute("aria-expanded") === "true";
         // A pointer click on a dropdown that hover just opened pins it open instead of closing it.
         if (desktop.matches && isOpen && e.detail > 0 && item.dataset.hoverOpen) { delete item.dataset.hoverOpen; return; }
@@ -1145,6 +1152,8 @@ body.lightbox-open { overflow: hidden; }
         clearTimeout(hoverTimer);
         hoverTimer = setTimeout(() => {
           if (item.classList.contains("is-open")) return;
+          // Another dropdown holds keyboard focus: leave it (and the user's place) alone.
+          if (items.some((it) => it !== item && it.classList.contains("is-open") && it.contains(document.activeElement))) return;
           closeAll(item);
           setItem(item, true, { viaHover: true });
         }, 60);
@@ -1187,7 +1196,7 @@ body.lightbox-open { overflow: hidden; }
       }
     };
     if (navToggle) {
-      navToggle.addEventListener("click", () => setPanel(!isPanelOpen()));
+      navToggle.addEventListener("click", () => { if (window.__scNavReady) setPanel(!isPanelOpen()); });
       nav.addEventListener("click", (e) => {
         const link = e.target.closest("a[href]");
         // Links that open a new window (the reservation system) leave the panel as it is.
@@ -1199,9 +1208,9 @@ body.lightbox-open { overflow: hidden; }
         if (e.key !== "Escape") return;
         const open = items.find((it) => it.classList.contains("is-open"));
         if (!open) return;
-        const hadFocus = open.contains(document.activeElement);
+        const inPanel = open.querySelector(".subnav").contains(document.activeElement);
         setItem(open, false);
-        if (hadFocus) toggleOf(open).focus();
+        if (inPanel) toggleOf(open).focus();
         return;
       }
       if (!isPanelOpen()) return;
@@ -1213,10 +1222,13 @@ body.lightbox-open { overflow: hidden; }
         else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
       }
     });
+    // Take over whatever the boot handler opened before this script arrived.
+    if (isPanelOpen() && !desktop.matches) { nav.classList.remove("is-open"); setPanel(true); }
+    window.__scNavReady = true;
     // Crossing the breakpoint (window resize, tablet rotation): close menus without losing focus.
     onChange(desktop, () => {
       const focusedItem = items.find((it) => it.contains(document.activeElement));
-      const focusInNav = nav.contains(document.activeElement);
+      const focusInNav = nav.contains(document.activeElement) || document.activeElement === navToggle;
       if (isPanelOpen()) setPanel(false, { restoreFocus: false });
       closeAll();
       if (!focusInNav) return;
@@ -1279,6 +1291,7 @@ body.lightbox-open { overflow: hidden; }
       height: t.dataset.height,
     }));
     let index = 0;
+    let lastDir = 1;
     let opener = null;
 
     const show = (i, dir = 0) => {
@@ -1295,11 +1308,16 @@ body.lightbox-open { overflow: hidden; }
       caption.textContent = s.caption;
       counter.textContent = counterText.replace("{n}", index + 1).replace("{total}", slides.length);
       if (dir && !reduceMotion.matches) { void img.offsetWidth; img.classList.add("is-swapping"); }
-      // Warm the next photo in the direction of travel only (WebP: smaller than the JPEG, universally supported).
-      const next = slides[(index + (dir < 0 ? -1 : 1) + slides.length) % slides.length];
-      const pre = new Image();
-      pre.src = next.webp || next.src;
+      lastDir = dir < 0 ? -1 : 1;
     };
+    // Once a photo is shown, warm the next one (direction of travel) in the format <picture> chose.
+    img.addEventListener("load", () => {
+      if (!dialog.open) return;
+      const next = slides[(index + lastDir + slides.length) % slides.length];
+      const ext = (img.currentSrc || "").split("?")[0].split(".").pop();
+      const pre = new Image();
+      pre.src = (ext === "avif" && next.avif) || (ext === "webp" && next.webp) || next.src;
+    });
 
     triggers.forEach((t, i) => t.addEventListener("click", (e) => {
       e.preventDefault();
@@ -1340,6 +1358,7 @@ body.lightbox-open { overflow: hidden; }
       pointers.delete(e.pointerId);
       if (!tracking || e.type === "pointercancel") { tracking = false; return; }
       tracking = false;
+      if (window.visualViewport && window.visualViewport.scale > 1.01) return; // zoomed in: the drag pans
       const dx = e.clientX - startX, dy = e.clientY - startY;
       if (Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy) * 1.3) {
         swipedAt = performance.now();
@@ -1355,7 +1374,7 @@ body.lightbox-open { overflow: hidden; }
 })();
 </script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Úvod","item":"https://www.sportovni-centrum.cz/"},{"@type":"ListItem","position":2,"name":"Kroužky","item":"https://www.sportovni-centrum.cz/krouzky"},{"@type":"ListItem","position":3,"name":"Atletická přípravka","item":"https://www.sportovni-centrum.cz/krouzky/atleticka-pripravka"}]}</script>
-<style>@media (max-width:1079.98px){.site-nav{bottom:var(--nb,0px)}}</style>
+<style>@media (max-width:67.49em){.site-nav{height:calc(100dvh - 100% - var(--nb,0px))}}</style>
 </head>
 <body id="top">
 <a class="skip-link" href="#obsah">Přeskočit na obsah</a>
@@ -1500,17 +1519,14 @@ body.lightbox-open { overflow: hidden; }
     <div>
       <ul class="disciplines" aria-label="Základní atletické disciplíny">
         <li class="discipline" data-reveal style="--i:0">
-          <svg class="discipline-lanes" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false" ><path pathLength="1" class="" d="M-40 260 H220 A70 70 0 0 1 220 400"/><path pathLength="1" class="" d="M-40 234 H220 A96 96 0 0 1 220 426"/><path pathLength="1" class="" d="M-40 208 H220 A122 122 0 0 1 220 452"/><path pathLength="1" class="" d="M-40 182 H220 A148 148 0 0 1 220 478"/></svg>
           <span class="discipline-num" aria-hidden="true">01</span>
           <svg class="pictogram" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="41" cy="9.5" r="5"/><path d="M38 17 30 33.5"/><path d="M36 20.5l8 6 6.5-5M36 20.5l-9 3-6-4.5"/><path d="M30 33.5l10 8.5-2 12M30 33.5l-8 9.5H11"/><path d="M4 58h56" stroke-dasharray="2 6" opacity=".55"/></svg>
           <h3>Běh</h3>
         </li><li class="discipline" data-reveal style="--i:1">
-          <svg class="discipline-lanes" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false" ><path pathLength="1" class="" d="M-40 260 H220 A70 70 0 0 1 220 400"/><path pathLength="1" class="" d="M-40 234 H220 A96 96 0 0 1 220 426"/><path pathLength="1" class="" d="M-40 208 H220 A122 122 0 0 1 220 452"/><path pathLength="1" class="" d="M-40 182 H220 A148 148 0 0 1 220 478"/></svg>
           <span class="discipline-num" aria-hidden="true">02</span>
           <svg class="pictogram" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 46C14 22 32 12 50 16" stroke-dasharray="2 6" opacity=".55"/><circle cx="45" cy="10.5" r="5"/><path d="M42 18 31 29"/><path d="M40 20.5l9-1 7-7M40 20.5l-6-6.5"/><path d="M31 29l11 6.5h10M31 29l7 11.5 10 2.5"/><path d="M28 58h32" opacity=".55"/></svg>
           <h3>Skok</h3>
         </li><li class="discipline" data-reveal style="--i:2">
-          <svg class="discipline-lanes" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false" ><path pathLength="1" class="" d="M-40 260 H220 A70 70 0 0 1 220 400"/><path pathLength="1" class="" d="M-40 234 H220 A96 96 0 0 1 220 426"/><path pathLength="1" class="" d="M-40 208 H220 A122 122 0 0 1 220 452"/><path pathLength="1" class="" d="M-40 182 H220 A148 148 0 0 1 220 478"/></svg>
           <span class="discipline-num" aria-hidden="true">03</span>
           <svg class="pictogram" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="47" cy="7" r="3.6" fill="currentColor" stroke="none"/><circle cx="25" cy="12.5" r="5"/><path d="M27 19.5l5 16.5"/><path d="M27.5 22.5l9.5-5.5 6.5-7M27.5 22.5l-10 6"/><path d="M32 36l8 10 4 10M32 36l-8 10-6 10"/><path d="M4 58h56" stroke-dasharray="2 6" opacity=".55"/></svg>
           <h3>Hod</h3>
@@ -1637,7 +1653,7 @@ body.lightbox-open { overflow: hidden; }
       <p class="news-index"><a class="link-arrow" href="https://www.sportovni-centrum.cz/novinky">Všechny novinky <svg class="icon-arrow " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></p>
     </div>
     <ol class="news-list" data-reveal>
-      <li><a href="https://www.sportovni-centrum.cz/novinky/198-diskoteka-na-lede"><span class="news-title">Diskotéka na ledě</span><svg class="icon-arrow " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li><li><a href="https://www.sportovni-centrum.cz/novinky/106-hokejova-pripravka"><span class="news-title">HOKEJOVÁ PŘÍPRAVKA</span><svg class="icon-arrow " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li><li><a href="https://www.sportovni-centrum.cz/novinky/97-kluziste-opet-se-brusli"><span class="news-title">MĚSTSKÉ KLUZIŠTĚ</span><svg class="icon-arrow " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li><li><a href="https://www.sportovni-centrum.cz/novinky/81-sportovni-dopoledne-pro-zaky-1-3-trid-zakladnich-skol"><span class="news-title">Sportovní dopoledne pro žáky 1. - 3. tříd základních škol</span><svg class="icon-arrow " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li><li><a href="https://www.sportovni-centrum.cz/novinky/197-badminton-pro-radost-krouzek-badmintonu-pro-deti"><span class="news-title">BADMINTON PRO RADOST - kroužek badmintonu pro děti</span><svg class="icon-arrow " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li>
+      <li><a href="https://www.sportovni-centrum.cz/novinky/198-diskoteka-na-lede"><span class="news-title">Diskotéka na ledě</span><svg class="icon-arrow " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li><li><a href="https://www.sportovni-centrum.cz/novinky/106-hokejova-pripravka"><span class="news-title">HOKEJOVÁ PŘÍPRAVKA</span><svg class="icon-arrow " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li><li><a href="https://www.sportovni-centrum.cz/novinky/97-kluziste-opet-se-brusli"><span class="news-title">MĚSTSKÉ KLUZIŠTĚ</span><svg class="icon-arrow " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li><li><a href="https://www.sportovni-centrum.cz/novinky/81-sportovni-dopoledne-pro-zaky-1-3-trid-zakladnich-skol"><span class="news-title">Sportovní dopoledne pro žáky 1. - 3. tříd základních škol</span><svg class="icon-arrow " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li><li><a href="https://www.sportovni-centrum.cz/novinky/197-badminton-pro-radost-krouzek-badmintonu-pro-deti"><span class="news-title">BADMINTON PRO RADOST - kroužek badmintonu pro děti</span><svg class="icon-arrow " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li>
     </ol>
   </div>
 </section>

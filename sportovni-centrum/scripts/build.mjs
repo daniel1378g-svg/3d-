@@ -18,6 +18,10 @@ const root = fileURLToPath(new URL("..", import.meta.url));
 const dist = join(root, "dist");
 const tmp = join(root, ".dist-tmp");
 const base = (process.env.BASE ?? "/").replace(/\/?$/, "/");
+if (!/^\/([A-Za-z0-9._~-]+\/)*$/.test(base)) {
+  console.error(`Build failed: BASE must be a URL path such as / or /redesign/ (letters, digits, . _ ~ - only), got "${process.env.BASE}"`);
+  process.exit(1);
+}
 const read = (p) => readFileSync(join(root, p), "utf8");
 const json = (p) => {
   const file = join(root, p);
@@ -58,10 +62,28 @@ try {
 
   // Boot script (inline, runs before paint):
   //  • marks JS + motion support;
-  //  • until site.js is ready, a tiny delegated handler makes the menu buttons work;
+  //  • until site.js reports a working navigation, a small delegated handler drives the menu
+  //    (panel with label, scroll lock and inert page; dropdowns with Escape and outside click);
   //  • if site.js has not finished within 3 s, only the motion class is dropped (hidden reveals become
   //    visible) – the layout itself never switches, so there is no late layout shift.
-  const boot = `(function(d,w){var e=d.documentElement;e.className=e.className.replace('no-js','js');if('IntersectionObserver' in w&&!w.matchMedia('(prefers-reduced-motion: reduce)').matches){e.classList.add('js-motion')}setTimeout(function(){if(!w.__scReady)e.classList.remove('js-motion')},3000);d.addEventListener('click',function(v){if(w.__scReady||!v.target.closest)return;var b=v.target.closest('[data-nav-toggle],.sub-toggle');if(!b)return;var o=b.getAttribute('aria-expanded')!=='true';b.setAttribute('aria-expanded',String(o));if(b.hasAttribute('data-nav-toggle')){var n=d.getElementById(b.getAttribute('aria-controls'));if(n)n.classList.toggle('is-open',o)}else{var i=b.closest('.nav-item');if(i)i.classList.toggle('is-open',o)}});d.addEventListener('keydown',function(v){if(w.__scReady||v.key!=='Escape')return;var b=d.querySelector('[data-nav-toggle][aria-expanded="true"]');if(b){b.click();b.focus()}})})(document,window)`;
+  const boot = [
+    "(function(d,w){var e=d.documentElement;e.className=e.className.replace('no-js','js');",
+    "if('IntersectionObserver' in w&&!w.matchMedia('(prefers-reduced-motion: reduce)').matches)e.classList.add('js-motion');",
+    "setTimeout(function(){if(!w.__scReady)e.classList.remove('js-motion')},3000);",
+    // Fallback menu, active until site.js reports a working navigation (__scNavReady).
+    "function q(s){return d.querySelector(s)}",
+    "function panel(b,o){var n=d.getElementById(b.getAttribute('aria-controls'));if(!n)return;b.setAttribute('aria-expanded',String(o));n.classList.toggle('is-open',o);d.body.classList.toggle('nav-open',o);",
+    "var l=b.querySelector('[data-nav-label]');if(l)l.textContent=o?l.getAttribute('data-close'):l.getAttribute('data-open');",
+    "['main','footer','.skip-link','.brand'].forEach(function(s){var x=q(s);if(x)x.inert=o});if(o){var a=n.querySelector('a[href]');if(a)a.focus()}else b.focus()}",
+    "function sub(i,o){var b=i.querySelector('.sub-toggle');b.setAttribute('aria-expanded',String(o));i.classList.toggle('is-open',o)}",
+    "function shut(){[].forEach.call(d.querySelectorAll('.nav-item.is-open'),function(i){sub(i,false)})}",
+    "d.addEventListener('click',function(v){if(w.__scNavReady||!v.target.closest)return;var b=v.target.closest('[data-nav-toggle]');",
+    "if(b)return panel(b,b.getAttribute('aria-expanded')!=='true');var t=v.target.closest('.sub-toggle');",
+    "if(t){var i=t.closest('.nav-item'),o=t.getAttribute('aria-expanded')!=='true';shut();return sub(i,o)}if(!v.target.closest('[data-nav]'))shut()});",
+    "d.addEventListener('keydown',function(v){if(w.__scNavReady||v.key!=='Escape')return;var b=q('[data-nav-toggle][aria-expanded=\"true\"]');",
+    "if(b&&b.offsetParent)return panel(b,false);var i=q('.nav-item.is-open');if(i){var f=i.querySelector('.subnav').contains(d.activeElement);sub(i,false);if(f)i.querySelector('.sub-toggle').focus()}})",
+    "})(document,window)",
+  ].join("");
 
   const render = createRenderer({ site, images, base });
   const rules = [];

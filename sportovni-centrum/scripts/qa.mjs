@@ -68,7 +68,8 @@ try {
         return r.width < 24 || r.height < 24;
       }).map((el) => `${el.textContent.trim().slice(0, 30)} ${Math.round(el.getBoundingClientRect().width)}x${Math.round(el.getBoundingClientRect().height)}`);
       const bodyFont = parseFloat(getComputedStyle(document.querySelector(".source-text")).fontSize);
-      const vlnaOk = !/\s[aikosuvzAIKOSUVZ] /.test(document.querySelector("main").innerText.replace(/\n/g, " ").replace(/\u00a0/g, "_"));
+      const flat = document.querySelector("main").innerText.replace(/\n/g, " ").replace(/\u00a0/g, "_");
+      const vlnaOk = !/(^|\s)[aikosuvzAIKOSUVZ] /.test(flat) && !/(^|\s)\d{1,2}\. /.test(flat);
       return { scroll: document.documentElement.scrollWidth, inner: innerWidth, over, clippedText, small, bodyFont, vlnaOk };
     });
     check(`no horizontal overflow @${width}px`, m.scroll <= m.inner && !m.over.length, m.over.join(", "));
@@ -313,10 +314,20 @@ try {
     await page.locator(".sub-toggle").nth(0).focus();
     await page.keyboard.press("Enter");
     await page.keyboard.press("Tab");
+    await page.keyboard.press("Tab");
+    const before = await page.evaluate(() => document.activeElement.textContent.trim());
     await items.nth(1).hover();
     await page.waitForTimeout(400);
-    const f1 = await page.evaluate(() => ({ tag: document.activeElement.tagName, body: document.activeElement === document.body, inNav: !!document.activeElement.closest("[data-nav]") }));
-    check("hovering another item never drops keyboard focus to <body>", !f1.body && f1.inNav, JSON.stringify(f1));
+    const f1 = await page.evaluate(() => ({ text: document.activeElement.textContent.trim(), open: document.querySelector(".nav-item.has-sub").classList.contains("is-open") }));
+    check("hovering another item leaves keyboard focus (and its dropdown) where it was", f1.text === before && f1.open, JSON.stringify({ before, ...f1 }));
+    await page.keyboard.press("Escape");
+    // Escape with focus on a parent link keeps focus on that link
+    await page.mouse.click(640, 700);
+    await page.locator(".nav-item.has-sub .nav-link").first().focus();
+    await page.locator(".sub-toggle").first().evaluate((b) => b.click());
+    await page.keyboard.press("Escape");
+    const f3 = await page.evaluate(() => ({ cls: document.activeElement.className, open: !!document.querySelector(".nav-item.is-open") }));
+    check("Escape with focus on a parent link closes its dropdown and keeps focus on the link", f3.cls.includes("nav-link") && !f3.open, JSON.stringify(f3));
     // hover-opened dropdown + Escape while focus is elsewhere: focus stays where it was
     await page.mouse.click(640, 700);
     await page.locator(".skip-link").focus();
@@ -338,6 +349,25 @@ try {
     await page.waitForTimeout(200);
     const f = await page.evaluate(() => ({ body: document.activeElement === document.body, label: document.activeElement.textContent.trim().slice(0, 20), inert: document.querySelector("main").inert, lock: document.body.classList.contains("nav-open") }));
     check("rotating to desktop with the menu open keeps focus, unlocks the page", !f.body && !f.inert && !f.lock, JSON.stringify(f));
+    // focus on the toggle itself (e.g. after closing the menu with Escape), then rotate
+    await page.setViewportSize({ width: 900, height: 800 });
+    await page.waitForTimeout(150);
+    await page.locator("[data-nav-toggle]").focus();
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.waitForTimeout(200);
+    check("rotating to desktop with focus on the menu toggle keeps focus in the navigation", await page.evaluate(() => document.activeElement !== document.body && !!document.activeElement.closest("[data-nav]")));
+    await ctx.close();
+  }
+  {
+    // Larger default text (32 px): the mobile panel starts below the header, never over the toggle.
+    const { ctx, page } = await open({ viewport: { width: 390, height: 844 } });
+    const cdp = await ctx.newCDPSession(page);
+    await cdp.send("Page.setFontSizes", { fontSizes: { standard: 32, fixed: 26 } });
+    await page.reload({ waitUntil: "networkidle" });
+    await page.locator("[data-nav-toggle]").click();
+    await page.waitForTimeout(400); // panel-in animation
+    const g = await page.evaluate(() => ({ header: document.querySelector("[data-header]").getBoundingClientRect().bottom, panel: document.getElementById("hlavni-navigace").getBoundingClientRect().top, overflow: document.documentElement.scrollWidth - innerWidth }));
+    check("32 px default text: mobile panel starts at the header's bottom edge, no overflow", Math.abs(g.panel - g.header) <= 1.5 && g.overflow <= 0, JSON.stringify(g));
     await ctx.close();
   }
 
@@ -376,6 +406,77 @@ try {
     check("site.js arriving after the 3 s failsafe causes no layout shift", cls < 0.02, `CLS ${cls.toFixed(4)}`);
     await ctx.close();
   }
+  {
+    // Boot-only menu (site.js blocked): modal panel on phones, closable dropdowns on desktop.
+    const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
+    const page = await ctx.newPage();
+    await page.route(/\/assets\/js\//, (r) => r.abort());
+    await page.goto(URL_);
+    await page.locator("[data-nav-toggle]").click();
+    const a = await page.evaluate(() => ({ inert: document.querySelector("main").inert, lock: document.body.classList.contains("nav-open"), label: document.querySelector("[data-nav-label]").textContent, focusIn: document.getElementById("hlavni-navigace").contains(document.activeElement) }));
+    await page.keyboard.press("Escape");
+    const b = await page.evaluate(() => ({ open: document.getElementById("hlavni-navigace").classList.contains("is-open"), inert: document.querySelector("main").inert, focus: document.activeElement.matches("[data-nav-toggle]") }));
+    check("site.js blocked, phone: fallback panel is modal, Escape closes and returns focus", a.inert && a.lock && a.label === "Zavřít" && a.focusIn && !b.open && !b.inert && b.focus, JSON.stringify({ a, b }));
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.locator(".sub-toggle").first().click();
+    const o1 = await page.evaluate(() => !!document.querySelector(".nav-item.is-open"));
+    await page.keyboard.press("Escape");
+    const o2 = await page.evaluate(() => !!document.querySelector(".nav-item.is-open"));
+    await page.locator(".sub-toggle").nth(1).click();
+    await page.mouse.click(640, 700);
+    const o3 = await page.evaluate(() => !!document.querySelector(".nav-item.is-open"));
+    check("site.js blocked, desktop: dropdown opens on click, closes on Escape and outside click", o1 && !o2 && !o3, JSON.stringify({ o1, o2, o3 }));
+    await ctx.close();
+  }
+  {
+    // Menu opened by the boot handler before site.js arrives: site.js takes the state over.
+    const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
+    const page = await ctx.newPage();
+    await page.route(/\/assets\/js\//, async (r) => { await new Promise((res) => setTimeout(res, 2000)); r.continue(); });
+    await page.goto(URL_, { waitUntil: "domcontentloaded" });
+    await page.locator("[data-nav-toggle]").click();
+    await page.waitForFunction(() => window.__scNavReady === true, null, { timeout: 15000 });
+    const t = await page.evaluate(() => ({ open: document.getElementById("hlavni-navigace").classList.contains("is-open"), label: document.querySelector("[data-nav-label]").textContent, inert: document.querySelector("main").inert, lock: document.body.classList.contains("nav-open") }));
+    await page.keyboard.press("Escape");
+    const closed = await page.evaluate(() => !document.getElementById("hlavni-navigace").classList.contains("is-open") && !document.querySelector("main").inert);
+    check("menu opened before site.js arrived is taken over (label, lock, inert, Escape)", t.open && t.label === "Zavřít" && t.inert && t.lock && closed, JSON.stringify(t));
+    await ctx.close();
+  }
+  {
+    // Fault injection: navigation set-up throws → the boot handler keeps the menu working.
+    const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
+    const page = await ctx.newPage();
+    const errs = [];
+    page.on("console", (m) => m.type() === "error" && errs.push(m.text()));
+    await page.addInitScript(() => {
+      const orig = Element.prototype.querySelectorAll;
+      Element.prototype.querySelectorAll = function (sel) { if (sel === "[data-sub]") throw new Error("injected fault"); return orig.call(this, sel); };
+    });
+    await page.goto(URL_, { waitUntil: "networkidle" });
+    await page.locator("[data-nav-toggle]").click();
+    const r = await page.evaluate(() => ({ ready: window.__scReady, navReady: !!window.__scNavReady, open: getComputedStyle(document.getElementById("hlavni-navigace")).display !== "none" }));
+    check("navigation set-up error: menu still opens via the boot handler", r.ready && !r.navReady && r.open && errs.some((e) => e.includes("injected fault")), JSON.stringify(r));
+    await ctx.close();
+  }
+  {
+    // Lightbox: the photo preloaded next is the format <picture> actually shows (AVIF in Chromium).
+    const ctx = await browser.newContext({ viewport: { width: 1280, height: 860 } });
+    const page = await ctx.newPage();
+    await page.goto(URL_, { waitUntil: "networkidle" });
+    const reqs = [];
+    page.on("request", (r) => { if (/mestsky-stadion-0\d-930\./.test(r.url())) reqs.push(r.url().split("/").pop()); });
+    await page.locator("[data-gallery-item]").first().evaluate((el) => el.click());
+    await page.waitForTimeout(500);
+    await page.keyboard.press("ArrowRight");
+    await page.waitForTimeout(500);
+    await page.keyboard.press("ArrowRight");
+    await page.waitForTimeout(500);
+    const shown = await page.evaluate(() => document.querySelector("[data-lb-img]").currentSrc.split("/").pop());
+    const wasted = reqs.filter((u) => !u.endsWith(shown.split(".").pop()));
+    const dupes = reqs.length - new Set(reqs).size;
+    check("lightbox preloads only the format it displays, no duplicate downloads", !wasted.length && dupes === 0, JSON.stringify({ shown, reqs }));
+    await ctx.close();
+  }
 
   /* 6. Reduced motion ---------------------------------------------------------------------------- */
   {
@@ -400,6 +501,15 @@ try {
       gallery: [...document.querySelectorAll("[data-gallery-item]")].every((a) => a.getAttribute("href").endsWith(".jpg")),
     }));
     check(`no-JS @${width}: content visible, all 30 navigation links usable, gallery links to photos`, r.hidden === 0 && r.navVisible && r.gallery && r.links === 30, JSON.stringify(r));
+    // Every navigation link must be reachable with the keyboard alone.
+    await page.evaluate(() => document.activeElement?.blur());
+    const reached = new Set();
+    for (let i = 0; i < 45; i++) {
+      await page.keyboard.press("Tab");
+      const href = await page.evaluate(() => { const a = document.activeElement; return a?.closest("#hlavni-navigace") && a.tagName === "A" ? a.getAttribute("href") + "|" + a.textContent.trim() : null; });
+      if (href) reached.add(href);
+    }
+    check(`no-JS @${width}: all 30 navigation links reachable by Tab`, reached.size === 30, `${reached.size} reached`);
     if (width === 1280) {
       await page.locator(".nav-item.has-sub").first().hover();
       await page.waitForTimeout(300);

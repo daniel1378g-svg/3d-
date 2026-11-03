@@ -104,6 +104,11 @@ body {
 img, svg { display: block; max-width: 100%; }
 img { height: auto; }
 h1, h2, h3, h4 { margin: 0; line-height: 1.12; font-weight: 750; letter-spacing: -0.015em; text-wrap: balance; }
+/* Very large text settings: a word that cannot fit may break (Czech hyphenation where supported). */
+h1, h2, h3, h4 { overflow-wrap: break-word; hyphens: auto; }
+/* Single-column grids never grow wider than the screen because of long words. */
+.hero-grid, .overview-grid, .facts-list, .training-panels, .cta-band, .news-wrap, .footer-main, .related-list, .gallery-grid > li, .contact-row { min-width: 0; }
+.hero-grid, .overview-grid, .facts-list, .training-panels, .cta-band, .news-wrap, .footer-main, .related-list { grid-template-columns: minmax(0, 1fr); }
 p { margin: 0 0 1em; text-wrap: pretty; }
 p:last-child { margin-bottom: 0; }
 ul, ol { margin: 0; padding: 0; }
@@ -181,6 +186,7 @@ button { font: inherit; color: inherit; }
   justify-content: center;
   gap: 0.65rem;
   min-height: 3.25rem;
+  max-width: 100%;
   padding: 0.8rem 1.4rem;
   border: 2px solid var(--btn-border);
   border-radius: 999px;
@@ -277,7 +283,7 @@ a:hover .icon-arrow--external, a:focus-visible .icon-arrow--external { transform
   transition: background-color var(--t-control), border-color var(--t-control);
 }
 .nav-toggle:hover { border-color: var(--blue-600); background: var(--blue-50); }
-@media (max-width: 359.98px) {
+@media (max-width: 22.49em) {
   .header-inner { gap: 0.75rem; }
   .nav-toggle { padding-inline: 0.8rem; }
   .nav-toggle [data-nav-label] { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
@@ -345,8 +351,14 @@ a:hover .icon-arrow--external, a:focus-visible .icon-arrow--external { transform
 /* Mobile & tablet navigation (panel) */
 @media (max-width: 67.49em) {
   .site-nav {
-    position: fixed;
-    inset: var(--header-h) 0 0 0;
+    /* Anchored to the sticky header's real bottom edge, so it never covers the header or the
+       toggle, whatever the text size. */
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    height: calc(100vh - 100%);
+    height: calc(100dvh - 100%);
     z-index: 90;
     overflow-y: auto;
     overscroll-behavior: contain;
@@ -552,22 +564,22 @@ a:hover .icon-arrow--external, a:focus-visible .icon-arrow--external { transform
 
 /* Track-line draw (decorative, once). Paths use pathLength="1". */
 .js-motion .draw path { stroke-dasharray: 1; stroke-dashoffset: 1; }
-.js-motion .draw.is-in path { animation: draw 900ms var(--ease-in-out) 200ms forwards; }
-.js-motion .draw.is-in path:nth-child(2) { animation-delay: 260ms; }
-.js-motion .draw.is-in path:nth-child(3) { animation-delay: 320ms; }
-.js-motion .draw.is-in path:nth-child(4) { animation-delay: 380ms; }
-.js-motion .draw.is-in path:nth-child(5) { animation-delay: 440ms; }
-.js-motion .draw.is-in path:nth-child(6) { animation-delay: 500ms; }
+.js-motion .draw.is-in path { animation: draw 600ms var(--ease-in-out) 100ms forwards; }
+.js-motion .draw.is-in path:nth-child(2) { animation-delay: 140ms; }
+.js-motion .draw.is-in path:nth-child(3) { animation-delay: 180ms; }
+.js-motion .draw.is-in path:nth-child(4) { animation-delay: 220ms; }
+.js-motion .draw.is-in path:nth-child(5) { animation-delay: 260ms; }
+.js-motion .draw.is-in path:nth-child(6) { animation-delay: 300ms; }
 @keyframes draw { to { stroke-dashoffset: 0; } }
 
 /* Hero entrance (short, readable immediately) */
 .js-motion .hero [data-enter] {
   opacity: 0;
   transform: translateY(16px);
-  animation: enter 620ms var(--ease-out) forwards;
-  animation-delay: calc(var(--i, 0) * 70ms + 60ms);
+  animation: enter 560ms var(--ease-out) forwards;
+  animation-delay: calc(var(--i, 0) * 60ms + 40ms);
 }
-.js-motion .hero .hero-photo[data-enter] img { animation: photo-settle 620ms var(--ease-out) both; animation-delay: inherit; }
+.js-motion .hero .hero-photo[data-enter] img { animation: photo-settle 560ms var(--ease-out) both; animation-delay: calc(var(--i, 0) * 60ms + 40ms); }
 @keyframes enter { to { opacity: 1; transform: none; } }
 @keyframes photo-settle { from { transform: scale(1.04); } to { transform: none; } }
 
@@ -713,14 +725,6 @@ a:hover .icon-arrow--external, a:focus-visible .icon-arrow--external { transform
 .discipline:hover svg.pictogram { transform: translateX(4px) rotate(-2deg); }
 .discipline h3 { font-size: var(--step-2); font-stretch: 110%; font-weight: 800; letter-spacing: 0; }
 @media (max-width: 420px) { .discipline h3 { font-size: 1.25rem; font-stretch: 100%; } }
-.discipline-lanes {
-  position: absolute; z-index: -1;
-  right: -22%; bottom: -6%;
-  width: 110%;
-  opacity: 0.22;
-  color: var(--white);
-}
-.discipline-lanes path { fill: none; stroke: currentColor; stroke-width: 2; }
 .disciplines-caption { margin-top: 1rem; color: var(--ink-2); font-size: var(--step--1); }
 
 /* Training & locations ------------------------------------------------------------------- */
@@ -911,6 +915,7 @@ body.lightbox-open { overflow: hidden; }
 .related-link {
   position: relative;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
@@ -996,7 +1001,7 @@ body.lightbox-open { overflow: hidden; }
 .phone-list a { display: inline-block; padding-block: 0.3rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .footer-links { display: flex; flex-direction: column; gap: 0.4rem; margin-top: 1.5rem; }
 .footer-aside { display: grid; gap: 2rem; align-content: start; }
-.footer-card { padding: 1.5rem; border: 1px solid rgb(255 255 255 / 0.12); border-radius: var(--radius-lg); background: rgb(255 255 255 / 0.03); }
+.footer-card { position: relative; padding: 1.5rem; border: 1px solid rgb(255 255 255 / 0.12); border-radius: var(--radius-lg); background: #0c2036; } /* opaque: the lane graphic never runs behind text */
 .footer-card .footer-title { font-size: var(--step-1); margin-bottom: 0.5rem; }
 .footer-card p { color: #b8cde0; font-size: var(--step--1); }
 .social-link { display: inline-flex; align-items: center; gap: 0.85rem; color: var(--white); text-decoration: none; font-weight: 650; padding: 0.25rem 0; }

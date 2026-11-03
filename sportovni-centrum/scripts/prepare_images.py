@@ -4,7 +4,8 @@ source/originals/ keeps every asset exactly as downloaded from www.sportovni-cen
 This script copies them to public/ under the same paths (so the original files stay
 available) and writes responsive AVIF/WebP variants of the photographs next to them.
 
-- Photographs = JPEG/PNG files at least 600 px wide (logos and icons are left alone).
+- Photographs = JPEG files at least 600 px wide (logos, icons and PNG artwork are left alone, so
+  transparency is never flattened).
 - Photos are never upscaled; the largest variant is the original width.
 - EXIF orientation is applied before measuring and resizing.
 - A WebP/AVIF variant is only kept when it is smaller than the original file.
@@ -39,7 +40,7 @@ for path in sorted(SRC.rglob("*")):
         im = ImageOps.exif_transpose(raw)
         w, h = im.size
         entry = {"width": w, "height": h, "variants": []}
-        is_photo = path.suffix.lower() in (".jpg", ".jpeg", ".png") and w >= MIN_PHOTO_WIDTH
+        is_photo = path.suffix.lower() in (".jpg", ".jpeg") and w >= MIN_PHOTO_WIDTH
         if is_photo:
             rgb = im.convert("RGB")
             original_size = path.stat().st_size
