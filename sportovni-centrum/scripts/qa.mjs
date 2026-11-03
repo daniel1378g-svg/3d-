@@ -2,8 +2,11 @@
 //   node scripts/qa.mjs [--shots <dir>]
 // Checks: horizontal overflow at 6 widths, console errors, headings, images, links/anchors,
 // axe-core WCAG 2.x A/AA rules, keyboard: skip link, desktop dropdowns, mobile menu, focus not
-// hidden under the sticky header, lightbox (keyboard, focus return, swipe), reduced motion, no-JS.
+// hidden under the sticky header, lightbox (keyboard, focus return, swipe, short viewports), mixed
+// mouse + keyboard use, breakpoint changes, print, reduced motion, no-JS, JS blocked and JS late.
+//   QA_PORT=<n> overrides the preview port (default: any free port).
 import { createRequire } from "node:module";
+import { fileURLToPath } from "node:url";
 import { spawn } from "node:child_process";
 import { readFileSync } from "node:fs";
 
@@ -12,10 +15,13 @@ const { chromium } = require("playwright");
 const axeSource = readFileSync(require.resolve("axe-core/axe.min.js"), "utf8");
 const shotsDir = process.argv.includes("--shots") ? process.argv[process.argv.indexOf("--shots") + 1] : null;
 
-const PORT = 4321;
-const URL_ = `http://localhost:${PORT}/krouzky/atleticka-pripravka`;
-const server = spawn(process.execPath, [new URL("./serve.mjs", import.meta.url).pathname], { env: { ...process.env, PORT: String(PORT) }, stdio: "pipe" });
-await new Promise((r) => server.stdout.once("data", r));
+const server = spawn(process.execPath, [fileURLToPath(new URL("./serve.mjs", import.meta.url))], { env: { ...process.env, PORT: process.env.QA_PORT ?? "0" }, stdio: ["ignore", "pipe", "pipe"] });
+server.stderr.on("data", (d) => process.stderr.write(`[serve] ${d}`));
+const URL_ = await new Promise((resolve, reject) => {
+  server.stdout.once("data", (d) => resolve(String(d).trim()));
+  server.once("exit", (code) => reject(new Error(`preview server exited (${code}) – is dist/ built and the port free?`)));
+});
+const PORT = new URL(URL_).port;
 
 const results = [];
 const check = (name, ok, detail = "") => { results.push({ name, ok, detail }); console.log(`${ok ? "✔" : "✘"} ${name}${detail ? ` — ${detail}` : ""}`); };
@@ -62,13 +68,15 @@ try {
         return r.width < 24 || r.height < 24;
       }).map((el) => `${el.textContent.trim().slice(0, 30)} ${Math.round(el.getBoundingClientRect().width)}x${Math.round(el.getBoundingClientRect().height)}`);
       const bodyFont = parseFloat(getComputedStyle(document.querySelector(".source-text")).fontSize);
-      return { scroll: document.documentElement.scrollWidth, inner: innerWidth, over, clippedText, small, bodyFont };
+      const vlnaOk = !/\s[aikosuvzAIKOSUVZ] /.test(document.querySelector("main").innerText.replace(/\n/g, " ").replace(/\u00a0/g, "_"));
+      return { scroll: document.documentElement.scrollWidth, inner: innerWidth, over, clippedText, small, bodyFont, vlnaOk };
     });
     check(`no horizontal overflow @${width}px`, m.scroll <= m.inner && !m.over.length, m.over.join(", "));
     check(`no clipped text @${width}px`, !m.clippedText.length, m.clippedText.join(" | "));
     check(`targets ≥ 24×24 px @${width}px`, !m.small.length, m.small.join(" | "));
     check(`body text 17–18 px @${width}px`, m.bodyFont >= 17 && m.bodyFont <= 18.01, `${m.bodyFont}px`);
     check(`no console/network errors @${width}px`, !errors.length, errors.join(" | "));
+    if (width === 1280) check("Czech no-break spaces after one-letter words (main content)", m.vlnaOk);
     if (shotsDir) await page.screenshot({ path: `${shotsDir}/w${width}.png`, fullPage: true });
     await ctx.close();
   }
@@ -94,7 +102,7 @@ try {
         emptyLinks: [...document.querySelectorAll("a")].filter((a) => !a.getAttribute("href") || a.getAttribute("href") === "#").length,
         badAnchors: [...document.querySelectorAll('a[href^="#"]')].filter((a) => !document.getElementById(a.getAttribute("href").slice(1))).map((a) => a.getAttribute("href")),
         nameless: [...document.querySelectorAll("a, button")].filter((el) => !(el.textContent.trim() || el.getAttribute("aria-label") || el.querySelector("img[alt]:not([alt=''])"))).length,
-        blankTargets: [...document.querySelectorAll('a[target="_blank"]')].filter((a) => !a.textContent.includes("otevře se v novém okně")).map((a) => a.href),
+        blankTargets: [...document.querySelectorAll('a[target="_blank"]')].filter((a) => !a.textContent.replace(/\u00a0/g, " ").includes("otevře se v novém okně")).map((a) => a.href),
         mailto: [...document.querySelectorAll('a[href^="mailto:"]')].map((a) => a.getAttribute("href")),
         tel: [...document.querySelectorAll('a[href^="tel:"]')].map((a) => a.getAttribute("href")),
         jsWarning: document.body.textContent.includes("chráněna před spamboty"),
@@ -276,6 +284,99 @@ try {
     await ctx.close();
   }
 
+  /* 5b. Lightbox on short viewports (landscape phone, 400 % zoom): controls never covered ---------- */
+  for (const [w, h] of [[844, 390], [320, 215], [1280, 600]]) {
+    const { ctx, page } = await open({ viewport: { width: w, height: h } });
+    await page.locator("[data-gallery-item]").first().evaluate((el) => el.click());
+    await page.waitForTimeout(300);
+    const hit = await page.evaluate(() => {
+      const top = (sel) => { const el = document.querySelector(sel); const r = el.getBoundingClientRect(); const t = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2); return el.contains(t); };
+      const img = document.querySelector("[data-lb-img]").getBoundingClientRect();
+      const stage = document.querySelector(".lightbox-stage").getBoundingClientRect();
+      return { next: top("[data-lb-next]"), prev: top("[data-lb-prev]"), close: top("[data-lb-close]"), caption: top("[data-lb-caption]"), inStage: img.bottom <= stage.bottom + 1 && img.top >= stage.top - 1 };
+    });
+    check(`lightbox controls + caption uncovered @${w}×${h}`, hit.next && hit.prev && hit.close && hit.caption && hit.inStage, JSON.stringify(hit));
+    await ctx.close();
+  }
+
+  /* 5c. Desktop: mixed mouse + keyboard, hover then click ------------------------------------------ */
+  {
+    const { ctx, page } = await open();
+    const items = page.locator(".nav-item.has-sub");
+    await items.nth(0).hover();
+    await page.waitForTimeout(250);
+    await page.locator(".sub-toggle").nth(0).click();
+    await page.waitForTimeout(250);
+    check("hover then click on the chevron keeps the dropdown open", await items.nth(0).evaluate((el) => el.classList.contains("is-open")));
+    await page.mouse.click(640, 700);
+    // keyboard focus inside dropdown A, pointer moves onto item B
+    await page.locator(".sub-toggle").nth(0).focus();
+    await page.keyboard.press("Enter");
+    await page.keyboard.press("Tab");
+    await items.nth(1).hover();
+    await page.waitForTimeout(400);
+    const f1 = await page.evaluate(() => ({ tag: document.activeElement.tagName, body: document.activeElement === document.body, inNav: !!document.activeElement.closest("[data-nav]") }));
+    check("hovering another item never drops keyboard focus to <body>", !f1.body && f1.inNav, JSON.stringify(f1));
+    // hover-opened dropdown + Escape while focus is elsewhere: focus stays where it was
+    await page.mouse.click(640, 700);
+    await page.locator(".skip-link").focus();
+    await items.nth(2).hover();
+    await page.waitForTimeout(250);
+    await page.keyboard.press("Escape");
+    const f2 = await page.evaluate(() => ({ skip: document.activeElement.classList.contains("skip-link"), open: !!document.querySelector(".nav-item.is-open") }));
+    check("Escape closes a hover-opened dropdown without moving focus", f2.skip && !f2.open, JSON.stringify(f2));
+    await ctx.close();
+  }
+
+  /* 5d. Breakpoint change with focus in the open mobile panel; inert page behind the panel ---------- */
+  {
+    const { ctx, page } = await open({ viewport: { width: 900, height: 800 } });
+    await page.locator("[data-nav-toggle]").click();
+    const inert = await page.evaluate(() => ({ main: document.querySelector("main").inert, footer: document.querySelector("footer").inert }));
+    check("page behind the open mobile menu is inert", inert.main && inert.footer, JSON.stringify(inert));
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.waitForTimeout(200);
+    const f = await page.evaluate(() => ({ body: document.activeElement === document.body, label: document.activeElement.textContent.trim().slice(0, 20), inert: document.querySelector("main").inert, lock: document.body.classList.contains("nav-open") }));
+    check("rotating to desktop with the menu open keeps focus, unlocks the page", !f.body && !f.inert && !f.lock, JSON.stringify(f));
+    await ctx.close();
+  }
+
+  /* 5e. Print before scrolling: nothing hidden -------------------------------------------------------- */
+  {
+    const { ctx, page } = await open();
+    await page.emulateMedia({ media: "print" });
+    const hidden = await page.evaluate(() => [...document.querySelectorAll("[data-reveal]")].filter((el) => el.getClientRects().length && getComputedStyle(el).opacity !== "1").length);
+    check("print media shows every section without scrolling first", hidden === 0, `${hidden} hidden`);
+    await ctx.close();
+  }
+
+  /* 5f. site.js blocked, and site.js late ---------------------------------------------------------- */
+  {
+    const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true });
+    const page = await ctx.newPage();
+    await page.route(/\/assets\/js\//, (r) => r.abort());
+    await page.goto(URL_);
+    await page.locator("[data-nav-toggle]").tap();
+    const early = await page.evaluate(() => ({ open: document.getElementById("hlavni-navigace").classList.contains("is-open"), visible: getComputedStyle(document.getElementById("hlavni-navigace")).display !== "none" }));
+    await page.locator("[data-nav-toggle]").tap();
+    await page.waitForTimeout(3300);
+    const late = await page.evaluate(() => ({ js: document.documentElement.classList.contains("js"), motion: document.documentElement.classList.contains("js-motion"), hidden: [...document.querySelectorAll("[data-reveal]")].filter((el) => getComputedStyle(el).opacity !== "1").length }));
+    check("site.js blocked: menu works from first paint; after 3 s all content visible, layout unchanged", early.open && early.visible && late.js && !late.motion && late.hidden === 0, JSON.stringify({ early, late }));
+    await ctx.close();
+  }
+  {
+    const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
+    const page = await ctx.newPage();
+    await page.route(/\/assets\/js\//, async (r) => { await new Promise((res) => setTimeout(res, 4000)); r.continue(); });
+    await page.addInitScript(() => { window.__cls = 0; new PerformanceObserver((l) => l.getEntries().forEach((e) => { if (!e.hadRecentInput) window.__cls += e.value; })).observe({ type: "layout-shift", buffered: true }); });
+    await page.goto(URL_);
+    await page.waitForFunction(() => window.__scReady === true, null, { timeout: 15000 });
+    await page.waitForTimeout(300);
+    const cls = await page.evaluate(() => window.__cls);
+    check("site.js arriving after the 3 s failsafe causes no layout shift", cls < 0.02, `CLS ${cls.toFixed(4)}`);
+    await ctx.close();
+  }
+
   /* 6. Reduced motion ---------------------------------------------------------------------------- */
   {
     const { ctx, page } = await open({ reducedMotion: "reduce" });
@@ -298,7 +399,7 @@ try {
       links: [...document.querySelectorAll("#hlavni-navigace a")].filter((a) => a.getBoundingClientRect().height > 0 || getComputedStyle(a.closest(".subnav") || a).visibility !== "hidden").length,
       gallery: [...document.querySelectorAll("[data-gallery-item]")].every((a) => a.getAttribute("href").endsWith(".jpg")),
     }));
-    check(`no-JS @${width}: content visible, navigation usable, gallery links to photos`, r.hidden === 0 && r.navVisible && r.gallery, JSON.stringify(r));
+    check(`no-JS @${width}: content visible, all 30 navigation links usable, gallery links to photos`, r.hidden === 0 && r.navVisible && r.gallery && r.links === 30, JSON.stringify(r));
     if (width === 1280) {
       await page.locator(".nav-item.has-sub").first().hover();
       await page.waitForTimeout(300);

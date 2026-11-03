@@ -34,40 +34,46 @@
   "height": 500,
   "variants": [
    {
-    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-01-480.webp",
-    "width": 480,
-    "height": 258,
-    "type": "image/webp"
-   },
-   {
     "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-01-480.avif",
     "width": 480,
     "height": 258,
-    "type": "image/avif"
+    "type": "image/avif",
+    "bytes": 16093
    },
    {
-    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-01-720.webp",
-    "width": 720,
-    "height": 387,
-    "type": "image/webp"
+    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-01-480.webp",
+    "width": 480,
+    "height": 258,
+    "type": "image/webp",
+    "bytes": 19608
    },
    {
     "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-01-720.avif",
     "width": 720,
     "height": 387,
-    "type": "image/avif"
+    "type": "image/avif",
+    "bytes": 35639
    },
    {
-    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-01-930.webp",
-    "width": 930,
-    "height": 500,
-    "type": "image/webp"
+    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-01-720.webp",
+    "width": 720,
+    "height": 387,
+    "type": "image/webp",
+    "bytes": 43100
    },
    {
     "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-01-930.avif",
     "width": 930,
     "height": 500,
-    "type": "image/avif"
+    "type": "image/avif",
+    "bytes": 60653
+   },
+   {
+    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-01-930.webp",
+    "width": 930,
+    "height": 500,
+    "type": "image/webp",
+    "bytes": 69794
    }
   ]
  },
@@ -76,40 +82,46 @@
   "height": 500,
   "variants": [
    {
-    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-02-480.webp",
-    "width": 480,
-    "height": 258,
-    "type": "image/webp"
-   },
-   {
     "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-02-480.avif",
     "width": 480,
     "height": 258,
-    "type": "image/avif"
+    "type": "image/avif",
+    "bytes": 20581
    },
    {
-    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-02-720.webp",
-    "width": 720,
-    "height": 387,
-    "type": "image/webp"
+    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-02-480.webp",
+    "width": 480,
+    "height": 258,
+    "type": "image/webp",
+    "bytes": 25144
    },
    {
     "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-02-720.avif",
     "width": 720,
     "height": 387,
-    "type": "image/avif"
+    "type": "image/avif",
+    "bytes": 47012
    },
    {
-    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-02-930.webp",
-    "width": 930,
-    "height": 500,
-    "type": "image/webp"
+    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-02-720.webp",
+    "width": 720,
+    "height": 387,
+    "type": "image/webp",
+    "bytes": 56914
    },
    {
     "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-02-930.avif",
     "width": 930,
     "height": 500,
-    "type": "image/avif"
+    "type": "image/avif",
+    "bytes": 78580
+   },
+   {
+    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-02-930.webp",
+    "width": 930,
+    "height": 500,
+    "type": "image/webp",
+    "bytes": 94684
    }
   ]
  },
@@ -118,40 +130,46 @@
   "height": 500,
   "variants": [
    {
-    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-03-480.webp",
-    "width": 480,
-    "height": 258,
-    "type": "image/webp"
-   },
-   {
     "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-03-480.avif",
     "width": 480,
     "height": 258,
-    "type": "image/avif"
+    "type": "image/avif",
+    "bytes": 21057
    },
    {
-    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-03-720.webp",
-    "width": 720,
-    "height": 387,
-    "type": "image/webp"
+    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-03-480.webp",
+    "width": 480,
+    "height": 258,
+    "type": "image/webp",
+    "bytes": 27630
    },
    {
     "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-03-720.avif",
     "width": 720,
     "height": 387,
-    "type": "image/avif"
+    "type": "image/avif",
+    "bytes": 52675
    },
    {
-    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-03-930.webp",
-    "width": 930,
-    "height": 500,
-    "type": "image/webp"
+    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-03-720.webp",
+    "width": 720,
+    "height": 387,
+    "type": "image/webp",
+    "bytes": 65122
    },
    {
     "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-03-930.avif",
     "width": 930,
     "height": 500,
-    "type": "image/avif"
+    "type": "image/avif",
+    "bytes": 89649
+   },
+   {
+    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-03-930.webp",
+    "width": 930,
+    "height": 500,
+    "type": "image/webp",
+    "bytes": 109678
    }
   ]
  },
@@ -160,40 +178,46 @@
   "height": 500,
   "variants": [
    {
-    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-04-480.webp",
-    "width": 480,
-    "height": 258,
-    "type": "image/webp"
-   },
-   {
     "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-04-480.avif",
     "width": 480,
     "height": 258,
-    "type": "image/avif"
+    "type": "image/avif",
+    "bytes": 20241
    },
    {
-    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-04-720.webp",
-    "width": 720,
-    "height": 387,
-    "type": "image/webp"
+    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-04-480.webp",
+    "width": 480,
+    "height": 258,
+    "type": "image/webp",
+    "bytes": 25596
    },
    {
     "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-04-720.avif",
     "width": 720,
     "height": 387,
-    "type": "image/avif"
+    "type": "image/avif",
+    "bytes": 42711
    },
    {
-    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-04-930.webp",
-    "width": 930,
-    "height": 500,
-    "type": "image/webp"
+    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-04-720.webp",
+    "width": 720,
+    "height": 387,
+    "type": "image/webp",
+    "bytes": 52962
    },
    {
     "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-04-930.avif",
     "width": 930,
     "height": 500,
-    "type": "image/avif"
+    "type": "image/avif",
+    "bytes": 72545
+   },
+   {
+    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-04-930.webp",
+    "width": 930,
+    "height": 500,
+    "type": "image/webp",
+    "bytes": 84156
    }
   ]
  },
@@ -202,40 +226,46 @@
   "height": 500,
   "variants": [
    {
-    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-05-480.webp",
-    "width": 480,
-    "height": 258,
-    "type": "image/webp"
-   },
-   {
     "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-05-480.avif",
     "width": 480,
     "height": 258,
-    "type": "image/avif"
+    "type": "image/avif",
+    "bytes": 15222
    },
    {
-    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-05-720.webp",
-    "width": 720,
-    "height": 387,
-    "type": "image/webp"
+    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-05-480.webp",
+    "width": 480,
+    "height": 258,
+    "type": "image/webp",
+    "bytes": 19074
    },
    {
     "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-05-720.avif",
     "width": 720,
     "height": 387,
-    "type": "image/avif"
+    "type": "image/avif",
+    "bytes": 34229
    },
    {
-    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-05-930.webp",
-    "width": 930,
-    "height": 500,
-    "type": "image/webp"
+    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-05-720.webp",
+    "width": 720,
+    "height": 387,
+    "type": "image/webp",
+    "bytes": 41280
    },
    {
     "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-05-930.avif",
     "width": 930,
     "height": 500,
-    "type": "image/avif"
+    "type": "image/avif",
+    "bytes": 61246
+   },
+   {
+    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-05-930.webp",
+    "width": 930,
+    "height": 500,
+    "type": "image/webp",
+    "bytes": 67944
    }
   ]
  },

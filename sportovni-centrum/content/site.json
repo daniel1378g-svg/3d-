@@ -9,6 +9,26 @@
     "alt": "Sportovní centrum Semily – úvodní stránka",
     "href": "https://www.sportovni-centrum.cz"
   },
+  "ui": {
+    "$comment": "Interface labels used on every page (Czech). {n} and {total} are replaced with numbers.",
+    "skipLink": "Přeskočit na obsah",
+    "mainNav": "Hlavní navigace",
+    "breadcrumbs": "Drobečková navigace",
+    "submenu": "Podnabídka",
+    "menuOpen": "Menu",
+    "menuClose": "Zavřít",
+    "newWindow": "(otevře se v novém okně)",
+    "partnersLabel": "Externí odkazy",
+    "toTop": "Zpět nahoru",
+    "currentPage": "Právě prohlížíte",
+    "lightbox": {
+      "open": "zobrazit fotografii {n} z {total} ve větší velikosti",
+      "counter": "Fotografie {n} z {total}",
+      "close": "Zavřít náhled",
+      "prev": "Předchozí fotografie",
+      "next": "Další fotografie"
+    }
+  },
   "nav": [
     {
       "label": "Úvod",
@@ -157,7 +177,7 @@
   ],
   "contact": {
     "title": "Kontakt",
-    "intro": "Recepce Sportovního centra Semily",
+    "intro": "Sportovní centrum Semily",
     "address": "3. května 327, 513 01 Semily",
     "phones": [
       {
@@ -177,6 +197,12 @@
     "gdpr": {
       "label": "Ochrana osobních údajů (GDPR)",
       "href": "/o-firme/gdpr"
+    },
+    "labels": {
+      "address": "Adresa",
+      "phones": "Recepce",
+      "email": "E-mail",
+      "more": "Více info"
     }
   },
   "social": {

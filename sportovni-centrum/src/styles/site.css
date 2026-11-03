@@ -76,7 +76,7 @@
   --shadow-md: 0 10px 30px -12px rgb(11 37 64 / 0.28);
   --shadow-lg: 0 24px 60px -24px rgb(7 26 46 / 0.45);
 }
-@media (min-width: 1080px) {
+@media (min-width: 67.5em) {
   :root { --header-h: 76px; }
 }
 
@@ -246,7 +246,7 @@ a:hover .icon-arrow--external, a:focus-visible .icon-arrow--external { transform
   align-items: center;
   justify-content: space-between;
   gap: 1.5rem;
-  height: var(--header-h);
+  min-height: var(--header-h);
 }
 .brand {
   display: block;
@@ -258,7 +258,7 @@ a:hover .icon-arrow--external, a:focus-visible .icon-arrow--external { transform
   height: auto;
   aspect-ratio: 400 / 72;
   transform-origin: left center;
-  transition: transform var(--t-reveal) var(--ease-out);
+  transition: transform var(--t-control) var(--ease-out);
 }
 .site-header.is-scrolled .brand img { transform: scale(0.92); }
 
@@ -331,7 +331,7 @@ a:hover .icon-arrow--external, a:focus-visible .icon-arrow--external { transform
   transition: background-color var(--t-fast), color var(--t-fast);
 }
 .subnav-link:hover { background: var(--blue-50); color: var(--blue-700); }
-.subnav-link[aria-current="page"] { color: var(--blue-600); font-weight: 650; }
+.subnav-link[aria-current="page"] { color: var(--blue-600); font-weight: 650; justify-content: flex-start; gap: 0.6rem; }
 .subnav-link[aria-current="page"]::after {
   content: "";
   width: 8px; height: 8px; border-radius: 50%;
@@ -343,7 +343,7 @@ a:hover .icon-arrow--external, a:focus-visible .icon-arrow--external { transform
 .subnav-link .icon-arrow { color: var(--blue-600); }
 
 /* Mobile & tablet navigation (panel) */
-@media (max-width: 1079.98px) {
+@media (max-width: 67.49em) {
   .site-nav {
     position: fixed;
     inset: var(--header-h) 0 0 0;
@@ -355,7 +355,7 @@ a:hover .icon-arrow--external, a:focus-visible .icon-arrow--external { transform
     padding: 0.75rem var(--gutter) 2.5rem;
   }
   .js .site-nav:not(.is-open) { display: none; }
-  .js .site-nav.is-open { animation: panel-in var(--t-reveal) var(--ease-out); }
+  .js .site-nav.is-open { animation: panel-in var(--t-control) var(--ease-out); }
   .nav-item { border-bottom: 1px solid var(--line); }
   .nav-link { flex: 1; min-height: 3.5rem; font-size: var(--step-1); padding-block: 0.5rem; }
   .sub-toggle { width: 3.5rem; min-height: 3.5rem; border-left: 1px solid var(--line); border-radius: 0; }
@@ -381,7 +381,7 @@ a:hover .icon-arrow--external, a:focus-visible .icon-arrow--external { transform
 }
 
 /* Desktop navigation (dropdowns) */
-@media (min-width: 1080px) {
+@media (min-width: 67.5em) {
   .nav-toggle { display: none; }
   .nav-list { display: flex; align-items: center; gap: 0.15rem; }
   .nav-item { position: relative; }
@@ -511,7 +511,9 @@ a:hover .icon-arrow--external, a:focus-visible .icon-arrow--external { transform
 }
 .hero-organiser svg { flex: none; width: 1.6rem; height: 1.6rem; color: var(--green); margin-top: 0.1rem; }
 .hero-organiser strong { color: var(--white); font-weight: 700; }
-.hero-actions { display: flex; flex-wrap: wrap; gap: 0.75rem 1rem; }
+.hero-actions { position: relative; z-index: 1; display: flex; flex-wrap: wrap; gap: 0.75rem 1rem; }
+.hero .btn--ghost { --btn-bg: var(--navy-900); }
+.hero .btn--ghost:hover { --btn-bg: var(--navy-800); }
 
 .hero-media { position: relative; margin: 0; }
 .hero-photo {
@@ -542,18 +544,20 @@ a:hover .icon-arrow--external, a:focus-visible .icon-arrow--external { transform
   color: var(--blue);
   opacity: 0.55;
   pointer-events: none;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 45%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 45%);
 }
 .hero-lanes path { fill: none; stroke: currentColor; stroke-width: 1.5; }
 .hero-lanes .lane-green { stroke: var(--green); stroke-width: 2.5; }
 
 /* Track-line draw (decorative, once). Paths use pathLength="1". */
 .js-motion .draw path { stroke-dasharray: 1; stroke-dashoffset: 1; }
-.js-motion .draw.is-in path { animation: draw 1600ms var(--ease-in-out) forwards; }
-.js-motion .draw.is-in path:nth-child(2) { animation-delay: 90ms; }
-.js-motion .draw.is-in path:nth-child(3) { animation-delay: 180ms; }
-.js-motion .draw.is-in path:nth-child(4) { animation-delay: 270ms; }
-.js-motion .draw.is-in path:nth-child(5) { animation-delay: 360ms; }
-.js-motion .draw.is-in path:nth-child(6) { animation-delay: 450ms; }
+.js-motion .draw.is-in path { animation: draw 900ms var(--ease-in-out) 200ms forwards; }
+.js-motion .draw.is-in path:nth-child(2) { animation-delay: 260ms; }
+.js-motion .draw.is-in path:nth-child(3) { animation-delay: 320ms; }
+.js-motion .draw.is-in path:nth-child(4) { animation-delay: 380ms; }
+.js-motion .draw.is-in path:nth-child(5) { animation-delay: 440ms; }
+.js-motion .draw.is-in path:nth-child(6) { animation-delay: 500ms; }
 @keyframes draw { to { stroke-dashoffset: 0; } }
 
 /* Hero entrance (short, readable immediately) */
@@ -563,15 +567,9 @@ a:hover .icon-arrow--external, a:focus-visible .icon-arrow--external { transform
   animation: enter 620ms var(--ease-out) forwards;
   animation-delay: calc(var(--i, 0) * 70ms + 60ms);
 }
-.js-motion .hero .hero-photo[data-enter] {
-  transform: none;
-  animation-name: photo-in;
-  animation-duration: 820ms;
-}
-.js-motion .hero .hero-photo[data-enter] img { animation: photo-settle 1400ms var(--ease-out) both; animation-delay: inherit; }
+.js-motion .hero .hero-photo[data-enter] img { animation: photo-settle 620ms var(--ease-out) both; animation-delay: inherit; }
 @keyframes enter { to { opacity: 1; transform: none; } }
-@keyframes photo-in { from { opacity: 0; clip-path: inset(0 0 0 18% round var(--radius-lg)); } to { opacity: 1; clip-path: inset(0 0 0 0 round var(--radius-lg)); } }
-@keyframes photo-settle { from { transform: scale(1.06); } to { transform: none; } }
+@keyframes photo-settle { from { transform: scale(1.04); } to { transform: none; } }
 
 /* Section reveals (once) */
 .js-motion [data-reveal] {
@@ -649,7 +647,9 @@ a:hover .icon-arrow--external, a:focus-visible .icon-arrow--external { transform
 .section--paper { background: var(--paper); }
 .section-head { max-width: 46rem; margin-bottom: clamp(2rem, 1.5rem + 2vw, 3.25rem); }
 .section-head h2 { font-size: var(--step-3); font-stretch: 95%; color: var(--navy-900); }
-.section-head p { margin-top: 1rem; color: var(--ink-2); font-size: var(--step-1); line-height: 1.55; }
+.section-head .section-lead { margin-top: 1rem; color: var(--ink-2); font-size: var(--step-1); line-height: 1.55; }
+.news-head { margin-bottom: 0; }
+.news-index { margin-top: 1.5rem; }
 .section-head h2 .accent { color: var(--blue); }
 
 /* Programme overview --------------------------------------------------------------------- */
@@ -708,14 +708,14 @@ a:hover .icon-arrow--external, a:focus-visible .icon-arrow--external { transform
   height: auto;
   color: var(--white);
   margin-block: 1rem;
-  transition: transform var(--t-reveal) var(--ease-out);
+  transition: transform var(--t-control) var(--ease-out);
 }
 .discipline:hover svg.pictogram { transform: translateX(4px) rotate(-2deg); }
 .discipline h3 { font-size: var(--step-2); font-stretch: 110%; font-weight: 800; letter-spacing: 0; }
 @media (max-width: 420px) { .discipline h3 { font-size: 1.25rem; font-stretch: 100%; } }
 .discipline-lanes {
   position: absolute; z-index: -1;
-  right: -30%; bottom: -35%;
+  right: -22%; bottom: -6%;
   width: 110%;
   opacity: 0.22;
   color: var(--white);
@@ -735,8 +735,8 @@ a:hover .icon-arrow--external, a:focus-visible .icon-arrow--external { transform
   border: 1px solid var(--line);
   overflow: hidden;
 }
-.panel-media { position: relative; aspect-ratio: 930 / 500; overflow: hidden; background: var(--navy-800); }
-.panel-media img { width: 100%; height: 100%; object-fit: cover; transition: transform 700ms var(--ease-out); }
+.panel-media { margin: 0; position: relative; aspect-ratio: 930 / 500; overflow: hidden; background: var(--navy-800); }
+.panel-media img { width: 100%; height: 100%; object-fit: cover; transition: transform 220ms var(--ease-out); }
 .panel:hover .panel-media img { transform: scale(1.03); }
 .panel-media figcaption {
   position: absolute; left: 0.75rem; bottom: 0.75rem;
@@ -828,7 +828,7 @@ a:hover .icon-arrow--external, a:focus-visible .icon-arrow--external { transform
   text-align: left;
 }
 .gallery-item picture, .gallery-item img { width: 100%; height: 100%; }
-.gallery-item img { aspect-ratio: 930 / 500; object-fit: cover; transition: transform 600ms var(--ease-out), opacity var(--t-control); }
+.gallery-item img { aspect-ratio: 930 / 500; object-fit: cover; transition: transform 220ms var(--ease-out), opacity var(--t-control); }
 .gallery-grid li:first-child .gallery-item img { height: 100%; }
 .gallery-item:hover img, .gallery-item:focus-visible img { transform: scale(1.035); }
 .gallery-item .gallery-zoom {
@@ -841,6 +841,7 @@ a:hover .icon-arrow--external, a:focus-visible .icon-arrow--external { transform
 }
 .gallery-item:hover .gallery-zoom, .gallery-item:focus-visible .gallery-zoom { transform: scale(1.08); background: var(--blue-600); }
 .gallery-zoom svg { width: 1.1rem; height: 1.1rem; }
+.gallery-links { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; }
 .gallery-foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; align-items: center; margin-top: 1.5rem; }
 
 /* Lightbox */
@@ -852,22 +853,28 @@ a:hover .icon-arrow--external, a:focus-visible .icon-arrow--external { transform
   background: rgb(4 15 27 / 0.96);
   color: var(--white);
 }
+body.lightbox-open { overflow: hidden; }
 .lightbox::backdrop { background: rgb(4 15 27 / 0.6); }
 .lightbox[open] { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; }
 .lightbox-top { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 0.75rem var(--gutter); }
 .lightbox-counter { font-variant-numeric: tabular-nums; color: #c9dbeb; font-size: var(--step--1); }
+/* The photo is centred inside the stage's own box (absolute positioning gives the percentages a
+   definite size), so on short screens it scales down instead of overflowing onto the controls. */
 .lightbox-stage {
   position: relative;
-  display: grid;
-  place-items: center;
-  padding: 0 var(--gutter);
-  touch-action: pan-y;
+  touch-action: pan-y pinch-zoom;
   min-height: 0;
+  overflow: hidden;
 }
+.lightbox-top, .lightbox-bottom { position: relative; z-index: 1; }
 .lightbox-stage img {
-  max-width: min(100%, 930px);
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  max-width: min(calc(100% - 2 * var(--gutter)), 930px);
   max-height: 100%;
   width: auto; height: auto;
+  object-fit: contain;
   border-radius: var(--radius);
   user-select: none;
   -webkit-user-drag: none;
@@ -900,7 +907,7 @@ a:hover .icon-arrow--external, a:focus-visible .icon-arrow--external { transform
 /* Related programmes --------------------------------------------------------------------- */
 .related-list { list-style: none; display: grid; gap: 0.75rem; }
 @media (min-width: 640px) { .related-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (min-width: 1080px) { .related-list { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+@media (min-width: 67.5em) { .related-list { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
 .related-link {
   position: relative;
   display: flex;
@@ -922,7 +929,7 @@ a:hover .icon-arrow--external, a:focus-visible .icon-arrow--external { transform
 }
 .related-link:hover { border-color: var(--blue-600); box-shadow: var(--shadow-md); transform: translateY(-3px); color: var(--navy-900); }
 .related-link .icon-arrow { color: var(--blue-600); flex: none; }
-@media (min-width: 1080px) {
+@media (min-width: 67.5em) {
   .related-link { flex-direction: column; align-items: stretch; min-height: 8.5rem; padding: 1.25rem; gap: 1.25rem; }
   .related-link .icon-arrow { align-self: flex-end; }
 }
@@ -970,11 +977,12 @@ a:hover .icon-arrow--external, a:focus-visible .icon-arrow--external { transform
 
 /* Footer ---------------------------------------------------------------------------------- */
 .site-footer { background: var(--navy-950); color: #d5e3ef; position: relative; overflow: hidden; isolation: isolate; }
-.footer-lanes { position: absolute; z-index: -1; left: -10%; top: -40%; width: 70%; min-width: 560px; color: var(--navy-700); opacity: 0.8; }
+.footer-lanes { position: absolute; z-index: -1; right: -140px; top: -260px; width: min(60vw, 720px); min-width: 420px; color: var(--navy-700); opacity: 0.55; pointer-events: none; }
 .footer-lanes path { fill: none; stroke: currentColor; stroke-width: 1.5; }
 .footer-main { display: grid; gap: 2.5rem; padding-block: clamp(3.5rem, 3rem + 3vw, 5.5rem) 2.5rem; }
 @media (min-width: 900px) { .footer-main { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 4rem; } }
 .footer-title { font-size: var(--step-2); color: var(--white); font-stretch: 95%; margin-bottom: 0.5rem; }
+.footer-title--small { font-size: var(--step-1); margin-bottom: 0.5rem; }
 .footer-sub { color: #b8cde0; margin-bottom: 1.75rem; font-size: var(--step--1); }
 .contact-list { display: grid; gap: 0; margin: 0; }
 .contact-row { display: grid; gap: 0.2rem; padding-block: 0.95rem; border-top: 1px solid rgb(255 255 255 / 0.12); }
@@ -1000,7 +1008,7 @@ a:hover .icon-arrow--external, a:focus-visible .icon-arrow--external { transform
 .partners h2 { font-size: 0.8125rem; font-weight: 650; letter-spacing: 0.08em; text-transform: uppercase; color: #9fbad2; margin-bottom: 1.25rem; }
 .partner-list { list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; }
 @media (min-width: 640px) { .partner-list { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-@media (min-width: 1080px) { .partner-list { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+@media (min-width: 67.5em) { .partner-list { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
 /* The original partner artwork is white (Sodexo, Multisport, Město Semily) or boxed (Edenred,
    Benefit Plus) and was made for the dark footer, so the logos stay on the dark surface unaltered. */
 .partner-link {
@@ -1044,6 +1052,8 @@ a:hover .icon-arrow--external, a:focus-visible .icon-arrow--external { transform
 
 /* Print ------------------------------------------------------------------------------------- */
 @media print {
+  .js-motion [data-reveal], .js-motion .hero [data-enter], .js-motion .hero [data-enter] img { opacity: 1 !important; transform: none !important; animation: none !important; transition: none !important; }
+  .js-motion .draw path { stroke-dashoffset: 0 !important; animation: none !important; }
   .site-header, .skip-link, .hero-lanes, .gallery-section, .lightbox, .footer-lanes, .to-top { display: none !important; }
   .hero { background: none; color: #000; padding: 0; }
   .hero-lead, .hero-organiser { color: #000; }
