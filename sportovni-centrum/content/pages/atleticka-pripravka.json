@@ -1,0 +1,133 @@
+{
+  "$comment": "Content of https://www.sportovni-centrum.cz/krouzky/atleticka-pripravka. 'source' holds the original article verbatim (Joomla article, retrieved 2026-11-03); every other text field is a reorganisation of it and must keep its meaning. Do not add prices, ages, days, times, coaches or registration here – the programme is run by Atletický klub Semily, z.s.",
+  "path": "/krouzky/atleticka-pripravka",
+  "source": {
+    "title": "Atletická přípravka",
+    "paragraph1": "Atletická přípravka je v současnosti zastřešena spolkem Atletický klub Semily, z.s. Veškeré bližší informace získáte na webových stránkách https://atletika-semily.cz/. Přípravka je určena pro děti prvního i druhého stupně základních škol, nově také pro středoškoláky. Jedná se o všestrannou pohybovou aktivitu založenou na základních atletických disciplínách jako je běh, skok a hod.",
+    "heading2": "TRÉNINKY:",
+    "paragraph2": "Tréninky probíhají na městském stadionu až třikrát týdně. V zimním období využíváme semilské školní tělocvičny."
+  },
+  "meta": {
+    "title": "Atletická přípravka - Sportovní centrum SEMILY",
+    "ogTitle": "Atletická přípravka – Sportovní centrum Semily",
+    "description": "Atletická přípravka pro děti prvního i druhého stupně základních škol a nově také pro středoškoláky: běh, skok a hod. Tréninky až třikrát týdně na městském stadionu, v zimě ve školních tělocvičnách. Zastřešuje Atletický klub Semily, z.s.",
+    "canonical": "https://www.sportovni-centrum.cz/krouzky/atleticka-pripravka",
+    "ogImage": "https://www.sportovni-centrum.cz/images/prolinacky/mestsky-stadion/mestsky-stadion-04.jpg"
+  },
+  "breadcrumbs": [
+    { "label": "Úvod", "href": "/" },
+    { "label": "Kroužky", "href": "/krouzky" },
+    { "label": "Atletická přípravka", "href": "/krouzky/atleticka-pripravka" }
+  ],
+  "hero": {
+    "eyebrow": "Kroužky · atletika",
+    "title": "Atletická přípravka",
+    "lead": "Všestranná pohybová aktivita pro děti prvního i druhého stupně základních škol a nově také pro středoškoláky – postavená na běhu, skoku a hodu.",
+    "organiser": "Přípravku v současnosti zastřešuje spolek <strong>Atletický klub Semily, z.s.</strong> Veškeré bližší informace najdete na webu klubu.",
+    "primary": { "label": "Více informací na webu klubu", "href": "https://atletika-semily.cz/", "srHint": "externí web atletika-semily.cz" },
+    "secondary": { "label": "Jak probíhají tréninky", "href": "#treninky" },
+    "image": {
+      "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-04.jpg",
+      "alt": "Červená běžecká dráha městského stadionu v Semilech s očíslovanými drahami, krytými střídačkami a vysokou věží u cílové rovinky.",
+      "caption": "Městský stadion Semily – sportoviště, kde tréninky probíhají. Ilustrační fotografie bez data pořízení, nezachycuje trénink přípravky."
+    }
+  },
+  "facts": {
+    "label": "Přípravka v kostce",
+    "items": [
+      { "icon": "users", "title": "Pro koho", "value": "Žáci 1. i 2. stupně ZŠ a středoškoláci", "text": "Přípravka je určena pro děti prvního i druhého stupně základních škol, nově také pro středoškoláky." },
+      { "icon": "activity", "title": "Zaměření", "value": "Běh, skok a hod", "text": "Všestranná pohybová aktivita založená na základních atletických disciplínách." },
+      { "icon": "calendar", "title": "Tréninky", "value": "<em>Až</em> třikrát týdně", "text": "Na městském stadionu, v zimním období v semilských školních tělocvičnách." }
+    ]
+  },
+  "overview": {
+    "eyebrow": "O přípravce",
+    "title": "Všestranný pohybový základ",
+    "paragraphs": [
+      "Atletická přípravka je v současnosti zastřešena spolkem Atletický klub Semily, z.s. Veškeré bližší informace získáte na webových stránkách <a href=\"https://atletika-semily.cz/\">https://atletika-semily.cz/</a>.",
+      "Přípravka je určena pro děti prvního i druhého stupně základních škol, nově také pro středoškoláky. Jedná se o všestrannou pohybovou aktivitu založenou na základních atletických disciplínách jako je běh, skok a hod."
+    ],
+    "organiser": [
+      { "term": "Přípravku zastřešuje", "value": "Atletický klub Semily, z.s." },
+      { "term": "Bližší informace", "value": "atletika-semily.cz", "href": "https://atletika-semily.cz/" }
+    ],
+    "disciplinesLabel": "Základní atletické disciplíny",
+    "disciplines": [
+      { "icon": "run", "label": "Běh" },
+      { "icon": "jump", "label": "Skok" },
+      { "icon": "throw", "label": "Hod" }
+    ],
+    "disciplinesCaption": "Běh, skok a hod – základní atletické disciplíny, na kterých přípravka stojí."
+  },
+  "training": {
+    "eyebrow": "Tréninky",
+    "title": "Kde a jak často se trénuje",
+    "intro": "",
+    "panels": [
+      {
+        "kind": "stadium",
+        "label": "Městský stadion",
+        "title": "Až třikrát týdně na stadionu",
+        "text": "Tréninky probíhají na městském stadionu až třikrát týdně.",
+        "image": {
+          "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-03.jpg",
+          "alt": "Rovinka červené běžecké dráhy s bílými čarami drah, vlevo zastřešená tribuna a travnatý svah, v pozadí stromy a domy.",
+          "caption": "Městský stadion Semily"
+        },
+        "link": { "label": "Městský stadion Semily", "href": "/sportoviste/mestsky-stadion-semily" }
+      },
+      {
+        "kind": "winter",
+        "label": "Zimní období",
+        "title": "V zimě ve školních tělocvičnách",
+        "text": "V zimním období využíváme semilské školní tělocvičny."
+      }
+    ],
+    "cta": {
+      "title": "Bližší informace poskytuje Atletický klub Semily",
+      "text": "Přípravku v současnosti zastřešuje spolek Atletický klub Semily, z.s. Veškeré bližší informace získáte na jeho webových stránkách.",
+      "label": "Více informací na webu klubu",
+      "href": "https://atletika-semily.cz/",
+      "urlLabel": "atletika-semily.cz"
+    }
+  },
+  "gallery": {
+    "eyebrow": "Fotografie",
+    "title": "Městský stadion Semily",
+    "intro": "Fotografie sportoviště, na kterém tréninky přípravky probíhají, ze stránky Městský stadion Semily.",
+    "note": "Fotografie zachycují městský stadion, nikoli trénink atletické přípravky. Datum pořízení není u fotografií uvedeno.",
+    "credit": "Fotografie: Sportovní centrum Semily",
+    "items": [
+      { "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-01.jpg", "alt": "Zatáčka červené běžecké dráhy městského stadionu s modrými žíněnkami, zábradlím a obloukovou lávkou v pozadí.", "caption": "Městský stadion Semily – zatáčka atletického oválu" },
+      { "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-02.jpg", "alt": "Rovinka červené běžecké dráhy podél travnaté plochy a chodníku, vpravo zastřešená tribuna a bílý ocelový oblouk lávky.", "caption": "Městský stadion Semily – rovinka a tribuna" },
+      { "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-03.jpg", "alt": "Rovinka červené běžecké dráhy s bílými čarami drah, vlevo zastřešená tribuna a travnatý svah, v pozadí stromy a domy.", "caption": "Městský stadion Semily – běžecká rovinka u tribuny" },
+      { "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-04.jpg", "alt": "Červená běžecká dráha městského stadionu v Semilech s očíslovanými drahami, krytými střídačkami a vysokou věží u cílové rovinky.", "caption": "Městský stadion Semily – očíslované dráhy a věž" },
+      { "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-05.jpg", "alt": "Zatáčka červené běžecké dráhy s krytými střídačkami a travnatou plochou, v pozadí zalesněné kopce.", "caption": "Městský stadion Semily – zatáčka s výhledem na kopce" }
+    ],
+    "links": [
+      { "label": "Více o městském stadionu", "href": "/sportoviste/mestsky-stadion-semily" },
+      { "label": "Fotogalerie", "href": "/fotogalerie" }
+    ]
+  },
+  "related": {
+    "eyebrow": "Kroužky",
+    "title": "Další kroužky Sportovního centra",
+    "items": [
+      { "label": "Atletická přípravka", "href": "/krouzky/atleticka-pripravka" },
+      { "label": "Badminton", "href": "/krouzky/badminton" },
+      { "label": "Hokejová přípravka", "href": "/krouzky/hokejova-pripravka" },
+      { "label": "Kurzy bruslení pro děti", "href": "/krouzky/kurzy-brusleni-pro-deti" },
+      { "label": "Kurzy bruslení pro dospělé", "href": "/krouzky/kurzy-brusleni-pro-dospele" }
+    ]
+  },
+  "news": {
+    "eyebrow": "Novinky",
+    "title": "Novinky ze Sportovního centra"
+  },
+  "footerNote": {
+    "title": "Dotazy k atletické přípravce",
+    "text": "Přípravku zastřešuje Atletický klub Semily, z.s. Veškeré bližší informace získáte na webových stránkách klubu. Kontakty v této patičce patří recepci Sportovního centra Semily.",
+    "linkLabel": "atletika-semily.cz",
+    "href": "https://atletika-semily.cz/"
+  }
+}

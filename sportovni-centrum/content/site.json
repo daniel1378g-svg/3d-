@@ -1,0 +1,240 @@
+{
+  "$comment": "Shared header, navigation and footer data. Labels and destinations are copied from the live Joomla menu (www.sportovni-centrum.cz, menu items 101–361). Pages that are not rebuilt link to their original absolute URLs. Link scheme upgrades verified 2026-11-03: Sodexo, Edenred and Facebook work over https (same final page); the reservation system and www.semily.cz are kept exactly as on the live site (https not available / not verifiable).",
+  "origin": "https://www.sportovni-centrum.cz",
+  "siteName": "Sportovní centrum SEMILY",
+  "logo": {
+    "src": "images/yootheme/logo.png",
+    "width": 400,
+    "height": 72,
+    "alt": "Sportovní centrum Semily – úvodní stránka",
+    "href": "https://www.sportovni-centrum.cz"
+  },
+  "nav": [
+    {
+      "label": "Úvod",
+      "href": "/"
+    },
+    {
+      "label": "Sportoviště",
+      "href": "/sportoviste",
+      "columns": [
+        [
+          {
+            "label": "Sportovní hala",
+            "href": "/sportoviste/sportovni-hala"
+          },
+          {
+            "label": "Squash",
+            "href": "/sportoviste/squash"
+          },
+          {
+            "label": "Malý sál pro stolní tenis a cvičení",
+            "href": "/sportoviste/stolni-tenis"
+          },
+          {
+            "label": "Fitcentrum",
+            "href": "/sportoviste/fitcentrum"
+          },
+          {
+            "label": "Aerobic",
+            "href": "/sportoviste/aerobic"
+          },
+          {
+            "label": "Sauna",
+            "href": "/sportoviste/sauna"
+          }
+        ],
+        [
+          {
+            "label": "Solárium",
+            "href": "/sportoviste/solarium"
+          },
+          {
+            "label": "Masáže",
+            "href": "/sportoviste/masaze"
+          },
+          {
+            "label": "Půjčovna elektrokol",
+            "href": "/sportoviste/pujcovna-elektrokol"
+          },
+          {
+            "label": "Městský stadion Semily",
+            "href": "/sportoviste/mestsky-stadion-semily"
+          },
+          {
+            "label": "Městské kluziště",
+            "href": "/sportoviste/mestske-kluziste"
+          },
+          {
+            "label": "Rezervace sportoviště",
+            "href": "http://scsemily.fit.mefisto.cz",
+            "external": true,
+            "newWindow": true,
+            "note": "externí rezervační systém",
+            "emphasis": true
+          }
+        ]
+      ]
+    },
+    {
+      "label": "Kroužky",
+      "href": "/krouzky",
+      "columns": [
+        [
+          {
+            "label": "Atletická přípravka",
+            "href": "/krouzky/atleticka-pripravka"
+          },
+          {
+            "label": "Badminton",
+            "href": "/krouzky/badminton"
+          },
+          {
+            "label": "Hokejová přípravka",
+            "href": "/krouzky/hokejova-pripravka"
+          }
+        ],
+        [
+          {
+            "label": "Kurzy bruslení pro děti",
+            "href": "/krouzky/kurzy-brusleni-pro-deti"
+          },
+          {
+            "label": "Kurzy bruslení pro dospělé",
+            "href": "/krouzky/kurzy-brusleni-pro-dospele"
+          }
+        ]
+      ]
+    },
+    {
+      "label": "Služby",
+      "href": "/sluzby",
+      "columns": [
+        [
+          {
+            "label": "Ubytování",
+            "href": "/sluzby/ubytovani-v-semilech"
+          },
+          {
+            "label": "Společenský sál",
+            "href": "/sluzby/spolecensky-sal"
+          },
+          {
+            "label": "Restaurace",
+            "href": "/sluzby/restaurace-v-semilech"
+          }
+        ]
+      ]
+    },
+    {
+      "label": "Fotogalerie",
+      "href": "/fotogalerie"
+    },
+    {
+      "label": "Akce",
+      "href": "/akce/list.events/-"
+    },
+    {
+      "label": "O nás",
+      "href": "/o-firme",
+      "columns": [
+        [
+          {
+            "label": "Dokumenty",
+            "href": "/o-firme/dokumenty"
+          },
+          {
+            "label": "GDPR",
+            "href": "/o-firme/gdpr"
+          },
+          {
+            "label": "Kontakt",
+            "href": "/o-firme/kontakt"
+          }
+        ]
+      ]
+    }
+  ],
+  "contact": {
+    "title": "Kontakt",
+    "intro": "Recepce Sportovního centra Semily",
+    "address": "3. května 327, 513 01 Semily",
+    "phones": [
+      {
+        "label": "+420 481 622 996",
+        "tel": "+420481622996"
+      },
+      {
+        "label": "+420 736 752 563",
+        "tel": "+420736752563"
+      }
+    ],
+    "email": "recepce@sportovni-centrum.cz",
+    "more": {
+      "label": "všechny kontakty + mapa",
+      "href": "/o-firme/kontakt"
+    },
+    "gdpr": {
+      "label": "Ochrana osobních údajů (GDPR)",
+      "href": "/o-firme/gdpr"
+    }
+  },
+  "social": {
+    "label": "Sportovní centrum Semily na Facebooku",
+    "href": "https://www.facebook.com/pages/Sportovn%C3%AD-centrum-Semily/277292708958460",
+    "icon": "images/facebook.png",
+    "width": 60,
+    "height": 60
+  },
+  "partners": [
+    {
+      "name": "Sodexo",
+      "alt": "sodexo",
+      "href": "https://www.sodexo.cz",
+      "src": "images/partneri/sodexo.png",
+      "width": 186,
+      "height": 60,
+      "rel": "noopener"
+    },
+    {
+      "name": "Edenred",
+      "alt": "Edenred",
+      "href": "https://www.edenred.cz",
+      "src": "images/partneri/edenred.jpg",
+      "width": 156,
+      "height": 60,
+      "rel": "nofollow noopener"
+    },
+    {
+      "name": "Benefit Plus",
+      "alt": "Benefit Plus",
+      "href": "https://www.benefit-plus.cz",
+      "src": "images/partneri/benefit-plus.png",
+      "width": 169,
+      "height": 120,
+      "rel": "nofollow noopener"
+    },
+    {
+      "name": "Multisport",
+      "alt": "Multisport",
+      "href": "https://multisport.cz/",
+      "src": "images/partneri/multisport.png",
+      "width": 174,
+      "height": 35,
+      "rel": "nofollow noopener"
+    },
+    {
+      "name": "Město Semily",
+      "alt": "Město Semily",
+      "href": "http://www.semily.cz",
+      "src": "images/partneri/mesto-semily.png",
+      "width": 141,
+      "height": 40,
+      "rel": "noopener"
+    }
+  ],
+  "newsIndex": {
+    "label": "Všechny novinky",
+    "href": "/novinky"
+  }
+}

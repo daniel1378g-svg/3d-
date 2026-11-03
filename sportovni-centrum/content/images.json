@@ -1,0 +1,257 @@
+{
+ "images/facebook.png": {
+  "width": 60,
+  "height": 60,
+  "variants": []
+ },
+ "images/partneri/benefit-plus.png": {
+  "width": 169,
+  "height": 120,
+  "variants": []
+ },
+ "images/partneri/edenred.jpg": {
+  "width": 156,
+  "height": 60,
+  "variants": []
+ },
+ "images/partneri/mesto-semily.png": {
+  "width": 141,
+  "height": 40,
+  "variants": []
+ },
+ "images/partneri/multisport.png": {
+  "width": 174,
+  "height": 35,
+  "variants": []
+ },
+ "images/partneri/sodexo.png": {
+  "width": 186,
+  "height": 60,
+  "variants": []
+ },
+ "images/prolinacky/mestsky-stadion/mestsky-stadion-01.jpg": {
+  "width": 930,
+  "height": 500,
+  "variants": [
+   {
+    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-01-480.webp",
+    "width": 480,
+    "height": 258,
+    "type": "image/webp"
+   },
+   {
+    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-01-480.avif",
+    "width": 480,
+    "height": 258,
+    "type": "image/avif"
+   },
+   {
+    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-01-720.webp",
+    "width": 720,
+    "height": 387,
+    "type": "image/webp"
+   },
+   {
+    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-01-720.avif",
+    "width": 720,
+    "height": 387,
+    "type": "image/avif"
+   },
+   {
+    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-01-930.webp",
+    "width": 930,
+    "height": 500,
+    "type": "image/webp"
+   },
+   {
+    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-01-930.avif",
+    "width": 930,
+    "height": 500,
+    "type": "image/avif"
+   }
+  ]
+ },
+ "images/prolinacky/mestsky-stadion/mestsky-stadion-02.jpg": {
+  "width": 930,
+  "height": 500,
+  "variants": [
+   {
+    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-02-480.webp",
+    "width": 480,
+    "height": 258,
+    "type": "image/webp"
+   },
+   {
+    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-02-480.avif",
+    "width": 480,
+    "height": 258,
+    "type": "image/avif"
+   },
+   {
+    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-02-720.webp",
+    "width": 720,
+    "height": 387,
+    "type": "image/webp"
+   },
+   {
+    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-02-720.avif",
+    "width": 720,
+    "height": 387,
+    "type": "image/avif"
+   },
+   {
+    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-02-930.webp",
+    "width": 930,
+    "height": 500,
+    "type": "image/webp"
+   },
+   {
+    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-02-930.avif",
+    "width": 930,
+    "height": 500,
+    "type": "image/avif"
+   }
+  ]
+ },
+ "images/prolinacky/mestsky-stadion/mestsky-stadion-03.jpg": {
+  "width": 930,
+  "height": 500,
+  "variants": [
+   {
+    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-03-480.webp",
+    "width": 480,
+    "height": 258,
+    "type": "image/webp"
+   },
+   {
+    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-03-480.avif",
+    "width": 480,
+    "height": 258,
+    "type": "image/avif"
+   },
+   {
+    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-03-720.webp",
+    "width": 720,
+    "height": 387,
+    "type": "image/webp"
+   },
+   {
+    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-03-720.avif",
+    "width": 720,
+    "height": 387,
+    "type": "image/avif"
+   },
+   {
+    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-03-930.webp",
+    "width": 930,
+    "height": 500,
+    "type": "image/webp"
+   },
+   {
+    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-03-930.avif",
+    "width": 930,
+    "height": 500,
+    "type": "image/avif"
+   }
+  ]
+ },
+ "images/prolinacky/mestsky-stadion/mestsky-stadion-04.jpg": {
+  "width": 930,
+  "height": 500,
+  "variants": [
+   {
+    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-04-480.webp",
+    "width": 480,
+    "height": 258,
+    "type": "image/webp"
+   },
+   {
+    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-04-480.avif",
+    "width": 480,
+    "height": 258,
+    "type": "image/avif"
+   },
+   {
+    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-04-720.webp",
+    "width": 720,
+    "height": 387,
+    "type": "image/webp"
+   },
+   {
+    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-04-720.avif",
+    "width": 720,
+    "height": 387,
+    "type": "image/avif"
+   },
+   {
+    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-04-930.webp",
+    "width": 930,
+    "height": 500,
+    "type": "image/webp"
+   },
+   {
+    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-04-930.avif",
+    "width": 930,
+    "height": 500,
+    "type": "image/avif"
+   }
+  ]
+ },
+ "images/prolinacky/mestsky-stadion/mestsky-stadion-05.jpg": {
+  "width": 930,
+  "height": 500,
+  "variants": [
+   {
+    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-05-480.webp",
+    "width": 480,
+    "height": 258,
+    "type": "image/webp"
+   },
+   {
+    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-05-480.avif",
+    "width": 480,
+    "height": 258,
+    "type": "image/avif"
+   },
+   {
+    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-05-720.webp",
+    "width": 720,
+    "height": 387,
+    "type": "image/webp"
+   },
+   {
+    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-05-720.avif",
+    "width": 720,
+    "height": 387,
+    "type": "image/avif"
+   },
+   {
+    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-05-930.webp",
+    "width": 930,
+    "height": 500,
+    "type": "image/webp"
+   },
+   {
+    "src": "images/prolinacky/mestsky-stadion/mestsky-stadion-05-930.avif",
+    "width": 930,
+    "height": 500,
+    "type": "image/avif"
+   }
+  ]
+ },
+ "images/yootheme/logo.png": {
+  "width": 400,
+  "height": 72,
+  "variants": []
+ },
+ "templates/yoo_infinite/apple_touch_icon.png": {
+  "width": 114,
+  "height": 114,
+  "variants": []
+ },
+ "templates/yoo_infinite/favicon.ico": {
+  "width": 16,
+  "height": 16,
+  "variants": []
+ }
+}
