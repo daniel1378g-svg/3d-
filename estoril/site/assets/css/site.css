@@ -20,3 +20,10 @@
 html:not(.menu-open) .pg-home .hdr:not(.is-solid){background:#16181bb8;-webkit-backdrop-filter:blur(14px) saturate(1.2);backdrop-filter:blur(14px) saturate(1.2)}
 @media (min-width: 961px){.jr__note{left:auto;right:var(--gut);bottom:140px;max-width:min(560px,calc(100vw - 2 * var(--gut) - 664px));text-align:right}}
 @media (min-width: 961px) and (max-height: 820px){.jr__note{bottom:128px}}
+/* journey on touch layouts: tap targets of 44 px, lower bottom sheets in portrait (50svh, their scroll chains on to the journey) so more of the car stays in view, the start hint clear of the first panel on tablets, and a side-panel layout for short landscape phones (scripts/test-site.mjs --only layout) */
+@media (max-width: 960px){.jr__nav ol{gap:0}.jr__nav button{width:44px;height:44px;padding:0;justify-content:center}.jr__bar{display:none}.jr__skip{top:calc(var(--hdr) + var(--strip) + 60px);min-height:44px;display:inline-flex;align-items:center}.jp .chip{min-height:44px}.lang a{min-width:44px;height:44px}}
+@media (max-width: 960px) and (max-height: 500px) and (orientation: landscape){.jp,.jp--1{top:calc(var(--hdr) + var(--strip) + 8px);bottom:64px;left:12px;right:auto;width:min(420px,50vw);max-height:none}.jp--1{overflow:auto}.jp__logo{width:min(200px,30vh)}.jp--1 .jp__lead,.jp--1 .nextev{display:none}.jp--1 .kicker{margin-bottom:4px}.jp__quick{gap:6px;margin-bottom:0}.qcard__k{display:none}.qcard{min-height:48px;padding:10px 12px}.qcard__t{font-size:18px}.jr__nav{left:auto;right:12px;justify-content:flex-end}.jr__skip{top:calc(var(--hdr) + var(--strip) + 60px)}.jr-live .jr__hint{display:none}}
+@media (min-width: 641px) and (max-width: 960px){.jp--1{bottom:98px}.jr__hint{bottom:64px}}
+@media (max-width: 960px) and (orientation: portrait){.jp:not(.jp--1){max-height:50svh;overscroll-behavior-y:auto}}
+@media (max-width: 380px){.hdr__bar{gap:12px}.hdr__tools{gap:2px}}
+@media (max-width: 640px){.jp--1{bottom:68px}.jp--1 .kicker{padding:4px 10px;margin-bottom:4px}.jp--1 .jp__lead{padding:5px 10px}}
