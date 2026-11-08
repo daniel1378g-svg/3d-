@@ -162,11 +162,21 @@ function initJourney() {
   }
 
   // ---------------------------------------------------------------------------------------------
-  // Adaptive resolution: frame times are collected in batches of 60; a slow median steps the render
-  // scale down, a fast one steps it back up (never above a ceiling that drops whenever a step up
-  // had to be undone within 3 s, so the scale does not oscillate).
+  // Adaptive resolution, changed gradually: frame times are collected in batches of RES_BATCH
+  // frames; a slow median (above RES_SLOW) lowers the render scale by one RES_STEP, a fast one
+  // (below RES_FAST, two batches in a row) raises it by one step, and medians in between leave it
+  // alone (hysteresis). After a change the next RES_HOLD ms are ignored. The scale never rises above
+  // a ceiling that drops whenever a step up had to be undone within 3 s, so it does not oscillate.
+  // The batch buffer is preallocated and sorted in place (no allocation per frame).
 
-  let frameTimes = [];
+  const RES_BATCH = 30;
+  const RES_STEP = 0.05;
+  const RES_SLOW = 0.0215; // seconds
+  const RES_FAST = 0.0165;
+  const RES_HOLD = 700; // ms
+  const frameTimes = new Float64Array(RES_BATCH);
+  let frameCount = 0;
+  let fastBatches = 0;
   let resScale = 1;
   let resCeiling = 1;
   let holdUntil = 0; // frames before this time are ignored (after a change, a resize or a start)
@@ -175,33 +185,35 @@ function initJourney() {
   function governResolution(dt) {
     const now = performance.now();
     if (now < holdUntil) {
-      frameTimes.length = 0;
+      frameCount = 0;
       return;
     }
-    frameTimes.push(dt);
-    if (frameTimes.length < 60) return;
-    frameTimes.sort((a, b) => a - b);
-    const median = frameTimes[30];
-    const p25 = frameTimes[15];
-    const p75 = frameTimes[45];
-    frameTimes = [];
+    frameTimes[frameCount++] = dt;
+    if (frameCount < RES_BATCH) return;
+    frameCount = 0;
+    frameTimes.sort();
+    const median = frameTimes[RES_BATCH >> 1];
+    const p25 = frameTimes[RES_BATCH >> 2];
+    const p75 = frameTimes[(3 * RES_BATCH) >> 2];
     if (!scene || !scene.setResScale) return;
     // lowest scale: an effective pixel ratio of 0.75 (or no reduction when the base ratio is lower)
     const floor = Math.min(1, 0.75 / Math.max(0.75, scene.basePixelRatio || 1));
     // a steady cadence slower than 30 ms is a capped refresh rate, not an overloaded GPU
     if (median > 0.03 && p75 - p25 < 0.0015) return;
-    if (median > 0.0215 && resScale > floor) {
-      resScale =
-        now - lastStepUp < 3e3
-          ? (resCeiling = Math.max(floor, resScale * 0.88))
-          : Math.max(floor, resScale * 0.85);
-      scene.setResScale(resScale);
-      holdUntil = now + 1500;
-    } else if (median < 0.0175 && resScale < resCeiling) {
-      resScale = Math.min(resCeiling, resScale / 0.88);
-      scene.setResScale(resScale);
+    fastBatches = median < RES_FAST ? fastBatches + 1 : 0;
+    let next = resScale;
+    if (median > RES_SLOW && resScale > floor) {
+      next = Math.max(floor, resScale - RES_STEP);
+      if (now - lastStepUp < 3e3) resCeiling = next;
+    } else if (fastBatches >= 2 && resScale < resCeiling) {
+      next = Math.min(resCeiling, resScale + RES_STEP);
       lastStepUp = now;
-      holdUntil = now + 2500;
+      fastBatches = 0;
+    }
+    if (next !== resScale) {
+      resScale = next;
+      scene.setResScale(resScale);
+      holdUntil = now + RES_HOLD;
     }
   }
 
@@ -438,14 +450,23 @@ function initJourney() {
 
     sceneReady = true;
     updateFraming();
+    // the intro fly-in plays when the page opens at the arrival (jump keeps it there), not with
+    // reduced motion
     scene.jump(scrollProgress());
+    if (reducedMotion) scene.skipIntro();
     setRunning(inView && !document.hidden);
 
     if (params.get('capture') === '1') {
-      // deterministic stills: stop the loops and render a given progress on request
+      // deterministic stills: stop the loops and render a given progress on request. Headless
+      // browsers hide the scrollbar but html { scrollbar-gutter: stable } still reserved its 15 px,
+      // so the canvas was 15 px narrower than the viewport and every capture had a light strip on the
+      // right; captures drop the reserved gutter so the stage, and the canvas, span the viewport.
       setRunning(false);
       capturePaused = true;
+      html.style.scrollbarGutter = 'auto';
+      updateFraming();
       window.__journey = scene; // debugCam overrides for scripted captures (scripts/capture.mjs --cam)
+      // renderAt: dt 0 renders a still; dt > 0 the next frame of a sequence (journey.js)
       window.__cap = (t, dt = 0) => {
         window.scrollTo(0, journey.getBoundingClientRect().top + scrollY + t * scrollRange());
         scene.renderAt(t, { dt });

@@ -46,7 +46,6 @@ function smoothDamp(spring, current, target, dt) {
  *   velocity   spring velocity (progress units / s)
  *   intro      intro timeline 0..1 (the fly-in along the main straight)
  *   introDone  intro finished or skipped
- *   snap       set by renderAt(): render `target` exactly, without smoothing
  */
 function createProgress() {
   const state = {
@@ -55,16 +54,18 @@ function createProgress() {
     velocity: 0,
     intro: 0,
     introDone: false,
-    snap: false,
-    /** One frame step of `dt` seconds: runs the intro clock and the spring. */
-    advance(dt) {
+    /**
+     * One frame step of `dt` seconds: runs the intro clock and the spring; with `snap` (renderAt)
+     * the value lands on the target exactly.
+     */
+    advance(dt, snap = false) {
       if (!state.introDone) {
         state.intro += dt / INTRO_SECONDS;
         if (state.intro >= 1 || state.target > INTRO_SKIP_PROGRESS) state.finishIntro();
       }
       // the spring always runs (it updates `velocity`); a snap then overrides its result
       state.value = smoothDamp(state, state.value, state.target, dt);
-      if (state.snap) {
+      if (snap) {
         state.value = state.target;
         state.velocity = 0;
       }

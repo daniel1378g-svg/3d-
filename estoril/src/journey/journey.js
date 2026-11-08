@@ -66,6 +66,10 @@ import { buildWorld } from './world/index.js';
 
 /** renderAt(t, { dt > 0 }) continues the previous frame (blur) only within this progress step. */
 const MAX_SEQUENCE_STEP = 0.02;
+/** Frame times are capped at this (seconds): a stalled tab does not jump the springs. */
+const MAX_FRAME_TIME = 0.05;
+/** jump() past this progress ends the intro fly-in (progress.js INTRO_SKIP_PROGRESS). */
+const INTRO_END_PROGRESS = 0.01;
 
 /** Journey positions pre-rendered by warmup() so their shaders and textures are ready. */
 const WARMUP_PROGRESS = [0.26, 0.37, 0.47, 0.7, 0.95];
@@ -144,7 +148,11 @@ async function createJourney({
   const progress = createProgress();
 
   // --- frame loop ------------------------------------------------------------------------------
-  let lastFrameTime = performance.now();
+  // step(dt, snap) advances and renders one frame; the rAF loop (start/stop) calls it with the
+  // measured frame time, renderAt() with the dt it is given, so a still is a function of its
+  // arguments and the journey state, not of the wall clock. There is at most one pending rAF (rafId)
+  // and only while running.
+  let lastFrameTime = 0;
   let clock = 0; // seconds of frame time since creation (also advances while hidden)
   let running = false;
   let visible = true;
@@ -161,14 +169,10 @@ async function createJourney({
   };
   const viewport = createViewport(canvas, renderer, camera, maxPixelRatio);
 
-  function renderFrame(now) {
-    rafId = requestAnimationFrame(renderFrame);
-    const dt = Math.min(0.05, (now - lastFrameTime) / 1e3); // seconds, capped
-    lastFrameTime = now;
+  function step(dt, snap) {
     clock += dt;
-    if (!visible) return;
     if (viewport.update()) resetMotionBlur(blur); // a resize is a cut for the blur
-    progress.advance(dt);
+    progress.advance(dt, snap);
     const p = progress.value;
     const introEase = progress.introEase;
 
@@ -199,10 +203,36 @@ async function createJourney({
     camera.updateMatrixWorld();
     shadowFollow.update(light.sunDir, camera, director.target);
 
-    highlight.update(p, dt, progress.snap, api.basePixelRatio * viewport.resScale);
+    highlight.update(p, dt, snap, api.basePixelRatio * viewport.resScale);
     world.update(clock, dt);
     const blurAmount = motionBlurAmount(blur, p, director.position.y - cameraFrame.p.y);
     renderWithMotionBlur(renderer, scene, camera, blur, blurAmount);
+  }
+
+  function loop(now) {
+    rafId = 0;
+    if (!running) return;
+    rafId = requestAnimationFrame(loop);
+    const dt = Math.min(MAX_FRAME_TIME, Math.max(0, (now - lastFrameTime) / 1e3));
+    lastFrameTime = now;
+    if (visible) step(dt, false);
+    else clock += dt;
+  }
+
+  /** The state warmup() changes and restores, and debugState() reports. */
+  function saveState() {
+    return {
+      progress: progress.value,
+      target: progress.target,
+      velocity: progress.velocity,
+      intro: progress.intro,
+      introDone: progress.introDone,
+      clock,
+      carDistance: carMotion.lastDistance,
+      wheelDistance: carMotion.wheelDistance,
+      speed: carMotion.speed,
+      prevSpeed: carMotion.prevSpeed,
+    };
   }
 
   // --- finish setup ----------------------------------------------------------------------------
@@ -229,12 +259,17 @@ async function createJourney({
     skipIntro() {
       progress.finishIntro();
     },
-    /** Moves to `value` without smoothing (and ends the intro). */
+    /**
+     * Cuts to `value` without smoothing (the car is placed there at rest, the blur forgets the last
+     * frame). A cut past the arrival (value > INTRO_END_PROGRESS: a stage reached by scrolling while
+     * the scene was stopped, a deep link) ends the intro; a cut to the top of the journey keeps it,
+     * so the fly-in plays when the page opens at the arrival (home.js skips it with reduced motion).
+     */
     jump(value) {
       progress.target = progress.value = clamp(value, 0, 1);
       progress.velocity = 0;
       carMotion.lastDistance = distanceAt(progress.value);
-      progress.finishIntro();
+      if (progress.value > INTRO_END_PROGRESS) progress.finishIntro();
       resetMotionBlur(blur);
     },
     /** Compiles every shader (hidden objects included) and pre-renders a few positions. */
@@ -252,26 +287,27 @@ async function createJourney({
         else renderer.compile(scene, camera);
       } catch {}
       for (const node of hidden) node.visible = false;
-      // pre-render a few positions, then restore progress, car distance and intro state; restoring
-      // lastDistance is a teleport (car-motion.js), so the car is at rest there on the next frame;
-      // the environment map and the blur history are NOT restored
-      const saved = [
-        progress.value,
-        carMotion.lastDistance,
-        carMotion.wheelDistance,
-        progress.intro,
-        progress.introDone,
-      ];
+      // pre-render a few positions (stills: no time passes), then put back everything they changed,
+      // so the next frame is the one a journey that never warmed up would draw: the progress, intro
+      // and clock; the car (restoring lastDistance is a teleport, car-motion.js: at rest there on the
+      // next update); the environment map and the red line of this position; no blur history
+      const saved = saveState();
       for (const at of WARMUP_PROGRESS) {
         api.renderAt(at);
         await new Promise((resolve) => requestAnimationFrame(resolve));
       }
-      [progress.value, carMotion.lastDistance, carMotion.wheelDistance, progress.intro, progress.introDone] =
-        saved;
-      progress.target = progress.value;
-      progress.velocity = 0;
-      carMotion.speed = carMotion.prevSpeed = 0;
-      progress.snap = false;
+      progress.value = saved.progress;
+      progress.target = saved.target;
+      progress.velocity = saved.velocity;
+      progress.intro = saved.intro;
+      progress.introDone = saved.introDone;
+      clock = saved.clock;
+      carMotion.lastDistance = saved.carDistance;
+      carMotion.wheelDistance = saved.wheelDistance;
+      carMotion.speed = saved.speed;
+      carMotion.prevSpeed = saved.prevSpeed;
+      environment.update(solarHourAt(progress.value));
+      highlight.update(progress.value, 0, true, api.basePixelRatio * viewport.resScale);
       resetMotionBlur(blur);
     },
     /**
@@ -294,40 +330,55 @@ async function createJourney({
       framing.panel = [cx - hx, cy - hy, cx + hx, cy + hy];
       framing.open = null;
     },
+    /** Starts the render loop (one rAF chain; a second start() does nothing). */
     start() {
       if (running) return;
       running = true;
-      progress.snap = false;
       resetMotionBlur(blur); // the first frame after a pause is a cut
       lastFrameTime = performance.now();
-      rafId = requestAnimationFrame(renderFrame);
+      if (!rafId) rafId = requestAnimationFrame(loop);
     },
+    /** Stops the render loop: the pending frame is cancelled. */
     stop() {
       running = false;
-      cancelAnimationFrame(rafId);
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = 0;
     },
     setVisible(value) {
       if (value && !visible) resetMotionBlur(blur);
       visible = value;
     },
     /**
-     * Renders one frame at `value` right now, without smoothing. `intro` sets the intro timeline,
-     * `speed` overrides the car speed (m/s), `dt` is the frame time in seconds (0 = car at rest).
+     * Renders one frame at `value` (clamped to 0..1) right now, without smoothing, and leaves the
+     * render loop as it is (running or not). `intro` sets the intro timeline, `speed` overrides the
+     * car speed (m/s), `dt` is the frame time in seconds (clamped to 0..MAX_FRAME_TIME): with dt 0 the
+     * frame is a still (car at rest, no time passes, no blur), so the same call gives the same pixels
+     * whatever was rendered before; with dt > 0 it is the next frame of a sequence (the car moves
+     * from the last frame's position, the blur reprojects the last frame) unless the step is longer
+     * than MAX_SEQUENCE_STEP, which counts as a cut.
      */
     renderAt(value, { intro = 1, speed = null, dt = 0 } = {}) {
-      // a still (dt 0) or a step longer than a scroll frame is a cut: no blur from the last frame
-      if (!dt || Math.abs(value - progress.value) > MAX_SEQUENCE_STEP) resetMotionBlur(blur);
-      progress.target = progress.value = value;
+      const at = clamp(Number(value) || 0, 0, 1);
+      const frameTime = clamp(Number(dt) || 0, 0, MAX_FRAME_TIME);
+      if (!frameTime || Math.abs(at - progress.value) > MAX_SEQUENCE_STEP) resetMotionBlur(blur);
+      progress.target = progress.value = at;
       progress.velocity = 0;
-      progress.intro = intro;
-      progress.introDone = intro >= 1;
-      progress.snap = true;
-      if (!dt) carMotion.lastDistance = distanceAt(value); // no distance step → no speed from the jump
+      progress.intro = clamp(intro, 0, 1);
+      progress.introDone = progress.intro >= 1;
+      if (!frameTime) carMotion.lastDistance = distanceAt(at); // a teleport: no speed from the jump
       if (speed != null) carMotion.speed = speed;
-      lastFrameTime = performance.now() - dt * 1e3;
-      renderFrame(performance.now());
-      // renderFrame() scheduled a next frame; this is a one-off render
-      cancelAnimationFrame(rafId);
+      step(frameTime, true);
+    },
+    /** The journey state warmup() restores, plus the environment step and the blur history (tests). */
+    debugState() {
+      return {
+        ...saveState(),
+        envStep: environment.step,
+        blurHistory: blur ? blur.hasPrev : null,
+        highlight: [highlight.mesh.visible, highlight.mesh.material.opacity],
+        running,
+        pendingFrame: rafId !== 0,
+      };
     },
     /** Optional camera override for debugging: { pos: [x, y, z], tgt: [x, y, z], fov }. */
     debugCam: null,
