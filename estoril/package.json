@@ -1,0 +1,20 @@
+{
+  "name": "circuito-estoril-redesign",
+  "private": true,
+  "version": "2.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "serve": "node scripts/serve.mjs",
+    "build:artifact": "node scripts/build.mjs && node scripts/build-artifact.mjs"
+  },
+  "dependencies": {
+    "three": "0.170.0"
+  },
+  "devDependencies": {
+    "acorn": "^8.14.0",
+    "acorn-walk": "^8.3.4",
+    "esbuild": "^0.24.0",
+    "prettier": "^3.4.2"
+  }
+}
