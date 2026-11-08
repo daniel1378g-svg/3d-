@@ -185,7 +185,7 @@ async function createJourney({
     followWithShadow(sun, sunDir, director.position, director.target, carMotion.frame.p);
 
     highlight.update(p, dt, progress.snap, api.basePixelRatio * viewport.resScale);
-    world.update(clock, dt);
+    world.update(clock, dt, camera);
     renderWithMotionBlur(renderer, scene, camera, blur, motionBlurAmount(blur, p));
   }
 
