@@ -79,7 +79,9 @@ files['en/index.html'] = 'en/index.html';
 addDir('assets/css');
 addDir('assets/fonts');
 addDir('assets/js');
-addDir('assets/models');
+// hero-car-mesh.json and hero-car-mr.webp are the bake source (tools/car/bake_body.py), kept for the
+// published reference build (serve.mjs --reference); the page loads hero-car-body.* and hero-car-orm.webp
+addDir('assets/models', (f) => !/hero-car-(mesh\.json|mr\.webp)$/.test(f));
 addDir('assets/img', (f) => /\/stage-\d(-p)?\.webp$/.test(f));
 add('assets/favicon.svg');
 add('assets/data/track.json');

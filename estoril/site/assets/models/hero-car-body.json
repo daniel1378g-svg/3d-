@@ -1,0 +1,226 @@
+{
+ "format": "ce-mesh/2",
+ "name": "body",
+ "units": "metres; +x forward, +y up, +z right",
+ "generator": "tools/car/bake_body.py from hero-car-mesh.json",
+ "buffer": "hero-car-body.bin",
+ "vertexCount": 48246,
+ "indexCount": 172407,
+ "positionTransform": {
+  "offset": [
+   0.0272,
+   0.7348,
+   -0.0032
+  ],
+  "scale": 2.31,
+  "note": "metres = offset + scale * normalised position"
+ },
+ "attributes": {
+  "position": {
+   "offset": 0,
+   "type": "int16",
+   "size": 3,
+   "normalized": true
+  },
+  "uv": {
+   "offset": 289476,
+   "type": "uint16",
+   "size": 2,
+   "normalized": true
+  },
+  "normal": {
+   "offset": 482460,
+   "type": "int8",
+   "size": 3,
+   "normalized": true
+  }
+ },
+ "index": {
+  "offset": 627200,
+  "type": "uint16",
+  "size": 1
+ },
+ "groups": [
+  {
+   "name": "body",
+   "start": 0,
+   "count": 164853
+  },
+  {
+   "name": "lights",
+   "start": 164853,
+   "count": 7554
+  }
+ ],
+ "textures": {
+  "map": "hero-car-base.webp",
+  "normalMap": "hero-car-normal.webp",
+  "ormMap": "hero-car-orm.webp"
+ },
+ "ormChannels": "R ambient occlusion, G roughness, B clearcoat (per texel; tools/car/bake_body.py)",
+ "footprint": {
+  "map": "hero-car-shadow.webp",
+  "size": [
+   6.4,
+   3.6
+  ],
+  "note": "ground occlusion (alpha), car frame, centred on the origin, +x along the texture width"
+ },
+ "lowPoints": [
+  [
+   -0.876,
+   0.0934,
+   0.9571
+  ],
+  [
+   -0.8745,
+   0.0936,
+   -0.9932
+  ],
+  [
+   -0.8685,
+   0.0932,
+   0.9807
+  ],
+  [
+   -0.8613,
+   0.0934,
+   -1.0015
+  ],
+  [
+   -0.6223,
+   0.0919,
+   0.9771
+  ],
+  [
+   -0.6111,
+   0.0913,
+   -0.9976
+  ],
+  [
+   1.82,
+   0.086,
+   1.0029
+  ],
+  [
+   1.8206,
+   0.086,
+   -1.0235
+  ],
+  [
+   1.8497,
+   0.0859,
+   1.0007
+  ],
+  [
+   1.9038,
+   0.0861,
+   0.9959
+  ],
+  [
+   1.9334,
+   0.086,
+   0.9885
+  ],
+  [
+   1.9434,
+   0.0859,
+   -1.0057
+  ],
+  [
+   1.9693,
+   0.0862,
+   0.9812
+  ],
+  [
+   1.9886,
+   0.0862,
+   0.9747
+  ],
+  [
+   1.9964,
+   0.0858,
+   -0.9899
+  ],
+  [
+   2.0077,
+   0.0861,
+   0.9649
+  ],
+  [
+   2.0297,
+   0.0862,
+   0.9523
+  ],
+  [
+   2.0572,
+   0.0865,
+   0.9347
+  ],
+  [
+   2.0658,
+   0.0861,
+   -0.9441
+  ],
+  [
+   2.0954,
+   0.0863,
+   -0.9235
+  ],
+  [
+   2.1177,
+   0.086,
+   -0.8976
+  ],
+  [
+   2.128,
+   0.086,
+   0.8604
+  ],
+  [
+   2.1734,
+   0.0857,
+   0.7948
+  ],
+  [
+   2.1744,
+   0.0859,
+   -0.8204
+  ],
+  [
+   2.2213,
+   0.0855,
+   -0.7197
+  ],
+  [
+   2.2323,
+   0.0855,
+   0.6721
+  ],
+  [
+   2.2369,
+   0.0853,
+   0.6523
+  ],
+  [
+   2.2575,
+   0.0854,
+   0.6026
+  ],
+  [
+   2.2737,
+   0.0848,
+   -0.5681
+  ],
+  [
+   2.2833,
+   0.0847,
+   -0.5118
+  ],
+  [
+   2.2883,
+   0.0849,
+   0.4853
+  ]
+ ]
+}
