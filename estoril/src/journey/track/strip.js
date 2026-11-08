@@ -12,16 +12,20 @@
 //   - v (along the ribbon) is the CENTRE-LINE distance, for both edges, so textures stretch on the
 //     outside of bends and compress on the inside.
 //
-// Winding
-//   Every segment k is two triangles (A_k, A_k+1, B_k) and (B_k, A_k+1, B_k+1), where A is the
-//   offsetA edge and B the offsetB edge. The front face (and the normals computeVertexNormals
-//   produces) points UP (+y) only when offsetB < offsetA, i.e. when the B edge lies to the left of
-//   the A edge. A strip with offsetB > offsetA faces DOWN, so a FrontSide material culls it when
-//   seen from above.
+// Winding and normals
+//   Every strip faces up (+y) whatever the order of its offsets: the triangle order is chosen from
+//   the sign of offsetA - offsetB at the first point (ribbonIndices). Normals are written
+//   explicitly instead of being averaged from the faces: (0, 1, 0) on a flat strip; on a cambered
+//   one (heightA != heightB) the normal of its cross-slope, tilted away from the higher edge.
+//   Barrier walls are closed slabs (track-side face, back face, top); the track-side face looks at
+//   the centre line.
 import { BufferGeometry, Float32BufferAttribute } from 'three';
 
 /** Wraps an index (possibly negative or past the end) into [0, count). */
 var wrapIndex = (index, count) => ((index % count) + count) % count;
+
+/** Offset value: a number, or a function of the wrapped centre-line index. */
+var offsetAt = (offset, index) => (typeof offset == 'function' ? offset(index) : offset);
 
 /**
  * Walks centre-line points `first`..`last` (inclusive; indices wrap around the closed loop) and
@@ -48,35 +52,42 @@ function walkCentreLine(centre, first, last, visit) {
   }
 }
 
-/** Triangle indices for `segmentCount` quads over vertex pairs (2k = A/bottom, 2k + 1 = B/top). */
-function ribbonIndices(segmentCount) {
-  let indices = [];
+/**
+ * Appends the triangle indices of `segmentCount` quads over vertex pairs starting at `base`
+ * (vertex 2k = edge A, 2k + 1 = edge B of point k). For travel direction T and the edge vector
+ * E = B_k - A_k, the order (A_k, A_k+1, B_k), (B_k, A_k+1, B_k+1) gives the face normal T × E;
+ * `forward` = false gives the mirrored order (normal -T × E). For a flat strip T × E points up
+ * exactly when edge A lies right of edge B (offsetA > offsetB).
+ */
+function ribbonIndices(segmentCount, forward, base = 0, indices = []) {
   for (let segment = 0; segment < segmentCount; segment++) {
-    let pair = segment * 2;
-    indices.push(pair, pair + 2, pair + 1, pair + 1, pair + 2, pair + 3);
+    let pair = base + segment * 2;
+    if (forward) indices.push(pair, pair + 2, pair + 1, pair + 1, pair + 2, pair + 3);
+    else indices.push(pair, pair + 1, pair + 2, pair + 1, pair + 3, pair + 2);
   }
   return indices;
 }
 
-function ribbonGeometry(positions, uvs, indices) {
+function ribbonGeometry(positions, normals, uvs, indices) {
   let geometry = new BufferGeometry();
   return (
     geometry.setAttribute('position', new Float32BufferAttribute(positions, 3)),
+    geometry.setAttribute('normal', new Float32BufferAttribute(normals, 3)),
     geometry.setAttribute('uv', new Float32BufferAttribute(uvs, 2)),
     geometry.setIndex(indices),
-    geometry.computeVertexNormals(),
     geometry
   );
 }
 
 /**
- * A flat (or slightly cambered) ribbon between two lateral offsets of the centre line.
+ * A flat (or slightly cambered) ribbon between two lateral offsets of the centre line. It faces
+ * up whatever the order of the offsets.
  *
  * @param {import('three').Vector2[]} centre centre line (x, z)
  * @param {number | ((pointIndex: number) => number)} offsetA lateral offset of edge A, metres
  *   (positive = right of travel); a function receives the wrapped centre-line index
- * @param {number | ((pointIndex: number) => number)} offsetB lateral offset of edge B. The strip
- *   faces up only if offsetB < offsetA (see the header comment)
+ * @param {number | ((pointIndex: number) => number)} offsetB lateral offset of edge B; the order
+ *   of the two offsets must not change along the strip
  * @param {object} [options]
  * @param {boolean} [options.closed=true] include the closing segment back to point 0 (ignored
  *   when segRange is given)
@@ -87,7 +98,7 @@ function ribbonGeometry(positions, uvs, indices) {
  * @param {number} [options.heightB=0] extra height of edge B, metres
  * @param {[number, number] | null} [options.segRange=null] first and last centre-line point
  *   (inclusive; may run past the ends, indices wrap)
- * @returns {BufferGeometry} indexed geometry with position, uv and computed normals
+ * @returns {BufferGeometry} indexed geometry with position, normal and uv
  */
 function buildStrip(
   centre,
@@ -97,12 +108,15 @@ function buildStrip(
 ) {
   let count = centre.length,
     positions = [],
+    normals = [],
     uvs = [],
     first = segRange ? segRange[0] : 0,
-    last = segRange ? segRange[1] : closed ? count : count - 1;
+    last = segRange ? segRange[1] : closed ? count : count - 1,
+    firstIndex = wrapIndex(first, count),
+    up = offsetAt(offsetA, firstIndex) > offsetAt(offsetB, firstIndex);
   walkCentreLine(centre, first, last, (index, point, normalX, normalZ, distance) => {
-    let edgeA = typeof offsetA == 'function' ? offsetA(index) : offsetA,
-      edgeB = typeof offsetB == 'function' ? offsetB(index) : offsetB;
+    let edgeA = offsetAt(offsetA, index),
+      edgeB = offsetAt(offsetB, index);
     positions.push(
       point.x + normalX * edgeA,
       y + heightA,
@@ -111,38 +125,71 @@ function buildStrip(
       y + heightB,
       point.y + normalZ * edgeB,
     );
+    // cross-slope from edge A to edge B; the normal tilts away from the higher edge
+    let slope = (heightB - heightA) / (Math.abs(edgeB - edgeA) || 1),
+      towardsB = edgeB > edgeA ? 1 : -1,
+      length = Math.hypot(slope, 1),
+      nx = (-slope * towardsB * normalX) / length,
+      nz = (-slope * towardsB * normalZ) / length;
+    normals.push(nx, 1 / length, nz, nx, 1 / length, nz);
     uvs.push(uvAcross[0], distance * vScale, uvAcross[1], distance * vScale);
   });
-  return ribbonGeometry(positions, uvs, ribbonIndices(last - first));
+  return ribbonGeometry(positions, normals, uvs, ribbonIndices(last - first, up));
 }
 
+/** Thickness of a barrier wall (metres), measured away from the track. */
+var WALL_THICKNESS = 0.3;
+
 /**
- * A vertical wall standing on the ground (y = 0) along one lateral offset of the centre line.
- * Its front face points to the RIGHT of the direction of travel (+normal) whatever the sign of
- * the offset, i.e. towards the track only for walls on the left (negative offsets).
+ * A barrier wall standing on the ground (y = 0) along one lateral offset of the centre line: a
+ * closed slab WALL_THICKNESS thick whose track-side face lies on the offset and looks at the
+ * centre line, plus a back face looking away and a top. Normals are horizontal on the faces and
+ * +y on the top; the ends are open.
  *
  * @param {import('three').Vector2[]} centre centre line (x, z)
- * @param {(pointIndex: number) => number} offset lateral offset, metres (positive = right)
+ * @param {(pointIndex: number) => number} offset lateral offset of the track-side face, metres
+ *   (positive = right); its sign must not change along the range
  * @param {[number, number]} range first and last centre-line point (inclusive, indices wrap)
  * @param {number} height wall height, metres
  * @param {number} uScale texture u per metre of centre line (v runs 0 at the foot to 1 at the top)
  */
 function buildBarrierWall(centre, offset, [first, last], height, uScale) {
   let positions = [],
-    uvs = [];
-  walkCentreLine(centre, first, last, (index, point, normalX, normalZ, distance) => {
-    let lateral = offset(index);
-    positions.push(
-      point.x + normalX * lateral,
-      0,
-      point.y + normalZ * lateral,
-      point.x + normalX * lateral,
-      height,
-      point.y + normalZ * lateral,
-    );
-    uvs.push(distance * uScale, 0, distance * uScale, 1);
-  });
-  return ribbonGeometry(positions, uvs, ribbonIndices(last - first));
+    normals = [],
+    uvs = [],
+    indices = [],
+    side = Math.sign(offset(wrapIndex(first, centre.length))) || 1,
+    // [extra offset of edge A, of edge B (away from the track), y of A, y of B, v of A, v of B,
+    //  outward normal: -1 towards the centre line, +1 away from it, 0 up]
+    faces = [
+      [0, 0, 0, height, 0, 1, -1], // track side
+      [WALL_THICKNESS, WALL_THICKNESS, height, 0, 1, 0, 1], // back
+      [0, WALL_THICKNESS, height, height, 0.96, 1, 0], // top
+    ];
+  for (let [extraA, extraB, yA, yB, vA, vB, facing] of faces) {
+    let base = positions.length / 3;
+    walkCentreLine(centre, first, last, (index, point, normalX, normalZ, distance) => {
+      let lateralA = offset(index) + side * extraA,
+        lateralB = offset(index) + side * extraB;
+      positions.push(
+        point.x + normalX * lateralA,
+        yA,
+        point.y + normalZ * lateralA,
+        point.x + normalX * lateralB,
+        yB,
+        point.y + normalZ * lateralB,
+      );
+      let nx = facing * side * normalX,
+        nz = facing * side * normalZ,
+        ny = facing ? 0 : 1;
+      normals.push(nx, ny, nz, nx, ny, nz);
+      uvs.push(distance * uScale, vA, distance * uScale, vB);
+    });
+    // for all three faces (A->B up the track side, down the back, outwards on top) the face normal
+    // T × (B - A) points the wanted way exactly when the wall is on the left (side < 0)
+    ribbonIndices(last - first, side < 0, base, indices);
+  }
+  return ribbonGeometry(positions, normals, uvs, indices);
 }
 
 export { buildBarrierWall, buildStrip };
