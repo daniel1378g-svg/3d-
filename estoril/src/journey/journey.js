@@ -180,7 +180,7 @@ async function createJourney({
     depthRange.update(director.position, director.target);
     followWithShadow(sun, sunDir, director.position, director.target, carMotion.frame.p);
 
-    highlight.update(p);
+    highlight.update(p, dt, progress.snap);
     world.update(clock, dt);
     renderWithMotionBlur(renderer, scene, camera, blur, motionBlurAmount(blur, p));
   }

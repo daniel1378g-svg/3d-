@@ -15,6 +15,9 @@
 //   layers       every pair of up-facing ground-level triangles that overlap in plan (track strips,
 //                pit lane, pit entry/exit, painted lines, start line, grid slots) is at least
 //                MIN_LAYER_GAP apart in height where they overlap, and above the terrain
+//   highlight    the aerial highlight ribbon lies on the model's centre line, faces up, closes the
+//                lap without a zero-length segment, and is above every layer it overlaps (it takes
+//                part in the layer check)
 //   car path     on the lap, the hero car's driving line stays within halfWidth - 1 m of the
 //                centre line
 import { readFileSync } from 'node:fs';
@@ -38,6 +41,7 @@ const { buildPitLaneSurface } = await import('../src/journey/world/pits.js');
 const { buildStartGantry } = await import('../src/journey/world/main-straight.js');
 const { LAYERS, MIN_LAYER_GAP } = await import('../src/journey/world/layers.js');
 const { arcLengthNear, buildCarPath } = await import('../src/journey/car-path.js');
+const { createTrackHighlight } = await import('../src/journey/track-highlight.js');
 
 const root = new URL('..', import.meta.url).pathname;
 const trackPoints = JSON.parse(readFileSync(root + 'site/assets/data/track.json', 'utf8')).pts;
@@ -54,6 +58,8 @@ buildTrackSurfaces(ctx, shape);
 const trackMeshes = ctx.root.children.filter((o) => o.isMesh);
 buildPitLaneSurface(ctx);
 buildStartGantry(ctx);
+const highlight = createTrackHighlight(ctx.root.userData.trackModel);
+ctx.root.add(highlight.mesh);
 ctx.root.updateMatrixWorld(true);
 const model = shape.model;
 const line = model.line;
@@ -300,6 +306,7 @@ check(
 {
   // up-facing triangles at ground level (y < 0.2 m) of everything built so far, with a layer name
   const layerName = (mesh, y) => {
+    if (mesh === highlight.mesh) return 'highlight';
     const key = materialName.get(mesh.material) ?? mesh.material.type;
     if (key === 'line' && !trackMeshes.includes(mesh))
       return y > LAYERS.lines + 0.002
@@ -462,6 +469,83 @@ check(
     material('rubber').polygonOffset && material('line').polygonOffset,
     'decal materials lack polygonOffset',
   );
+}
+
+// --- highlight --------------------------------------------------------------------------------------
+{
+  const geometry = highlight.mesh.geometry;
+  const position = geometry.attributes.position;
+  const arc = geometry.attributes.aArc;
+  const pairs = position.count / 2;
+  let offLine = 0;
+  let shortest = Infinity;
+  let arcBackwards = 0;
+  let minY = Infinity;
+  for (let k = 0; k < pairs; k++) {
+    const i = k % line.count;
+    const mx = (position.getX(2 * k) + position.getX(2 * k + 1)) / 2;
+    const mz = (position.getZ(2 * k) + position.getZ(2 * k + 1)) / 2;
+    offLine = Math.max(offLine, Math.hypot(mx - line.x[i], mz - line.z[i]));
+    minY = Math.min(minY, position.getY(2 * k), position.getY(2 * k + 1));
+    if (k > 0) {
+      const px = (position.getX(2 * k - 2) + position.getX(2 * k - 1)) / 2;
+      const pz = (position.getZ(2 * k - 2) + position.getZ(2 * k - 1)) / 2;
+      shortest = Math.min(shortest, Math.hypot(mx - px, mz - pz));
+      if (!(arc.getX(2 * k) > arc.getX(2 * k - 2))) arcBackwards++;
+    }
+  }
+  const tris = triangles(highlight.mesh);
+  const down = tris.filter((t) => !(t.geometric.y > 0)).length;
+  console.log(
+    `highlight: ${pairs} vertex pairs, ${tris.length} triangles facing down ${down}, centre off the model line` +
+      ` ${offLine.toFixed(4)} m, shortest segment ${shortest.toFixed(3)} m, arc ${arc.getX(0)}..${arc.getX(position.count - 1)}` +
+      ` (backwards ${arcBackwards}), lowest point ${minY.toFixed(3)} m vs asphalt ${LAYERS.asphalt} m`,
+  );
+  check(down === 0, `highlight: ${down} triangles face down`);
+  check(offLine < 1e-3, `highlight: off the model centre line by ${offLine} m`);
+  check(shortest > 0.5, `highlight: a ${shortest} m segment (duplicated seam point?)`);
+  check(
+    arcBackwards === 0 && arc.getX(0) === 0 && arc.getX(position.count - 1) === 1,
+    'highlight: arc parameter',
+  );
+  check(minY >= LAYERS.asphalt + MIN_LAYER_GAP, 'highlight: not above the asphalt');
+  check(
+    highlight.mesh.material.depthTest && highlight.mesh.material.polygonOffset,
+    'highlight: depth test/offset',
+  );
+
+  // reveal head: a scroll step from 0.34 to 0.37 played at 30, 60, 120 and 240 fps; the head positions
+  // after the same elapsed times must agree (frame-rate independent), its speed stays bounded, and
+  // a snap (renderAt) lands on the target
+  const play = (fps) => {
+    const h = createTrackHighlight(ctx.root.userData.trackModel);
+    const uniforms = {};
+    h.mesh.material.onBeforeCompile({ uniforms, vertexShader: '', fragmentShader: '' });
+    h.update(0.34, 0, true);
+    const samples = [];
+    let speed = 0;
+    let previous = uniforms.uHead.value;
+    for (let frame = 1; frame <= Math.round(fps * 1.2); frame++) {
+      h.update(0.37, 1 / fps);
+      speed = Math.max(speed, ((uniforms.uHead.value - previous) * fps) / (1 + uniforms.uFeather.value));
+      previous = uniforms.uHead.value;
+      if (frame % Math.round(fps / 10) === 0) samples.push(uniforms.uHead.value);
+    }
+    h.update(0.37, 0, true);
+    return { samples, speed, snapped: uniforms.uHead.value };
+  };
+  const runs = [30, 60, 120, 240].map(play);
+  let spread = 0;
+  for (let k = 0; k < runs[0].samples.length; k++)
+    spread = Math.max(spread, ...runs.map((r) => Math.abs(r.samples[k] - runs[1].samples[k])));
+  const maxSpeed = Math.max(...runs.map((r) => r.speed));
+  console.log(
+    `highlight reveal: 0.34 -> 0.37 step, head after 0.1..1.2 s differs by <= ${(spread * line.length).toFixed(1)} m` +
+      ` between 30/60/120/240 fps; top speed ${maxSpeed.toFixed(2)} laps/s (${(maxSpeed * line.length).toFixed(0)} m/s);` +
+      ` head at 0.1 s ${(runs[1].samples[0] * line.length).toFixed(0)} m, snapped ${(runs[1].snapped * line.length).toFixed(0)} m`,
+  );
+  check(spread * line.length < 15, `highlight reveal depends on the frame rate (${spread * line.length} m)`);
+  check(maxSpeed <= 0.95, `highlight head too fast (${maxSpeed} laps/s)`);
 }
 
 // --- car path ---------------------------------------------------------------------------------------
