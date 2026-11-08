@@ -7,6 +7,7 @@
 // black) so it stays sharp and is never smeared into the background. Tone mapping and the output
 // colour space are applied in the pass (except for the sky, which is display-referred already).
 import {
+  Color,
   DepthTexture,
   HalfFloatType,
   Matrix4,
@@ -19,6 +20,7 @@ import {
   Vector2,
   WebGLRenderTarget,
 } from 'three';
+import { agxInverse } from './util/agx.js';
 import { clamp, smoothstep } from './util/math.js';
 
 /** Object layer of the meshes that go into the car mask. */
@@ -94,6 +96,9 @@ function createMotionBlur(quality) {
       vp: new Matrix4(), // this frame's view-projection
       prev: new Matrix4(), // last rendered frame's view-projection
       size: new Vector2(),
+      fogDisplay: new Color(), // scratch: the fog colour swap
+      fogLinear: new Color(),
+      fogRadiance: new Color(),
       ok: true, // false after a failure: plain rendering from then on
     };
   } catch {
@@ -127,8 +132,23 @@ function renderWithMotionBlur(renderer, scene, camera, blur, amount) {
         blur.rt.setSize(width, height);
         blur.maskRT.setSize(width, height);
       }
+      // the fog colour is a display colour (three.js mixes fog in after tone mapping, sky.js); in the
+      // HDR target the mix happens before the pass tone-maps, so it takes the radiance that tone-maps
+      // to that colour
+      const fog = scene.fog;
+      if (fog) {
+        blur.fogDisplay.copy(fog.color);
+        fog.color.copy(
+          agxInverse(
+            blur.fogLinear.copy(fog.color).convertSRGBToLinear(),
+            renderer.toneMappingExposure,
+            blur.fogRadiance,
+          ),
+        );
+      }
       renderer.setRenderTarget(blur.rt);
       renderer.render(scene, camera);
+      if (fog) fog.color.copy(blur.fogDisplay);
       // 2. the car mask: same camera, car layer only, flat white, shadow maps not re-rendered
       const shadowAutoUpdate = renderer.shadowMap.autoUpdate;
       renderer.shadowMap.autoUpdate = false;

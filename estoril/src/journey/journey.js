@@ -6,8 +6,9 @@
 //
 // Parts:
 //   renderer.js         WebGLRenderer, quality tiers, drawing-buffer sizing, anisotropy/dithering
-//   sky.js              sky dome shader, PMREM environment probe
-//   lighting.js         sun + hemisphere lights, progress → time of day, shadow box follow
+//   time-of-day.js      progress → solar hour → sun position and lighting palette
+//   sky.js              sky dome shader, PMREM environment probe (per solar-hour step)
+//   lighting.js         sun + hemisphere lights, exposure, shadow box fitted to the view
 //   progress.js         scroll target → smoothed progress (spring), intro, STAGES
 //   car-motion.js       progress → distance along the car path, car kinematics
 //   camera-shots.js     camera keyframes; camera-director.js evaluates and applies them
@@ -40,14 +41,7 @@ import {
   updatePaddockVisitors,
   updatePitCrew,
 } from './crew-staging.js';
-import {
-  applyAtmosphere,
-  applyTimeOfDay,
-  createLights,
-  followWithShadow,
-  sunDirection,
-  timeOfDayAt,
-} from './lighting.js';
+import { applyLighting, createLights, createShadowFollow } from './lighting.js';
 import { createMotionBlur, motionBlurAmount, renderWithMotionBlur, tagCarForMask } from './motion-blur.js';
 import { STAGES, createProgress } from './progress.js';
 import {
@@ -58,7 +52,7 @@ import {
   maxPixelRatioFor,
 } from './renderer.js';
 import { createEnvironmentProbe, createSkyDome, createSkyMaterial, setSkyUniforms } from './sky.js';
-import { sampleTimeOfDay } from './time-of-day.js';
+import { createTimeOfDaySample, sampleTimeOfDay, solarHourAt } from './time-of-day.js';
 import { createTrackHighlight } from './track-highlight.js';
 import { clamp } from './util/math.js';
 import { buildWorld } from './world/index.js';
@@ -87,7 +81,9 @@ async function createJourney({
   const skyDome = createSkyDome(skyMaterial);
   scene.add(skyDome);
   const { hemi, sun } = createLights(scene, renderer, quality);
-  const environment = createEnvironmentProbe({ renderer, scene, skyMaterial, quality });
+  const shadowFollow = createShadowFollow(sun);
+  const light = createTimeOfDaySample(); // this frame's time of day (sampleTimeOfDay fills it)
+  const environment = createEnvironmentProbe({ renderer, scene, quality });
   const blur = createMotionBlur(quality);
 
   // --- data, world, hero car -------------------------------------------------------------------
@@ -161,14 +157,12 @@ async function createJourney({
     updatePitCrew(crew, p, clock, sampler, landmarks.pitBox, openBox);
     updatePaddockVisitors(visitors, p, clock);
 
-    // light
-    const timeOfDay = timeOfDayAt(p);
-    const light = sampleTimeOfDay(timeOfDay);
-    const sunDir = sunDirection(light);
-    applyTimeOfDay(light, { sun, hemi });
-    setSkyUniforms(skyMaterial, light, sunDir);
-    applyAtmosphere(light, { scene, renderer });
-    environment.refreshIfNeeded(timeOfDay);
+    // light: the solar hour at this progress sets the sun, sky, fog, exposure and environment map
+    const hour = solarHourAt(p);
+    sampleTimeOfDay(hour, light);
+    applyLighting(light, { sun, hemi, scene, renderer });
+    setSkyUniforms(skyMaterial, light);
+    environment.update(hour);
 
     // camera, then the shadow box around what it looks at
     director.update({
@@ -182,7 +176,8 @@ async function createJourney({
       framingY,
     });
     depthRange.update(director.position, director.target);
-    followWithShadow(sun, sunDir, director.position, director.target, carMotion.frame.p);
+    camera.updateMatrixWorld();
+    shadowFollow.update(light.sunDir, camera, director.target);
 
     highlight.update(p, dt, progress.snap, api.basePixelRatio * viewport.resScale);
     world.update(clock, dt);
@@ -190,9 +185,8 @@ async function createJourney({
   }
 
   // --- finish setup ----------------------------------------------------------------------------
-  // first environment capture: no time of day has been applied yet, so the sky uniforms are
-  // still black here
-  environment.capture(0);
+  // the environment map of the first position, before the shaders compile against it
+  environment.update(solarHourAt(0));
   applyAnisotropy(scene, renderer, quality);
   enableDithering(scene);
   onProgress(1);
