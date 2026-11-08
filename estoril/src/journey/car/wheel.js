@@ -368,6 +368,16 @@ function wheelMaterials(tyreMaps) {
   };
 }
 
+/**
+ * Roll angle (radians about the wheel frame's z) of a wheel of `radius` metres after `distance`
+ * metres along the path: exactly distance / radius, so the tread never slips or drifts and runs
+ * backwards with the car. Forward roll is clockwise seen from +z (negative); left-hand wheel frames
+ * face -z, so the same roll is positive in their own frame.
+ */
+function rollAngle(distance, radius, left) {
+  return (left ? 1 : -1) * (distance / radius);
+}
+
 // --- the wheel set ------------------------------------------------------------------------------------
 
 const KEYS = ['FL', 'FR', 'RL', 'RR'];
@@ -465,8 +475,7 @@ function createWheels({ layout, width, centreZ, centreY = 0 }) {
   function update(dist, steer) {
     for (let i = 0; i < 4; i++) {
       const w = wheels[i];
-      // forward roll about +z is clockwise seen from +z (negative angle); the left frames face -z
-      const roll = (w.left ? 1 : -1) * (dist / w.r);
+      const roll = rollAngle(dist, w.r, w.left);
       qSteer.setFromAxisAngle(Y, w.front ? steer : 0);
       q.copy(qSteer);
       if (w.left) q.multiply(qSide);
@@ -486,4 +495,4 @@ function createWheels({ layout, width, centreZ, centreY = 0 }) {
   return { group, materials, radius, update };
 }
 
-export { createWheels, REFERENCE_RADIUS };
+export { createWheels, REFERENCE_RADIUS, rollAngle };
