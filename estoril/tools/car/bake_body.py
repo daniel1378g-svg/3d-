@@ -11,10 +11,18 @@ This script does the expensive, deterministic work once, so the page only upload
      faces connected through smooth edges (corner-angle weights, slivers down-weighted). Unlike a per-face
      "neighbours within the crease angle" average, every face of a fan shares the same normal, so smooth
      regions have no shading cracks and creases stay crisp;
-  3. writes an indexed vertex buffer (a vertex is split only where the uv or the fan differs).
+  3. material groups (paint, trim, glass, lights): every triangle is classified from 15 texture samples plus
+     position/orientation boxes, isolated labels are voted away across smooth edges, and the index buffer is
+     sorted by class (one draw range per material);
+  4. writes an indexed vertex buffer (a vertex is split only where the uv or the fan differs);
+  5. ambient occlusion from depth maps rendered in 160 directions: into the R channel of an ORM texture
+     (G roughness and B metalness copied from the source metal-roughness map), and onto the ground around
+     the car (body plus four tyre cylinders, 384 directions) as the car's contact-shadow footprint.
 
-Output (site/assets/models): hero-car-body.json (descriptor) and hero-car-body.bin
+Output (site/assets/models): hero-car-body.json (descriptor), hero-car-body.bin
   position float32 x3 | uv uint16 x2 normalised | normal int16 x3 normalised | index uint16
+hero-car-orm.webp (1024^2, replaces hero-car-mr.webp at runtime) and hero-car-shadow.webp (ground occlusion).
+The ce-mesh/1 source and its textures stay untouched for the published reference build.
 """
 import json
 import os
@@ -27,6 +35,8 @@ MODELS = os.path.normpath(os.path.join(HERE, '../../site/assets/models'))
 SOURCE = os.path.join(MODELS, 'hero-car-mesh.json')
 OUT_JSON = os.path.join(MODELS, 'hero-car-body.json')
 OUT_BIN = os.path.join(MODELS, 'hero-car-body.bin')
+OUT_ORM = os.path.join(MODELS, 'hero-car-orm.webp')
+OUT_FOOTPRINT = os.path.join(MODELS, 'hero-car-shadow.webp')
 
 #: Faces meeting at more than this dihedral angle keep separate normals (degrees).
 CREASE_DEG = float(os.environ.get("CREASE_DEG", 42))
@@ -351,6 +361,212 @@ def write_outputs(pos, uv, nrm, index, groups, extra):
     log('wrote %s (%d vertices, %d triangles, %d bytes)' % (os.path.basename(OUT_BIN), N, len(index), len(buf)))
 
 
+# --- ambient occlusion -------------------------------------------------------------------------------------
+#
+# Depth-map ("shadow map") AO: the occluders are rasterised orthographically from AO_DIRECTIONS directions
+# spread evenly over the sphere (Fibonacci), keeping the surface nearest to each direction per 1 cm cell. A
+# point sees direction d unless that cell holds a surface in front of it (further along d) by more than a bias.
+# Visibility is cosine-weighted over the point's hemisphere. Below the horizon the ground occludes too.
+
+AO_DIRECTIONS = 160
+AO_CELL = 0.01  # metres per depth-map cell
+AO_BIAS = 0.012  # metres
+AO_NORMAL_OFFSET = 0.012  # query points are pushed this far along their normal
+GROUND_TRANSMISSION = 0.35  # visibility of directions below the horizon (the ground bounces a little light)
+ORM_SIZE = 1024
+#: Tyres as AO occluders for the ground footprint: closed cylinders at the wheel centres (hero-car.json).
+TYRE_WIDTH = 0.34
+TYRE_CENTRE_Z = 0.86
+#: The road surface sits this far above the tyres' lowest point (tyre deflection, hero-car.js).
+TYRE_DEFLECTION = 0.012
+#: Footprint texture: ground area (metres, car frame, centred on the origin) and size in pixels.
+FOOTPRINT_EXTENT = (6.4, 3.6)
+FOOTPRINT_PIXELS = (320, 180)
+FOOTPRINT_RANGE = 1.6
+FOOTPRINT_DIRECTIONS = 384  # over the upper hemisphere  # occluders further than this along a ray do not darken the ground (metres)
+
+
+def fibonacci_directions(n):
+    i = np.arange(n) + 0.5
+    phi = np.arccos(1 - 2 * i / n)
+    theta = np.pi * (1 + 5 ** 0.5) * i
+    return np.stack([np.cos(theta) * np.sin(phi), np.cos(phi), np.sin(theta) * np.sin(phi)], 1)
+
+
+def rasterize(xy, I, width, height, max_tile=64):
+    """Covered pixel centres of 2D triangles (pixel units). Returns (pixel index, triangle, barycentrics)."""
+    a, b, c = xy[I[:, 0]], xy[I[:, 1]], xy[I[:, 2]]
+    lo = np.floor(np.minimum(np.minimum(a, b), c) - 0.5).astype(int) + 1
+    hi = np.floor(np.maximum(np.maximum(a, b), c) - 0.5).astype(int)
+    size = np.maximum(hi - lo + 1, 0)
+    span = size.max(1)
+    out_p, out_t, out_b = [], [], []
+    d = (b[:, 1] - c[:, 1]) * (a[:, 0] - c[:, 0]) + (c[:, 0] - b[:, 0]) * (a[:, 1] - c[:, 1])
+    ok = np.abs(d) > 1e-12
+    tile = 1
+    while tile <= max(max_tile, int(span.max()) if len(span) else 1):
+        sel = np.flatnonzero(ok & (span > tile // 2 if tile > 1 else span >= 0) & (span <= tile))
+        if len(sel):
+            oy, ox = np.mgrid[0:tile, 0:tile]
+            px = lo[sel, 0, None] + ox.ravel()[None, :]
+            py = lo[sel, 1, None] + oy.ravel()[None, :]
+            inside = (px <= hi[sel, 0, None]) & (py <= hi[sel, 1, None])
+            cx, cy = px + 0.5, py + 0.5
+            ts = sel[:, None]
+            l1 = ((b[ts, 1] - c[ts, 1]) * (cx - c[ts, 0]) + (c[ts, 0] - b[ts, 0]) * (cy - c[ts, 1])) / d[ts]
+            l2 = ((c[ts, 1] - a[ts, 1]) * (cx - c[ts, 0]) + (a[ts, 0] - c[ts, 0]) * (cy - c[ts, 1])) / d[ts]
+            l3 = 1 - l1 - l2
+            eps = -1e-9
+            inside &= (l1 >= eps) & (l2 >= eps) & (l3 >= eps) & (px >= 0) & (py >= 0) & (px < width) & (py < height)
+            r, k = np.nonzero(inside)
+            out_p.append(py[r, k] * width + px[r, k])
+            out_t.append(sel[r])
+            out_b.append(np.stack([l1[r, k], l2[r, k], l3[r, k]], 1))
+        tile *= 2
+    if not out_p:
+        return np.zeros(0, int), np.zeros(0, int), np.zeros((0, 3))
+    return np.concatenate(out_p), np.concatenate(out_t), np.concatenate(out_b)
+
+
+def direction_frame(d):
+    up = np.array([0.0, 1.0, 0.0]) if abs(d[1]) < 0.9 else np.array([1.0, 0.0, 0.0])
+    u = np.cross(up, d)
+    u /= np.linalg.norm(u)
+    v = np.cross(d, u)
+    return u, v
+
+
+def depth_maps(P, I, dirs, cell=AO_CELL):
+    """Per direction: (u, v, origin, width, height, depth) with depth = max over the cell of p . d."""
+    maps = []
+    for d in dirs:
+        u, v = direction_frame(d)
+        pu, pv, h = P @ u, P @ v, P @ d
+        o = np.array([pu.min() - 2 * cell, pv.min() - 2 * cell])
+        W = int(np.ceil((pu.max() - o[0]) / cell)) + 3
+        H = int(np.ceil((pv.max() - o[1]) / cell)) + 3
+        xy = np.stack([(pu - o[0]) / cell, (pv - o[1]) / cell], 1)
+        pix, tri, bary = rasterize(xy, I, W, H)
+        depth = np.full(W * H, -np.inf)
+        np.maximum.at(depth, pix, (h[I[tri]] * bary).sum(1))
+        maps.append((u, v, o, W, H, depth, cell))
+    return maps
+
+
+def visibility(points, normals, dirs, maps, ground_y=None, max_range=np.inf):
+    """Cosine-weighted visible fraction of each point's hemisphere (1 = open sky)."""
+    q = points + normals * AO_NORMAL_OFFSET
+    acc = np.zeros(len(points))
+    wsum = np.zeros(len(points))
+    for d, (u, v, o, W, H, depth, cell) in zip(dirs, maps):
+        w = np.maximum(normals @ d, 0)
+        m = w > 0
+        if not m.any():
+            continue
+        x = np.floor((q[m] @ u - o[0]) / cell).astype(int)
+        y = np.floor((q[m] @ v - o[1]) / cell).astype(int)
+        inb = (x >= 0) & (y >= 0) & (x < W) & (y < H)
+        occ_h = np.full(m.sum(), -np.inf)
+        occ_h[inb] = depth[y[inb] * W + x[inb]]
+        ahead = occ_h - q[m] @ d
+        vis = ~((ahead > AO_BIAS) & (ahead < max_range))
+        vis = vis.astype(float)
+        if ground_y is not None and d[1] < 0:
+            vis *= GROUND_TRANSMISSION
+        acc[m] += w[m] * vis
+        wsum[m] += w[m]
+    return acc / np.maximum(wsum, 1e-9)
+
+
+def tyre_occluders(layout):
+    """Closed 32-sided cylinders standing in for the four tyres (car frame, wheel centre at y = r)."""
+    verts, tris = [], []
+    k = 32
+    for key in ('FL', 'FR', 'RL', 'RR'):
+        x, r = layout[key]['x'], layout[key]['r']
+        zc = (1 if key[1] == 'R' else -1) * TYRE_CENTRE_Z
+        base = sum(len(v) for v in verts)
+        a = np.arange(k) / k * 2 * np.pi
+        ring = np.stack([x + r * np.cos(a), r + r * np.sin(a)], 1)
+        v = np.concatenate([np.c_[ring, np.full(k, zc - TYRE_WIDTH / 2)], np.c_[ring, np.full(k, zc + TYRE_WIDTH / 2)],
+                            [[x, r, zc - TYRE_WIDTH / 2], [x, r, zc + TYRE_WIDTH / 2]]])
+        verts.append(v)
+        for i in range(k):
+            j = (i + 1) % k
+            tris += [[base + i, base + j, base + k + i], [base + j, base + k + j, base + k + i],
+                     [base + 2 * k, base + j, base + i], [base + 2 * k + 1, base + k + i, base + k + j]]
+    return np.concatenate(verts), np.array(tris)
+
+
+def dilate(values, known, iterations=24):
+    """Fill unknown texels from known neighbours (gutters), so mip levels do not bleed other charts in."""
+    v = np.where(known, values, 0.0)
+    k = known.astype(float)
+    for _ in range(iterations):
+        s = np.zeros_like(v)
+        c = np.zeros_like(v)
+        for dy in (-1, 0, 1):
+            for dx in (-1, 0, 1):
+                s += np.roll(np.roll(v * k, dy, 0), dx, 1)
+                c += np.roll(np.roll(k, dy, 0), dx, 1)
+        grow = (k == 0) & (c > 0)
+        v = np.where(grow, s / np.maximum(c, 1e-9), v)
+        k = np.where(grow, 1.0, k)
+    return np.where(k > 0, v, 1.0)
+
+
+def bake_orm(P, UV, I, corner_normals, mr, maps, dirs):
+    """ORM texture (glTF packing): R ambient occlusion (baked here), G roughness and B metalness (source)."""
+    N = ORM_SIZE
+    pix, tri, bary = rasterize(UV * N, I, N, N)  # flipY false: row = v * N
+    first = np.unique(pix, return_index=True)[1]
+    pix, tri, bary = pix[first], tri[first], bary[first]
+    pts = (P[I[tri]] * bary[:, :, None]).sum(1)
+    nrm = (corner_normals[tri] * bary[:, :, None]).sum(1)
+    nrm /= np.maximum(np.linalg.norm(nrm, axis=1, keepdims=True), 1e-9)
+    ao = visibility(pts, nrm, dirs, maps, ground_y=0.0)
+    img = np.zeros(N * N)
+    known = np.zeros(N * N, bool)
+    img[pix] = ao
+    known[pix] = True
+    ao_map = dilate(img.reshape(N, N), known.reshape(N, N))
+    log('ORM: %d texels baked (%.1f %%), AO mean %.2f, 5th pct %.2f' % (
+        len(pix), 100 * len(pix) / N / N, ao.mean(), np.percentile(ao, 5)))
+    from PIL import Image
+    src = np.asarray(Image.fromarray((mr * 255).astype(np.uint8)).resize((N, N), Image.LANCZOS)).astype(np.float32) / 255
+    orm = np.stack([ao_map, src[..., 1], src[..., 2]], 2)
+    return orm, ao
+
+
+def bake_footprint(P, I, layout, dirs, maps_body):
+    """Ground occlusion around the car (car frame, road at y = TYRE_DEFLECTION), body plus tyre occluders."""
+    tv, tt = tyre_occluders(layout)
+    allP = np.concatenate([P, tv])
+    allI = np.concatenate([I, tt + len(P)])
+    up = fibonacci_directions(2 * FOOTPRINT_DIRECTIONS)
+    up = up[up[:, 1] > 0.02]
+    maps = depth_maps(allP, allI, up, cell=0.02)
+    (ex, ez), (nx, nz) = FOOTPRINT_EXTENT, FOOTPRINT_PIXELS
+    xs = (np.arange(nx) + 0.5) / nx * ex - ex / 2
+    zs = (np.arange(nz) + 0.5) / nz * ez - ez / 2
+    gx, gz = np.meshgrid(xs, zs)
+    pts = np.stack([gx.ravel(), np.full(gx.size, TYRE_DEFLECTION + 0.002), gz.ravel()], 1)
+    nrm = np.tile([0.0, 1.0, 0.0], (len(pts), 1))
+    vis = visibility(pts, nrm, up, maps, max_range=FOOTPRINT_RANGE)
+    occ = (1 - vis).reshape(nz, nx)
+    # a 5-tap binomial blur hides the steps between the discrete directions
+    k = np.array([1, 4, 6, 4, 1], float) / 16
+    for axis in (0, 1):
+        occ = sum(w * np.roll(occ, s, axis) for w, s in zip(k, range(-2, 3)))
+    # fade to zero over the outer 12 % so the decal never shows an edge
+    fx = np.clip(np.minimum(gx + ex / 2, ex / 2 - gx) / (0.12 * ex / 2), 0, 1)
+    fz = np.clip(np.minimum(gz + ez / 2, ez / 2 - gz) / (0.12 * ez / 2), 0, 1)
+    occ *= (fx * fx * (3 - 2 * fx)) * (fz * fz * (3 - 2 * fz))
+    log('footprint: %dx%d px over %.1f x %.1f m, max occlusion %.2f, under the doors %.2f' % (
+        nx, nz, ex, ez, occ.max(), occ[nz // 2, nx // 2]))
+    return occ
+
+
 def main():
     src, P, UV, I = load_source()
     I = drop_debris(P, UV, I)
@@ -376,8 +592,27 @@ def main():
         start = int(np.searchsorted(cls, k)) * 3
         count = int((cls == k).sum()) * 3
         groups.append({'name': name, 'start': start, 'count': count})
-    extra = {'textures': {'map': src['material']['map'], 'normalMap': src['material']['normalMap'],
-                          'metalRoughMap': src['material']['metalRoughMap']}}
+    # ambient occlusion: the body's ORM texture and the ground footprint
+    from PIL import Image
+    layout = json.load(open(os.path.join(MODELS, 'hero-car.json')))
+    dirs = fibonacci_directions(AO_DIRECTIONS)
+    maps = depth_maps(P, I, dirs)
+    orm, ao = bake_orm(P, UV, I, normals, mr, maps, dirs)
+    orm8 = np.clip(np.round(orm * 255), 0, 255).astype(np.uint8)
+    Image.fromarray(orm8).save(OUT_ORM, 'WEBP', quality=80, method=6)
+    back = np.asarray(Image.open(OUT_ORM).convert('RGB')).astype(int)
+    err = np.abs(back - orm8.astype(int)).reshape(-1, 3)
+    log('wrote %s (%d bytes); encode error per channel mean %s, 99th pct %s' % (
+        os.path.basename(OUT_ORM), os.path.getsize(OUT_ORM), err.mean(0).round(2), np.percentile(err, 99, axis=0)))
+    occ = bake_footprint(P, I, layout, dirs, maps)
+    Image.fromarray(np.clip(np.round(occ * 255), 0, 255).astype(np.uint8), 'L').save(OUT_FOOTPRINT, 'WEBP', lossless=True)
+    log('wrote %s (%d bytes)' % (os.path.basename(OUT_FOOTPRINT), os.path.getsize(OUT_FOOTPRINT)))
+    extra = {
+        'textures': {'map': src['material']['map'], 'normalMap': src['material']['normalMap'],
+                     'ormMap': os.path.basename(OUT_ORM)},
+        'footprint': {'map': os.path.basename(OUT_FOOTPRINT), 'size': list(FOOTPRINT_EXTENT),
+                      'note': 'ground occlusion (alpha), car frame, centred on the origin, +x along the texture width'},
+    }
     write_outputs(pos, uv, nrm, index, groups, extra)
 
 

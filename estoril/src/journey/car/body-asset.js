@@ -3,9 +3,18 @@
 // hero-car-body.json describes one binary buffer (hero-car-body.bin, in the same folder):
 //   position float32 × 3 (metres, +x forward, +y up, +z right), uv uint16 × 2 normalised,
 //   normal int16 × 3 normalised (creased normals, computed offline), index uint16,
-// plus `groups` (index ranges sorted by material) and the texture file names. The page only wraps
+// plus `groups` (index ranges sorted by material), the texture file names (base colour, normal map and
+// an ORM map: baked ambient occlusion in R, roughness in G, metalness in B) and `footprint`, the car's
+// baked ground occlusion (a grayscale image over `size` metres of road). The page only wraps
 // the buffer in typed-array views: no per-vertex work at load time.
-import { BufferAttribute, BufferGeometry, RepeatWrapping, SRGBColorSpace, TextureLoader } from 'three';
+import {
+  BufferAttribute,
+  BufferGeometry,
+  ClampToEdgeWrapping,
+  RepeatWrapping,
+  SRGBColorSpace,
+  TextureLoader,
+} from 'three';
 
 const ARRAY_TYPES = { float32: Float32Array, uint16: Uint16Array, int16: Int16Array };
 
@@ -21,7 +30,8 @@ function view(buffer, spec, count) {
  * @param {(progress: {loaded: number, total: number}) => void} [onProgress] after the buffer (1/2)
  *   and after the textures (2/2)
  * @returns {Promise<{ geometry: BufferGeometry, groups: Array<{name: string, start: number, count: number}>,
- *   textures: Record<string, import('three').Texture>, desc: object }>}
+ *   textures: Record<string, import('three').Texture>, desc: object }>} textures: map, normalMap, ormMap
+ *   and footprint
  */
 async function loadBodyAsset(url, onProgress) {
   const baseUrl = url.slice(0, url.lastIndexOf('/') + 1);
@@ -49,9 +59,16 @@ async function loadBodyAsset(url, onProgress) {
     if (isColor) texture.colorSpace = SRGBColorSpace;
     return texture;
   };
-  const names = Object.keys(desc.textures);
-  const loaded = await Promise.all(names.map((key) => loadTexture(desc.textures[key], key === 'map')));
+  const files = { ...desc.textures };
+  if (desc.footprint) files.footprint = desc.footprint.map;
+  const names = Object.keys(files);
+  const loaded = await Promise.all(names.map((key) => loadTexture(files[key], key === 'map')));
   const textures = Object.fromEntries(names.map((key, i) => [key, loaded[i]]));
+  if (textures.footprint) {
+    // a plain image on a PlaneGeometry
+    textures.footprint.flipY = true;
+    textures.footprint.wrapS = textures.footprint.wrapT = ClampToEdgeWrapping;
+  }
   onProgress && onProgress({ loaded: 2, total: 2 });
   return { geometry, groups: desc.groups, textures, desc };
 }

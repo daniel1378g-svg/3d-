@@ -55,6 +55,14 @@
  "textures": {
   "map": "hero-car-base.webp",
   "normalMap": "hero-car-normal.webp",
-  "metalRoughMap": "hero-car-mr.webp"
+  "ormMap": "hero-car-orm.webp"
+ },
+ "footprint": {
+  "map": "hero-car-shadow.webp",
+  "size": [
+   6.4,
+   3.6
+  ],
+  "note": "ground occlusion (alpha), car frame, centred on the origin, +x along the texture width"
  }
 }

@@ -9,8 +9,10 @@
 //   │   └─ wheel-wells              one mesh: 4 arch liners + back plates hiding the body's inside
 //   ├─ wheels                       9 instanced parts × 4 wheels (car/wheel.js), unsprung, at
 //   │                               (x, r, ±0.86); the front pair steers
-//   ├─ contact shadow decal         5.5 × 2.75 m, userData.noMask
-//   └─ 4 × blob shadow under tyres  userData.noMask
+//   └─ ground-occlusion             baked car-shaped AO decal on the road (6.4 × 3.6 m), noMask
+//
+// The chassis and the wheels sit RIDE_HEIGHT above the root, so the tyres press 12 mm into the road
+// surface at y = ROAD_SURFACE_Y: they visibly touch it on the track, in the pit lane and the paddock.
 //
 // userData.noMask keeps an object off layer 1, which journey.js uses for the motion-blur mask.
 import { CircleGeometry, CylinderGeometry, Group, Mesh, MeshBasicMaterial, PlaneGeometry } from 'three';
@@ -18,12 +20,23 @@ import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js
 import { loadBodyAsset } from './body-asset.js';
 import { bodyMaterials } from './body-materials.js';
 import { createWheels } from './wheel.js';
-import { blobShadowTexture, roundedShadowTexture } from '../textures.js';
 
 /** Tyre width, metres. */
 const WHEEL_WIDTH = 0.34;
 /** Lateral distance of the wheel centres from the car's centre line, metres. */
 const WHEEL_CENTRE_Z = 0.86;
+/**
+ * Top of the asphalt the car drives on (world track surfaces y 0.03; the pit lane is at 0.025 and the
+ * paddock at 0.02). The car path itself is at y = 0.
+ */
+const ROAD_SURFACE_Y = 0.03;
+/** Tyres sink this far below ROAD_SURFACE_Y: a loaded tyre's flattened contact patch (≈ 16 cm long). */
+const TYRE_DEFLECTION = 0.012;
+/** Height of the car frame (tyre bottoms, body) above the path: wheels and chassis are raised by it. */
+const RIDE_HEIGHT = ROAD_SURFACE_Y - TYRE_DEFLECTION;
+/** The occlusion decal floats this far above ROAD_SURFACE_Y (above the 0.034 rubber line too). */
+const FOOTPRINT_LIFT = 0.006;
+const FOOTPRINT_OPACITY = 0.9;
 /** Inboard and outboard |z| of the wheel wells (the body's arch cut-outs span |z| 0.49 to 0.98–1.02). */
 const WELL_INNER_Z = 0.49;
 const WELL_OUTER_Z = 0.95;
@@ -39,6 +52,8 @@ async function loadBody(url, quality, onProgress) {
   mesh.castShadow = mesh.receiveShadow = true;
   const group = new Group();
   group.add(mesh);
+  group.userData.footprint = textures.footprint;
+  group.userData.footprintSize = desc.footprint.size;
   return group;
 }
 
@@ -71,42 +86,30 @@ function wheelWells(layout, material) {
 }
 
 /**
- * Soft rounded-rectangle shadow under the whole car plus a darker blob under each tyre. Both are
- * ground decals on the root (they do not pitch/roll with the chassis), excluded from the motion
- * mask, drawn after the ground with polygonOffset instead of depth writes.
+ * The car's ground contact: a decal of the baked ground occlusion (tools/car/bake_body.py: the body
+ * and the four tyres occluding the sky above each road point within 1.6 m, so it is car-shaped, darkest
+ * under the floor and at the tyre contact patches, and fades to nothing before its edges). It lies on
+ * the root (it does not pitch or roll with the chassis), just above the road, is excluded from the
+ * motion-blur mask and draws after the ground with polygonOffset instead of depth writes.
  */
-function addContactShadows(root, layout) {
-  let carShadowMaterial = new MeshBasicMaterial({
-      map: roundedShadowTexture(256, 128, { alpha: 0.8 }),
-      transparent: true,
-      depthWrite: false,
-      polygonOffset: true,
-      polygonOffsetFactor: -2,
-      polygonOffsetUnits: -2,
-    }),
-    carShadow = new Mesh(new PlaneGeometry(5.5, 2.75), carShadowMaterial);
-  ((carShadow.rotation.x = -Math.PI / 2),
-    carShadow.position.set(0, 0.055, 0),
-    (carShadow.renderOrder = 1),
-    (carShadow.userData.noMask = true),
-    root.add(carShadow));
-  let tyreShadowMaterial = new MeshBasicMaterial({
-    map: blobShadowTexture(),
+function groundOcclusion(texture, [width, depth]) {
+  const material = new MeshBasicMaterial({
+    name: 'car-ground-occlusion',
+    color: 0x000000,
+    alphaMap: texture,
     transparent: true,
+    opacity: FOOTPRINT_OPACITY,
     depthWrite: false,
-    opacity: 0.9,
     polygonOffset: true,
-    polygonOffsetFactor: -3,
-    polygonOffsetUnits: -3,
+    polygonOffsetFactor: -2,
+    polygonOffsetUnits: -4,
   });
-  for (const key of ['FL', 'FR', 'RL', 'RR']) {
-    let tyreShadow = new Mesh(new PlaneGeometry(0.95, 0.62), tyreShadowMaterial);
-    ((tyreShadow.rotation.x = -Math.PI / 2),
-      tyreShadow.position.set(layout[key].x, 0.06, (key[1] === 'R' ? 1 : -1) * WHEEL_CENTRE_Z),
-      (tyreShadow.renderOrder = 2),
-      (tyreShadow.userData.noMask = true),
-      root.add(tyreShadow));
-  }
+  const mesh = new Mesh(new PlaneGeometry(width, depth).rotateX(-Math.PI / 2), material);
+  mesh.name = 'ground-occlusion';
+  mesh.position.y = ROAD_SURFACE_Y + FOOTPRINT_LIFT;
+  mesh.renderOrder = 1;
+  mesh.userData.noMask = true;
+  return mesh;
 }
 
 /**
@@ -125,12 +128,18 @@ async function buildHeroCar(url, wheelLayout, { onProgress, quality = 'high' } =
     root = new Group();
   root.name = 'hero-car';
   let chassis = new Group();
+  chassis.position.y = RIDE_HEIGHT;
   (root.add(chassis), chassis.add(body));
-  const wheels = createWheels({ layout: wheelLayout, width: WHEEL_WIDTH, centreZ: WHEEL_CENTRE_Z });
+  const wheels = createWheels({
+    layout: wheelLayout,
+    width: WHEEL_WIDTH,
+    centreZ: WHEEL_CENTRE_Z,
+    centreY: RIDE_HEIGHT,
+  });
   const materials = wheels.materials;
   root.add(wheels.group);
   chassis.add(wheelWells(wheelLayout, materials.well));
-  addContactShadows(root, wheelLayout);
+  root.add(groundOcclusion(body.userData.footprint, body.userData.footprintSize));
   return {
     root,
     chassis,
@@ -151,7 +160,7 @@ async function buildHeroCar(url, wheelLayout, { onProgress, quality = 'high' } =
       materials.blur.visible = materials.blur.opacity > 0.01;
       wheels.update(dist, steer);
       chassis.rotation.set(roll, 0, pitch);
-      chassis.position.y = heave;
+      chassis.position.y = RIDE_HEIGHT + heave;
     },
   };
 }
