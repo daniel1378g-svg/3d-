@@ -21,8 +21,8 @@
 //   the sign of offsetA - offsetB at the first sample (ribbonIndices). Normals are written
 //   explicitly instead of being averaged from the faces: (0, 1, 0) on a flat strip; on a cambered
 //   one (heightA != heightB) the normal of its cross-slope, tilted away from the higher edge.
-//   Barrier walls are closed slabs (track-side face, back face, top); the track-side face looks at
-//   the centre line.
+//   Barrier walls are closed slabs (track-side face, back face, top, square end caps); the
+//   track-side face looks at the centre line.
 import { BufferGeometry, Float32BufferAttribute } from 'three';
 
 /** An edge vertex must advance at least this far (metres) along the tangent, or it is held. */
@@ -212,8 +212,9 @@ function buildStrip(
 /**
  * A barrier wall standing on the ground (y = 0) along one lateral offset of the centre line: a
  * closed slab WALL_THICKNESS thick whose track-side face lies on the offset and looks at the
- * centre line, plus a back face looking away and a top. Normals are horizontal on the faces and
- * +y on the top; the ends are open.
+ * centre line, plus a back face looking away, a top and a square cap at each end (along the
+ * normal of the first and last sample). Normals are horizontal on the faces and caps and +y on the
+ * top.
  *
  * @param {object} model the track model (createTrackModel)
  * @param {number | ((sampleIndex: number, step: number) => number)} offset lateral offset of the
@@ -254,6 +255,29 @@ function buildBarrierWall(model, offset, [first, last], height, uScale) {
     // for all three faces (A->B up the track side, down the back, outwards on top) the face normal
     // T × (B - A) points the wanted way exactly when the wall is on the left (side < 0)
     ribbonIndices(last - first, side < 0, base, indices);
+  }
+  // end caps: square cuts along the normal of the first and last sample, facing back / forward
+  for (const [k, facing] of [
+    [0, -1],
+    [last - first, 1],
+  ]) {
+    const i = wrapIndex(first + k, line.count);
+    const base = positions.length / 3;
+    const [fx, fz, bx, bz] = [
+      front.points[2 * k],
+      front.points[2 * k + 1],
+      back.points[2 * k],
+      back.points[2 * k + 1],
+    ];
+    positions.push(fx, 0, fz, fx, height, fz, bx, height, bz, bx, 0, bz);
+    const nx = facing * line.tx[i];
+    const nz = facing * line.tz[i];
+    normals.push(nx, 0, nz, nx, 0, nz, nx, 0, nz, nx, 0, nz);
+    const u = WALL_THICKNESS * uScale;
+    uvs.push(0, 0, 0, 1, u, 1, u, 0);
+    // (front foot, front top, back top) has the face normal up × (back - front) = side × tangent
+    if (side * facing > 0) indices.push(base, base + 1, base + 2, base, base + 2, base + 3);
+    else indices.push(base, base + 2, base + 1, base, base + 3, base + 2);
   }
   return ribbonGeometry(positions, normals, uvs, indices, [first, last], {
     held: front.held + back.held,

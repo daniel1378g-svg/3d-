@@ -8,10 +8,13 @@
 //   facing       every flat strip (asphalt, rubber, lines, kerbs, run-off, gravel) faces up (+y):
 //                every normal attribute has y > 0, and no triangle is inverted (folded) or
 //                degenerate; the kerbs' risers face away from the centre line
-//   walls        every barrier wall's winding agrees with its normals, and its track-side face
-//                looks at the centre-line sample it was built from (the back face looks away)
+//   walls        every barrier wall's winding agrees with its normals, it has no zero-area triangle,
+//                and its track-side face looks at the centre-line sample it was built from (the
+//                back face looks away); no wall vertex lies inside or within WALL_GAP of a gravel
+//                trap (its own or another) or of another wall (walls never cross)
 //   clearance    no kerb, run-off, gravel or wall vertex lies on the asphalt of another part of the
-//                track (distance to every centre-line sample minus its half-width)
+//                track (distance to every centre-line sample minus its half-width); walls stay
+//                WALL_TRACK_CLEARANCE from every asphalt edge
 //   layers       every pair of up-facing ground-level triangles that overlap in plan (track strips,
 //                pit lane, pit entry/exit, painted lines, start line, grid slots) is at least
 //                MIN_LAYER_GAP apart in height where they overlap, and above the terrain
@@ -35,7 +38,8 @@ const context2d = new Proxy(
 globalThis.document ??= { createElement: () => ({ width: 0, height: 0, getContext: () => context2d }) };
 
 const { MIN_RADIUS, analyseTrack } = await import('../src/journey/world/track-analysis.js');
-const { buildTrackSurfaces } = await import('../src/journey/world/track-surfaces.js');
+const { WALL_GAP, WALL_TRACK_CLEARANCE, buildTrackSurfaces } =
+  await import('../src/journey/world/track-surfaces.js');
 const { createWorldContext } = await import('../src/journey/world/context.js');
 const { buildPitLaneSurface } = await import('../src/journey/world/pits.js');
 const { buildStartGantry } = await import('../src/journey/world/main-straight.js');
@@ -49,7 +53,7 @@ const trackPoints = JSON.parse(readFileSync(root + 'site/assets/data/track.json'
 /** Largest allowed distance (metres) of a source point from the model's centre line. */
 const MAX_DEVIATION = 4;
 /** Corner strips and walls must stay this far (metres) from the asphalt edge of other track parts. */
-const CLEARANCE = { kerb: -0.01, runoff: 0.5, gravel: 0.5, barrier: 0.5 };
+const CLEARANCE = { kerb: -0.01, runoff: 0.5, gravel: 0.5, barrier: WALL_TRACK_CLEARANCE - 1e-3 };
 
 // the real world context (materials, helpers), then the track surfaces, pit lane and start area
 const ctx = createWorldContext(trackPoints, 'high');
@@ -232,8 +236,11 @@ check(
   let trackSideAway = 0;
   let backTowards = 0;
   let repaired = 0;
+  let degenerate = 0;
   for (const wall of walls) {
-    const tris = triangles(wall).filter((t) => t.geometric.length() > 1e-6);
+    const all = triangles(wall);
+    const tris = all.filter((t) => t.geometric.length() / 2 >= 1e-6);
+    degenerate += all.length - tris.length;
     count += tris.length;
     for (const t of tris) if (t.geometric.clone().normalize().dot(t.attribute) <= 0) inverted++;
     const repairs = wall.geometry.userData.repairs;
@@ -261,14 +268,88 @@ check(
     }
   }
   console.log(
-    `walls: ${walls.length} walls, ${count} triangles, inverted ${inverted}, track-side vertices facing away from` +
-      ` their centre-line sample ${trackSideAway} of ${trackSide}, back-face vertices facing the track ${backTowards},` +
-      ` guard repairs ${repaired}`,
+    `walls: ${walls.length} walls, ${count} triangles, inverted ${inverted}, degenerate ${degenerate},` +
+      ` track-side vertices facing away from their centre-line sample ${trackSideAway} of ${trackSide},` +
+      ` back-face vertices facing the track ${backTowards}, guard repairs ${repaired}`,
   );
   check(walls.length > 0, 'no barrier walls built');
+  check(degenerate === 0, `walls: ${degenerate} degenerate (zero-area) triangles`);
   check(inverted === 0, `walls: ${inverted} triangles whose winding disagrees with their normals`);
   check(trackSideAway === 0, `walls: ${trackSideAway} track-side vertices face away from the centre line`);
   check(backTowards === 0, `walls: ${backTowards} back-face vertices face the centre line`);
+}
+
+// --- walls against gravel and against each other -----------------------------------------------------
+{
+  // plan distance from a point to a triangle (0 inside) or a segment (c = b)
+  const toSegment = (px, pz, ax, az, bx, bz) => segmentDistance(px, pz, ax, az, bx, bz);
+  const toTriangle = (px, pz, t) => {
+    const [ax, az, bx, bz, cx, cz] = t;
+    const s = (x0, z0, x1, z1) => (x1 - x0) * (pz - z0) - (z1 - z0) * (px - x0);
+    const d1 = s(ax, az, bx, bz);
+    const d2 = s(bx, bz, cx, cz);
+    const d3 = s(cx, cz, ax, az);
+    if ((d1 >= 0 && d2 >= 0 && d3 >= 0) || (d1 <= 0 && d2 <= 0 && d3 <= 0)) return 0;
+    return Math.min(
+      toSegment(px, pz, ax, az, bx, bz),
+      toSegment(px, pz, bx, bz, cx, cz),
+      toSegment(px, pz, cx, cz, ax, az),
+    );
+  };
+  // plan triangles of a mesh, in 10 m cells
+  const SIZE = 10;
+  const bucket = (meshes) => {
+    const cells = new Map();
+    meshes.forEach((mesh, id) => {
+      for (const t of triangles(mesh)) {
+        const tri = [t.a.x, t.a.z, t.b.x, t.b.z, t.c.x, t.c.z];
+        const x0 = Math.floor(Math.min(t.a.x, t.b.x, t.c.x) / SIZE);
+        const x1 = Math.floor(Math.max(t.a.x, t.b.x, t.c.x) / SIZE);
+        const z0 = Math.floor(Math.min(t.a.z, t.b.z, t.c.z) / SIZE);
+        const z1 = Math.floor(Math.max(t.a.z, t.b.z, t.c.z) / SIZE);
+        for (let cx = x0; cx <= x1; cx++)
+          for (let cz = z0; cz <= z1; cz++) {
+            const key = cx + ',' + cz;
+            if (!cells.has(key)) cells.set(key, []);
+            cells.get(key).push({ id, tri });
+          }
+      }
+    });
+    return (x, z, skip = -1) => {
+      let best = Infinity;
+      for (let dx = -1; dx <= 1; dx++)
+        for (let dz = -1; dz <= 1; dz++)
+          for (const { id, tri } of cells.get(
+            Math.floor(x / SIZE) + dx + ',' + (Math.floor(z / SIZE) + dz),
+          ) || [])
+            if (id !== skip) best = Math.min(best, toTriangle(x, z, tri));
+      return best;
+    };
+  };
+  const walls = meshes.filter((m) => m.kind === 'barrier');
+  const gravelDistance = bucket(meshes.filter((m) => m.kind === 'gravel'));
+  const wallDistance = bucket(walls);
+  let inGravel = 0;
+  let nearGravel = Infinity;
+  let nearWall = Infinity;
+  walls.forEach((wall, id) => {
+    const position = wall.geometry.attributes.position;
+    for (let v = 0; v < position.count; v++) {
+      const x = position.getX(v);
+      const z = position.getZ(v);
+      const g = gravelDistance(x, z);
+      if (g === 0) inGravel++;
+      nearGravel = Math.min(nearGravel, g);
+      nearWall = Math.min(nearWall, wallDistance(x, z, id));
+    }
+  });
+  console.log(
+    `walls vs gravel: ${inGravel} wall vertices inside a gravel trap, nearest ${nearGravel.toFixed(2)} m;` +
+      ` nearest other wall ${nearWall.toFixed(2)} m (minimum ${WALL_GAP} m)`,
+  );
+  check(inGravel === 0, `walls: ${inGravel} vertices inside gravel`);
+  check(nearGravel >= WALL_GAP - 1e-3, `walls: a wall stands ${nearGravel} m from gravel`);
+  check(nearWall >= WALL_GAP - 1e-3, `walls: two walls come within ${nearWall} m (cross or touch)`);
 }
 
 // --- clearance from other parts of the track -------------------------------------------------------
