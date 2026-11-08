@@ -404,6 +404,7 @@ function initJourney() {
       // deterministic stills: stop the loops and render a given progress on request
       setRunning(false);
       capturePaused = true;
+      window.__journey = scene; // debugCam overrides for scripted captures (scripts/capture.mjs --cam)
       window.__cap = (t, dt = 0) => {
         window.scrollTo(0, journey.getBoundingClientRect().top + scrollY + t * scrollRange());
         scene.renderAt(t, { dt });
