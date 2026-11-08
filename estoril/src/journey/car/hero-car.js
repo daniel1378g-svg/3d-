@@ -1,11 +1,11 @@
-// Loads the hero car mesh and builds its materials, wheels and contact shadows.
+// Builds the hero car: the packed body (car/body-asset.js), its materials, wheels and contact shadows.
 //
 // Car frame: metres, +x forward, y up with the ground at y = 0, +z to the right (the "units" of
-// hero-car-mesh.json). Scene graph returned by buildHeroCar:
+// the body asset). Scene graph returned by buildHeroCar:
 //
 //   root 'hero-car'                 journey.js sets position (on the driving line) and rotation.y
 //   ├─ chassis                      sprung mass: pose() rolls (x), pitches (z) and heaves (y) it
-//   │   ├─ body                     Group > Mesh 'body' (the single-material scanned body)
+//   │   ├─ body                     Group > Mesh 'body' (the scanned body, normals baked offline)
 //   │   └─ 4 × wheel-well liner + back plate (dark, hide the body interior behind the wheels)
 //   ├─ 4 × wheel steer group        unsprung, at (x, r, ±0.86); front ones steer about y
 //   ├─ contact shadow decal         5.5 × 2.75 m, userData.noMask
@@ -13,189 +13,57 @@
 //
 // userData.noMask keeps an object off layer 1, which journey.js uses for the motion-blur mask.
 import {
-  BufferAttribute,
-  BufferGeometry,
   CircleGeometry,
   CylinderGeometry,
-  Float32BufferAttribute,
   Group,
-  MathUtils,
   Mesh,
   MeshBasicMaterial,
   MeshPhysicalMaterial,
   MeshStandardMaterial,
   PlaneGeometry,
-  RepeatWrapping,
-  SRGBColorSpace,
-  TextureLoader,
 } from 'three';
+import { loadBodyAsset } from './body-asset.js';
 import { buildWheel, wheelMaterials } from './wheel.js';
 import { blobShadowTexture, roundedShadowTexture } from '../textures.js';
 
-/** Smoothing threshold for the generated body normals (faces meeting at more than this stay sharp). */
-var BODY_CREASE_ANGLE_DEG = 50,
-  /** Tyre width passed to buildWheel, metres. */
-  WHEEL_WIDTH = 0.34,
+/** Tyre width passed to buildWheel, metres. */
+var WHEEL_WIDTH = 0.34,
   /** Lateral distance of the wheel centres from the car's centre line, metres. */
   WHEEL_CENTRE_Z = 0.86;
 
 /**
- * Loads the "ce-mesh/1" JSON (position / uv / index arrays plus texture file names) and its three
- * textures (base colour, normal, glTF-style metal-roughness), relative to the JSON's folder.
- * Reports progress as { loaded, total } after the JSON (1/2) and after the textures (2/2).
- *
- * @returns {Promise<Group>} a Group holding one Mesh named after the JSON's `name`, with a
- *   flat-shaded MeshStandardMaterial (the geometry has no normals yet)
+ * The body material: base colour, normal and glTF metal-roughness maps (roughness in G, metalness
+ * in B); a light clearcoat unless quality is 'low'. The normal map is a glTF (OpenGL, +Y up)
+ * tangent-space map read with flipY = false and no vertex tangents, so its green channel is
+ * negated (as three's GLTFLoader does) and softened to 0.6.
  */
-async function loadCarMesh(url, onProgress) {
-  let baseUrl = url.slice(0, url.lastIndexOf('/') + 1),
-    data = await (await fetch(url)).json();
-  onProgress && onProgress({ loaded: 1, total: 2 });
-  let geometry = new BufferGeometry();
-  (geometry.setAttribute('position', new Float32BufferAttribute(data.position, 3)),
-    geometry.setAttribute('uv', new Float32BufferAttribute(data.uv, 2)),
-    geometry.setIndex(data.index));
-  let loader = new TextureLoader(),
-    // glTF-style UVs (flipY false); only the base colour map holds sRGB colour data.
-    loadTexture = async (file, isColor) => {
-      let texture = await loader.loadAsync(baseUrl + file);
-      return (
-        (texture.flipY = false),
-        (texture.wrapS = texture.wrapT = RepeatWrapping),
-        isColor && (texture.colorSpace = SRGBColorSpace),
-        texture
-      );
-    },
-    materialSpec = data.material,
-    // The three Texture objects are created synchronously, in this order, before any await.
-    [baseColorMap, normalMap, metalRoughMap] = await Promise.all([
-      loadTexture(materialSpec.map, true),
-      loadTexture(materialSpec.normalMap),
-      loadTexture(materialSpec.metalRoughMap),
-    ]);
-  onProgress && onProgress({ loaded: 2, total: 2 });
-  let material = new MeshStandardMaterial({
-    map: baseColorMap,
-    normalMap: normalMap,
-    // glTF packing: roughness in G, metalness in B of the same texture.
-    roughnessMap: metalRoughMap,
-    metalnessMap: metalRoughMap,
-    metalness: materialSpec.metalness,
-    roughness: materialSpec.roughness,
-    flatShading: true,
-  });
-  // Green channel flipped for a flipY = false (glTF-convention) normal map.
-  material.normalScale.set(1, -1);
-  let mesh = new Mesh(geometry, material);
-  mesh.name = data.name;
-  let group = new Group();
-  return (group.add(mesh), group);
+function bodyMaterial(textures, quality) {
+  const params = {
+    map: textures.map,
+    normalMap: textures.normalMap,
+    roughnessMap: textures.metalRoughMap,
+    metalnessMap: textures.metalRoughMap,
+    metalness: 1,
+    roughness: 1,
+    envMapIntensity: 1,
+  };
+  const material =
+    quality === 'low'
+      ? new MeshStandardMaterial(params)
+      : new MeshPhysicalMaterial({ ...params, clearcoat: 0.32, clearcoatRoughness: 0.14 });
+  material.normalScale.set(0.6, -0.6);
+  return material;
 }
 
-/**
- * Smooth normals that keep hard edges: returns a NON-indexed copy of `geometry` (or the geometry
- * itself if it is already non-indexed) with a `normal` attribute. Each corner's normal is the
- * area-weighted average of the normals of all faces that share that corner's position (welded at
- * 0.1 mm) AND whose unit normal is within `creaseAngle` (radians) of the corner's own face.
- */
-function creasedNormals(geometry, creaseAngle) {
-  let soup = geometry.index ? geometry.toNonIndexed() : geometry,
-    positions = soup.attributes.position.array,
-    faceCount = positions.length / 9,
-    minCos = Math.cos(creaseAngle),
-    // Unnormalised cross products: length = 2 × face area, so sums are area-weighted.
-    weightedNormals = new Float32Array(faceCount * 3),
-    unitNormals = new Float32Array(faceCount * 3),
-    cornerKeys = new Array(faceCount * 3),
-    facesByPosition = new Map(),
-    // Position quantised to 1e-4 m, as a string key.
-    positionKey = (offset) =>
-      Math.round(positions[offset] * 1e4) +
-      ',' +
-      Math.round(positions[offset + 1] * 1e4) +
-      ',' +
-      Math.round(positions[offset + 2] * 1e4);
-  for (let face = 0; face < faceCount; face++) {
-    let base = face * 9,
-      edge1X = positions[base + 3] - positions[base],
-      edge1Y = positions[base + 4] - positions[base + 1],
-      edge1Z = positions[base + 5] - positions[base + 2],
-      edge2X = positions[base + 6] - positions[base],
-      edge2Y = positions[base + 7] - positions[base + 1],
-      edge2Z = positions[base + 8] - positions[base + 2],
-      normalX = edge1Y * edge2Z - edge1Z * edge2Y,
-      normalY = edge1Z * edge2X - edge1X * edge2Z,
-      normalZ = edge1X * edge2Y - edge1Y * edge2X,
-      length = Math.hypot(normalX, normalY, normalZ) || 1;
-    ((weightedNormals[face * 3] = normalX),
-      (weightedNormals[face * 3 + 1] = normalY),
-      (weightedNormals[face * 3 + 2] = normalZ),
-      (unitNormals[face * 3] = normalX / length),
-      (unitNormals[face * 3 + 1] = normalY / length),
-      (unitNormals[face * 3 + 2] = normalZ / length));
-    for (let corner = 0; corner < 3; corner++) {
-      let key = positionKey(base + corner * 3);
-      cornerKeys[face * 3 + corner] = key;
-      let faces = facesByPosition.get(key);
-      (faces || facesByPosition.set(key, (faces = [])), faces.push(face));
-    }
-  }
-  let normals = new Float32Array(positions.length);
-  for (let face = 0; face < faceCount; face++)
-    for (let corner = 0; corner < 3; corner++) {
-      let sumX = 0,
-        sumY = 0,
-        sumZ = 0;
-      for (let other of facesByPosition.get(cornerKeys[face * 3 + corner]))
-        unitNormals[face * 3] * unitNormals[other * 3] +
-          unitNormals[face * 3 + 1] * unitNormals[other * 3 + 1] +
-          unitNormals[face * 3 + 2] * unitNormals[other * 3 + 2] >=
-          minCos &&
-          ((sumX += weightedNormals[other * 3]),
-          (sumY += weightedNormals[other * 3 + 1]),
-          (sumZ += weightedNormals[other * 3 + 2]));
-      let length = Math.hypot(sumX, sumY, sumZ) || 1,
-        offset = (face * 3 + corner) * 3;
-      ((normals[offset] = sumX / length),
-        (normals[offset + 1] = sumY / length),
-        (normals[offset + 2] = sumZ / length));
-    }
-  return (soup.setAttribute('normal', new BufferAttribute(normals, 3)), soup);
-}
-
-/** Same maps and PBR values as `standard`, plus a light clearcoat (one coat over the whole body). */
-function toClearcoatMaterial(standard) {
-  return new MeshPhysicalMaterial({
-    map: standard.map,
-    normalMap: standard.normalMap,
-    normalScale: standard.normalScale.clone(),
-    roughnessMap: standard.roughnessMap,
-    metalnessMap: standard.metalnessMap,
-    metalness: standard.metalness,
-    roughness: standard.roughness,
-    color: standard.color,
-    clearcoat: 0.32,
-    clearcoatRoughness: 0.14,
-  });
-}
-
-/**
- * Shadows, normals and material for one body mesh: generates creased normals if the geometry has
- * none (switching off flat shading), upgrades to the clearcoat material unless quality is 'low',
- * and softens the normal map to 0.6 (keeping the flipped green channel).
- */
-function prepareBodyMesh(mesh, quality) {
-  ((mesh.castShadow = true), (mesh.receiveShadow = true));
-  let material = mesh.material;
-  (mesh.geometry.attributes.normal ||
-    ((mesh.geometry = creasedNormals(mesh.geometry, MathUtils.degToRad(BODY_CREASE_ANGLE_DEG))),
-    (material.flatShading = false)),
-    quality !== 'low' &&
-      !material.isMeshPhysicalMaterial &&
-      (material = mesh.material = toClearcoatMaterial(material)),
-    (material.envMapIntensity = 1),
-    material.normalScale && material.normalScale.set(0.6, material.normalScale.y < 0 ? -0.6 : 0.6),
-    (material.needsUpdate = true));
+/** Loads the packed body and returns a Group holding its Mesh (shadows on). */
+async function loadBody(url, quality, onProgress) {
+  const { geometry, textures, desc } = await loadBodyAsset(url, onProgress);
+  const mesh = new Mesh(geometry, bodyMaterial(textures, quality));
+  mesh.name = desc.name;
+  mesh.castShadow = mesh.receiveShadow = true;
+  const group = new Group();
+  group.add(mesh);
+  return group;
 }
 
 /**
@@ -284,23 +152,22 @@ function addContactShadows(root, wheels) {
 }
 
 /**
- * @param {string} url hero-car-mesh.json URL (anything not ending in .json is unsupported)
- * @param {object} wheelLayout hero-car.json: { FL, FR, RL, RR: { x, y, r, side }, scale, bounds }
+ * @param {string} url the car's mesh URL (hero-car-mesh.json); its folder also holds the packed
+ *   body named by `wheelLayout.body`, which is what is loaded when present. The ce-mesh/1 JSON
+ *   itself stays for the published reference build and is not read by this code.
+ * @param {object} wheelLayout hero-car.json: { FL, FR, RL, RR: { x, y, r, side }, scale, bounds, body }
  * @param {object} [options]
  * @param {(progress: {loaded: number, total: number}) => void} [options.onProgress]
  * @param {'low'|'mid'|'high'} [options.quality='high'] 'low' keeps the cheaper standard material
  * @returns {Promise<{root: Group, chassis: Group, body: Group, wheels: object, pose: Function}>}
  */
 async function buildHeroCar(url, wheelLayout, { onProgress, quality = 'high' } = {}) {
-  let body = /\.json$/.test(url) ? await loadCarMesh(url, onProgress) : null,
+  const bodyUrl = wheelLayout.body ? url.slice(0, url.lastIndexOf('/') + 1) + wheelLayout.body : url;
+  let body = await loadBody(bodyUrl, quality, onProgress),
     root = new Group();
   root.name = 'hero-car';
   let chassis = new Group();
-  (root.add(chassis),
-    body.traverse((node) => {
-      node.isMesh && prepareBodyMesh(node, quality);
-    }),
-    chassis.add(body));
+  (root.add(chassis), chassis.add(body));
   let materials = wheelMaterials(),
     wheels = addWheels(root, chassis, wheelLayout, materials);
   addContactShadows(root, wheels);
