@@ -23,6 +23,11 @@ page.on('pageerror', (e) => errors.push(String(e)));
 page.on('console', (m) => { if (m.type() === 'error' || m.type() === 'warning') errors.push(m.type() + ': ' + m.text()); });
 await page.goto(`${base}${page_}?capture=1&3d=force&q=${q}${extra ? '&' + extra : ''}`, { waitUntil: 'load' });
 await page.waitForFunction(() => typeof window.__cap === 'function', null, { timeout: 180000 });
+// let the canvas finish fading in (CSS transition on .is-3d) and render one throwaway frame
+await page.waitForFunction(() => document.querySelector('[data-journey]')?.classList.contains('is-3d'), null, { timeout: 60000 }).catch(() => {});
+await page.addStyleTag({ content: '*,*::before,*::after{transition:none!important;animation:none!important}' });
+await page.evaluate(() => window.__cap(0.5, 0));
+await page.waitForTimeout(300);
 if (hideUi) await page.addStyleTag({ content: '.jr__panels,.jr__ui,.jr__ticker,.hdr,.preview-strip{visibility:hidden!important}.jr__posters{display:none!important}' });
 for (const t of ts) {
   await page.evaluate((t) => window.__cap(t, 0), t);
