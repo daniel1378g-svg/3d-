@@ -1,17 +1,31 @@
-// Date-driven "next event" blocks of the home page (site/index.html, site/en/index.html).
+// Date-driven event blocks: the home page (site/index.html, site/en/index.html, through src/home.js) and
+// the events pages (site/eventos, site/categorias and their English twins, through src/events-page.js).
 //
 // The journey panels list events in four places:
 //   panel 1   .nextev                 the next event that has not ended yet
 //   panel 2   .nextev.nextev--sm      the next TESTES (testing) event
 //   panel 3   .mini-cal               the next four events
 //   bottom    .jr__ticker .ticker     every upcoming event
-// and, below the journey, the calendar section's card grid (.evgrid[data-filter-list]) with the
-// per-category counts of its filter chips ([data-filter] [data-f] .chip__n).
+// Card grids of upcoming events (.evgrid[data-filter-list]: the home page's calendar section, the events
+// index and the category pages, one grid per month) carry the per-category counts of the filter chips of
+// their group ([data-filter] [data-f] .chip__n; the group is the parent of [data-filter], as in site.js).
+// The events pages add (every hook is optional):
+//   section[data-month]            a month of upcoming events: removed once its last card has ended
+//   .evgrid[data-ev-past]          "past events": ended cards move here, latest first (not counted); its
+//                                  section is shown once it holds a card
+//   [data-ev-none]                 shown when no upcoming card is left (else [data-filter-empty] is)
+//   [data-ev-hero]                 the page hero: JSON [[end, src, width, height], ...] in date order; it
+//                                  shows the first one not ended (a last entry with end "" is the
+//                                  fallback photo of the circuit, for when no event is left)
+//   a.chip[data-ev-ends]           category links: the count is the number of these end dates not passed
+//   .evgrid[data-ev-more="3"]      "other events" on an event page: ended cards go, the first three show,
+//                                  and the enclosing section hides when none is left
+//   article[data-start][data-end]  an event page: its [data-ev-ended] tag and note show once it has ended
 //
-// Every <li> of .mini-cal, .ticker and .evgrid carries its dates, and .mini-cal items also their categories:
+// Every <li> of .mini-cal, .ticker and .evgrid carries its dates, and .mini-cal and grid items their categories:
 //   data-start="YYYY-MM-DD" data-end="YYYY-MM-DD"   calendar dates in Europe/Lisbon (end = start for a
 //                                                    one-day event)
-//   data-cats="auto testes"                          category slugs, as on the home page event cards
+//   data-cats="auto testes"                          category slugs, as on the event cards
 // .mini-cal must list every upcoming event in date order; items past the first four stay `hidden`.
 // The two .nextev cards are views of it: they are re-rendered from the chosen .mini-cal item (link,
 // title, and the "date · organiser" line of its <small>), and carry that item's data-start/data-end.
@@ -21,6 +35,7 @@
 //
 // The static HTML is rendered for the day it was published, so the page is right without JS; this
 // script keeps it right on later days. ?today=YYYY-MM-DD overrides the date (for checking a layout).
+// scripts/test-events.mjs checks the static render; scripts/test-site.mjs the runtime one.
 
 const ISO_DAY = /^\d{4}-\d{2}-\d{2}$/;
 const LIST_SIZE = 4;
@@ -104,7 +119,11 @@ function describe(li) {
   const titleEl = li.querySelector('.mini-cal__t');
   const small = titleEl && titleEl.querySelector('small');
   const title = titleEl
-    ? [...titleEl.childNodes].filter((n) => n.nodeType === 3).map((n) => n.nodeValue).join('').trim()
+    ? [...titleEl.childNodes]
+        .filter((n) => n.nodeType === 3)
+        .map((n) => n.nodeValue)
+        .join('')
+        .trim()
     : '';
   const meta = small ? small.textContent : '';
   const cut = meta.indexOf('·');
@@ -125,8 +144,14 @@ export function initEvents(root = document) {
     { el: scope.querySelector('.nextev:not(.nextev--sm)'), pick: 'next', nowKey: 'ev_now' },
     { el: scope.querySelector('.nextev--sm'), pick: 'nextTest', nowKey: 'ev_now_test' },
   ].filter((card) => card.el);
-  const grids = [...root.querySelectorAll('.evgrid[data-filter-list]')];
-  if (!calendar && !ticker && !grids.length) return;
+  const grids = [...root.querySelectorAll('.evgrid[data-filter-list]:not([data-ev-past])')];
+  const pastList = root.querySelector('.evgrid[data-ev-past]');
+  const more = [...root.querySelectorAll('.evgrid[data-ev-more]')];
+  const hero = root.querySelector('[data-ev-hero]');
+  const chipLinks = [...root.querySelectorAll('a.chip[data-ev-ends]')];
+  const eventPage = root.querySelector('article[data-start][data-end]');
+  if (!calendar && !ticker && !grids.length && !more.length && !hero && !chipLinks.length && !eventPage)
+    return;
 
   const strings = (window.CE && window.CE.t) || {};
   // the published kicker ("Próximo evento"), restored when the event is no longer under way
@@ -164,14 +189,25 @@ export function initEvents(root = document) {
       const bar = ticker.closest('.jr__ticker');
       if (bar) setHidden(bar, !ticker.children.length);
     }
-    for (const grid of grids) {
-      let removed = false;
-      for (const item of readList(grid))
-        if (hasEnded(item, day)) {
-          item.el.remove();
-          removed = true;
-        }
-      if (removed) recountFilters(grid);
+    if (grids.length) renderGrids(root, grids, pastList, day);
+    for (const list of more) {
+      const left = [];
+      for (const item of readList(list)) {
+        if (hasEnded(item, day)) item.el.remove();
+        else left.push(item);
+      }
+      left.forEach((item, i) => setHidden(item.el, i >= (+list.dataset.evMore || 3)));
+      const section = list.closest('section');
+      if (section) setHidden(section, !left.length);
+    }
+    if (hero) renderHero(hero, day);
+    for (const chip of chipLinks) {
+      const ends = chip.dataset.evEnds.split(/\s+/).filter(Boolean);
+      setText(chip.querySelector('.chip__n'), String(ends.filter((end) => !hasEnded({ end }, day)).length));
+    }
+    if (eventPage) {
+      const ended = hasEnded(readItem(eventPage), day);
+      for (const el of eventPage.querySelectorAll('[data-ev-ended]')) setHidden(el, !ended);
     }
   }
 
@@ -182,20 +218,64 @@ export function initEvents(root = document) {
 }
 
 /**
- * Updates the counts on the filter chips that belong to `grid` (site.js wires the chips to the
- * [data-filter-list] inside the same parent and reads the cards afresh on every click), and shows
- * the "nothing here" note when every card has ended.
+ * Ended cards leave the upcoming grids: into the past list when the page has one (latest end first), else
+ * out of the page. Then empty months go, and the chip counts and the "nothing here" note follow. site.js
+ * wires the chips to the [data-filter-list] cards inside the chips' parent and reads them afresh on
+ * every click, so moved and removed cards need nothing more.
  */
-function recountFilters(grid) {
-  const group = grid.parentElement;
-  const items = readList(grid);
-  for (const chip of group.querySelectorAll('[data-filter] [data-f]')) {
-    const filter = chip.dataset.f;
-    const count = items.filter((item) => filter === 'all' || item.cats.includes(filter)).length;
-    setText(chip.querySelector('.chip__n'), String(count));
+function renderGrids(root, grids, pastList, day) {
+  let changed = false;
+  for (const grid of grids)
+    for (const item of readList(grid)) {
+      if (!hasEnded(item, day)) continue;
+      changed = true;
+      if (pastList) {
+        const end = lastDay(item);
+        const after = [...pastList.children].find((li) => lastDay(readItem(li)) < end);
+        pastList.insertBefore(item.el, after || null);
+      } else item.el.remove();
+    }
+  if (!changed) return;
+  for (const grid of grids) {
+    const month = grid.closest('[data-month]');
+    if (month && !grid.children.length) month.remove();
   }
-  const empty = group.querySelector('[data-filter-empty]');
+  if (pastList) {
+    const section = pastList.closest('[data-month]') || pastList;
+    setHidden(section, !pastList.children.length);
+  }
+  const live = grids.filter((grid) => grid.isConnected);
+  const items = live.flatMap(readList);
+  // counts per filter group (the chips' parent element, as in site.js)
+  for (const filter of root.querySelectorAll('[data-filter]')) {
+    const group = filter.parentElement;
+    const own = items.filter((item) => group.contains(item.el));
+    for (const chip of filter.querySelectorAll('[data-f]')) {
+      const f = chip.dataset.f;
+      setText(
+        chip.querySelector('.chip__n'),
+        String(own.filter((it) => f === 'all' || it.cats.includes(f)).length),
+      );
+    }
+  }
+  const empty = root.querySelector('[data-ev-none]') || root.querySelector('[data-filter-empty]');
   if (empty && !items.length) setHidden(empty, false);
+}
+
+/** Shows the first hero candidate that has not ended ([[end, src, width, height], ...]). */
+function renderHero(hero, day) {
+  let list = [];
+  try {
+    list = JSON.parse(hero.dataset.evHero);
+  } catch {
+    return;
+  }
+  const pick = list.find(([end]) => !hasEnded({ end }, day));
+  const img = hero.querySelector('img');
+  if (!pick || !img || img.getAttribute('src') === pick[1]) return;
+  img.setAttribute('width', String(pick[2]));
+  img.setAttribute('height', String(pick[3]));
+  img.setAttribute('src', pick[1]);
 }
 
 /** Adds (or removes) a "happening now" tag next to the category tags of a .mini-cal item. */
