@@ -31,7 +31,8 @@ function createRenderer(canvas, quality) {
  * Keeps the drawing buffer at CSS size × min(devicePixelRatio, maxPixelRatio) × resScale and the
  * camera aspect in sync. Uses a ResizeObserver (device-pixel-content-box when supported, so a full
  * resolution buffer matches the screen's pixels exactly) and falls back to getBoundingClientRect.
- * update() is called at the start of every rendered frame; it only resizes when the size changed.
+ * update() is called at the start of every rendered frame; it only resizes when the size changed, and
+ * then returns true.
  */
 function createViewport(canvas, renderer, camera, maxPixelRatio) {
   let cssWidth = 0;
@@ -82,13 +83,13 @@ function createViewport(canvas, renderer, camera, maxPixelRatio) {
       w = Math.max(1, Math.round(cssWidth * ratio));
       h = Math.max(1, Math.round(cssHeight * ratio));
     }
-    if (w !== width || h !== height) {
-      width = w;
-      height = h;
-      renderer.setSize(width, height, false);
-      camera.aspect = width / height;
-      camera.updateProjectionMatrix();
-    }
+    if (w === width && h === height) return false;
+    width = w;
+    height = h;
+    renderer.setSize(width, height, false);
+    camera.aspect = width / height;
+    camera.updateProjectionMatrix();
+    return true;
   }
   return {
     update,

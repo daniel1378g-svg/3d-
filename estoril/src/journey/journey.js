@@ -43,7 +43,13 @@ import {
   updatePitCrew,
 } from './crew-staging.js';
 import { applyLighting, createLights, createShadowFollow } from './lighting.js';
-import { createMotionBlur, motionBlurAmount, renderWithMotionBlur, tagCarForMask } from './motion-blur.js';
+import {
+  createMotionBlur,
+  motionBlurAmount,
+  renderWithMotionBlur,
+  resetMotionBlur,
+  tagCarForMask,
+} from './motion-blur.js';
 import { STAGES, createProgress } from './progress.js';
 import {
   applyAnisotropy,
@@ -57,6 +63,9 @@ import { createTimeOfDaySample, sampleTimeOfDay, solarHourAt } from './time-of-d
 import { createTrackHighlight } from './track-highlight.js';
 import { clamp } from './util/math.js';
 import { buildWorld } from './world/index.js';
+
+/** renderAt(t, { dt > 0 }) continues the previous frame (blur) only within this progress step. */
+const MAX_SEQUENCE_STEP = 0.02;
 
 /** Journey positions pre-rendered by warmup() so their shaders and textures are ready. */
 const WARMUP_PROGRESS = [0.26, 0.37, 0.47, 0.7, 0.95];
@@ -158,7 +167,7 @@ async function createJourney({
     lastFrameTime = now;
     clock += dt;
     if (!visible) return;
-    viewport.update();
+    if (viewport.update()) resetMotionBlur(blur); // a resize is a cut for the blur
     progress.advance(dt);
     const p = progress.value;
     const introEase = progress.introEase;
@@ -192,7 +201,8 @@ async function createJourney({
 
     highlight.update(p, dt, progress.snap, api.basePixelRatio * viewport.resScale);
     world.update(clock, dt);
-    renderWithMotionBlur(renderer, scene, camera, blur, motionBlurAmount(blur, p));
+    const blurAmount = motionBlurAmount(blur, p, director.position.y - cameraFrame.p.y);
+    renderWithMotionBlur(renderer, scene, camera, blur, blurAmount);
   }
 
   // --- finish setup ----------------------------------------------------------------------------
@@ -225,6 +235,7 @@ async function createJourney({
       progress.velocity = 0;
       carMotion.lastDistance = distanceAt(progress.value);
       progress.finishIntro();
+      resetMotionBlur(blur);
     },
     /** Compiles every shader (hidden objects included) and pre-renders a few positions. */
     async warmup() {
@@ -261,6 +272,7 @@ async function createJourney({
       progress.velocity = 0;
       carMotion.speed = carMotion.prevSpeed = 0;
       progress.snap = false;
+      resetMotionBlur(blur);
     },
     /**
      * Where the subject goes on screen. `areas` = { panel, open }: [left, top, right, bottom]
@@ -286,6 +298,7 @@ async function createJourney({
       if (running) return;
       running = true;
       progress.snap = false;
+      resetMotionBlur(blur); // the first frame after a pause is a cut
       lastFrameTime = performance.now();
       rafId = requestAnimationFrame(renderFrame);
     },
@@ -294,6 +307,7 @@ async function createJourney({
       cancelAnimationFrame(rafId);
     },
     setVisible(value) {
+      if (value && !visible) resetMotionBlur(blur);
       visible = value;
     },
     /**
@@ -301,6 +315,8 @@ async function createJourney({
      * `speed` overrides the car speed (m/s), `dt` is the frame time in seconds (0 = car at rest).
      */
     renderAt(value, { intro = 1, speed = null, dt = 0 } = {}) {
+      // a still (dt 0) or a step longer than a scroll frame is a cut: no blur from the last frame
+      if (!dt || Math.abs(value - progress.value) > MAX_SEQUENCE_STEP) resetMotionBlur(blur);
       progress.target = progress.value = value;
       progress.velocity = 0;
       progress.intro = intro;
