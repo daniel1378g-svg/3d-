@@ -16,6 +16,10 @@
 //   lod         every species' far geometry bounding box contains its near geometry (the depth
 //               range indexes the far instances), and the near set refills without exceeding its
 //               capacity at a few camera positions
+//   people      (people.js) in every pose: the visor and the cap brim are in front of the head
+//               (+x, the person's forward), armL hangs on the person's left (-z) and armR on the
+//               right (+z), the feet stay within 3 cm of the ground; the crew and visitors fade
+//               (their group's uniform follows progress) instead of popping
 import { readFileSync } from 'node:fs';
 import { Box3, Matrix4, Vector3 } from 'three';
 
@@ -33,6 +37,9 @@ globalThis.document ??= { createElement: () => ({ width: 0, height: 0, getContex
 const { buildWorld } = await import('../src/journey/world/index.js');
 const { BUDGET, TRACK_CLEARANCE } = await import('../src/journey/world/vegetation.js');
 const { createPlanIndex } = await import('../src/journey/world/plan-index.js');
+const { POSES, buildPerson } = await import('../src/journey/people.js');
+const { createPitCrew, placePaddockVisitors, updatePaddockVisitors, updatePitCrew } =
+  await import('../src/journey/crew-staging.js');
 
 const root = new URL('..', import.meta.url).pathname;
 const trackPoints = JSON.parse(readFileSync(root + 'site/assets/data/track.json', 'utf8')).pts;
@@ -240,6 +247,51 @@ for (const quality of ['high', 'mid', 'low']) {
   summary.push({ quality, buildMs, budgets, minimum, minTreeTrack, instances, nearMax });
 }
 
+// --- people ------------------------------------------------------------------------------------
+const peopleRows = [];
+{
+  const at = (object) => new Vector3().setFromMatrixPosition(object.matrixWorld);
+  for (const pose of Object.keys(POSES))
+    for (const head of ['hair', 'cap', 'helmet', 'headset']) {
+      const person = buildPerson({ pose, head });
+      person.updateMatrixWorld(true);
+      const { head: headPivot, armL, armR, visor, brim } = person.userData;
+      const label = `people ${pose}/${head}`;
+      const h = at(headPivot);
+      if (head === 'helmet')
+        check(visor && at(visor).x > h.x + 0.05, `${label}: visor not in front of the head`);
+      if (head === 'cap' || head === 'headset')
+        check(brim && at(brim).x > h.x + 0.04, `${label}: brim not forward`);
+      check(at(armL).z < -0.1, `${label}: armL not on the left (-z)`);
+      check(at(armR).z > 0.1, `${label}: armR not on the right (+z)`);
+      const box = new Box3().setFromObject(person);
+      check(Math.abs(box.min.y) < 0.03, `${label}: lowest point ${fmt(box.min.y)} m off the ground`);
+      if (head === 'cap')
+        peopleRows.push({
+          pose,
+          visorOrBrimAhead: fmt((brim ? at(brim).x : NaN) - h.x),
+          armL: fmt(at(armL).z),
+          armR: fmt(at(armR).z),
+          lowest: fmt(box.min.y),
+        });
+    }
+  // fades: the crew's uniform follows progress (0 far from the pit stop, 1 at it, partial between)
+  const crew = createPitCrew();
+  const sampler = { sample: () => ({ p: new Vector3(-60, 0, 189), t: new Vector3(-1, 0, 0) }) };
+  const fadeAt = (p) => {
+    updatePitCrew(crew, p, 0, sampler, 0, { x: -60, z: 185.5 });
+    return crew.materials.fade.value;
+  };
+  check(fadeAt(0.26) === 1 && fadeAt(0.5) === 0, 'crew: not fully shown at 0.26 / hidden at 0.5');
+  const mid = fadeAt(0.165);
+  check(mid > 0.05 && mid < 0.95, `crew: no gradual fade (presence ${fmt(mid)} at 0.165)`);
+  const scene = { add() {} };
+  const visitors = placePaddockVisitors(scene);
+  updatePaddockVisitors(visitors, 0.62, 0);
+  const v = visitors[0][0].userData.materials.fade.value;
+  check(v > 0.05 && v < 0.95, `visitors: no gradual fade (presence ${fmt(v)} at 0.62)`);
+}
+
 for (const s of summary) {
   console.log(
     `${s.quality}: built in ${s.buildMs.toFixed(0)} ms; ${s.instances} instances; largest near set ${s.nearMax}; trees ≥ ${fmt(s.minTreeTrack)} m from the track asphalt`,
@@ -258,6 +310,8 @@ for (const s of summary) {
   console.log('  smallest clearance (distance − footprint, m):');
   console.table(rows);
 }
+console.log('people (cap): brim ahead of the head centre, shoulder z, lowest point (m)');
+console.table(peopleRows);
 if (failures.length) {
   console.log(`FAILED (${failures.length}):\n` + [...new Set(failures)].slice(0, 40).join('\n'));
   process.exit(1);
