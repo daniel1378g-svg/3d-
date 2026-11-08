@@ -58,18 +58,26 @@ function timeOfDayAt(progress) {
         : lerp(0.78, 1, smoothstep(clamp((progress - 0.8) / 0.085, 0, 1)));
 }
 
+// scratch: sunDirection()'s default target, followWithShadow()'s focus point
+const sunDirScratch = new Vector3();
+const shadowFocus = new Vector3();
+
 /**
  * Unit vector towards the sun for a sampleTimeOfDay() result: `sunAz` (degrees) is measured from
- * -Z towards +X, `sunEl` (degrees) above the XZ plane. Allocates a new Vector3.
+ * -Z towards +X, `sunEl` (degrees) above the XZ plane. Written into `target`; by default a shared
+ * vector that the next call overwrites (the frame loop uses it within the frame), so it does not
+ * allocate.
  */
-function sunDirection(light) {
+function sunDirection(light, target = sunDirScratch) {
   const elevation = MathUtils.degToRad(light.sunEl);
   const azimuth = MathUtils.degToRad(light.sunAz);
-  return new Vector3(
-    Math.sin(azimuth) * Math.cos(elevation),
-    Math.sin(elevation),
-    -Math.cos(azimuth) * Math.cos(elevation),
-  ).normalize();
+  return target
+    .set(
+      Math.sin(azimuth) * Math.cos(elevation),
+      Math.sin(elevation),
+      -Math.cos(azimuth) * Math.cos(elevation),
+    )
+    .normalize();
 }
 
 /** Applies a sampleTimeOfDay() result to the sun and hemisphere lights (the sky dome: sky.js). */
@@ -116,8 +124,7 @@ function snapToShadowTexels(point, sunDir, sun) {
  * snapped to shadow texels, with the light SUN_DISTANCE metres up-sun of it.
  */
 function followWithShadow(sun, sunDir, cameraPosition, cameraTarget, carPosition) {
-  const focus = cameraTarget.clone();
-  if (cameraPosition.y > AERIAL_CAMERA_HEIGHT) focus.copy(carPosition);
+  const focus = shadowFocus.copy(cameraPosition.y > AERIAL_CAMERA_HEIGHT ? carPosition : cameraTarget);
   snapToShadowTexels(focus, sunDir, sun);
   sun.position.copy(focus).addScaledVector(sunDir, SUN_DISTANCE);
   sun.target.position.copy(focus);
