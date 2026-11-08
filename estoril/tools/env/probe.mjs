@@ -59,26 +59,23 @@ const rows = await page.evaluate(
     if (textures) {
       const seen = new Set();
       let bytes = 0;
+      // bytes per texel from the format (RedFormat 1028: 1 channel) and type (half 1016 / float 1015)
+      const size = (value) => {
+        if (!value || !value.isTexture || seen.has(value)) return;
+        seen.add(value);
+        const image = value.image || {};
+        const channels = value.format === 1028 ? 1 : 4;
+        const bytesPerChannel = value.type === 1016 ? 2 : value.type === 1015 ? 4 : 1;
+        const mipmapped = [1004, 1005, 1007, 1008].includes(value.minFilter); // the *Mipmap* filters
+        const mips = value.generateMipmaps !== false && mipmapped ? 4 / 3 : 1;
+        bytes += (image.width || 0) * (image.height || 0) * channels * bytesPerChannel * mips;
+      };
       scene.traverse((o) => {
         const materials = o.material ? (Array.isArray(o.material) ? o.material : [o.material]) : [];
-        for (const m of materials)
-          for (const value of Object.values(m)) {
-            if (!value || !value.isTexture || seen.has(value)) continue;
-            seen.add(value);
-            const image = value.image || {};
-            const width = image.width || 0;
-            const height = image.height || 0;
-            const perTexel = value.type === 1016 || value.type === 1015 ? 8 : 4; // half/float RGBA
-            bytes += width * height * perTexel * (value.generateMipmaps !== false ? 4 / 3 : 1);
-          }
-        for (const m of materials)
-          for (const u of Object.values(m.userData?.uniforms || {})) {
-            const value = u && u.value;
-            if (!value || !value.isTexture || seen.has(value)) continue;
-            seen.add(value);
-            const image = value.image || {};
-            bytes += (image.width || 0) * (image.height || 0) * 4 * (4 / 3);
-          }
+        for (const m of materials) {
+          for (const value of Object.values(m)) size(value);
+          for (const u of Object.values(m.userData?.uniforms || {})) size(u && u.value);
+        }
       });
       textureMB = { count: seen.size, MB: +(bytes / 1048576).toFixed(2) };
     }
