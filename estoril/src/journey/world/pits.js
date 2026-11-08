@@ -56,7 +56,17 @@ function buildPitLaneSurface(ctx) {
   // Its top is at the lines layer (layers.js); it stands 1 mm above the pit-lane asphalt.
   const lineBase = LAYERS.pitLane + 0.001;
   const lineHeight = LAYERS.lines - lineBase;
-  box(L.pitX1 - L.pitX0 + 260, lineHeight, 0.25, materials.line, pitCentreX, lineBase, L.garageFrontZ + 6, root, false);
+  box(
+    L.pitX1 - L.pitX0 + 260,
+    lineHeight,
+    0.25,
+    materials.line,
+    pitCentreX,
+    lineBase,
+    L.garageFrontZ + 6,
+    root,
+    false,
+  );
   box(L.pitX1 - L.pitX0 + 300, 1.1, 0.7, materials.concrete, pitCentreX, 0, L.pitWallZ + 0.35);
   box(L.pitX1 - L.pitX0 + 300, 0.08, 0.9, materials.steel, pitCentreX, 1.1, L.pitWallZ + 0.35);
 
