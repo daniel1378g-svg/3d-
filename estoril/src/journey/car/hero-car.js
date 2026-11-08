@@ -1,7 +1,7 @@
-// Builds the hero car: the packed body (car/body-asset.js), its materials, wheels and contact shadows.
+// Builds the hero car: the packed body (car/body-asset.js), its materials, wheels and ground contact.
 //
-// Car frame: metres, +x forward, y up with the ground at y = 0, +z to the right (the "units" of
-// the body asset). Scene graph returned by buildHeroCar:
+// Car frame: metres, +x forward, y up with the tyre bottoms at y = 0, +z to the right (the "units"
+// of the body asset). Scene graph returned by buildHeroCar:
 //
 //   root 'hero-car'                 journey.js sets position (on the driving line) and rotation.y
 //   ├─ chassis                      sprung mass: pose() rolls (x), pitches (z) and heaves (y) it
@@ -124,12 +124,13 @@ function groundOcclusion(texture, [width, depth]) {
  */
 async function buildHeroCar(url, wheelLayout, { onProgress, quality = 'high' } = {}) {
   const bodyUrl = wheelLayout.body ? url.slice(0, url.lastIndexOf('/') + 1) + wheelLayout.body : url;
-  let body = await loadBody(bodyUrl, quality, onProgress),
-    root = new Group();
+  const body = await loadBody(bodyUrl, quality, onProgress);
+  const root = new Group();
   root.name = 'hero-car';
-  let chassis = new Group();
+  const chassis = new Group();
   chassis.position.y = RIDE_HEIGHT;
-  (root.add(chassis), chassis.add(body));
+  root.add(chassis);
+  chassis.add(body);
   const wheels = createWheels({
     layout: wheelLayout,
     width: WHEEL_WIDTH,
