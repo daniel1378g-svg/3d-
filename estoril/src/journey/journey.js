@@ -11,6 +11,7 @@
 //   progress.js         scroll target → smoothed progress (spring), intro, STAGES
 //   car-motion.js       progress → distance along the car path, car kinematics
 //   camera-shots.js     camera keyframes; camera-director.js evaluates and applies them
+//   depth-range.js      near/far planes from the camera's clearance, every frame
 //   crew-staging.js     pit crew, paddock cars and visitors
 //   track-highlight.js  red line drawn around the circuit during the aerial shots
 //   motion-blur.js      depth-reprojection camera blur on the lap (high quality)
@@ -19,6 +20,7 @@
 // construction, so objects are created in exactly the order of the published build.
 import { Fog, PerspectiveCamera, Scene } from 'three';
 import { createCameraDirector } from './camera-director.js';
+import { createDepthRange } from './depth-range.js';
 import { CAMERA_SHOTS } from './camera-shots.js';
 import { buildCarPath } from './car-path.js';
 import { buildHeroCar } from './car/hero-car.js';
@@ -76,10 +78,13 @@ async function createJourney({
   const maxPixelRatio = maxPixelRatioFor(quality);
   const scene = new Scene();
   scene.fog = new Fog(14279913, 140, 3300); // metres; the colour follows the time of day
-  // near 0.3 m / far 9 km (the sky dome is 8 km); the blur pass reconstructs positions from depth
+  // the blur pass reconstructs positions from depth with each frame's own matrices
+  // near/far start at 0.3 m / 9 km and then follow the camera's clearance every frame
   const camera = new PerspectiveCamera(36, 1, 0.3, 9e3);
+  const depthRange = createDepthRange(camera);
   const skyMaterial = createSkyMaterial();
-  scene.add(createSkyDome(skyMaterial));
+  const skyDome = createSkyDome(skyMaterial);
+  scene.add(skyDome);
   const { hemi, sun } = createLights(scene, renderer, quality);
   const environment = createEnvironmentProbe({ renderer, scene, skyMaterial, quality });
   const blur = createMotionBlur(quality);
@@ -103,13 +108,17 @@ async function createJourney({
   onProgress(0.92);
 
   // --- extras ----------------------------------------------------------------------------------
-  const highlight = createTrackHighlight(track);
+  const highlight = createTrackHighlight(world.root.userData.trackModel);
   scene.add(highlight.mesh);
   const openBox = world.root.userData.openBox; // the open pit garage, { x, z }
   const crew = createPitCrew();
   scene.add(...crew.members);
   placePaddockCars(scene);
   const visitors = placePaddockVisitors(scene);
+  depthRange.build(scene, {
+    sky: skyDome,
+    movers: [car.root, ...crew.members, ...visitors.map(([person]) => person)],
+  });
 
   // --- choreography ----------------------------------------------------------------------------
   const carPath = buildCarPath(track);
@@ -168,9 +177,10 @@ async function createJourney({
       framingX,
       framingY,
     });
+    depthRange.update(director.position, director.target);
     followWithShadow(sun, sunDir, director.position, director.target, carMotion.frame.p);
 
-    highlight.update(p);
+    highlight.update(p, dt, progress.snap);
     world.update(clock, dt);
     renderWithMotionBlur(renderer, scene, camera, blur, motionBlurAmount(blur, p));
   }
