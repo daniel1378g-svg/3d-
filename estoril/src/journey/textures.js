@@ -1,10 +1,18 @@
-// Procedural canvas textures for the circuit, its buildings, people and cars.
+// Procedural textures for the circuit, its buildings, people and cars.
 //
-// Every texture is drawn once into a 2D canvas at load time. Seeded generators (createRng) and the
-// seeded noise (fbm2) make the result identical on every load. Canvas pixel coordinates have
-// (0, 0) at the top-left; with three's default flipY that row ends up at v = 1.
-import { CanvasTexture, RepeatWrapping, SRGBColorSpace } from 'three';
-import { fbm2 } from './util/noise.js';
+// Every texture is drawn once at load time: most into a 2D canvas, the shared surface detail into
+// typed arrays (a DataTexture, so Node tests can build it too). Seeded generators (createRng) and
+// the shared noise (env/noise.js) make the result identical on every load. Canvas pixel
+// coordinates have (0, 0) at the top-left; with three's default flipY that row ends up at v = 1.
+import {
+  CanvasTexture,
+  DataTexture,
+  LinearMipmapLinearFilter,
+  RepeatWrapping,
+  RGBAFormat,
+  SRGBColorSpace,
+} from 'three';
+import { sampleNoise } from './env/noise.js';
 import { createRng } from './util/rng.js';
 
 /**
@@ -30,84 +38,70 @@ function canvasTexture(width, height, draw, { repeat = true, srgb = true, aniso 
   );
 }
 
-/** Tiling asphalt, 512 px: mid grey with low-frequency fbm blotches plus per-pixel grain. */
-function asphaltTexture() {
-  return canvasTexture(512, 512, (context, width, height) => {
-    ((context.fillStyle = '#55585e'), context.fillRect(0, 0, width, height));
-    let image = context.getImageData(0, 0, width, height),
-      pixels = image.data,
-      random = createRng(3);
-    for (let offset = 0; offset < pixels.length; offset += 4) {
-      let x = (offset / 4) % width,
-        y = Math.floor(offset / 4 / width),
-        shade = fbm2(x / 60, y / 60, 3) * 14 + (random() - 0.5) * 30;
-      // Uint8ClampedArray: += rounds and clamps. Blue gets +1 for a faint cool cast.
-      ((pixels[offset] += shade), (pixels[offset + 1] += shade), (pixels[offset + 2] += shade + 1));
-    }
-    context.putImageData(image, 0, 0);
-  });
-}
-
 /**
- * Tiling grass, 512 px. Deliberately pale (≈ rgb 196/210/186): the ground material multiplies it
- * with per-vertex colours that carry the actual greens and browns.
- */
-function grassTexture() {
-  return canvasTexture(512, 512, (context, width, height) => {
-    let image = context.createImageData(width, height),
-      pixels = image.data,
-      random = createRng(11);
-    for (let y = 0; y < height; y++)
-      for (let x = 0; x < width; x++) {
-        let offset = (y * width + x) * 4,
-          patch = fbm2(x / 90, y / 90, 4),
-          grain = (random() - 0.5) * 14;
-        ((pixels[offset] = 196 + patch * 40 + grain),
-          (pixels[offset + 1] = 210 + patch * 40 + grain),
-          (pixels[offset + 2] = 186 + patch * 30 + grain * 0.6),
-          (pixels[offset + 3] = 255));
-      }
-    context.putImageData(image, 0, 0);
-  });
-}
-
-/** Tiling gravel trap, 256 px: sand base with 2600 random pebbles (radius 0.6..3 px). */
-function gravelTexture() {
-  return canvasTexture(256, 256, (context, width, height) => {
-    ((context.fillStyle = '#d6c6a2'), context.fillRect(0, 0, width, height));
-    let random = createRng(5);
-    for (let pebble = 0; pebble < 2600; pebble++) {
-      // Draw order per pebble: radius, brightness, x, y.
-      let radius = random() * 2.4 + 0.6,
-        brightness = 160 + random() * 80;
-      ((context.fillStyle = `rgb(${brightness},${brightness * 0.93},${brightness * 0.8})`),
-        context.beginPath(),
-        context.arc(random() * width, random() * height, radius, 0, Math.PI * 2),
-        context.fill());
-    }
-  });
-}
-
-/**
- * Kerb, 128 x 512: four blue/white bands along v (so one tile = two blue + two white blocks along
- * the track) and a faint dark stripe on the u = 0 edge.
+ * Kerb, 64 x 512, one tile = 6 m along the track (v): six 1 m blocks, blue #2F86D0 and white
+ * #ECEEF0 (references §4.4), each with a little dirt towards its ends, thin dark joints, and two
+ * shallow grooves along the kerb (u across: 0 at the asphalt edge, 1 at the run-off).
  */
 function kerbTexture() {
-  return canvasTexture(128, 512, (context, width, height) => {
-    for (let band = 0; band < 4; band++)
-      ((context.fillStyle = band % 2 ? '#f2f2ee' : '#2a63c9'),
-        context.fillRect(0, (band * height) / 4, width, height / 4));
-    ((context.fillStyle = 'rgba(0,0,0,.08)'), context.fillRect(0, 0, 12, height));
+  return canvasTexture(64, 512, (context, width, height) => {
+    const block = height / 6;
+    for (let i = 0; i < 6; i++) {
+      context.fillStyle = i % 2 ? '#eceef0' : '#2f86d0';
+      context.fillRect(0, i * block, width, block);
+      const gradient = context.createLinearGradient(0, i * block, 0, (i + 1) * block);
+      gradient.addColorStop(0, 'rgba(60,52,40,.10)');
+      gradient.addColorStop(0.2, 'rgba(60,52,40,0)');
+      gradient.addColorStop(0.8, 'rgba(60,52,40,0)');
+      gradient.addColorStop(1, 'rgba(60,52,40,.12)');
+      context.fillStyle = gradient;
+      context.fillRect(0, i * block, width, block);
+      context.fillStyle = 'rgba(20,22,26,.35)';
+      context.fillRect(0, i * block, width, 2);
+    }
+    context.fillStyle = 'rgba(0,0,0,.10)';
+    for (const u of [0.34, 0.67]) context.fillRect(Math.round(u * width), 0, 2, height);
+    context.fillStyle = 'rgba(0,0,0,.08)';
+    context.fillRect(0, 0, 4, height);
   });
 }
 
-/** Tyre-wall / barrier, 512 x 128: eight orange/white vertical blocks and a dark band at the bottom. */
+/**
+ * Tyre wall wrapped in a conveyor-belt cover, 512 x 128, one tile = 7 m along the wall (u), v from
+ * the foot (0) to the top (1) of the 0.95 m wall (references §4.5): black tyres showing at the foot
+ * and along the top edge with dust on them, belt panels alternating orange #E5772E and white #E9ECEE
+ * (four per tile) with two darker straps and bolt heads, and road dirt splashed up from the foot.
+ */
 function barrierTexture() {
   return canvasTexture(512, 128, (context, width, height) => {
-    for (let block = 0; block < 8; block++)
-      ((context.fillStyle = block % 2 ? '#f3efe8' : '#e8742a'),
-        context.fillRect((block * width) / 8, 0, width / 8, height));
-    ((context.fillStyle = 'rgba(0,0,0,.18)'), context.fillRect(0, height - 16, width, 16));
+    context.fillStyle = '#2a2a2a';
+    context.fillRect(0, 0, width, height);
+    // tyre ends along the foot and the top (canvas y = 0 is the top of the wall)
+    context.fillStyle = '#1b1b1c';
+    for (let x = 0; x < width; x += 16) {
+      context.beginPath();
+      context.arc(x + 8, height - 6, 7, 0, Math.PI * 2);
+      context.arc(x + 8, 5, 6, 0, Math.PI * 2);
+      context.fill();
+    }
+    context.fillStyle = 'rgba(90,85,75,.55)';
+    context.fillRect(0, 0, width, 3);
+    const panel = width / 4;
+    for (let i = 0; i < 4; i++) {
+      context.fillStyle = i % 2 ? '#e9ecee' : '#e5772e';
+      context.fillRect(i * panel + 1, 10, panel - 2, height - 24);
+      context.fillStyle = 'rgba(0,0,0,.13)';
+      context.fillRect(i * panel + 1, 30, panel - 2, 5);
+      context.fillRect(i * panel + 1, 76, panel - 2, 5);
+      context.fillStyle = 'rgba(40,40,40,.55)';
+      for (let k = 0; k < 4; k++)
+        for (const y of [32, 78]) context.fillRect(i * panel + 10 + k * (panel / 4), y, 3, 2);
+    }
+    const dirt = context.createLinearGradient(0, height, 0, height - 46);
+    dirt.addColorStop(0, 'rgba(98,84,62,.55)');
+    dirt.addColorStop(1, 'rgba(98,84,62,0)');
+    context.fillStyle = dirt;
+    context.fillRect(0, height - 46, width, 46);
   });
 }
 
@@ -229,19 +223,32 @@ function aoFadeTexture() {
   );
 }
 
-/** Garage roller shutter, 64 x 256: light grey with a highlight-to-shadow gradient every 8 px slat. */
+/**
+ * Garage roller door, 64 x 256 (one per door): sky blue #2F86C0 (references §4.6) with a slat every
+ * 8 px (12 cm on a 3.9 m door), a band of small dark panels at 60 % of the door height and a darker
+ * bottom rail.
+ */
 function shutterTexture() {
   return canvasTexture(64, 256, (context, width, height) => {
-    ((context.fillStyle = '#cfd3d6'), context.fillRect(0, 0, width, height));
+    context.fillStyle = '#2f86c0';
+    context.fillRect(0, 0, width, height);
     for (let slatTop = 0; slatTop < height; slatTop += 8) {
-      let gradient = context.createLinearGradient(0, slatTop, 0, slatTop + 8);
-      (gradient.addColorStop(0, 'rgba(255,255,255,.55)'),
-        gradient.addColorStop(0.45, 'rgba(255,255,255,0)'),
-        gradient.addColorStop(0.8, 'rgba(0,0,0,.10)'),
-        gradient.addColorStop(1, 'rgba(0,0,0,.28)'),
-        (context.fillStyle = gradient),
-        context.fillRect(0, slatTop, width, 8));
+      const gradient = context.createLinearGradient(0, slatTop, 0, slatTop + 8);
+      gradient.addColorStop(0, 'rgba(255,255,255,.22)');
+      gradient.addColorStop(0.45, 'rgba(255,255,255,0)');
+      gradient.addColorStop(0.8, 'rgba(0,0,0,.08)');
+      gradient.addColorStop(1, 'rgba(0,0,0,.25)');
+      context.fillStyle = gradient;
+      context.fillRect(0, slatTop, width, 8);
     }
+    // band of vision panels at 60 % of the door height (canvas row 0 is the top of the door)
+    const band = Math.round(height * 0.4) - 6;
+    context.fillStyle = '#1d2a33';
+    for (let x = 3; x < width - 6; x += 10) context.fillRect(x, band, 7, 10);
+    context.fillStyle = 'rgba(255,255,255,.18)';
+    for (let x = 3; x < width - 6; x += 10) context.fillRect(x, band, 7, 2);
+    context.fillStyle = '#5c6670';
+    context.fillRect(0, height - 6, width, 6);
   });
 }
 
@@ -273,46 +280,187 @@ function glazingTexture() {
 }
 
 /**
- * Grass tuft billboard, 128 px, transparent background: 70 curved blades rooted on the bottom edge.
+ * Grass tuft, 128 px, transparent background: 110 blades rooted along the bottom edge, darker at the
+ * root and paler (drier) towards the tip; the instance colour tints it to the ground below.
  */
 function grassTuftTexture() {
   return canvasTexture(
     128,
     128,
     (context, width, height) => {
-      let random = createRng(21);
-      for (let blade = 0; blade < 70; blade++) {
-        // Draw order per blade: root x, blade height, lean, brightness, then line width.
-        let rootX = width * (0.1 + random() * 0.8),
-          bladeHeight = height * (0.35 + random() * 0.6),
-          lean = (random() - 0.5) * 26,
-          brightness = 70 + random() * 60;
-        ((context.strokeStyle = `rgba(${brightness * 0.8},${brightness},${brightness * 0.55},1)`),
-          (context.lineWidth = 1.4 + random() * 1.6),
-          context.beginPath(),
-          context.moveTo(rootX, height),
-          context.quadraticCurveTo(
-            rootX + lean * 0.3,
-            height - bladeHeight * 0.6,
-            rootX + lean,
-            height - bladeHeight,
-          ),
-          context.stroke());
+      const random = createRng(21);
+      for (let blade = 0; blade < 110; blade++) {
+        const rootX = width * (0.08 + random() * 0.84);
+        const bladeHeight = height * (0.3 + random() * 0.68);
+        const lean = (random() - 0.5) * 34;
+        const tone = 0.7 + random() * 0.5;
+        const gradient = context.createLinearGradient(0, height, 0, height - bladeHeight);
+        gradient.addColorStop(0, `rgba(${46 * tone},${60 * tone},${28 * tone},1)`);
+        gradient.addColorStop(1, `rgba(${150 * tone},${158 * tone},${96 * tone},1)`);
+        context.strokeStyle = gradient;
+        context.lineWidth = 1.2 + random() * 1.4;
+        context.beginPath();
+        context.moveTo(rootX, height);
+        context.quadraticCurveTo(
+          rootX + lean * 0.3,
+          height - bladeHeight * 0.6,
+          rootX + lean,
+          height - bladeHeight,
+        );
+        context.stroke();
       }
     },
     { repeat: false },
   );
 }
 
+/**
+ * Debris-fence mesh, 32 x 32, transparent: one diamond of galvanised wire (two 2 px diagonals). With
+ * mipmaps the wires average out to a faint, even veil at a distance instead of shimmering.
+ */
+function fenceMeshTexture() {
+  return canvasTexture(32, 32, (context, width, height) => {
+    context.strokeStyle = 'rgba(205,210,212,1)';
+    context.lineWidth = 2;
+    context.beginPath();
+    for (const offset of [-width, 0, width]) {
+      context.moveTo(offset, 0);
+      context.lineTo(offset + width, height);
+      context.moveTo(offset + width, 0);
+      context.lineTo(offset, height);
+    }
+    context.stroke();
+  });
+}
+
+/**
+ * Surface detail shared by the ground and track shaders (env/shading.js), 512 px, tileable, linear
+ * data (no colour space), sampled at world positions:
+ *   r  asphalt aggregate (tile 2.3 m, ~4.5 mm per texel): grain, pale stones 4–10 mm, dark pores
+ *   g  grass seen from above (tile 2.7 m): short blade strokes over a speckle, in soft clumps
+ *   b  gravel pebbles (tile 1.45 m, ~2.8 mm per texel): rounded pebbles 5–15 mm over dark gaps
+ *   a  gravel pebble height (domes), for the bump
+ * Every colour channel averages about 0.5. Built with typed arrays (also in Node). `anisotropy`
+ * follows the quality tier.
+ */
+function surfaceDetailTexture(anisotropy = 8) {
+  const S = 512;
+  const random = createRng(97);
+  const asphalt = new Float32Array(S * S);
+  const grass = new Float32Array(S * S);
+  const gravel = new Float32Array(S * S).fill(0.3);
+  const height = new Float32Array(S * S);
+  const wrap = (v) => v & (S - 1); // S is a power of two
+  const blur = (buffer) => {
+    const out = new Float32Array(S * S);
+    for (let y = 0; y < S; y++)
+      for (let x = 0; x < S; x++) {
+        let sum = 0;
+        for (let dy = -1; dy <= 1; dy++)
+          for (let dx = -1; dx <= 1; dx++) sum += buffer[wrap(y + dy) * S + wrap(x + dx)];
+        out[y * S + x] = sum / 9;
+      }
+    return out;
+  };
+  /** Calls fn(index, r²) for every texel of an ellipse of `radius` (r² is 0 at the centre, 1 at the rim). */
+  const disc = (cx, cy, radius, fn, stretch = 1, angle = 0) => {
+    const reach = Math.ceil(radius * Math.max(1, stretch)) + 1;
+    const c = Math.cos(angle);
+    const s = Math.sin(angle);
+    for (let dy = -reach; dy <= reach; dy++)
+      for (let dx = -reach; dx <= reach; dx++) {
+        const px = dx + 0.5 - (cx % 1);
+        const py = dy + 0.5 - (cy % 1);
+        const u = (px * c + py * s) / stretch;
+        const v = -px * s + py * c;
+        const r2 = (u * u + v * v) / (radius * radius);
+        if (r2 < 1) fn(wrap(Math.floor(cy) + dy) * S + wrap(Math.floor(cx) + dx), r2);
+      }
+  };
+
+  // asphalt: blurred grain, pale stones, dark pores
+  for (let i = 0; i < S * S; i++) asphalt[i] = 0.5 + (random() - 0.5) * 0.55;
+  const grain = blur(asphalt);
+  for (let i = 0; i < S * S; i++) asphalt[i] = 0.47 + (grain[i] - 0.5) * 1.3 + (random() - 0.5) * 0.08;
+  for (let k = 0; k < 2600; k++) {
+    const r = 0.9 + random() * 1.4;
+    const lift = 0.2 + random() * 0.25;
+    disc(random() * S, random() * S, r, (i, r2) => (asphalt[i] += lift * (1 - r2 * r2)));
+  }
+  for (let k = 0; k < 1500; k++) {
+    const r = 0.6 + random() * 1.0;
+    disc(random() * S, random() * S, r, (i, r2) => (asphalt[i] -= 0.28 * (1 - r2)));
+  }
+
+  // grass: speckle, blade strokes, clumps
+  for (let i = 0; i < S * S; i++) grass[i] = 0.5 + (random() - 0.5) * 0.3;
+  for (let k = 0; k < 4200; k++) {
+    const length = 3 + random() * 7;
+    const angle = random() * Math.PI * 2;
+    const tone = 0.22 + random() * 0.65;
+    let x = random() * S;
+    let y = random() * S;
+    for (let step = 0; step < length; step++) {
+      const i = wrap(Math.floor(y)) * S + wrap(Math.floor(x));
+      grass[i] = grass[i] * 0.3 + tone * 0.7;
+      x += Math.cos(angle);
+      y += Math.sin(angle);
+    }
+  }
+  const grassSoft = blur(grass);
+  for (let y = 0; y < S; y++)
+    for (let x = 0; x < S; x++) {
+      const i = y * S + x;
+      const clump = sampleNoise(0, x / S, y / S); // periodic over the tile
+      grass[i] = 0.5 + (grass[i] * 0.6 + grassSoft[i] * 0.4 - 0.5) * 1.1 + (clump - 0.5) * 0.22;
+    }
+
+  // gravel: rounded pebbles over dark gaps, each a dome
+  for (let k = 0; k < 3400; k++) {
+    const r = 1.8 + random() * random() * 4.2;
+    const tone = random() < 0.12 ? 0.32 + random() * 0.2 : 0.55 + random() * 0.45;
+    const stretch = 0.75 + random() * 0.5;
+    const angle = random() * Math.PI;
+    disc(
+      random() * S,
+      random() * S,
+      r,
+      (i, r2) => {
+        const dome = Math.sqrt(1 - r2);
+        gravel[i] = tone * (0.82 + 0.18 * dome);
+        height[i] = dome;
+      },
+      stretch,
+      angle,
+    );
+  }
+
+  const bytes = new Uint8Array(S * S * 4);
+  const toByte = (v) => Math.max(0, Math.min(255, Math.round(v * 255)));
+  for (let i = 0; i < S * S; i++) {
+    bytes[4 * i] = toByte(asphalt[i]);
+    bytes[4 * i + 1] = toByte(grass[i]);
+    bytes[4 * i + 2] = toByte(gravel[i]);
+    bytes[4 * i + 3] = toByte(height[i]);
+  }
+  const texture = new DataTexture(bytes, S, S, RGBAFormat);
+  texture.wrapS = texture.wrapT = RepeatWrapping;
+  texture.minFilter = LinearMipmapLinearFilter;
+  texture.generateMipmaps = true;
+  texture.anisotropy = anisotropy;
+  texture.name = 'env-surface-detail';
+  texture.needsUpdate = true;
+  return texture;
+}
+
 export {
   aoFadeTexture,
-  asphaltTexture,
+  fenceMeshTexture,
+  surfaceDetailTexture,
   barrierTexture,
   blobShadowTexture,
   glazingTexture,
-  grassTexture,
   grassTuftTexture,
-  gravelTexture,
   kerbTexture,
   puffTexture,
   roundedShadowTexture,

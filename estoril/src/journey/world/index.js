@@ -8,6 +8,7 @@
 //    grandstand flags, clouds).
 //
 // Coordinates: metres, world XZ ground plane, +Y up. See layout.js for the fixed positions.
+import { bindTrackModel } from '../env/shading.js';
 import { buildClouds } from './clouds.js';
 import { createWorldContext } from './context.js';
 import { buildFlag } from './flags.js';
@@ -33,6 +34,7 @@ function buildWorld(trackPoints, { quality = 'high' } = {}) {
   const ctx = createWorldContext(trackPoints, quality);
   const L = ctx.layout;
   const shape = analyseTrack(ctx.track);
+  bindTrackModel(ctx.materials, ctx.textures.lap, shape.model);
 
   buildGround(ctx);
   buildHills(ctx);
