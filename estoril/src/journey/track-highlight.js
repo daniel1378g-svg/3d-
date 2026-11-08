@@ -8,10 +8,15 @@
 // walls and trees hide it, and writes no depth. Unlit brand red (MeshBasicMaterial), no fog.
 //
 // Width: WIDTH metres, widened in the vertex shader (up to MAX_WIDTH) wherever the line would be
-// thinner on screen than MIN_SCREEN_FRACTION of the viewport height, measured across the line's
-// own screen direction. The widening stays in the ground plane, so the line keeps lying on the
-// road and its depth test stays right, and it stays readable at the grazing 0.345 view (16°
-// elevation, 200–600 m away), where a flat ribbon of constant width shrinks below a pixel.
+// thinner on screen than the minimum core width, measured across the line's own screen direction:
+// MIN_SCREEN_FRACTION of the viewport's smaller side (on a portrait phone the camera widens its
+// view, so the circuit's scale follows the width), and never less than MIN_CSS_PIXELS CSS pixels
+// (the drawing buffer can be smaller than the canvas: pixel-ratio cap, dynamic resolution) nor
+// MIN_BUFFER_PIXELS drawing-buffer pixels. The widening stays in the ground plane, so the line
+// keeps lying on the road and its depth test stays right, and it stays readable at the grazing
+// 0.345 view (16° elevation, 200–600 m away), where a flat ribbon of constant width shrinks below
+// a pixel. The core is fully opaque: the quad is one pixel wider on each side than the core and
+// only that extra pixel fades (anti-aliased edge), so a thin line is never blended with the road.
 //
 // Reveal: the fragment shader compares each fragment's arc-length fraction with the head
 // (uniform uHead) and fades the last FEATHER metres, so the head is smooth at any angle and any
@@ -26,9 +31,11 @@ import { clamp, smoothstep } from './util/math.js';
 import { LAYERS } from './world/layers.js';
 
 const COLOR = 0xe93325; // brand red
-const OPACITY = 0.95;
-const WIDTH = 3; // metres (the track is 13–14 m wide)
-const MIN_SCREEN_FRACTION = 0.004; // of the viewport height: 3.6 px at 900 px
+const OPACITY = 1;
+const WIDTH = 4.5; // metres (the track is 13–14 m wide)
+const MIN_SCREEN_FRACTION = 0.006; // of the smaller viewport side: 5.4 px at 1440×900, 3.6 at 960×600
+const MIN_CSS_PIXELS = 3; // the core is never thinner than this many CSS pixels…
+const MIN_BUFFER_PIXELS = 1.5; // …nor than this many drawing-buffer pixels
 const MAX_WIDTH = 30; // metres: the widening never goes beyond this
 const FEATHER = 50; // metres of soft fade behind the head
 const REVEAL_START = 0.334;
@@ -47,44 +54,53 @@ uniform float uMaxWidth;
 uniform float uMinPixels;
 uniform vec2 uViewport;
 varying float vArc;
-varying float vSide;
+varying float vSidePixels;
+varying float vHalfPixels;
 `;
 
-// Widen the ribbon so it is at least uMinPixels thick on screen: project 1 m along and 1 m across
-// the track, and measure the screen distance across the line (the part of the across step that
-// is perpendicular to the line's own screen direction), in pixels per metre of width.
+// Widen the ribbon so its core is at least uMinPixels thick on screen: project 1 m along and 1 m
+// across the track from the centre-line point of this vertex pair (so both vertices of a pair
+// agree), and measure the screen distance across the line (the part of the across step that is
+// perpendicular to the line's own screen direction), in pixels per metre of width. Each edge then
+// moves out by half the extra width plus one pixel (the anti-aliased fringe); vSidePixels runs
+// from -vHalfPixels to +vHalfPixels across the quad.
 const VERTEX_WIDEN = `#include <begin_vertex>
 {
   vec3 across = vec3(aAcross.x, 0.0, aAcross.y);
   vec3 along = vec3(aAcross.y, 0.0, -aAcross.x);
-  vec4 world = modelMatrix * vec4(position, 1.0);
+  vec4 world = modelMatrix * vec4(position - across * aSide * 0.5 * uWidth, 1.0);
   mat4 viewProjection = projectionMatrix * viewMatrix;
   vec4 c0 = viewProjection * world;
   vec4 cAlong = viewProjection * (world + vec4(along, 0.0));
   vec4 cAcross = viewProjection * (world + vec4(across, 0.0));
-  float width = uWidth;
+  float halfWidth = 0.5 * uWidth;
+  float halfPixels = 1e4; // no screen measure (at or behind the eye): a hard edge
   if (c0.w > 1.0 && cAlong.w > 0.5 && cAcross.w > 0.5) {
     vec2 s0 = c0.xy / c0.w;
     vec2 t = (cAlong.xy / cAlong.w - s0) * 0.5 * uViewport;
     vec2 l = (cAcross.xy / cAcross.w - s0) * 0.5 * uViewport;
-    float thickness = abs(t.x * l.y - t.y * l.x) / max(length(t), 1e-4);
-    width = clamp(uMinPixels / max(thickness, 1e-4), uWidth, uMaxWidth);
+    float pixelsPerMetre = max(abs(t.x * l.y - t.y * l.x) / max(length(t), 1e-4), 1e-4);
+    float core = clamp(uMinPixels / pixelsPerMetre, uWidth, uMaxWidth);
+    halfWidth = min(0.5 * core + 1.0 / pixelsPerMetre, 0.5 * uMaxWidth + 1.0);
+    halfPixels = halfWidth * pixelsPerMetre;
   }
-  transformed += across * aSide * 0.5 * (width - uWidth);
+  transformed += across * aSide * (halfWidth - 0.5 * uWidth);
   vArc = aArc;
-  vSide = aSide;
+  vSidePixels = aSide * halfPixels;
+  vHalfPixels = halfPixels;
 }`;
 
 const FRAGMENT_PARS = `uniform float uHead;
 uniform float uFeather;
 varying float vArc;
-varying float vSide;
+varying float vSidePixels;
+varying float vHalfPixels;
 `;
 
-// soft head along the lap; across it, only the outermost pixel fades (anti-aliased edges)
+// soft head along the lap; across it, an opaque core and a one-pixel fade outside it
 const FRAGMENT_MASK = `#include <color_fragment>
 diffuseColor.a *= 1.0 - smoothstep(uHead - uFeather, uHead, vArc);
-diffuseColor.a *= clamp((1.0 - abs(vSide)) / max(fwidth(vSide), 1e-4), 0.0, 1.0);`;
+diffuseColor.a *= clamp(vHalfPixels - abs(vSidePixels), 0.0, 1.0);`;
 
 /** Ribbon geometry: vertex pairs (right, left) at every model sample, closing on sample 0. */
 function ribbonGeometry(model) {
@@ -127,7 +143,7 @@ function ribbonGeometry(model) {
   geometry.setAttribute('aArc', new Float32BufferAttribute(arcs, 1));
   geometry.setIndex(indices);
   geometry.computeBoundingSphere();
-  geometry.boundingSphere.radius += MAX_WIDTH; // the shader widens the ribbon up to MAX_WIDTH
+  geometry.boundingSphere.radius += MAX_WIDTH; // the shader widens it to MAX_WIDTH + 2 m at most
   return geometry;
 }
 
@@ -162,10 +178,15 @@ function createTrackHighlight(model) {
   // after the renderOrder-1 decals (rubber line, AO fades), so they never tint the line
   mesh.renderOrder = 2;
   const viewport = new Vector4();
+  let pixelRatio = 1; // drawing-buffer pixels per CSS pixel (set by update)
   mesh.onBeforeRender = (renderer) => {
     renderer.getCurrentViewport(viewport);
     uniforms.uViewport.value.set(viewport.z, viewport.w);
-    uniforms.uMinPixels.value = MIN_SCREEN_FRACTION * viewport.w;
+    uniforms.uMinPixels.value = Math.max(
+      MIN_SCREEN_FRACTION * Math.min(viewport.z, viewport.w),
+      MIN_CSS_PIXELS * pixelRatio,
+      MIN_BUFFER_PIXELS,
+    );
   };
 
   // the head: `limited` chases the target at no more than MAX_SPEED laps per second, `reveal`
@@ -178,9 +199,10 @@ function createTrackHighlight(model) {
     mesh,
     /**
      * `progress` journey progress, `dt` frame time (s), `snap` true to jump to the target
-     * (renderAt / captures).
+     * (renderAt / captures), `ratio` drawing-buffer pixels per CSS pixel (minimum line width).
      */
-    update(progress, dt, snap = false) {
+    update(progress, dt, snap = false, ratio = 1) {
+      pixelRatio = ratio;
       const target = smoothstep(clamp((progress - REVEAL_START) / (REVEAL_END - REVEAL_START), 0, 1));
       if (snap || !(dt > 0)) {
         limited = reveal = target;
