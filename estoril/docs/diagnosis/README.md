@@ -433,7 +433,7 @@ The close-ups change by 0–21 px under the depth fix. The changes at steps 2–
 lines that now appear, and from the asphalt texture following the new arc length. Every page load reported no console
 errors or warnings.
 
-Sheets (base build vs final build, with 1:1 detail crops):
+Sheets (base build vs the final build after the review fixes below, with 1:1 detail crops):
 [aerial 0.345](../comparisons/geometry/aerial-0.345.jpg), [aerial 0.375](../comparisons/geometry/aerial-0.375.jpg),
 [aerial 0.400](../comparisons/geometry/aerial-0.400.jpg), [chicane top-down](../comparisons/geometry/bend-top.jpg),
 [chicane low](../comparisons/geometry/bend-low.jpg), [on-track close-up](../comparisons/geometry/close-0.500.jpg),
@@ -441,17 +441,99 @@ Sheets (base build vs final build, with 1:1 detail crops):
 separately: [chicane](../comparisons/geometry/steps-bend-top.jpg),
 [aerial 0.375 detail](../comparisons/geometry/steps-aerial-0.375.jpg).
 
+### Review fixes
+
+An independent review of the five commits above found one high, one medium and four low issues. Each is fixed at its
+cause in its own commit (R1–R6), and every commit was rendered and compared with the previous one as above.
+
+| # | issue | cause | fix | where |
+|---|---|---|---|---|
+| R1 | the highlight reads as a dark maroon stripe, and almost vanishes on small canvases | minimum width 0.4 % of the viewport height (3.6 px at 900 px, 1.6 px at 400 px), and an `fwidth` edge fade *inside* that width kept the alpha below 1 under ~2 px | ribbon 3 → 4.5 m; minimum core 0.6 % of the viewport's smaller side, never under 3 CSS px (pixel ratio × dynamic resolution) nor 1.5 buffer px; the core is opaque and only one extra pixel outside it fades | `track-highlight.js`, `journey.js` (passes the pixel ratio) |
+| R2 | barrier walls cross in an X at the hairpin, run through gravel, collapse to zero thickness at the chicane | each wall spanned its whole gravel interval through `model.edge`, whose inside-of-bend clamp pulled 42, 64 and 29 wall samples in to 14.6–24.1 m | a wall keeps only samples where the clamp leaves it in place, 8.5 m from every asphalt edge and 1.5 m from every gravel trap; then the longest wall is placed first and each later one keeps its longest stretch 1.5 m clear of placed walls; square end caps | `world/track-surfaces.js` (`barrierRuns`), new `world/plan-index.js`, `track/strip.js` |
+| R3 | gravel outlines end in thin tongues, with spikes and notches | width = 24 m × clamp(cornerness), a running maximum with abrupt plateaus; ends tapered to 15 % of the width; a 31 m gap between two same-side traps | cornerness smoothed by two 25 m box filters; ends ease to an absolute 4 m and stop square; a trap ends where the clamp leaves under 3 m; same-side gaps ≤ 35 m without an inside-of-bend sample are bridged | `world/track-surfaces.js` (`gravelTraps`), `world/track-analysis.js` |
+| R4 | asphalt texture seam at T1 entry | 4,176.6 m / 12 m = 348.05 repeats per lap | v scale = round(L / 12) / L: 348 repeats | `world/track-surfaces.js` |
+| R5 | near 0.05 m with the eye inside the control tower (t = 0.8525); `build()` blocks ~120 ms | padded bounding boxes count 0 inside; JS arrays, `Box3.applyMatrix4` per instance, `getX` per corner | axis-aligned `BoxGeometry` meshes are exact solid boxes (inside: distance to the nearest face); typed arrays filled directly; boxes as centre + \|M\| extents; vertices transformed once; flat ground layers as one box per 20 m cell | `depth-range.js`, `scripts/measure-clearance.mjs` |
+| R6 | the pit-lane line call was 120 characters | — | wrapped as prettier would (identical bundle) | `world/pits.js` |
+
+**Highlight readability (R1).** Strong brand-red pixels (r > 150, r > g + 70, r > b + 70), base build / before R1 /
+after R1:
+
+| frame | base | before | after |
+|---|---|---|---|
+| 1440×900, aerial 0.365 | 11,516 | 4,676 | 15,373 |
+| 1440×900, aerial 0.375 | 12,947 | 5,633 | 18,404 |
+| 1440×900, aerial 0.385 | 16,083 | 7,042 | 20,979 |
+| 960×600, 0.355–0.385 | 3,488–4,080 | 350–569 | 4,886–6,971 |
+| 640×400 `q=low`, 0.355–0.385 | 1,977–2,243 | 0–3 | 2,506–3,903 |
+| phone 390×844, 0.375 | 1,435 | 939 | 3,006 |
+
+The line keeps the base build's tone-mapped colour: from 0.39 the blur pass tone-maps every pixel, so an untone-mapped
+line would change hue in the middle of its fade-out.
+
+**Walls and gravel (R2, R3)**, `node scripts/test-geometry.mjs`, which now also checks them (run against the commit
+before R2 it fails):
+
+* Walls: degenerate triangles 260 → 0, wall vertices inside a gravel trap 549 → 0, nearest other wall 0.00 → 1.98 m,
+  nearest gravel 0 → 1.90 m, nearest asphalt edge 8.11 → 8.79 m. Four of the twelve walls changed: 1029–1208 →
+  1040–1208 (it stops at the hairpin wall), 1991–2411 → 1991–2369, 2412–2461 → 2412–2432, 2462–2713 → 2510–2697 (they
+  end where the chicane clamp starts).
+* Gravel: narrowest trap and narrowest end 1.08 → 3.11 m, largest width change 8.59 → 2.04 m per metre (the 2.04 is
+  the taper of the 50 m chicane trap). 12 → 11 intervals (219–414 and 446–721 are bridged). Gravel stays ≥ 5.50 m from
+  any asphalt and the layer check still passes (772,005 candidate pairs, minimum gap 5 mm).
+
+**Asphalt seam (R4).** 348.0517 → 348.0000 repeats per lap. The asphalt texture is low-contrast, so no journey frame
+changes by more than 24/255; at the seam itself, top-down from 14 m, 1,465 px change by more than 8/255.
+
+**Depth range (R5).** Near at t = 0.8525: 0.050 → 0.328 m (the eye is 0.657 m inside the tower's nearest face);
+0.855: 0.121 → 0.271 m; 0.835: 0.499 → 0.649 m (exact boxes are no longer padded). The flat-layer boxes lower near by
+at most 5.5 % (t = 0.4775: 0.830 → 0.784 m, 19 of 421 samples lower by more than 1 %, median unchanged).
+`measure-clearance.mjs`: near < clearance in 421 of 421 frames (before: 420 plus the tower frame reported as "inside
+geometry"). Items indexed 118,027 → 54,642; cold `build()` in Node on this host 108–123 ms → 67–79 ms (5 runs each);
+`update()` still 0.004–0.26 ms and allocation-free.
+
+**Changed pixels per review commit** (1440×900, each commit against the previous one; the last column compares the
+base build with the final build):
+
+| view | R1 highlight | R2 walls | R3 gravel | R4 seam | R5 depth | base → final |
+|---|---|---|---|---|---|---|
+| aerial 0.345 | 1,938 | 1,443 | 4,374 | 0 | 0 | 24,825 (1.9 %) |
+| aerial 0.365 | 16,971 | 433 | 3,477 | 0 | 0 | 55,734 (4.3 %) |
+| aerial 0.375 | 18,264 | 317 | 2,991 | 0 | 0 | 57,807 (4.5 %) |
+| aerial 0.385 | 19,040 | 238 | 3,666 | 0 | 0 | 48,617 (3.8 %) |
+| aerial 0.400 | 11,172 | 6 | 2,813 | 0 | 0 | 89,981 (6.9 %) |
+| close-up 0.05 | 0 | 0 | 0 | 0 | 0 | 31,589 (2.4 %) |
+| close-up 0.12 | 0 | 50 | 0 | 0 | 5 | 4,835 (0.4 %) |
+| close-up 0.50 | 0 | 74 | 1,821 | 0 | 28 | 43,831 (3.4 %) |
+| close-up 0.95 | 0 | 0 | 0 | 0 | 0 | 1,677 (0.1 %) |
+| chicane top-down | 31,353 | 3,526 | 2,047 | 0 | 0 | 565,702 (43.6 %) |
+| chicane low | 15,439 | 21,255 | 238 | 0 | 0 | 591,128 (45.6 %) |
+| T1 at 1.2 m | 114,256 | 1 | 0 | 0 | 0 | 422,820 (32.6 %) |
+| pit entry | 16,893 | 5 | 20,551 | 0 | 0 | 202,996 (15.7 %) |
+| start line | 169 | 0 | 0 | 0 | 0 | 3,735 (0.3 %) |
+| phone 390×844, 0.375 | 3,034 | 7 | 240 | 0 | 0 | 6,132 (1.9 %) |
+
+Shimmer with the camera moved 1 cm stays at 362 / 271 / 340 px at 0.345 / 0.375 / 0.400 (base: 337 / 3,859 / 471).
+No page load reported a console error or warning. R6 rebuilds to the same bundle hash.
+
+More sheets: the highlight at [960×600](../comparisons/geometry/aerial-960-0.365.jpg) and
+[640×400 `q=low`](../comparisons/geometry/aerial-640-low-0.375.jpg) (base build vs final); walls and gravel top-down
+at t = 0.3, before vs after the review fixes, at the [hairpin](../comparisons/geometry/walls-hairpin.jpg) and the
+[chicane](../comparisons/geometry/walls-chicane.jpg), and the gravel outlines around the
+[western hairpins](../comparisons/geometry/gravel-hairpin.jpg) and [T1 exit](../comparisons/geometry/gravel-t1.jpg).
+The step sheets ([chicane](../comparisons/geometry/steps-bend-top.jpg),
+[aerial 0.375](../comparisons/geometry/steps-aerial-0.375.jpg)) gain a seventh panel with the review fixes.
+
 ### Remaining artefacts (outside this fix)
 
-* **Camera path:** at t ≈ 0.8525 the eye passes through the control tower, and at t = 0.33 it skims the grandstand roof
-  by 0.16 m, so the near plane drops to 0.08 m and precision is lower for that frame (camera shots).
+* **Camera path:** at t = 0.33 the eye passes 0.16 m from the grandstand roof. Near follows it down to 0.08 m, so that
+  one frame now shows the roof filling the view, where the base build's fixed 0.3 m near plane cut the roof away
+  (0.3275 and 0.3325 are fine). At t ≈ 0.8525 the eye is inside the control tower (near is now 0.33 m there). Both are
+  camera keys for the camera-shots phase, not something the near plane should hide.
 * **O1, O2, O3 are still open:** motion blur switches on at 0.39 while the camera is airborne, the 140 m shadow box
   follows the car in the aerial, and alpha-tested tufts and shrubs sit on the gravel. Vegetation is still placed with
   the original 1000-point centre line, which is unchanged on purpose so the seeded placement stays the same.
-* At the chicane the outside walls cross the infield, 8.1 m from the asphalt edge of the other leg. They do not touch
-  it, but the barrier layout there is schematic.
+* Walls now stop where the chicane clamp starts, so the gravel at the chicane exit (2462–2713) has no wall for its
+  first 48 m, and the 50 m chicane trap keeps a 21 m wall.
 * Cloud sprites draw before the highlight (renderOrder 0 vs 2). A cloud drifting between the camera and the track would
   be covered by the line. None does in the journey frames.
-* The asphalt texture v coordinate restarts at sample 0 (T1 entry): a texture seam across the track that predates this
-  fix.
 
