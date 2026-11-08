@@ -108,7 +108,7 @@ async function createJourney({
   onProgress(0.92);
 
   // --- extras ----------------------------------------------------------------------------------
-  const highlight = createTrackHighlight(track);
+  const highlight = createTrackHighlight(world.root.userData.trackModel);
   scene.add(highlight.mesh);
   const openBox = world.root.userData.openBox; // the open pit garage, { x, z }
   const crew = createPitCrew();
