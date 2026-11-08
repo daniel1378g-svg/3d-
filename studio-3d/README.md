@@ -11,6 +11,16 @@ An interactive 3D model of the studio apartment from the walkthrough video, buil
 
 All sizes are estimates from the video. To change them, edit the constants at the top of the script (`W`, `L`, `H`, `PZ0`, `BX0`, …).
 
+## Rendering
+
+- Sky and sunlight from a physical sky model, with the sun casting soft shadows through the window.
+- Image-based lighting: outdoors from the sky, indoors from a neutral room environment, so chrome, porcelain, glass and the TV screen show reflections.
+- Daylight from the window and balcony door is modelled as area lights.
+- Ambient occlusion (GTAO), a light bloom on lamps and bright windows, and ACES tone mapping. Exposure adjusts between inside and outside views like a phone camera.
+- Procedural textures with colour, normal and roughness maps: laminate with grooved planks, plaster, wood grain, glazed tiles with grout, woven cotton and concrete.
+- Rounded furniture edges, a draped duvet, folded curtains, a working mirror reflection in the shower room, and terrain with forest, chalets and mountains.
+- The **Quality** button switches between high, medium and fast for slower devices.
+
 ## Using it
 
 - **Overview / Floor plan:** drag to orbit, scroll or pinch to zoom. The walls facing you are cut away.
