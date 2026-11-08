@@ -38,6 +38,12 @@ const RIDE_HEIGHT = ROAD_SURFACE_Y - TYRE_DEFLECTION;
 /** The occlusion decal floats this far above ROAD_SURFACE_Y (above the 0.034 rubber line too). */
 const FOOTPRINT_LIFT = 0.006;
 const FOOTPRINT_OPACITY = 0.9;
+/**
+ * The opaque wheel blur discs (car/wheel.js) fade in over this speed range (m/s): the still spokes start to
+ * alias at about 8 m/s (half a spoke pitch per 60 Hz frame) and are fully covered by 14 m/s.
+ */
+const BLUR_FROM = 4;
+const BLUR_FULL = 14;
 /** Inboard and outboard |z| of the wheel wells (the body's arch cut-outs span |z| 0.49 to 0.98–1.02). */
 const WELL_INNER_Z = 0.49;
 const WELL_OUTER_Z = 0.95;
@@ -175,10 +181,10 @@ async function buildHeroCar(url, wheelLayout, { onProgress, quality = 'high' } =
      * @param {number} [state.pitch=0] chassis rotation about z, radians
      * @param {number} [state.roll=0] chassis rotation about x, radians
      * @param {number} [state.heave=0] chassis vertical offset, metres
-     * @param {number} [state.speed=0] speed, m/s; fades the wheel blur discs in from 5 to ~20 m/s
+     * @param {number} [state.speed=0] speed, m/s; fades the wheel blur discs in from BLUR_FROM to BLUR_FULL
      */
     pose({ dist = 0, steer = 0, pitch = 0, roll = 0, heave = 0, speed = 0 } = {}) {
-      materials.blur.opacity = Math.min(0.94, Math.max(0, (speed - 5) / 16));
+      materials.blur.opacity = Math.min(1, Math.max(0, (speed - BLUR_FROM) / (BLUR_FULL - BLUR_FROM)));
       materials.blur.visible = materials.blur.opacity > 0.01;
       wheels.update(dist, steer);
       chassis.rotation.set(roll, 0, pitch);

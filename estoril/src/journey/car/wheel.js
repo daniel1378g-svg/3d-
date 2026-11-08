@@ -8,7 +8,8 @@
 // Parts (shared geometry and material, 4 instances each):
 //   rolling  tyre (rubber, moulded sidewall), rim face (10 spokes, metal), rim barrel with a lip,
 //            centre-lock nut, ventilated brake disc with grooves, disc bell, dark backing disc
-//   steered  brake caliper (red, ahead of the front axle, behind the rear one), speed-blur disc
+//   steered  brake caliper (red, ahead of the front axle, behind the rear one), speed-blur disc (an opaque
+//            time average of the spinning rim with the caliper behind it, faded in by speed)
 import {
   CanvasTexture,
   CircleGeometry,
@@ -34,11 +35,18 @@ import {
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 
 const ACCENT_RED = 0xe93325;
+/** Rim face: dark graphite metal, so the spokes read against the brake disc and caliper behind them. */
+const RIM_COLOR = '#5b6067';
+/** Time-averaged colours of the spinning wheel (blurTexture): spokes over the disc, over the caliper. */
+const BLUR_WINDOWS = '#3a3c40';
+const BLUR_CALIPER = '#b0362c';
 
 /** Tyre radius the shared geometry is built for (metres); instances scale from it. */
 const REFERENCE_RADIUS = 0.41;
 /** Rim radius as a fraction of the tyre radius (18-inch rim in a 660 mm tyre). */
 const RIM_RATIO = 0.69;
+/** Angular span of the brake caliper (radians). */
+const CALIPER_SPAN = 0.75;
 
 // --- procedural textures ------------------------------------------------------------------------
 
@@ -117,8 +125,8 @@ function tyreTextures(profileV) {
     }
     const rand2 = random(7);
     const grey = (a) => () => `rgba(128,128,130,${a})`;
-    drawSidewall(ctx, beadIn, sideIn, false, rand2, grey(0.25));
-    drawSidewall(ctx, beadOut, sideOut, true, rand2, grey(0.6));
+    drawSidewall(ctx, beadIn, sideIn, false, rand2, grey(0.12));
+    drawSidewall(ctx, beadOut, sideOut, true, rand2, grey(0.16));
   });
   return { color, height };
 }
@@ -165,24 +173,42 @@ function discTexture(innerFraction) {
   );
 }
 
-/** Radial grey gradient that reads as a spinning rim when faded in over the wheel. */
-function blurTexture() {
+/**
+ * What a spinning wheel looks like: the time average of the rim face (spokes cover about a third of the
+ * window annulus between 0.4 and 0.86 of the radius) over the disc and the caliper behind it. Opaque, so
+ * at speed it hides the rim face completely (a still spoke pattern would strobe: at 40 m/s the wheel turns
+ * 1.6 rad per frame). The caliper does not spin, so it is painted in at angle 0 (+x), seen through the
+ * spokes; each wheel's blur disc is turned like its caliper (CALIPER_ANGLE). Radii are fractions of the
+ * disc radius; `caliper` is [inner, outer, angular span].
+ */
+function blurTexture(caliper) {
   return canvasTexture(
     256,
     256,
-    (ctx) => {
-      const centre = 128;
-      const gradient = ctx.createRadialGradient(centre, centre, 0, centre, centre, centre);
-      gradient.addColorStop(0, 'rgba(150,156,162,1)');
-      gradient.addColorStop(0.18, 'rgba(70,74,79,.95)');
-      gradient.addColorStop(0.32, 'rgba(48,51,55,.75)');
-      gradient.addColorStop(0.7, 'rgba(58,61,66,.62)');
-      gradient.addColorStop(0.86, 'rgba(92,96,101,.8)');
-      gradient.addColorStop(0.95, 'rgba(36,38,41,.95)');
-      gradient.addColorStop(1, 'rgba(20,21,23,1)');
-      ctx.fillStyle = gradient;
+    (ctx, W) => {
+      const c = W / 2;
+      const ring = (r0, r1, color) => {
+        ctx.fillStyle = color;
+        ctx.beginPath();
+        ctx.arc(c, c, r1 * c, 0, Math.PI * 2);
+        ctx.arc(c, c, r0 * c, 0, Math.PI * 2, true);
+        ctx.fill();
+      };
+      ring(0.86, 1, RIM_COLOR); // outer rim, no windows
+      ring(0.4, 0.86, BLUR_WINDOWS); // spokes over the disc, averaged
+      ring(0, 0.4, RIM_COLOR); // hub
+      ring(0.97, 1, '#2a2c30'); // the barrel's lip in shadow
+      // the caliper through the spinning spokes (two thirds of the time)
+      const [inner, outer, span] = caliper;
+      ctx.fillStyle = BLUR_CALIPER;
       ctx.beginPath();
-      ctx.arc(centre, centre, centre, 0, Math.PI * 2);
+      ctx.arc(c, c, outer * c, -span / 2, span / 2);
+      ctx.arc(c, c, inner * c, span / 2, -span / 2, true);
+      ctx.fill();
+      // centre-lock nut
+      ctx.fillStyle = '#9a9fa6';
+      ctx.beginPath();
+      ctx.arc(c, c, 0.18 * c, 0, Math.PI * 2);
       ctx.fill();
     },
     { clamp: true },
@@ -200,7 +226,7 @@ function tyreGeometry(outerRadius, width, rimRadius) {
   const halfWidth = width / 2;
   const knots = [
     [rimRadius + 0.01, -halfWidth + 0.018],
-    [rimRadius + 0.05, -halfWidth - 0.004],
+    [rimRadius + 0.026, -halfWidth - 0.004],
     [outerRadius - 0.09, -halfWidth - 0.012],
     [outerRadius - 0.035, -halfWidth - 0.006],
     [outerRadius - 0.008, -halfWidth + 0.02],
@@ -210,7 +236,7 @@ function tyreGeometry(outerRadius, width, rimRadius) {
     [outerRadius - 0.008, halfWidth - 0.02],
     [outerRadius - 0.035, halfWidth + 0.006],
     [outerRadius - 0.09, halfWidth + 0.012],
-    [rimRadius + 0.05, halfWidth + 0.004],
+    [rimRadius + 0.026, halfWidth + 0.004],
     [rimRadius + 0.01, halfWidth - 0.018],
   ];
   const points = new SplineCurve(knots.map(([radius, axial]) => new Vector2(radius, axial))).getPoints(40);
@@ -319,7 +345,7 @@ function caliperGeometry(innerRadius, outerRadius, span, depth) {
  * Materials shared by the four wheels (and the wheel wells). `blur` starts fully transparent; the
  * car's pose() drives its opacity from speed.
  */
-function wheelMaterials(tyreMaps) {
+function wheelMaterials(tyreMaps, caliper) {
   return {
     rubber: new MeshStandardMaterial({
       name: 'tyre',
@@ -330,10 +356,10 @@ function wheelMaterials(tyreMaps) {
       roughness: 0.9,
       metalness: 0,
     }),
-    rim: new MeshStandardMaterial({ name: 'rim', color: 0x8e949b, roughness: 0.32, metalness: 1 }),
+    rim: new MeshStandardMaterial({ name: 'rim', color: RIM_COLOR, roughness: 0.36, metalness: 1 }),
     barrel: new MeshStandardMaterial({
       name: 'rim-barrel',
-      color: 0x55595f,
+      color: 0x3e4146,
       roughness: 0.38,
       metalness: 1,
       side: DoubleSide,
@@ -358,7 +384,7 @@ function wheelMaterials(tyreMaps) {
     }),
     blur: new MeshStandardMaterial({
       name: 'wheel-blur',
-      map: blurTexture(),
+      map: blurTexture(caliper),
       transparent: true,
       opacity: 0,
       roughness: 0.35,
@@ -454,24 +480,36 @@ function wheelTransforms(wheel, dist, steer, rolled, steered) {
 function createWheels({ layout, width, centreZ, centreY = 0 }) {
   const rimRadius = REFERENCE_RADIUS * RIM_RATIO;
   const halfWidth = width / 2;
+  const faceRadius = rimRadius * 0.985;
+  const discZ = halfWidth - 0.13;
+  const discOuter = rimRadius * 0.82;
+  const caliperInner = discOuter - 0.06;
+  const caliperOuter = discOuter + 0.022;
   const { geometry: tyre, profileV } = tyreGeometry(REFERENCE_RADIUS, width, rimRadius);
-  const materials = wheelMaterials(tyreTextures(profileV));
+  const materials = wheelMaterials(tyreTextures(profileV), [
+    caliperInner / faceRadius,
+    caliperOuter / faceRadius,
+    CALIPER_SPAN,
+  ]);
 
   // geometry in the right-hand wheel frame, each part already at its place on the axle
-  const rimFace = rimFaceGeometry(rimRadius * 0.985).translate(0, 0, halfWidth - 0.045);
+  const rimFace = rimFaceGeometry(faceRadius).translate(0, 0, halfWidth - 0.045);
   const barrel = rimBarrelGeometry(rimRadius, width);
   const nut = new CylinderGeometry(0.05, 0.058, 0.06, 6)
     .rotateX(Math.PI / 2)
     .translate(0, 0, halfWidth - 0.02);
-  const discZ = halfWidth - 0.13;
-  const discOuter = rimRadius * 0.82;
   const disc = brakeDiscGeometry(rimRadius * 0.45, discOuter, 0.032).translate(0, 0, discZ);
   const bell = new CylinderGeometry(rimRadius * 0.45, rimRadius * 0.45, 0.05, 32, 1, false)
     .rotateX(Math.PI / 2)
     .translate(0, 0, discZ + 0.04);
   const backing = new CircleGeometry(rimRadius * 0.99, 40).translate(0, 0, halfWidth - 0.2);
-  const caliper = caliperGeometry(discOuter - 0.06, discOuter + 0.022, 0.75, 0.085).translate(0, 0, discZ);
-  const blur = new CircleGeometry(rimRadius * 0.985, 48).translate(0, 0, halfWidth - 0.028);
+  // the caliper straddles the disc (z 0.024..0.056) and stays 6 mm behind the spinning rim face (z 0.082)
+  const caliper = caliperGeometry(caliperInner, caliperOuter, CALIPER_SPAN, 0.068).translate(
+    0,
+    0,
+    discZ - 0.006,
+  );
+  const blur = new CircleGeometry(faceRadius, 48).translate(0, 0, halfWidth - 0.028);
 
   const group = new Group();
   group.name = 'wheels';
