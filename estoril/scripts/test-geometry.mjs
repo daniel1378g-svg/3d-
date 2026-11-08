@@ -38,7 +38,7 @@ const context2d = new Proxy(
 globalThis.document ??= { createElement: () => ({ width: 0, height: 0, getContext: () => context2d }) };
 
 const { MIN_RADIUS, analyseTrack } = await import('../src/journey/world/track-analysis.js');
-const { WALL_GAP, WALL_TRACK_CLEARANCE, buildTrackSurfaces } =
+const { GRAVEL_MIN_WIDTH, WALL_GAP, WALL_TRACK_CLEARANCE, buildTrackSurfaces } =
   await import('../src/journey/world/track-surfaces.js');
 const { createWorldContext } = await import('../src/journey/world/context.js');
 const { buildPitLaneSurface } = await import('../src/journey/world/pits.js');
@@ -277,6 +277,37 @@ check(
   check(inverted === 0, `walls: ${inverted} triangles whose winding disagrees with their normals`);
   check(trackSideAway === 0, `walls: ${trackSideAway} track-side vertices face away from the centre line`);
   check(backTowards === 0, `walls: ${backTowards} back-face vertices face the centre line`);
+}
+
+// --- gravel outlines ----------------------------------------------------------------------------------
+{
+  // width of every trap at each of its samples (vertex pair k = inner edge, outer edge), the
+  // narrowest end and the largest width change per metre
+  const traps = meshes.filter((m) => m.kind === 'gravel');
+  let narrowest = Infinity;
+  let narrowestEnd = Infinity;
+  let steepest = 0;
+  for (const trap of traps) {
+    const position = trap.geometry.attributes.position;
+    const pairs = position.count / 2;
+    const widths = [];
+    for (let k = 0; k < pairs; k++)
+      widths.push(
+        Math.hypot(
+          position.getX(2 * k + 1) - position.getX(2 * k),
+          position.getZ(2 * k + 1) - position.getZ(2 * k),
+        ),
+      );
+    narrowest = Math.min(narrowest, ...widths);
+    narrowestEnd = Math.min(narrowestEnd, widths[0], widths[pairs - 1]);
+    for (let k = 1; k < pairs; k++)
+      steepest = Math.max(steepest, Math.abs(widths[k] - widths[k - 1]) / line.spacing);
+  }
+  console.log(
+    `gravel: ${traps.length} traps, narrowest ${narrowest.toFixed(2)} m, narrowest end ${narrowestEnd.toFixed(2)} m` +
+      ` (minimum ${GRAVEL_MIN_WIDTH} m), largest width change ${steepest.toFixed(2)} m per metre`,
+  );
+  check(narrowest >= GRAVEL_MIN_WIDTH - 1e-3, `gravel: a trap narrows to ${narrowest} m (sliver)`);
 }
 
 // --- walls against gravel and against each other -----------------------------------------------------

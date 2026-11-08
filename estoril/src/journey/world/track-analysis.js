@@ -55,6 +55,8 @@ const DIRECTION_TURN = 0.02; // radians: smaller turns do not decide a sub-corne
 /** Gravel traps start this far before a corner and end this far after it (metres). */
 const GRAVEL_BEFORE = 25;
 const GRAVEL_AFTER = 42;
+/** Same-side gravel intervals separated by at most this much (metres, not inside a bend) are joined. */
+const GRAVEL_BRIDGE = 35;
 
 const wrapAngle = (a) => Math.atan2(Math.sin(a), Math.cos(a));
 
@@ -361,12 +363,15 @@ function findCorners(cornerness, turn, spacing) {
 /**
  * Gravel intervals, per side: the outside of every sub-corner, extended GRAVEL_BEFORE before the
  * corner and GRAVEL_AFTER after it, never into a sub-corner that turns towards that side; same-side
- * intervals that touch or overlap are merged, so gravel never lies on gravel.
+ * intervals that touch or overlap are merged, so gravel never lies on gravel, and gaps of up to
+ * GRAVEL_BRIDGE between them are filled (no notch between two traps), unless the gap holds the
+ * inside of a bend on that side.
  * Returns [{ side, first, last }] (sample indices; last may exceed count).
  */
 function gravelIntervals(corners, count, spacing) {
   const before = Math.round(GRAVEL_BEFORE / spacing);
   const after = Math.round(GRAVEL_AFTER / spacing);
+  const bridge = Math.round(GRAVEL_BRIDGE / spacing);
   // per-sample "inside of a bend" flags: no gravel on the inside of any sub-corner
   const inside = { 1: new Uint8Array(count), [-1]: new Uint8Array(count) };
   for (const corner of corners)
@@ -384,6 +389,22 @@ function gravelIntervals(corners, count, spacing) {
         wanted[side][((i % count) + count) % count] = 1;
       for (let i = sub.last + 1; i <= last && !inside[side][i % count]; i++) wanted[side][i % count] = 1;
     });
+  for (const side of [1, -1]) {
+    // fill short gaps between wanted samples that hold no inside-of-bend sample
+    const flags = wanted[side];
+    let start = 0;
+    while (start < count && !flags[start]) start++;
+    if (start === count) continue;
+    for (let i = start; i < start + count; i++) {
+      if (flags[i % count]) continue;
+      let j = i;
+      while (j + 1 < start + count && !flags[(j + 1) % count]) j++;
+      let clear = j - i + 1 <= bridge;
+      for (let k = i; clear && k <= j; k++) if (inside[side][k % count]) clear = false;
+      if (clear) for (let k = i; k <= j; k++) flags[k % count] = 1;
+      i = j;
+    }
+  }
   const intervals = [];
   for (const side of [1, -1]) {
     const flags = wanted[side];

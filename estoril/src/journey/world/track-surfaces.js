@@ -31,9 +31,13 @@ const WALL_TRACK_CLEARANCE = RUNOFF_OUTER + 3;
 const WALL_GAP = 1.5;
 /** Shortest barrier wall, metres. */
 const MIN_WALL_LENGTH = 15;
-/** Gravel traps narrow towards their ends over this length (metres) to this fraction of their width. */
+/** Gravel width follows the cornerness smoothed by two box filters this long (metres). */
+const GRAVEL_SMOOTHING = 25;
+/** Gravel traps narrow towards their ends over this length (metres) to this width (metres). */
 const GRAVEL_TAPER = 20;
-const GRAVEL_END_WIDTH = 0.15;
+const GRAVEL_END_WIDTH = 4;
+/** A trap ends (square cut) where the inside-of-bend clamp leaves it less than this (metres). */
+const GRAVEL_MIN_WIDTH = 3;
 
 /** Asphalt from -halfWidth to +halfWidth; UVs in metres / 12, across 0..14/12. */
 function buildAsphalt(ctx, model) {
@@ -109,13 +113,13 @@ function buildEdgeLines(ctx, model) {
  *    (flush with the asphalt there, 15 mm higher on the outside, with a riser down to the run-off;
  *    texture repeats every 6 m) and 3.9 m of painted run-off, square-cut at both ends.
  *  - Every gravel interval of the model (the outside of each sub-corner, 25 m before to 42 m after
- *    the corner, never inside a bend, same-side intervals merged) gets a gravel trap from 5.5 m
- *    beyond the edge, 7.2–24 m wide depending on cornerness and narrowing to 15 % over 20 m at
- *    both ends, and a 0.95 m barrier wall 31.4 m beyond the edge where barrierRuns() allows one.
+ *    the corner, never inside a bend, same-side intervals merged or bridged) gets a gravel trap
+ *    from 5.5 m beyond the edge (gravelTraps()), and a 0.95 m barrier wall 31.4 m beyond the edge
+ *    where barrierRuns() allows one.
  */
 function buildCorners(ctx, model) {
   const { materials, root } = ctx;
-  const { halfWidth, cornerness } = model;
+  const { halfWidth } = model;
   for (const corner of model.corners) {
     const range = [corner.first, corner.last];
     for (const side of [1, -1]) {
@@ -145,18 +149,11 @@ function buildCorners(ctx, model) {
   }
 
   const gravelIndex = createPlanIndex(); // every gravel triangle, for the wall layout
-  for (const { side, first, last } of model.gravel) {
-    const spacing = model.line.spacing;
-    const taper = Math.min(GRAVEL_TAPER, 0.3 * (last - first) * spacing);
-    const width = (i, step) => {
-      const fromEnd = Math.min(step - first, last - step) * spacing;
-      const narrowing = GRAVEL_END_WIDTH + (1 - GRAVEL_END_WIDTH) * smoothstep(clamp(fromEnd / taper, 0, 1));
-      return GRAVEL_WIDTH * clamp(cornerness[i], 0.3, 1) * narrowing;
-    };
+  for (const { side, first, last, width } of gravelTraps(model)) {
     const gravelGeometry = buildStrip(
       model,
       (i) => side * (halfWidth[i] + RUNOFF_OUTER),
-      (i, step) => side * (halfWidth[i] + RUNOFF_OUTER + width(i, step)),
+      (i, step) => side * (halfWidth[i] + RUNOFF_OUTER + width[step - first]),
       { range: [first, last], y: LAYERS.gravel, vScale: 1 / 10 },
     );
     indexTriangles(gravelIndex, gravelGeometry);
@@ -178,6 +175,60 @@ function buildCorners(ctx, model) {
     barrier.receiveShadow = true;
     root.add(barrier);
   }
+}
+
+/** Moving average over ±radius samples of a closed loop of values. */
+function boxFilter(values, radius) {
+  const count = values.length;
+  const out = new Float64Array(count);
+  let sum = 0;
+  for (let d = -radius; d <= radius; d++) sum += values[(d + count) % count];
+  for (let i = 0; i < count; i++) {
+    out[i] = sum / (2 * radius + 1);
+    sum += values[(i + radius + 1) % count] - values[(i - radius + count) % count];
+  }
+  return out;
+}
+
+/**
+ * The gravel traps: [{ side, first, last, width }], width[k] in metres at step first + k.
+ *   - Full width GRAVEL_WIDTH × cornerness (clamped to 0.3–1, so 7.2–24 m), smoothed along the
+ *     track by two GRAVEL_SMOOTHING box filters: the cornerness is a running maximum whose plateaus
+ *     change abruptly, which left notches and spikes in the outline.
+ *   - Over GRAVEL_TAPER at both ends of the interval the width eases down to GRAVEL_END_WIDTH and
+ *     the trap ends with a square cut (no thin tongue).
+ *   - Where the inside-of-bend clamp (model.edge) leaves less room than that width, the trap takes
+ *     the room left; where that is under GRAVEL_MIN_WIDTH the trap ends (its longest stretch is kept).
+ */
+function gravelTraps(model) {
+  const { line, halfWidth } = model;
+  const count = line.count;
+  const radius = Math.round(GRAVEL_SMOOTHING / 2 / line.spacing);
+  const clamped = Float64Array.from(model.cornerness, (c) => clamp(c, 0.3, 1));
+  const scale = boxFilter(boxFilter(clamped, radius), radius);
+  const traps = [];
+  for (const { side, first, last } of model.gravel) {
+    const steps = last - first + 1;
+    const taper = Math.min(GRAVEL_TAPER, 0.3 * (steps - 1) * line.spacing);
+    const width = new Float64Array(steps);
+    const fits = new Uint8Array(steps);
+    for (let k = 0; k < steps; k++) {
+      const i = (first + k) % count;
+      const full = GRAVEL_WIDTH * scale[i];
+      const end = Math.min(GRAVEL_END_WIDTH, full);
+      const fromEnd = Math.min(k, steps - 1 - k) * line.spacing;
+      const wanted = end + (full - end) * smoothstep(clamp(fromEnd / taper, 0, 1));
+      const inner = Math.abs(model.edge(i, side * (halfWidth[i] + RUNOFF_OUTER)));
+      const room = Math.abs(model.edge(i, side * (halfWidth[i] + RUNOFF_OUTER + wanted))) - inner;
+      width[k] = Math.min(wanted, room);
+      fits[k] = width[k] >= GRAVEL_MIN_WIDTH ? 1 : 0;
+    }
+    const runs = flagRuns(fits, 2);
+    if (!runs.length) continue;
+    const [a, b] = runs.reduce((best, run) => (run[1] - run[0] > best[1] - best[0] ? run : best));
+    traps.push({ side, first: first + a, last: first + b, width: width.subarray(a, b + 1) });
+  }
+  return traps;
 }
 
 /** Adds the plan triangles of an indexed geometry to a plan index. */
@@ -299,4 +350,4 @@ function buildTrackSurfaces(ctx, shape) {
   buildCorners(ctx, model);
 }
 
-export { WALL_GAP, WALL_TRACK_CLEARANCE, buildTrackSurfaces };
+export { GRAVEL_MIN_WIDTH, WALL_GAP, WALL_TRACK_CLEARANCE, buildTrackSurfaces };
