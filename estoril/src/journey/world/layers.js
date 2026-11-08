@@ -21,6 +21,12 @@
 //   start line, grid-slot bars      0.048           main-straight.js
 //   aerial highlight                0.060           track-highlight.js
 //
+// The paddock, away from the track, has its own stack (paddock.js):
+//   paddock asphalt                 0.020
+//   paddock bay lines (top)         0.023           below the hero car's contact decal, which lies
+//                                                   6 mm above whatever the car stands on (0.026),
+//                                                   so the decal darkens the lines it covers
+//
 // The asphalt keeps its old height (0.030), so the car's tyres sit on it as before.
 const LAYERS = {
   ground: -0.05,
@@ -35,6 +41,8 @@ const LAYERS = {
   lines: 0.042,
   paint: 0.048,
   highlight: 0.06,
+  paddock: 0.02,
+  paddockLines: 0.023,
 };
 
 /** Smallest height difference (metres) between two layers that overlap in plan. */

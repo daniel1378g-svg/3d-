@@ -1,5 +1,5 @@
-// Builds the circuit world: terrain, hills, track surfaces, pits, grandstand, paddock, vegetation
-// and clouds. Each part lives in its own module; this file only fixes the build order.
+// Builds the circuit world: terrain, hills, track surfaces, pits, grandstand, paddock, barriers,
+// vegetation and clouds. Each part lives in its own module; this file only fixes the build order.
 //
 // The order below is load-bearing and must not be changed casually:
 //  - three.js sorts draws by material.id and object id, which follow creation order;
@@ -11,6 +11,7 @@
 //
 // Coordinates: metres, world XZ ground plane, +Y up. See layout.js for the fixed positions.
 import { bindTrackModel } from '../env/shading.js';
+import { buildArmco, buildTyreStacks } from './barriers.js';
 import { buildClouds } from './clouds.js';
 import { createWorldContext } from './context.js';
 import { buildFlag } from './flags.js';
@@ -47,6 +48,8 @@ function buildWorld(trackPoints, { quality = 'high' } = {}) {
   buildGrandstand(ctx);
   buildStartGantry(ctx);
   buildPaddock(ctx);
+  buildArmco(ctx, shape);
+  buildTyreStacks(ctx);
   const vegetation = buildVegetation(ctx, shape);
   // Flags on top of the grandstand back wall (17 m): red at the -X end, white at the +X end.
   buildFlag(ctx, L.grandstandX0 + 8, 17, L.grandstandZ + 16, 0xe93325, ctx.root);
