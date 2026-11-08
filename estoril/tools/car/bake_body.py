@@ -567,6 +567,25 @@ def bake_footprint(P, I, layout, dirs, maps_body):
     return occ
 
 
+#: Pitch/roll range (radians) over which low_points() collects the body's lowest vertices.
+LOW_POINT_RANGE = 0.06
+
+
+def low_points(P):
+    """The body vertices that can be lowest under any chassis pitch/roll within +-LOW_POINT_RANGE (rotation
+    (roll, 0, pitch), Euler XYZ, as hero-car.js applies it): the splitter lip and the sills. car-motion.js
+    keeps them clear of the road."""
+    sel = set()
+    for p in np.linspace(-LOW_POINT_RANGE, LOW_POINT_RANGE, 25):
+        for r in np.linspace(-LOW_POINT_RANGE, LOW_POINT_RANGE, 25):
+            y = (P[:, 0] * np.sin(p) + P[:, 1] * np.cos(p)) * np.cos(r) - P[:, 2] * np.sin(r)
+            sel.add(int(np.argmin(y)))
+    pts = P[sorted(sel)]
+    pts = pts[np.argsort(pts[:, 0], kind='stable')]
+    log('low points: %d, y %.4f..%.4f m' % (len(pts), pts[:, 1].min(), pts[:, 1].max()))
+    return [[round(float(v), 4) for v in q] for q in pts]
+
+
 def main():
     src, P, UV, I = load_source()
     I = drop_debris(P, UV, I)
@@ -612,6 +631,7 @@ def main():
                      'ormMap': os.path.basename(OUT_ORM)},
         'footprint': {'map': os.path.basename(OUT_FOOTPRINT), 'size': list(FOOTPRINT_EXTENT),
                       'note': 'ground occlusion (alpha), car frame, centred on the origin, +x along the texture width'},
+        'lowPoints': low_points(pos),
     }
     write_outputs(pos, uv, nrm, index, groups, extra)
 

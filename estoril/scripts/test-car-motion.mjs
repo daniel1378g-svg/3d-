@@ -3,12 +3,14 @@
 //
 // Scroll scripts drive the page's progress spring (progress.js) like journey.js does, at random
 // frame times of 8–50 ms, and every frame's pose is checked: continuity (no jumps beyond the limits
-// below), bounded roll/pitch/heave/steer, wheels at exactly distance / radius, settling when
-// stopped, mirrored dynamics in reverse, teleports (jump / renderAt dt 0) without speed, and the
-// same pose at 30 and 120 frames per second.
+// below), bounded roll/pitch/heave/steer, ground clearance of the body's low points (exact rotation),
+// the wheels rolling exactly distance / radius through their instance matrices (car/wheel.js), front
+// wheels steering into the bend, settling when stopped, mirrored dynamics in reverse, teleports
+// (jump / renderAt dt 0) without speed, and the same pose at 30 and 120 frames per second.
 import { readFileSync } from 'node:fs';
 import { buildCarPath } from '../src/journey/car-path.js';
 import {
+  MIN_CLEARANCE,
   carScheduleKeys,
   computeLandmarks,
   createCarMotion,
@@ -16,20 +18,31 @@ import {
   createPathSampler,
 } from '../src/journey/car-motion.js';
 import { createProgress } from '../src/journey/progress.js';
-import { rollAngle } from '../src/journey/car/wheel.js';
-import { Vector3 } from 'three';
+import { clearancePoints } from '../src/journey/car/hero-car.js';
+import { REFERENCE_RADIUS, rollAngle, wheelSet, wheelTransforms } from '../src/journey/car/wheel.js';
+import { Matrix4, Vector3 } from 'three';
 
 const root = new URL('..', import.meta.url).pathname;
 const track = JSON.parse(readFileSync(root + 'site/assets/data/track.json', 'utf8')).pts;
 const layout = JSON.parse(readFileSync(root + 'site/assets/models/hero-car.json', 'utf8'));
+const bodyDesc = JSON.parse(readFileSync(root + 'site/assets/models/' + layout.body, 'utf8'));
 const path = buildCarPath(track);
 const sampler = createPathSampler(path);
 const landmarks = computeLandmarks(path, track);
 const distanceAt = createCarSchedule(carScheduleKeys(landmarks));
+const lowPoints = clearancePoints(bodyDesc.lowPoints); // x, clearance at rest, z
+const wheels = wheelSet(layout, 0.86, 0);
 
 // limits (the module's clamps, plus a hair for float noise) and per-frame continuity thresholds
-const LIMIT = { roll: 0.045 + 1e-9, pitch: 0.03 + 1e-9, heave: 0.012 + 1e-9, steer: 0.5 + 1e-9 };
-const MAX_STEP = { roll: 0.012, pitch: 0.012, heave: 0.004, steer: 0.1, speed: 2.5 };
+const LIMIT = { roll: 0.028 + 1e-9, pitch: 0.016 + 1e-9, heave: 0.006 + 1e-9, steer: 0.5 + 1e-9 };
+const MAX_STEP = { roll: 0.006, pitch: 0.006, heave: 0.003, steer: 0.02, speed: 2.5 };
+/**
+ * The car's heading follows the path: per frame it may turn by at most this much per metre driven
+ * (the tightest bend of the car path, in the paddock, is 0.445 rad/m), plus 0.01 rad.
+ */
+const MAX_TURN_PER_METRE = 0.5;
+/** The body may come this close to the road (metres): MIN_CLEARANCE less 0.5 mm of rounding. */
+const CLEARANCE = MIN_CLEARANCE - 0.0005;
 
 let failures = 0;
 const check = (name, ok, detail = '') => {
@@ -47,11 +60,50 @@ function frameTimes(seed) {
 function mockCar() {
   return {
     root: { position: new Vector3(), rotation: { y: 0 } },
+    lowPoints,
     last: null,
     pose(state) {
       this.last = { ...state };
     },
   };
+}
+
+/**
+ * Lowest clearance (metres) of the body's low points under a pose, with the exact rotation hero-car.js
+ * applies (chassis.rotation.set(roll, 0, pitch), Euler XYZ, about the chassis origin, plus heave).
+ */
+function clearance({ pitch, roll, heave }) {
+  let min = Infinity;
+  const raw = bodyDesc.lowPoints;
+  for (let i = 0; i < raw.length; i++) {
+    const [x, y, z] = raw[i];
+    const rest = lowPoints[i * 3 + 1]; // clearance at rest = y + (ride height - road height)
+    const yRotated = (x * Math.sin(pitch) + y * Math.cos(pitch)) * Math.cos(roll) - z * Math.sin(roll);
+    min = Math.min(min, rest + (yRotated - y) + heave);
+  }
+  return min;
+}
+
+/** Wraps an angle difference to (-π, π]. */
+const wrap = (a) => Math.atan2(Math.sin(a), Math.cos(a));
+
+// wheel instance matrices (car/wheel.js wheelTransforms) and the angle they show
+const rolledM = new Matrix4();
+const steeredM = new Matrix4();
+const top = new Vector3();
+/**
+ * Where the top of each tyre is (car frame) after `dist` metres with `steer`: [{ x, y, z, angle }],
+ * angle = how far the tyre has turned forwards (radians, the top point's angle from +y towards the
+ * wheel's heading).
+ */
+function tyreTops(dist, steer) {
+  return wheels.map((w) => {
+    wheelTransforms(w, dist, steer, rolledM, steeredM);
+    top.set(0, REFERENCE_RADIUS, 0).applyMatrix4(rolledM).sub(w.centre);
+    const heading = w.front ? steer : 0; // about +y: forward is (cos, 0, -sin)
+    const along = top.x * Math.cos(heading) - top.z * Math.sin(heading);
+    return { x: top.x, y: top.y, z: top.z, along, angle: Math.atan2(along, top.y) };
+  });
 }
 
 /**
@@ -84,22 +136,39 @@ function run({ target, duration, dt, startProgress, motion: given, car: givenCar
       roll: motion.roll,
       pitch: motion.pitch,
       heave: motion.heave,
+      yaw: car.root.rotation.y,
       dist: car.last.dist,
     });
   }
   return { frames, motion, car, progress };
 }
 
-/** Bounds, continuity and the wheel contract over a recorded run. */
+/** Bounds, continuity, ground clearance and the wheel contract over a recorded run. */
 function checkRun(name, frames) {
   const worst = { roll: 0, pitch: 0, heave: 0, steer: 0 };
   const jump = { roll: 0, pitch: 0, heave: 0, steer: 0, speed: 0 };
-  let wheelsExact = true;
+  let headingJump = 0; // worst |heading change| beyond what the distance step allows (radians)
+  let minClearance = Infinity;
+  let slip = 0; // worst |tyre turn − distance / r| between frames, through the instance matrices
+  let prevTops = null;
   for (let i = 0; i < frames.length; i++) {
     const f = frames[i];
     for (const k of Object.keys(worst)) worst[k] = Math.max(worst[k], Math.abs(f[k]));
-    if (i) for (const k of Object.keys(jump)) jump[k] = Math.max(jump[k], Math.abs(f[k] - frames[i - 1][k]));
-    if (f.dist !== f.distance) wheelsExact = false;
+    if (i) {
+      for (const k of Object.keys(jump)) jump[k] = Math.max(jump[k], Math.abs(f[k] - frames[i - 1][k]));
+      const allowed = MAX_TURN_PER_METRE * Math.abs(f.distance - frames[i - 1].distance) + 0.01;
+      headingJump = Math.max(headingJump, Math.abs(wrap(f.yaw - frames[i - 1].yaw)) - allowed);
+    }
+    minClearance = Math.min(minClearance, clearance(f));
+    const tops = tyreTops(f.dist, f.steer);
+    if (prevTops) {
+      const step = f.dist - frames[i - 1].dist;
+      tops.forEach(
+        (tyre, w) =>
+          (slip = Math.max(slip, Math.abs(wrap(tyre.angle - prevTops[w].angle - step / wheels[w].r)))),
+      );
+    }
+    prevTops = tops;
   }
   const bounded = Object.keys(worst).every((k) => worst[k] <= LIMIT[k]);
   check(
@@ -109,16 +178,25 @@ function checkRun(name, frames) {
       .map(([k, v]) => `${k} ${v.toFixed(4)}`)
       .join(', '),
   );
-  const continuous = Object.keys(jump).every((k) => jump[k] <= MAX_STEP[k]);
+  const continuous = Object.keys(jump).every((k) => jump[k] <= MAX_STEP[k]) && headingJump <= 0;
   check(
-    `${name}: continuous (max change per frame)`,
+    `${name}: continuous (max change per frame; heading follows the distance step)`,
     continuous,
     Object.entries(jump)
       .map(([k, v]) => `${k} ${v.toFixed(4)}`)
-      .join(', '),
+      .join(', ') + `, heading excess ${Math.max(0, headingJump).toFixed(4)}`,
   );
-  check(`${name}: wheels driven by the exact path distance`, wheelsExact);
-  return { worst, jump };
+  check(
+    `${name}: body clears the road by at least ${(CLEARANCE * 1000).toFixed(1)} mm`,
+    minClearance >= CLEARANCE,
+    `min ${(minClearance * 1000).toFixed(1)} mm (${(clearance({ pitch: 0, roll: 0, heave: 0 }) * 1000).toFixed(1)} at rest)`,
+  );
+  check(
+    `${name}: tyres turn by exactly the distance step / r (instance matrices)`,
+    slip < 1e-6,
+    `worst slip ${slip.toExponential(1)} rad`,
+  );
+  return { worst, jump, minClearance };
 }
 
 const r = { F: layout.FL.r, R: layout.RL.r };
@@ -183,6 +261,7 @@ function constantSpeed(fromDistance, toDistance, speed, seed) {
       roll: motion.roll,
       pitch: motion.pitch,
       heave: motion.heave,
+      yaw: car.root.rotation.y,
       dist: car.last.dist,
     });
   }
@@ -209,6 +288,36 @@ check(
   Math.sign(ba.steer) === Math.sign(fa.steer) && Math.abs(ba.steer - fa.steer) < 0.12,
   `steer forward ${fa.steer.toFixed(3)} reverse ${ba.steer.toFixed(3)}`,
 );
+// the front wheels point into the bend: the steer angle (about +y) has the sign of the change of the
+// car's heading (root rotation.y, also about +y) a few metres ahead
+const yawAt = (d) => {
+  const t = sampler.sample(d).t;
+  return Math.atan2(-t.z, t.x);
+};
+const yawAhead = (d) => wrap(yawAt(d + 4) - yawAt(d));
+check(
+  'steering: front wheels turn into the bend (sign of steer = sign of the heading change ahead)',
+  Math.sign(fa.steer) === Math.sign(yawAhead(apex)) && Math.abs(fa.steer) > 0.05,
+  `apex ${apex.toFixed(1)} m, kappa ${sampler.curvatureAt(apex).toFixed(4)}/m, heading change over 4 m ${yawAhead(apex).toFixed(3)} rad, steer ${fa.steer.toFixed(3)} rad`,
+);
+{
+  // over the whole lap at 25 m/s: wherever the car is turning noticeably, the wheels turn the same way
+  const lap = constantSpeed(landmarks.lapStart, landmarks.lapEnd, 25, 9);
+  let turning = 0;
+  let agree = 0;
+  for (let i = 1; i < lap.length; i++) {
+    const rate = wrap(lap[i].yaw - lap[i - 1].yaw) / (lap[i].distance - lap[i - 1].distance); // rad/m
+    if (Math.abs(rate) < 0.01 || Math.abs(lap[i].steer) < 0.01) continue;
+    turning++;
+    if (Math.sign(lap[i].steer) === Math.sign(rate)) agree++;
+  }
+  check(
+    'steering: the same direction as the turn over the lap',
+    turning > 50 && agree / turning > 0.97,
+    `${agree} of ${turning} turning frames agree`,
+  );
+  checkRun('lap at 25 m/s', lap);
+}
 const pitchWhile = (frames) => frames.find((f) => f.t > 0.8).pitch;
 check(
   'reverse: pitch mirrors (accelerating forwards lifts the nose, backwards dips it)',
@@ -217,6 +326,29 @@ check(
 );
 
 // 5. Wheels: angle = distance / r for both radii, and back to the start after going there and back
+{
+  // through the instance matrices: each tyre's top moves forwards (along its own heading, steered or
+  // not) by r·sin(d / r) after d metres, the bottom backwards (no slip against the road)
+  let worst = 0;
+  for (const d of [0.01, 0.37, -0.25, 1234.567, -987.65]) {
+    for (const steer of [0, 0.3, -0.3]) {
+      tyreTops(d, steer).forEach((tyre, w) => {
+        const r = wheels[w].r;
+        worst = Math.max(
+          worst,
+          Math.abs(tyre.along - r * Math.sin(d / r)),
+          Math.abs(tyre.y - r * Math.cos(d / r)),
+          Math.abs(wrap(tyre.angle - d / r)),
+        );
+      });
+    }
+  }
+  check(
+    'wheels: every tyre (left and right, steered) rolls forwards by distance / r',
+    worst < 1e-9,
+    `worst ${worst.toExponential(1)}`,
+  );
+}
 const there = run({ target: ease(0.43, 0.5, 0, 3), duration: 4, dt: frameTimes(6) });
 const back = run({
   target: ease(0.5, 0.43, 0, 3),
@@ -239,6 +371,29 @@ check(
     Math.abs(endDist - startDist) < 1e-3,
   `${travelled.toFixed(1)} m there: front ${(travelled / r.F).toFixed(2)} rad, rear ${(travelled / r.R).toFixed(2)} rad; back at ${(endDist - startDist).toExponential(1)} m from the start`,
 );
+
+// 5b. Scroll gestures that drive the body hardest: the whole journey in 20 s and in 6 s, a flick on
+// the lap and back, and the lap in 4 s (each frame is checked for bounds, continuity and clearance)
+{
+  const full20 = run({ target: ease(0, 1, 0.5, 20.5), startProgress: 0, duration: 23, dt: frameTimes(10) });
+  checkRun('full scroll in 20 s', full20.frames);
+  const full6 = run({ target: ease(0, 1, 0.5, 6.5), startProgress: 0, duration: 9, dt: frameTimes(11) });
+  checkRun('full scroll in 6 s', full6.frames);
+  const flick = run({
+    target: (t) => (t < 0.3 ? 0.43 + (0.07 * t) / 0.3 : t < 0.6 ? 0.5 - (0.07 * (t - 0.3)) / 0.3 : 0.43),
+    startProgress: 0.43,
+    duration: 4,
+    dt: frameTimes(12),
+  });
+  checkRun('flick 0.43 → 0.5 → 0.43', flick.frames);
+  const lap4 = run({
+    target: ease(0.425, 0.56, 0.2, 4.2),
+    startProgress: 0.425,
+    duration: 6,
+    dt: frameTimes(13),
+  });
+  checkRun('lap in 4 s', lap4.frames);
+}
 
 // 6. Jump: a teleport mid-run is not speed, and the next frames stay calm
 {

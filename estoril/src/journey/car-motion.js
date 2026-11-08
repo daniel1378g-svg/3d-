@@ -10,12 +10,15 @@
 //   speed     the frame's distance step / dt, clamped, through a frame-rate independent exponential
 //             filter and a slew limit (4 g): a teleport (jump(), renderAt(t, {dt: 0}), warmup) is
 //             never seen as speed;
-//   steering  atan(wheelbase × path curvature) a little ahead in the direction of travel (the
+//   steering  −atan(wheelbase × path curvature) a little ahead in the direction of travel (the
 //             bicycle model: the same angle forwards and backwards), on a critically damped spring;
+//             a rotation about +y, so a right-hand bend (κ > 0, towards +z) turns the wheels right;
 //   body      pitch from longitudinal and roll from lateral acceleration (v² κ), a little heave
 //             from load and road texture: critically damped springs integrated exactly for the
 //             frame's dt, with clamped inputs and outputs, so very fast scrolling cannot flip or
-//             spike the body, and it settles when the car stops.
+//             spike the body, and it settles when the car stops. The pose that is shown is then
+//             scaled back, if needed, so that no low point of the body (car.lowPoints: splitter,
+//             sills) comes closer than MIN_CLEARANCE to the road.
 // The pose is a function of the distance sequence alone (no wall-clock wobble), so the same scroll
 // positions and frame times give the same pose; any dt ≤ REST_DT (renderAt(t, {dt: 0})) gives the
 // car at rest at that position. World XZ plane, y up; the car model faces its local +X.
@@ -49,15 +52,26 @@ const SPEED_SLEW = 40;
 const MAX_LONGITUDINAL = 12;
 const MAX_LATERAL = 15;
 
-/** Body response: radians per m/s² and the clamps (radians / metres). */
-const PITCH_PER_ACCEL = 0.0022; // nose up under acceleration, down under braking
-const ROLL_PER_ACCEL = 0.0032; // leans out of the turn
-const MAX_PITCH = 0.03;
-const MAX_ROLL = 0.045;
-const HEAVE_PER_ACCEL = 0.0006; // squats a little under load
+/**
+ * Body response: radians per m/s² and the clamps (radians / metres). A stiffly sprung GT car: about
+ * 0.7° of pitch and 1.1° of roll per g, at most 0.9° and 1.6°, and a few millimetres of squat.
+ */
+const PITCH_PER_ACCEL = 0.0012; // nose up under acceleration, down under braking
+const ROLL_PER_ACCEL = 0.0019; // leans out of the turn
+const MAX_PITCH = 0.016;
+const MAX_ROLL = 0.028;
+const HEAVE_PER_ACCEL = 0.0004; // squats a little under load
 const ROAD_HEAVE = 0.0015; // road texture amplitude at speed (metres)
 const ROAD_WAVELENGTH = 7.3; // metres
-const MAX_HEAVE = 0.012;
+const MAX_SQUAT = 0.006;
+const MAX_LIFT = 0.003;
+/**
+ * The shown pose keeps every low point of the body at least this far above the road (metres; the
+ * splitter clears it by 72.7 mm at rest). The limit is linear in pitch/roll/heave (small angles),
+ * so it keeps SAFETY in reserve for the second-order terms.
+ */
+const MIN_CLEARANCE = 0.02;
+const CLEARANCE_SAFETY = 0.001;
 
 /** Natural frequencies (rad/s) of the critically damped springs. */
 const STEER_OMEGA = 9;
@@ -188,15 +202,39 @@ function springStep(s, target, omega, dt) {
   return s.x;
 }
 
-/** Steering angle (radians) the path asks for at `distance`, looking ahead in the direction of travel. */
+/**
+ * Steering angle the path asks for at `distance`, looking ahead in the direction of travel: radians
+ * about +y (the car's up axis), so positive turns the wheels left (+x towards -z). A bend towards +z
+ * (κ > 0, a right-hand bend) asks for a negative angle.
+ */
 function steerTarget(sampler, distance, speed) {
   const direction = speed < 0 ? -1 : 1;
   const ahead = STEER_LOOKAHEAD + STEER_LOOKAHEAD_TIME * Math.abs(speed);
   return clamp(
-    Math.atan(WHEELBASE * sampler.curvatureAt(distance + direction * ahead)),
+    -Math.atan(WHEELBASE * sampler.curvatureAt(distance + direction * ahead)),
     -MAX_STEER,
     MAX_STEER,
   );
+}
+
+/**
+ * How much of a body pose can be shown: 1, or the largest factor k < 1 for which pitch, roll and
+ * heave all scaled by k keep every low point at least MIN_CLEARANCE above the road. In the car frame
+ * (chassis rotation (roll, 0, pitch), Euler XYZ) a body point (x, y, z) moves up by
+ * x·pitch − z·roll + heave to first order.
+ *
+ * @param {Float64Array|number[]|null} points low points as x, clearance at rest (m), z triples
+ */
+function clearanceScale(points, pitch, roll, heave) {
+  if (!points) return 1;
+  let k = 1;
+  for (let i = 0; i < points.length; i += 3) {
+    const drop = -(points[i] * pitch - points[i + 2] * roll + heave);
+    if (drop <= 0) continue;
+    const room = points[i + 1] - MIN_CLEARANCE - CLEARANCE_SAFETY;
+    k = Math.min(k, room > 0 ? room / drop : 0);
+  }
+  return k;
 }
 
 /**
@@ -207,7 +245,8 @@ function steerTarget(sampler, distance, speed) {
  * puts the car at rest there instead of reading the jump as speed. `frame` is the car's ground frame
  * (p: position, f: flat forward, r: right) that car-relative camera shots and the shadow follow read.
  *
- * @param {{ root: import('three').Object3D, pose: Function }} car buildHeroCar() result
+ * @param {{ root: import('three').Object3D, pose: Function, lowPoints?: Float64Array }} car buildHeroCar()
+ *   result; lowPoints (x, clearance above the road at rest, z triples, metres) enable the clearance limit
  * @param {ReturnType<typeof createPathSampler>} sampler
  * @param {number} startDistance metres along the path
  */
@@ -221,6 +260,9 @@ function createCarMotion(car, sampler, startDistance) {
   const pitch = { x: 0, v: 0 };
   const roll = { x: 0, v: 0 };
   const heave = { x: 0, v: 0 };
+  // the body's low points (x, clearance at rest, z), if the car provides them
+  const lowPoints = car.lowPoints || null;
+  // what is shown: the springs' pose after the clearance limit (it is also car.pose()'s argument)
   const pose = { dist: 0, steer: 0, pitch: 0, roll: 0, heave: 0, speed: 0 };
   const frame = { p: new Vector3(), f: new Vector3(), r: new Vector3() };
 
@@ -259,17 +301,21 @@ function createCarMotion(car, sampler, startDistance) {
     },
     accel: 0, // longitudinal acceleration the body reacts to (m/s²)
     lateral: 0, // lateral acceleration v²κ the body reacts to (m/s²)
+    /** Front-wheel steer angle about +y (radians, > 0 turns left). */
     get steer() {
-      return steer.x;
+      return pose.steer;
     },
+    /** Body pitch about +z (radians, > 0 nose up), as shown. */
     get pitch() {
-      return pitch.x;
+      return pose.pitch;
     },
+    /** Body roll about +x (radians, > 0 lowers the right side), as shown. */
     get roll() {
-      return roll.x;
+      return pose.roll;
     },
+    /** Body heave (metres), as shown. */
     get heave() {
-      return heave.x;
+      return pose.heave;
     },
     frame,
     /**
@@ -302,12 +348,12 @@ function createCarMotion(car, sampler, startDistance) {
           ROAD_HEAVE *
           Math.sin((distance / ROAD_WAVELENGTH) * Math.PI * 2) *
           Math.min(1, Math.abs(speed) / 20);
-        springStep(heave, clamp(road - HEAVE_PER_ACCEL * load, -MAX_HEAVE, MAX_HEAVE), HEAVE_OMEGA, dt);
+        springStep(heave, clamp(road - HEAVE_PER_ACCEL * load, -MAX_SQUAT, MAX_LIFT), HEAVE_OMEGA, dt);
         // the springs' own transients stay inside the limits too
         steer.x = clamp(steer.x, -MAX_STEER, MAX_STEER);
         roll.x = clamp(roll.x, -MAX_ROLL, MAX_ROLL);
         pitch.x = clamp(pitch.x, -MAX_PITCH, MAX_PITCH);
-        heave.x = clamp(heave.x, -MAX_HEAVE, MAX_HEAVE);
+        heave.x = clamp(heave.x, -MAX_SQUAT, MAX_LIFT);
       }
       speedOverride = false;
       motion.wheelDistance = distance;
@@ -318,11 +364,13 @@ function createCarMotion(car, sampler, startDistance) {
       frame.r.crossVectors(frame.f, UP).normalize();
       car.root.position.copy(at.p);
       car.root.rotation.y = Math.atan2(-at.t.z, at.t.x); // turns local +X onto the tangent
+      // a continuous scale of the spring state, so the shown pose never jumps
+      const k = clearanceScale(lowPoints, pitch.x, roll.x, heave.x);
       pose.dist = distance;
       pose.steer = steer.x;
-      pose.pitch = pitch.x;
-      pose.roll = roll.x;
-      pose.heave = heave.x;
+      pose.pitch = pitch.x * k;
+      pose.roll = roll.x * k;
+      pose.heave = heave.x * k;
       pose.speed = Math.abs(speed);
       car.pose(pose);
     },
@@ -331,8 +379,10 @@ function createCarMotion(car, sampler, startDistance) {
 }
 
 export {
+  MIN_CLEARANCE,
   ON_TRACK_RANGE,
   carScheduleKeys,
+  clearanceScale,
   computeLandmarks,
   createCarMotion,
   createCarSchedule,

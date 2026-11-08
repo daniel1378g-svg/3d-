@@ -381,6 +381,63 @@ function rollAngle(distance, radius, left) {
 // --- the wheel set ------------------------------------------------------------------------------------
 
 const KEYS = ['FL', 'FR', 'RL', 'RR'];
+/** Caliper angle in the wheel frame (radians about z from +x): ahead of the front axle, behind the rear. */
+const CALIPER_ANGLE = 0.55;
+
+/**
+ * Per-wheel constants in the car frame: centre (x, r + centreY, ±centreZ), radius, instance scale, and
+ * the steered-frame turn that puts the caliper (and the blur disc's painted caliper) in place. The
+ * left-hand wheels' frames face backwards (turned half a turn about y), which mirrors that angle.
+ *
+ * @param {Record<'FL'|'FR'|'RL'|'RR', {x: number, r: number}>} layout hero-car.json
+ */
+function wheelSet(layout, centreZ, centreY = 0) {
+  return KEYS.map((key) => {
+    const front = key[0] === 'F';
+    const left = key[1] === 'L';
+    const ahead = front !== left;
+    return {
+      key,
+      front,
+      left,
+      r: layout[key].r,
+      centre: new Vector3(layout[key].x, layout[key].r + centreY, (left ? -1 : 1) * centreZ),
+      scale: layout[key].r / REFERENCE_RADIUS,
+      caliperTurn: new Matrix4().makeRotationZ(ahead ? CALIPER_ANGLE : Math.PI - CALIPER_ANGLE),
+    };
+  });
+}
+
+// scratch for wheelTransforms
+const qSteer = new Quaternion();
+const qSpin = new Quaternion();
+const qSide = new Quaternion().setFromAxisAngle(new Vector3(0, 1, 0), Math.PI);
+const qWheel = new Quaternion();
+const scaleVector = new Vector3();
+const AXIS_Y = new Vector3(0, 1, 0);
+const AXIS_Z = new Vector3(0, 0, 1);
+
+/**
+ * The instance matrices of one wheel (a wheelSet() entry) in the car frame: `steered` (steer about +y
+ * for the front pair, radians, > 0 turns left; then the left-hand half turn) for the parts that do
+ * not roll, and `rolled` = steered × the roll about the axle by rollAngle(dist, r). No allocations.
+ *
+ * @param {ReturnType<typeof wheelSet>[number]} wheel
+ * @param {number} dist metres driven along the path
+ * @param {number} steer radians about +y
+ * @param {Matrix4} rolled written
+ * @param {Matrix4} steered written
+ */
+function wheelTransforms(wheel, dist, steer, rolled, steered) {
+  qSteer.setFromAxisAngle(AXIS_Y, wheel.front ? steer : 0);
+  qWheel.copy(qSteer);
+  if (wheel.left) qWheel.multiply(qSide);
+  scaleVector.setScalar(wheel.scale);
+  steered.compose(wheel.centre, qWheel, scaleVector);
+  qSpin.setFromAxisAngle(AXIS_Z, rollAngle(dist, wheel.r, wheel.left));
+  qWheel.multiply(qSpin);
+  rolled.compose(wheel.centre, qWheel, scaleVector);
+}
 
 /**
  * Builds the four wheels.
@@ -445,48 +502,19 @@ function createWheels({ layout, width, centreZ, centreY = 0 }) {
   const blurMesh = part('blur', blur, materials.blur, { rolling: false });
   blurMesh.renderOrder = 3;
 
-  // per wheel: centre, scale, side; scratch objects for the per-frame matrices
-  const wheels = KEYS.map((key) => ({
-    key,
-    front: key[0] === 'F',
-    left: key[1] === 'L',
-    r: layout[key].r,
-    centre: new Vector3(layout[key].x, layout[key].r + centreY, (key[1] === 'R' ? 1 : -1) * centreZ),
-    scale: layout[key].r / REFERENCE_RADIUS,
-  }));
+  const wheels = wheelSet(layout, centreZ, centreY);
   const radius = Object.fromEntries(wheels.map((w) => [w.key, w.r]));
-  // caliper angle in the wheel frame: front calipers ahead of the axle (+x), rear ones behind it; the
-  // left-hand wheels' frames face backwards, which mirrors the angle
-  const CALIPER_ANGLE = 0.55;
-  const caliperTurn = wheels.map((w) => {
-    const ahead = w.front !== w.left;
-    return new Matrix4().makeRotationZ(ahead ? CALIPER_ANGLE : Math.PI - CALIPER_ANGLE);
-  });
-  const qSteer = new Quaternion();
-  const qSpin = new Quaternion();
-  const qSide = new Quaternion().setFromAxisAngle(new Vector3(0, 1, 0), Math.PI);
-  const q = new Quaternion();
-  const s = new Vector3();
   const steered = new Matrix4();
   const rolled = new Matrix4();
-  const Y = new Vector3(0, 1, 0);
-  const Z = new Vector3(0, 0, 1);
 
   function update(dist, steer) {
     for (let i = 0; i < 4; i++) {
-      const w = wheels[i];
-      const roll = rollAngle(dist, w.r, w.left);
-      qSteer.setFromAxisAngle(Y, w.front ? steer : 0);
-      q.copy(qSteer);
-      if (w.left) q.multiply(qSide);
-      s.setScalar(w.scale);
-      steered.compose(w.centre, q, s);
-      qSpin.setFromAxisAngle(Z, roll);
-      q.multiply(qSpin);
-      rolled.compose(w.centre, q, s);
+      wheelTransforms(wheels[i], dist, steer, rolled, steered);
       for (const mesh of rolling) mesh.setMatrixAt(i, rolled);
+      // the caliper and the blur disc (which shows a time-averaged caliper) turn into place
+      steered.multiply(wheels[i].caliperTurn);
+      caliperMesh.setMatrixAt(i, steered);
       blurMesh.setMatrixAt(i, steered);
-      caliperMesh.setMatrixAt(i, steered.multiply(caliperTurn[i]));
     }
     for (const mesh of group.children) mesh.instanceMatrix.needsUpdate = true;
   }
@@ -495,4 +523,4 @@ function createWheels({ layout, width, centreZ, centreY = 0 }) {
   return { group, materials, radius, update };
 }
 
-export { createWheels, REFERENCE_RADIUS, rollAngle };
+export { createWheels, REFERENCE_RADIUS, rollAngle, wheelSet, wheelTransforms };

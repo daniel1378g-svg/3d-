@@ -54,6 +54,7 @@ async function loadBody(url, quality, onProgress) {
   group.add(mesh);
   group.userData.footprint = textures.footprint;
   group.userData.footprintSize = desc.footprint.size;
+  group.userData.lowPoints = desc.lowPoints || null;
   return group;
 }
 
@@ -113,6 +114,18 @@ function groundOcclusion(texture, [width, depth]) {
 }
 
 /**
+ * The body's low points (tools/car/bake_body.py: the vertices that can touch down first when the
+ * chassis pitches or rolls) as x, clearance above the road at rest, z triples (metres), for the
+ * clearance limit in car-motion.js.
+ */
+function clearancePoints(lowPoints) {
+  if (!lowPoints) return null;
+  const out = new Float64Array(lowPoints.length * 3);
+  lowPoints.forEach(([x, y, z], i) => out.set([x, y + RIDE_HEIGHT - ROAD_SURFACE_Y, z], i * 3));
+  return out;
+}
+
+/**
  * @param {string} url the car's mesh URL (hero-car-mesh.json); its folder also holds the packed
  *   body named by `wheelLayout.body`, which is what is loaded when present. The ce-mesh/1 JSON
  *   itself stays for the published reference build and is not read by this code.
@@ -120,7 +133,8 @@ function groundOcclusion(texture, [width, depth]) {
  * @param {object} [options]
  * @param {(progress: {loaded: number, total: number}) => void} [options.onProgress]
  * @param {'low'|'mid'|'high'} [options.quality='high'] 'low' keeps the cheaper standard material
- * @returns {Promise<{root: Group, chassis: Group, body: Group, wheels: object, pose: Function}>}
+ * @returns {Promise<{root: Group, chassis: Group, body: Group, wheels: object, lowPoints: Float64Array|null,
+ *   pose: Function}>}
  */
 async function buildHeroCar(url, wheelLayout, { onProgress, quality = 'high' } = {}) {
   const bodyUrl = wheelLayout.body ? url.slice(0, url.lastIndexOf('/') + 1) + wheelLayout.body : url;
@@ -146,11 +160,12 @@ async function buildHeroCar(url, wheelLayout, { onProgress, quality = 'high' } =
     chassis,
     body,
     wheels,
+    lowPoints: clearancePoints(body.userData.lowPoints),
     /**
      * Per-frame car state.
      * @param {object} [state]
      * @param {number} [state.dist=0] distance driven, metres (wheels roll by dist / r radians)
-     * @param {number} [state.steer=0] front-wheel steer angle about y, radians
+     * @param {number} [state.steer=0] front-wheel steer angle about +y, radians (> 0 turns left)
      * @param {number} [state.pitch=0] chassis rotation about z, radians
      * @param {number} [state.roll=0] chassis rotation about x, radians
      * @param {number} [state.heave=0] chassis vertical offset, metres
@@ -166,4 +181,4 @@ async function buildHeroCar(url, wheelLayout, { onProgress, quality = 'high' } =
   };
 }
 
-export { buildHeroCar };
+export { buildHeroCar, clearancePoints };

@@ -222,8 +222,9 @@ async function createJourney({
         else renderer.compile(scene, camera);
       } catch {}
       for (const node of hidden) node.visible = false;
-      // pre-render a few positions, then restore progress, car distance and intro state;
-      // steering/roll/pitch, the environment map and the blur history are NOT restored
+      // pre-render a few positions, then restore progress, car distance and intro state; restoring
+      // lastDistance is a teleport (car-motion.js), so the car is at rest there on the next frame;
+      // the environment map and the blur history are NOT restored
       const saved = [
         progress.value,
         carMotion.lastDistance,
