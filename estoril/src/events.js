@@ -5,8 +5,10 @@
 //   panel 2   .nextev.nextev--sm      the next TESTES (testing) event
 //   panel 3   .mini-cal               the next four events
 //   bottom    .jr__ticker .ticker     every upcoming event
+// and, below the journey, the calendar section's card grid (.evgrid[data-filter-list]) with the
+// per-category counts of its filter chips ([data-filter] [data-f] .chip__n).
 //
-// Every <li> of .mini-cal and .ticker carries its dates, and .mini-cal items also their categories:
+// Every <li> of .mini-cal, .ticker and .evgrid carries its dates, and .mini-cal items also their categories:
 //   data-start="YYYY-MM-DD" data-end="YYYY-MM-DD"   calendar dates in Europe/Lisbon (end = start for a
 //                                                    one-day event)
 //   data-cats="auto testes"                          category slugs, as on the home page event cards
@@ -123,7 +125,8 @@ export function initEvents(root = document) {
     { el: scope.querySelector('.nextev:not(.nextev--sm)'), pick: 'next', nowKey: 'ev_now' },
     { el: scope.querySelector('.nextev--sm'), pick: 'nextTest', nowKey: 'ev_now_test' },
   ].filter((card) => card.el);
-  if (!calendar && !ticker) return;
+  const grids = [...root.querySelectorAll('.evgrid[data-filter-list]')];
+  if (!calendar && !ticker && !grids.length) return;
 
   const strings = (window.CE && window.CE.t) || {};
   // the published kicker ("Próximo evento"), restored when the event is no longer under way
@@ -161,12 +164,38 @@ export function initEvents(root = document) {
       const bar = ticker.closest('.jr__ticker');
       if (bar) setHidden(bar, !ticker.children.length);
     }
+    for (const grid of grids) {
+      let removed = false;
+      for (const item of readList(grid))
+        if (hasEnded(item, day)) {
+          item.el.remove();
+          removed = true;
+        }
+      if (removed) recountFilters(grid);
+    }
   }
 
   render();
   // a page left open past midnight (or restored from a background tab) catches up
   document.addEventListener('visibilitychange', () => document.hidden || render());
   setInterval(render, 30 * 60 * 1000);
+}
+
+/**
+ * Updates the counts on the filter chips that belong to `grid` (site.js wires the chips to the
+ * [data-filter-list] inside the same parent and reads the cards afresh on every click), and shows
+ * the "nothing here" note when every card has ended.
+ */
+function recountFilters(grid) {
+  const group = grid.parentElement;
+  const items = readList(grid);
+  for (const chip of group.querySelectorAll('[data-filter] [data-f]')) {
+    const filter = chip.dataset.f;
+    const count = items.filter((item) => filter === 'all' || item.cats.includes(filter)).length;
+    setText(chip.querySelector('.chip__n'), String(count));
+  }
+  const empty = group.querySelector('[data-filter-empty]');
+  if (empty && !items.length) setHidden(empty, false);
 }
 
 /** Adds (or removes) a "happening now" tag next to the category tags of a .mini-cal item. */

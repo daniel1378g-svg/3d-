@@ -83,6 +83,13 @@ const items = (html) =>
     const day = m[4].match(/class="dateblk"><b>(\d+)<\/b><i>(\w+)<\/i>/);
     return { href: m[2], start: a['data-start'], end: a['data-end'], cats: (a['data-cats'] || '').split(/\s+/).filter(Boolean), hidden: 'hidden' in a, dateblk: day && [+day[1], MONTHS[day[2].toLowerCase()]] };
   });
+// the calendar section's cards: <li class="evcard" data-start.. data-end.. data-cats..><a class="evcard__a" href=..>
+const gridItems = (html) =>
+  [...html.matchAll(/<li class="evcard[^"]*"([^>]*)>\s*<a class="evcard__a" href="([^"]+)">([\s\S]*?)<\/a>\s*<\/li>/g)].map((m) => {
+    const a = attrs('<li' + m[1]);
+    const day = m[3].match(/class="evcard__date"><b>(\d+)<\/b><i>(\w+)<\/i><em>(\d{4})<\/em>/);
+    return { href: m[2], start: a['data-start'], end: a['data-end'], cats: (a['data-cats'] || '').split(/\s+/).filter(Boolean), date: day && `${day[3]}-${String(MONTHS[day[2].toLowerCase()]).padStart(2, '0')}-${day[1].padStart(2, '0')}` };
+  });
 const card = (html, cls) => {
   const m = html.match(new RegExp(`<a class="${cls}"([^>]*)>`));
   return m ? attrs('<a' + m[1]) : null;
@@ -95,7 +102,9 @@ for (const [lang, dir] of [['pt', 'site/'], ['en', 'site/en/']]) {
   const tick = items(block(html, '<ul class="ticker">', '</ul>'));
   const next = card(html, 'nextev');
   const nextTest = card(html, 'nextev nextev--sm');
-  pages[lang] = { cal, tick };
+  const grid = gridItems(block(html, '<ol class="evgrid" data-filter-list>', '</ol>'));
+  const chips = Object.fromEntries([...block(html, 'data-filter>', '</div>').matchAll(/data-f="(\w+)"[^>]*>[^<]*<span class="chip__n">(\d+)<\/span>/g)].map((m) => [m[1], +m[2]]));
+  pages[lang] = { cal, tick, grid };
 
   check(`${lang}: blocks found`, cal.length >= 4 && tick.length >= 4 && next && nextTest, `${cal.length} calendar, ${tick.length} ticker items`);
   const problems = [];
@@ -106,6 +115,10 @@ for (const [lang, dir] of [['pt', 'site/'], ['en', 'site/en/']]) {
     const fromPage = page && `${page[3]}-${String(MONTHS[page[2].toLowerCase()]).padStart(2, '0')}-${page[1].padStart(2, '0')}`;
     if (fromPage !== it.start) problems.push(`${it.href}: data-start ${it.start}, event page ${fromPage}`);
   }
+  for (const it of grid) {
+    if (!(isDay(it.start) && isDay(it.end) && it.end >= it.start)) problems.push(`grid ${it.href}: ${it.start} / ${it.end}`);
+    if (it.date !== it.start) problems.push(`grid ${it.href}: card date ${it.date}, data-start ${it.start}`);
+  }
   for (const it of cal) {
     if (!it.dateblk || it.dateblk[0] !== +it.start.slice(8) || it.dateblk[1] !== +it.start.slice(5, 7)) problems.push(`${it.href}: date block ${it.dateblk}, data-start ${it.start}`);
   }
@@ -114,14 +127,19 @@ for (const [lang, dir] of [['pt', 'site/'], ['en', 'site/en/']]) {
 
   const sel = selectEvents(cal, PUBLISHED);
   same(`${lang}: static calendar shows the next four on ${PUBLISHED}`, cal.filter((it) => !it.hidden).map((it) => it.href), sel.list.map((it) => it.href));
-  check(`${lang}: nothing ended is left in the markup on ${PUBLISHED}`, ![...cal, ...tick].some((it) => hasEnded(it, PUBLISHED)));
+  check(`${lang}: nothing ended is left in the markup on ${PUBLISHED}`, ![...cal, ...tick, ...grid].some((it) => hasEnded(it, PUBLISHED)));
   same(`${lang}: static next event`, [next.href, next['data-start'], next['data-end']], [sel.next.href, sel.next.start, sel.next.end]);
   same(`${lang}: static next testing event`, [nextTest.href, nextTest['data-start'], nextTest['data-end']], [sel.nextTest.href, sel.nextTest.start, sel.nextTest.end]);
+  check(`${lang}: calendar grid found`, grid.length > 0);
+  same(`${lang}: calendar grid lists the upcoming events on ${PUBLISHED}`, grid.map((it) => it.href), sel.upcoming.map((it) => it.href));
+  const counted = Object.fromEntries(Object.keys(chips).map((f) => [f, grid.filter((it) => f === 'all' || it.cats.includes(f)).length]));
+  same(`${lang}: filter chip counts match the grid`, chips, counted);
   same(`${lang}: ticker lists the same upcoming events`, tick.map((it) => it.href), sel.upcoming.map((it) => it.href));
 }
 const dates = (list) => list.map((it) => [it.href, it.start, it.end, it.cats.join(' ')]);
 same('pt and en calendars agree', dates(pages.en.cal), dates(pages.pt.cal));
 same('pt and en tickers agree', dates(pages.en.tick), dates(pages.pt.tick));
+same('pt and en calendar grids agree', dates(pages.en.grid), dates(pages.pt.grid));
 
 console.log(failures ? `\n${failures} FAILED` : '\nall event checks passed');
 process.exit(failures ? 1 : 0);
