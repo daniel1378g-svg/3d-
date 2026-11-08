@@ -7,8 +7,9 @@
 //                and no source point of track.json farther than MAX_DEVIATION from it
 //   facing       every flat strip (asphalt, rubber, lines, kerbs, run-off, gravel) faces up (+y):
 //                every normal attribute has y > 0, and no triangle is inverted (folded) or
-//                degenerate; the kerbs' risers face away from the centre line
-//   walls        every barrier wall's winding agrees with its normals, it has no zero-area triangle,
+//                degenerate; the kerbs' risers face away from the centre line; the closed asphalt
+//                strip ends a whole number of texture repeats after it starts (no seam)
+//   walls       every barrier wall's winding agrees with its normals, it has no zero-area triangle,
 //                and its track-side face looks at the centre-line sample it was built from (the
 //                back face looks away); no wall vertex lies inside or within WALL_GAP of a gravel
 //                trap (its own or another) or of another wall (walls never cross)
@@ -226,6 +227,16 @@ check(
   risers.wrong === 0,
   `kerb risers: ${risers.wrong} triangles face the track or disagree with their winding`,
 );
+{
+  // the closed asphalt strip: v at the closing vertex pair (back at sample 0) minus v at the first
+  const uv = meshes.find((m) => m.kind === 'asphalt').geometry.attributes.uv;
+  const repeats = uv.getY(uv.count - 1) - uv.getY(0);
+  const seam = Math.abs(repeats - Math.round(repeats));
+  console.log(
+    `  asphalt texture: ${repeats.toFixed(4)} repeats per lap, seam offset ${seam.toFixed(4)} of a tile`,
+  );
+  check(seam < 1e-3, `asphalt: the texture jumps by ${seam} of a tile at the lap seam`);
+}
 
 // --- walls ----------------------------------------------------------------------------------------
 {

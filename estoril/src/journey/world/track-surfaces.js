@@ -39,12 +39,17 @@ const GRAVEL_END_WIDTH = 4;
 /** A trap ends (square cut) where the inside-of-bend clamp leaves it less than this (metres). */
 const GRAVEL_MIN_WIDTH = 3;
 
-/** Asphalt from -halfWidth to +halfWidth; UVs in metres / 12, across 0..14/12. */
+/**
+ * Asphalt from -halfWidth to +halfWidth; UVs in metres / 12 (across 0..14/12). Along the lap the
+ * repeat is stretched to a whole number of tiles (348 over 4,176.6 m, one every 12.002 m), so the
+ * texture continues across the closing seam at sample 0 (T1 entry).
+ */
 function buildAsphalt(ctx, model) {
   const halfWidth = (i) => model.halfWidth[i];
+  const { length } = model.line;
   const geometry = buildStrip(model, halfWidth, (i) => -halfWidth(i), {
     y: LAYERS.asphalt,
-    vScale: 1 / 12,
+    vScale: Math.round(length / 12) / length,
     uvAcross: [0, 14 / 12],
   });
   const asphalt = new Mesh(geometry, ctx.materials.asphalt);
