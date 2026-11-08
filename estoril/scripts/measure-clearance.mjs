@@ -9,7 +9,9 @@
 //   car     distance from the eye to the car's exact bounding box (all its meshes),
 //   world   distance to every other mesh: triangles for meshes wider than 60 m (terrain, hills,
 //           track strips), the world bounding box of smaller meshes, the box of every instance of
-//           an InstancedMesh (trees, tufts, posts); all lower bounds of the true distance,
+//           an InstancedMesh (trees, tufts, posts); all lower bounds of the true distance. A box
+//           counts as 0 when the eye is inside it, except an axis-aligned BoxGeometry mesh (the box
+//           is the mesh): there it is the distance to its nearest face,
 //   sprites view depth of every sprite whose quad overlaps the view frustum (clouds).
 // A frame passes when near < min(car, world, sprites). Frames where the eye is inside geometry
 // (clearance <= 1 cm: a camera-path defect no near plane can fix) are listed as warnings. Prints a
@@ -71,6 +73,18 @@ const result = await page.evaluate((step) => {
   const sprites = [];
   const v = new Vector3();
   const m = new Matrix4();
+  // a BoxGeometry with axis-aligned faces under a matrix without rotation: its world box is the mesh
+  const exactBox = (g, matrix) => {
+    const e = matrix.elements;
+    if (g.type !== 'BoxGeometry' || Math.abs(e[1]) + Math.abs(e[2]) + Math.abs(e[4]) > 1e-9) return false;
+    if (Math.abs(e[6]) + Math.abs(e[8]) + Math.abs(e[9]) > 1e-9) return false;
+    const n = g.attributes.normal;
+    for (let i = 0; i < n.count; i++) {
+      const [x, y, z] = [Math.abs(n.getX(i)), Math.abs(n.getY(i)), Math.abs(n.getZ(i))];
+      if (x + y + z > Math.max(x, y, z) + 1e-6) return false;
+    }
+    return true;
+  };
   scene.traverse((o) => {
     if (isSky(o) || inCar(o)) return;
     if (o.isSprite) return void sprites.push(o);
@@ -92,6 +106,7 @@ const result = await page.evaluate((step) => {
           box.max.x,
           box.max.y,
           box.max.z,
+          exactBox(g, m),
         ]);
       }
       return;
@@ -124,11 +139,13 @@ const result = await page.evaluate((step) => {
     TB[t * 6 + 4] = Math.max(T[o + 1], T[o + 4], T[o + 7]);
     TB[t * 6 + 5] = Math.max(T[o + 2], T[o + 5], T[o + 8]);
   }
-  const boxDist = (p, x0, y0, z0, x1, y1, z1) => {
+  const boxDist = (p, x0, y0, z0, x1, y1, z1, exact = false) => {
     const dx = Math.max(0, x0 - p.x, p.x - x1);
     const dy = Math.max(0, y0 - p.y, p.y - y1);
     const dz = Math.max(0, z0 - p.z, p.z - z1);
-    return Math.sqrt(dx * dx + dy * dy + dz * dz);
+    const d = Math.sqrt(dx * dx + dy * dy + dz * dz);
+    // inside an exact box mesh: the distance to its nearest face
+    return d === 0 && exact ? Math.min(p.x - x0, x1 - p.x, p.y - y0, y1 - p.y, p.z - z0, z1 - p.z) : d;
   };
   // closest point on a triangle (Ericson, Real-Time Collision Detection 5.1.5)
   const triDist = (p, o) => {
@@ -213,14 +230,19 @@ const result = await page.evaluate((step) => {
     for (const o of small) {
       if (!shown(o)) continue;
       const b = o.geometry.boundingBox.clone().applyMatrix4(o.matrixWorld);
-      const d = boxDist(eye, b.min.x, b.min.y, b.min.z, b.max.x, b.max.y, b.max.z);
+      const exact = exactBox(o.geometry, o.matrixWorld);
+      const d = boxDist(eye, b.min.x, b.min.y, b.min.z, b.max.x, b.max.y, b.max.z, exact);
       if (d < world) {
         world = d;
-        what = o.name || o.parent?.name || o.geometry.type;
+        what =
+          (o.name || o.parent?.name || o.geometry.type) +
+          (exact && d > 0 && !boxDist(eye, b.min.x, b.min.y, b.min.z, b.max.x, b.max.y, b.max.z)
+            ? ' (eye inside, nearest face)'
+            : '');
       }
     }
     for (const r of instanced) {
-      const d = boxDist(eye, r[1], r[2], r[3], r[4], r[5], r[6]);
+      const d = boxDist(eye, r[1], r[2], r[3], r[4], r[5], r[6], r[7]);
       if (d < world) {
         world = d;
         what = r[0];
