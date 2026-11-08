@@ -1,280 +1,423 @@
-var s = document.querySelector('[data-journey]'),
-  I = document.documentElement,
-  x = I.classList.contains('rm'),
-  g = (L, u, v) => Math.max(u, Math.min(v, L)),
-  G = [
-    [0, 0.085],
-    [0.2, 0.315],
-    [0.425, 0.56],
-    [0.665, 0.79],
-    [0.885, 1],
-  ],
-  b = 0.03,
-  Q = [0, 0.205, 0.43, 0.67, 0.89],
-  V = [0.1425, 0.37, 0.6125, 0.8375];
-s && X();
-function X() {
-  I.classList.add('jr-live');
-  let L = [...s.querySelectorAll('[data-panel]')],
-    u = [...s.querySelectorAll('[data-poster]')],
-    v = [...s.querySelectorAll('[data-goto]')],
-    R = s.querySelector('[data-bar]'),
-    d = s.querySelector('[data-loader]'),
-    k = s.querySelector('.jr__canvas'),
-    D = matchMedia('(max-width: 960px)'),
-    S = new URLSearchParams(location.search),
-    o = null,
-    f = !1,
-    h = !1,
-    p = !0,
-    c = 0,
-    _ = -1,
-    P = performance.now(),
-    C = -1,
-    A = () => Math.max(1, s.offsetHeight - innerHeight),
-    m = () => g(-s.getBoundingClientRect().top / A(), 0, 1),
-    F = (t) => V.filter((e) => t >= e).length;
-  function M(t, e = !x) {
-    let n = s.getBoundingClientRect().top + scrollY + Q[t] * A() + (t ? 2 : 0);
-    window.scrollTo({ top: Math.round(n), behavior: e ? 'smooth' : 'auto' });
+// Home page controller: the five-stage scroll journey ([data-journey] in site/index.html and
+// site/en/index.html) and the date-driven event blocks inside it.
+//
+// The journey section is a tall scroll track with a sticky stage. The scroll position inside the
+// section maps to a journey progress from 0 to 1, which drives
+//   - the five text panels ([data-panel]): each is fully visible inside its progress window and
+//     fades and slides in before it / out after it,
+//   - the stage buttons ([data-goto]), the progress bar ([data-bar]) and the .is-moving class,
+//   - the 3D scene (src/journey, loaded on demand) or, without it, the still posters ([data-poster]).
+// The upcoming-event blocks are handled by ./events.js, whether or not 3D runs.
+//
+// Query parameters: ?3d=force skips the device check (and ?q=low|mid|high then picks the quality),
+// ?3d=off (or 0) shows the stills, ?capture=1 exposes window.__cap(t, dt) for deterministic stills.
+
+import { initEvents } from './events.js';
+
+const journey = document.querySelector('[data-journey]');
+const html = document.documentElement;
+/** prefers-reduced-motion (the inline script in <head> sets .rm). */
+const reducedMotion = html.classList.contains('rm');
+
+const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+
+/** Progress windows [from, to] in which each panel is fully visible. */
+const PANEL_WINDOWS = [
+  [0, 0.085],
+  [0.2, 0.315],
+  [0.425, 0.56],
+  [0.665, 0.79],
+  [0.885, 1],
+];
+/** Progress over which a panel fades in before its window and out after it. */
+const PANEL_FADE = 0.03;
+/** The last stage: its panel never fades out (the section simply scrolls away). */
+const LAST_STAGE = 4;
+/** Progress a stage button scrolls to (the start of each panel window, or just inside it). */
+const STAGE_TARGETS = [0, 0.205, 0.43, 0.67, 0.89];
+/** Progress at which the current stage becomes the next one (midway between panel windows). */
+const STAGE_BOUNDARIES = [0.1425, 0.37, 0.6125, 0.8375];
+
+try {
+  initEvents(document);
+} catch (err) {
+  console.warn('[events] could not update the event blocks', err);
+}
+if (journey) initJourney();
+
+function initJourney() {
+  html.classList.add('jr-live');
+  const panels = [...journey.querySelectorAll('[data-panel]')];
+  let posters = [...journey.querySelectorAll('[data-poster]')];
+  const stageButtons = [...journey.querySelectorAll('[data-goto]')];
+  const bar = journey.querySelector('[data-bar]');
+  const loader = journey.querySelector('[data-loader]');
+  const canvas = journey.querySelector('.jr__canvas');
+  const narrow = matchMedia('(max-width: 960px)');
+  const params = new URLSearchParams(location.search);
+
+  let scene = null; // the 3D journey returned by createJourney()
+  let sceneReady = false; // loaded and warmed up: the scene owns the progress, posters are retired
+  let sceneRunning = false; // the scene's own render loop is started
+  let inView = true; // the section is within 80px of the viewport
+  let progress = 0; // displayed progress
+  let laidOutAt = -1; // progress the panels were last laid out for
+  let lastFrameTime = performance.now();
+  let currentStage = -1;
+
+  const scrollRange = () => Math.max(1, journey.offsetHeight - innerHeight);
+  /** Progress from the scroll position alone. */
+  const scrollProgress = () => clamp(-journey.getBoundingClientRect().top / scrollRange(), 0, 1);
+  const stageAt = (p) => STAGE_BOUNDARIES.filter((boundary) => p >= boundary).length;
+
+  // ---------------------------------------------------------------------------------------------
+  // Stage navigation
+
+  function goToStage(stage, smooth = !reducedMotion) {
+    // 2px past the target (except stage 0) so rounding never lands just before the window
+    const top =
+      journey.getBoundingClientRect().top + scrollY + STAGE_TARGETS[stage] * scrollRange() + (stage ? 2 : 0);
+    window.scrollTo({ top: Math.round(top), behavior: smooth ? 'smooth' : 'auto' });
   }
-  (v.forEach((t) => t.addEventListener('click', () => M(+t.dataset.goto))),
-    L.forEach((t, e) =>
-      t.addEventListener('focusin', () => {
-        F(m()) !== e && M(e, !1);
-      }),
-    ),
-    document.addEventListener('keydown', (t) => {
-      if (t.target.closest && t.target.closest('input, textarea, select')) return;
-      let e = s.getBoundingClientRect();
-      if (e.bottom < innerHeight * 0.5 || e.top > innerHeight * 0.5) return;
-      let n = F(m());
-      (t.key === ']' && n < 4 && (t.preventDefault(), M(n + 1)),
-        t.key === '[' && n > 0 && (t.preventDefault(), M(n - 1)));
-    }));
-  function N(t, e) {
-    let [n, r] = G[t];
-    return e < n ? g(1 - (n - e) / b, 0, 1) : e > r && t < 4 ? g(1 - (e - r) / b, 0, 1) : 1;
+
+  stageButtons.forEach((button) => button.addEventListener('click', () => goToStage(+button.dataset.goto)));
+
+  // Tabbing into a panel that is not the current stage jumps straight to it.
+  panels.forEach((panel, stage) =>
+    panel.addEventListener('focusin', () => {
+      if (stageAt(scrollProgress()) !== stage) goToStage(stage, false);
+    }),
+  );
+
+  // [ and ] step back and forward while the section covers the middle of the viewport.
+  document.addEventListener('keydown', (event) => {
+    if (event.target.closest && event.target.closest('input, textarea, select')) return;
+    const rect = journey.getBoundingClientRect();
+    if (rect.bottom < innerHeight * 0.5 || rect.top > innerHeight * 0.5) return;
+    const stage = stageAt(scrollProgress());
+    if (event.key === ']' && stage < LAST_STAGE) {
+      event.preventDefault();
+      goToStage(stage + 1);
+    }
+    if (event.key === '[' && stage > 0) {
+      event.preventDefault();
+      goToStage(stage - 1);
+    }
+  });
+
+  // ---------------------------------------------------------------------------------------------
+  // Panels, stage buttons, progress bar
+
+  /** 1 inside the panel's window, falling to 0 over PANEL_FADE before and after it. */
+  function panelOpacity(stage, p) {
+    const [from, to] = PANEL_WINDOWS[stage];
+    if (p < from) return clamp(1 - (from - p) / PANEL_FADE, 0, 1);
+    if (p > to && stage < LAST_STAGE) return clamp(1 - (p - to) / PANEL_FADE, 0, 1);
+    return 1;
   }
-  function Y(t, e) {
-    let [n, r] = G[t];
-    return e < n ? g((n - e) / b, 0, 1) : e > r && t < 4 ? -g((e - r) / b, 0, 1) : 0;
+
+  /** 0 inside the window; up to 1 before it (still to come), down to -1 after it (left behind). */
+  function panelOffset(stage, p) {
+    const [from, to] = PANEL_WINDOWS[stage];
+    if (p < from) return clamp((from - p) / PANEL_FADE, 0, 1);
+    if (p > to && stage < LAST_STAGE) return -clamp((p - to) / PANEL_FADE, 0, 1);
+    return 0;
   }
-  function q(t) {
-    let e = D.matches;
-    L.forEach((r, a) => {
-      let l = N(a, t),
-        i = Y(a, t),
-        w = i * Math.abs(i),
-        $ =
-          x || !i
-            ? 'none'
-            : e
-              ? `translate3d(0,${(w * 36).toFixed(1)}px,0)`
-              : `translate3d(${(w * 6).toFixed(2)}vw,0,0)`,
-        U = l.toFixed(3) + $;
-      r._k !== U &&
-        ((r._k = U),
-        (r.style.opacity = l.toFixed(3)),
-        (r.style.transform = $),
-        (r.style.pointerEvents = l > 0.5 ? 'auto' : 'none'),
-        r.classList.toggle('is-on', l > 0.5),
-        r.classList.toggle('is-off', l < 0.002));
+
+  function layout(p) {
+    const isNarrow = narrow.matches;
+    panels.forEach((panel, stage) => {
+      const opacity = panelOpacity(stage, p);
+      const offset = panelOffset(stage, p);
+      const eased = offset * Math.abs(offset); // signed square: gentle near the window
+      // narrow screens (≤960px) slide panels vertically (36px), wider ones sideways (6vw)
+      const transform =
+        reducedMotion || !offset
+          ? 'none'
+          : isNarrow
+            ? `translate3d(0,${(eased * 36).toFixed(1)}px,0)`
+            : `translate3d(${(eased * 6).toFixed(2)}vw,0,0)`;
+      const key = opacity.toFixed(3) + transform;
+      if (panel._layoutKey === key) return; // unchanged: skip the style writes
+      panel._layoutKey = key;
+      panel.style.opacity = opacity.toFixed(3);
+      panel.style.transform = transform;
+      panel.style.pointerEvents = opacity > 0.5 ? 'auto' : 'none';
+      panel.classList.toggle('is-on', opacity > 0.5);
+      panel.classList.toggle('is-off', opacity < 0.002);
     });
-    let n = F(t);
-    (n !== C &&
-      ((C = n),
-      v.forEach((r, a) => {
-        (r.classList.toggle('is-on', a === n),
-          a === n ? r.setAttribute('aria-current', 'step') : r.removeAttribute('aria-current'));
-      }),
-      f || u.forEach((r, a) => r.classList.toggle('is-on', a === n))),
-      R && (R.style.transform = `scaleY(${t.toFixed(4)})`),
-      s.classList.toggle('is-moving', t > 0.012));
+
+    const stage = stageAt(p);
+    if (stage !== currentStage) {
+      currentStage = stage;
+      stageButtons.forEach((button, i) => {
+        button.classList.toggle('is-on', i === stage);
+        if (i === stage) button.setAttribute('aria-current', 'step');
+        else button.removeAttribute('aria-current');
+      });
+      if (!sceneReady) posters.forEach((poster, i) => poster.classList.toggle('is-on', i === stage));
+    }
+    if (bar) bar.style.transform = `scaleY(${p.toFixed(4)})`;
+    journey.classList.toggle('is-moving', p > 0.012);
   }
-  let y = [],
-    T = 1,
-    Gc = 1,
-    Gt = 0,
-    Gu = -1e9;
-  function J(t) {
-    let e = performance.now();
-    if (e < Gt) {
-      y.length = 0;
+
+  // ---------------------------------------------------------------------------------------------
+  // Adaptive resolution: frame times are collected in batches of 60; a slow median steps the render
+  // scale down, a fast one steps it back up (never above a ceiling that drops whenever a step up
+  // had to be undone within 3 s, so the scale does not oscillate).
+
+  let frameTimes = [];
+  let resScale = 1;
+  let resCeiling = 1;
+  let holdUntil = 0; // frames before this time are ignored (after a change, a resize or a start)
+  let lastStepUp = -1e9;
+
+  function governResolution(dt) {
+    const now = performance.now();
+    if (now < holdUntil) {
+      frameTimes.length = 0;
       return;
     }
-    if ((y.push(t), y.length < 60)) return;
-    y.sort((n, r) => n - r);
-    let n = y[30],
-      r = y[15],
-      a = y[45];
-    if (((y = []), !o || !o.setResScale)) return;
-    let l = Math.min(1, 0.75 / Math.max(0.75, o.basePixelRatio || 1));
-    if (n > 0.03 && a - r < 0.0015) return;
-    if (n > 0.0215 && T > l)
-      ((T = e - Gu < 3e3 ? (Gc = Math.max(l, T * 0.88)) : Math.max(l, T * 0.85)),
-        o.setResScale(T),
-        (Gt = e + 1500));
-    else if (n < 0.0175 && T < Gc)
-      ((T = Math.min(Gc, T / 0.88)), o.setResScale(T), (Gu = e), (Gt = e + 2500));
+    frameTimes.push(dt);
+    if (frameTimes.length < 60) return;
+    frameTimes.sort((a, b) => a - b);
+    const median = frameTimes[30];
+    const p25 = frameTimes[15];
+    const p75 = frameTimes[45];
+    frameTimes = [];
+    if (!scene || !scene.setResScale) return;
+    // lowest scale: an effective pixel ratio of 0.75 (or no reduction when the base ratio is lower)
+    const floor = Math.min(1, 0.75 / Math.max(0.75, scene.basePixelRatio || 1));
+    // a steady cadence slower than 30 ms is a capped refresh rate, not an overloaded GPU
+    if (median > 0.03 && p75 - p25 < 0.0015) return;
+    if (median > 0.0215 && resScale > floor) {
+      resScale =
+        now - lastStepUp < 3e3
+          ? (resCeiling = Math.max(floor, resScale * 0.88))
+          : Math.max(floor, resScale * 0.85);
+      scene.setResScale(resScale);
+      holdUntil = now + 1500;
+    } else if (median < 0.0175 && resScale < resCeiling) {
+      resScale = Math.min(resCeiling, resScale / 0.88);
+      scene.setResScale(resScale);
+      lastStepUp = now;
+      holdUntil = now + 2500;
+    }
   }
-  let B = !1;
-  function H(t) {
-    if ((requestAnimationFrame(H), B)) return;
-    let e = Math.min(0.1, (t - P) / 1e3);
-    if (((P = t), !p)) return;
-    let n = m();
-    (f && h
-      ? (o.setProgress(n), (c = o.progress), !document.hidden && e < 0.1 && J(e))
-      : (c += (n - c) * (x ? 1 : 1 - Math.exp(-e * 8))),
-      Math.abs(c - _) > 1e-5 && ((_ = c), q(c)));
+
+  // ---------------------------------------------------------------------------------------------
+  // Frame loop: with the scene running, the scene eases its own progress towards the scroll
+  // position; otherwise the progress eases here (instantly with reduced motion).
+
+  let capturePaused = false; // ?capture=1: frames are rendered on demand by window.__cap
+
+  function frame(time) {
+    requestAnimationFrame(frame);
+    if (capturePaused) return;
+    const dt = Math.min(0.1, (time - lastFrameTime) / 1e3);
+    lastFrameTime = time;
+    if (!inView) return;
+    const target = scrollProgress();
+    if (sceneReady && sceneRunning) {
+      scene.setProgress(target);
+      progress = scene.progress;
+      if (!document.hidden && dt < 0.1) governResolution(dt);
+    } else {
+      progress += (target - progress) * (reducedMotion ? 1 : 1 - Math.exp(-dt * 8));
+    }
+    if (Math.abs(progress - laidOutAt) > 1e-5) {
+      laidOutAt = progress;
+      layout(progress);
+    }
   }
-  ((c = m()), q(c), (_ = c), requestAnimationFrame(H));
-  function E(t) {
-    if (f)
-      if (t && !h) {
-        let e = m();
-        (Math.abs(e - o.progress) > 0.08 && o.jump(e), o.start(), (h = !0), (Gt = performance.now() + 1500));
-      } else !t && h && (o.stop(), (h = !1));
+
+  progress = scrollProgress();
+  layout(progress);
+  laidOutAt = progress;
+  requestAnimationFrame(frame);
+
+  // ---------------------------------------------------------------------------------------------
+  // Start the scene's render loop while the section is on screen and the tab is visible.
+
+  function setRunning(run) {
+    if (!sceneReady) return;
+    if (run && !sceneRunning) {
+      const target = scrollProgress();
+      // scrolled far while stopped: cut to the position instead of flying there
+      if (Math.abs(target - scene.progress) > 0.08) scene.jump(target);
+      scene.start();
+      sceneRunning = true;
+      holdUntil = performance.now() + 1500;
+    } else if (!run && sceneRunning) {
+      scene.stop();
+      sceneRunning = false;
+    }
   }
-  (new IntersectionObserver(
-    ([t]) => {
-      ((p = t.isIntersecting), E(p && !document.hidden));
+
+  new IntersectionObserver(
+    ([entry]) => {
+      inView = entry.isIntersecting;
+      setRunning(inView && !document.hidden);
     },
     { rootMargin: '80px 0px' },
-  ).observe(s),
-    document.addEventListener('visibilitychange', () => E(p && !document.hidden)));
-  function O() {
-    o &&
-      (D.matches
-        ? o.setFraming(0, innerWidth < innerHeight ? 0.16 : 0.1)
-        : o.setFraming(g(((Math.min(560, innerWidth * 0.42) + 40) / innerWidth) * 0.42, 0, 0.2), 0));
+  ).observe(journey);
+  document.addEventListener('visibilitychange', () => setRunning(inView && !document.hidden));
+
+  /** Shifts the subject clear of the panels: right of the panel column, or up on phones. */
+  function updateFraming() {
+    if (!scene) return;
+    if (narrow.matches) scene.setFraming(0, innerWidth < innerHeight ? 0.16 : 0.1);
+    else scene.setFraming(clamp(((Math.min(560, innerWidth * 0.42) + 40) / innerWidth) * 0.42, 0, 0.2), 0);
   }
-  addEventListener('resize', O);
+
+  addEventListener('resize', updateFraming);
   addEventListener('resize', () => {
-    Gt = performance.now() + 800;
+    holdUntil = performance.now() + 800;
   });
-  function j(t) {
-    (s.classList.add('no-3d'), s.classList.remove('is-3d'));
-    let e = s.querySelector('[data-posters]');
-    if (e && u.length < 5) {
-      let n = [];
+
+  // ---------------------------------------------------------------------------------------------
+  // Stills: without 3D the posters follow the stages. Only the first poster is in the HTML; the
+  // other four come from data-posters. An optional note is shown in the loader for 6 s.
+
+  function useStills(note) {
+    journey.classList.add('no-3d');
+    journey.classList.remove('is-3d');
+    const holder = journey.querySelector('[data-posters]');
+    if (holder && posters.length < 5) {
+      let list = [];
       try {
-        n = JSON.parse(e.dataset.posters);
+        list = JSON.parse(holder.dataset.posters);
       } catch {
-        n = [];
+        list = [];
       }
-      (n.forEach(([r, a], l) => {
-        let i = document.createElement('picture');
-        ((i.innerHTML = `<source media="(max-aspect-ratio: 4/5)" srcset="${a}"><img class="jr__poster" data-poster="${l + 1}" src="${r}" alt="" width="1600" height="900" decoding="async">`),
-          e.appendChild(i));
-      }),
-        (u = [...s.querySelectorAll('[data-poster]')]));
+      list.forEach(([landscape, portrait], i) => {
+        const picture = document.createElement('picture');
+        picture.innerHTML = `<source media="(max-aspect-ratio: 4/5)" srcset="${portrait}"><img class="jr__poster" data-poster="${i + 1}" src="${landscape}" alt="" width="1600" height="900" decoding="async">`;
+        holder.appendChild(picture);
+      });
+      posters = [...journey.querySelectorAll('[data-poster]')];
     }
-    if (((C = -1), q(c), t && d)) {
-      let n = d.querySelector('.jr__load-t');
-      (n && (n.textContent = t),
-        d.classList.add('is-note'),
-        setTimeout(() => d.classList.remove('is-note'), 6e3));
+    currentStage = -1; // force the poster for the current stage on
+    layout(progress);
+    if (note && loader) {
+      const text = loader.querySelector('.jr__load-t');
+      if (text) text.textContent = note;
+      loader.classList.add('is-note');
+      setTimeout(() => loader.classList.remove('is-note'), 6e3);
     }
   }
-  function z() {
-    let t = S.get('3d');
+
+  // ---------------------------------------------------------------------------------------------
+  // Device check: 'low' | 'mid' | 'high', or null for stills.
+
+  function detectQuality() {
+    const mode = params.get('3d');
     if (
-      t === '0' ||
-      t === 'off' ||
-      (t !== 'force' && (x || (navigator.connection && navigator.connection.saveData)))
+      mode === '0' ||
+      mode === 'off' ||
+      (mode !== 'force' && (reducedMotion || (navigator.connection && navigator.connection.saveData)))
     )
       return null;
-    let e = null;
+
+    let gl = null;
     try {
-      e = document
-        .createElement('canvas')
-        .getContext('webgl2', { failIfMajorPerformanceCaveat: t !== 'force' });
+      gl = document.createElement('canvas').getContext('webgl2', { failIfMajorPerformanceCaveat: mode !== 'force' });
     } catch {
-      e = null;
+      gl = null;
     }
-    if (!e) return null;
-    let n = !1;
+    if (!gl) return null;
+
+    let software = false;
     try {
-      let i = e.getExtension('WEBGL_debug_renderer_info');
-      i &&
-        (n = /swiftshader|llvmpipe|software|basic render/i.test(
-          String(e.getParameter(i.UNMASKED_RENDERER_WEBGL)),
-        ));
-      let w = e.getExtension('WEBGL_lose_context');
-      w && w.loseContext();
+      const info = gl.getExtension('WEBGL_debug_renderer_info');
+      if (info) {
+        software = /swiftshader|llvmpipe|software|basic render/i.test(
+          String(gl.getParameter(info.UNMASKED_RENDERER_WEBGL)),
+        );
+      }
+      // release the probe context right away
+      const lose = gl.getExtension('WEBGL_lose_context');
+      if (lose) lose.loseContext();
     } catch {}
-    if (t === 'force') return S.get('q') || 'mid';
-    if (n) return null;
-    let r = matchMedia('(pointer: coarse)').matches,
-      a = navigator.deviceMemory || 8,
-      l = navigator.hardwareConcurrency || 8;
-    return a <= 2 || l <= 2
-      ? 'low'
-      : r || a <= 4 || l <= 4 || Math.min(screen.width, screen.height) < 700
-        ? 'mid'
-        : 'high';
+
+    if (mode === 'force') return params.get('q') || 'mid';
+    if (software) return null;
+    const coarsePointer = matchMedia('(pointer: coarse)').matches;
+    const memory = navigator.deviceMemory || 8;
+    const cores = navigator.hardwareConcurrency || 8;
+    if (memory <= 2 || cores <= 2) return 'low';
+    if (coarsePointer || memory <= 4 || cores <= 4 || Math.min(screen.width, screen.height) < 700) return 'mid';
+    return 'high';
   }
-  let W = z();
-  if (!W) {
-    j(x ? '' : (window.CE && CE.t && CE.t.no3d) || '');
+
+  const no3dNote = () => (window.CE && window.CE.t && window.CE.t.no3d) || '';
+
+  const quality = detectQuality();
+  if (!quality) {
+    // with reduced motion the stills are expected, so no note
+    useStills(reducedMotion ? '' : no3dNote());
     return;
   }
-  let K = (t) => {
-    d && d.style.setProperty('--p', Math.round(t * 100) + '%');
+
+  const onLoadProgress = (fraction) => {
+    if (loader) loader.style.setProperty('--p', Math.round(fraction * 100) + '%');
   };
-  (k.addEventListener(
+
+  canvas.addEventListener(
     'webglcontextlost',
-    (t) => {
-      (t.preventDefault(), E(!1), (f = !1), j());
+    (event) => {
+      event.preventDefault();
+      setRunning(false);
+      sceneReady = false;
+      useStills();
     },
-    { once: !0 },
-  ),
-    (async () => {
+    { once: true },
+  );
+
+  (async () => {
+    try {
+      // keep this specifier: esbuild names the chunk after it (chunks/journey-[hash].js)
+      const { createJourney } = await import('./journey/journey.js');
+      scene = await createJourney({
+        canvas,
+        quality,
+        onProgress: onLoadProgress,
+        trackUrl: journey.dataset.track,
+        carUrl: journey.dataset.car,
+        carMetaUrl: journey.dataset.carMeta,
+      });
       try {
-        let { createJourney: t } = await import('./journey/journey.js');
-        o = await t({
-          canvas: k,
-          quality: W,
-          onProgress: K,
-          trackUrl: s.dataset.track,
-          carUrl: s.dataset.car,
-          carMetaUrl: s.dataset.carMeta,
-        });
-        try {
-          await o.warmup();
-        } catch {}
-      } catch (t) {
-        (console.warn('[journey] 3D unavailable, using stills', t),
-          j((window.CE && CE.t && CE.t.no3d) || ''));
-        return;
-      }
-      ((f = !0),
-        O(),
-        o.jump(m()),
-        E(p && !document.hidden),
-        S.get('capture') === '1' &&
-          (E(!1),
-          (f = !0),
-          (B = !0),
-          (window.__cap = (t, e = 0) => (
-            window.scrollTo(0, s.getBoundingClientRect().top + scrollY + t * A()),
-            o.renderAt(t, { dt: e }),
-            q(t),
-            !0
-          ))),
-        requestAnimationFrame(() =>
-          requestAnimationFrame(() => {
-            (s.classList.add('is-3d'),
-              setTimeout(
-                () =>
-                  u.forEach((t) => {
-                    t.classList.remove('is-on');
-                  }),
-                1400,
-              ));
-          }),
-        ));
-    })());
+        await scene.warmup();
+      } catch {}
+    } catch (err) {
+      console.warn('[journey] 3D unavailable, using stills', err);
+      useStills(no3dNote());
+      return;
+    }
+
+    sceneReady = true;
+    updateFraming();
+    scene.jump(scrollProgress());
+    setRunning(inView && !document.hidden);
+
+    if (params.get('capture') === '1') {
+      // deterministic stills: stop the loops and render a given progress on request
+      setRunning(false);
+      capturePaused = true;
+      window.__cap = (t, dt = 0) => {
+        window.scrollTo(0, journey.getBoundingClientRect().top + scrollY + t * scrollRange());
+        scene.renderAt(t, { dt });
+        layout(t);
+        return true;
+      };
+    }
+
+    // fade the canvas in once a frame is on screen, then retire the posters behind it
+    requestAnimationFrame(() =>
+      requestAnimationFrame(() => {
+        journey.classList.add('is-3d');
+        setTimeout(() => posters.forEach((poster) => poster.classList.remove('is-on')), 1400);
+      }),
+    );
+  })();
 }
