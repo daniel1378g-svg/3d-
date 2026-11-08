@@ -213,10 +213,10 @@ function tyreGeometry(outerRadius, width, rimRadius) {
     [rimRadius + 0.05, halfWidth + 0.004],
     [rimRadius + 0.01, halfWidth - 0.018],
   ];
-  const points = new SplineCurve(knots.map(([radius, axial]) => new Vector2(radius, axial))).getPoints(48);
+  const points = new SplineCurve(knots.map(([radius, axial]) => new Vector2(radius, axial))).getPoints(40);
   // v of each profile part: the spline passes knot k at t = k / (knots - 1)
   const at = (k) => k / (knots.length - 1);
-  const geometry = new LatheGeometry(points, 64);
+  const geometry = new LatheGeometry(points, 56);
   // LatheGeometry revolves around y; rotateX(+90°) turns the axle onto z and puts the +halfWidth end
   // of the profile (v 1, the outer sidewall) at +z
   geometry.rotateX(Math.PI / 2);
@@ -258,8 +258,8 @@ function rimFaceGeometry(radius, spokeCount = 10) {
     bevelEnabled: true,
     bevelThickness: 0.008,
     bevelSize: 0.006,
-    bevelSegments: 2,
-    curveSegments: 40,
+    bevelSegments: 1,
+    curveSegments: 20,
   });
   geometry.translate(0, 0, -0.035);
   return geometry;
