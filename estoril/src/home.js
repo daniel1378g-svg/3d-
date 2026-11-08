@@ -263,14 +263,52 @@ function initJourney() {
   ).observe(journey);
   document.addEventListener('visibilitychange', () => setRunning(inView && !document.hidden));
 
-  /** Shifts the subject clear of the panels: right of the panel column, or up on phones. */
+  /**
+   * Tells the camera which part of the stage the page leaves free (camera-director.js), as
+   * [left, top, right, bottom] fractions of the canvas: `open` is the canvas minus the fixed UI
+   * (the preview strip on top, the ticker at the bottom; on phones also the stage buttons and the
+   * skip link at the top), `panel` is that area minus the panel column (desktop: right of the widest
+   * panel) or minus the bottom sheet (phones: above the tallest panel). Car shots keep the car in
+   * `panel`, the aerial frames the circuit in `open`. Measured from the layout (offset boxes are not
+   * moved by the panels' slide transforms), on resize and once the web fonts have loaded.
+   */
   function updateFraming() {
-    if (!scene) return;
-    if (narrow.matches) scene.setFraming(0, innerWidth < innerHeight ? 0.16 : 0.1);
-    else scene.setFraming(clamp(((Math.min(560, innerWidth * 0.42) + 40) / innerWidth) * 0.42, 0, 0.2), 0);
+    if (!scene || !canvas) return;
+    const box = canvas.getBoundingClientRect();
+    const width = box.width;
+    const height = box.height;
+    if (!width || !height) return;
+    const bottomOf = (selector) => {
+      const el = journey.querySelector(selector) || document.querySelector(selector);
+      if (!el) return 0;
+      const rect = el.getBoundingClientRect();
+      return rect.height && rect.bottom > 0 && rect.top < height * 0.4 ? rect.bottom - box.top : 0;
+    };
+    const ticker = journey.querySelector('.jr__ticker');
+    const isNarrow = narrow.matches;
+    let top = Math.max(
+      bottomOf('.preview-strip'),
+      isNarrow ? Math.max(bottomOf('.jr__nav'), bottomOf('.jr__skip')) : 0,
+    );
+    top += isNarrow ? 8 : 20;
+    const bottom = (ticker ? ticker.offsetTop : height) - (isNarrow ? 8 : 20);
+    const side = isNarrow ? 8 : 24;
+    const open = [side, top, width - side, bottom];
+    const panel = open.slice();
+    for (const element of panels) {
+      if (isNarrow) panel[3] = Math.min(panel[3], element.offsetTop - 10);
+      else panel[0] = Math.max(panel[0], element.offsetLeft + element.offsetWidth + 24);
+    }
+    // a band too thin to show the car (landscape phones and small windows, where the bottom sheet
+    // takes most of the height) grows down over the top of the sheet; a column too narrow grows left
+    if (panel[3] - panel[1] < height * 0.1) panel[3] = Math.min(open[3], panel[1] + height * 0.22);
+    panel[0] = Math.min(panel[0], panel[2] - width * 0.25);
+    const toFractions = (r) => [r[0] / width, r[1] / height, r[2] / width, r[3] / height];
+    scene.setFraming(0, 0, { panel: toFractions(panel), open: toFractions(open) });
   }
 
   addEventListener('resize', updateFraming);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => updateFraming());
   addEventListener('resize', () => {
     holdUntil = performance.now() + 800;
   });
@@ -321,7 +359,9 @@ function initJourney() {
 
     let gl = null;
     try {
-      gl = document.createElement('canvas').getContext('webgl2', { failIfMajorPerformanceCaveat: mode !== 'force' });
+      gl = document
+        .createElement('canvas')
+        .getContext('webgl2', { failIfMajorPerformanceCaveat: mode !== 'force' });
     } catch {
       gl = null;
     }
@@ -346,7 +386,8 @@ function initJourney() {
     const memory = navigator.deviceMemory || 8;
     const cores = navigator.hardwareConcurrency || 8;
     if (memory <= 2 || cores <= 2) return 'low';
-    if (coarsePointer || memory <= 4 || cores <= 4 || Math.min(screen.width, screen.height) < 700) return 'mid';
+    if (coarsePointer || memory <= 4 || cores <= 4 || Math.min(screen.width, screen.height) < 700)
+      return 'mid';
     return 'high';
   }
 

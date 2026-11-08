@@ -11,7 +11,8 @@
 //   lighting.js         sun + hemisphere lights, exposure, shadow box fitted to the view
 //   progress.js         scroll target → smoothed progress (spring), intro, STAGES
 //   car-motion.js       progress → distance along the car path, car kinematics
-//   camera-shots.js     camera keyframes; camera-director.js evaluates and applies them
+//   camera-shots.js     camera keyframes; camera-director.js evaluates them, frames the subject
+//                       in the area the page leaves free and fits the overhead shot
 //   depth-range.js      near/far planes from the camera's clearance, every frame
 //   crew-staging.js     pit crew, paddock cars and visitors
 //   track-highlight.js  red line drawn around the circuit during the aerial shots
@@ -20,7 +21,7 @@
 // Construction order matters: three.js sorts opaque draws by material id, which is assigned at
 // construction, so objects are created in exactly the order of the published build.
 import { Fog, PerspectiveCamera, Scene } from 'three';
-import { createCameraDirector } from './camera-director.js';
+import { createCameraDirector, createCameraFrame } from './camera-director.js';
 import { createDepthRange } from './depth-range.js';
 import { CAMERA_SHOTS } from './camera-shots.js';
 import { buildCarPath } from './car-path.js';
@@ -126,7 +127,11 @@ async function createJourney({
   const scheduleDistances = carScheduleKeys(landmarks).map((key) => key[1]);
   const road = createRoadHeight(world.root, sampler, scheduleDistances, car.contacts);
   const carMotion = createCarMotion(car, sampler, landmarks.arrival, { roadHeight: road.heightAt });
-  const director = createCameraDirector(camera, CAMERA_SHOTS, carMotion.frame);
+  const cameraFrame = createCameraFrame(sampler); // the car's frame with a smoothed heading
+  const director = createCameraDirector(camera, CAMERA_SHOTS, cameraFrame, {
+    circuit: track,
+    carBox: carMeta.bounds,
+  });
   const progress = createProgress();
 
   // --- frame loop ------------------------------------------------------------------------------
@@ -135,8 +140,16 @@ async function createJourney({
   let running = false;
   let visible = true;
   let rafId = 0;
-  let framingX = 0;
-  let framingY = 0;
+  // the camera's per-frame input (reused): framing areas from setFraming(), see camera-director.js
+  const cameraInput = {
+    progress: 0,
+    introEase: 1,
+    clock: 0,
+    debugCam: null,
+    width: 1,
+    height: 1,
+    framing: { panel: null, open: null },
+  };
   const viewport = createViewport(canvas, renderer, camera, maxPixelRatio);
 
   function renderFrame(now) {
@@ -154,6 +167,7 @@ async function createJourney({
     let distance = distanceAt(p);
     if (progress.intro < 1) distance = introRunIn(distance, progress.intro, landmarks);
     carMotion.update(distance, dt, clock);
+    cameraFrame.update(distance);
     updatePitCrew(crew, p, clock, sampler, landmarks.pitBox, openBox);
     updatePaddockVisitors(visitors, p, clock);
 
@@ -165,16 +179,13 @@ async function createJourney({
     environment.update(hour);
 
     // camera, then the shadow box around what it looks at
-    director.update({
-      progress: p,
-      introEase,
-      clock,
-      debugCam: api.debugCam,
-      width: viewport.width,
-      height: viewport.height,
-      framingX,
-      framingY,
-    });
+    cameraInput.progress = p;
+    cameraInput.introEase = introEase;
+    cameraInput.clock = clock;
+    cameraInput.debugCam = api.debugCam;
+    cameraInput.width = viewport.width;
+    cameraInput.height = viewport.height;
+    director.update(cameraInput);
     depthRange.update(director.position, director.target);
     camera.updateMatrixWorld();
     shadowFollow.update(light.sunDir, camera, director.target);
@@ -251,10 +262,25 @@ async function createJourney({
       carMotion.speed = carMotion.prevSpeed = 0;
       progress.snap = false;
     },
-    /** View offset as fractions of the viewport (x shifts the image right, y shifts it up). */
-    setFraming(x = 0, y = 0) {
-      framingX = x;
-      framingY = y;
+    /**
+     * Where the subject goes on screen. `areas` = { panel, open }: [left, top, right, bottom]
+     * fractions of the viewport left free while a stage panel is shown (car shots) and with no panel
+     * (aerial), see camera-director.js. Without `areas`, (x, y) shift the subject from the centre as
+     * fractions of the viewport (x right, y up), as before.
+     */
+    setFraming(x = 0, y = 0, areas = null) {
+      const framing = cameraInput.framing;
+      if (areas) {
+        framing.panel = areas.panel;
+        framing.open = areas.open || areas.panel;
+        return;
+      }
+      const cx = 0.5 + clamp(x, -0.4, 0.4);
+      const cy = 0.5 - clamp(y, -0.4, 0.4);
+      const hx = Math.min(cx, 1 - cx) - 0.02;
+      const hy = Math.min(cy, 1 - cy) - 0.02;
+      framing.panel = [cx - hx, cy - hy, cx + hx, cy + hy];
+      framing.open = null;
     },
     start() {
       if (running) return;
