@@ -142,13 +142,15 @@ var stepRange = (model, range) => (range ? range : [0, model.line.count]);
  * @param {[number, number]} [options.uvAcross=[0, 1]] u at edge A and at edge B
  * @param {number} [options.heightA=0] extra height of edge A (camber), metres
  * @param {number} [options.heightB=0] extra height of edge B, metres
+ * @param {number | null} [options.skirtB=null] if set, a vertical riser hangs from edge B down to
+ *   this height (y, metres), facing away from edge A: it closes the step to a lower neighbour
  * @returns {BufferGeometry} indexed geometry with position, normal and uv
  */
 function buildStrip(
   model,
   offsetA,
   offsetB,
-  { range = null, y = 0, vScale = 1, uvAcross = [0, 1], heightA = 0, heightB = 0 } = {},
+  { range = null, y = 0, vScale = 1, uvAcross = [0, 1], heightA = 0, heightB = 0, skirtB = null } = {},
 ) {
   const { line } = model;
   const [first, last] = stepRange(model, range);
@@ -182,7 +184,26 @@ function buildStrip(
     const v = k * line.spacing * vScale;
     uvs.push(uvAcross[0], v, uvAcross[1], v);
   }
-  return ribbonGeometry(positions, normals, uvs, ribbonIndices(last - first, up), [first, last], {
+  const indices = ribbonIndices(last - first, up);
+  if (skirtB !== null) {
+    // riser: vertex pairs (edge B at its height, edge B at skirtB), normal pointing from A to B
+    const base = positions.length / 3;
+    const towardsB = edgeB.offsets[0] > edgeA.offsets[0] ? 1 : -1;
+    for (let k = 0; k <= last - first; k++) {
+      const i = wrapIndex(first + k, line.count);
+      const x = edgeB.points[2 * k];
+      const z = edgeB.points[2 * k + 1];
+      positions.push(x, y + heightB, z, x, skirtB, z);
+      const nx = towardsB * line.nx[i];
+      const nz = towardsB * line.nz[i];
+      normals.push(nx, 0, nz, nx, 0, nz);
+      const v = k * line.spacing * vScale;
+      uvs.push(uvAcross[1], v, uvAcross[1], v);
+    }
+    // the face normal T × (bottom - top) = -N points the wanted way when edge B is left of A
+    ribbonIndices(last - first, towardsB < 0, base, indices);
+  }
+  return ribbonGeometry(positions, normals, uvs, indices, [first, last], {
     held: edgeA.held + edgeB.held,
     collapsed,
   });

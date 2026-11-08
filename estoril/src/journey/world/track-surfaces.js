@@ -3,10 +3,10 @@
 // traps and the barrier walls behind them. Every layer takes its edges from the same model, so
 // shared edges (asphalt/kerb, kerb/run-off, run-off/gravel) use identical vertices.
 //
-// Layer heights (metres above y = 0; ground is at -0.05 near the track):
-//   asphalt 0.030 · gravel 0.035 · rubber line 0.034 (decal, renderOrder 1) · run-off 0.040 ·
-//   edge lines 0.045 · kerbs 0.070 at the track edge sloping to 0.040 outside · barriers 0..0.95
-// Of these layers only the rubber line uses polygonOffset (factor/units -1, set in materials.js).
+// Heights and polygon offsets follow the layer table in layers.js (gravel < run-off < asphalt <
+// kerbs, rubber, lines). The kerbs are flush with the asphalt at the track edge and rise outwards,
+// with a riser down to the run-off, so no gap opens between layers of different heights. The
+// rubber line and the white lines are pulled towards the camera with polygonOffset.
 //
 // Offsets are signed lateral distances from the centre line: positive = right of the direction of
 // travel (normal (-dz, dx)), negative = left. The model's half-width blends from 7 m on the main
@@ -14,6 +14,7 @@
 import { CanvasTexture, Mesh } from 'three';
 import { buildBarrierWall, buildStrip } from '../track/strip.js';
 import { clamp, smoothstep } from '../util/math.js';
+import { LAYERS } from './layers.js';
 
 /** Kerb and run-off widths, gravel start, widest gravel and barrier offset beyond the asphalt edge. */
 const KERB_WIDTH = 1.6;
@@ -28,7 +29,7 @@ const GRAVEL_END_WIDTH = 0.15;
 function buildAsphalt(ctx, model) {
   const halfWidth = (i) => model.halfWidth[i];
   const geometry = buildStrip(model, halfWidth, (i) => -halfWidth(i), {
-    y: 0.03,
+    y: LAYERS.asphalt,
     vScale: 1 / 12,
     uvAcross: [0, 14 / 12],
   });
@@ -68,7 +69,7 @@ function buildRubberLine(ctx, model) {
     model,
     (i) => 2.6 + drift(i),
     (i) => -3.4 + drift(i),
-    { y: 0.034 },
+    { y: LAYERS.rubber },
   );
   const rubber = new Mesh(geometry, materials.rubber);
   rubber.renderOrder = 1;
@@ -77,12 +78,14 @@ function buildRubberLine(ctx, model) {
 
 /** White edge lines, 0.30 m wide, 0.15 m inside each asphalt edge (right side first, then left). */
 function buildEdgeLines(ctx, model) {
+  // the shared line material also paints the pit-lane line, the start line and the grid slots
+  Object.assign(ctx.materials.line, { polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -2 });
   for (const side of [1, -1]) {
     const geometry = buildStrip(
       model,
       (i) => side * (model.halfWidth[i] - 0.15),
       (i) => side * (model.halfWidth[i] - 0.45),
-      { y: 0.045 },
+      { y: LAYERS.lines },
     );
     const line = new Mesh(geometry, ctx.materials.line);
     line.receiveShadow = true;
@@ -93,8 +96,8 @@ function buildEdgeLines(ctx, model) {
 /**
  * Corner furniture.
  *  - Every corner run gets, on both sides (right, then left), a 1.6 m kerb at the asphalt edge
- *    (raised 0.07 m on the track side, 0.04 m on the outside; texture repeats every 6 m) and 3.9 m
- *    of painted run-off, square-cut at both ends.
+ *    (flush with the asphalt there, 15 mm higher on the outside, with a riser down to the run-off;
+ *    texture repeats every 6 m) and 3.9 m of painted run-off, square-cut at both ends.
  *  - Every gravel interval of the model (the outside of each sub-corner, 25 m before to 42 m after
  *    the corner, never inside a bend, same-side intervals merged) gets a gravel trap from 5.5 m
  *    beyond the edge, 7.2–24 m wide depending on cornerness and narrowing to 15 % over 20 m at
@@ -110,7 +113,13 @@ function buildCorners(ctx, model) {
         model,
         (i) => side * halfWidth[i],
         (i) => side * (halfWidth[i] + KERB_WIDTH),
-        { range, y: 0.07, vScale: 1 / 6, heightA: 0, heightB: -0.03 },
+        {
+          range,
+          y: LAYERS.kerbInner,
+          vScale: 1 / 6,
+          heightB: LAYERS.kerbOuter - LAYERS.kerbInner,
+          skirtB: LAYERS.runoff,
+        },
       );
       const kerb = new Mesh(kerbGeometry, materials.kerb);
       kerb.receiveShadow = true;
@@ -119,7 +128,7 @@ function buildCorners(ctx, model) {
         model,
         (i) => side * (halfWidth[i] + KERB_WIDTH),
         (i) => side * (halfWidth[i] + RUNOFF_OUTER),
-        { range, y: 0.04 },
+        { range, y: LAYERS.runoff },
       );
       root.add(new Mesh(runoffGeometry, materials.runoff));
     }
@@ -137,7 +146,7 @@ function buildCorners(ctx, model) {
       model,
       (i) => side * (halfWidth[i] + RUNOFF_OUTER),
       (i, step) => side * (halfWidth[i] + RUNOFF_OUTER + width(i, step)),
-      { range: [first, last], y: 0.035, vScale: 1 / 10 },
+      { range: [first, last], y: LAYERS.gravel, vScale: 1 / 10 },
     );
     const gravel = new Mesh(gravelGeometry, materials.gravel);
     gravel.receiveShadow = true;

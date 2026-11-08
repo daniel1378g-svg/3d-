@@ -7,25 +7,36 @@
 //                and no source point of track.json farther than MAX_DEVIATION from it
 //   facing       every flat strip (asphalt, rubber, lines, kerbs, run-off, gravel) faces up (+y):
 //                every normal attribute has y > 0, and no triangle is inverted (folded) or
-//                degenerate
+//                degenerate; the kerbs' risers face away from the centre line
 //   walls        every barrier wall's winding agrees with its normals, and its track-side face
 //                looks at the centre-line sample it was built from (the back face looks away)
 //   clearance    no kerb, run-off, gravel or wall vertex lies on the asphalt of another part of the
 //                track (distance to every centre-line sample minus its half-width)
+//   layers       every pair of up-facing ground-level triangles that overlap in plan (track strips,
+//                pit lane, pit entry/exit, painted lines, start line, grid slots) is at least
+//                MIN_LAYER_GAP apart in height where they overlap, and above the terrain
 //   car path     on the lap, the hero car's driving line stays within halfWidth - 1 m of the
 //                centre line
 import { readFileSync } from 'node:fs';
-import { Group, Vector2, Vector3 } from 'three';
+import { Vector2, Vector3 } from 'three';
 
 // --- minimal DOM for the canvas textures built by the world modules ------------------------------
 const context2d = new Proxy(
   {},
-  { get: (target, key) => (key in target ? target[key] : () => ({ addColorStop() {} })), set: () => true },
+  {
+    get: (target, key) =>
+      key in target ? target[key] : () => ({ addColorStop() {}, data: new Uint8ClampedArray(4) }),
+    set: (target, key, value) => ((target[key] = value), true),
+  },
 );
 globalThis.document ??= { createElement: () => ({ width: 0, height: 0, getContext: () => context2d }) };
 
 const { MIN_RADIUS, analyseTrack } = await import('../src/journey/world/track-analysis.js');
 const { buildTrackSurfaces } = await import('../src/journey/world/track-surfaces.js');
+const { createWorldContext } = await import('../src/journey/world/context.js');
+const { buildPitLaneSurface } = await import('../src/journey/world/pits.js');
+const { buildStartGantry } = await import('../src/journey/world/main-straight.js');
+const { LAYERS, MIN_LAYER_GAP } = await import('../src/journey/world/layers.js');
 const { arcLengthNear, buildCarPath } = await import('../src/journey/car-path.js');
 
 const root = new URL('..', import.meta.url).pathname;
@@ -36,21 +47,19 @@ const MAX_DEVIATION = 4;
 /** Corner strips and walls must stay this far (metres) from the asphalt edge of other track parts. */
 const CLEARANCE = { kerb: -0.01, runoff: 0.5, gravel: 0.5, barrier: 0.5 };
 
-/** Fake material table: every key is a distinct plain object named after the key. */
-function fakeMaterials() {
-  const cache = {};
-  return new Proxy(cache, {
-    get: (target, key) => (target[key] ??= { name: String(key), isMaterial: true }),
-  });
-}
-
-const track = trackPoints.map(([x, z]) => new Vector2(x, z));
-const ctx = { track, materials: fakeMaterials(), root: new Group() };
-const shape = analyseTrack(track);
+// the real world context (materials, helpers), then the track surfaces, pit lane and start area
+const ctx = createWorldContext(trackPoints, 'high');
+const shape = analyseTrack(ctx.track);
 buildTrackSurfaces(ctx, shape);
-const meshes = ctx.root.children.filter((o) => o.isMesh);
+const trackMeshes = ctx.root.children.filter((o) => o.isMesh);
+buildPitLaneSurface(ctx);
+buildStartGantry(ctx);
+ctx.root.updateMatrixWorld(true);
 const model = shape.model;
 const line = model.line;
+const materialName = new Map(Object.entries(ctx.materials).map(([key, material]) => [material, key]));
+for (const mesh of trackMeshes) mesh.kind = materialName.get(mesh.material);
+const meshes = trackMeshes;
 
 const failures = [];
 const check = (ok, message) => {
@@ -145,8 +154,9 @@ function nearestOnLine(x, z, reach = 3) {
 // --- facing and folds: flat strips ----------------------------------------------------------------
 const FLAT = ['asphalt', 'rubber', 'line', 'kerb', 'runoff', 'gravel'];
 const summary = {};
+const risers = { count: 0, wrong: 0 };
 for (const mesh of meshes) {
-  const kind = mesh.material.name;
+  const kind = mesh.kind;
   if (!FLAT.includes(kind)) continue;
   const s = (summary[kind] ??= {
     strips: 0,
@@ -164,6 +174,7 @@ for (const mesh of meshes) {
   const normal = mesh.geometry.attributes.normal;
   for (let i = 0; i < normal.count; i++) {
     const y = normal.getY(i);
+    if (Math.abs(y) < 0.1 && Math.hypot(normal.getX(i), normal.getZ(i)) > 0.99) continue; // riser
     s.minNormalY = Math.min(s.minNormalY, y);
     if (!(y > 0)) s.normalDown++;
   }
@@ -172,6 +183,14 @@ for (const mesh of meshes) {
     s.triangles++;
     if (t.geometric.length() / 2 < 1e-6) {
       s.degenerate++;
+      continue;
+    }
+    if (Math.abs(t.attribute.y) < 0.1) {
+      // a riser (kerbs): vertical, facing away from the centre line, winding matching its normal
+      risers.count++;
+      const { sample } = nearestOnLine(t.a.x, t.a.z);
+      const outward = t.attribute.x * (t.a.x - line.x[sample]) + t.attribute.z * (t.a.z - line.z[sample]);
+      if (!(outward > 0) || t.geometric.clone().normalize().dot(t.attribute) <= 0) risers.wrong++;
       continue;
     }
     facing += t.geometric.y;
@@ -192,10 +211,15 @@ for (const [kind, s] of Object.entries(summary)) {
   check(s.degenerate === 0, `${kind}: ${s.degenerate} degenerate triangles`);
 }
 check(Object.keys(summary).length === FLAT.length, 'some flat strip kinds are missing');
+console.log(`  kerb risers: ${risers.count} triangles, facing the track or mis-wound ${risers.wrong}`);
+check(
+  risers.wrong === 0,
+  `kerb risers: ${risers.wrong} triangles face the track or disagree with their winding`,
+);
 
 // --- walls ----------------------------------------------------------------------------------------
 {
-  const walls = meshes.filter((m) => m.material.name === 'barrier');
+  const walls = meshes.filter((m) => m.kind === 'barrier');
   let count = 0;
   let inverted = 0;
   let trackSide = 0;
@@ -245,7 +269,7 @@ check(Object.keys(summary).length === FLAT.length, 'some flat strip kinds are mi
 {
   const worst = {};
   for (const mesh of meshes) {
-    const kind = mesh.material.name;
+    const kind = mesh.kind;
     if (!(kind in CLEARANCE)) continue;
     const position = mesh.geometry.attributes.position;
     for (let v = 0; v < position.count; v++) {
@@ -270,6 +294,174 @@ check(Object.keys(summary).length === FLAT.length, 'some flat strip kinds are mi
   );
   for (const [kind, d] of Object.entries(worst))
     check(d >= CLEARANCE[kind], `${kind}: a vertex lies ${d.toFixed(2)} m from an asphalt edge`);
+}
+
+// --- layers ---------------------------------------------------------------------------------------
+{
+  // up-facing triangles at ground level (y < 0.2 m) of everything built so far, with a layer name
+  const layerName = (mesh, y) => {
+    const key = materialName.get(mesh.material) ?? mesh.material.type;
+    if (key === 'line' && !trackMeshes.includes(mesh))
+      return y > LAYERS.lines + 0.002
+        ? 'paint'
+        : y > LAYERS.pitLane + 0.01 && mesh.position.z < 195
+          ? 'pit-line'
+          : 'grid-side';
+    if (key === 'pitAsphalt') return y < LAYERS.pitLane - 0.002 ? 'pit-mouth' : 'pit-lane';
+    return key;
+  };
+  const flat = []; // [ax, az, bx, bz, cx, cz, ay, by, cy, layer]
+  const names = [];
+  const a = new Vector3();
+  const b = new Vector3();
+  const c = new Vector3();
+  const n = new Vector3();
+  ctx.root.traverse((mesh) => {
+    if (!mesh.isMesh) return;
+    const position = mesh.geometry.attributes.position;
+    const index = mesh.geometry.index;
+    const count = index ? index.count : position.count;
+    for (let k = 0; k < count; k += 3) {
+      const at = (j, out) =>
+        out.fromBufferAttribute(position, index ? index.getX(k + j) : k + j).applyMatrix4(mesh.matrixWorld);
+      at(0, a);
+      at(1, b);
+      at(2, c);
+      n.subVectors(b, a).cross(c.clone().sub(a));
+      if (n.length() < 1e-9 || n.y / n.length() < 0.95 || Math.max(a.y, b.y, c.y) > 0.2) continue;
+      const name = layerName(mesh, (a.y + b.y + c.y) / 3);
+      if (!names.includes(name)) names.push(name);
+      flat.push([a.x, a.z, b.x, b.z, c.x, c.z, a.y, b.y, c.y, names.indexOf(name)]);
+    }
+  });
+  // spatial hash of triangle bounding boxes (2 m cells)
+  const SIZE = 2;
+  const cells = new Map();
+  const boxes = flat.map((t) => [
+    Math.min(t[0], t[2], t[4]),
+    Math.min(t[1], t[3], t[5]),
+    Math.max(t[0], t[2], t[4]),
+    Math.max(t[1], t[3], t[5]),
+  ]);
+  boxes.forEach(([x0, z0, x1, z1], id) => {
+    for (let cx = Math.floor(x0 / SIZE); cx <= Math.floor(x1 / SIZE); cx++)
+      for (let cz = Math.floor(z0 / SIZE); cz <= Math.floor(z1 / SIZE); cz++) {
+        const key = cx * 100003 + cz;
+        if (!cells.has(key)) cells.set(key, []);
+        cells.get(key).push(id);
+      }
+  });
+  // plan intersection of two triangles (Sutherland-Hodgman), counter-clockwise copies
+  const ccw = (t) => {
+    const p = [
+      [t[0], t[1], t[6]],
+      [t[2], t[3], t[7]],
+      [t[4], t[5], t[8]],
+    ];
+    const area = (p[1][0] - p[0][0]) * (p[2][1] - p[0][1]) - (p[2][0] - p[0][0]) * (p[1][1] - p[0][1]);
+    return area < 0 ? [p[0], p[2], p[1]] : p;
+  };
+  const clip = (subject, clipper) => {
+    let out = subject;
+    for (let e = 0; e < 3 && out.length; e++) {
+      const [px, pz] = clipper[e];
+      const [qx, qz] = clipper[(e + 1) % 3];
+      const inside = (v) => (qx - px) * (v[1] - pz) - (qz - pz) * (v[0] - px) >= 0;
+      const input = out;
+      out = [];
+      for (let i = 0; i < input.length; i++) {
+        const cur = input[i];
+        const prev = input[(i + input.length - 1) % input.length];
+        const cross = () => {
+          const dx = cur[0] - prev[0];
+          const dz = cur[1] - prev[1];
+          const den = (qx - px) * dz - (qz - pz) * dx;
+          const u = ((qx - px) * (pz - prev[1]) - (qz - pz) * (px - prev[0])) / (den || 1e-30);
+          return [prev[0] + u * dx, prev[1] + u * dz];
+        };
+        if (inside(cur)) {
+          if (!inside(prev)) out.push(cross());
+          out.push(cur);
+        } else if (inside(prev)) out.push(cross());
+      }
+    }
+    return out;
+  };
+  const heightAt = (tri, x, z) => {
+    // barycentric interpolation of y over the plan triangle
+    const [p0, p1, p2] = tri;
+    const det = (p1[1] - p2[1]) * (p0[0] - p2[0]) + (p2[0] - p1[0]) * (p0[1] - p2[1]);
+    const l0 = ((p1[1] - p2[1]) * (x - p2[0]) + (p2[0] - p1[0]) * (z - p2[1])) / det;
+    const l1 = ((p2[1] - p0[1]) * (x - p2[0]) + (p0[0] - p2[0]) * (z - p2[1])) / det;
+    return l0 * p0[2] + l1 * p1[2] + (1 - l0 - l1) * p2[2];
+  };
+  const pairs = new Map(); // "layerA|layerB" -> { overlaps, minGap, below }
+  let tested = 0;
+  for (const [key, ids] of cells) {
+    for (let i = 0; i < ids.length; i++)
+      for (let j = i + 1; j < ids.length; j++) {
+        const p = ids[i];
+        const q = ids[j];
+        const bp = boxes[p];
+        const bq = boxes[q];
+        const ix0 = Math.max(bp[0], bq[0]);
+        const iz0 = Math.max(bp[1], bq[1]);
+        if (ix0 > Math.min(bp[2], bq[2]) || iz0 > Math.min(bp[3], bq[3])) continue;
+        // test each pair once: in the cell holding the low corner of the boxes' intersection
+        if (Math.floor(ix0 / SIZE) * 100003 + Math.floor(iz0 / SIZE) !== key) continue;
+        tested++;
+        const tp = ccw(flat[p]);
+        const tq = ccw(flat[q]);
+        const poly = clip(tp, tq);
+        if (poly.length < 3) continue;
+        let area = 0;
+        let mx = 0;
+        let mz = 0;
+        for (let k = 0; k < poly.length; k++) {
+          const [x0, z0] = poly[k];
+          const [x1, z1] = poly[(k + 1) % poly.length];
+          const w = x0 * z1 - x1 * z0;
+          area += w;
+          mx += (x0 + x1) * w;
+          mz += (z0 + z1) * w;
+        }
+        area /= 2;
+        if (area < 1e-4) continue; // shared edges and corners
+        mx /= 6 * area;
+        mz /= 6 * area;
+        const gap = Math.abs(heightAt(tp, mx, mz) - heightAt(tq, mx, mz));
+        const la = names[flat[p][9]];
+        const lb = names[flat[q][9]];
+        const pairKey = [la, lb].sort().join(' / ');
+        const entry = pairs.get(pairKey) ?? { overlaps: 0, minGap: Infinity, below: 0 };
+        entry.overlaps++;
+        entry.minGap = Math.min(entry.minGap, gap);
+        if (gap < MIN_LAYER_GAP - 1e-6) entry.below++;
+        pairs.set(pairKey, entry);
+      }
+  }
+  const lowest = Math.min(...flat.map((t) => Math.min(t[6], t[7], t[8])));
+  console.log(
+    `layers: ${flat.length} up-facing ground-level triangles in ${names.length} layers, ${tested} candidate` +
+      ` pairs; minimum gap ${MIN_LAYER_GAP * 1000} mm; terrain ${LAYERS.ground} m, lowest layer ${lowest.toFixed(3)} m`,
+  );
+  for (const [pairKey, e] of [...pairs].sort())
+    console.log(
+      `  ${pairKey.padEnd(26)} ${String(e.overlaps).padStart(6)} overlapping triangle pairs,` +
+        ` min gap ${(e.minGap * 1000).toFixed(1)} mm${e.below ? `, ${e.below} below the minimum` : ''}`,
+    );
+  check(lowest - LAYERS.ground >= MIN_LAYER_GAP, `a layer lies within ${MIN_LAYER_GAP} m of the terrain`);
+  for (const [pairKey, e] of pairs)
+    check(e.below === 0, `layers ${pairKey}: ${e.below} overlaps closer than ${MIN_LAYER_GAP} m`);
+  const material = (key) => ctx.materials[key];
+  for (const key of ['rubber', 'line'])
+    console.log(
+      `  polygonOffset ${key}: ${material(key).polygonOffset ? `${material(key).polygonOffsetFactor}/${material(key).polygonOffsetUnits}` : 'off'}`,
+    );
+  check(
+    material('rubber').polygonOffset && material('line').polygonOffset,
+    'decal materials lack polygonOffset',
+  );
 }
 
 // --- car path ---------------------------------------------------------------------------------------

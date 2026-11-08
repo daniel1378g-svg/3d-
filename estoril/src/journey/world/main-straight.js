@@ -14,6 +14,7 @@ import {
   MeshStandardMaterial,
   PlaneGeometry,
 } from 'three';
+import { LAYERS } from './layers.js';
 
 /**
  * Outer (grandstand-side) wall 10.5 m from the centre line: 1.15 m of concrete, then a debris
@@ -93,14 +94,20 @@ function buildStartGantry(ctx) {
       gantry,
     );
 
-  box(0.8, 0.01, 14, materials.line, x, 0.04, L.straightZ, root, false); // start/finish line
+  // Painted marks (layers.js): boxes standing 1 mm above the asphalt, the start line and the slots'
+  // front bars with their tops at the paint layer, the slots' side lines (which touch the bars) one
+  // layer lower, at the lines layer.
+  const paintBase = LAYERS.asphalt + 0.001;
+  const bar = LAYERS.paint - paintBase;
+  const side = LAYERS.lines - paintBase;
+  box(0.8, bar, 14, materials.line, x, paintBase, L.straightZ, root, false); // start/finish line
   // Grid slots: a bar across the front and two 2.2 m side lines, like a bracket opening to +X.
   for (let i = 0; i < 10; i++) {
     const slotX = x + 12 + i * 8;
     const slotZ = L.straightZ + (i % 2 ? 3.2 : -3.2);
-    box(0.18, 0.01, 2.6, materials.line, slotX, 0.04, slotZ, root, false);
-    box(2.2, 0.01, 0.18, materials.line, slotX + 1.1, 0.04, slotZ + 1.3, root, false);
-    box(2.2, 0.01, 0.18, materials.line, slotX + 1.1, 0.04, slotZ - 1.3, root, false);
+    box(0.18, bar, 2.6, materials.line, slotX, paintBase, slotZ, root, false);
+    box(2.2, side, 0.18, materials.line, slotX + 1.1, paintBase, slotZ + 1.3, root, false);
+    box(2.2, side, 0.18, materials.line, slotX + 1.1, paintBase, slotZ - 1.3, root, false);
   }
 }
 
