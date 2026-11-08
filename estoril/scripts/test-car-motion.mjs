@@ -6,7 +6,8 @@
 // below), bounded roll/pitch/heave/steer, ground clearance of the body's low points (exact rotation),
 // the wheels rolling exactly distance / radius through their instance matrices (car/wheel.js), front
 // wheels steering into the bend, settling when stopped, mirrored dynamics in reverse, teleports
-// (jump / renderAt dt 0) without speed, and the same pose at 30 and 120 frames per second.
+// (jump / renderAt dt 0) without speed, the same pose at 30 and 120 frames per second, and the road
+// height probe (car/road-height.js) on a synthetic world.
 import { readFileSync } from 'node:fs';
 import { buildCarPath } from '../src/journey/car-path.js';
 import {
@@ -19,8 +20,9 @@ import {
 } from '../src/journey/car-motion.js';
 import { createProgress } from '../src/journey/progress.js';
 import { clearancePoints } from '../src/journey/car/hero-car.js';
+import { createRoadHeight } from '../src/journey/car/road-height.js';
 import { REFERENCE_RADIUS, rollAngle, wheelSet, wheelTransforms } from '../src/journey/car/wheel.js';
-import { Matrix4, Vector3 } from 'three';
+import { Group, Matrix4, Mesh, MeshBasicMaterial, PlaneGeometry, Vector3 } from 'three';
 
 const root = new URL('..', import.meta.url).pathname;
 const track = JSON.parse(readFileSync(root + 'site/assets/data/track.json', 'utf8')).pts;
@@ -458,6 +460,48 @@ check(
       .map(([k, v]) => `${k} ${v.toFixed(4)}`)
       .join(', '),
   );
+}
+
+// 9. Road height (car/road-height.js): a synthetic world along +x, the pit lane (0.025) for x < 50 and
+// the track (0.03) beyond, a transparent decal (0.05) and a raised strip (0.05) under one tyre at x 20
+{
+  const world = new Group();
+  const plane = (x0, x1, z0, z1, y, material) => {
+    const mesh = new Mesh(new PlaneGeometry(x1 - x0, z1 - z0).rotateX(-Math.PI / 2), material);
+    mesh.position.set((x0 + x1) / 2, y, (z0 + z1) / 2);
+    world.add(mesh);
+  };
+  const opaque = new MeshBasicMaterial();
+  plane(-10, 50, -5, 5, 0.025, opaque);
+  plane(50, 110, -5, 5, 0.03, opaque);
+  plane(-5, 5, -5, 5, 0.05, new MeshBasicMaterial({ transparent: true, depthWrite: false }));
+  plane(20.5, 23, 0.6, 1.1, 0.05, opaque); // under the front-right tyre at distance 20 only
+  const line = {
+    sample(d) {
+      this.p.set(d, 0, 0);
+      return this;
+    },
+    p: new Vector3(),
+    t: new Vector3(1, 0, 0),
+  };
+  const contacts = wheels.map((w) => [w.centre.x, w.centre.z]);
+  const road = createRoadHeight(world, line, [0, 20, 40, 60, 100], contacts);
+  const at = (d) => +road.heightAt(d).toFixed(4);
+  check(
+    'road height: surfaces measured, decals ignored, one raised tyre ignored, linear in between',
+    at(0) === 0.025 &&
+      at(20) === 0.025 &&
+      at(40) === 0.025 &&
+      at(60) === 0.03 &&
+      at(100) === 0.03 &&
+      at(50) === 0.0275,
+    `0: ${at(0)}, 20: ${at(20)}, 40: ${at(40)}, 50: ${at(50)}, 60: ${at(60)}, 100: ${at(100)}`,
+  );
+  // car-motion hands it to car.pose() as `road`
+  const car = mockCar();
+  const motion = createCarMotion(car, sampler, 1000, { roadHeight: () => 0.021 });
+  motion.update(1000, 0);
+  check('road height: passed to car.pose()', car.last.road === 0.021, `road ${car.last.road}`);
 }
 
 console.log(failures ? `\n${failures} check(s) failed` : '\nall car-motion checks passed');

@@ -249,8 +249,11 @@ function clearanceScale(points, pitch, roll, heave) {
  *   result; lowPoints (x, clearance above the road at rest, z triples, metres) enable the clearance limit
  * @param {ReturnType<typeof createPathSampler>} sampler
  * @param {number} startDistance metres along the path
+ * @param {object} [options]
+ * @param {(distance: number) => number} [options.roadHeight] height of the road surface under the car
+ *   (car/road-height.js), passed on to car.pose() as `road`
  */
-function createCarMotion(car, sampler, startDistance) {
+function createCarMotion(car, sampler, startDistance, { roadHeight = null } = {}) {
   let lastDistance = startDistance;
   let teleported = true;
   let speed = 0;
@@ -263,7 +266,7 @@ function createCarMotion(car, sampler, startDistance) {
   // the body's low points (x, clearance at rest, z), if the car provides them
   const lowPoints = car.lowPoints || null;
   // what is shown: the springs' pose after the clearance limit (it is also car.pose()'s argument)
-  const pose = { dist: 0, steer: 0, pitch: 0, roll: 0, heave: 0, speed: 0 };
+  const pose = { dist: 0, steer: 0, pitch: 0, roll: 0, heave: 0, speed: 0, road: undefined };
   const frame = { p: new Vector3(), f: new Vector3(), r: new Vector3() };
 
   function settle(distance) {
@@ -372,6 +375,7 @@ function createCarMotion(car, sampler, startDistance) {
       pose.roll = roll.x * k;
       pose.heave = heave.x * k;
       pose.speed = Math.abs(speed);
+      if (roadHeight) pose.road = roadHeight(distance);
       car.pose(pose);
     },
   };

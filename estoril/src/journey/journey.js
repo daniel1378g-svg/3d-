@@ -22,6 +22,7 @@ import { createCameraDirector } from './camera-director.js';
 import { CAMERA_SHOTS } from './camera-shots.js';
 import { buildCarPath } from './car-path.js';
 import { buildHeroCar } from './car/hero-car.js';
+import { createRoadHeight } from './car/road-height.js';
 import {
   carScheduleKeys,
   computeLandmarks,
@@ -116,7 +117,10 @@ async function createJourney({
   const sampler = createPathSampler(carPath);
   const landmarks = computeLandmarks(carPath, track);
   const distanceAt = createCarSchedule(carScheduleKeys(landmarks));
-  const carMotion = createCarMotion(car, sampler, landmarks.arrival);
+  // the road surface under the car at the choreography's stops and turning points (raycast once)
+  const scheduleDistances = carScheduleKeys(landmarks).map((key) => key[1]);
+  const road = createRoadHeight(world.root, sampler, scheduleDistances, car.contacts);
+  const carMotion = createCarMotion(car, sampler, landmarks.arrival, { roadHeight: road.heightAt });
   const director = createCameraDirector(camera, CAMERA_SHOTS, carMotion.frame);
   const progress = createProgress();
 

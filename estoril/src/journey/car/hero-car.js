@@ -12,8 +12,10 @@
 //   │                               (x, r, ±0.86); the front pair steers
 //   └─ ground-occlusion             baked car-shaped AO decal on the road (6.4 × 3.6 m), noMask
 //
-// The chassis and the wheels sit RIDE_HEIGHT above the root, so the tyres press 12 mm into the road
-// surface at y = ROAD_SURFACE_Y: they visibly touch it on the track, in the pit lane and the paddock.
+// The root follows the car path (y = 0); the road surface under the car is higher by a few millimetres
+// and differs between the track, the pit lane and the paddock (car/road-height.js measures it; pose()
+// gets it as `road`). The wheels and the chassis sit TYRE_DEFLECTION below it, so the tyres press 12 mm
+// into whatever the car stands on and visibly touch it; the decal lies FOOTPRINT_LIFT above it.
 //
 // userData.noMask keeps an object off layer 1, which journey.js uses for the motion-blur mask.
 import { CircleGeometry, CylinderGeometry, Group, Mesh, MeshBasicMaterial, PlaneGeometry } from 'three';
@@ -26,16 +28,11 @@ import { createWheels } from './wheel.js';
 const WHEEL_WIDTH = 0.34;
 /** Lateral distance of the wheel centres from the car's centre line, metres. */
 const WHEEL_CENTRE_Z = 0.86;
-/**
- * Top of the asphalt the car drives on (world track surfaces y 0.03; the pit lane is at 0.025 and the
- * paddock at 0.02). The car path itself is at y = 0.
- */
-const ROAD_SURFACE_Y = 0.03;
-/** Tyres sink this far below ROAD_SURFACE_Y: a loaded tyre's flattened contact patch (≈ 16 cm long). */
+/** Road surface height (above the car path) when pose() is given none: the track asphalt. */
+const DEFAULT_ROAD_Y = 0.03;
+/** Tyres sink this far below the road surface: a loaded tyre's flattened contact patch (≈ 16 cm long). */
 const TYRE_DEFLECTION = 0.012;
-/** Height of the car frame (tyre bottoms, body) above the path: wheels and chassis are raised by it. */
-const RIDE_HEIGHT = ROAD_SURFACE_Y - TYRE_DEFLECTION;
-/** The occlusion decal floats this far above ROAD_SURFACE_Y (above the 0.034 rubber line too). */
+/** The occlusion decal floats this far above the road surface (above painted lines too). */
 const FOOTPRINT_LIFT = 0.006;
 const FOOTPRINT_OPACITY = 0.9;
 /**
@@ -119,7 +116,7 @@ function groundOcclusion(texture, [width, depth]) {
   });
   const mesh = new Mesh(new PlaneGeometry(width, depth).rotateX(-Math.PI / 2), material);
   mesh.name = 'ground-occlusion';
-  mesh.position.y = ROAD_SURFACE_Y + FOOTPRINT_LIFT;
+  mesh.position.y = DEFAULT_ROAD_Y + FOOTPRINT_LIFT; // pose() follows the road
   mesh.renderOrder = 1;
   mesh.userData.noMask = true;
   return mesh;
@@ -133,7 +130,7 @@ function groundOcclusion(texture, [width, depth]) {
 function clearancePoints(lowPoints) {
   if (!lowPoints) return null;
   const out = new Float64Array(lowPoints.length * 3);
-  lowPoints.forEach(([x, y, z], i) => out.set([x, y + RIDE_HEIGHT - ROAD_SURFACE_Y, z], i * 3));
+  lowPoints.forEach(([x, y, z], i) => out.set([x, y - TYRE_DEFLECTION, z], i * 3));
   return out;
 }
 
@@ -146,7 +143,7 @@ function clearancePoints(lowPoints) {
  * @param {(progress: {loaded: number, total: number}) => void} [options.onProgress]
  * @param {'low'|'mid'|'high'} [options.quality='high'] 'low' keeps the cheaper standard material
  * @returns {Promise<{root: Group, chassis: Group, body: Group, wheels: object, lowPoints: Float64Array|null,
- *   pose: Function}>}
+ *   contacts: Array<[number, number]>, pose: Function}>}
  */
 async function buildHeroCar(url, wheelLayout, { onProgress, quality = 'high' } = {}) {
   const bodyUrl = wheelLayout.body ? url.slice(0, url.lastIndexOf('/') + 1) + wheelLayout.body : url;
@@ -154,25 +151,28 @@ async function buildHeroCar(url, wheelLayout, { onProgress, quality = 'high' } =
   const root = new Group();
   root.name = 'hero-car';
   const chassis = new Group();
-  chassis.position.y = RIDE_HEIGHT;
+  chassis.position.y = DEFAULT_ROAD_Y - TYRE_DEFLECTION;
   root.add(chassis);
   chassis.add(body);
   const wheels = createWheels({
     layout: wheelLayout,
     width: WHEEL_WIDTH,
     centreZ: WHEEL_CENTRE_Z,
-    centreY: RIDE_HEIGHT,
   });
   const materials = wheels.materials;
+  wheels.group.position.y = chassis.position.y;
   root.add(wheels.group);
   chassis.add(wheelWells(wheelLayout, materials.well));
-  root.add(groundOcclusion(body.userData.footprint, body.userData.footprintSize));
+  const decal = groundOcclusion(body.userData.footprint, body.userData.footprintSize);
+  root.add(decal);
   return {
     root,
     chassis,
     body,
     wheels,
     lowPoints: clearancePoints(body.userData.lowPoints),
+    /** Tyre contact points in the car frame, [x, z] metres (FL, FR, RL, RR). */
+    contacts: wheels.wheels.map((w) => [w.centre.x, w.centre.z]),
     /**
      * Per-frame car state.
      * @param {object} [state]
@@ -182,13 +182,18 @@ async function buildHeroCar(url, wheelLayout, { onProgress, quality = 'high' } =
      * @param {number} [state.roll=0] chassis rotation about x, radians
      * @param {number} [state.heave=0] chassis vertical offset, metres
      * @param {number} [state.speed=0] speed, m/s; fades the wheel blur discs in from BLUR_FROM to BLUR_FULL
+     * @param {number} [state.road] height of the road surface under the car above the root, metres
+     *   (default DEFAULT_ROAD_Y)
      */
-    pose({ dist = 0, steer = 0, pitch = 0, roll = 0, heave = 0, speed = 0 } = {}) {
+    pose({ dist = 0, steer = 0, pitch = 0, roll = 0, heave = 0, speed = 0, road = DEFAULT_ROAD_Y } = {}) {
       materials.blur.opacity = Math.min(1, Math.max(0, (speed - BLUR_FROM) / (BLUR_FULL - BLUR_FROM)));
       materials.blur.visible = materials.blur.opacity > 0.01;
       wheels.update(dist, steer);
+      const base = road - TYRE_DEFLECTION; // the tyre bottoms
+      wheels.group.position.y = base;
       chassis.rotation.set(roll, 0, pitch);
-      chassis.position.y = RIDE_HEIGHT + heave;
+      chassis.position.y = base + heave;
+      decal.position.y = road + FOOTPRINT_LIFT;
     },
   };
 }

@@ -558,7 +558,7 @@ function createWheels({ layout, width, centreZ, centreY = 0 }) {
   }
   update(0, 0);
   for (const mesh of group.children) mesh.computeBoundingSphere();
-  return { group, materials, radius, update };
+  return { group, materials, radius, wheels, update };
 }
 
 export { createWheels, REFERENCE_RADIUS, rollAngle, wheelSet, wheelTransforms };
