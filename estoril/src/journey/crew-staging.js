@@ -169,7 +169,7 @@ function placeCrew(crew, sampler, pitBoxDistance, openBox) {
 function updatePitCrew(crew, progress, clock, sampler, pitBoxDistance, openBox) {
   const presence = 1 - smoothstep(clamp(Math.abs(progress - 0.26) / 0.1 - 0.6, 0, 1));
   const shown = presence > 0.002;
-  for (const member of crew.members) member.visible = shown;
+  for (let k = 0; k < crew.members.length; k++) crew.members[k].visible = shown;
   crew.materials.setFade(presence);
   if (!shown) return;
   if (!crew.placed) placeCrew(crew, sampler, pitBoxDistance, openBox);
@@ -191,7 +191,7 @@ function updatePaddockVisitors(visitors, progress, clock) {
     smoothstep(clamp((progress - 0.6) / 0.04, 0, 1)) *
     (1 - smoothstep(clamp((progress - 0.84) / 0.03, 0, 1)));
   const shown = presence > 0.002;
-  for (const [person] of visitors) person.visible = shown;
+  for (let k = 0; k < visitors.length; k++) visitors[k][0].visible = shown;
   if (!visitors.length) return;
   visitors[0][0].userData.group.setFade(presence);
   if (!shown) return;

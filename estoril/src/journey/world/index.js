@@ -65,7 +65,7 @@ function buildWorld(trackPoints, { quality = 'high' } = {}) {
     vegetation,
     /** Per-frame updaters; `camera` (already placed for this frame) drives the vegetation LOD. */
     update(time, dt, camera) {
-      for (const update of updaters) update(time, dt, camera);
+      for (let k = 0; k < updaters.length; k++) updaters[k](time, dt, camera);
     },
   };
 }

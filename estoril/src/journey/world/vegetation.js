@@ -579,7 +579,7 @@ function buildVegetation(ctx, shape) {
     tufts.time.value = time;
     if (!camera) return;
     const p = camera.position;
-    for (const { lod } of species) lod.update(p.x, p.y, p.z);
+    for (let k = 0; k < species.length; k++) species[k].lod.update(p.x, p.y, p.z);
   });
   // the shared stream continues where the old vegetation left it (clouds come next)
   ctx.rng = createRng(CLOUD_RNG_STATE[quality] ?? CLOUD_RNG_STATE.high);
