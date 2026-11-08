@@ -32,7 +32,11 @@ function createLights(scene, renderer, quality) {
     near: 10,
     far: 900,
   });
-  sun.shadow.bias = -4e-4;
+  // Depth bias in shadow-depth units: the orthographic box is 890 m deep (near 10, far 900), so
+  // -4e-5 is 3.6 cm. (-4e-4 was 36 cm: occluders closer than that to a receiver cast nothing, which
+  // let the sun leak under the car's floor, splitter and tyres and under every eave.) The normal
+  // offset (4 cm ≈ 1.2 texels of the 140 m / 4096 map) handles the slope acne.
+  sun.shadow.bias = -4e-5;
   sun.shadow.normalBias = 0.04;
   sun.shadow.radius = 4;
   scene.add(sun, sun.target);
