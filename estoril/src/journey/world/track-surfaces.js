@@ -1,26 +1,57 @@
-// Track surface layers built as ribbons along the centre line (track/strip.js), plus the corner
-// furniture: kerbs, painted run-off, gravel traps and the barrier walls behind them.
+// Track surface layers built as ribbons along the shared centre-line model (track-analysis.js
+// createTrackModel, track/strip.js), plus the corner furniture: kerbs, painted run-off, gravel
+// traps and the barrier walls behind them. Every layer takes its edges from the same model, so
+// shared edges (asphalt/kerb, kerb/run-off, run-off/gravel) use identical vertices.
 //
-// Layer heights (metres above y = 0; ground is at -0.05 near the track):
-//   asphalt 0.030 · gravel 0.035 · rubber line 0.034 (decal, renderOrder 1) · run-off 0.040 ·
-//   edge lines 0.045 · kerbs 0.070 at the track edge sloping to 0.040 outside · barriers 0..0.95
-// Of these layers only the rubber line uses polygonOffset (factor/units -1, set in materials.js).
+// Heights and polygon offsets follow the layer table in layers.js (gravel < run-off < asphalt <
+// kerbs, rubber, lines). The kerbs are flush with the asphalt at the track edge and rise outwards,
+// with a riser down to the run-off, so no gap opens between layers of different heights. The
+// rubber line and the white lines are pulled towards the camera with polygonOffset.
 //
 // Offsets are signed lateral distances from the centre line: positive = right of the direction of
-// travel (normal (-dz, dx)), negative = left. See track-analysis.js.
+// travel (normal (-dz, dx)), negative = left. The model's half-width blends from 7 m on the main
+// straight to 6.5 m elsewhere over 40 m.
 import { CanvasTexture, Mesh } from 'three';
-import { buildBarrierWall, buildStrip } from '../track/strip.js';
-import { clamp } from '../util/math.js';
+import { WALL_THICKNESS, buildBarrierWall, buildStrip } from '../track/strip.js';
+import { clamp, smoothstep } from '../util/math.js';
+import { LAYERS } from './layers.js';
+import { createPlanIndex } from './plan-index.js';
 
-/** Asphalt from -halfWidth to +halfWidth; UVs in metres / 12, across 0..14/12. */
-function buildAsphalt(ctx, shape) {
-  const { halfWidth } = shape;
-  const geometry = buildStrip(
-    ctx.track,
-    (i) => halfWidth(i),
-    (i) => -halfWidth(i),
-    { y: 0.03, vScale: 1 / 12, uvAcross: [0, 14 / 12] },
-  );
+/** Kerb and run-off widths, gravel start, widest gravel and barrier offset beyond the asphalt edge. */
+const KERB_WIDTH = 1.6;
+const RUNOFF_OUTER = 5.5;
+const GRAVEL_WIDTH = 24;
+const BARRIER_OFFSET = 31.4;
+const BARRIER_HEIGHT = 0.95;
+/**
+ * Barrier walls: least distance (metres) from any asphalt edge (another leg's run-off plus 3 m of
+ * verge), and from gravel or another wall.
+ */
+const WALL_TRACK_CLEARANCE = RUNOFF_OUTER + 3;
+const WALL_GAP = 1.5;
+/** Shortest barrier wall, metres. */
+const MIN_WALL_LENGTH = 15;
+/** Gravel width follows the cornerness smoothed by two box filters this long (metres). */
+const GRAVEL_SMOOTHING = 25;
+/** Gravel traps narrow towards their ends over this length (metres) to this width (metres). */
+const GRAVEL_TAPER = 20;
+const GRAVEL_END_WIDTH = 4;
+/** A trap ends (square cut) where the inside-of-bend clamp leaves it less than this (metres). */
+const GRAVEL_MIN_WIDTH = 3;
+
+/**
+ * Asphalt from -halfWidth to +halfWidth; UVs in metres / 12 (across 0..14/12). Along the lap the
+ * repeat is stretched to a whole number of tiles (348 over 4,176.6 m, one every 12.002 m), so the
+ * texture continues across the closing seam at sample 0 (T1 entry).
+ */
+function buildAsphalt(ctx, model) {
+  const halfWidth = (i) => model.halfWidth[i];
+  const { length } = model.line;
+  const geometry = buildStrip(model, halfWidth, (i) => -halfWidth(i), {
+    y: LAYERS.asphalt,
+    vScale: Math.round(length / 12) / length,
+    uvAcross: [0, 14 / 12],
+  });
   const asphalt = new Mesh(geometry, ctx.materials.asphalt);
   asphalt.receiveShadow = true;
   asphalt.name = 'track';
@@ -48,16 +79,16 @@ function rubberGradientTexture() {
  * to 2.2 m towards the inside of each corner (12 m per radian of turn). Drawn as a decal over the
  * asphalt (renderOrder 1). Also finalises the shared `rubber` material (map, opacity 0.2).
  */
-function buildRubberLine(ctx, shape) {
+function buildRubberLine(ctx, model) {
   const { materials } = ctx;
   materials.rubber.map = rubberGradientTexture();
   materials.rubber.opacity = 0.2;
-  const drift = (i) => clamp(shape.turn[i] * 12, -2.2, 2.2);
+  const drift = (i) => clamp(model.turn[i] * 12, -2.2, 2.2);
   const geometry = buildStrip(
-    ctx.track,
+    model,
     (i) => 2.6 + drift(i),
     (i) => -3.4 + drift(i),
-    { y: 0.034 },
+    { y: LAYERS.rubber },
   );
   const rubber = new Mesh(geometry, materials.rubber);
   rubber.renderOrder = 1;
@@ -65,14 +96,15 @@ function buildRubberLine(ctx, shape) {
 }
 
 /** White edge lines, 0.30 m wide, 0.15 m inside each asphalt edge (right side first, then left). */
-function buildEdgeLines(ctx, shape) {
-  const { halfWidth } = shape;
+function buildEdgeLines(ctx, model) {
+  // the shared line material also paints the pit-lane line, the start line and the grid slots
+  Object.assign(ctx.materials.line, { polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -2 });
   for (const side of [1, -1]) {
     const geometry = buildStrip(
-      ctx.track,
-      (i) => side * (halfWidth(i) - 0.15),
-      (i) => side * (halfWidth(i) - 0.45),
-      { y: 0.045 },
+      model,
+      (i) => side * (model.halfWidth[i] - 0.15),
+      (i) => side * (model.halfWidth[i] - 0.45),
+      { y: LAYERS.lines },
     );
     const line = new Mesh(geometry, ctx.materials.line);
     line.receiveShadow = true;
@@ -81,56 +113,66 @@ function buildEdgeLines(ctx, shape) {
 }
 
 /**
- * For every corner run [start, end):
- *  - on both sides (right, then left): a 1.6 m kerb at the asphalt edge (raised 0.07 m on the
- *    track side, 0.04 m on the outside; texture repeats every 6 m) and 3.9 m of painted run-off;
- *  - on the outside of the corner only: a gravel trap from 5.5 m beyond the edge, 7.2–24 m wide
- *    depending on cornerness, and a 0.95 m barrier wall 31.4 m beyond the edge. Both extend 6
- *    points before and 10 points after the run (clamped to the first/last point, no wrap).
+ * Corner furniture.
+ *  - Every corner run gets, on both sides (right, then left), a 1.6 m kerb at the asphalt edge
+ *    (flush with the asphalt there, 15 mm higher on the outside, with a riser down to the run-off;
+ *    texture repeats every 6 m) and 3.9 m of painted run-off, square-cut at both ends.
+ *  - Every gravel interval of the model (the outside of each sub-corner, 25 m before to 42 m after
+ *    the corner, never inside a bend, same-side intervals merged or bridged) gets a gravel trap
+ *    from 5.5 m beyond the edge (gravelTraps()), and a 0.95 m barrier wall 31.4 m beyond the edge
+ *    where barrierRuns() allows one.
  */
-function buildCorners(ctx, shape) {
-  const { track, materials, root } = ctx;
-  const { halfWidth, turn, cornerness, corners, count } = shape;
-  for (const [start, end] of corners) {
+function buildCorners(ctx, model) {
+  const { materials, root } = ctx;
+  const { halfWidth } = model;
+  for (const corner of model.corners) {
+    const range = [corner.first, corner.last];
     for (const side of [1, -1]) {
       const kerbGeometry = buildStrip(
-        track,
-        (i) => side * halfWidth(i),
-        (i) => side * (halfWidth(i) + 1.6),
-        { closed: false, segRange: [start, end], y: 0.07, vScale: 1 / 6, heightA: 0, heightB: -0.03 },
+        model,
+        (i) => side * halfWidth[i],
+        (i) => side * (halfWidth[i] + KERB_WIDTH),
+        {
+          range,
+          y: LAYERS.kerbInner,
+          vScale: 1 / 6,
+          heightB: LAYERS.kerbOuter - LAYERS.kerbInner,
+          skirtB: LAYERS.runoff,
+        },
       );
       const kerb = new Mesh(kerbGeometry, materials.kerb);
       kerb.receiveShadow = true;
       root.add(kerb);
       const runoffGeometry = buildStrip(
-        track,
-        (i) => side * (halfWidth(i) + 1.6),
-        (i) => side * (halfWidth(i) + 5.5),
-        { closed: false, segRange: [start, end], y: 0.04 },
+        model,
+        (i) => side * (halfWidth[i] + KERB_WIDTH),
+        (i) => side * (halfWidth[i] + RUNOFF_OUTER),
+        { range, y: LAYERS.runoff },
       );
       root.add(new Mesh(runoffGeometry, materials.runoff));
     }
+  }
 
-    // The outside of the corner is opposite to the turn direction (straight-ish runs default left).
-    const middle = Math.floor((start + end) / 2);
-    const outside = -(Math.sign(turn[middle]) || 1);
-    // Gravel and barrier run from 6 points before to 10 points after the corner run.
-    const trapRange = [Math.max(0, start - 6), Math.min(count - 1, end + 10)];
+  const gravelIndex = createPlanIndex(); // every gravel triangle, for the wall layout
+  for (const { side, first, last, width } of gravelTraps(model)) {
     const gravelGeometry = buildStrip(
-      track,
-      (i) => outside * (halfWidth(i) + 5.5),
-      (i) => outside * (halfWidth(i) + 5.5 + 24 * clamp(cornerness[i], 0.3, 1)),
-      { closed: false, segRange: trapRange, y: 0.035, vScale: 1 / 10 },
+      model,
+      (i) => side * (halfWidth[i] + RUNOFF_OUTER),
+      (i, step) => side * (halfWidth[i] + RUNOFF_OUTER + width[step - first]),
+      { range: [first, last], y: LAYERS.gravel, vScale: 1 / 10 },
     );
+    indexTriangles(gravelIndex, gravelGeometry);
     const gravel = new Mesh(gravelGeometry, materials.gravel);
     gravel.receiveShadow = true;
     root.add(gravel);
+  }
 
+  for (const { side, first, last } of barrierRuns(model, gravelIndex)) {
     const barrierGeometry = buildBarrierWall(
-      track,
-      (i) => outside * (halfWidth(i) + 31.4),
-      trapRange,
-      0.95, // wall height, metres
+      model,
+      (i) => side * (halfWidth[i] + BARRIER_OFFSET),
+      [first, last],
+      BARRIER_HEIGHT,
       1 / 7, // texture u per metre: one repeat every 7 m
     );
     const barrier = new Mesh(barrierGeometry, materials.barrier);
@@ -140,12 +182,177 @@ function buildCorners(ctx, shape) {
   }
 }
 
-/** All ribbon layers, in draw/creation order. */
-function buildTrackSurfaces(ctx, shape) {
-  buildAsphalt(ctx, shape);
-  buildRubberLine(ctx, shape);
-  buildEdgeLines(ctx, shape);
-  buildCorners(ctx, shape);
+/** Moving average over ±radius samples of a closed loop of values. */
+function boxFilter(values, radius) {
+  const count = values.length;
+  const out = new Float64Array(count);
+  let sum = 0;
+  for (let d = -radius; d <= radius; d++) sum += values[(d + count) % count];
+  for (let i = 0; i < count; i++) {
+    out[i] = sum / (2 * radius + 1);
+    sum += values[(i + radius + 1) % count] - values[(i - radius + count) % count];
+  }
+  return out;
 }
 
-export { buildTrackSurfaces };
+/**
+ * The gravel traps: [{ side, first, last, width }], width[k] in metres at step first + k.
+ *   - Full width GRAVEL_WIDTH × cornerness (clamped to 0.3–1, so 7.2–24 m), smoothed along the
+ *     track by two GRAVEL_SMOOTHING box filters: the cornerness is a running maximum whose plateaus
+ *     change abruptly, which left notches and spikes in the outline.
+ *   - Over GRAVEL_TAPER at both ends of the interval the width eases down to GRAVEL_END_WIDTH and
+ *     the trap ends with a square cut (no thin tongue).
+ *   - Where the inside-of-bend clamp (model.edge) leaves less room than that width, the trap takes
+ *     the room left; where that is under GRAVEL_MIN_WIDTH the trap ends (its longest stretch is kept).
+ */
+function gravelTraps(model) {
+  const { line, halfWidth } = model;
+  const count = line.count;
+  const radius = Math.round(GRAVEL_SMOOTHING / 2 / line.spacing);
+  const clamped = Float64Array.from(model.cornerness, (c) => clamp(c, 0.3, 1));
+  const scale = boxFilter(boxFilter(clamped, radius), radius);
+  const traps = [];
+  for (const { side, first, last } of model.gravel) {
+    const steps = last - first + 1;
+    const taper = Math.min(GRAVEL_TAPER, 0.3 * (steps - 1) * line.spacing);
+    const width = new Float64Array(steps);
+    const fits = new Uint8Array(steps);
+    for (let k = 0; k < steps; k++) {
+      const i = (first + k) % count;
+      const full = GRAVEL_WIDTH * scale[i];
+      const end = Math.min(GRAVEL_END_WIDTH, full);
+      const fromEnd = Math.min(k, steps - 1 - k) * line.spacing;
+      const wanted = end + (full - end) * smoothstep(clamp(fromEnd / taper, 0, 1));
+      const inner = Math.abs(model.edge(i, side * (halfWidth[i] + RUNOFF_OUTER)));
+      const room = Math.abs(model.edge(i, side * (halfWidth[i] + RUNOFF_OUTER + wanted))) - inner;
+      width[k] = Math.min(wanted, room);
+      fits[k] = width[k] >= GRAVEL_MIN_WIDTH ? 1 : 0;
+    }
+    const runs = flagRuns(fits, 2);
+    if (!runs.length) continue;
+    const [a, b] = runs.reduce((best, run) => (run[1] - run[0] > best[1] - best[0] ? run : best));
+    traps.push({ side, first: first + a, last: first + b, width: width.subarray(a, b + 1) });
+  }
+  return traps;
+}
+
+/** Adds the plan triangles of an indexed geometry to a plan index. */
+function indexTriangles(index, geometry) {
+  const position = geometry.attributes.position;
+  const indices = geometry.index;
+  for (let k = 0; k < indices.count; k += 3) {
+    const [a, b, c] = [indices.getX(k), indices.getX(k + 1), indices.getX(k + 2)];
+    index.addTriangle(
+      position.getX(a),
+      position.getZ(a),
+      position.getX(b),
+      position.getZ(b),
+      position.getX(c),
+      position.getZ(c),
+    );
+  }
+}
+
+/** [first, last] of every run of set flags at least `minLength` long. */
+function flagRuns(flags, minLength) {
+  const runs = [];
+  for (let k = 0; k < flags.length; k++) {
+    if (!flags[k]) continue;
+    let j = k;
+    while (j + 1 < flags.length && flags[j + 1]) j++;
+    if (j - k + 1 >= minLength) runs.push([k, j]);
+    k = j;
+  }
+  return runs;
+}
+
+/**
+ * Where the barrier walls stand: [{ side, first, last }] (sample ranges, unwrapped). Each gravel
+ * interval's wall (BARRIER_OFFSET beyond the asphalt edge, WALL_THICKNESS thick) keeps the samples
+ * where
+ *   - model.edge leaves it in place: on the inside of a bend the offset clamp would pull the wall
+ *     towards the track, across its own gravel, and squash its two faces together;
+ *   - it stays WALL_TRACK_CLEARANCE from the asphalt edge of every part of the track (beyond the
+ *     run-off, with room to spare: no wall across an infield next to another leg of the circuit);
+ *   - it stays WALL_GAP from every gravel triangle (its own and the other traps').
+ * Runs shorter than MIN_WALL_LENGTH are dropped. Then walls meet instead of crossing: the longest
+ * wall is placed first, and every later one keeps only its longest stretch that stays WALL_GAP
+ * from the walls already placed (it ends where it would meet one).
+ */
+function barrierRuns(model, gravelIndex) {
+  const { line, halfWidth } = model;
+  const count = line.count;
+  const minSteps = Math.ceil(MIN_WALL_LENGTH / line.spacing) + 1;
+  const trackIndex = createPlanIndex();
+  for (let i = 0; i < count; i++) trackIndex.addDisc(line.x[i], line.z[i], halfWidth[i]);
+  // plan points of the wall's two faces at a sample
+  const faces = (side, i) => {
+    const front = side * (halfWidth[i] + BARRIER_OFFSET);
+    const back = front + side * WALL_THICKNESS;
+    return [front, back].map((o) => [line.x[i] + line.nx[i] * o, line.z[i] + line.nz[i] * o, o]);
+  };
+
+  const candidates = [];
+  for (const { side, first, last } of model.gravel) {
+    const free = new Uint8Array(last - first + 1);
+    for (let k = 0; k < free.length; k++) {
+      const i = (first + k) % count;
+      free[k] = faces(side, i).every(
+        ([x, z, o]) =>
+          model.edge(i, o) === o &&
+          trackIndex.distance(x, z, WALL_TRACK_CLEARANCE) >= WALL_TRACK_CLEARANCE &&
+          gravelIndex.distance(x, z, WALL_GAP) >= WALL_GAP,
+      )
+        ? 1
+        : 0;
+    }
+    for (const [a, b] of flagRuns(free, minSteps))
+      candidates.push({ side, first: first + a, last: first + b });
+  }
+
+  candidates.sort((p, q) => q.last - q.first - (p.last - p.first) || p.first - q.first);
+  const wallIndex = createPlanIndex();
+  const walls = [];
+  for (const { side, first, last } of candidates) {
+    const free = new Uint8Array(last - first + 1);
+    for (let k = 0; k < free.length; k++)
+      free[k] = faces(side, (first + k) % count).every(
+        ([x, z]) => wallIndex.distance(x, z, WALL_GAP) >= WALL_GAP,
+      )
+        ? 1
+        : 0;
+    const runs = flagRuns(free, minSteps);
+    if (!runs.length) continue;
+    const [a, b] = runs.reduce((best, run) => (run[1] - run[0] > best[1] - best[0] ? run : best));
+    const wall = { side, first: first + a, last: first + b };
+    walls.push(wall);
+    // its outline: both faces, and the end caps
+    let previous = null;
+    for (let step = wall.first; step <= wall.last; step++) {
+      const points = faces(side, step % count);
+      if (previous)
+        for (let f = 0; f < 2; f++)
+          wallIndex.addSegment(previous[f][0], previous[f][1], points[f][0], points[f][1]);
+      if (step === wall.first || step === wall.last)
+        wallIndex.addSegment(points[0][0], points[0][1], points[1][0], points[1][1]);
+      previous = points;
+    }
+  }
+  // build order: along the lap, right side first
+  return walls.sort((p, q) => q.side - p.side || p.first - q.first);
+}
+
+/**
+ * All ribbon layers, in draw/creation order. The model is also published as
+ * ctx.root.userData.trackModel (the aerial highlight is built on it).
+ */
+function buildTrackSurfaces(ctx, shape) {
+  const { model } = shape;
+  ctx.root.userData.trackModel = model;
+  buildAsphalt(ctx, model);
+  buildRubberLine(ctx, model);
+  buildEdgeLines(ctx, model);
+  buildCorners(ctx, model);
+}
+
+export { GRAVEL_MIN_WIDTH, WALL_GAP, WALL_TRACK_CLEARANCE, buildTrackSurfaces };

@@ -16,6 +16,7 @@ import {
   Vector3,
 } from 'three';
 import { buildFlag } from './flags.js';
+import { LAYERS } from './layers.js';
 
 /** Index of the garage whose shutter is open and whose interior is modelled. */
 const OPEN_BOX = 13;
@@ -24,7 +25,7 @@ const OPEN_BOX = 13;
  * Flat pit-lane asphalt from 140 m before the first box to 150 m after the last, between the
  * garage fronts and the pit wall (y 0.025), the painted pit-lane line 6 m in front of the garages,
  * the pit wall (1.1 m concrete with a steel cap) and the two wedge-shaped entry/exit lanes that
- * join the pit lane to the track (y 0.028).
+ * join the pit lane to the track (y LAYERS.pitMouth, under the asphalt they overlap).
  *
  * Shapes are drawn in (x, -z) because rotateX(-π/2) maps shape Y onto world -Z.
  */
@@ -52,7 +53,20 @@ function buildPitLaneSurface(ctx) {
 
   const pitCentreX = (L.pitX0 + L.pitX1) / 2;
   // Painted line along the pit lane (no shadow), then the pit wall and its steel cap.
-  box(L.pitX1 - L.pitX0 + 260, 0.012, 0.25, materials.line, pitCentreX, 0.03, L.garageFrontZ + 6, root, false);
+  // Its top is at the lines layer (layers.js); it stands 1 mm above the pit-lane asphalt.
+  const lineBase = LAYERS.pitLane + 0.001;
+  const lineHeight = LAYERS.lines - lineBase;
+  box(
+    L.pitX1 - L.pitX0 + 260,
+    lineHeight,
+    0.25,
+    materials.line,
+    pitCentreX,
+    lineBase,
+    L.garageFrontZ + 6,
+    root,
+    false,
+  );
   box(L.pitX1 - L.pitX0 + 300, 1.1, 0.7, materials.concrete, pitCentreX, 0, L.pitWallZ + 0.35);
   box(L.pitX1 - L.pitX0 + 300, 0.08, 0.9, materials.steel, pitCentreX, 1.1, L.pitWallZ + 0.35);
 
@@ -71,7 +85,7 @@ function buildPitLaneSurface(ctx) {
     const wedgeGeometry = new ShapeGeometry(wedge);
     wedgeGeometry.rotateX(-Math.PI / 2);
     const wedgeMesh = new Mesh(wedgeGeometry, materials.pitAsphalt);
-    wedgeMesh.position.y = 0.028;
+    wedgeMesh.position.y = LAYERS.pitMouth; // 10 mm under the asphalt edge the mouth overlaps
     wedgeMesh.receiveShadow = true;
     root.add(wedgeMesh);
   }
