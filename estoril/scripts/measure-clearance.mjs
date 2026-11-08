@@ -11,8 +11,9 @@
 //           track strips), the world bounding box of smaller meshes, the box of every instance of
 //           an InstancedMesh (trees, tufts, posts); all lower bounds of the true distance,
 //   sprites view depth of every sprite whose quad overlaps the view frustum (clouds).
-// A frame passes when near < min(car, world, sprites). Prints a summary and exits non-zero on a
-// failure.
+// A frame passes when near < min(car, world, sprites). Frames where the eye is inside geometry
+// (clearance <= 1 cm: a camera-path defect no near plane can fix) are listed as warnings. Prints a
+// summary and exits non-zero on a failure.
 import { createRequire } from 'node:module';
 import { writeFileSync } from 'node:fs';
 const { chromium } = createRequire(import.meta.url)('playwright');
@@ -24,6 +25,8 @@ const arg = (k, d) => {
 const base = arg('base', 'http://127.0.0.1:8080/');
 const step = +arg('step', '0.0025');
 const out = arg('out', '');
+/** Clearance (metres) at or below which the eye counts as inside geometry. */
+const INSIDE = 0.01;
 
 const browser = await chromium.launch({
   args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'],
@@ -281,8 +284,15 @@ const result = await page.evaluate((step) => {
 }, step);
 
 const rows = result.rows;
-const fails = rows.filter((r) => !(r.near < Math.min(r.car, r.world, r.sprite)));
-const worst = [...rows].sort((a, b) => a.ratio - b.ratio).slice(0, 8);
+const clearanceOf = (r) => Math.min(r.car, r.world, r.sprite);
+// an eye inside a box or touching a triangle is a camera-path defect no near plane can fix: report
+// those frames separately; every other frame must have near < clearance
+const inside = rows.filter((r) => clearanceOf(r) <= INSIDE);
+const fails = rows.filter((r) => clearanceOf(r) > INSIDE && !(r.near < clearanceOf(r)));
+const worst = rows
+  .filter((r) => clearanceOf(r) > INSIDE)
+  .sort((a, b) => a.ratio - b.ratio)
+  .slice(0, 8);
 const minCar = rows.reduce((a, r) => (r.car < a.car ? r : a));
 const minWorld = rows.reduce((a, r) => (r.world < a.world ? r : a));
 const maxNear = rows.reduce((a, r) => (r.near > a.near ? r : a));
@@ -295,10 +305,15 @@ for (const r of worst) console.log('  ', JSON.stringify(r));
 for (const t of [0.05, 0.12, 0.345, 0.365, 0.375, 0.385, 0.4, 0.5, 0.95])
   console.log('  at', JSON.stringify(rows.find((r) => r.intro === 1 && Math.abs(r.t - t) < 1e-9) || {}));
 if (out) writeFileSync(out, JSON.stringify(rows, null, 1));
+for (const r of inside)
+  console.log(
+    `WARNING: the eye is inside or on "${r.nearest}" at t = ${r.t} (camera path):`,
+    JSON.stringify(r),
+  );
 console.log(
   fails.length
     ? `FAIL: near plane clips geometry in ${fails.length} frames`
-    : 'OK: near < clearance in every frame',
+    : `OK: near < clearance in every frame with the eye outside geometry (${rows.length - inside.length} of ${rows.length})`,
 );
 console.log('PAGE MESSAGES:' + (messages.length ? '\n' + [...new Set(messages)].join('\n') : ' none'));
 await browser.close();

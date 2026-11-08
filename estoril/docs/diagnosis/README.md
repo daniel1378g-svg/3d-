@@ -337,3 +337,121 @@ Reproduce: build with a temporary `exp.js` flag reader, serve, and capture the s
 `window.__cap(t)` called twice per frame (to neutralise the blur history). The geometry numbers come from running
 `buildStrip()`/`buildBarrierWall()` in Node with the same inputs as `world.js`.
 
+## Fixes applied
+
+H1–H4 and O4 are fixed at their source, one cause per commit, in the order of the fix plan. O1 (blur), O2 (shadow box)
+and O3 (tufts) belong to later phases and are untouched. After every commit the same frames were rendered and compared
+with the previous commit. Changed pixels are pixels whose max channel difference is above 24/255. The frames are
+1440×900, `q=high`, SwiftShader, rendered through `window.__cap` in a fixed order, with blur frames rendered twice so they
+have no blur history. Two runs of the same build differ by 0 px.
+
+| # | cause | fix | where |
+|---|---|---|---|
+| H1 | fixed near 0.3 m | near/far per frame from the camera's **clearance** (exact distance to the nearest geometry): near = clearance / 2 (0.05–400 m), far = distance to the sky-dome centre + dome radius + 2 % | `src/journey/depth-range.js`, one call in `journey.js` |
+| H2 | winding from the offset order | triangle order from the sign of offsetA − offsetB; explicit normals (flat +y, cambered kerbs); walls are closed slabs whose track side faces the centre line | `track/strip.js` |
+| H3 | folds at the 7.6 m chicane, mixed-direction corners | one shared centre-line/offset model: Catmull-Rom through every point, 1 m samples, min radius 15 m, inner offsets clamped to 0.8 R, corners split by direction, smooth width, tapered/square ends | `world/track-analysis.js`, `track/strip.js`, `world/track-surfaces.js` |
+| O4 + layering | 2–15 mm stacking, gravel/run-off above the asphalt | layer table with ≥ 5 mm gaps, rubber/lines polygonOffset, kerbs flush with a riser | `world/layers.js` (+ heights in `pits.js`, `main-straight.js`) |
+| H4 | 1.9 m tube + `setDrawRange` | flat ribbon on the model, ≥ 3.6 px on screen, shader reveal with a feathered head, rate-limited time-damped head | `track-highlight.js` |
+
+### Measured
+
+**Depth (H1).** `scripts/measure-clearance.mjs` runs the real frame code at t = 0…1 (step 0.0025) and through the intro
+(421 samples). It measures exact distances from the eye to the car's bounding boxes, to every mesh or instance box and to
+the triangles of large meshes, and to the cloud sprites that overlap the frustum.
+
+| progress | eye height | near before → after | far | 24-bit step at the far ground |
+|---|---|---|---|---|
+| 0.345 | 60 m | 0.3 → 19.8 m | 8,516 m | 7.2 cm → 1.1 mm (600 m) |
+| 0.375 | 620 m | 0.3 → 301.4 m | 8,996 m | 24 cm → 0.23 mm (1,100 m) |
+| 0.400 | 220 m | 0.3 → 102.0 m | 8,768 m | 3.2 cm → 0.09 mm (400 m) |
+| close-ups and intro | 0.5–3.2 m | 0.3 → 0.24–1.6 m | 8,349–8,674 m | finer, or up to 25 % coarser where the eye is within 0.6 m of geometry |
+
+Close to geometry the near plane can be below the old 0.3 m: 0.275 m in the intro (eye 0.5 m above the asphalt),
+0.24–0.29 m in the pit-lane shot (the pit wall is 0.5 m from the eye), and 0.12 m at t = 0.855 next to the control
+tower.
+
+In every sample, near is exactly half the measured clearance. The closest car approach is 3.19 m (t = 0.8475). In the
+base build the fixed 0.3 m near clipped the grandstand roof at t = 0.33 (the eye passes 0.16 m from it). The new near is
+0.08 m there. One sample has the eye *inside* geometry: t = 0.8525 puts the camera inside the control-tower box (camera
+path, reported as a warning). The frame logic still costs < 0.15 ms per frame. The blur pass rebuilds positions from
+each frame's own matrices. With a 0.003 scroll step before the frame, the depth change alone moves 133 px at 0.400,
+5 px at 0.405 and 0 px at 0.450, which is the precision gain only (the diagnosis measured 134 and 5).
+
+**Shimmer** (same frame, camera and target moved 1 cm with `debugCam`):
+
+| progress | base | 1 depth | 2 winding | 3 centre line | 4 layers | 5 highlight |
+|---|---|---|---|---|---|---|
+| 0.345 | 337 | 300 | 355 | 355 | 362 | 362 |
+| 0.375 | **3,859** | 295 | 411 | 445 | 352 | **269** (−93 %) |
+| 0.400 | 471 | 261 | 409 | 426 | 346 | 338 |
+
+Steps 2–3 add pixels because the kerbs, run-off, gravel and walls that used to be missing now have edges, and edges move
+by a fraction of a pixel.
+
+**Geometry** (`node scripts/test-geometry.mjs`, the real modules and three.js in Node; exits non-zero on failure):
+
+* Centre line: 4,177 samples 1.000 m apart. The minimum radius goes from 7.6 to 15.2 m. Only source points 565–600 move
+  by more than 5 cm, with the largest move 3.68 m at point 584 (the OSM fit tolerance is 13 m). Corners are now 8 runs
+  and 13 sub-corners. T1 is no longer split at the loop seam, and the old 980 m "corner 8" is now 5 sub-corners. The
+  track has 12 gravel intervals, and none lies inside a bend.
+* Strips facing down: 23 → 0. Normals pointing down: 4,992 → 0. Walls facing away from the track: 4 → 0. Inverted
+  triangles: 16 → 0 in the strips and 72 → 0 in the walls. There are 0 degenerate triangles, and the fold guard makes
+  0 repairs. All 8,976 kerb-riser triangles face away from the track.
+* Gravel lies at least 5.50 m from any asphalt edge, and walls at least 8.11 m.
+* On the lap, the car path stays within 0.73 m of the new centre line, which leaves 4.77 m of margin inside
+  half-width − 1 m. `car-path.js` is unchanged.
+* Layers: every pair of up-facing ground-level triangles that overlap in plan was clipped against each other
+  (754,080 candidate pairs). The minimum gap is 5 mm, and every gap now meets it: asphalt/rubber 6 mm (was 4 mm),
+  asphalt/pit mouth 10 mm (was 2 mm), grid bar/side line 6 mm (was 0 mm, 40 coplanar pairs), asphalt/lines 12 mm, and
+  highlight/anything 12–30 mm. The lowest layer sits 60 mm above the terrain.
+* Highlight: it lies on the model line (0.0000 m), faces up, and its shortest segment is 1.000 m (no duplicated seam
+  point). A 0.34 → 0.37 scroll step gives the same head position within 2.9 m at 30, 60, 120 and 240 fps. The head's top
+  speed is 0.90 laps/s, which is 62 m per frame at 60 fps (before: up to 375 m per 15 px step).
+
+**Changed pixels per step** (each commit against the previous one; the last column compares the base build with the
+final build):
+
+| view | 1 depth | 2 winding | 3 centre line | 4 layers | 5 highlight | base → final |
+|---|---|---|---|---|---|---|
+| aerial 0.345 | 57 | 16,359 | 5,775 | 928 | 1,961 | 21,363 (1.6 %) |
+| aerial 0.365 | 1,649 | 32,996 | 31,412 | 1,044 | 12,257 | 58,389 (4.5 %) |
+| aerial 0.375 | 2,833 | 36,066 | 31,221 | 906 | 11,828 | 58,809 (4.5 %) |
+| aerial 0.385 | 1,956 | 26,972 | 22,430 | 938 | 14,293 | 53,191 (4.1 %) |
+| aerial 0.400 | 189 | 45,672 | 43,730 | 379 | 13,717 | 83,687 (6.5 %) |
+| close-up 0.05 | 1 | 6,679 | 37,024 | 587 | 0 | 31,609 (2.4 %) |
+| close-up 0.12 | 2 | 686 | 2,963 | 1,884 | 3 | 4,819 (0.4 %) |
+| close-up 0.50 | 21 | 35,149 | 11,159 | 3,304 | 0 | 42,142 (3.3 %) |
+| close-up 0.95 | 2 | 225 | 369 | 1,320 | 0 | 1,677 (0.1 %) |
+| chicane top-down (228,90,−150) | 658 | 655,203 | 529,738 | 215 | 10,063 | 563,535 (43.5 %) |
+| chicane low (200,6,−120) | 14 | 494,262 | 90,954 | 5,428 | 77,967 | 604,082 (46.6 %) |
+| T1 at 1.2 m | 0 | 2,270 | 6,556 | 3,058 | 387,622 | 395,327 (30.5 %) |
+| pit entry | 7 | 179,152 | 24,176 | 1,386 | 44,398 | 224,865 (17.4 %) |
+| start line | 1 | 1,699 | 180 | 1,661 | 824 | 3,756 (0.3 %) |
+| phone 390×844, 0.375 | 230 | 2,471 | 2,786 | 60 | 1,130 | 4,185 (1.3 %) |
+
+The close-ups change by 0–21 px under the depth fix. The changes at steps 2–4 come from the kerbs, run-off and edge
+lines that now appear, and from the asphalt texture following the new arc length. Every page load reported no console
+errors or warnings.
+
+Sheets (base build vs final build, with 1:1 detail crops):
+[aerial 0.345](../comparisons/geometry/aerial-0.345.jpg), [aerial 0.375](../comparisons/geometry/aerial-0.375.jpg),
+[aerial 0.400](../comparisons/geometry/aerial-0.400.jpg), [chicane top-down](../comparisons/geometry/bend-top.jpg),
+[chicane low](../comparisons/geometry/bend-low.jpg), [on-track close-up](../comparisons/geometry/close-0.500.jpg),
+[T1 at driver height](../comparisons/geometry/kerb.jpg), [phone](../comparisons/geometry/phone-0.375.jpg). Each step
+separately: [chicane](../comparisons/geometry/steps-bend-top.jpg),
+[aerial 0.375 detail](../comparisons/geometry/steps-aerial-0.375.jpg).
+
+### Remaining artefacts (outside this fix)
+
+* **Camera path:** at t ≈ 0.8525 the eye passes through the control tower, and at t = 0.33 it skims the grandstand roof
+  by 0.16 m, so the near plane drops to 0.08 m and precision is lower for that frame (camera shots).
+* **O1, O2, O3 are still open:** motion blur switches on at 0.39 while the camera is airborne, the 140 m shadow box
+  follows the car in the aerial, and alpha-tested tufts and shrubs sit on the gravel. Vegetation is still placed with
+  the original 1000-point centre line, which is unchanged on purpose so the seeded placement stays the same.
+* At the chicane the outside walls cross the infield, 8.1 m from the asphalt edge of the other leg. They do not touch
+  it, but the barrier layout there is schematic.
+* Cloud sprites draw before the highlight (renderOrder 0 vs 2). A cloud drifting between the camera and the track would
+  be covered by the line. None does in the journey frames.
+* The asphalt texture v coordinate restarts at sample 0 (T1 entry): a texture seam across the track that predates this
+  fix.
+
