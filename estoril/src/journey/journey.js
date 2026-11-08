@@ -37,7 +37,7 @@ import { buildPerson } from './people.js';
 import { sampleTimeOfDay } from './time-of-day.js';
 import { clamp, easeInOutCubic, hermite, lerp, monotoneSlope, smoothstep } from './util/math.js';
 import { buildPaddockCar } from './vehicles.js';
-import { buildWorld } from './world.js';
+import { buildWorld } from './world/index.js';
 
 async function createJourney({
   canvas: i,
