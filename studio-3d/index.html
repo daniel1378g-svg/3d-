@@ -427,6 +427,7 @@ function group(x = 0, y = 0, z = 0, parent = scene) { const g = new THREE.Group(
 function tiles(axis, c, a0, a1, y0, y1, tileSize = 0.6) {
   const len = a1 - a0, ht = y1 - y0;
   const m = M.wallTile.clone();
+  m.polygonOffset = true; m.polygonOffsetFactor = -1; m.polygonOffsetUnits = -4;
   m.map = withRepeat(wallTileBase, len / tileSize, ht / tileSize);
   const mesh = new THREE.Mesh(new THREE.PlaneGeometry(len, ht), m);
   if (axis === 'z') mesh.position.set((a0 + a1) / 2, (y0 + y1) / 2, c);
@@ -515,15 +516,27 @@ bx(M.chrome, 0.04, 0.09, 1.0, 1.03, 0.62, 0.72, bathDoor);
 bathDoor.rotation.y = 1.42;
 
 /* ---------- Floors, ceiling, outside ---------- */
-const floor = new THREE.Mesh(new THREE.PlaneGeometry(W, L), M.oak);
-floor.rotation.x = -Math.PI / 2;
-floor.position.set(W / 2, 0, L / 2);
-floor.receiveShadow = true;
-scene.add(floor);
+// Oak floor: the main room plus the hall strip. UVs follow world position so the planks line up.
+function floorPlane(x0, x1, z0, z1, m) {
+  const geo = new THREE.PlaneGeometry(x1 - x0, z1 - z0);
+  const uv = geo.attributes.uv, pos = geo.attributes.position;
+  for (let i = 0; i < uv.count; i++) {
+    const wx = pos.getX(i) + (x0 + x1) / 2, wz = -pos.getY(i) + (z0 + z1) / 2;
+    uv.setXY(i, wx / W, 1 - wz / L);
+  }
+  const mesh = new THREE.Mesh(geo, m);
+  mesh.rotation.x = -Math.PI / 2;
+  mesh.position.set((x0 + x1) / 2, 0, (z0 + z1) / 2);
+  mesh.receiveShadow = true;
+  scene.add(mesh);
+  return mesh;
+}
+const floor = floorPlane(0, W, 0, PZ1, M.oak);
+const hallFloor = floorPlane(0, BX1, PZ1, L, M.oak);
 
 const bathFloor = new THREE.Mesh(new THREE.PlaneGeometry(W - BX1, L - PZ1), M.floorTile);
 bathFloor.rotation.x = -Math.PI / 2;
-bathFloor.position.set((BX1 + W) / 2, 0.004, (PZ1 + L) / 2);
+bathFloor.position.set((BX1 + W) / 2, 0, (PZ1 + L) / 2);
 bathFloor.receiveShadow = true;
 scene.add(bathFloor);
 
@@ -539,7 +552,7 @@ bx(M.white, W - 0.012, W, 0, 0.06, 0, PZ0);
 bx(M.white, BX0, W, 0, 0.06, PZ0 - 0.012, PZ0);
 
 // Foundation, terrace and lawn
-bx(M.wallOuter, -T, W + T, -0.7, 0, -T, L + T);
+bx(M.wallOuter, -T, W + T, -0.7, -0.03, -T, L + T);
 const terrace = bx(M.concrete, -0.6, W + 0.6, -0.7, -0.02, -2.1, -T);
 const lawn = new THREE.Mesh(new THREE.PlaneGeometry(260, 260), M.grass);
 lawn.rotation.x = -Math.PI / 2;
@@ -676,7 +689,7 @@ bx(M.steel, kx0, kx1, 0.86, 0.9, L - 0.62, L);
 for (const [x, z] of [[0.3, L - 0.42], [0.62, L - 0.22]]) cyl(M.black, 0.09, 0.09, 0.012, x, 0.906, z);
 bx(M.steel, 0.78, 1.08, 0.85, 0.9, L - 0.5, L - 0.12);                                 // small sink
 cyl(M.chrome, 0.012, 0.012, 0.2, 0.93, 1.0, L - 0.06);
-const kitchenSplash = tiles('z', L - 0.002, kx0, kx1, 0.9, 1.45, 0.4);
+const kitchenSplash = tiles('z', L - 0.006, kx0, kx1, 0.9, 1.45, 0.4);
 kitchenSplash.material.map = withRepeat(splashBase, 1.15 / 0.4, 0.55 / 0.4);
 bx(M.white, kx0, kx1, 1.45, 2.2, L - 0.34, L);
 bx(M.white, kx0 + 0.57, kx0 + 0.58, 1.47, 2.18, L - 0.345, L - 0.34, scene, false);
@@ -684,11 +697,11 @@ const kitchenLight = bx(M.bulb, kx0 + 0.05, kx1 - 0.05, 1.43, 1.45, L - 0.3, L -
 
 /* ---------- Shower room ---------- */
 // Wall tiles to 2.0 m
-tiles('x', W - 0.002, PZ1, L, 0, 2.0).rotation.y = -Math.PI / 2;
-tiles('z', PZ1 + 0.002, BX1, W, 0, 2.0);
-tiles('z', L - 0.002, BX1, W, 0, 2.0).rotation.y = Math.PI;
-tiles('x', BX1 + 0.002, PZ1, 5.8, 0, 2.0);
-tiles('x', BX1 + 0.002, 6.7, L, 0, 2.0);
+tiles('x', W - 0.006, PZ1, L, 0, 2.0).rotation.y = -Math.PI / 2;
+tiles('z', PZ1 + 0.006, BX1, W, 0, 2.0);
+tiles('z', L - 0.006, BX1, W, 0, 2.0).rotation.y = Math.PI;
+tiles('x', BX1 + 0.006, PZ1, 5.8, 0, 2.0);
+tiles('x', BX1 + 0.006, 6.7, L, 0, 2.0);
 
 // Toilet against the far wall, facing the door
 const wc = group(W - 0.36, 0, 6.05);
@@ -731,7 +744,7 @@ sph(M.porcelain, 0.26, 0, 0.8, -0.22, 1, 0.38, 0.8, sink);
 bx(M.porcelain, -0.26, 0.26, 0.78, 0.86, -0.42, -0.01, sink);
 cyl(M.chrome, 0.012, 0.012, 0.16, 0, 0.94, -0.06, sink);
 bx(M.white, -0.3, 0.3, 1.18, 1.78, -0.15, 0, sink);
-bx(M.mirror, -0.28, 0.28, 1.2, 1.76, -0.152, -0.15, sink, false);
+bx(M.mirror, -0.28, 0.28, 1.2, 1.76, -0.158, -0.15, sink, false);
 const mirrorLight = bx(M.bulb, -0.28, 0.28, 1.8, 1.86, -0.12, -0.02, sink, false);
 bx(M.white, -0.28, -0.24, 0.9, 1.0, -0.16, -0.06, sink);
 
@@ -883,6 +896,8 @@ function setMode(m) {
   controls.minPolarAngle = inside ? 0.35 : 0;
   controls.maxPolarAngle = inside ? 2.6 : 1.42;
   hint.textContent = HINTS[m];
+  camera.near = inside ? 0.05 : 0.25;
+  camera.updateProjectionMatrix();
   if (!anim) setFov(fovFor(m));
   if (!inside) for (const w of outerWalls) { w.g.visible = true; }
   if (inside) for (const w of outerWalls) { w.g.visible = true; w.stub.visible = false; }
@@ -948,7 +963,7 @@ canvas.addEventListener('dblclick', (e) => {
   const r = canvas.getBoundingClientRect();
   ndc.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
   ray.setFromCamera(ndc, camera);
-  const hit = ray.intersectObjects([floor, bathFloor, terrace], false)[0];
+  const hit = ray.intersectObjects([floor, hallFloor, bathFloor, terrace], false)[0];
   if (!hit) return;
   const p = clampPos(new THREE.Vector3(hit.point.x, EYE, hit.point.z));
   const dir = new THREE.Vector3();
