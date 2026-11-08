@@ -1,39 +1,57 @@
-// 2D gradient noise and fractal Brownian motion, seeded once.
+// 2D gradient (Perlin-style) noise and fractal Brownian motion.
+//
+// The permutation table is shuffled once at module load from createRng(7), so the noise field is
+// identical on every page load. Used by the procedural textures and the terrain/hill shapes.
 import { createRng } from './rng.js';
 
+/** 256-entry permutation, duplicated to 512 entries so PERM[i + 1] never needs a wrap. */
 var PERM = new Uint8Array(512);
 {
-  let i = createRng(7),
-    t = [...Array(256).keys()];
-  for (let e = 255; e > 0; e--) {
-    let n = Math.floor(i() * (e + 1));
-    [t[e], t[n]] = [t[n], t[e]];
+  let random = createRng(7),
+    table = [...Array(256).keys()];
+  // Fisher-Yates shuffle (draw order: one random() per swap, from the top down).
+  for (let top = 255; top > 0; top--) {
+    let pick = Math.floor(random() * (top + 1));
+    [table[top], table[pick]] = [table[pick], table[top]];
   }
-  for (let e = 0; e < 512; e++) PERM[e] = t[e & 255];
+  for (let k = 0; k < 512; k++) PERM[k] = table[k & 255];
 }
-var fade = (i) => i * i * i * (i * (i * 6 - 15) + 10),
-  grad = (i, t, e) => (i & 1 ? -t : t) + (i & 2 ? -e : e);
-function perlin2(i, t) {
-  let e = Math.floor(i) & 255,
-    n = Math.floor(t) & 255;
-  ((i -= Math.floor(i)), (t -= Math.floor(t)));
-  let s = fade(i),
-    r = fade(t),
-    o = PERM[e] + n,
-    a = PERM[e + 1] + n,
-    c = (l, h, f) => l + (h - l) * f;
-  return c(
-    c(grad(PERM[o], i, t), grad(PERM[a], i - 1, t), s),
-    c(grad(PERM[o + 1], i, t - 1), grad(PERM[a + 1], i - 1, t - 1), s),
-    r,
+
+/** Quintic fade curve 6t^5 - 15t^4 + 10t^3. */
+var fade = (t) => t * t * t * (t * (t * 6 - 15) + 10),
+  /** Dot product with one of four diagonal gradients (±1, ±1) picked by the hash bits. */
+  grad = (hash, dx, dy) => (hash & 1 ? -dx : dx) + (hash & 2 ? -dy : dy);
+
+/** Gradient noise at (x, y); roughly in [-1, 1], 0 at integer lattice points. */
+function perlin2(x, y) {
+  let cellX = Math.floor(x) & 255,
+    cellY = Math.floor(y) & 255;
+  // Position inside the cell, in [0, 1).
+  ((x -= Math.floor(x)), (y -= Math.floor(y)));
+  let fadeX = fade(x),
+    fadeY = fade(y),
+    hashLeft = PERM[cellX] + cellY,
+    hashRight = PERM[cellX + 1] + cellY,
+    mix = (a, b, amount) => a + (b - a) * amount;
+  return mix(
+    mix(grad(PERM[hashLeft], x, y), grad(PERM[hashRight], x - 1, y), fadeX),
+    mix(grad(PERM[hashLeft + 1], x, y - 1), grad(PERM[hashRight + 1], x - 1, y - 1), fadeX),
+    fadeY,
   );
 }
-function fbm2(i, t, e = 4) {
-  let n = 0.5,
-    s = 1,
-    r = 0;
-  for (let o = 0; o < e; o++) ((r += n * perlin2(i * s, t * s)), (n *= 0.5), (s *= 2.03));
-  return r;
+
+/**
+ * Fractal Brownian motion: `octaves` layers of perlin2, amplitude halving (starting at 0.5) and
+ * frequency growing x2.03 per octave (the odd lacunarity avoids lattice alignment).
+ * Result is roughly in [-1, 1] (amplitudes sum to < 1).
+ */
+function fbm2(x, y, octaves = 4) {
+  let amplitude = 0.5,
+    frequency = 1,
+    sum = 0;
+  for (let octave = 0; octave < octaves; octave++)
+    ((sum += amplitude * perlin2(x * frequency, y * frequency)), (amplitude *= 0.5), (frequency *= 2.03));
+  return sum;
 }
 
 export { fbm2 };

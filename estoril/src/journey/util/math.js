@@ -1,56 +1,94 @@
-// Scalar helpers and monotone cubic (Fritsch-Carlson) interpolation.
+// Scalar helpers and piecewise cubic Hermite interpolation.
 
-var lerp = (i, t, e) => i + (t - i) * e,
-  clamp = (i, t, e) => Math.min(e, Math.max(t, i)),
-  smoothstep = (i) => i * i * (3 - 2 * i),
-  easeInOutCubic = (i) => (i < 0.5 ? 4 * i * i * i : 1 - Math.pow(-2 * i + 2, 3) / 2);
-function monotoneCurve(i) {
-  let t = i.map((r) => r[0]),
-    e = i.map((r) => r[1]),
-    n = i.length,
-    s = e.map((r, o) =>
-      o === 0
-        ? (e[1] - e[0]) / (t[1] - t[0])
-        : o === n - 1
-          ? (e[n - 1] - e[n - 2]) / (t[n - 1] - t[n - 2])
-          : (e[o + 1] - e[o - 1]) / (t[o + 1] - t[o - 1]),
+/** Linear interpolation from a (amount 0) to b (amount 1); not clamped. */
+var lerp = (a, b, amount) => a + (b - a) * amount,
+  /** Clamps value to [min, max]. */
+  clamp = (value, min, max) => Math.min(max, Math.max(min, value)),
+  /** Cubic smoothstep for x already in [0, 1] (no clamping). */
+  smoothstep = (x) => x * x * (3 - 2 * x),
+  /** Cubic ease-in-out for x in [0, 1]. */
+  easeInOutCubic = (x) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+
+/**
+ * Builds y = f(x) through a list of [x, y] knots (x strictly increasing) as a piecewise cubic
+ * Hermite curve. Tangents are non-uniform central differences (one-sided at the ends).
+ *
+ * NOTE: despite the name this is NOT monotonicity-preserving (no Fritsch-Carlson limiting), so
+ * it can overshoot between knots whose slopes change sign. Outside [x0, xN] it holds the end
+ * values.
+ *
+ * @param {Array<[number, number]>} knots
+ * @returns {(x: number) => number}
+ */
+function monotoneCurve(knots) {
+  let xs = knots.map((knot) => knot[0]),
+    ys = knots.map((knot) => knot[1]),
+    count = knots.length,
+    tangents = ys.map((_y, k) =>
+      k === 0
+        ? (ys[1] - ys[0]) / (xs[1] - xs[0])
+        : k === count - 1
+          ? (ys[count - 1] - ys[count - 2]) / (xs[count - 1] - xs[count - 2])
+          : (ys[k + 1] - ys[k - 1]) / (xs[k + 1] - xs[k - 1]),
     );
-  return (r) => {
-    if (r <= t[0]) return e[0];
-    if (r >= t[n - 1]) return e[n - 1];
-    let o = 0;
-    for (; r > t[o + 1];) o++;
-    let a = t[o + 1] - t[o],
-      c = (r - t[o]) / a,
-      l = c * c,
-      h = l * c;
+  return (x) => {
+    if (x <= xs[0]) return ys[0];
+    if (x >= xs[count - 1]) return ys[count - 1];
+    // Linear scan for the segment [xs[k], xs[k + 1]] containing x.
+    let k = 0;
+    for (; x > xs[k + 1];) k++;
+    let span = xs[k + 1] - xs[k],
+      s = (x - xs[k]) / span,
+      s2 = s * s,
+      s3 = s2 * s;
+    // Cubic Hermite basis h00, h10, h01, h11 (tangents scaled by the segment width).
     return (
-      (2 * h - 3 * l + 1) * e[o] +
-      (h - 2 * l + c) * a * s[o] +
-      (-2 * h + 3 * l) * e[o + 1] +
-      (h - l) * a * s[o + 1]
+      (2 * s3 - 3 * s2 + 1) * ys[k] +
+      (s3 - 2 * s2 + s) * span * tangents[k] +
+      (-2 * s3 + 3 * s2) * ys[k + 1] +
+      (s3 - s2) * span * tangents[k + 1]
     );
   };
 }
-function monotoneSlope(i, t, e) {
-  let n = i.length;
-  if (e <= 0) return (t[1] - t[0]) / (i[1] - i[0]);
-  if (e >= n - 1) return (t[n - 1] - t[n - 2]) / (i[n - 1] - i[n - 2]);
-  let s = (t[e] - t[e - 1]) / (i[e] - i[e - 1]),
-    r = (t[e + 1] - t[e]) / (i[e + 1] - i[e]);
-  if (s * r <= 0) return 0;
-  let o = i[e] - i[e - 1],
-    a = i[e + 1] - i[e],
-    c = 2 * a + o,
-    l = a + 2 * o;
-  return (c + l) / (c / s + l / r);
+
+/**
+ * Monotonicity-preserving PCHIP tangent (Fritsch-Carlson weighted harmonic mean of the adjacent
+ * secant slopes, as in MATLAB's pchip) at knot `index` of the data (xs, ys). Returns 0 at local
+ * extrema and plain one-sided secant slopes at the ends.
+ *
+ * @param {number[]} xs strictly increasing knot positions
+ * @param {number[]} ys knot values
+ * @param {number} index knot index
+ */
+function monotoneSlope(xs, ys, index) {
+  let count = xs.length;
+  if (index <= 0) return (ys[1] - ys[0]) / (xs[1] - xs[0]);
+  if (index >= count - 1) return (ys[count - 1] - ys[count - 2]) / (xs[count - 1] - xs[count - 2]);
+  let slopeBefore = (ys[index] - ys[index - 1]) / (xs[index] - xs[index - 1]),
+    slopeAfter = (ys[index + 1] - ys[index]) / (xs[index + 1] - xs[index]);
+  if (slopeBefore * slopeAfter <= 0) return 0;
+  let spanBefore = xs[index] - xs[index - 1],
+    spanAfter = xs[index + 1] - xs[index],
+    weightBefore = 2 * spanAfter + spanBefore,
+    weightAfter = spanAfter + 2 * spanBefore;
+  return (weightBefore + weightAfter) / (weightBefore / slopeBefore + weightAfter / slopeAfter);
 }
-function hermite(i, t, e, n, s, r, o) {
-  let a = t - i,
-    c = (o - i) / a,
-    l = c * c,
-    h = l * c;
-  return (2 * h - 3 * l + 1) * e + (h - 2 * l + c) * a * s + (3 * l - 2 * h) * n + (h - l) * a * r;
+
+/**
+ * Evaluates the cubic Hermite segment from (x0, y0, slope m0) to (x1, y1, slope m1) at x.
+ * Slopes are dy/dx; x is not clamped to [x0, x1].
+ */
+function hermite(x0, x1, y0, y1, m0, m1, x) {
+  let span = x1 - x0,
+    s = (x - x0) / span,
+    s2 = s * s,
+    s3 = s2 * s;
+  return (
+    (2 * s3 - 3 * s2 + 1) * y0 +
+    (s3 - 2 * s2 + s) * span * m0 +
+    (3 * s2 - 2 * s3) * y1 +
+    (s3 - s2) * span * m1
+  );
 }
 
 export { clamp, easeInOutCubic, hermite, lerp, monotoneCurve, monotoneSlope, smoothstep };
