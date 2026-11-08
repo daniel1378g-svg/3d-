@@ -19,8 +19,8 @@
 // The framing channel (1 for 'panel' keys, 0 for 'open' keys) blends between them. The camera's
 // principal point (where the target appears) is moved to the centre of the blended area with a
 // view offset, and in car shots the vertical field of view is widened, only when needed, so the
-// car's bounding box fits inside the area (a smooth maximum, so the FOV stays C1 where the fit
-// takes over). The overhead key is solved for the actual aspect: fitCircuitShot() picks, among
+// car (a car-shaped hull in its bounding box, carOutline) fits inside the area (a smooth maximum,
+// so the FOV stays C1 where the fit takes over). The overhead key is solved for the actual aspect: fitCircuitShot() picks, among
 // headings between "from the grandstand side" and "from the first corner", the camera that shows
 // the whole circuit largest inside the open area.
 //
@@ -73,6 +73,34 @@ function circuitOutline(track) {
     out[4 * i + 3] = z - nz * CIRCUIT_MARGIN;
   }
   return out;
+}
+
+/**
+ * Points of a car-shaped hull inside the car's bounding box `box` ([[minX, minY, minZ], [maxX, maxY,
+ * maxZ]], +x forward), as fractions of the box: the full-width floor, the rear wing at full height
+ * and width, the nose at 45 % of the height, the top of the windscreen. The box's empty front-top
+ * corners would otherwise make the fit, and the car on screen, needlessly small in three-quarter
+ * views from the front. Flat [x, y, z, …] in the car frame.
+ */
+const CAR_HULL = [
+  [0, 0, 0],
+  [0, 0, 1],
+  [1, 0, 0],
+  [1, 0, 1],
+  [0, 1, 0],
+  [0, 1, 1],
+  [1, 0.45, 0.04],
+  [1, 0.45, 0.96],
+  [0.6, 0.93, 0.18],
+  [0.6, 0.93, 0.82],
+];
+function carOutline(box) {
+  const [min, max] = box;
+  return CAR_HULL.flatMap(([fx, fy, fz]) => [
+    min[0] + fx * (max[0] - min[0]),
+    min[1] + fy * (max[1] - min[1]),
+    min[2] + fz * (max[2] - min[2]),
+  ]);
 }
 
 /** Smooth maximum of a and b (≥ both, C∞): the softness k rounds the corner. */
@@ -288,7 +316,8 @@ function createCameraDirector(camera, shots, carFrame, { circuit = null, carBox 
   const right = new Vector3();
   const upAxis = new Vector3();
   const corner = new Vector3();
-  const needs = new Float64Array(16);
+  const carHull = carBox ? carOutline(carBox) : null;
+  const needs = new Float64Array(carHull ? (2 * carHull.length) / 3 : 0);
   const area = [0, 0, 0, 0];
   let overhead = null;
   let overheadAspect = NaN;
@@ -376,20 +405,16 @@ function createCameraDirector(camera, shots, carFrame, { circuit = null, carBox 
     forward.subVectors(target, position).normalize();
     right.crossVectors(forward, UP).normalize();
     upAxis.crossVectors(right, forward);
-    const min = carBox[0];
-    const max = carBox[1];
-    // the largest of the 16 corner/axis requirements, as a soft maximum (log-sum-exp, at most
-    // FIT_LSE_OVERSHOOT above the hard one) so the FOV stays smooth when the limiting corner changes
+    // the largest of the requirements of the hull's points (x and y each), as a soft maximum
+    // (log-sum-exp, at most 3.5 % above the hard one) so the FOV stays smooth when the limiting
+    // point changes
     let count = 0;
-    for (let i = 0; i < 8; i++) {
-      const bx = i & 1 ? max[0] : min[0];
-      const by = i & 2 ? max[1] : min[1];
-      const bz = i & 4 ? max[2] : min[2];
+    for (let i = 0; i < carHull.length; i += 3) {
       corner
         .copy(carFrame.p)
-        .addScaledVector(carFrame.f, bx)
-        .addScaledVector(carFrame.r, bz)
-        .addScaledVector(UP, by)
+        .addScaledVector(carFrame.f, carHull[i])
+        .addScaledVector(UP, carHull[i + 1])
+        .addScaledVector(carFrame.r, carHull[i + 2])
         .sub(position);
       const depth = corner.dot(forward);
       if (depth < 0.2) return 0; // the car is not in front of the camera: no fit
@@ -468,4 +493,4 @@ function createCameraDirector(camera, shots, carFrame, { circuit = null, carBox 
   };
 }
 
-export { circuitOutline, createCameraDirector, createCameraFrame, fitCircuitShot };
+export { carOutline, circuitOutline, createCameraDirector, createCameraFrame, fitCircuitShot };

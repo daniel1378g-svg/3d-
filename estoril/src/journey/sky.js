@@ -40,7 +40,8 @@ const ENV_STEP_HOURS = 0.2;
 const PROBE_GROUND_GAIN = 0.75;
 
 /**
- * Sky gradient from the horizon colour `hor` to the zenith colour `zen`, plus a sun disc and halo
+ * Sky gradient from the horizon colour `hor` to the zenith colour `zen` (its middle band paled by
+ * `lift`), plus a sun disc and halo
  * in `sunCol` around `sunDir`; below the horizon it fades to a slightly darker horizon colour.
  * Writes its colours as they are: display colours for the dome, radiance for the probe. The dome
  * is dithered by ±0.5/255 (`dither` 1). No fog: the dome is the fog's backdrop.
@@ -55,13 +56,15 @@ function createSkyMaterial() {
       hor: { value: new Color() },
       sunDir: { value: new Vector3(0, 1, 0) },
       sunCol: { value: new Color() },
+      lift: { value: 0 },
       dither: { value: 1 },
     },
     vertexShader:
       'varying vec3 vP; void main(){ vP = normalize(position); gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.); }',
-    fragmentShader: `uniform vec3 zen, hor, sunCol; uniform vec3 sunDir; uniform float dither; varying vec3 vP;
+    fragmentShader: `uniform vec3 zen, hor, sunCol; uniform vec3 sunDir; uniform float lift, dither; varying vec3 vP;
       void main(){ vec3 p = normalize(vP); float h = clamp(p.y, -.2, 1.); float k = pow(clamp(h, 0., 1.), .55);
         vec3 c = mix(hor, zen, k);
+        c += lift * 4. * k * (1. - k) * (vec3(1.) - c);
         float s = max(dot(p, sunDir), 0.);
         c += sunCol * (pow(s, 380.) * 2.2 + pow(s, 12.) * .16 + pow(s, 3.) * .05 * (1. - k));
         c = mix(c, hor * .92, smoothstep(0., -.2, p.y));
@@ -84,6 +87,7 @@ function setSkyUniforms(material, light) {
   uniforms.hor.value.copy(light.hor);
   uniforms.sunDir.value.copy(light.sunDir);
   uniforms.sunCol.value.copy(light.sun).convertLinearToSRGB();
+  uniforms.lift.value = light.lift;
 }
 
 /**
@@ -119,6 +123,7 @@ function createEnvironmentProbe({ renderer, scene, quality }) {
     uniforms.hor.value.copy(light.hor).convertSRGBToLinear();
     uniforms.sunDir.value.copy(light.sunDir);
     uniforms.sunCol.value.copy(light.sun);
+    uniforms.lift.value = light.lift;
     // the ground below the horizon: its albedo lit by the sun and the sky
     const lit = (light.sunI * Math.max(0, light.sunDir.y) + light.hemiI) / Math.PI;
     groundMaterial.color.copy(light.gnd).multiplyScalar(PROBE_GROUND_GAIN * lit);

@@ -17,7 +17,8 @@
 //               KINK_FLOOR + KINK_REL × the first difference (a velocity change of more than 5 %),
 //               then examined at finer steps (refineKink). Kinks where the car's own path has one
 //               (car-path.js: its arc-length table and joins) are counted as `inherited`, not failed.
-//   car framing during the panel windows (home.js PANEL_WINDOWS) the car's projected box is fully
+//   car framing during the panel windows (home.js PANEL_WINDOWS) the car's projected outline (a
+//               car-shaped hull in its bounding box, camera-director.js carOutline) is fully
 //               on screen and overlaps the panel's box by at most PANEL_OVERLAP of its area; in the
 //               other car shots it is fully on screen
 //   overhead    between the two overhead keys (the top of the aerial, while the red line closes the
@@ -42,7 +43,8 @@ const { buildCarPath } = await import('../src/journey/car-path.js');
 const { carScheduleKeys, computeLandmarks, createCarMotion, createCarSchedule, createPathSampler } =
   await import('../src/journey/car-motion.js');
 const { CAMERA_SHOTS } = await import('../src/journey/camera-shots.js');
-const { createCameraDirector, createCameraFrame } = await import('../src/journey/camera-director.js');
+const { carOutline, createCameraDirector, createCameraFrame } =
+  await import('../src/journey/camera-director.js');
 const { createDepthRange } = await import('../src/journey/depth-range.js');
 const { createSkyDome, createSkyMaterial } = await import('../src/journey/sky.js');
 
@@ -179,22 +181,22 @@ function project(p, v) {
   return [(scratch.x * 0.5 + 0.5) * v.width, (0.5 - scratch.y * 0.5) * v.height];
 }
 
-/** The car's 8 box corners in world space. */
+/**
+ * The car's silhouette points in world space: the car-shaped hull the director fits (carOutline:
+ * the floor, the rear wing, the nose, the windscreen top) in the car's actual pose.
+ */
+const carHull = carOutline(carBox);
 function carCorners() {
   const { p, f, r } = carMotion.frame;
   const out = [];
-  for (let i = 0; i < 8; i++) {
-    const bx = i & 1 ? carBox[1][0] : carBox[0][0];
-    const by = i & 2 ? carBox[1][1] : carBox[0][1];
-    const bz = i & 4 ? carBox[1][2] : carBox[0][2];
+  for (let i = 0; i < carHull.length; i += 3)
     out.push(
       new Vector3()
         .copy(p)
-        .addScaledVector(f, bx)
-        .addScaledVector(r, bz)
-        .setY(p.y + by),
+        .addScaledVector(f, carHull[i])
+        .addScaledVector(r, carHull[i + 2])
+        .setY(p.y + carHull[i + 1]),
     );
-  }
   return out;
 }
 

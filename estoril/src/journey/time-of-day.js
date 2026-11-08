@@ -98,6 +98,9 @@ function sunVector(sunEl, sunAz, target) {
  *   fog     fog colour (display hex): distant objects fade towards it (≈ the horizon haze)
  *   env     scene.environmentIntensity (image-based light from the sky probe)
  *   exp     exposure trim on top of the automatic exposure (lighting.js exposureFor)
+ *   lift    how much the sky's middle band (between horizon and zenith) pales towards white: a
+ *           blend of two complementary colours (the golden hour's orange horizon and blue zenith)
+ *           would otherwise pass through grey
  */
 const PALETTE = [
   // morning (references.md 4.9: clean Atlantic air, sampled zenith #518AD5 → horizon #94C9F1)
@@ -113,6 +116,7 @@ const PALETTE = [
     fog: 0xb2d2ec,
     env: 0.6,
     exp: 1.35,
+    lift: 0.06,
   },
   {
     hour: 8,
@@ -126,6 +130,7 @@ const PALETTE = [
     fog: 0xb8d5ec,
     env: 0.6,
     exp: 1.12,
+    lift: 0.06,
   },
   // late morning, the lap
   {
@@ -140,6 +145,7 @@ const PALETTE = [
     fog: 0xbfd9ed,
     env: 0.6,
     exp: 1,
+    lift: 0.05,
   },
   // afternoon, the paddock
   {
@@ -154,6 +160,7 @@ const PALETTE = [
     fog: 0xc2d6e6,
     env: 0.6,
     exp: 1,
+    lift: 0.07,
   },
   // the run into the golden hour
   {
@@ -168,6 +175,7 @@ const PALETTE = [
     fog: 0xdcc9ad,
     env: 0.6,
     exp: 1.1,
+    lift: 0.18,
   },
   // golden hour (references.md 4.9: key light ≈ #FFA040, zenith #6E8FC0 → horizon #F2B572)
   {
@@ -182,10 +190,11 @@ const PALETTE = [
     fog: 0xe8c39a,
     env: 0.6,
     exp: 1.25,
+    lift: 0.3,
   },
 ];
 const COLOR_FIELDS = ['sun', 'sky', 'gnd', 'zen', 'hor', 'fog'];
-const NUMBER_FIELDS = ['sunI', 'hemiI', 'env', 'exp'];
+const NUMBER_FIELDS = ['sunI', 'hemiI', 'env', 'exp', 'lift'];
 /** Display colours: kept as display values (not decoded to linear) for the sky dome and fog. */
 const DISPLAY_FIELDS = new Set(['zen', 'hor', 'fog']);
 
