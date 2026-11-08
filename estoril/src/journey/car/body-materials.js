@@ -1,29 +1,38 @@
-// PBR materials for the body's material groups (see tools/car/bake_body.py for the classification).
+// PBR materials for the body's material groups (see tools/car/bake_body.py).
 //
-// All groups share the body atlas: base colour (sRGB), a glTF tangent-space normal map and an ORM map
-// (glTF packing: ambient occlusion baked by tools/car/bake_body.py in R, roughness in G, metalness in
-// B). The occlusion darkens only indirect light (sky, environment), as three's aoMap does. The normal
+// Both groups share the body atlas: base colour (sRGB), a glTF tangent-space normal map and the ORM map
+// baked by tools/car/bake_body.py: ambient occlusion in R, roughness in G and clearcoat in B, all per
+// texel. The occlusion darkens only indirect light (sky, environment), as three's aoMap does. The normal
 // map is +Y-up (OpenGL) and is read with flipY = false and no vertex tangents, so its green channel is
 // negated (as three's GLTFLoader does); 0.6 softens the generated panel-line detail.
 //
-//   paint   white/red livery: dielectric base coat with the map's roughness × PAINT_ROUGHNESS, plus a
-//           restrained clearcoat (mid/high only; 'low' keeps MeshStandardMaterial)
-//   trim    dark plastics, carbon, underbody, interior: rougher, never metallic (the map's metalness
-//           there is baked brake/hub residue in the wheel arches)
-//   glass   side windows and the engine-cover window: opaque, near-black tint, mirror-smooth, so the
-//           sky reflects with the Fresnel falloff of glass (F0 0.04); no transparency, hence no sorting
-//   lights  head- and tail-light clusters: the map's colour, glossy, and a subtle emission of the
-//           same colour (red lenses glow red, LED strips white)
-import { Color, MeshPhysicalMaterial, MeshStandardMaterial } from 'three';
+//   body    paint, trim and glass in one material: what differs between them is in the ORM texture, so
+//           their borders follow the atlas texels, never triangle edges. Paint: roughness 0.19–0.32 with a
+//           restrained clearcoat (0.45); trim (dark plastics, carbon, interior): roughness 0.25–0.5, no
+//           clearcoat; glass (side windows, engine-cover window, the windscreen added by the bake):
+//           opaque dark tint from the atlas, roughness 0.035 and a full mirror-smooth clearcoat, so the
+//           sky and the surroundings reflect with the Fresnel falloff of two glass interfaces (F0 0.04
+//           each). Nothing is transparent, so nothing needs sorting. Mid/high: MeshPhysicalMaterial with
+//           the clearcoat amount read from the ORM's B channel (three reads clearcoatMap's R, which here
+//           holds the occlusion) and the clearcoat roughness from G × CLEARCOAT_ROUGHNESS. Low:
+//           MeshStandardMaterial, the same per-texel roughness without the clearcoat.
+//   lights  head- and tail-light clusters: the map's colour, glossy, and a subtle emission of the same
+//           colour (red lenses glow red, LED strips white)
+import { Color, MeshPhysicalMaterial, MeshStandardMaterial, ShaderChunk } from 'three';
 
 const NORMAL_SCALE = 0.6;
-const PAINT_ROUGHNESS = 3.2; // × the map's 0.06–0.10 on paint → 0.19–0.32 base coat
-const PAINT_CLEARCOAT = 0.45;
-const PAINT_CLEARCOAT_ROUGHNESS = 0.07;
-const TRIM_ROUGHNESS = 1.25; // × the map's 0.2–0.4 → 0.25–0.5
-const GLASS_TINT = 0x08090b;
+/** Clearcoat roughness = this × the ORM roughness: 0.06–0.1 on paint, 0.01 on glass. */
+const CLEARCOAT_ROUGHNESS = 0.3;
 const LIGHT_EMISSIVE_INTENSITY = 0.45;
 const AO_INTENSITY = 1;
+
+/** lights_physical_fragment with the clearcoat amount read from the clearcoat map's blue channel. */
+const CLEARCOAT_FROM_BLUE = ShaderChunk.lights_physical_fragment.replace(
+  'texture2D( clearcoatMap, vClearcoatMapUv ).x',
+  'texture2D( clearcoatMap, vClearcoatMapUv ).z',
+);
+if (CLEARCOAT_FROM_BLUE === ShaderChunk.lights_physical_fragment)
+  throw new Error('hero car: three.js clearcoat chunk changed; update body-materials.js');
 
 function withNormalMap(material, textures) {
   material.normalMap = textures.normalMap;
@@ -32,38 +41,30 @@ function withNormalMap(material, textures) {
 }
 
 const FACTORIES = {
-  paint(textures, quality) {
+  body(textures, quality) {
     const params = {
-      name: 'car-paint',
+      name: 'car-body',
       map: textures.map,
       roughnessMap: textures.ormMap,
-      roughness: PAINT_ROUGHNESS,
+      roughness: 1,
       metalness: 0,
     };
-    const material =
-      quality === 'low'
-        ? new MeshStandardMaterial(params)
-        : new MeshPhysicalMaterial({
-            ...params,
-            clearcoat: PAINT_CLEARCOAT,
-            clearcoatRoughness: PAINT_CLEARCOAT_ROUGHNESS,
-          });
+    if (quality === 'low') return withNormalMap(new MeshStandardMaterial(params), textures);
+    const material = new MeshPhysicalMaterial({
+      ...params,
+      clearcoat: 1,
+      clearcoatMap: textures.ormMap,
+      clearcoatRoughness: CLEARCOAT_ROUGHNESS,
+      clearcoatRoughnessMap: textures.ormMap,
+    });
+    material.onBeforeCompile = (shader) => {
+      shader.fragmentShader = shader.fragmentShader.replace(
+        '#include <lights_physical_fragment>',
+        CLEARCOAT_FROM_BLUE,
+      );
+    };
+    material.customProgramCacheKey = () => 'car-body-clearcoat-b';
     return withNormalMap(material, textures);
-  },
-  trim(textures) {
-    return withNormalMap(
-      new MeshStandardMaterial({
-        name: 'car-trim',
-        map: textures.map,
-        roughnessMap: textures.ormMap,
-        roughness: TRIM_ROUGHNESS,
-        metalness: 0,
-      }),
-      textures,
-    );
-  },
-  glass() {
-    return new MeshStandardMaterial({ name: 'car-glass', color: GLASS_TINT, roughness: 0.04, metalness: 0 });
   },
   lights(textures) {
     return new MeshStandardMaterial({

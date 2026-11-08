@@ -5,7 +5,8 @@
 //
 //   root 'hero-car'                 journey.js sets position (on the driving line) and rotation.y
 //   ├─ chassis                      sprung mass: pose() rolls (x), pitches (z) and heaves (y) it
-//   │   ├─ body                     Group > Mesh 'body' (normals baked offline; 4 material groups)
+//   │   ├─ body                     Group > Mesh 'body' (quantised, normals baked offline, windscreen
+//   │   │                           added offline; 2 material groups: body, lights)
 //   │   └─ wheel-wells              one mesh: 4 arch liners + back plates hiding the body's inside
 //   ├─ wheels                       9 instanced parts × 4 wheels (car/wheel.js), unsprung, at
 //   │                               (x, r, ±0.86); the front pair steers
@@ -43,12 +44,17 @@ const WELL_OUTER_Z = 0.95;
 
 /**
  * Loads the packed body and returns a Group holding its Mesh (shadows on), with one material per
- * group (paint, trim, glass, lights: car/body-materials.js).
+ * group (body, lights: car/body-materials.js). The mesh carries the de-quantising transform of the
+ * int16 positions (a uniform scale and an offset), so the Group is in metres.
  */
 async function loadBody(url, quality, onProgress) {
   const { geometry, groups, textures, desc } = await loadBodyAsset(url, onProgress);
   const mesh = new Mesh(geometry, bodyMaterials(groups, textures, quality));
   mesh.name = desc.name;
+  if (desc.positionTransform) {
+    mesh.position.fromArray(desc.positionTransform.offset);
+    mesh.scale.setScalar(desc.positionTransform.scale);
+  }
   mesh.castShadow = mesh.receiveShadow = true;
   const group = new Group();
   group.add(mesh);

@@ -4,52 +4,52 @@
  "units": "metres; +x forward, +y up, +z right",
  "generator": "tools/car/bake_body.py from hero-car-mesh.json",
  "buffer": "hero-car-body.bin",
- "vertexCount": 47149,
- "indexCount": 166359,
+ "vertexCount": 48246,
+ "indexCount": 172407,
+ "positionTransform": {
+  "offset": [
+   0.0272,
+   0.7348,
+   -0.0032
+  ],
+  "scale": 2.31,
+  "note": "metres = offset + scale * normalised position"
+ },
  "attributes": {
   "position": {
    "offset": 0,
-   "type": "float32",
-   "size": 3
+   "type": "int16",
+   "size": 3,
+   "normalized": true
   },
   "uv": {
-   "offset": 565788,
+   "offset": 289476,
    "type": "uint16",
    "size": 2,
    "normalized": true
   },
   "normal": {
-   "offset": 754384,
-   "type": "int16",
+   "offset": 482460,
+   "type": "int8",
    "size": 3,
    "normalized": true
   }
  },
  "index": {
-  "offset": 1037280,
+  "offset": 627200,
   "type": "uint16",
   "size": 1
  },
  "groups": [
   {
-   "name": "paint",
+   "name": "body",
    "start": 0,
-   "count": 46962
-  },
-  {
-   "name": "trim",
-   "start": 46962,
-   "count": 102681
-  },
-  {
-   "name": "glass",
-   "start": 149643,
-   "count": 9150
+   "count": 164853
   },
   {
    "name": "lights",
-   "start": 158793,
-   "count": 7566
+   "start": 164853,
+   "count": 7554
   }
  ],
  "textures": {
@@ -57,6 +57,7 @@
   "normalMap": "hero-car-normal.webp",
   "ormMap": "hero-car-orm.webp"
  },
+ "ormChannels": "R ambient occlusion, G roughness, B clearcoat (per texel; tools/car/bake_body.py)",
  "footprint": {
   "map": "hero-car-shadow.webp",
   "size": [

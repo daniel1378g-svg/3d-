@@ -1,12 +1,14 @@
 // Loads the packed hero-car body ("ce-mesh/2", written offline by tools/car/bake_body.py).
 //
 // hero-car-body.json describes one binary buffer (hero-car-body.bin, in the same folder):
-//   position float32 × 3 (metres, +x forward, +y up, +z right), uv uint16 × 2 normalised,
-//   normal int16 × 3 normalised (creased normals, computed offline), index uint16,
+//   position int16 × 3 normalised: metres = positionTransform.offset + positionTransform.scale × value
+//            (+x forward, +y up, +z right; one scale for all axes, so the normals need no correction),
+//   uv uint16 × 2 normalised, normal int8 × 3 normalised (creased normals, computed offline), index uint16,
 // plus `groups` (index ranges sorted by material), the texture file names (base colour, normal map and
-// an ORM map: baked ambient occlusion in R, roughness in G, metalness in B) and `footprint`, the car's
-// baked ground occlusion (a grayscale image over `size` metres of road). The page only wraps
-// the buffer in typed-array views: no per-vertex work at load time.
+// an ORM map: baked ambient occlusion in R, per-texel roughness in G and clearcoat in B), `footprint`,
+// the car's baked ground occlusion (a grayscale image over `size` metres of road), and `lowPoints`.
+// The page only wraps the buffer in typed-array views (the position transform goes on the mesh): no
+// per-vertex work at load time.
 import {
   BufferAttribute,
   BufferGeometry,
@@ -16,7 +18,7 @@ import {
   TextureLoader,
 } from 'three';
 
-const ARRAY_TYPES = { float32: Float32Array, uint16: Uint16Array, int16: Int16Array };
+const ARRAY_TYPES = { float32: Float32Array, uint16: Uint16Array, int16: Int16Array, int8: Int8Array };
 
 /** A typed-array view of `count` elements of `spec.type` at `spec.offset` in `buffer`. */
 function view(buffer, spec, count) {
@@ -31,7 +33,7 @@ function view(buffer, spec, count) {
  *   and after the textures (2/2)
  * @returns {Promise<{ geometry: BufferGeometry, groups: Array<{name: string, start: number, count: number}>,
  *   textures: Record<string, import('three').Texture>, desc: object }>} textures: map, normalMap, ormMap
- *   and footprint
+ *   and footprint; desc.positionTransform ({ offset: [x, y, z], scale }) maps the geometry to metres
  */
 async function loadBodyAsset(url, onProgress) {
   const baseUrl = url.slice(0, url.lastIndexOf('/') + 1);
