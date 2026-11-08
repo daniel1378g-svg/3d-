@@ -6,22 +6,27 @@
 //   root 'hero-car'                 journey.js sets position (on the driving line) and rotation.y
 //   ├─ chassis                      sprung mass: pose() rolls (x), pitches (z) and heaves (y) it
 //   │   ├─ body                     Group > Mesh 'body' (normals baked offline; 4 material groups)
-//   │   └─ 4 × wheel-well liner + back plate (dark, hide the body interior behind the wheels)
-//   ├─ 4 × wheel steer group        unsprung, at (x, r, ±0.86); front ones steer about y
+//   │   └─ wheel-wells              one mesh: 4 arch liners + back plates hiding the body's inside
+//   ├─ wheels                       9 instanced parts × 4 wheels (car/wheel.js), unsprung, at
+//   │                               (x, r, ±0.86); the front pair steers
 //   ├─ contact shadow decal         5.5 × 2.75 m, userData.noMask
 //   └─ 4 × blob shadow under tyres  userData.noMask
 //
 // userData.noMask keeps an object off layer 1, which journey.js uses for the motion-blur mask.
 import { CircleGeometry, CylinderGeometry, Group, Mesh, MeshBasicMaterial, PlaneGeometry } from 'three';
+import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import { loadBodyAsset } from './body-asset.js';
 import { bodyMaterials } from './body-materials.js';
-import { buildWheel, wheelMaterials } from './wheel.js';
+import { createWheels } from './wheel.js';
 import { blobShadowTexture, roundedShadowTexture } from '../textures.js';
 
-/** Tyre width passed to buildWheel, metres. */
-var WHEEL_WIDTH = 0.34,
-  /** Lateral distance of the wheel centres from the car's centre line, metres. */
-  WHEEL_CENTRE_Z = 0.86;
+/** Tyre width, metres. */
+const WHEEL_WIDTH = 0.34;
+/** Lateral distance of the wheel centres from the car's centre line, metres. */
+const WHEEL_CENTRE_Z = 0.86;
+/** Inboard and outboard |z| of the wheel wells (the body's arch cut-outs span |z| 0.49 to 0.98–1.02). */
+const WELL_INNER_Z = 0.49;
+const WELL_OUTER_Z = 0.95;
 
 /**
  * Loads the packed body and returns a Group holding its Mesh (shadows on), with one material per
@@ -38,49 +43,31 @@ async function loadBody(url, quality, onProgress) {
 }
 
 /**
- * Four wheels on the root (unsprung) and their dark wheel-well liners on the chassis.
+ * The four wheel wells as one mesh on the chassis: per wheel an open arch liner (a cylinder segment
+ * 7 % larger than the tyre over the top 209°) and a back plate closing its inboard side, so the
+ * open wheel cut-outs of the body never show its inside. The liner stops at |z| = WELL_OUTER_Z,
+ * inside the body's arch rim (|z| 0.98–1.02), so it cannot poke through the fender skin.
  *
- * @param {Record<'FL'|'FR'|'RL'|'RR', {x: number, y: number, r: number}>} wheelLayout from
- *   hero-car.json: axle x, wheel-centre height y and tyre radius r (metres). Its `side` field is
- *   not read; the side comes from the key (…R = right = +z).
+ * @param {Record<'FL'|'FR'|'RL'|'RR', {x: number, y: number, r: number}>} layout hero-car.json
  */
-function addWheels(root, chassis, wheelLayout, materials) {
-  let wheels = {};
-  for (let key of ['FL', 'FR', 'RL', 'RR']) {
-    let layout = wheelLayout[key],
-      front = key[0] === 'F',
-      side = key[1] === 'R' ? 1 : -1,
-      wheel = buildWheel({ r: layout.r, w: WHEEL_WIDTH, front, side, mats: materials }),
-      centreZ = side * WHEEL_CENTRE_Z;
-    // Wheel centre at y = r so the tyre touches the ground (layout.y is only used for the wells).
-    (wheel.steer.position.set(layout.x, layout.r, centreZ), root.add(wheel.steer));
-    // Liner: open cylinder segment (0.42π .. 1.58π, i.e. the top of the arch once rotated)
-    // around the wheel, 7 % larger than the tyre.
-    let liner = new Mesh(
-      new CylinderGeometry(
-        layout.r * 1.07,
-        layout.r * 1.07,
-        0.5,
-        40,
-        1,
-        true,
-        Math.PI * 0.42,
-        Math.PI * 1.16,
-      ),
-      materials.well,
+function wheelWells(layout, material) {
+  const parts = [];
+  for (const key of ['FL', 'FR', 'RL', 'RR']) {
+    const { x, y, r } = layout[key];
+    const side = key[1] === 'R' ? 1 : -1;
+    const length = WELL_OUTER_Z - WELL_INNER_Z;
+    parts.push(
+      new CylinderGeometry(r * 1.07, r * 1.07, length, 40, 1, true, Math.PI * 0.42, Math.PI * 1.16)
+        .rotateX(Math.PI / 2)
+        .translate(x, y, side * (WELL_INNER_Z + length / 2)),
     );
-    ((liner.rotation.x = Math.PI / 2),
-      (liner.rotation.y = 0),
-      liner.position.set(layout.x, layout.y, side * 0.78),
-      chassis.add(liner));
-    // Back plate: a disc sector closing the inboard side of the well.
-    let backPlate = new Mesh(
-      new CircleGeometry(layout.r * 1.07, 40, -Math.PI * 0.08, Math.PI * 1.16),
-      materials.well,
-    );
-    (backPlate.position.set(layout.x, layout.y, side * 0.53), chassis.add(backPlate), (wheels[key] = wheel));
+    const plate = new CircleGeometry(r * 1.07, 40, -Math.PI * 0.08, Math.PI * 1.16);
+    parts.push(plate.translate(x, y, side * WELL_INNER_Z));
   }
-  return wheels;
+  const mesh = new Mesh(mergeGeometries(parts), material);
+  mesh.name = 'wheel-wells';
+  for (const part of parts) part.dispose();
+  return mesh;
 }
 
 /**
@@ -88,7 +75,7 @@ function addWheels(root, chassis, wheelLayout, materials) {
  * ground decals on the root (they do not pitch/roll with the chassis), excluded from the motion
  * mask, drawn after the ground with polygonOffset instead of depth writes.
  */
-function addContactShadows(root, wheels) {
+function addContactShadows(root, layout) {
   let carShadowMaterial = new MeshBasicMaterial({
       map: roundedShadowTexture(256, 128, { alpha: 0.8 }),
       transparent: true,
@@ -112,10 +99,10 @@ function addContactShadows(root, wheels) {
     polygonOffsetFactor: -3,
     polygonOffsetUnits: -3,
   });
-  for (let key in wheels) {
+  for (const key of ['FL', 'FR', 'RL', 'RR']) {
     let tyreShadow = new Mesh(new PlaneGeometry(0.95, 0.62), tyreShadowMaterial);
     ((tyreShadow.rotation.x = -Math.PI / 2),
-      tyreShadow.position.set(wheels[key].steer.position.x, 0.06, wheels[key].steer.position.z),
+      tyreShadow.position.set(layout[key].x, 0.06, (key[1] === 'R' ? 1 : -1) * WHEEL_CENTRE_Z),
       (tyreShadow.renderOrder = 2),
       (tyreShadow.userData.noMask = true),
       root.add(tyreShadow));
@@ -139,9 +126,11 @@ async function buildHeroCar(url, wheelLayout, { onProgress, quality = 'high' } =
   root.name = 'hero-car';
   let chassis = new Group();
   (root.add(chassis), chassis.add(body));
-  let materials = wheelMaterials(),
-    wheels = addWheels(root, chassis, wheelLayout, materials);
-  addContactShadows(root, wheels);
+  const wheels = createWheels({ layout: wheelLayout, width: WHEEL_WIDTH, centreZ: WHEEL_CENTRE_Z });
+  const materials = wheels.materials;
+  root.add(wheels.group);
+  chassis.add(wheelWells(wheelLayout, materials.well));
+  addContactShadows(root, wheelLayout);
   return {
     root,
     chassis,
@@ -158,14 +147,11 @@ async function buildHeroCar(url, wheelLayout, { onProgress, quality = 'high' } =
      * @param {number} [state.speed=0] speed, m/s; fades the wheel blur discs in from 5 to ~20 m/s
      */
     pose({ dist = 0, steer = 0, pitch = 0, roll = 0, heave = 0, speed = 0 } = {}) {
-      ((materials.blur.opacity = Math.min(0.94, Math.max(0, (speed - 5) / 16))),
-        (materials.blur.visible = materials.blur.opacity > 0.01));
-      for (let key in wheels) {
-        let wheel = wheels[key];
-        // Negative about z = forward roll for a car moving towards +x.
-        ((wheel.spin.rotation.z = -dist / wheel.r), key[0] === 'F' && (wheel.steer.rotation.y = steer));
-      }
-      (chassis.rotation.set(roll, 0, pitch), (chassis.position.y = heave));
+      materials.blur.opacity = Math.min(0.94, Math.max(0, (speed - 5) / 16));
+      materials.blur.visible = materials.blur.opacity > 0.01;
+      wheels.update(dist, steer);
+      chassis.rotation.set(roll, 0, pitch);
+      chassis.position.y = heave;
     },
   };
 }
