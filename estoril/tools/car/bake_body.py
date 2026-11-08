@@ -200,6 +200,105 @@ def creased_normals(P, I, crease_deg, extra_sharp=None, filtered=None):
     return normals, fan
 
 
+# --- material classification -------------------------------------------------------------------------------
+
+#: Group order in the index buffer and material index at runtime (hero-car.js BODY_MATERIALS).
+CLASSES = ['paint', 'trim', 'glass', 'lights']
+PAINT, TRIM, GLASS, LIGHTS = range(4)
+
+
+def srgb_to_linear(c):
+    return np.where(c <= 0.04045, c / 12.92, ((c + 0.055) / 1.055) ** 2.4)
+
+
+def load_texture(name, linear=False):
+    from PIL import Image
+    a = np.asarray(Image.open(os.path.join(MODELS, name)).convert('RGB')).astype(np.float32) / 255
+    return srgb_to_linear(a) if linear else a
+
+
+def bilinear(img, uv):
+    """Bilinear lookup with repeat wrapping; flipY = false, so v = 0 is the first row."""
+    h, w = img.shape[:2]
+    x = uv[..., 0] * w - 0.5
+    y = uv[..., 1] * h - 0.5
+    x0, y0 = np.floor(x).astype(int), np.floor(y).astype(int)
+    fx, fy = (x - x0)[..., None], (y - y0)[..., None]
+    x0, x1 = x0 % w, (x0 + 1) % w
+    y0, y1 = y0 % h, (y0 + 1) % h
+    return (img[y0, x0] * (1 - fx) * (1 - fy) + img[y0, x1] * fx * (1 - fy) + img[y1, x0] * (1 - fx) * fy
+            + img[y1, x1] * fx * fy)
+
+
+def sample_triangles(UV, I, base, mr, steps=4):
+    """Texture statistics per triangle from a barycentric grid of samples (15 points for steps = 4)."""
+    b = [(i / steps, j / steps) for i in range(steps + 1) for j in range(steps + 1 - i)]
+    b = np.array([(u, v, 1 - u - v) for u, v in b])
+    b = 0.9 * b + 0.1 / 3  # pull the samples inside the triangle (away from chart borders)
+    uv = np.einsum('sk,tkc->tsc', b, UV[I])  # T x S x 2
+    col = bilinear(base, uv)
+    orm = bilinear(mr, uv)
+    lum = col @ np.array([0.2126, 0.7152, 0.0722])
+    sat = (col.max(-1) - col.min(-1)) / np.maximum(col.max(-1), 1e-4)
+    red = (col[..., 0] > 0.15) & (col[..., 0] > 2.5 * col[..., 1]) & (sat > 0.5)
+    rough, metal = orm[..., 1], orm[..., 2]
+    gloss_white = (lum > 0.3) & (rough < 0.13) & (sat < 0.25)  # the paint
+    lens = ((rough > 0.16) | red | (metal > 0.12)) & (lum > 0.02) & ~gloss_white  # lenses, reflectors, LEDs
+    return {
+        'col': col.mean(1), 'lum': lum.mean(1), 'rough': rough.mean(1), 'metal': metal.mean(1),
+        'bright': ((lum > 0.2) | red).mean(1),  # fraction of paint-like samples (white or the red livery)
+        'dark': (lum < 0.1).mean(1), 'red': red.mean(1), 'lens': lens.mean(1),
+    }
+
+
+def classify(P, I, n, s):
+    """Material class per triangle from texture samples plus position/orientation boxes (car frame)."""
+    x, y, z = P[I].mean(1).T
+    az = np.abs(z)
+    cls = np.where(s['bright'] >= 0.5, PAINT, TRIM)
+    # lights: the headlight slots and the tail-light clusters (red lenses, light-grey reflectors), not the
+    # glossy white paint around them
+    head = (x > 1.55) & (y > 0.46) & (y < 0.68) & (az > 0.35)
+    tail = ((x < -1.9) & (y > 0.82) & (y < 1.04) & (az > 0.4)) | ((x < -1.4) & (y > 0.9) & (y < 1.04) & (az > 0.8))
+    rain = (x < -1.9) & (y > 0.36) & (y < 0.48) & (az < 0.2)
+    cls[(head | tail) & (s['lens'] >= 0.6)] = LIGHTS
+    cls[rain & (s['red'] > 0.3)] = LIGHTS
+    # glass: the dark side windows (a thin double shell) and the glossy engine-cover window; not the mirrors
+    mirror = (x > 0.2) & (x < 0.75) & (az > 0.85) & (y > 0.85) & (y < 1.12)
+    side = (s['dark'] > 0.5) & (y > 0.88) & (az > 0.45) & (x > -1.05) & (x < 0.95) & (np.abs(n[:, 2]) > 0.35)
+    deck = (s['dark'] > 0.5) & (x > -1.55) & (x < -0.55) & (az < 0.5) & (y > 0.9) & (s['rough'] < 0.15) & (n[:, 1] > 0.5)
+    cls[(side | deck) & ~mirror] = GLASS
+    return cls
+
+
+def smooth_classes(P, I, cls, smooth_pairs, iterations=4):
+    """Majority vote across smooth edges only: removes isolated misclassified triangles; class borders can
+    still follow creases (sharp edges never vote)."""
+    f0, f1 = smooth_pairs
+    K = len(CLASSES)
+    for _ in range(iterations):
+        votes = np.zeros((len(I), K))
+        np.add.at(votes, (f0, cls[f1]), 1)
+        np.add.at(votes, (f1, cls[f0]), 1)
+        best = votes.argmax(1)
+        flip = (votes.max(1) >= 2) & (votes[np.arange(len(I)), cls] == 0) & (best != cls)
+        if not flip.any():
+            break
+        cls = np.where(flip, best, cls)
+    return cls
+
+
+def smooth_edge_pairs(P, I, normals_used, crease_deg):
+    weld = weld_positions(P)
+    WI = weld[I]
+    src, dst, order, starts, counts = edge_table(WI)
+    face = order // 3
+    m2 = counts == 2
+    f0, f1 = face[starts[m2]], face[starts[m2] + 1]
+    ok = (normals_used[f0] * normals_used[f1]).sum(1) >= np.cos(np.radians(crease_deg))
+    return f0[ok], f1[ok]
+
+
 def build_vertices(P, UV, I, normals, fan):
     """Indexed buffers: one vertex per (source vertex, fan)."""
     T = len(I)
@@ -257,9 +356,26 @@ def main():
     I = drop_debris(P, UV, I)
     n, area, _, _ = face_geometry(P, I)
     filtered = filter_face_normals(P, I, n, area, FILTER_ITERATIONS, FILTER_SIGMA_R_DEG) if FILTER_ITERATIONS else None
+    # material groups: classify, clean up, then sort the triangles by class (stable)
+    base = load_texture(src['material']['map'], linear=True)
+    mr = load_texture(src['material']['metalRoughMap'])
+    stats = sample_triangles(UV, I, base, mr)
+    cls = classify(P, I, filtered if filtered is not None else n, stats)
+    cls = smooth_classes(P, I, cls, smooth_edge_pairs(P, I, filtered if filtered is not None else n, CREASE_DEG))
+    order = np.argsort(cls, kind='stable')
+    I, cls = I[order], cls[order]
+    if filtered is not None:
+        filtered = filtered[order]
+    for k, name in enumerate(CLASSES):
+        sel = cls == k
+        log('group %-6s %6d triangles, %6.2f m2' % (name, sel.sum(), area[order][sel].sum()))
     normals, fan = creased_normals(P, I, CREASE_DEG, filtered=filtered)
     pos, uv, nrm, index = build_vertices(P, UV, I, normals, fan)
-    groups = [{'name': 'body', 'start': 0, 'count': int(index.size)}]
+    groups = []
+    for k, name in enumerate(CLASSES):
+        start = int(np.searchsorted(cls, k)) * 3
+        count = int((cls == k).sum()) * 3
+        groups.append({'name': name, 'start': start, 'count': count})
     extra = {'textures': {'map': src['material']['map'], 'normalMap': src['material']['normalMap'],
                           'metalRoughMap': src['material']['metalRoughMap']}}
     write_outputs(pos, uv, nrm, index, groups, extra)

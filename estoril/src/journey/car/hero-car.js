@@ -5,24 +5,16 @@
 //
 //   root 'hero-car'                 journey.js sets position (on the driving line) and rotation.y
 //   ├─ chassis                      sprung mass: pose() rolls (x), pitches (z) and heaves (y) it
-//   │   ├─ body                     Group > Mesh 'body' (the scanned body, normals baked offline)
+//   │   ├─ body                     Group > Mesh 'body' (normals baked offline; 4 material groups)
 //   │   └─ 4 × wheel-well liner + back plate (dark, hide the body interior behind the wheels)
 //   ├─ 4 × wheel steer group        unsprung, at (x, r, ±0.86); front ones steer about y
 //   ├─ contact shadow decal         5.5 × 2.75 m, userData.noMask
 //   └─ 4 × blob shadow under tyres  userData.noMask
 //
 // userData.noMask keeps an object off layer 1, which journey.js uses for the motion-blur mask.
-import {
-  CircleGeometry,
-  CylinderGeometry,
-  Group,
-  Mesh,
-  MeshBasicMaterial,
-  MeshPhysicalMaterial,
-  MeshStandardMaterial,
-  PlaneGeometry,
-} from 'three';
+import { CircleGeometry, CylinderGeometry, Group, Mesh, MeshBasicMaterial, PlaneGeometry } from 'three';
 import { loadBodyAsset } from './body-asset.js';
+import { bodyMaterials } from './body-materials.js';
 import { buildWheel, wheelMaterials } from './wheel.js';
 import { blobShadowTexture, roundedShadowTexture } from '../textures.js';
 
@@ -32,33 +24,12 @@ var WHEEL_WIDTH = 0.34,
   WHEEL_CENTRE_Z = 0.86;
 
 /**
- * The body material: base colour, normal and glTF metal-roughness maps (roughness in G, metalness
- * in B); a light clearcoat unless quality is 'low'. The normal map is a glTF (OpenGL, +Y up)
- * tangent-space map read with flipY = false and no vertex tangents, so its green channel is
- * negated (as three's GLTFLoader does) and softened to 0.6.
+ * Loads the packed body and returns a Group holding its Mesh (shadows on), with one material per
+ * group (paint, trim, glass, lights: car/body-materials.js).
  */
-function bodyMaterial(textures, quality) {
-  const params = {
-    map: textures.map,
-    normalMap: textures.normalMap,
-    roughnessMap: textures.metalRoughMap,
-    metalnessMap: textures.metalRoughMap,
-    metalness: 1,
-    roughness: 1,
-    envMapIntensity: 1,
-  };
-  const material =
-    quality === 'low'
-      ? new MeshStandardMaterial(params)
-      : new MeshPhysicalMaterial({ ...params, clearcoat: 0.32, clearcoatRoughness: 0.14 });
-  material.normalScale.set(0.6, -0.6);
-  return material;
-}
-
-/** Loads the packed body and returns a Group holding its Mesh (shadows on). */
 async function loadBody(url, quality, onProgress) {
-  const { geometry, textures, desc } = await loadBodyAsset(url, onProgress);
-  const mesh = new Mesh(geometry, bodyMaterial(textures, quality));
+  const { geometry, groups, textures, desc } = await loadBodyAsset(url, onProgress);
+  const mesh = new Mesh(geometry, bodyMaterials(groups, textures, quality));
   mesh.name = desc.name;
   mesh.castShadow = mesh.receiveShadow = true;
   const group = new Group();

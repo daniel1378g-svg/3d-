@@ -32,9 +32,24 @@
  },
  "groups": [
   {
-   "name": "body",
+   "name": "paint",
    "start": 0,
-   "count": 166359
+   "count": 46962
+  },
+  {
+   "name": "trim",
+   "start": 46962,
+   "count": 102681
+  },
+  {
+   "name": "glass",
+   "start": 149643,
+   "count": 9150
+  },
+  {
+   "name": "lights",
+   "start": 158793,
+   "count": 7566
   }
  ],
  "textures": {
