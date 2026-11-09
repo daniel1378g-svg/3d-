@@ -36,8 +36,10 @@ const CAMERA_SHOTS = [
   { u: 0.115, pos: rel(-9, 1.6, -4.5), tgt: rel(0.5, 0.85, 0), fov: 38 },
   { u: 0.15, pos: rel(-9, 2.4, -7), tgt: rel(1.5, 0.8, 0), fov: 38 },
   { u: 0.18, pos: rel(-3, 3.8, -15.5), tgt: rel(1, 0.9, 0), fov: 39 },
-  // stage 2, pit lane: at the open pit box
-  { u: 0.2, pos: abs(-65.3, 1.5, 197.5), tgt: abs(-58.3, 1, 187), fov: 40 },
+  // stage 2, pit lane: at the open pit box, 0.8 m in from the pit wall's face (z 197.9): the chase
+  // eye comes over the wall from the straight, and where no dolly moves this key (large screens)
+  // the eye would otherwise pass 0.4 m from the wall's cap
+  { u: 0.2, pos: abs(-65.3, 1.5, 196.6), tgt: abs(-58.3, 1, 187), fov: 40 },
   { u: 0.315, pos: abs(-64.6, 1.55, 197.3), tgt: abs(-58.4, 1, 187.1), fov: 40 },
   // aerial: lift off above the straight, climb over the grandstand, hold the overhead shot, dive
   { u: 0.332, pos: abs(-66, 13, 203), tgt: rel(0.5, 0.6, 0), fov: 42 },

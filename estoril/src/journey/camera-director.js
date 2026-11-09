@@ -39,15 +39,28 @@
 // most MAX_DOLLY, stopped DOLLY_CLEARANCE short of the scenery: `clearanceAt`) until the car (a
 // car-shaped hull in its bounding box, carOutline) fits in that key's framing area at the key's
 // FOV, so the lens stays as designed and the car keeps the size the screen allows; where a wall
-// stops the dolly, that key's lens widens instead (a fixed value for the layout). Between keys,
-// where the interpolated eye can come closer, the FOV may widen by at most FIT_EXTRA_FOV degrees,
-// following a profile solved with the layout (sampled every 0.001 of progress, spread by a running
-// maximum and smoothed), so the widening is gradual and never pumps. The overhead key is solved for
-// the actual aspect: fitCircuitShot() picks, among headings between "from the grandstand side" and
-// "from the first corner", the camera that shows the whole circuit largest inside the open area.
+// stops the dolly, that key's lens widens instead (a fixed value for the layout). Between keys the
+// interpolated target can drift off the car (where the shot changes from car-relative to absolute
+// it follows neither exactly) and the interpolated eye can come closer, so three profiles, solved
+// with the layout, keep the car's outline inside the framing area. update() applies them in this
+// order (poseAt):
+//   dolly  the eye backs away from the target, by at most MAX_FIT_DOLLY of its distance, kept clear
+//          of the scenery (limitDolly);
+//   aim    the target moves a share of the way to the middle of the car's outline seen from that
+//          eye (soft extents, measured at the pose itself), the share that brings the outline back
+//          inside the area: zero where it already is, never past the middle;
+//   lens   the FOV widens by at most FIT_EXTRA_FOV degrees (about the principal point: the aim holds).
+// The solve asks the aim first, then the lens, and the dolly only for what is left of the car's size.
+// The profiles are sampled every 0.001 of progress with the car where it is at each sample, in
+// FIT_PASSES passes: each poses the camera exactly as update() will with the profiles solved so far
+// and adds what is still missing, so the smoothing's losses and the estimates (size ∝ 1 / distance)
+// are made up. Each profile is spread by a running maximum and smoothed, so it starts before it is
+// needed, is C1 and never pumps; update() applies the profiles as solved. The overhead key is solved
+// for the actual aspect: fitCircuitShot() picks, among headings between "from the grandstand side"
+// and "from the first corner", the camera that shows the whole circuit largest inside the open area.
 //
-// update() allocates nothing; the layout (overhead shot, dollies, rigs) is re-solved only when the
-// aspect or the framing areas change.
+// update() allocates nothing; the layout (overhead shot, dollies, rigs, car-fit profiles) is
+// re-solved only when the aspect or the framing areas change.
 import { Vector3 } from 'three';
 import { INTRO_CAMERA_FOV, INTRO_CAMERA_POSITION, PANEL_FADE, PANEL_WINDOWS } from './camera-shots.js';
 import { clamp, hermite, lerp, monotoneSlope, smoothstep } from './util/math.js';
@@ -74,10 +87,14 @@ const MAX_CHASE_DOLLY = 2;
 const DOLLY_RISE = 0.04;
 /**
  * Between keys the dolly aims DOLLY_MARGIN beyond the fit (it is an estimate: size ∝ 1 / distance)
- * and backs the eye away by at most MAX_FIT_DOLLY of its distance (smoothly saturated).
+ * and backs the eye away by at most MAX_FIT_DOLLY of its distance; the car-fit profiles are solved
+ * in FIT_PASSES passes (see the header).
  */
 const DOLLY_MARGIN = 1.04;
 const MAX_FIT_DOLLY = 0.75;
+const FIT_PASSES = 3;
+/** Rounds of dents that keep the between-keys dolly under the scenery's limits (limitDolly). */
+const LIMIT_DENTS = 6;
 /**
  * …stops where the eye would come closer than DOLLY_CLEARANCE metres to the scenery (checked in
  * steps of at least DOLLY_STEP metres), and if that is too soon, swings around the target by up to
@@ -104,6 +121,11 @@ const PROFILE_SAMPLES = 1001;
 const PROFILE_SPREAD = 6;
 const PROFILE_SMOOTH = 4;
 const PROFILE_TIMES = Float64Array.from({ length: PROFILE_SAMPLES }, (_, i) => i / (PROFILE_SAMPLES - 1));
+/** The smoothing's weights (offsets 0 … SMOOTH_REACH samples, truncated at 3σ). */
+const SMOOTH_REACH = Math.ceil(3 * PROFILE_SMOOTH);
+const SMOOTH_WEIGHTS = Float64Array.from({ length: SMOOTH_REACH + 1 }, (_, j) =>
+  Math.exp(-0.5 * (j / PROFILE_SMOOTH) ** 2),
+);
 /** Car-relative shots use the car's heading smoothed over a chord of ± this many metres of path. */
 const HEADING_CHORD = 10;
 /** Overhead shot: camera pitch below the horizon and the headings tried (degrees). */
@@ -144,6 +166,21 @@ function panelWeight(t, windows, fade) {
     if (o > opacity) opacity = o;
   }
   return smoothstep(clamp(4 * opacity, 0, 1));
+}
+
+/** Whether two framing areas ([left, top, right, bottom]) are the same. */
+function sameArea(a, b) {
+  return a[0] === b[0] && a[1] === b[1] && a[2] === b[2] && a[3] === b[3];
+}
+
+/**
+ * The shift that brings the extent [low, high] inside ±half: none when it is already inside, the
+ * least that puts it inside otherwise, and its middle when it is wider than the room (continuous in
+ * every input; it never moves the extent's middle past 0).
+ */
+function shiftInto(low, high, half) {
+  if (high - low >= 2 * half) return (low + high) / 2;
+  return Math.min(Math.max(0, high - half), low + half);
 }
 
 /**
@@ -411,16 +448,41 @@ function createCameraDirector(
   const dollies = new Float64Array(count).fill(1);
   // per key, for the last layout (tests): the dolly the car needed, the FOV, the resolved eye/target
   const keyInfo = shots.map(() => ({ wanted: 1, angle: 0, fov: 0, eye: null, look: null }));
+  // the car-fit profiles (see the header): each the smoothed samples and their tangents, solved from
+  // the raw needs (`raw`; `spread` keeps the running maximum of the lens and dolly needs)
   const newProfile = () => ({
     values: new Float64Array(PROFILE_SAMPLES),
     slopes: new Float64Array(PROFILE_SAMPLES),
+    raw: new Float64Array(PROFILE_SAMPLES),
+    spread: new Float64Array(PROFILE_SAMPLES),
   });
-  const fitProfiles = { widen: newProfile(), back: newProfile() };
+  const fitProfiles = {
+    aim: newProfile(), // aim: fraction of the way from the keys' target to the middle of the car
+    widen: newProfile(), // lens: half of the extra vertical FOV (radians)
+    back: newProfile(), // dolly: ratio of the eye's horizontal distance from the target
+  };
+  const allProfiles = [fitProfiles.aim, fitProfiles.widen, fitProfiles.back];
+  /** What poseAt() leaves: the keys' tan(fov/2), the car-subject weight, the dolly, aim and lens applied. */
+  const fitState = { keyTan: 0, subject: 0, aim: 0, widen: 0, back: 0 };
+  const extent = { x0: 0, y0: 0, x1: 0, y1: 0, distance: 0 };
+  const fitArea = [0, 0, 0, 0];
+  const centring = new Vector3();
   const profileScratch = new Float64Array(PROFILE_SAMPLES);
+  const limitScratch = new Float64Array(PROFILE_SAMPLES);
+  // what limitDolly() learnt per sample for this layout (the eye's path there is fixed): the
+  // clearance floor and the largest dolly known clear and the smallest known blocked
+  const dollyRoom = {
+    floor: new Float64Array(PROFILE_SAMPLES),
+    clearTo: new Float64Array(PROFILE_SAMPLES),
+    blockedFrom: new Float64Array(PROFILE_SAMPLES),
+  };
   const gaussScratch = new Float64Array(PROFILE_SAMPLES);
   const scratchEye = new Vector3();
   const rideEye = new Vector3();
   const rideLook = new Vector3();
+  const fitEye = new Vector3();
+  const fitLook = new Vector3();
+  const probeEye = new Vector3();
   const newFrame = () => ({ p: new Vector3(), f: new Vector3(), r: new Vector3() });
   const keyCarFrame = newFrame();
   const rideFrames = Array.from({ length: RIDE_SAMPLES }, newFrame);
@@ -463,20 +525,20 @@ function createCameraDirector(
   }
 
   /**
-   * Moves `look` so that the middle of the car's outline (at `frame`) on screen falls on the
-   * principal point, for an eye at `eye`: the outline's extent across and up the view, in tan units,
-   * and the target shifted by the middle of it at the target's distance.
+   * The car's outline (its hull at `frame`) on screen for an eye at `eye` looking at `look`: its
+   * extent across and up the view in tan units, relative to the view axis (which the principal point
+   * draws at the framing area's centre), and the target's distance, into `extent`; the view's axes
+   * are left in forward/right/upAxis. False when part of the car is not in front of the eye.
    */
-  function centreOnCar(frame, eye, look) {
+  function outlineExtent(frame, eye, look) {
     forward.subVectors(look, eye);
     const distance = forward.length();
     forward.divideScalar(distance);
     right.crossVectors(forward, UP).normalize();
     upAxis.crossVectors(right, forward);
-    let x0 = Infinity;
-    let x1 = -Infinity;
-    let y0 = Infinity;
-    let y1 = -Infinity;
+    extent.x0 = extent.y0 = Infinity;
+    extent.x1 = extent.y1 = -Infinity;
+    extent.distance = distance;
     for (let i = 0; i < carHull.length; i += 3) {
       corner
         .copy(frame.p)
@@ -485,17 +547,87 @@ function createCameraDirector(
         .addScaledVector(frame.r, carHull[i + 2])
         .sub(eye);
       const depth = corner.dot(forward);
-      if (depth < 0.2) return;
+      if (depth < 0.2) return false;
       const x = corner.dot(right) / depth;
       const y = corner.dot(upAxis) / depth;
-      x0 = Math.min(x0, x);
-      x1 = Math.max(x1, x);
-      y0 = Math.min(y0, y);
-      y1 = Math.max(y1, y);
+      extent.x0 = Math.min(extent.x0, x);
+      extent.x1 = Math.max(extent.x1, x);
+      extent.y0 = Math.min(extent.y0, y);
+      extent.y1 = Math.max(extent.y1, y);
     }
-    const cx = (x0 + x1) / 2;
-    const cy = (y0 + y1) / 2;
-    look.addScaledVector(right, cx * distance).addScaledVector(upAxis, cy * distance);
+    return true;
+  }
+
+  /**
+   * The car's outline at `frame` for an eye at `eye` looking at `look` as soft extents: as
+   * outlineExtent(), but in units of `unitX`, `unitY` (tan units across and up the view) and as soft
+   * minima and maxima over the hull's points (log-sum-exp, FIT_LSE_SHARPNESS: they move smoothly
+   * when the outermost point changes, a few % outside the hard ones). Also writes into `centring`
+   * the target's displacement that puts the outline's middle on the view axis. False when part of
+   * the car is not in front of the eye.
+   */
+  function softExtent(frame, eye, look, unitX, unitY) {
+    forward.subVectors(look, eye);
+    const distance = forward.length();
+    forward.divideScalar(distance);
+    right.crossVectors(forward, UP).normalize();
+    upAxis.crossVectors(right, forward);
+    let n = 0;
+    let x1 = -Infinity;
+    let x0 = Infinity;
+    let y1 = -Infinity;
+    let y0 = Infinity;
+    for (let i = 0; i < carHull.length; i += 3) {
+      corner
+        .copy(frame.p)
+        .addScaledVector(frame.f, carHull[i])
+        .addScaledVector(UP, carHull[i + 1])
+        .addScaledVector(frame.r, carHull[i + 2])
+        .sub(eye);
+      const depth = corner.dot(forward);
+      if (depth < 0.2) return false;
+      const x = corner.dot(right) / (depth * unitX);
+      const y = corner.dot(upAxis) / (depth * unitY);
+      needs[n++] = x;
+      needs[n++] = y;
+      x1 = Math.max(x1, x);
+      x0 = Math.min(x0, x);
+      y1 = Math.max(y1, y);
+      y0 = Math.min(y0, y);
+    }
+    // log-sum-exp around the hard extremes (which only keep it in range: the result is smooth)
+    let sx1 = 0;
+    let sx0 = 0;
+    let sy1 = 0;
+    let sy0 = 0;
+    for (let i = 0; i < n; i += 2) {
+      sx1 += Math.exp(FIT_LSE_SHARPNESS * (needs[i] - x1));
+      sx0 += Math.exp(FIT_LSE_SHARPNESS * (x0 - needs[i]));
+      sy1 += Math.exp(FIT_LSE_SHARPNESS * (needs[i + 1] - y1));
+      sy0 += Math.exp(FIT_LSE_SHARPNESS * (y0 - needs[i + 1]));
+    }
+    extent.x1 = x1 + Math.log(sx1) / FIT_LSE_SHARPNESS;
+    extent.x0 = x0 - Math.log(sx0) / FIT_LSE_SHARPNESS;
+    extent.y1 = y1 + Math.log(sy1) / FIT_LSE_SHARPNESS;
+    extent.y0 = y0 - Math.log(sy0) / FIT_LSE_SHARPNESS;
+    extent.distance = distance;
+    const cx = ((extent.x0 + extent.x1) / 2) * unitX * distance;
+    const cy = ((extent.y0 + extent.y1) / 2) * unitY * distance;
+    centring.copy(right).multiplyScalar(cx).addScaledVector(upAxis, cy);
+    return true;
+  }
+
+  /**
+   * Moves `look` so that the middle of the car's outline (at `frame`) on screen falls on the
+   * principal point, for an eye at `eye`: the target shifted by the middle of the outline's extent
+   * at the target's distance.
+   */
+  function centreOnCar(frame, eye, look) {
+    if (!outlineExtent(frame, eye, look)) return;
+    const d = extent.distance;
+    look
+      .addScaledVector(right, ((extent.x0 + extent.x1) / 2) * d)
+      .addScaledVector(upAxis, ((extent.y0 + extent.y1) / 2) * d);
   }
 
   /** World position of key spec `spec` (abs, rel or the overhead fit) with the car at `frame`. */
@@ -615,15 +747,16 @@ function createCameraDirector(
   /**
    * Solves the layout for this aspect and these framing areas and panel windows (setup, on a resize
    * or a new layout): the overhead shot; per key the dolly and the FOV (the key's FOV for this
-   * viewport, widened where the dolly was stopped short); the rigs; and the car-fit profile.
+   * viewport, widened where the dolly was stopped short); the rigs; and the car-fit profiles. The
+   * check for an unchanged layout runs every frame and allocates nothing.
    */
   function prepareLayout(aspect, panelArea, openArea, windows, fade) {
     if (
       aspect === solved.aspect &&
       windows === solved.windows &&
       fade === solved.fade &&
-      panelArea.every((v, i) => v === solved.panel[i]) &&
-      openArea.every((v, i) => v === solved.open[i])
+      sameArea(panelArea, solved.panel) &&
+      sameArea(openArea, solved.open)
     )
       return;
     solved.aspect = aspect;
@@ -700,114 +833,247 @@ function createCameraDirector(
     for (let k = 0; k < count; k++) fovChannel.slopes[k] = monotoneSlope(times, fovChannel.values, k);
     rigs.pos.build(worldKeys.pos, carKeys.pos);
     rigs.tgt.build(worldKeys.tgt, carKeys.tgt);
+    solveFit(aspect, panelArea, openArea, windows, fade);
+  }
 
-    // the car-fit profiles: how much the car needs beyond the keys between them, sampled along the
-    // journey with the car where it is at each sample: first the lens, by up to FIT_EXTRA_FOV, then
-    // for the rest the eye backs away from the target (a dolly). Each is spread forwards and back (a
-    // running maximum) and smoothed, so the move starts before it is needed and never pumps.
-    const widen = fitProfiles.widen.values;
-    const back = fitProfiles.back.values;
-    for (let i = 0; i < PROFILE_SAMPLES; i++) {
-      const u = i / (PROFILE_SAMPLES - 1);
-      widen[i] = back[i] = 0;
-      if (!carHull) continue;
-      const seg = segmentOf(u);
-      const subject = clamp(curve(subjectChannel.values, subjectChannel.slopes, seg, u), 0, 1);
-      if (subject <= 0) continue;
-      const frame = frameAt ? frameAt(u) : carFrame;
-      evaluateRig(rigs.pos, seg, u, eye, frame);
-      evaluateRig(rigs.tgt, seg, u, look, frame);
-      const tan = curve(fovChannel.values, fovChannel.slopes, seg, u);
-      const weight = panelWeight(u, windows, fade);
-      for (let a = 0; a < 4; a++) keyArea[a] = lerp(openArea[a], panelArea[a], weight);
-      const need = carFitTan(frame, eye, look, aspect, keyArea[2] - keyArea[0], keyArea[3] - keyArea[1]);
-      const ratio = need / tan;
-      const lens = Math.min(Math.max(0, ratio - 1), widestTan(tan) / tan - 1);
-      widen[i] = subject * lens;
-      back[i] = subject * Math.max(0, (DOLLY_MARGIN * ratio) / (1 + lens) - 1);
+  /**
+   * The between-keys car-fit profiles for this layout (see the header). Each of FIT_PASSES passes
+   * poses the camera at every sample as update() will, with the profiles solved so far (poseAt), and
+   * adds to the raw needs what the car still lacks there: the aim that brings its outline inside the
+   * framing area (CAR_FILL of it, as at the keys), then, for the outline so aimed, the lens (up to
+   * FIT_EXTRA_FOV) and the dolly for what is left of its size (up to MAX_FIT_DOLLY). The needs only
+   * grow from pass to pass and are weighted by the car-subject weight, so the fit fades out towards
+   * the aerial. After each pass every profile is smoothed again from its raw needs and the dolly kept
+   * clear of the scenery.
+   */
+  function solveFit(aspect, panelArea, openArea, windows, fade) {
+    for (const profile of allProfiles) {
+      profile.values.fill(0);
+      profile.slopes.fill(0);
+      profile.raw.fill(0);
     }
-    smoothProfile(fitProfiles.widen);
-    smoothProfile(fitProfiles.back);
-    if (clearanceAt) limitDolly(fitProfiles.back, windows, fade);
+    dollyRoom.floor.fill(NaN);
+    dollyRoom.clearTo.fill(0);
+    dollyRoom.blockedFrom.fill(Infinity);
+    if (!carHull) return;
+    const maxLens = (FIT_EXTRA_FOV * DEG) / 2;
+    const aimNeed = fitProfiles.aim.raw;
+    const lensNeed = fitProfiles.widen.raw;
+    const dollyNeed = fitProfiles.back.raw;
+    for (let pass = 0; pass < FIT_PASSES; pass++) {
+      for (let i = 0; i < PROFILE_SAMPLES; i++) {
+        const u = PROFILE_TIMES[i];
+        const frame = frameAt ? frameAt(u) : carFrame;
+        const tan = poseAt(u, frame, fitEye, fitLook);
+        const subject = fitState.subject;
+        if (subject <= 0) continue;
+        const weight = panelWeight(u, windows, fade);
+        for (let a = 0; a < 4; a++) fitArea[a] = lerp(openArea[a], panelArea[a], weight);
+        const halfX = fitArea[2] - fitArea[0];
+        const halfY = fitArea[3] - fitArea[1];
+        const keyTan = fitState.keyTan;
+        if (!softExtent(frame, fitEye, fitLook, halfX * aspect * keyTan, halfY * keyTan)) continue;
+        // the aim: the share of the rest of the way to the middle of the outline that brings it
+        // inside the area (CAR_FILL of it at this FOV), on top of the share already applied
+        const half = (CAR_FILL * tan) / keyTan;
+        const midX = (extent.x0 + extent.x1) / 2;
+        const midY = (extent.y0 + extent.y1) / 2;
+        const share = clamp(
+          Math.max(
+            Math.abs(midX) > 1e-9 ? shiftInto(extent.x0, extent.x1, half) / midX : 0,
+            Math.abs(midY) > 1e-9 ? shiftInto(extent.y0, extent.y1, half) / midY : 0,
+          ),
+          0,
+          1,
+        );
+        aimNeed[i] = Math.max(aimNeed[i], subject * (fitState.aim + share * (1 - fitState.aim)));
+        fitLook.addScaledVector(centring, share);
+        // the size, for the outline so aimed: the lens first, then the dolly
+        const need = carFitTan(frame, fitEye, fitLook, aspect, halfX, halfY);
+        if (!(need > tan)) continue;
+        const keyAngle = Math.atan(keyTan);
+        const lens = Math.min(maxLens, Math.atan(need) - keyAngle);
+        lensNeed[i] = Math.max(lensNeed[i], subject * lens);
+        const rest = need / Math.tan(keyAngle + lens);
+        if (rest > 1) {
+          const back = Math.min(MAX_FIT_DOLLY, (1 + fitState.back) * rest * DOLLY_MARGIN - 1);
+          dollyNeed[i] = Math.max(dollyNeed[i], subject * back);
+        }
+      }
+      smoothProfile(fitProfiles.aim);
+      smoothProfile(fitProfiles.widen);
+      smoothProfile(fitProfiles.back);
+      if (clearanceAt) limitDolly(fitProfiles.back);
+    }
+  }
+
+  /**
+   * The keys' pose at progress u with the car at `frame`: the eye into `eye`, the target into
+   * `look`. Returns the keys' tan(fov/2) and leaves it and the car-subject weight in fitState.
+   */
+  function keysAt(progress, frame, eye, look) {
+    const u = clamp(progress, 0, 1);
+    const seg = segmentOf(u);
+    evaluateRig(rigs.pos, seg, u, eye, frame);
+    evaluateRig(rigs.tgt, seg, u, look, frame);
+    fitState.keyTan = curve(fovChannel.values, fovChannel.slopes, seg, u);
+    fitState.subject = clamp(curve(subjectChannel.values, subjectChannel.slopes, seg, u), 0, 1);
+    return fitState.keyTan;
+  }
+
+  /**
+   * The camera pose at progress u with the car at `frame`, as update() draws it before the intro
+   * blend and the bob: the keys, then the car fit: the dolly (the eye backs away from the keys'
+   * target), the aim (the target moves the aim profile's share of the way to the middle of the car's
+   * outline seen from that eye, soft extents, so the share never takes it past the middle) and the
+   * lens (which scales the image about the principal point, so it keeps the aim). Writes `eye` and
+   * `look`; returns tan(fov/2) and leaves the keys' tan, the subject weight and the dolly, aim and
+   * lens applied in fitState.
+   */
+  function poseAt(progress, frame, eye, look) {
+    const keyTan = keysAt(progress, frame, eye, look);
+    fitState.back = fitState.aim = fitState.widen = 0;
+    if (!carHull) return keyTan;
+    const u = clamp(progress, 0, 1);
+    const back = profileAt(fitProfiles.back, u);
+    if (back > 0) dollyEye(eye, look, back);
+    fitState.back = back;
+    const aim = profileAt(fitProfiles.aim, u);
+    if (aim > 0) {
+      // the outline's soft extents in units of the framing area's half-size at the keys' FOV
+      const weight = panelWeight(u, solved.windows, solved.fade);
+      const { open, panel } = solved;
+      const halfX = lerp(open[2], panel[2], weight) - lerp(open[0], panel[0], weight);
+      const halfY = lerp(open[3], panel[3], weight) - lerp(open[1], panel[1], weight);
+      if (softExtent(frame, eye, look, halfX * solved.aspect * keyTan, halfY * keyTan)) {
+        look.addScaledVector(centring, aim);
+        fitState.aim = aim;
+      }
+    }
+    const widen = profileAt(fitProfiles.widen, u);
+    fitState.widen = widen;
+    return widen > 0 ? Math.tan(Math.atan(keyTan) + widen) : keyTan;
+  }
+
+  /** Backs `eye` away from `look` horizontally by `back` of its distance, rising DOLLY_RISE per metre. */
+  function dollyEye(eye, look, back) {
+    const radius = Math.hypot(eye.x - look.x, eye.z - look.z);
+    eye.x = look.x + (eye.x - look.x) * (1 + back);
+    eye.z = look.z + (eye.z - look.z) * (1 + back);
+    eye.y += back * radius * DOLLY_RISE;
+    return eye;
   }
 
   /**
    * Keeps the between-keys dolly `profile` clear of the scenery: where the dollied eye would come
    * closer than DOLLY_CLEARANCE (or than the undollied eye already is), the most it can back away
-   * (bisection); that limit is spread as a running minimum over the smoothing's reach, the profile
-   * clamped to it and smoothed again, so the result stays under the limit everywhere.
+   * (bisection, remembered for the layout's later passes: dollyRoom). The profile is then smoothed again from its spread needs held under a ceiling,
+   * dented wherever the smoothed profile would still rise above a limit: a Gaussian-shaped dent (the
+   * smoothing's own shape) as deep as lowers the smoothed value there by the excess, the least
+   * change that does (minimum norm), sample by sample, for LIMIT_DENTS rounds; what is left (where
+   * a dent reached 0) is taken by scaling that sample's window down to the limit, which is exact.
+   * The result is under every limit and nowhere above the unlimited profile (the smoothing is
+   * monotone and the ceiling only comes down), so the eye never comes closer than allowed.
    */
-  function limitDolly(profile, windows, fade) {
-    const { values, slopes } = profile;
-    const limit = profileScratch;
-    const eye = scratchEye;
+  function limitDolly(profile) {
+    const { values, slopes, spread } = profile;
+    const limit = limitScratch;
+    const { floor, clearTo, blockedFrom } = dollyRoom;
     let limited = false;
     for (let i = 0; i < PROFILE_SAMPLES; i++) {
       limit[i] = Infinity;
       const back = values[i];
-      if (!(back > 1e-4)) continue;
-      const u = i / (PROFILE_SAMPLES - 1);
-      const seg = segmentOf(u);
-      const frame = frameAt ? frameAt(u) : carFrame;
-      evaluateRig(rigs.pos, seg, u, eye, frame);
-      evaluateRig(rigs.tgt, seg, u, rideLook, frame);
-      const radius = Math.hypot(eye.x - rideLook.x, eye.z - rideLook.z);
-      const floor = Math.min(DOLLY_CLEARANCE, clearanceAt(eye, rideLook));
-      const at = (b) =>
-        rideEye.set(
-          rideLook.x + (eye.x - rideLook.x) * (1 + b),
-          eye.y + b * radius * DOLLY_RISE,
-          rideLook.z + (eye.z - rideLook.z) * (1 + b),
-        );
-      if (clearanceAt(at(back), rideLook) >= floor) continue;
-      let low = 0;
-      let high = back;
-      for (let k = 0; k < 8; k++) {
-        const mid = (low + high) / 2;
-        if (clearanceAt(at(mid), rideLook) >= floor) low = mid;
-        else high = mid;
+      if (!(back > 1e-4) || back <= clearTo[i]) continue;
+      const u = PROFILE_TIMES[i];
+      keysAt(u, frameAt ? frameAt(u) : carFrame, fitEye, fitLook);
+      if (Number.isNaN(floor[i])) floor[i] = Math.min(DOLLY_CLEARANCE, clearanceAt(fitEye, fitLook));
+      const clearAt = (b) => clearanceAt(dollyEye(probeEye.copy(fitEye), fitLook, b), fitLook) >= floor[i];
+      if (back < blockedFrom[i]) {
+        if (clearAt(back)) {
+          clearTo[i] = back;
+          continue;
+        }
+        blockedFrom[i] = back;
       }
-      limit[i] = low;
+      // bisection between what is known to be clear and blocked, to back / 256
+      while (blockedFrom[i] - clearTo[i] > back / 256) {
+        const mid = (clearTo[i] + blockedFrom[i]) / 2;
+        if (clearAt(mid)) clearTo[i] = mid;
+        else blockedFrom[i] = mid;
+      }
+      limit[i] = Math.min(back, clearTo[i]);
       limited = true;
     }
     if (!limited) return;
-    const reach = PROFILE_SPREAD + Math.ceil(3 * PROFILE_SMOOTH);
-    for (let i = 0; i < PROFILE_SAMPLES; i++) {
-      let m = Infinity;
-      const last = Math.min(PROFILE_SAMPLES - 1, i + reach);
-      for (let j = Math.max(0, i - reach); j <= last; j++) m = Math.min(m, limit[j]);
-      slopes[i] = Math.min(values[i], m); // slopes as scratch: the clamped profile
+    // the ceiling, dented sample by sample (each limit sees the dents made before it)
+    const ceiling = profileScratch;
+    ceiling.fill(Infinity);
+    for (let round = 0; round <= LIMIT_DENTS; round++) {
+      let over = false;
+      for (let i = 0; i < PROFILE_SAMPLES; i++) {
+        if (limit[i] === Infinity) continue;
+        // the smoothed value at i under the ceiling, as gaussian() will compute it
+        const first = Math.max(0, i - SMOOTH_REACH);
+        const last = Math.min(PROFILE_SAMPLES - 1, i + SMOOTH_REACH);
+        let sum = 0;
+        let wsum = 0;
+        let w2sum = 0;
+        for (let j = first; j <= last; j++) {
+          const w = SMOOTH_WEIGHTS[Math.abs(j - i)];
+          sum += w * Math.min(spread[j], ceiling[j]);
+          wsum += w;
+          w2sum += w * w;
+        }
+        const value = sum / wsum;
+        if (!(value > limit[i] + 1e-9)) continue;
+        over = true;
+        if (round < LIMIT_DENTS) {
+          const depth = ((value - limit[i]) * wsum) / w2sum;
+          for (let j = first; j <= last; j++)
+            ceiling[j] = Math.max(
+              0,
+              Math.min(spread[j], ceiling[j]) - depth * SMOOTH_WEIGHTS[Math.abs(j - i)],
+            );
+        } else {
+          // what the dents could not take (where they reached 0): the window scaled to the limit
+          const scale = limit[i] / value;
+          for (let j = first; j <= last; j++) ceiling[j] = Math.min(spread[j], ceiling[j]) * scale;
+        }
+      }
+      if (!over) break;
     }
-    values.set(slopes);
+    for (let i = 0; i < PROFILE_SAMPLES; i++) values[i] = Math.min(spread[i], ceiling[i]);
     gaussian(values);
     for (let i = 0; i < PROFILE_SAMPLES; i++) slopes[i] = monotoneSlope(PROFILE_TIMES, values, i);
   }
 
-  /** Spreads (running maximum) and smooths (Gaussian) a profile in place, then sets its tangents. */
+  /**
+   * A profile's samples from its raw needs: spread (a running maximum, kept in `spread`), then
+   * smoothed (Gaussian), with monotone tangents (the curve stays between the samples: never below 0,
+   * never above the largest need).
+   */
   function smoothProfile(profile) {
-    const { values, slopes } = profile;
+    const { values, slopes, raw, spread } = profile;
     for (let i = 0; i < PROFILE_SAMPLES; i++) {
       let m = 0;
       const last = Math.min(PROFILE_SAMPLES - 1, i + PROFILE_SPREAD);
-      for (let j = Math.max(0, i - PROFILE_SPREAD); j <= last; j++) m = Math.max(m, values[j]);
-      profileScratch[i] = m;
+      for (let j = Math.max(0, i - PROFILE_SPREAD); j <= last; j++) m = Math.max(m, raw[j]);
+      spread[i] = m;
     }
-    values.set(profileScratch);
+    values.set(spread);
     gaussian(values);
-    // monotone tangents: the curve stays between the samples, never below 0
     for (let i = 0; i < PROFILE_SAMPLES; i++) slopes[i] = monotoneSlope(PROFILE_TIMES, values, i);
   }
 
   /** Gaussian smoothing in place, σ = PROFILE_SMOOTH samples (truncated at 3σ, renormalised at the ends). */
   function gaussian(values) {
-    const reach = Math.ceil(3 * PROFILE_SMOOTH);
     gaussScratch.set(values);
     for (let i = 0; i < PROFILE_SAMPLES; i++) {
       let sum = 0;
       let wsum = 0;
-      const last = Math.min(PROFILE_SAMPLES - 1, i + reach);
-      for (let j = Math.max(0, i - reach); j <= last; j++) {
-        const w = Math.exp(-0.5 * ((j - i) / PROFILE_SMOOTH) ** 2);
+      const last = Math.min(PROFILE_SAMPLES - 1, i + SMOOTH_REACH);
+      for (let j = Math.max(0, i - SMOOTH_REACH); j <= last; j++) {
+        const w = SMOOTH_WEIGHTS[Math.abs(j - i)];
         sum += gaussScratch[j] * w;
         wsum += w;
       }
@@ -822,11 +1088,6 @@ function createCameraDirector(
     const step = 1 / (PROFILE_SAMPLES - 1);
     const { values, slopes } = profile;
     return hermite(i * step, (i + 1) * step, values[i], values[i + 1], slopes[i], slopes[i + 1], u);
-  }
-
-  /** tan(fov/2) widened by FIT_EXTRA_FOV degrees. */
-  function widestTan(tan) {
-    return Math.tan(Math.atan(tan) + (FIT_EXTRA_FOV * DEG) / 2);
   }
 
   /** The key segment that holds progress u (clamped to 0..1). */
@@ -891,24 +1152,10 @@ function createCameraDirector(
     const windows = (framing && framing.windows) || PANEL_WINDOWS;
     const fade = (framing && framing.fade) || PANEL_FADE;
     prepareLayout(aspect, panelArea, openArea, windows, fade);
-    let tanHalf = Math.tan((evaluateShots(progress, position, target) * DEG) / 2);
+    // the keys with the between-keys car fit (aim, dolly, lens), as the layout's profiles were solved
+    let tanHalf = poseAt(progress, carFrame, position, target);
+    evaluateShots.car = fitState.subject;
     let mix = panelWeight(progress, windows, fade);
-    // the car fit between keys (the smoothed profiles): the eye backs away from the target, by at
-    // most MAX_FIT_DOLLY (a smooth saturation)…
-    const back = carHull
-      ? MAX_FIT_DOLLY * -Math.expm1(-profileAt(fitProfiles.back, progress) / MAX_FIT_DOLLY)
-      : 0;
-    if (back > 0) {
-      const radius = Math.hypot(position.x - target.x, position.z - target.z);
-      position.x = target.x + (position.x - target.x) * (1 + back);
-      position.z = target.z + (position.z - target.z) * (1 + back);
-      position.y += back * radius * DOLLY_RISE;
-    }
-    // …and the lens widens, saturating smoothly at FIT_EXTRA_FOV
-    if (carHull) {
-      const room = widestTan(tanHalf) - tanHalf;
-      tanHalf += room * -Math.expm1(-(profileAt(fitProfiles.widen, progress) * tanHalf) / room);
-    }
     if (introEase < 1) {
       position.lerpVectors(intro, position, introEase);
       tanHalf = lerp(introTan, tanHalf, introEase);
@@ -950,8 +1197,16 @@ function createCameraDirector(
     dollies,
     /** Per key for the last layout: the dolly the car needed, the FOV, the resolved eye and target. */
     keyInfo,
-    /** The car-fit profiles at progress u for the last layout: lens widening and dolly (ratios). */
-    fitAt: (u) => ({ widen: profileAt(fitProfiles.widen, u), back: profileAt(fitProfiles.back, u) }),
+    /**
+     * The car-fit profiles at progress u for the last layout (tests): `aim` the share of the way from
+     * the keys' target to the middle of the car, `widen` the extra vertical FOV (degrees), `back` the
+     * dolly (ratio of the eye's distance).
+     */
+    fitAt: (u) => ({
+      aim: profileAt(fitProfiles.aim, u),
+      widen: (2 * profileAt(fitProfiles.widen, u)) / DEG,
+      back: profileAt(fitProfiles.back, u),
+    }),
   };
 }
 
@@ -960,6 +1215,7 @@ export {
   circuitOutline,
   createCameraDirector,
   createCameraFrame,
+  FIT_EXTRA_FOV,
   fitCircuitShot,
   panelWeight,
   viewportTan,
