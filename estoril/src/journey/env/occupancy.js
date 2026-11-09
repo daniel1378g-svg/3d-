@@ -361,4 +361,4 @@ function createOccupancy(root, { trackMaterial, skip = new Set(), loop = null })
   };
 }
 
-export { createOccupancy };
+export { createExactIndex, createOccupancy };
