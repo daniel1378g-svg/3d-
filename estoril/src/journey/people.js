@@ -12,8 +12,13 @@
 //   armL / armR  only for the arms named in `moving` (e.g. a wheel gun that bounces)
 // so a person costs 2–3 draws. All the people of a group share one material (vertex colours) whose
 // `envFade` uniform fades the whole group in and out with a screen-space dither (shadows included,
-// through a matching depth material), instead of popping. Contact shadow: one soft decal each,
-// with the group's own decal material (its opacity follows the fade).
+// through a matching depth material), instead of popping. Contact shadow: one soft decal each
+// (one shared plane), with the group's own decal material (its opacity follows the fade).
+//
+// Poses give the arm angles directly, or (`reach`) the points the hands must hold, solved by a
+// two-bone arm IK (reachAngles): the front-jack man's hands are on the T-bar of a handle that runs
+// down to the jack's socket, the tyre carrier holds a mounted tyre by its tread at waist height.
+// userData.props lists, per held prop, the points that must touch (scripts/test-environment.mjs).
 import {
   BoxGeometry,
   CapsuleGeometry,
@@ -21,6 +26,7 @@ import {
   CylinderGeometry,
   Float32BufferAttribute,
   Group,
+  LatheGeometry,
   Matrix4,
   Mesh,
   MeshBasicMaterial,
@@ -31,6 +37,7 @@ import {
   RGBADepthPacking,
   SphereGeometry,
   TorusGeometry,
+  Vector2,
   Vector3,
 } from 'three';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
@@ -221,12 +228,13 @@ const POSES = {
     legR: [-0.2, 1.9],
     prop: 'gun',
   },
-  // front jack: bent over the jack handle
+  // front jack: bent over the T-bar of the jack handle (JACK below), both hands on the bar
   jack: {
     hipY: 0.93,
     lean: 0.55,
     armL: [1.0, 0.05, 0.25],
     armR: [1.0, 0.05, 0.25],
+    reach: { L: [0.55, 0.9, -0.17], R: [0.55, 0.9, 0.17] },
     legL: [0.35, 0.45],
     legR: [-0.1, 0.3],
     prop: 'jack',
@@ -251,12 +259,14 @@ const POSES = {
     legR: [-0.05, 0.02],
     prop: 'tablet',
   },
-  // carrying a tyre at the waist with both hands
+  // carrying a mounted tyre upright in front of the hips (TYRE_HELD below), leaning back a little,
+  // both hands on the tread at its "10 and 2 o'clock"
   tyre: {
     hipY: 0.95,
     lean: -0.05,
     armL: [0.55, 0.05, 0.9],
     armR: [0.55, 0.05, 0.9],
+    reach: { L: [0.36, 1.135, -0.315], R: [0.36, 1.135, 0.315] },
     legL: [0.12, 0.05],
     legR: [-0.12, 0.05],
     prop: 'tyre',
@@ -362,20 +372,28 @@ function buildPerson({
   }
 
   // arms: upper arm, elbow, forearm, hand; baked into the body unless named in `moving`
-  for (const [side, pivot, [swing, spread, elbow], name] of [
-    [-1, armL, P.armL, 'armL'],
-    [1, armR, P.armR, 'armR'],
+  const hands = {};
+  let propFrame = root;
+  if (P.reach) root.updateMatrixWorld(true);
+  for (const [side, pivot, angles, name, key] of [
+    [-1, armL, P.armL, 'armL', 'L'],
+    [1, armR, P.armR, 'armR', 'R'],
   ]) {
     const frame = moving.includes(name) ? pivot : root;
+    const [swing, spread, elbow] = P.reach
+      ? reachAngles(side, pivot.worldToLocal(new Vector3(...P.reach[key])))
+      : angles;
     // spread about x: positive angles open the left arm towards -z, so the right arm takes -spread
     const upper = node(pivot, 0, 0, 0, -side * spread, 0, swing);
     baker.add(frame, capsule(0.052, 0.22), node(upper, 0, -0.15, 0), colours.top);
-    const fore = node(upper, 0, -0.3, 0, 0, 0, elbow);
+    const fore = node(upper, 0, -UPPER_ARM, 0, 0, 0, elbow);
     baker.add(frame, capsule(0.045, 0.2), node(fore, 0, -0.14, 0), skin);
-    const hand = node(fore, 0, -0.29, 0);
+    const hand = node(fore, 0, -FOREARM, 0);
     baker.add(frame, SPHERE_LOW, node(hand, 0, 0, 0, 0, 0, 0, 0.05, 0.06, 0.04), skin);
-    if (side === 1) addProp(baker, frame, P.prop, hand, root);
+    hands[key] = hand;
+    if (side === 1) propFrame = frame;
   }
+  const props = addProp(baker, propFrame, P.prop, hands, root);
 
   // head: face, then hair / cap with a brim pointing forward (+x) / helmet with a visor at the front
   baker.add(headPivot, SPHERE, node(headPivot, 0, 0, 0, 0, 0, 0, 0.105, 0.12, 0.1), skin);
@@ -413,14 +431,13 @@ function buildPerson({
 
   baker.bake(root, materials.body, materials.depth);
 
-  // contact shadow
-  const contact = new Mesh(new PlaneGeometry(1.1, 1.1), materials.contact);
-  contact.rotation.x = -Math.PI / 2;
-  contact.position.set(pose === 'kneel' ? -0.1 : 0, 0.055, 0);
+  // contact shadow, just above the surface the person stands on (root y)
+  const contact = new Mesh(CONTACT_DECAL, materials.contact);
+  contact.position.set(pose === 'kneel' ? -0.1 : 0, CONTACT_LIFT, 0);
   contact.renderOrder = 1;
   root.add(contact);
 
-  root.userData = { hip, head: headPivot, armL, armR, visor, brim, materials };
+  root.userData = { hip, head: headPivot, armL, armR, visor, brim, hands, props, materials };
   return root;
 }
 
@@ -428,41 +445,163 @@ const TORUS_STRIPE = new TorusGeometry(0.135, 0.012, 5, 18, Math.PI);
 const TORUS_BAND = new TorusGeometry(0.115, 0.008, 4, 16, Math.PI);
 /** A cap brim: the front half of a thin disc (theta 0..π spans x >= 0 in CylinderGeometry). */
 const CYLINDER_HALF = new CylinderGeometry(1, 1, 1, 12, 1, false, 0, Math.PI);
+/** One contact-shadow plane (1.1 m square, facing up) shared by every person. */
+const CONTACT_DECAL = new PlaneGeometry(1.1, 1.1).rotateX(-Math.PI / 2);
+/** Height of the contact decal above the person's feet (the surface): above the asphalt by > 5 mm. */
+const CONTACT_LIFT = 0.008;
+
+/** Arm segment lengths (metres): shoulder → elbow, elbow → hand centre. */
+const UPPER_ARM = 0.3;
+const FOREARM = 0.29;
 
 /**
- * A prop held in the right hand. The wheel gun is built in the hand's frame (it moves with a moving
- * arm, along the forearm towards the wheel); the others are placed at the hand's position but kept
- * level (a board on an upright pole, a tablet, a tyre, a helmet), in the root frame.
+ * Two-bone arm IK: the [swing, spread, elbow] angles (POSES convention) that put the hand of the arm
+ * on `side` (-1 left, +1 right) at `target`, given in the shoulder pivot's frame. The arm lies in a
+ * plane through the shoulder turned about x by the spread; the elbow bends forward (positive angle).
+ * A target out of reach gets a straight arm pointing at it.
  */
-function addProp(baker, frame, prop, hand, root) {
-  if (!prop) return;
+function reachAngles(side, target) {
+  const across = Math.hypot(target.y, target.z);
+  const alpha = Math.atan2(-target.z, -target.y); // the arm plane's turn about x (= -side · spread)
+  const span = Math.min(UPPER_ARM + FOREARM - 1e-4, Math.hypot(target.x, across));
+  const cosElbow = (span * span - UPPER_ARM * UPPER_ARM - FOREARM * FOREARM) / (2 * UPPER_ARM * FOREARM);
+  const elbow = Math.acos(Math.max(-1, Math.min(1, cosElbow)));
+  // in the arm plane: the unswung arm points at phi0, the target lies at phi
+  const phi = Math.atan2(-across, target.x);
+  const phi0 = Math.atan2(-(UPPER_ARM + FOREARM * Math.cos(elbow)), FOREARM * Math.sin(elbow));
+  return [phi - phi0, -alpha / side, elbow];
+}
+
+/**
+ * The front jack, in the jack man's frame (crew-staging.js puts him 3.95 m ahead of the car's
+ * centre, facing it, so his +x runs back along the car; the hero car's nose is at 2.34 m, i.e.
+ * x = 1.61 here): a low trolley from x 1.03 to 1.51 on four castors, its lifting saddle at the car
+ * end, and a handle from the socket at the trolley's back up to a T-bar under the hands.
+ */
+const JACK = { x0: 1.03, x1: 1.51, top: 0.13, width: 0.3, socket: [1.08, 0.14, 0], bar: [0.55, 0.9, 0] };
+/** The carried tyre: centre (person frame), outer and rim radii, width; its axis runs along x. */
+const TYRE_HELD = { centre: [0.36, 0.95, 0], radius: 0.33, rim: 0.215, width: 0.3 };
+
+/** A tyre around the x axis (lathe of its section: rounded shoulders, open towards the rim). */
+const TYRE = (() => {
+  const { radius: R, rim: r, width: w } = TYRE_HELD;
+  const h = w / 2;
+  // from the -y bead over the tread to the +y bead, so LatheGeometry's normals point outwards
+  const profile = [
+    [r, -h + 0.02],
+    [r + 0.035, -h],
+    [R - 0.025, -h],
+    [R - 0.004, -h + 0.03],
+    [R, 0],
+    [R - 0.004, h - 0.03],
+    [R - 0.025, h],
+    [r + 0.035, h],
+    [r, h - 0.02],
+  ].map(([x, y]) => new Vector2(x, y));
+  return new LatheGeometry(profile, 18).rotateZ(-Math.PI / 2); // lathe axis y → x
+})();
+const RIM = new CylinderGeometry(TYRE_HELD.rim + 0.005, TYRE_HELD.rim + 0.005, 0.22, 18).rotateZ(
+  -Math.PI / 2,
+);
+const HUB = new CylinderGeometry(0.07, 0.07, 0.24, 10).rotateZ(-Math.PI / 2);
+
+/** A rod of radius r between points a and b (arrays), as a CYLINDER part of `frame`. */
+function rod(baker, frame, parent, a, b, r, colour) {
+  const from = new Vector3(...a);
+  const axis = new Vector3(...b).sub(from);
+  const length = axis.length();
+  const o = node(
+    parent,
+    from.x + axis.x / 2,
+    from.y + axis.y / 2,
+    from.z + axis.z / 2,
+    0,
+    0,
+    0,
+    r,
+    length,
+    r,
+  );
+  o.quaternion.setFromUnitVectors(new Vector3(0, 1, 0), axis.normalize());
+  baker.add(frame, CYLINDER, o, colour);
+}
+
+/**
+ * The held prop. The wheel gun is built in the right hand's frame (it moves with a moving arm, along
+ * the forearm towards the wheel); the others are kept level in the root frame: a board on an upright
+ * pole and a helmet at the right hand, a tablet between the hands, the jack (JACK) and the tyre
+ * (TYRE_HELD) at fixed places that the pose's `reach` puts the hands on. Returns the contact points
+ * to check: [{ name, a, b, gap }] (a and b in the person's frame should be within `gap` metres).
+ */
+function addProp(baker, frame, prop, hands, root) {
+  if (!prop) return [];
   if (prop === 'gun') {
-    const gun = node(hand, 0, -0.12, 0);
+    const gun = node(hands.R, 0, -0.12, 0);
     baker.add(frame, BOX, node(gun, 0, 0, 0, 0, 0, 0, 0.11, 0.26, 0.11), 0x2b2e33);
     baker.add(frame, CYLINDER, node(gun, 0, -0.17, 0, 0, 0, 0, 0.04, 0.09, 0.04), 0x9aa0a6);
     baker.add(frame, BOX, node(gun, 0.07, 0.06, 0, 0, 0, 0, 0.05, 0.1, 0.05), 0xe93325);
-    return;
+    return [];
   }
   root.updateMatrixWorld(true);
-  const at = hand.getWorldPosition(new Vector3());
-  const held = node(root, at.x, at.y, at.z);
+  const handL = hands.L.getWorldPosition(new Vector3());
+  const handR = hands.R.getWorldPosition(new Vector3());
+  const held = node(root, handR.x, handR.y, handR.z);
   if (prop === 'board') {
     baker.add(frame, CYLINDER, node(held, 0, 0.3, 0, 0, 0, 0, 0.015, 0.7, 0.015), 0x9aa0a6);
     baker.add(frame, CYLINDER, node(held, 0.01, 0.75, 0, 0, 0, Math.PI / 2, 0.24, 0.02, 0.24), 0xe93325);
     baker.add(frame, CYLINDER, node(held, 0.022, 0.75, 0, 0, 0, Math.PI / 2, 0.16, 0.02, 0.16), 0xf5f3ee);
   } else if (prop === 'tablet') {
     baker.add(frame, BOX, node(held, 0.02, 0.05, -0.2, 0, 0, 0.9, 0.012, 0.26, 0.19), 0x15171a);
-  } else if (prop === 'tyre') {
-    baker.add(frame, CYLINDER, node(held, 0.05, 0, -0.2, Math.PI / 2, 0, 0, 0.33, 0.3, 0.33), 0x18191b);
   } else if (prop === 'helmet') {
     baker.add(frame, SPHERE, node(held, 0.02, -0.12, 0.05, 0, 0, 0, 0.15, 0.15, 0.145), 0xf5f3ee);
     baker.add(frame, SPHERE_LOW, node(held, 0.12, -0.13, 0.05, 0, 0, 0, 0.06, 0.05, 0.1), 0x1c1e21);
+  } else if (prop === 'tyre') {
+    const [cx, cy, cz] = TYRE_HELD.centre;
+    baker.add(frame, TYRE, node(root, cx, cy, cz), 0x18191b);
+    baker.add(frame, RIM, node(root, cx, cy, cz), 0x8d9299);
+    baker.add(frame, HUB, node(root, cx, cy, cz), 0x2b2e33);
+    // each hand rests on the tread: its centre ~4 cm (the hand's half thickness) outside the tyre
+    const rimGap = (hand) => {
+      const radial = Math.hypot(hand.y - cy, hand.z - cz);
+      return [
+        hand.toArray(),
+        [
+          cx,
+          cy + ((hand.y - cy) * TYRE_HELD.radius) / radial,
+          cz + ((hand.z - cz) * TYRE_HELD.radius) / radial,
+        ],
+      ];
+    };
+    return [
+      { name: 'tyre/handL', points: rimGap(handL), gap: 0.07 },
+      { name: 'tyre/handR', points: rimGap(handR), gap: 0.07 },
+    ];
   } else if (prop === 'jack') {
-    // jack handle from the hands down to the jack body on the ground ahead
-    const handle = node(root, 0.95, 0.42, 0, 0, 0, -1.05);
-    baker.add(root, CYLINDER, node(handle, 0, 0, 0, 0, 0, 0, 0.025, 1.15, 0.025), 0x9aa0a6);
-    baker.add(root, BOX, node(root, 1.45, 0.1, 0, 0, 0, 0, 0.5, 0.16, 0.34), 0xe93325);
+    const { x0, x1, top, width, socket, bar } = JACK;
+    const red = 0xe93325;
+    const steel = 0x9aa0a6;
+    // trolley frame, lifting saddle at the car end, four castors
+    baker.add(root, BOX, node(root, (x0 + x1) / 2, top - 0.035, 0, 0, 0, 0, x1 - x0, 0.07, width), red);
+    baker.add(root, BOX, node(root, x1 - 0.06, top + 0.005, 0, 0, 0, 0, 0.1, 0.02, width * 0.7), 0x2b2e33);
+    for (const cx of [x0 + 0.05, x1 - 0.05])
+      for (const s of [-1, 1])
+        baker.add(
+          root,
+          CYLINDER,
+          node(root, cx, 0.03, s * (width / 2 - 0.03), Math.PI / 2, 0, 0, 0.03, 0.03, 0.03),
+          0x15171a,
+        );
+    // handle: socket → T-bar, the bar between the hands
+    rod(baker, root, root, socket, bar, 0.02, steel);
+    rod(baker, root, root, [bar[0], bar[1], -0.24], [bar[0], bar[1], 0.24], 0.018, steel);
+    const onBar = (hand) => [hand.toArray(), [bar[0], bar[1], Math.max(-0.24, Math.min(0.24, hand.z))]];
+    return [
+      { name: 'jack/handL', points: onBar(handL), gap: 0.05 },
+      { name: 'jack/handR', points: onBar(handR), gap: 0.05 },
+      { name: 'jack/socket', points: [socket, [socket[0], top, socket[2]]], gap: 0.05 },
+    ];
   }
+  return [];
 }
 
-export { KITS, POSES, buildPerson, contactShadowMaterial, createPeopleMaterials };
+export { JACK, KITS, POSES, TYRE_HELD, buildPerson, contactShadowMaterial, createPeopleMaterials };

@@ -55,8 +55,12 @@ function addInstances(ctx, geometry, material, specs, castShadow = true) {
 }
 
 /**
- * Paddock asphalt (y 0.02, UVs metres / 12), three connecting aprons (y 0.022), the access road
- * from the infield (y 0.021) and the AO fade along the back of the garages.
+ * Paddock asphalt and the pieces that join it to the pit lane and the infield, all one layer
+ * (LAYERS.paddock) and side by side, never overlapping (coplanar overlaps would z-fight): the
+ * paddock rectangle, the strip behind the garages (z 166-169.25), the east apron north of it, the
+ * link up to the pit lane's end (stopping at the garage-front line, where the pit lane begins) and
+ * the access road from the infield (ending at the paddock's south edge). UVs metres / 12; the AO
+ * fade along the back of the garages.
  */
 function buildPaddockSurfaces(ctx) {
   const { root, materials } = ctx;
@@ -71,26 +75,28 @@ function buildPaddockSurfaces(ctx) {
   paddock.position.set((P.x0 + P.x1) / 2, LAYERS.paddock, (P.z0 + P.z1) / 2);
   paddock.receiveShadow = true;
   root.add(paddock);
-  // [centre x, centre z, width, depth]: east apron, link to the pit-lane end, strip behind the garages.
-  for (const [x, z, width, depth] of [
-    [80, 160, 22, 28],
-    [84, 180, 18, 16],
-    [10, 167.5, 220, 3.5],
-  ]) {
-    const apron = new Mesh(new PlaneGeometry(width, depth), materials.pitAsphalt);
-    apron.rotation.x = -Math.PI / 2;
-    apron.position.set(x, 0.022, z);
-    apron.receiveShadow = true;
-    root.add(apron);
+  // [x0, x1, z0, z1]: strip behind the garages, east apron, link to the pit-lane end, access road
+  for (const [x0, x1, z0, z1] of PADDOCK_LINKS) {
+    const piece = new Mesh(new PlaneGeometry(x1 - x0, z1 - z0), materials.pitAsphalt);
+    piece.rotation.x = -Math.PI / 2;
+    piece.position.set((x0 + x1) / 2, LAYERS.paddock, (z0 + z1) / 2);
+    piece.receiveShadow = true;
+    root.add(piece);
   }
-  const accessRoad = new Mesh(new PlaneGeometry(9, 90), materials.pitAsphalt);
-  accessRoad.rotation.x = -Math.PI / 2;
-  accessRoad.position.set(-60, 0.021, 70);
-  accessRoad.receiveShadow = true;
-  root.add(accessRoad);
   const backZ = L.garageFrontZ - L.garageDepth;
   ctx.addAoStrip(L.pitX0, backZ, L.pitX1, backZ, 2.6, -1, 0.05); // paddock side of the garage back wall
 }
+
+/**
+ * The paddock's link pieces as [x0, x1, z0, z1] (metres): edge to edge with the paddock rectangle
+ * (z 96-166) and with each other, the link ending at the garage-front line z 185.5 (pit lane).
+ */
+const PADDOCK_LINKS = [
+  [-100, 120, 166, 169.25],
+  [69, 91, 169.25, 174],
+  [75, 93, 174, 185.5],
+  [-64.5, -55.5, 25, 96],
+];
 
 /** Geometry and materials shared by several paddock object kinds (created in this order). */
 function createPaddockKit() {
@@ -241,12 +247,7 @@ function buildPaddockEquipment(ctx, kit) {
   }
   addInstances(ctx, new ConeGeometry(1, 1, 4, 1, true), materials.roofW, canopies);
   addInstances(ctx, new CylinderGeometry(0.03, 0.03, 1, 5), materials.steel, legs, false);
-  addInstances(
-    ctx,
-    kit.unitBox,
-    new MeshStandardMaterial({ color: 0x141518, roughness: 0.45, metalness: 0.3 }),
-    chests,
-  );
+  addInstances(ctx, kit.unitBox, ctx.materials.toolChest, chests);
   addInstances(ctx, kit.unitBox, materials.red, stripes, false);
   addInstances(ctx, kit.unitBox, materials.white, tables);
   addInstances(ctx, new PlaneGeometry(1, 1), materials.contact, shadows, false).renderOrder = 1;
@@ -327,18 +328,29 @@ function buildTyreStacks(ctx, kit) {
 }
 
 /**
- * Painted parking bays for the classic cars: seven 5.8 m lines 3.2 m apart and a spine line. They
- * stand 1 mm above the paddock asphalt with their tops at LAYERS.paddockLines (layers.js), under the
- * hero car's contact decal, which therefore darkens them.
+ * Painted parking bays for the classic cars: seven 5.8 m lines 3.2 m apart and a spine line. The
+ * paint is a flat decal at LAYERS.paddockLines (5 mm above the paddock asphalt), blended without
+ * depth writes and drawn before the hero car's contact decal (renderOrder 0 < 1), which therefore
+ * darkens the lines it covers although it lies only 1 mm higher (layers.js).
  */
-function buildParkingBays(ctx, kit) {
-  const base = LAYERS.paddock + 0.001;
-  const height = LAYERS.paddockLines - base;
-  const y = base + height / 2;
+function buildParkingBays(ctx) {
   const lines = [];
-  for (let i = 0; i < 7; i++) lines.push({ x: -7.4, y, z: 126.1 - i * 3.2, sx: 5.8, sy: height, sz: 0.12 });
-  lines.push({ x: -10.3, y, z: 126.1 - 3 * 3.2, sx: 0.12, sy: height, sz: 6 * 3.2 + 0.12 });
-  addInstances(ctx, kit.unitBox, ctx.materials.line, lines, false);
+  for (let i = 0; i < 7; i++)
+    lines.push({ x: -7.4, y: LAYERS.paddockLines, z: 126.1 - i * 3.2, sx: 5.8, sz: 0.12 });
+  lines.push({ x: -10.3, y: LAYERS.paddockLines, z: 126.1 - 3 * 3.2, sx: 0.12, sz: 6 * 3.2 + 0.12 });
+  const paint = new MeshStandardMaterial({
+    color: 0xe8e8e6,
+    roughness: 0.6,
+    transparent: true,
+    depthWrite: false,
+    polygonOffset: true,
+    polygonOffsetFactor: -1,
+    polygonOffsetUnits: -2,
+  });
+  const decal = new PlaneGeometry(1, 1).rotateX(-Math.PI / 2);
+  const mesh = addInstances(ctx, decal, paint, lines, false);
+  mesh.name = 'paddock-bay-lines';
+  mesh.renderOrder = 0;
 }
 
 /** Four 22 m floodlight masts every 90 m along the paddock's -Z edge, each with a lamp head. */
@@ -359,7 +371,7 @@ function buildPaddock(ctx) {
   buildMarquees(ctx);
   buildTyreStacks(ctx, kit);
   buildPaddockEquipment(ctx, kit);
-  buildParkingBays(ctx, kit);
+  buildParkingBays(ctx);
   buildFloodlightMasts(ctx);
 }
 

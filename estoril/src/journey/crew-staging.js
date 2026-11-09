@@ -8,6 +8,9 @@
 // man, a tyre carrier, the driver's helper with the helmet, the engineer with a tablet at the garage
 // door and a mechanic inside the garage. Small motions (gun arms, heads turning) keep them alive.
 // The whole crew fades in and out with a dither (people.js) instead of popping; so do the visitors.
+// Everyone stands ON the surface under them (layers.js): the crew in the pit lane at LAYERS.pitLane,
+// the engineer and the mechanic on the garage floor (openBox.floorY, pits.js), the visitors and the
+// paddock cars on the paddock asphalt (LAYERS.paddock).
 //
 // Construction order matters for pixel parity (three.js sorts opaque draws by material id, which
 // is assigned at construction), so these builders run in exactly the original order.
@@ -16,6 +19,7 @@ import { Vector3 } from 'three';
 import { buildPerson, createPeopleMaterials } from './people.js';
 import { clamp, smoothstep } from './util/math.js';
 import { buildPaddockCar } from './vehicles.js';
+import { LAYERS } from './world/layers.js';
 
 const UP = new Vector3(0, 1, 0);
 
@@ -81,7 +85,7 @@ function createPitCrew() {
 function placePaddockCars(scene) {
   for (const [kind, colour, x, z, yaw] of PADDOCK_CARS) {
     const car = buildPaddockCar(kind, colour);
-    car.position.set(x, 0, z);
+    car.position.set(x, LAYERS.paddock, z);
     car.rotation.y = yaw;
     scene.add(car);
   }
@@ -124,7 +128,7 @@ function placePaddockVisitors(scene) {
     ],
   ];
   for (const [person, x, z, yaw] of visitors) {
-    person.position.set(x, 0, z);
+    person.position.set(x, LAYERS.paddock, z);
     person.rotation.y = yaw;
     person.userData.group = materials;
     scene.add(person);
@@ -152,9 +156,15 @@ function placeCrew(crew, sampler, pitBoxDistance, openBox) {
   right.crossVectors(forward, UP);
   CREW.forEach(([name, , place]) => {
     const person = crew.byName[name];
-    if (place.garage) person.position.set(openBox.x + place.garage[0], 0, openBox.z + place.garage[1]);
-    else person.position.copy(stop).addScaledVector(forward, place.f).addScaledVector(right, place.r).setY(0);
-    if (place.face === 'car') toCar.subVectors(stop, person.position);
+    if (place.garage)
+      person.position.set(openBox.x + place.garage[0], openBox.floorY ?? 0, openBox.z + place.garage[1]);
+    else
+      person.position
+        .copy(stop)
+        .addScaledVector(forward, place.f)
+        .addScaledVector(right, place.r)
+        .setY(LAYERS.pitLane);
+    if (place.face === 'car') toCar.subVectors(stop, person.position).setY(0);
     else toCar.copy(right).multiplyScalar(place.face === 'left' ? -1 : 1);
     person.rotation.y = yawTowards(toCar.x, toCar.z) + (place.yaw || 0);
     person.userData.baseYaw = person.rotation.y;

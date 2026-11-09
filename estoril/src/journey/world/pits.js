@@ -31,6 +31,8 @@ import { LAYERS } from './layers.js';
 
 /** Index of the garage whose shutter is open and whose interior is modelled. */
 const OPEN_BOX = 13;
+/** Top of the open garage's floor (metres): the crew inside stands on it (crew-staging.js). */
+const GARAGE_FLOOR_Y = 0.04;
 /** Door opening: height and width margin inside a bay (metres). */
 const DOOR_HEIGHT = 4.0;
 const PIER_WIDTH = 0.6;
@@ -234,7 +236,7 @@ const tyreMaterial = () =>
  * Interior of the open garage (box OPEN_BOX): floor, lined back wall with a dark team backdrop and a
  * red band, black tool chests with red stripes, tyre stacks, a red wheel stand, a warm point light
  * with two ceiling light panels, a screen, a tyre trolley and AO along the walls. Stores the box's
- * front-centre as root.userData.openBox = { x, z }.
+ * front-centre and floor height as root.userData.openBox = { x, z, floorY }.
  */
 function buildOpenGarage(ctx, pits, batch) {
   const { materials, addBox: box, addAoStrip } = ctx;
@@ -243,10 +245,11 @@ function buildOpenGarage(ctx, pits, batch) {
   const backZ = frontZ - L.garageDepth;
   const boxX = L.pitX0 + OPEN_BOX * L.boxW + L.boxW / 2;
 
-  // Floor and back-wall lining (own meshes: flat floor, the interior walls stay simple boxes)
+  // Floor (top at GARAGE_FLOOR_Y) and back-wall lining (own meshes: flat floor, the interior walls
+  // stay simple boxes)
   box(
     L.boxW - 0.4,
-    0.02,
+    GARAGE_FLOOR_Y - 0.02,
     L.garageDepth - 0.4,
     materials.floor,
     boxX,
@@ -259,7 +262,7 @@ function buildOpenGarage(ctx, pits, batch) {
   const backdrop = new MeshStandardMaterial({ color: 0x1b1f26, roughness: 0.6 });
   batch.add(L.boxW - 0.9, 2.4, 0.04, backdrop, boxX, 1.0, backZ + 0.52, { castShadow: false });
   batch.add(L.boxW - 0.9, 0.18, 0.05, materials.red, boxX, 1.55, backZ + 0.53, { castShadow: false });
-  const chest = new MeshStandardMaterial({ color: 0x141518, roughness: 0.45, metalness: 0.3 });
+  const chest = materials.toolChest;
   for (const side of [-1, 1]) {
     // tool chest against the side wall with a red stripe, a tyre stack on the other side
     batch.add(0.7, 1.05, 1.6, chest, boxX + side * 2.55, 0, backZ + 3.2);
@@ -296,7 +299,7 @@ function buildOpenGarage(ctx, pits, batch) {
   addAoStrip(boxX - L.boxW / 2 + 0.2, backZ + 0.5, boxX + L.boxW / 2 - 0.2, backZ + 0.5, 2.4, 1, 0.045, pits);
   addAoStrip(boxX - L.boxW / 2 + 0.2, backZ + 0.5, boxX - L.boxW / 2 + 0.2, frontZ, 1.4, -1, 0.045, pits);
   addAoStrip(boxX + L.boxW / 2 - 0.2, backZ + 0.5, boxX + L.boxW / 2 - 0.2, frontZ, 1.4, 1, 0.045, pits);
-  ctx.root.userData.openBox = { x: boxX, z: frontZ };
+  ctx.root.userData.openBox = { x: boxX, z: frontZ, floorY: GARAGE_FLOOR_Y };
 }
 
 /**

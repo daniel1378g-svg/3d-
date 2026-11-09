@@ -101,6 +101,8 @@ function createWorldMaterials(textures) {
     interior: new MeshStandardMaterial({ color: 0xd9d7d1, roughness: 0.8 }),
     floor: new MeshStandardMaterial({ color: 0x8e9298, roughness: 0.55, metalness: 0.1 }),
     blob: new MeshBasicMaterial({ map: textures.blob, transparent: true, depthWrite: false }),
+    // Black tool chests in the open garage (pits.js) and under the paddock awnings (paddock.js).
+    toolChest: new MeshStandardMaterial({ color: 0x141518, roughness: 0.45, metalness: 0.3 }),
   };
   shadeWorldSurfaces(materials, textures.detail, textures.lap);
   return materials;

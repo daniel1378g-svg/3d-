@@ -30,7 +30,7 @@ import { buildVegetation } from './vegetation.js';
  *   for API compatibility and not used.
  * @returns {{root: import('three').Group, materials: Object, layout: Object, vegetation: Object,
  *            track: import('three').Vector2[], update: (time: number, dt: number, camera?) => void}}
- *   root.userData also carries `openBox` ({x, z} of the open garage front) and `tower`
+ *   root.userData also carries `openBox` ({x, z} of the open garage front, floorY its floor) and `tower`
  *   (Vector3 look-at point on the control tower).
  */
 function buildWorld(trackPoints, { quality = 'high' } = {}) {
