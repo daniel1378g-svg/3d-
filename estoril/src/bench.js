@@ -81,8 +81,10 @@ function createOverlay() {
   box.setAttribute('aria-label', 'Benchmark');
   box.style.cssText =
     'position:fixed;z-index:9999;left:8px;top:8px;max-width:min(94vw,460px);max-height:calc(100vh - 16px);' +
-    'overflow:auto;padding:10px 12px;border-radius:8px;background:rgba(16,18,21,.92);color:#fff;' +
-    'font:12px/1.45 "IBM Plex Mono",ui-monospace,monospace;box-shadow:0 4px 24px rgba(0,0,0,.4)';
+    'overflow:auto;padding:10px;border-radius:8px;background:rgba(16,18,21,.92);color:#fff;' +
+    // the 50-column stage table fits a 360 px phone: 10 px type there, 12 px from 430 px up
+    'font:clamp(10px,2.8vw,12px)/1.45 "IBM Plex Mono",ui-monospace,monospace;' +
+    'box-shadow:0 4px 24px rgba(0,0,0,.4)';
   box.innerHTML =
     '<p data-b="status" aria-live="polite" style="margin:0 0 6px">Bench: preparing…</p>' +
     '<pre data-b="out" style="margin:0;white-space:pre-wrap"></pre>' +

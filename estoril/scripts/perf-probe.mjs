@@ -6,8 +6,9 @@
 //   textures      GPU bytes of every live texture and renderbuffer, tracked at the GL entry points
 //                 (texImage2D/3D, texStorage2D/3D, generateMipmap, renderbufferStorage[Multisample],
 //                 delete*): the size of each level/face as allocated, by internal format (a generated
-//                 mip chain adds a third); the default framebuffer (the canvas) is reported
-//                 separately, as drawing-buffer pixels
+//                 mip chain adds a third); the default framebuffer (the canvas) is estimated
+//                 separately from its size, antialias and depth attributes and its sample count
+//                 (canvasBytes: back and front colour buffers, multisampled colour and depth)
 //   objects       live GL objects by kind (textures, buffers, programs, shaders, framebuffers,
 //                 renderbuffers, vertex arrays): create* adds, delete* removes
 //   raf           the pending requestAnimationFrame callbacks (ids), so a test can count the chains
@@ -75,8 +76,14 @@ function installProbe({ noDraw = false } = {}) {
   const getContext = HTMLCanvasElement.prototype.getContext;
   HTMLCanvasElement.prototype.getContext = function (type, ...rest) {
     const ctx = getContext.call(this, type, ...rest);
-    if (ctx && /webgl/i.test(type) && !probe.contexts.some((entry) => entry.ctx === ctx))
-      probe.contexts.push({ ctx, type, onPage: () => this.isConnected });
+    if (ctx && /webgl/i.test(type) && !probe.contexts.some((entry) => entry.ctx === ctx)) {
+      // the canvas's sample count, read while the default framebuffer is still bound
+      let samples = 0;
+      try {
+        samples = ctx.getParameter(ctx.SAMPLES) || 0;
+      } catch {}
+      probe.contexts.push({ ctx, type, samples, onPage: () => this.isConnected });
+    }
     return ctx;
   };
 
@@ -264,6 +271,19 @@ function installProbe({ noDraw = false } = {}) {
     let renderbufferBytes = 0;
     for (const [bytes] of probe.renderbuffers.values()) renderbufferBytes += bytes;
     const live = probe.contexts.filter((entry) => !entry.ctx.isContextLost());
+    // The canvas's own buffers (the default framebuffer), estimated as a desktop GPU holds them: the
+    // browser's back and front colour buffers (RGBA8), plus with antialias a multisampled colour and
+    // depth(-stencil) buffer of `samples` samples each, else one single-sample depth buffer.
+    // Tile-based GPUs (phones, Apple silicon) may keep multisample storage on chip: an upper bound.
+    let canvasBytes = 0;
+    for (const entry of live) {
+      if (!entry.onPage()) continue;
+      const gl = entry.ctx;
+      const attributes = gl.getContextAttributes() || {};
+      const samples = attributes.antialias ? entry.samples || 4 : 0;
+      const depth = attributes.depth || attributes.stencil ? Math.max(1, samples) : 0;
+      canvasBytes += gl.drawingBufferWidth * gl.drawingBufferHeight * 4 * (2 + samples + depth);
+    }
     const list = () =>
       [
         ...[...probe.textures.values()].map((e) => [
@@ -282,6 +302,7 @@ function installProbe({ noDraw = false } = {}) {
       textureBytes,
       renderbuffers: probe.renderbuffers.size,
       renderbufferBytes,
+      canvasBytes,
       rafPending: probe.raf.size,
       objects: Object.fromEntries(Object.entries(probe.objects).map(([kind, set]) => [kind, set.size])),
       largest: largest ? list() : undefined,

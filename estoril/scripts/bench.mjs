@@ -5,8 +5,10 @@
 //                          [--frames 600] [--json out.json] [--draw]
 //
 // Per profile (scripts/perf-probe.mjs PROFILES: viewport, device pixel ratio, quality tier, CPU
-// slowdown with CDP Emulation.setCPUThrottlingRate), one page load of index.html?capture=1&3d=force&q=…
-// with the probe of perf-probe.mjs installed, then:
+// slowdown with CDP Emulation.setCPUThrottlingRate), in a browser of its own (a cold shader cache: a
+// browser keeps compiled programs across pages, which made every profile after the first load
+// faster), one page load of index.html?capture=1&3d=force&q=… with the probe of perf-probe.mjs
+// installed, then:
 //   load       bytes transferred until the scene is ready (Playwright response bodies; gzip size
 //              estimated with zlib level 9, as a static host would serve them), and the stills path
 //              (?3d=off) the same way; the load phases from the performance marks (ce:* in
@@ -14,8 +16,9 @@
 //              world, car, created, warm (shaders compiled, positions pre-rendered), shown
 //   GPU        draw calls and triangles per frame at each moment of MOMENTS (renderer.info with
 //              autoReset off: shadow pass, scene and blur pass), the shadow pass's share, shader
-//              programs, geometries, textures, texture + renderbuffer bytes (GL-level tracking),
-//              the shadow map size and the drawing buffer (pixels)
+//              programs, geometries, textures, GPU memory: texture + renderbuffer bytes (GL-level
+//              tracking) plus the canvas's own buffers (estimated, perf-probe.mjs canvasBytes), the
+//              shadow map size and the drawing buffer (pixels)
 //   CPU        JS time per frame (performance.now around renderAt(t, { dt: 1/60 }) over a sweep of
 //              --frames frames through the whole journey, after an untimed warm-up sweep), p50 / p95
 //              / max per stage. With the draw calls skipped (perf-probe.mjs noDraw) unless --draw:
@@ -46,12 +49,14 @@ const DRAW = process.argv.includes('--draw');
 
 /**
  * Budgets per declared profile (docs/performance.md gives the reason for each). Draw calls and
- * triangles count every pass of a frame (shadow map, scene, blur) at the heaviest moment; texture
- * memory is textures + render targets (shadow map, blur targets, environment), without the canvas;
- * CPU is the p95 of JS time per scripted frame under the profile's CPU slowdown; allocation is the
- * garbage per frame (three.js's own per-draw uniform bookkeeping is most of it), retained is what a
- * forced GC leaves after the sweep; ready is navigation start to the end of warmup() (SwiftShader
- * compiles the shaders on the CPU: an upper bound, not a device time).
+ * triangles count every pass of a frame (shadow map, scene, blur) at the heaviest moment; GPU memory
+ * is everything the page holds on the GPU: textures, render targets (shadow map, blur targets,
+ * environment) and the canvas's own buffers, budgeted at 1/16 of the class's memory (8 GB desktops
+ * and MacBooks, 4 GB laptops and phones, 2 GB low phones: integrated GPUs and phones share it with
+ * the system); CPU is the p95 of JS time per scripted frame under the profile's CPU slowdown;
+ * allocation is the garbage per frame (three.js's own per-draw uniform bookkeeping is most of it),
+ * retained is what a forced GC leaves after the sweep; ready is navigation start to the end of
+ * warmup() (SwiftShader compiles the shaders on the CPU: an upper bound, not a device time).
  */
 const COMMON = { allocKB: 256, retainedKB: 256, lateCompiles: 0, load3dKB: 2200, loadStillsKB: 1000 };
 const BUDGETS = {
@@ -60,7 +65,7 @@ const BUDGETS = {
     calls: 1000,
     triangles: 3e6,
     programs: 64,
-    textureMB: 320,
+    gpuMB: 512,
     bufferMP: 1.5,
     cpuP95: 8,
     readyMs: 8000,
@@ -70,7 +75,7 @@ const BUDGETS = {
     calls: 1000,
     triangles: 3e6,
     programs: 64,
-    textureMB: 512,
+    gpuMB: 512,
     bufferMP: 5.2,
     cpuP95: 8,
     readyMs: 8000,
@@ -80,7 +85,7 @@ const BUDGETS = {
     calls: 800,
     triangles: 2e6,
     programs: 56,
-    textureMB: 128,
+    gpuMB: 256,
     bufferMP: 3.2,
     cpuP95: 12,
     readyMs: 10000,
@@ -90,7 +95,7 @@ const BUDGETS = {
     calls: 600,
     triangles: 1.5e6,
     programs: 56,
-    textureMB: 128,
+    gpuMB: 256,
     bufferMP: 1.1,
     cpuP95: 16,
     readyMs: 12000,
@@ -100,16 +105,16 @@ const BUDGETS = {
     calls: 450,
     triangles: 0.8e6,
     programs: 48,
-    textureMB: 64,
+    gpuMB: 128,
     bufferMP: 0.3,
     cpuP95: 16,
     readyMs: 12000,
   },
 };
 
-const browser = await launch();
 const results = {};
 let failures = 0;
+let browser = null;
 
 for (const name of NAMES) {
   const profile = PROFILES[name];
@@ -117,10 +122,11 @@ for (const name of NAMES) {
   console.log(
     `\n=== ${name}: ${profile.width}x${profile.height} @${profile.dpr}x, q=${profile.q}, CPU ×${profile.cpu}`,
   );
+  browser = await launch(); // a fresh browser: a cold shader cache for the load phases
   results[name] = await benchProfile(profile);
+  await browser.close();
   failures += report(name, profile, results[name]);
 }
-await browser.close();
 if (JSON_OUT) writeFileSync(JSON_OUT, JSON.stringify(results, null, 1));
 console.log(failures ? `\n${failures} budget check(s) failed` : '\nall budgets met');
 process.exit(failures ? 1 : 0);
@@ -278,6 +284,9 @@ async function benchProfile(profile) {
       textures: r.info.memory.textures,
       shadowMap: r.shadowMap.enabled && sun && sun.castShadow ? sun.shadow.mapSize.x : 0,
       antialias: !!gl.getContextAttributes().antialias,
+      canvasSamples: gl.getContextAttributes().antialias
+        ? (window.__probe.contexts.find((entry) => entry.ctx === gl)?.samples ?? '?')
+        : 0,
       pixelRatio: j.basePixelRatio,
       maxTextureSize: r.capabilities.maxTextureSize,
     };
@@ -380,9 +389,11 @@ function report(name, profile, r) {
       `  ${s.name.padEnd(12)} ${String(s.frames).padStart(8)} ${s.p50.toFixed(2).padStart(6)} ${s.p95.toFixed(2).padStart(6)} ${s.max.toFixed(2).padStart(6)}`,
     );
   const p = g.probe;
+  const gpuBytes = p.textureBytes + p.renderbufferBytes + p.canvasBytes;
   console.log(
     `  programs ${r.programs} · geometries ${g.geometries} · textures ${g.textures} (${p.textures} GL) · ` +
-      `texture memory ${mb(p.textureBytes)} + render buffers ${mb(p.renderbufferBytes)}`,
+      `GPU memory ${mb(gpuBytes)}: textures ${mb(p.textureBytes)} + render buffers ` +
+      `${mb(p.renderbufferBytes)} + canvas ${mb(p.canvasBytes)} (estimate, ${g.canvasSamples}× MSAA)`,
   );
   const bytes = (b) =>
     Object.entries(b.kinds)
@@ -415,12 +426,7 @@ function report(name, profile, r) {
     r.lateCompiles.reduce((s, [, n]) => s + n, 0),
     budget.lateCompiles,
   );
-  check(
-    'texture + target memory',
-    +((p.textureBytes + p.renderbufferBytes) / 1048576).toFixed(1),
-    budget.textureMB,
-    ' MB',
-  );
+  check('GPU memory, canvas included', +(gpuBytes / 1048576).toFixed(1), budget.gpuMB, ' MB');
   check(
     'drawing buffer',
     +((g.drawingBuffer[0] * g.drawingBuffer[1]) / 1e6).toFixed(2),

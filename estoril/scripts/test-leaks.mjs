@@ -22,9 +22,11 @@
 //             (b) 300 scripted scroll steps forward and back and 30 stage-button jumps, twice: GL
 //                 objects of every kind, texture and renderbuffer bytes and shader programs equal
 //                 after the second pass to after the first, and the JS heap after GC within 512 KB
-//             (c) 20 resizes across desktop, tablet and phone sizes, back to the first size: render
-//                 targets (shadow map, blur targets, environment) replaced, not added: the same GL
-//                 objects and bytes as before the resizes
+//             (c) 20 resizes across desktop, tablet and phone sizes, back to the first size, at the
+//                 top of the journey and again on the lap (progress 0.5, where the blur pass renders
+//                 every frame and its targets follow the drawing buffer: checked at every size):
+//                 render targets (shadow map, blur targets, environment) replaced, not added: the
+//                 same GL objects and bytes as before the resizes
 //             (d) 10 hidden/visible cycles (document.hidden emulated, visibilitychange dispatched) and
 //                 10 scroll-away/back cycles (IntersectionObserver start/stop): exactly one render
 //                 loop and the page's own frame loop pending afterwards (2 rAF callbacks; 1 while
@@ -313,6 +315,59 @@ if (ONLY.includes('session')) {
       before.renderbufferBytes === afterResize.renderbufferBytes,
     `${describe(afterResize)}; at most ${peakRenderbuffers} renderbuffers on the way`,
   );
+
+  // the same 20 resizes on the lap (progress 0.5), where the blur pass renders every frame and its
+  // targets follow the drawing buffer (at the top of the journey no target depends on the viewport):
+  // at every size the blur's multisampled colour buffer has the drawing buffer's size, and afterwards
+  // the GL objects and bytes are those from before
+  const toLap = () =>
+    page.evaluate(() => {
+      const journey = document.querySelector('[data-journey]');
+      const top = journey.getBoundingClientRect().top + scrollY;
+      window.scrollTo({ top: top + 0.5 * (journey.offsetHeight - innerHeight), behavior: 'instant' });
+    });
+  const lapState = () =>
+    page.evaluate(() => {
+      const summary = window.__probe.summary({ largest: 16 });
+      const canvas = document.querySelector('.jr__canvas');
+      const size = `renderbuffer ${canvas.width}x${canvas.height} `;
+      return {
+        renderbuffers: summary.renderbuffers,
+        blurAtSize: summary.largest.some(([, what]) => what.startsWith(size) && /samples/.test(what)),
+      };
+    });
+  await toLap();
+  await frames(page, 180);
+  const beforeLap = await probe(page);
+  let followed = 0;
+  let peakLap = 0;
+  for (const [width, height] of sizes) {
+    await page.setViewportSize({ width, height });
+    await toLap(); // the journey's height follows the viewport: scroll back to the same progress
+    await frames(page, 40);
+    const state = await lapState();
+    peakLap = Math.max(peakLap, state.renderbuffers);
+    if (state.blurAtSize) followed++;
+  }
+  await frames(page, 10);
+  const afterLap = await probe(page);
+  check(
+    'resizes on the lap: the blur targets follow the drawing buffer at every size',
+    followed === sizes.length,
+    `${followed} of ${sizes.length} sizes`,
+  );
+  check(
+    'resizes on the lap: blur targets replaced, not added (same GL objects and bytes at the same size)',
+    sameObjects(beforeLap, afterLap) &&
+      beforeLap.textureBytes === afterLap.textureBytes &&
+      beforeLap.renderbufferBytes === afterLap.renderbufferBytes,
+    `${describe(afterLap)}; at most ${peakLap} renderbuffers on the way`,
+  );
+  await page.evaluate(() => {
+    const journey = document.querySelector('[data-journey]');
+    window.scrollTo({ top: journey.getBoundingClientRect().top + scrollY, behavior: 'instant' });
+  });
+  await frames(page, 60);
 
   // hidden/visible and scroll-away/back cycles: one render loop
   const pending = () => page.evaluate(() => window.__probe.raf.size);
