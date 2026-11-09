@@ -1,13 +1,20 @@
 // Frame-loop and API checks of the 3D journey in a real browser (Playwright, headless Chromium with
 // SwiftShader), against a served build. Exit code 1 on any failure.
 //
-// node scripts/test-loop.mjs [--base http://127.0.0.1:8080/]
+// node scripts/test-loop.mjs [--base http://127.0.0.1:8080/] [--update-viewports [WxH,WxH,…]]
+//
+// --update-viewports measures the layouts instead of checking them: it writes
+// scripts/camera-viewports.json (test-camera.mjs's layouts) from the page, for every layout already
+// in it plus the sizes listed (e.g. 360x740,844x390), and still runs every other check. An entry
+// keeps its maxFov, nav and allow; a new one gets them derived (layoutEntry below).
 //
 // Checks (capture mode, ?capture=1&3d=force&q=high, which exposes window.__journey and __cap):
 //   viewport     the canvas covers the viewport exactly (CSS size = innerWidth × innerHeight) and its
 //                drawing buffer is CSS size × device pixel ratio (1440×900 at 1×, 390×844 at 2×,
-//                1024×768); the panels, the stage buttons and the framing areas home.js passes to
-//                the camera match scripts/camera-viewports.json, test-camera.mjs's layouts
+//                1024×768)
+//   layouts      for every layout in scripts/camera-viewports.json (test-camera.mjs's), the panels,
+//                the stage buttons and the framing areas home.js passes to the camera match the page
+//                (within 2 px), measured on a page opened at that size
 //   determinism  renderAt(t) twice gives the same pixels (hash of gl.readPixels), and again after
 //                stills of other positions and a debug camera in between (t = 0.05, 0.375, 0.5,
 //                0.95), and again after the real render loop has played frames elsewhere (the
@@ -27,18 +34,37 @@
 //                sky's horizon colour, on the direct path and through the blur pass
 //   blur path    a still drawn through the blur pass equals the same frame drawn directly, and the
 //                frame does not jump where the pass switches on (0.4305 → 0.4306)
-//   messages     no page errors, console errors or warnings
-import { readFileSync } from 'node:fs';
+//   messages     no page errors, console errors or warnings (but Chrome's driver note about the stall
+//                that this script's own gl.readPixels causes: READPIXELS_STALL)
+import { readFileSync, writeFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
+import { CAMERA_SHOTS } from '../src/journey/camera-shots.js';
+import { FIT_EXTRA_FOV, viewportTan } from '../src/journey/camera-director.js';
 const { chromium } = createRequire(import.meta.url)('playwright');
 /** The layouts test-camera.mjs frames the car in (scripts/camera-viewports.json). */
-const VIEWPORTS = JSON.parse(readFileSync(new URL('camera-viewports.json', import.meta.url), 'utf8'));
+const VIEWPORTS_FILE = new URL('camera-viewports.json', import.meta.url);
+const VIEWPORTS = JSON.parse(readFileSync(VIEWPORTS_FILE, 'utf8'));
 
 const arg = (k, d) => {
   const i = process.argv.indexOf('--' + k);
   return i > -1 ? process.argv[i + 1] : d;
 };
 const base = arg('base', 'http://127.0.0.1:8080/');
+const updateViewports = process.argv.includes('--update-viewports');
+const addedSizes = (arg('update-viewports', '') || '')
+  .split(',')
+  .filter((size) => /^\d+x\d+$/.test(size))
+  .map((size) => size.split('x').map(Number));
+/**
+ * Chrome's GL driver reports a "GPU stall due to ReadPixels" performance note (as a console warning)
+ * when a gl.readPixels waits for the GPU. The page never reads pixels; this script does (the hashes,
+ * the fog pixel and the blur comparisons below), and whether the note comes depends on timing, so
+ * exactly that note (and its last repetition, which says it will no longer repeat) is set aside.
+ * Every other message still fails the check.
+ */
+const READPIXELS_STALL =
+  /^\[\.WebGL-0x[0-9a-f]+\]\s*GL Driver Message \(OpenGL, Performance, GL_CLOSE_PATH_NV, High\): GPU stall due to ReadPixels( \(this message will no longer repeat\))?$/i;
+let readPixelsStalls = 0;
 
 let failures = 0;
 const check = (name, ok, detail = '') => {
@@ -56,7 +82,8 @@ async function open(width, height, scale = 1) {
   const messages = [];
   page.on('pageerror', (e) => messages.push(String(e)));
   page.on('console', (m) => {
-    if (m.type() === 'error' || m.type() === 'warning') messages.push(m.type() + ': ' + m.text());
+    if (m.type() === 'warning' && READPIXELS_STALL.test(m.text())) readPixelsStalls++;
+    else if (m.type() === 'error' || m.type() === 'warning') messages.push(m.type() + ': ' + m.text());
   });
   // every rAF callback the page runs is counted; __rafRaw is the browser's own (uncounted)
   await page.addInitScript(() => {
@@ -109,54 +136,102 @@ async function open(width, height, scale = 1) {
   return { page, messages };
 }
 
-// --- viewport -------------------------------------------------------------------------------------
-for (const [width, height, scale] of [
+// --- viewport and layouts ---------------------------------------------------------------------------
+/**
+ * The page layout test-camera.mjs frames the car in, in CSS px (in the page): the panels' and the
+ * stage buttons' boxes and the framing areas home.js passed to the camera.
+ */
+function pageLayout() {
+  const box = (r) => [r.left, r.top, r.right, r.bottom].map(Math.round);
+  const framing = window.__journey.debugState().framing;
+  const px = (f) =>
+    [f[0] * innerWidth, f[1] * innerHeight, f[2] * innerWidth, f[3] * innerHeight].map(Math.round);
+  return {
+    panels: [...document.querySelectorAll('[data-journey] [data-panel]')].map((el) => [
+      el.offsetLeft,
+      el.offsetTop,
+      el.offsetLeft + el.offsetWidth,
+      el.offsetTop + el.offsetHeight,
+    ]),
+    buttons: box(document.querySelector('.jr__nav').getBoundingClientRect()),
+    panel: px(framing.panel),
+    open: px(framing.open),
+  };
+}
+
+/**
+ * The fixture entry for a layout measured at width × height. An existing entry keeps its maxFov,
+ * whether it has a nav box (then the stage buttons' box as measured) and its allow
+ * (test-camera.mjs explains them). A new one gets
+ *   maxFov  the widest key FOV for its aspect, or the widest car-shot key's plus the car fit's
+ *           FIT_EXTRA_FOV if that is wider, rounded up, plus 4° for the key solve, which widens a
+ *           key's lens where the scenery stops its dolly (by 4° at the pit box on a 412×915 phone);
+ *           this gives the 56° of 1024×768 (1440×900 and 390×844 keep their 52° and 68°),
+ *   nav     the stage buttons' box if they stand beside the panel-shown framing area (right of it,
+ *           at its height: home.js then keeps that area clear of them), else null.
+ */
+function layoutEntry(width, height, layout, old) {
+  const aspect = width / height;
+  const fovAt = (shot) => (2 * Math.atan(viewportTan(shot.fov, aspect)) * 180) / Math.PI;
+  const widest = Math.max(...CAMERA_SHOTS.map(fovAt));
+  const widestCar = Math.max(...CAMERA_SHOTS.filter((shot) => !shot.aerial).map(fovAt));
+  const maxFov = Math.ceil(Math.max(widest, widestCar + FIT_EXTRA_FOV)) + 4;
+  const { panel, buttons } = layout;
+  const beside = panel[2] <= buttons[0] && buttons[1] < panel[3] && buttons[3] > panel[1];
+  const entry = {
+    name: `${width}x${height}`,
+    width,
+    height,
+    maxFov: old ? old.maxFov : maxFov,
+    panels: layout.panels,
+    nav: (old ? old.nav : beside) ? buttons : null,
+    panel,
+    open: layout.open,
+    buttons,
+  };
+  if (old && old.allow) entry.allow = old.allow;
+  if (old && old.maxFov !== maxFov)
+    console.log(`note ${entry.name}: keeps maxFov ${old.maxFov}° (derived ${maxFov}°)`);
+  return entry;
+}
+
+/** One entry per line, as the file is kept. */
+function formatViewports(entries) {
+  const fmt = (v) =>
+    Array.isArray(v)
+      ? `[${v.map(fmt).join(', ')}]`
+      : v && typeof v === 'object'
+        ? `{${Object.entries(v)
+            .map(([k, x]) => `${JSON.stringify(k)}: ${fmt(x)}`)
+            .join(', ')}}`
+        : JSON.stringify(v);
+  return `[\n${entries.map((entry) => '  ' + fmt(entry)).join(',\n')}\n]\n`;
+}
+
+// the page checks at three sizes (canvas, drawing buffer at the device pixel ratio, messages), the
+// layout of every fixture entry (and of the sizes --update-viewports adds) on a page of that size
+const measured = new Map();
+const PAGE_CHECKS = [
   [1440, 900, 1],
   [390, 844, 2],
   [1024, 768, 1],
-]) {
+];
+const layoutSizes = [...VIEWPORTS.map((v) => [v.width, v.height]), ...addedSizes].filter(
+  ([w, h], i, all) => all.findIndex(([w2, h2]) => w2 === w && h2 === h) === i,
+);
+for (const [width, height, scale] of PAGE_CHECKS) {
   const { page, messages } = await open(width, height, scale);
   const size = await page.evaluate(() => {
     window.__journey.renderAt(0.5);
     const canvas = document.querySelector('.jr__canvas');
     const rect = canvas.getBoundingClientRect();
-    const box = (r) => [r.left, r.top, r.right, r.bottom].map(Math.round);
-    const framing = window.__journey.debugState().framing;
-    const px = (f) =>
-      [f[0] * innerWidth, f[1] * innerHeight, f[2] * innerWidth, f[3] * innerHeight].map(Math.round);
     return {
       css: [rect.left, rect.top, rect.width, rect.height],
       viewport: [innerWidth, innerHeight],
       buffer: [canvas.width, canvas.height],
-      dpr: devicePixelRatio,
-      scale: window.__journey.resScale,
-      layout: {
-        panels: [...document.querySelectorAll('[data-journey] [data-panel]')].map((el) => [
-          el.offsetLeft,
-          el.offsetTop,
-          el.offsetLeft + el.offsetWidth,
-          el.offsetTop + el.offsetHeight,
-        ]),
-        buttons: box(document.querySelector('.jr__nav').getBoundingClientRect()),
-        panel: px(framing.panel),
-        open: px(framing.open),
-      },
     };
   });
-  // the layout test-camera.mjs frames the car in is the page's (within 2 px)
-  const table = VIEWPORTS.find((v) => v.width === width && v.height === height);
-  const off = (a, b) => Math.max(...a.flat().map((v, i) => Math.abs(v - b.flat()[i])));
-  const layoutError = Math.max(
-    off(size.layout.panels, table.panels),
-    off(size.layout.buttons, table.buttons),
-    off(size.layout.panel, table.panel),
-    off(size.layout.open, table.open),
-  );
-  check(
-    `test-camera's ${width}x${height} layout matches the page`,
-    layoutError <= 2,
-    `largest difference ${layoutError} px; page ${JSON.stringify(size.layout)}`,
-  );
+  measured.set(`${width}x${height}`, await page.evaluate(pageLayout));
   check(
     `canvas covers the ${width}x${height} viewport`,
     size.css[0] === 0 && size.css[1] === 0 && size.css[2] === width && size.css[3] === height,
@@ -170,6 +245,44 @@ for (const [width, height, scale] of [
   );
   check(`no page messages at ${width}x${height}`, !messages.length, messages.join(' | '));
   await page.close();
+}
+for (const [width, height] of layoutSizes) {
+  if (measured.has(`${width}x${height}`)) continue;
+  const { page, messages } = await open(width, height, 1);
+  measured.set(`${width}x${height}`, await page.evaluate(pageLayout));
+  check(`no page messages at ${width}x${height}`, !messages.length, messages.join(' | '));
+  await page.close();
+}
+if (updateViewports) {
+  const entries = layoutSizes.map(([width, height]) =>
+    layoutEntry(
+      width,
+      height,
+      measured.get(`${width}x${height}`),
+      VIEWPORTS.find((v) => v.width === width && v.height === height),
+    ),
+  );
+  writeFileSync(VIEWPORTS_FILE, formatViewports(entries));
+  console.log(
+    `wrote ${entries.length} layouts to scripts/camera-viewports.json: ${entries.map((e) => e.name).join(', ')}`,
+  );
+} else {
+  // the layouts test-camera.mjs frames the car in are the page's (within 2 px)
+  for (const table of VIEWPORTS) {
+    const layout = measured.get(`${table.width}x${table.height}`);
+    const off = (a, b) => Math.max(...a.flat().map((v, i) => Math.abs(v - b.flat()[i])));
+    const layoutError = Math.max(
+      off(layout.panels, table.panels),
+      off(layout.buttons, table.buttons),
+      off(layout.panel, table.panel),
+      off(layout.open, table.open),
+    );
+    check(
+      `test-camera's ${table.name} layout matches the page`,
+      layoutError <= 2,
+      `largest difference ${layoutError} px; page ${JSON.stringify(layout)}`,
+    );
+  }
 }
 
 // --- determinism, warmup, rAF, cuts (small viewport: software rendering is slow) ----------------
@@ -479,7 +592,16 @@ check('a rendered frame keeps its view-projection for the next one', cuts.afterF
 check('jump() clears the blur history', cuts.afterJump === false);
 check('becoming visible clears the blur history', cuts.afterVisible === false);
 check('start() clears the blur history', cuts.afterStart === false);
-check('no page messages', !messages.length, [...new Set(messages)].join(' | '));
+check(
+  'no page messages',
+  !messages.length,
+  [
+    ...new Set(messages),
+    ...(readPixelsStalls
+      ? [`set aside: ${readPixelsStalls} "GPU stall due to ReadPixels" driver notes`]
+      : []),
+  ].join(' | '),
+);
 await browser.close();
 
 console.log(failures ? `FAIL: ${failures} loop checks failed` : 'OK: all loop checks passed');
