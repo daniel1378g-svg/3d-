@@ -1,141 +1,257 @@
-// Sun and sky light: creation, journey progress → time of day, and the sun's shadow box that
-// follows the camera with texel snapping (so shadow edges do not shimmer while the camera moves).
+// Sun and sky light: creation, applying a time-of-day sample (time-of-day.js), the fog, and the
+// sun's shadow box, fitted every frame to the ground the camera sees.
 // World XZ plane, y up; distances in metres, angles in radians unless noted.
-import { DirectionalLight, HemisphereLight, MathUtils, Vector3 } from 'three';
-import { clamp, lerp, smoothstep } from './util/math.js';
+//
+// Fog. three.js mixes the fog in after tone mapping and the output encoding, so the fog colour is a
+// display colour: the time of day's horizon colour (time-of-day.js). A THREE.Color holds working
+// (linear) values and three.js encodes the fog uniform for the output, so applyLighting() decodes
+// the display colour first; a fully fogged object then shows exactly the horizon's display colour,
+// on the canvas and in the motion-blur target alike (motion-blur.js draws it like the canvas). The
+// haze sits in the lowest air: fitFog() lengthens the fog distances with the eye's height by the
+// mean haze density along a ray from the eye down to the ground (an exponential haze of scale
+// height HAZE_SCALE_HEIGHT), so the overhead shots, which see the ground from up to 1.5 km, are not
+// washed out by fog meant for the horizontal views.
+//
+// Shadow box (createShadowFollow). The orthographic shadow camera looks down the sun direction. Its
+// square cross-section is fitted to the camera's ground footprint: the ground points under the eye
+// and the target and where the four frustum corner rays meet the ground, each clipped to a reach
+// that grows with the eye's height (rays above the horizon end there), measured in the shadow
+// map's own axes. So the close-ups keep the sharp, car-tuned 140 m box (BASE_HALF_EXTENT, ≈ 3.4 cm
+// texels on the 4096² map) and the aerial gets a box of up to 2.2 km that covers the whole frame
+// (O2 in docs/diagnosis: the old box stayed on the car). The size follows the camera continuously
+// (quantised to 1/16 octave so a still camera keeps a still box), the centre is snapped to whole
+// shadow texels (no shimmer while the camera moves), the depth range follows the footprint, and
+// the depth and normal biases keep their car-tuned values in metres (3.6 cm and 4 cm at the base
+// box) scaled with the texel size. Shadow map: 4096² on 'high' (if the GPU allows 8192² textures,
+// else 2048²), 2048² on 'mid', none on 'low'; PCF soft filtering (renderer.js).
+// update() allocates nothing.
+import { DirectionalLight, HemisphereLight, Vector3 } from 'three';
+import { clamp } from './util/math.js';
 
 const UP = new Vector3(0, 1, 0);
 
-/** Half-size of the sun's orthographic shadow box (metres): a 140 m square around the focus point. */
-const SHADOW_HALF_EXTENT = 70;
+/** Linear fog from FOG_NEAR to FOG_FAR (metres) for an eye at ground level (see fitFog). */
+const FOG_NEAR = 140;
+const FOG_FAR = 3300;
+/** Scale height (metres) of the haze density, exp(−y / H). */
+const HAZE_SCALE_HEIGHT = 900;
 
-/** The sun light sits this far from the shadow focus point, along the sun direction (metres). */
-const SUN_DISTANCE = 400;
+/** Half-size (metres) of the shadow box for ground-level shots, and its upper limit (aerial). */
+const BASE_HALF_EXTENT = 70;
+const MAX_HALF_EXTENT = 1100;
+/**
+ * Depth bias (metres along the sun) and normal offset (metres) at the base box: the values tuned
+ * with the car's tyre contact (-4e-5 of the old 890 m depth range is 3.6 cm; 4 cm ≈ 1.2 texels).
+ */
+const BASE_BIAS_METRES = 0.0356;
+const BASE_NORMAL_BIAS = 0.04;
+/** Frustum corner rays are followed to at most this horizontal reach: metres + × eye height. */
+const REACH_BASE = 60;
+const REACH_PER_HEIGHT = 2.5;
+const MAX_REACH = 1600;
+/** Casters this far up-sun of the footprint (and this far below it) stay inside the depth range. */
+const CASTER_MARGIN = 160;
+const RECEIVER_MARGIN = 40;
+/** The box size moves in steps of 1/16 octave (4.4 %). */
+const SIZE_STEPS_PER_OCTAVE = 16;
 
-/** Above this camera height (aerial shots) the shadow box stays on the car instead of the camera target. */
-const AERIAL_CAMERA_HEIGHT = 40;
+function shadowMapSizeFor(renderer, quality) {
+  return quality === 'high' && renderer.capabilities.maxTextureSize >= 8192 ? 4096 : 2048;
+}
+
+/**
+ * Exposure. A camera adapts to the light: groundIlluminance() estimates the light on level ground
+ * (the sun's, plus the sky's from the environment probe and the hemisphere fill), and exposureFor()
+ * puts a sunlit 18 % grey card at REFERENCE_EXPOSURE under REFERENCE_ILLUMINANCE (midday),
+ * compensating ADAPTATION of each stop the light falls (so the morning and the golden hour keep
+ * comparable mid-tones and still read as darker, warmer moments), times the palette's trim (`exp`).
+ */
+const REFERENCE_ILLUMINANCE = 3.84;
+const REFERENCE_EXPOSURE = 0.9;
+const ADAPTATION = 0.8;
+/** Irradiance on level ground per unit of environmentIntensity / hemisphere intensity (measured). */
+const SKY_IRRADIANCE = 1.1;
+const HEMI_IRRADIANCE = 0.6;
+/**
+ * Light bounced up by the ground (asphalt and grass, albedo ≈ 0.1), as the hemisphere light's
+ * ground colour: the palette's `gnd` tint (luminance ≈ 0.13) times this times the illuminance.
+ */
+const GROUND_BOUNCE = 0.75;
+
+function groundIlluminance(light) {
+  return (
+    light.sunI * Math.max(0.03, light.sunDir.y) + SKY_IRRADIANCE * light.env + HEMI_IRRADIANCE * light.hemiI
+  );
+}
+
+/** Tone-mapping exposure for a sampleTimeOfDay() result (see above). */
+function exposureFor(light) {
+  return (
+    light.exp * REFERENCE_EXPOSURE * Math.pow(REFERENCE_ILLUMINANCE / groundIlluminance(light), ADAPTATION)
+  );
+}
 
 /** Hemisphere sky/ground fill plus the shadow-casting sun, added to `scene` in this order. */
 function createLights(scene, renderer, quality) {
-  const hemi = new HemisphereLight(14279913, 6187602, 1);
+  const hemi = new HemisphereLight(0xffffff, 0x404040, 0.5);
   scene.add(hemi);
-  const sun = new DirectionalLight(16777215, 3);
+  const sun = new DirectionalLight(0xffffff, 3);
   sun.castShadow = renderer.shadowMap.enabled;
-  sun.shadow.mapSize.setScalar(
-    quality === 'high' && renderer.capabilities.maxTextureSize >= 8192 ? 4096 : 2048,
-  );
+  sun.shadow.mapSize.setScalar(shadowMapSizeFor(renderer, quality));
   Object.assign(sun.shadow.camera, {
-    left: -SHADOW_HALF_EXTENT,
-    right: SHADOW_HALF_EXTENT,
-    top: SHADOW_HALF_EXTENT,
-    bottom: -SHADOW_HALF_EXTENT,
-    near: 10,
-    far: 900,
+    left: -BASE_HALF_EXTENT,
+    right: BASE_HALF_EXTENT,
+    top: BASE_HALF_EXTENT,
+    bottom: -BASE_HALF_EXTENT,
+    near: 1,
+    far: 400,
   });
-  // Depth bias in shadow-depth units: the orthographic box is 890 m deep (near 10, far 900), so
-  // -4e-5 is 3.6 cm. (-4e-4 was 36 cm: occluders closer than that to a receiver cast nothing, which
-  // let the sun leak under the car's floor, splitter and tyres and under every eave.) The normal
-  // offset (4 cm ≈ 1.2 texels of the 140 m / 4096 map) handles the slope acne.
-  sun.shadow.bias = -4e-5;
-  sun.shadow.normalBias = 0.04;
-  sun.shadow.radius = 4;
+  sun.shadow.camera.updateProjectionMatrix();
+  sun.shadow.bias = -BASE_BIAS_METRES / 399;
+  sun.shadow.normalBias = BASE_NORMAL_BIAS;
   scene.add(sun, sun.target);
   return { hemi, sun };
 }
 
 /**
- * Journey progress → time of day (0 morning … 1 golden hour, the keys in time-of-day.js): a slow
- * morning over arrival and pit lane, midday on track, afternoon in the paddock, then an eased run
- * into the golden hour over progress 0.8–0.885.
+ * Applies a sampleTimeOfDay() result: sun and hemisphere lights (sky fill and ground bounce), the
+ * fog colour (the display colour `fog` decoded, see the header), the tone-mapping exposure and the
+ * strength of the sky's image-based light.
  */
-function timeOfDayAt(progress) {
-  return progress < 0.2
-    ? lerp(0, 0.12, progress / 0.2)
-    : progress < 0.56
-      ? lerp(0.12, 0.45, (progress - 0.2) / 0.36)
-      : progress < 0.8
-        ? lerp(0.45, 0.78, (progress - 0.56) / 0.24)
-        : lerp(0.78, 1, smoothstep(clamp((progress - 0.8) / 0.085, 0, 1)));
-}
-
-// scratch: sunDirection()'s default target, followWithShadow()'s focus point
-const sunDirScratch = new Vector3();
-const shadowFocus = new Vector3();
-
-/**
- * Unit vector towards the sun for a sampleTimeOfDay() result: `sunAz` (degrees) is measured from
- * -Z towards +X, `sunEl` (degrees) above the XZ plane. Written into `target`; by default a shared
- * vector that the next call overwrites (the frame loop uses it within the frame), so it does not
- * allocate.
- */
-function sunDirection(light, target = sunDirScratch) {
-  const elevation = MathUtils.degToRad(light.sunEl);
-  const azimuth = MathUtils.degToRad(light.sunAz);
-  return target
-    .set(
-      Math.sin(azimuth) * Math.cos(elevation),
-      Math.sin(elevation),
-      -Math.cos(azimuth) * Math.cos(elevation),
-    )
-    .normalize();
-}
-
-/** Applies a sampleTimeOfDay() result to the sun and hemisphere lights (the sky dome: sky.js). */
-function applyTimeOfDay(light, { sun, hemi }) {
-  sun.color.set(light.sun);
+function applyLighting(light, { sun, hemi, scene, renderer }) {
+  sun.color.copy(light.sun);
   sun.intensity = light.sunI;
-  hemi.color.set(light.sky);
-  hemi.groundColor.set(light.gnd);
-  hemi.intensity = light.hemiI;
-}
-
-/** Fog colour and tone-mapping exposure for a sampleTimeOfDay() result. */
-function applyAtmosphere(light, { scene, renderer }) {
-  scene.fog.color.set(light.fog);
-  renderer.toneMappingExposure = light.exp;
-}
-
-// scratch: the shadow map's horizontal and vertical axes
-const shadowRight = new Vector3();
-const shadowUp = new Vector3();
-
-/**
- * Snaps `point` (in place) to the shadow map's texel grid in the plane perpendicular to `sunDir`,
- * keeping its depth along `sunDir`, so the shadow box only ever moves by whole texels.
- */
-function snapToShadowTexels(point, sunDir, sun) {
-  const texel = (sun.shadow.camera.right - sun.shadow.camera.left) / sun.shadow.mapSize.x; // metres
-  shadowRight.crossVectors(UP, sunDir);
-  if (shadowRight.lengthSq() < 1e-8) shadowRight.set(1, 0, 0); // sun straight overhead
-  shadowRight.normalize();
-  shadowUp.crossVectors(sunDir, shadowRight).normalize();
-  const across = Math.round(point.dot(shadowRight) / texel) * texel;
-  const up = Math.round(point.dot(shadowUp) / texel) * texel;
-  const depth = point.dot(sunDir);
-  return point
-    .set(0, 0, 0)
-    .addScaledVector(shadowRight, across)
-    .addScaledVector(shadowUp, up)
-    .addScaledVector(sunDir, depth);
+  // the hemisphere light carries the sky fill (`sky` × hemiI) and the ground bounce
+  hemi.intensity = 1;
+  hemi.color.copy(light.sky).multiplyScalar(light.hemiI);
+  hemi.groundColor.copy(light.gnd).multiplyScalar(GROUND_BOUNCE * groundIlluminance(light));
+  scene.fog.color.copy(light.fog).convertSRGBToLinear();
+  scene.environmentIntensity = light.env;
+  renderer.toneMappingExposure = exposureFor(light);
 }
 
 /**
- * Centres the sun's shadow box on what the camera looks at (on the car during aerial shots),
- * snapped to shadow texels, with the light SUN_DISTANCE metres up-sun of it.
+ * Fog distances for an eye `eyeHeight` metres above the ground: FOG_NEAR..FOG_FAR stretched by the
+ * inverse of the mean haze density along a ray from the eye to the ground, h / (H (1 − e^(−h/H))):
+ * 1 at ground level, 1.4 at 600 m, 2.0 at 1.5 km.
  */
-function followWithShadow(sun, sunDir, cameraPosition, cameraTarget, carPosition) {
-  const focus = shadowFocus.copy(cameraPosition.y > AERIAL_CAMERA_HEIGHT ? carPosition : cameraTarget);
-  snapToShadowTexels(focus, sunDir, sun);
-  sun.position.copy(focus).addScaledVector(sunDir, SUN_DISTANCE);
-  sun.target.position.copy(focus);
+function fitFog(fog, eyeHeight) {
+  const h = Math.max(0, eyeHeight) / HAZE_SCALE_HEIGHT;
+  const stretch = h > 1e-4 ? h / -Math.expm1(-h) : 1 + h / 2;
+  fog.near = FOG_NEAR * stretch;
+  fog.far = FOG_FAR * stretch;
+}
+
+/**
+ * The sun's shadow box, fitted to the camera's view each frame (see the header). Returns
+ * { update(sunDir, camera, target), halfExtent }.
+ */
+function createShadowFollow(sun) {
+  const shadowCamera = sun.shadow.camera;
+  const mapSize = sun.shadow.mapSize.x;
+  // scratch
+  const right = new Vector3();
+  const upAxis = new Vector3();
+  const ray = new Vector3();
+  const centre = new Vector3();
+  const corners = [
+    [-1, -1],
+    [1, -1],
+    [-1, 1],
+    [1, 1],
+  ];
+  const state = { halfExtent: BASE_HALF_EXTENT, update };
+  let minA, maxA, minB, maxB, minD, maxD;
+
+  function include(x, y, z) {
+    const a = x * right.x + y * right.y + z * right.z;
+    const b = x * upAxis.x + y * upAxis.y + z * upAxis.z;
+    const d = x * sunDirRef.x + y * sunDirRef.y + z * sunDirRef.z;
+    if (a < minA) minA = a;
+    if (a > maxA) maxA = a;
+    if (b < minB) minB = b;
+    if (b > maxB) maxB = b;
+    if (d < minD) minD = d;
+    if (d > maxD) maxD = d;
+  }
+  let sunDirRef = UP;
+
+  /**
+   * `sunDir` unit vector to the sun, `camera` the posed scene camera (projection and matrixWorld up
+   * to date), `target` the point it looks at.
+   */
+  function update(sunDir, camera, target) {
+    sunDirRef = sunDir;
+    right.crossVectors(UP, sunDir);
+    if (right.lengthSq() < 1e-8) right.set(1, 0, 0); // sun straight overhead
+    right.normalize();
+    upAxis.crossVectors(sunDir, right).normalize();
+    minA = minB = minD = Infinity;
+    maxA = maxB = maxD = -Infinity;
+
+    const eye = camera.position;
+    const height = Math.max(0, eye.y);
+    const reach = Math.min(MAX_REACH, REACH_BASE + REACH_PER_HEIGHT * height);
+    include(eye.x, 0, eye.z);
+    include(target.x, Math.min(target.y, 0), target.z);
+    // the frame's corners at unit view depth from the projection matrix (view offset included):
+    // x_ndc = P[0]·x + P[8]·(−z) at z = −1
+    const p = camera.projectionMatrix.elements;
+    const e = camera.matrixWorld.elements; // columns: right, up, back
+    for (let i = 0; i < 4; i++) {
+      const sx = (corners[i][0] + p[8]) / p[0];
+      const sy = (corners[i][1] + p[9]) / p[5];
+      ray.set(e[0] * sx + e[4] * sy - e[8], e[1] * sx + e[5] * sy - e[9], e[2] * sx + e[6] * sy - e[10]);
+      // where the corner ray meets the ground, or its point at the reach if that is nearer
+      const horizontal = Math.hypot(ray.x, ray.z) || 1e-6;
+      let t = reach / horizontal;
+      if (ray.y < 0) t = Math.min(t, height / -ray.y);
+      include(eye.x + ray.x * t, Math.max(0, eye.y + ray.y * t), eye.z + ray.z * t);
+    }
+
+    // square box in the shadow map's axes, its size quantised, its centre snapped to texels
+    const rawHalf = 0.5 * Math.max(maxA - minA, maxB - minB) * 1.04;
+    const steps = Math.ceil(Math.log2(Math.max(1, rawHalf / BASE_HALF_EXTENT)) * SIZE_STEPS_PER_OCTAVE);
+    const half = Math.min(MAX_HALF_EXTENT, BASE_HALF_EXTENT * Math.pow(2, steps / SIZE_STEPS_PER_OCTAVE));
+    const texel = (2 * half) / mapSize;
+    const a = Math.round((minA + maxA) / 2 / texel) * texel;
+    const b = Math.round((minB + maxB) / 2 / texel) * texel;
+    const depthCentre = (minD + maxD) / 2;
+    centre
+      .set(0, 0, 0)
+      .addScaledVector(right, a)
+      .addScaledVector(upAxis, b)
+      .addScaledVector(sunDir, depthCentre);
+    const depthHalf = (maxD - minD) / 2;
+    const sunDistance = depthHalf + CASTER_MARGIN;
+    sun.position.copy(centre).addScaledVector(sunDir, sunDistance);
+    sun.target.position.copy(centre);
+    const far = sunDistance + depthHalf + RECEIVER_MARGIN;
+    if (half !== shadowCamera.right || far !== shadowCamera.far) {
+      shadowCamera.left = shadowCamera.bottom = -half;
+      shadowCamera.right = shadowCamera.top = half;
+      shadowCamera.near = 1;
+      shadowCamera.far = far;
+      shadowCamera.updateProjectionMatrix();
+    }
+    const scale = half / BASE_HALF_EXTENT;
+    sun.shadow.bias = -(BASE_BIAS_METRES * scale) / (far - 1);
+    sun.shadow.normalBias = BASE_NORMAL_BIAS * scale;
+    state.halfExtent = half;
+  }
+
+  return state;
 }
 
 export {
-  applyAtmosphere,
-  applyTimeOfDay,
+  FOG_FAR,
+  FOG_NEAR,
+  BASE_HALF_EXTENT,
+  MAX_HALF_EXTENT,
+  applyLighting,
+  exposureFor,
   createLights,
-  followWithShadow,
-  snapToShadowTexels,
-  sunDirection,
-  timeOfDayAt,
+  createShadowFollow,
+  fitFog,
+  shadowMapSizeFor,
 };

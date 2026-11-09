@@ -1,106 +1,246 @@
-// Morning to golden-hour lighting keys, sampled by journey progress.
-import { Color } from 'three';
-import { clamp, lerp, smoothstep } from './util/math.js';
+// Time of day: journey progress → local solar time → the sun's real position over the circuit and
+// the lighting palette (sun, sky, fog, ambient, exposure) for that moment.
+//
+// Sun position. Circuito Estoril lies at 38.75° N. The day is a late-spring one (solar declination
+// +18.8°, mid May or late July, matching the late-spring ground palette of docs/references.md 4.3),
+// so the sun rises in the ENE and sets in the WNW. Elevation and azimuth come from the standard
+// solar-geometry formulas for the local solar hour; the azimuth (degrees clockwise from north) is
+// turned into scene coordinates with the real-world frame measured in references.md §2:
+//   North = (+0.911, −0.417), East = (+0.416, +0.909) in the (x, z) ground plane.
+// That gives the brief's light (references.md 4.9): in the morning the sun stands behind the
+// grandstands (+z) and front-lights the pit facade; in the golden hour it is 4–9° high behind the
+// pit building (−z), so the pit lane falls into shadow and the grandstand glows.
+//
+// Journey progress → solar hour is a monotone cubic through one key per stage boundary: the sun
+// moves slowly while a stage panel is shown and faster in the transitions between stages:
+//   arrival 06:45–06:54 (20–22°), pit lane 07:24–07:48 (26–31°), aerial 07:48 → 09:36,
+//   on track 09:36–10:24 (52–60°), paddock 14:36–15:24 (51–41°), golden hour 18:15–18:37 (9–5°).
+//
+// Palette. Keys by solar hour. The sky's zenith and horizon are DISPLAY colours (sRGB hex as seen on
+// screen: the photo samples of references.md 4.9 where the brief gives them), blended in display
+// space and drawn as they are by the sky dome (sky.js). The fog colour is the horizon colour itself,
+// so a fully fogged object fades exactly into the horizon behind it (lighting.js turns the display
+// colour into the working colour three.js expects for fog). The lights are scene-linear (the hex is
+// decoded) and blended in linear light. Keys are blended with a smoothstep.
+//
+// sampleTimeOfDay(hour, out) fills `out` (createTimeOfDaySample()) and allocates nothing.
+import { Color, LinearSRGBColorSpace, Vector3 } from 'three';
+import { clamp, monotoneCurve, smoothstep } from './util/math.js';
+
+/** Latitude of the circuit and the solar declination of the chosen day, degrees. */
+const LATITUDE = 38.75;
+const DECLINATION = 18.8;
+
+/** Real-world North and East as unit vectors in the scene's (x, z) plane (references.md §2). */
+const NORTH_X = 0.911;
+const NORTH_Z = -0.417;
+const EAST_X = 0.416;
+const EAST_Z = 0.909;
+
+/** Journey progress → local solar time (hours): [progress, hour] keys at the stage boundaries. */
+const SOLAR_HOUR_KEYS = [
+  [0, 6.75],
+  [0.085, 6.9],
+  [0.2, 7.4],
+  [0.315, 7.8],
+  [0.425, 9.6],
+  [0.56, 10.4],
+  [0.665, 14.6],
+  [0.79, 15.4],
+  [0.885, 18.25],
+  [1, 18.62],
+];
+const solarHourCurve = monotoneCurve(SOLAR_HOUR_KEYS);
+
+/** Local solar time (hours) at journey progress 0..1 (clamped). */
+function solarHourAt(progress) {
+  return solarHourCurve(clamp(progress, 0, 1));
+}
+
+const DEG = Math.PI / 180;
+const SIN_LAT = Math.sin(LATITUDE * DEG);
+const COS_LAT = Math.cos(LATITUDE * DEG);
+const SIN_DEC = Math.sin(DECLINATION * DEG);
+const COS_DEC = Math.cos(DECLINATION * DEG);
 
 /**
- * Lighting keyframes. Fields:
- *   t       journey progress (0 = arrival, 1 = golden hour) at which this key applies
- *   sunEl   sun elevation above the horizon, degrees
- *   sunAz   sun azimuth, degrees clockwise from -z ("north") towards +x ("east");
- *           journey.js turns (sunEl, sunAz) into the direction (sin az cos el, sin el, -cos az cos el)
- *   sun     sun (directional light) colour, sRGB hex; also the sky shader's sun colour
- *   sunI    sun intensity
- *   sky     hemisphere light sky colour, sRGB hex
- *   gnd     hemisphere light ground colour, sRGB hex
- *   hemiI   hemisphere light intensity
- *   zen     sky dome zenith colour, sRGB hex
- *   hor     sky dome horizon colour, sRGB hex
- *   fog     fog colour, sRGB hex
- *   exp     renderer tone-mapping exposure
+ * Sun elevation and azimuth (degrees; azimuth clockwise from north) at local solar time `hour`,
+ * written into `out.sunEl` / `out.sunAz`.
  */
-var TIME_OF_DAY = [
-    {
-      t: 0,
-      sunEl: 15,
-      sunAz: 110,
-      sun: 0xffe0c0,
-      sunI: 3.6,
-      sky: 0xcfdce6,
-      gnd: 0x58644e,
-      hemiI: 0.92,
-      zen: 0x7fb0d8,
-      hor: 0xe7eef1,
-      fog: 0xdfe8ec,
-      exp: 1.04,
-    },
-    {
-      t: 0.45,
-      sunEl: 52,
-      sunAz: 175,
-      sun: 0xfff5e8,
-      sunI: 3.9,
-      sky: 0xd6e2ea,
-      gnd: 0x5e6a52,
-      hemiI: 0.98,
-      zen: 0x5d9ed6,
-      hor: 0xd9e4e9,
-      fog: 0xd9e4e9,
-      exp: 1,
-    },
-    {
-      t: 0.75,
-      sunEl: 26,
-      sunAz: 238,
-      sun: 0xffe2bc,
-      sunI: 3.7,
-      sky: 0xdbe0e2,
-      gnd: 0x5c6550,
-      hemiI: 0.9,
-      zen: 0x6d9fce,
-      hor: 0xe6e3da,
-      fog: 0xe2e2dc,
-      exp: 1,
-    },
-    {
-      t: 1,
-      sunEl: 7,
-      sunAz: 262,
-      sun: 0xffa95c,
-      sunI: 3.7,
-      sky: 0xf0c9a2,
-      gnd: 0x5a5244,
-      hemiI: 0.72,
-      zen: 0x6b80ab,
-      hor: 0xf3bf8b,
-      fog: 0xeac39c,
-      exp: 1.08,
-    },
-  ],
-  /** Keys holding colours (blended as colours, not as numbers). */
-  COLOR_KEYS = ['sun', 'sky', 'gnd', 'zen', 'hor', 'fog'],
-  scratchColorFrom = new Color(),
-  scratchColorTo = new Color();
+function solarPosition(hour, out) {
+  const hourAngle = (hour - 12) * 15 * DEG;
+  const sinEl = SIN_LAT * SIN_DEC + COS_LAT * COS_DEC * Math.cos(hourAngle);
+  const el = Math.asin(clamp(sinEl, -1, 1));
+  const cosAz = clamp((SIN_DEC - sinEl * SIN_LAT) / (Math.cos(el) * COS_LAT), -1, 1);
+  const az = Math.acos(cosAz) / DEG;
+  out.sunEl = el / DEG;
+  out.sunAz = hourAngle > 0 ? 360 - az : az;
+  return out;
+}
+
+/** Unit vector towards the sun in scene coordinates for elevation/azimuth in degrees, into `target`. */
+function sunVector(sunEl, sunAz, target) {
+  const el = sunEl * DEG;
+  const az = sunAz * DEG;
+  const horizontal = Math.cos(el);
+  const north = Math.cos(az) * horizontal;
+  const east = Math.sin(az) * horizontal;
+  return target
+    .set(north * NORTH_X + east * EAST_X, Math.sin(el), north * NORTH_Z + east * EAST_Z)
+    .normalize();
+}
 
 /**
- * Lighting at journey progress `progress` (0..1, clamped by the key range): the two surrounding
- * keys blended with a smoothstep. Colours go through THREE.Color, i.e. they are blended in the
- * linear working colour space and returned as sRGB hex numbers. Returns a new object with every
- * field of TIME_OF_DAY (including a blended `t`, which callers ignore).
+ * Palette keys by local solar hour. Fields:
+ *   hour    local solar time of the key
+ *   sun     sun light colour (display sRGB hex; used as a light colour, i.e. decoded to linear)
+ *   sunI    sun illuminance (three.js directional-light intensity)
+ *   sky     hemisphere light sky colour (hex), gnd its ground colour, hemiI its intensity
+ *   zen     sky-dome zenith colour (display hex), hor horizon colour (display hex); the sample's
+ *           `fog` is `hor` (distant objects fade into the horizon)
+ *   env     scene.environmentIntensity (image-based light from the sky probe)
+ *   exp     exposure trim on top of the automatic exposure (lighting.js exposureFor)
+ *   lift    how much the sky's middle band (between horizon and zenith) pales towards white: a
+ *           blend of two complementary colours (the golden hour's orange horizon and blue zenith)
+ *           would otherwise pass through grey
  */
-function sampleTimeOfDay(progress) {
-  let keyIndex = 0;
-  for (; keyIndex < TIME_OF_DAY.length - 2 && progress > TIME_OF_DAY[keyIndex + 1].t;) keyIndex++;
-  let from = TIME_OF_DAY[keyIndex],
-    to = TIME_OF_DAY[keyIndex + 1],
-    blend = smoothstep(clamp((progress - from.t) / (to.t - from.t), 0, 1)),
-    blendColor = (key) => scratchColorFrom.set(from[key]).lerp(scratchColorTo.set(to[key]), blend).getHex(),
-    sample = {};
-  for (let key of Object.keys(from))
-    sample[key] =
-      typeof from[key] == 'number' && !COLOR_KEYS.includes(key)
-        ? lerp(from[key], to[key], blend)
-        : blendColor(key);
+const PALETTE = [
+  // morning (references.md 4.9: clean Atlantic air, sampled zenith #518AD5 → horizon #94C9F1)
+  {
+    hour: 6.75,
+    sun: 0xfff0dc,
+    sunI: 3.3,
+    sky: 0xb9d3ee,
+    gnd: 0x5d6a4c,
+    hemiI: 0.4,
+    zen: 0x518ad5,
+    hor: 0x94c9f1,
+    env: 0.6,
+    exp: 1.35,
+    lift: 0.06,
+  },
+  {
+    hour: 8,
+    sun: 0xfff5e8,
+    sunI: 3.5,
+    sky: 0xbcd5ee,
+    gnd: 0x5f6b4e,
+    hemiI: 0.4,
+    zen: 0x4d86d3,
+    hor: 0x9dcdf1,
+    env: 0.6,
+    exp: 1.12,
+    lift: 0.06,
+  },
+  // late morning, the lap
+  {
+    hour: 10.5,
+    sun: 0xfffaf2,
+    sunI: 3.7,
+    sky: 0xc2d8ee,
+    gnd: 0x616c50,
+    hemiI: 0.4,
+    zen: 0x4a82d0,
+    hor: 0xa9d2f0,
+    env: 0.6,
+    exp: 1,
+    lift: 0.05,
+  },
+  // afternoon, the paddock
+  {
+    hour: 15,
+    sun: 0xfff3e2,
+    sunI: 3.6,
+    sky: 0xc4d6e8,
+    gnd: 0x606a4f,
+    hemiI: 0.4,
+    zen: 0x5085cd,
+    hor: 0xaccfea,
+    env: 0.6,
+    exp: 1,
+    lift: 0.07,
+  },
+  // the run into the golden hour
+  {
+    hour: 17.6,
+    sun: 0xffd29a,
+    sunI: 3.4,
+    sky: 0xd2cdc6,
+    gnd: 0x5e5f49,
+    hemiI: 0.4,
+    zen: 0x6185c2,
+    hor: 0xdfc7a2,
+    env: 0.6,
+    exp: 1.1,
+    lift: 0.18,
+  },
+  // golden hour (references.md 4.9: key light ≈ #FFA040, zenith #6E8FC0 → horizon #F2B572)
+  {
+    hour: 18.62,
+    sun: 0xffa654,
+    sunI: 3.2,
+    sky: 0xe6c3a0,
+    gnd: 0x5c5444,
+    hemiI: 0.4,
+    zen: 0x6e8fc0,
+    hor: 0xf2b572,
+    env: 0.6,
+    exp: 1.25,
+    lift: 0.3,
+  },
+];
+const COLOR_FIELDS = ['sun', 'sky', 'gnd', 'zen', 'hor'];
+const NUMBER_FIELDS = ['sunI', 'hemiI', 'env', 'exp', 'lift'];
+/** Display colours: kept as display values (not decoded to linear) for the sky dome and fog. */
+const DISPLAY_FIELDS = new Set(['zen', 'hor']);
+
+// the keys' colours as THREE.Color: lights decoded to linear, display colours kept as display values
+const paletteColors = PALETTE.map((key) => {
+  const colors = {};
+  for (const field of COLOR_FIELDS)
+    colors[field] = DISPLAY_FIELDS.has(field)
+      ? new Color().setHex(key[field], LinearSRGBColorSpace)
+      : new Color().setHex(key[field]);
+  return colors;
+});
+
+/** A reusable sample object for sampleTimeOfDay(). */
+function createTimeOfDaySample() {
+  const sample = { hour: 0, sunEl: 0, sunAz: 0, sunDir: new Vector3(), fog: new Color() };
+  for (const field of COLOR_FIELDS) sample[field] = new Color();
+  for (const field of NUMBER_FIELDS) sample[field] = 0;
   return sample;
 }
 
-export { sampleTimeOfDay };
+/**
+ * Lighting at local solar time `hour` into `out` (a createTimeOfDaySample() object): the sun's
+ * elevation, azimuth and direction (sunDir, unit vector towards the sun), and the palette blended
+ * between the surrounding keys with a smoothstep; `fog` (a display colour, like `hor`) is the
+ * horizon colour. Allocates nothing.
+ */
+function sampleTimeOfDay(hour, out) {
+  out.hour = hour;
+  solarPosition(hour, out);
+  sunVector(out.sunEl, out.sunAz, out.sunDir);
+  let k = 0;
+  while (k < PALETTE.length - 2 && hour > PALETTE[k + 1].hour) k++;
+  const from = PALETTE[k];
+  const to = PALETTE[k + 1];
+  const blend = smoothstep(clamp((hour - from.hour) / (to.hour - from.hour), 0, 1));
+  for (const field of NUMBER_FIELDS) out[field] = from[field] + (to[field] - from[field]) * blend;
+  for (const field of COLOR_FIELDS)
+    out[field].copy(paletteColors[k][field]).lerp(paletteColors[k + 1][field], blend);
+  out.fog.copy(out.hor);
+  return out;
+}
+
+export {
+  LATITUDE,
+  DECLINATION,
+  PALETTE,
+  createTimeOfDaySample,
+  sampleTimeOfDay,
+  solarHourAt,
+  solarPosition,
+  sunVector,
+};

@@ -10,44 +10,26 @@ var lerp = (a, b, amount) => a + (b - a) * amount,
   easeInOutCubic = (x) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
 
 /**
- * Builds y = f(x) through a list of [x, y] knots (x strictly increasing) as a piecewise cubic
- * Hermite curve. Tangents are non-uniform central differences (one-sided at the ends).
- *
- * NOTE: despite the name this is NOT monotonicity-preserving (no Fritsch-Carlson limiting), so
- * it can overshoot between knots whose slopes change sign. Outside [x0, xN] it holds the end
- * values.
+ * Builds y = f(x) through a list of [x, y] knots (x strictly increasing) as a monotone piecewise
+ * cubic Hermite curve (PCHIP: Fritsch-Carlson tangents from monotoneSlope()). Between two knots
+ * the curve stays within their values, so monotone data gives a monotone curve and a key that is a
+ * local extremum is never overshot; the curve is C1. Outside [x0, xN] it holds the end values.
+ * Evaluation allocates nothing.
  *
  * @param {Array<[number, number]>} knots
  * @returns {(x: number) => number}
  */
 function monotoneCurve(knots) {
-  let xs = knots.map((knot) => knot[0]),
-    ys = knots.map((knot) => knot[1]),
-    count = knots.length,
-    tangents = ys.map((_y, k) =>
-      k === 0
-        ? (ys[1] - ys[0]) / (xs[1] - xs[0])
-        : k === count - 1
-          ? (ys[count - 1] - ys[count - 2]) / (xs[count - 1] - xs[count - 2])
-          : (ys[k + 1] - ys[k - 1]) / (xs[k + 1] - xs[k - 1]),
-    );
+  const xs = knots.map((knot) => knot[0]);
+  const ys = knots.map((knot) => knot[1]);
+  const count = knots.length;
+  const tangents = ys.map((_y, k) => monotoneSlope(xs, ys, k));
   return (x) => {
     if (x <= xs[0]) return ys[0];
     if (x >= xs[count - 1]) return ys[count - 1];
-    // Linear scan for the segment [xs[k], xs[k + 1]] containing x.
     let k = 0;
-    for (; x > xs[k + 1];) k++;
-    let span = xs[k + 1] - xs[k],
-      s = (x - xs[k]) / span,
-      s2 = s * s,
-      s3 = s2 * s;
-    // Cubic Hermite basis h00, h10, h01, h11 (tangents scaled by the segment width).
-    return (
-      (2 * s3 - 3 * s2 + 1) * ys[k] +
-      (s3 - 2 * s2 + s) * span * tangents[k] +
-      (-2 * s3 + 3 * s2) * ys[k + 1] +
-      (s3 - s2) * span * tangents[k + 1]
-    );
+    while (x > xs[k + 1]) k++;
+    return hermite(xs[k], xs[k + 1], ys[k], ys[k + 1], tangents[k], tangents[k + 1], x);
   };
 }
 

@@ -190,11 +190,21 @@ function initJourney() {
   }
 
   // ---------------------------------------------------------------------------------------------
-  // Adaptive resolution: frame times are collected in batches of 60; a slow median steps the render
-  // scale down, a fast one steps it back up (never above a ceiling that drops whenever a step up
-  // had to be undone within 3 s, so the scale does not oscillate).
+  // Adaptive resolution, changed gradually: frame times are collected in batches of RES_BATCH
+  // frames; a slow median (above RES_SLOW) lowers the render scale by one RES_STEP, a fast one
+  // (below RES_FAST, two batches in a row) raises it by one step, and medians in between leave it
+  // alone (hysteresis). After a change the next RES_HOLD ms are ignored. The scale never rises above
+  // a ceiling that drops whenever a step up had to be undone within 3 s, so it does not oscillate.
+  // The batch buffer is preallocated and sorted in place (no allocation per frame).
 
-  let frameTimes = [];
+  const RES_BATCH = 30;
+  const RES_STEP = 0.05;
+  const RES_SLOW = 0.0215; // seconds
+  const RES_FAST = 0.0165;
+  const RES_HOLD = 700; // ms
+  const frameTimes = new Float64Array(RES_BATCH);
+  let frameCount = 0;
+  let fastBatches = 0;
   let resScale = 1;
   let resCeiling = 1;
   let holdUntil = 0; // frames before this time are ignored (after a change, a resize or a start)
@@ -203,33 +213,35 @@ function initJourney() {
   function governResolution(dt) {
     const now = performance.now();
     if (now < holdUntil) {
-      frameTimes.length = 0;
+      frameCount = 0;
       return;
     }
-    frameTimes.push(dt);
-    if (frameTimes.length < 60) return;
-    frameTimes.sort((a, b) => a - b);
-    const median = frameTimes[30];
-    const p25 = frameTimes[15];
-    const p75 = frameTimes[45];
-    frameTimes = [];
+    frameTimes[frameCount++] = dt;
+    if (frameCount < RES_BATCH) return;
+    frameCount = 0;
+    frameTimes.sort();
+    const median = frameTimes[RES_BATCH >> 1];
+    const p25 = frameTimes[RES_BATCH >> 2];
+    const p75 = frameTimes[(3 * RES_BATCH) >> 2];
     if (!scene || !scene.setResScale) return;
     // lowest scale: an effective pixel ratio of 0.75 (or no reduction when the base ratio is lower)
     const floor = Math.min(1, 0.75 / Math.max(0.75, scene.basePixelRatio || 1));
     // a steady cadence slower than 30 ms is a capped refresh rate, not an overloaded GPU
     if (median > 0.03 && p75 - p25 < 0.0015) return;
-    if (median > 0.0215 && resScale > floor) {
-      resScale =
-        now - lastStepUp < 3e3
-          ? (resCeiling = Math.max(floor, resScale * 0.88))
-          : Math.max(floor, resScale * 0.85);
-      scene.setResScale(resScale);
-      holdUntil = now + 1500;
-    } else if (median < 0.0175 && resScale < resCeiling) {
-      resScale = Math.min(resCeiling, resScale / 0.88);
-      scene.setResScale(resScale);
+    fastBatches = median < RES_FAST ? fastBatches + 1 : 0;
+    let next = resScale;
+    if (median > RES_SLOW && resScale > floor) {
+      next = Math.max(floor, resScale - RES_STEP);
+      if (now - lastStepUp < 3e3) resCeiling = next;
+    } else if (fastBatches >= 2 && resScale < resCeiling) {
+      next = Math.min(resCeiling, resScale + RES_STEP);
       lastStepUp = now;
-      holdUntil = now + 2500;
+      fastBatches = 0;
+    }
+    if (next !== resScale) {
+      resScale = next;
+      scene.setResScale(resScale);
+      holdUntil = now + RES_HOLD;
     }
   }
 
@@ -291,14 +303,67 @@ function initJourney() {
   ).observe(journey);
   document.addEventListener('visibilitychange', () => setRunning(inView && !document.hidden));
 
-  /** Shifts the subject clear of the panels: right of the panel column, or up on phones. */
+  /**
+   * Tells the camera which part of the stage the page leaves free (camera-director.js), as
+   * [left, top, right, bottom] fractions of the canvas: `open` is the canvas minus the fixed UI
+   * (the preview strip on top, the ticker at the bottom; on desktop the stage buttons on the right,
+   * on phones the stage buttons and the skip link at the top), `panel` is that area minus the panel
+   * column (desktop: right of the widest panel) or minus the bottom sheet (phones: above the
+   * tallest panel). Car shots keep the car in `panel` while a panel is shown (the camera follows
+   * PANEL_WINDOWS and PANEL_FADE, passed along), the aerial frames the circuit in `open`. Measured
+   * from the layout (offset boxes are not moved by the panels' slide transforms), on resize and
+   * once the web fonts have loaded.
+   */
   function updateFraming() {
-    if (!scene) return;
-    if (narrow.matches) scene.setFraming(0, innerWidth < innerHeight ? 0.16 : 0.1);
-    else scene.setFraming(clamp(((Math.min(560, innerWidth * 0.42) + 40) / innerWidth) * 0.42, 0, 0.2), 0);
+    if (!scene || !canvas) return;
+    const box = canvas.getBoundingClientRect();
+    const width = box.width;
+    const height = box.height;
+    if (!width || !height) return;
+    const bottomOf = (selector) => {
+      const el = journey.querySelector(selector) || document.querySelector(selector);
+      if (!el) return 0;
+      const rect = el.getBoundingClientRect();
+      return rect.height && rect.bottom > 0 && rect.top < height * 0.4 ? rect.bottom - box.top : 0;
+    };
+    const ticker = journey.querySelector('.jr__ticker');
+    const isNarrow = narrow.matches;
+    let top = Math.max(
+      bottomOf('.preview-strip'),
+      isNarrow ? Math.max(bottomOf('.jr__nav'), bottomOf('.jr__skip')) : 0,
+    );
+    top += isNarrow ? 8 : 20;
+    const bottom = (ticker ? ticker.offsetTop : height) - (isNarrow ? 8 : 20);
+    const side = isNarrow ? 8 : 24;
+    // desktop: the stage buttons stand at the right edge, at mid-height; the aerial keeps clear of
+    // them, and so do the car shots where the column between the panels and the buttons is wide
+    // enough for the car (a quarter of the width: not on 4:3 tablets, where the car may pass under
+    // the buttons rather than under a panel)
+    const nav = isNarrow ? null : journey.querySelector('.jr__nav');
+    const navRect = nav && nav.getBoundingClientRect();
+    const navLeft = navRect && navRect.width ? navRect.left - box.left - 24 : width - side;
+    const open = [side, top, Math.min(width - side, navLeft), bottom];
+    const panel = [side, top, width - side, bottom];
+    for (const element of panels) {
+      if (isNarrow) panel[3] = Math.min(panel[3], element.offsetTop - 10);
+      else panel[0] = Math.max(panel[0], element.offsetLeft + element.offsetWidth + 24);
+    }
+    if (navLeft - panel[0] >= width * 0.25) panel[2] = Math.min(panel[2], navLeft);
+    // a band too thin to show the car (landscape phones and small windows, where the bottom sheet
+    // takes most of the height) grows down over the top of the sheet; a column too narrow grows left
+    if (panel[3] - panel[1] < height * 0.1) panel[3] = Math.min(bottom, panel[1] + height * 0.22);
+    panel[0] = Math.min(panel[0], panel[2] - width * 0.25);
+    const toFractions = (r) => [r[0] / width, r[1] / height, r[2] / width, r[3] / height];
+    scene.setFraming(0, 0, {
+      panel: toFractions(panel),
+      open: toFractions(open),
+      windows: PANEL_WINDOWS,
+      fade: PANEL_FADE,
+    });
   }
 
   addEventListener('resize', updateFraming);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => updateFraming());
   addEventListener('resize', () => {
     holdUntil = performance.now() + 800;
   });
@@ -428,14 +493,23 @@ function initJourney() {
 
     sceneReady = true;
     updateFraming();
+    // the intro fly-in plays when the page opens at the arrival (jump keeps it there), not with
+    // reduced motion
     scene.jump(scrollProgress());
+    if (reducedMotion) scene.skipIntro();
     setRunning(inView && !document.hidden);
 
     if (params.get('capture') === '1') {
-      // deterministic stills: stop the loops and render a given progress on request
+      // deterministic stills: stop the loops and render a given progress on request. Headless
+      // browsers hide the scrollbar but html { scrollbar-gutter: stable } still reserved its 15 px,
+      // so the canvas was 15 px narrower than the viewport and every capture had a light strip on the
+      // right; captures drop the reserved gutter so the stage, and the canvas, span the viewport.
       setRunning(false);
       capturePaused = true;
+      html.style.scrollbarGutter = 'auto';
+      updateFraming();
       window.__journey = scene; // debugCam overrides for scripted captures (scripts/capture.mjs --cam)
+      // renderAt: dt 0 renders a still; dt > 0 the next frame of a sequence (journey.js)
       window.__cap = (t, dt = 0) => {
         window.scrollTo(0, journey.getBoundingClientRect().top + scrollY + t * scrollRange());
         scene.renderAt(t, { dt });
