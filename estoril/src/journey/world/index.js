@@ -10,7 +10,7 @@
 //    vegetation LOD and grass sway, grandstand flags, clouds).
 //
 // Coordinates: metres, world XZ ground plane, +Y up. See layout.js for the fixed positions.
-import { bindTrackModel } from '../env/shading.js';
+import { bindGravelMask, bindTrackModel } from '../env/shading.js';
 import { buildArmco, buildTyreStacks } from './barriers.js';
 import { buildClouds } from './clouds.js';
 import { createWorldContext } from './context.js';
@@ -43,6 +43,7 @@ function buildWorld(trackPoints, { quality = 'high' } = {}) {
   buildGround(ctx);
   buildHills(ctx);
   buildTrackSurfaces(ctx, shape);
+  bindGravelMask(ctx.materials, ctx.root); // where the run-off shader spills gravel
   buildPitLaneSurface(ctx);
   buildPitBuilding(ctx);
   buildOuterWallAndFence(ctx);

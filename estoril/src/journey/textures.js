@@ -334,68 +334,92 @@ function fenceMeshTexture() {
 }
 
 /**
- * Surface detail shared by the ground and track shaders (env/shading.js), 512 px, tileable, linear
- * data (no colour space), sampled at world positions:
+ * Surface detail shared by the ground and track shaders (env/shading.js), `size` px (512; 256 on
+ * 'low', where it is generated 4x faster and the finest grain is below a phone pixel anyway: every
+ * feature keeps its size in metres), tileable, linear data (no colour space), sampled at world
+ * positions (texel sizes below at 512 px):
  *   r  asphalt aggregate (tile 2.3 m, ~4.5 mm per texel): grain, pale stones 4–10 mm, dark pores
  *   g  grass seen from above (tile 2.7 m): short blade strokes over a speckle, in soft clumps
  *   b  gravel pebbles (tile 1.45 m, ~2.8 mm per texel): rounded pebbles 5–15 mm over dark gaps
  *   a  gravel pebble height (domes), for the bump
- * Every colour channel averages about 0.5. Built with typed arrays (also in Node). `anisotropy`
- * follows the quality tier.
+ * The channel means are in texture.userData.mean. Built with typed arrays (also in Node).
+ * `anisotropy` follows the quality tier.
  */
-function surfaceDetailTexture(anisotropy = 8) {
-  const S = 512;
+function surfaceDetailTexture(anisotropy = 8, size = 512) {
+  const S = size; // a power of two
+  const k1 = S / 512; // feature sizes in texels scale with the image…
+  const k2 = k1 * k1; // …and feature counts with its area
   const random = createRng(97);
   const asphalt = new Float32Array(S * S);
   const grass = new Float32Array(S * S);
   const gravel = new Float32Array(S * S).fill(0.3);
   const height = new Float32Array(S * S);
   const wrap = (v) => v & (S - 1); // S is a power of two
+  const line = new Float32Array(S);
+  /** 3 × 3 box blur with wrap-around, as two separable passes (in place on a copy). */
   const blur = (buffer) => {
-    const out = new Float32Array(S * S);
-    for (let y = 0; y < S; y++)
-      for (let x = 0; x < S; x++) {
-        let sum = 0;
-        for (let dy = -1; dy <= 1; dy++)
-          for (let dx = -1; dx <= 1; dx++) sum += buffer[wrap(y + dy) * S + wrap(x + dx)];
-        out[y * S + x] = sum / 9;
-      }
+    const out = new Float32Array(buffer);
+    for (let y = 0; y < S; y++) {
+      const o = y * S;
+      for (let x = 0; x < S; x++) line[x] = out[o + wrap(x - 1)] + out[o + x] + out[o + wrap(x + 1)];
+      out.set(line, o);
+    }
+    for (let x = 0; x < S; x++) {
+      for (let y = 0; y < S; y++)
+        line[y] = out[wrap(y - 1) * S + x] + out[y * S + x] + out[wrap(y + 1) * S + x];
+      for (let y = 0; y < S; y++) out[y * S + x] = line[y] / 9;
+    }
     return out;
   };
-  /** Calls fn(index, r²) for every texel of an ellipse of `radius` (r² is 0 at the centre, 1 at the rim). */
-  const disc = (cx, cy, radius, fn, stretch = 1, angle = 0) => {
+  // the texels of one ellipse: indices and r² (0 at the centre, 1 at the rim), filled by disc()
+  const discIndex = new Int32Array(1024);
+  const discR2 = new Float32Array(1024);
+  /** Collects every texel of an ellipse of `radius` into discIndex / discR2; returns their count. */
+  const disc = (cx, cy, radius, stretch = 1, angle = 0) => {
     const reach = Math.ceil(radius * Math.max(1, stretch)) + 1;
     const c = Math.cos(angle);
     const s = Math.sin(angle);
+    const fx = cx % 1;
+    const fy = cy % 1;
+    const ix = Math.floor(cx);
+    const iy = Math.floor(cy);
+    const inv = 1 / (radius * radius);
+    let n = 0;
     for (let dy = -reach; dy <= reach; dy++)
       for (let dx = -reach; dx <= reach; dx++) {
-        const px = dx + 0.5 - (cx % 1);
-        const py = dy + 0.5 - (cy % 1);
+        const px = dx + 0.5 - fx;
+        const py = dy + 0.5 - fy;
         const u = (px * c + py * s) / stretch;
         const v = -px * s + py * c;
-        const r2 = (u * u + v * v) / (radius * radius);
-        if (r2 < 1) fn(wrap(Math.floor(cy) + dy) * S + wrap(Math.floor(cx) + dx), r2);
+        const r2 = (u * u + v * v) * inv;
+        if (r2 < 1 && n < discIndex.length) {
+          discIndex[n] = wrap(iy + dy) * S + wrap(ix + dx);
+          discR2[n++] = r2;
+        }
       }
+    return n;
   };
 
   // asphalt: blurred grain, pale stones, dark pores
   for (let i = 0; i < S * S; i++) asphalt[i] = 0.5 + (random() - 0.5) * 0.55;
   const grain = blur(asphalt);
   for (let i = 0; i < S * S; i++) asphalt[i] = 0.47 + (grain[i] - 0.5) * 1.3 + (random() - 0.5) * 0.08;
-  for (let k = 0; k < 2600; k++) {
-    const r = 0.9 + random() * 1.4;
+  for (let k = 0; k < 2600 * k2; k++) {
+    const r = (0.9 + random() * 1.4) * k1;
     const lift = 0.2 + random() * 0.25;
-    disc(random() * S, random() * S, r, (i, r2) => (asphalt[i] += lift * (1 - r2 * r2)));
+    const n = disc(random() * S, random() * S, r);
+    for (let t = 0; t < n; t++) asphalt[discIndex[t]] += lift * (1 - discR2[t] * discR2[t]);
   }
-  for (let k = 0; k < 1500; k++) {
-    const r = 0.6 + random() * 1.0;
-    disc(random() * S, random() * S, r, (i, r2) => (asphalt[i] -= 0.28 * (1 - r2)));
+  for (let k = 0; k < 1500 * k2; k++) {
+    const r = (0.6 + random() * 1.0) * k1;
+    const n = disc(random() * S, random() * S, r);
+    for (let t = 0; t < n; t++) asphalt[discIndex[t]] -= 0.28 * (1 - discR2[t]);
   }
 
   // grass: speckle, blade strokes, clumps
   for (let i = 0; i < S * S; i++) grass[i] = 0.5 + (random() - 0.5) * 0.3;
-  for (let k = 0; k < 4200; k++) {
-    const length = 3 + random() * 7;
+  for (let k = 0; k < 4200 * k2; k++) {
+    const length = (3 + random() * 7) * k1;
     const angle = random() * Math.PI * 2;
     const tone = 0.22 + random() * 0.65;
     let x = random() * S;
@@ -416,32 +440,28 @@ function surfaceDetailTexture(anisotropy = 8) {
     }
 
   // gravel: rounded pebbles over dark gaps, each a dome
-  for (let k = 0; k < 3400; k++) {
-    const r = 1.8 + random() * random() * 4.2;
+  for (let k = 0; k < 3400 * k2; k++) {
+    const r = (1.8 + random() * random() * 4.2) * k1;
     const tone = random() < 0.12 ? 0.32 + random() * 0.2 : 0.55 + random() * 0.45;
     const stretch = 0.75 + random() * 0.5;
     const angle = random() * Math.PI;
-    disc(
-      random() * S,
-      random() * S,
-      r,
-      (i, r2) => {
-        const dome = Math.sqrt(1 - r2);
-        gravel[i] = tone * (0.82 + 0.18 * dome);
-        height[i] = dome;
-      },
-      stretch,
-      angle,
-    );
+    const n = disc(random() * S, random() * S, r, stretch, angle);
+    for (let t = 0; t < n; t++) {
+      const dome = Math.sqrt(1 - discR2[t]);
+      gravel[discIndex[t]] = tone * (0.82 + 0.18 * dome);
+      height[discIndex[t]] = dome;
+    }
   }
 
   const bytes = new Uint8Array(S * S * 4);
   const toByte = (v) => Math.max(0, Math.min(255, Math.round(v * 255)));
+  const sums = [0, 0, 0, 0];
   for (let i = 0; i < S * S; i++) {
     bytes[4 * i] = toByte(asphalt[i]);
     bytes[4 * i + 1] = toByte(grass[i]);
     bytes[4 * i + 2] = toByte(gravel[i]);
     bytes[4 * i + 3] = toByte(height[i]);
+    for (let c = 0; c < 4; c++) sums[c] += bytes[4 * i + c];
   }
   const texture = new DataTexture(bytes, S, S, RGBAFormat);
   texture.wrapS = texture.wrapT = RepeatWrapping;
@@ -449,6 +469,8 @@ function surfaceDetailTexture(anisotropy = 8) {
   texture.generateMipmaps = true;
   texture.anisotropy = anisotropy;
   texture.name = 'env-surface-detail';
+  // per-channel means: the shaders blend lookups around them (env/shading.js envNoTile)
+  texture.userData.mean = sums.map((sum) => sum / (S * S * 255));
   texture.needsUpdate = true;
   return texture;
 }

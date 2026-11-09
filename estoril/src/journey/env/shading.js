@@ -6,7 +6,12 @@
 // repeats on a visible grid from the ground or from the aerial shots:
 //   - macro variation: noise at 60–1700 m scales (tone, dry/green patches, wear, clumps);
 //   - detail: a 512 px tile (aggregate, grass, pebbles) sampled twice per scale with offsets chosen
-//     by a slow noise and blended (Quilez's "texture repetition" technique 3), at two scales;
+//     by a slow noise and blended (Quilez's "texture repetition" technique 3), at two scales; every
+//     blend of independent detail samples is renormalised around the mean (envNoTile, envMix), so
+//     it keeps the tile's contrast instead of averaging it away;
+//   - mid-frequency layers at 0.15-2 m from the noise image (stone clusters and patching on the
+//     asphalt, pebble clusters on the gravel, tussocks in the grass): they survive minification, so
+//     the surfaces keep their grain a few metres away where the fine detail is below a pixel;
 //   - a little bump from the detail height (derivative bump mapping), faded out with distance.
 // Strips that follow the track keep their UVs for what belongs to the track frame (across / along:
 // kerb blocks, worn edges, repairs, tyre marks); the asphalt detail itself is world-projected, so
@@ -15,7 +20,7 @@
 // Each patched material gets a fixed customProgramCacheKey, so programs are shared and stable. The
 // uniforms are kept in material.userData.uniforms (tools/env/probe.mjs counts their textures).
 // Colours below are linear-RGB albedos converted from the sRGB values in docs/references.md §4.3–4.4.
-import { Color, DataTexture, LinearFilter, RepeatWrapping, RGBAFormat, Vector4 } from 'three';
+import { Color, DataTexture, LinearFilter, RedFormat, RepeatWrapping, RGBAFormat, Vector4 } from 'three';
 import { noiseTexture } from './noise.js';
 
 /** The grass shader's dry/green threshold on its noise sum (vegetation.js reads the same). */
@@ -53,6 +58,7 @@ const VERTEX_BODY = /* glsl */ `
 const FRAGMENT_HEAD = /* glsl */ `
 uniform sampler2D envNoise;
 uniform sampler2D envDetail;
+uniform vec4 envDetailMean;
 varying vec3 vEnvPos;
 varying vec2 vEnvUv;
 float envHash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
@@ -68,7 +74,16 @@ vec4 envNoTile(sampler2D tex, vec2 uv, float variation) {
   vec2 offb = sin(vec2(3.0, 7.0) * (ia + 1.0));
   vec4 ca = textureGrad(tex, uv + offa, dx, dy);
   vec4 cb = textureGrad(tex, uv + offb, dx, dy);
-  return mix(ca, cb, smoothstep(0.2, 0.8, f - 0.1 * dot(ca - cb, vec4(1.0))));
+  float w = smoothstep(0.2, 0.8, f - 0.1 * dot(ca - cb, vec4(1.0)));
+  // a blend of two independent samples deviates less from the image's mean than either, by
+  // sqrt((1 - w)^2 + w^2) (0.71 at w = 0.5): scale the deviation back
+  return envDetailMean + (mix(ca, cb, w) - envDetailMean) * inversesqrt((1.0 - w) * (1.0 - w) + w * w);
+}
+/* the noise image's fbm channels (r, g: mean 0.5, deviation 0.09) as zero-mean, unit deviation */
+float envUnit(float v) { return (v - 0.5) * 11.0; }
+/* blend of two independent detail values (channel mean m) that keeps their contrast (envNoTile) */
+float envMix(float a, float b, float w, float m) {
+  return m + (mix(a, b, w) - m) * inversesqrt((1.0 - w) * (1.0 - w) + w * w);
 }
 /* derivative bump mapping (Mikkelsen 2010): perturbs the view-space normal by height h */
 vec3 envBump(vec3 surfPos, vec3 surfNorm, float h, float strength) {
@@ -86,7 +101,17 @@ let shared = null;
 
 /** Uniforms shared by every patched material (same objects, so one upload each). */
 function sharedUniforms(detail) {
-  if (!shared) shared = { envNoise: { value: noiseTexture() }, envDetail: { value: detail } };
+  if (!shared)
+    shared = {
+      envNoise: { value: noiseTexture() },
+      envDetail: { value: null },
+      envDetailMean: { value: new Vector4() },
+    };
+  // one world per page; a later world (tests build several) brings its own detail image
+  if (shared.envDetail.value !== detail) {
+    shared.envDetail.value = detail;
+    shared.envDetailMean.value.fromArray(detail.userData.mean || [0.5, 0.5, 0.5, 0.5]);
+  }
   return shared;
 }
 
@@ -156,13 +181,19 @@ function shadeGrass(material, detail) {
         col = mix(col, ${linear(0xb8a878)}, smoothstep(0.62, 0.9, small) * dry * 0.55);
         float soil = smoothstep(0.72, 0.85, texture(envNoise, p / 410.0 + 0.2).g) * smoothstep(0.45, 0.75, dry);
         col = mix(col, ${linear(0xb39c7c)}, soil * 0.65);
+        // blades at three scales (5 mm, 18 mm and 5 cm per texel): the coarsest keeps a grain a
+        // pixel or two wide in the middle distance, where the finer ones have averaged out
         float d1 = envNoTile(envDetail, p / 2.7, 0.05).g;
         float d2 = envNoTile(envDetail, p / 9.1 + 0.37, 0.02).g;
-        // mottling at 1–5 m: tussocks and thin patches, visible where the blade detail has blurred out
-        float tussock = texture(envNoise, p / 14.0).g * 0.6 + texture(envNoise, p / 43.0 + 0.3).r * 0.4;
+        float d3 = envNoTile(envDetail, p / 26.0 + 0.61, 0.008).g;
+        float blades = envMix(envMix(d1, d2, 0.4, envDetailMean.g), d3, 0.35, envDetailMean.g);
+        // tufts and bare gaps at 0.15-0.4 m (cellular clumps), then mottling at 1-5 m: tussocks and
+        // thin patches, visible where the blade detail has blurred out
+        float tufts = texture(envNoise, p / 3.1 + 0.2).b * 0.6 + texture(envNoise, p / 1.3 + 0.7).b * 0.4;
+        float tussock = envUnit(texture(envNoise, p / 14.0).g) * 0.8 + envUnit(texture(envNoise, p / 43.0 + 0.3).r) * 0.6;
         float canopy = texture(envCanopy, (p - envCanopyBounds.xy) / (envCanopyBounds.zw - envCanopyBounds.xy)).r;
-        diffuseColor.rgb *= col * ${GRASS_GAIN.toFixed(2)} * (0.7 + 0.6 * mix(d1, d2, 0.4)) * (0.8 + 0.4 * tussock)
-          * (1.0 - 0.55 * canopy);
+        diffuseColor.rgb *= col * ${GRASS_GAIN.toFixed(2)} * (1.0 + 0.8 * (blades - envDetailMean.g)) * max(0.6, 1.0 + 0.08 * tussock)
+          * (0.82 + 0.36 * tufts) * (1.0 - 0.55 * canopy);
       }`,
     },
   });
@@ -186,11 +217,19 @@ function shadeAsphalt(material, detail, { trackFrame, lapLength = 1 }) {
       map_fragment: /* glsl */ `
       {
         vec2 p = vEnvPos.xz;
+        // aggregate at three scales (4.5 mm, 15 mm and 4.5 cm per texel), see the grass
         float a1 = envNoTile(envDetail, p / 2.3, 0.03).r;
         float a2 = envNoTile(envDetail, p / 7.9 + 0.5, 0.011).r;
+        float a3 = envNoTile(envDetail, p / 23.0 + 0.27, 0.004).r;
         envAsphaltH = a1;
+        float aggregate = envMix(envMix(a1, a2, 0.4, envDetailMean.r), a3, 0.45, envDetailMean.r);
+        // stone clusters (0.2 m cells) and patching tone (1-2 m), kept where the aggregate blurs out
+        float cluster = texture(envNoise, p / 1.7 + 0.3).b * 0.5 + texture(envNoise, p / 1.9).g * 0.5;
+        // worn and patched tone at 0.5-3 m: fbm blotches
+        float worn = envUnit(texture(envNoise, p / 11.0 + 0.6).r) * 0.8 + envUnit(texture(envNoise, p / 4.3 + 0.2).g) * 0.6;
         float macro = texture(envNoise, p / 97.0).r * 0.6 + texture(envNoise, p / 331.0 + 0.3).r * 0.4;
-        vec3 col = vec3((0.84 + 0.32 * macro) * (0.72 + 0.56 * mix(a1, a2, 0.5)));
+        vec3 col = vec3((0.84 + 0.32 * macro) * (1.0 + 1.25 * (aggregate - envDetailMean.r)) * (0.88 + 0.24 * cluster)
+          * max(0.7, 1.0 + 0.06 * worn));
         ${
           trackFrame
             ? /* glsl */ `
@@ -303,13 +342,22 @@ function shadeKerb(material, detail) {
   });
 }
 
+/** Width (metres) of the painted run-off strip (track-surfaces.js: 1.6 m kerb to 5.5 m). */
+const RUNOFF_WIDTH = 3.9;
+
 /**
  * Painted run-off, mint green #4FB9A2 (references §4.4): dirt patches, grey tyre marks along the
- * corner, and gravel spilled onto its outer edge (u → 1, where the gravel trap starts).
+ * corner, and gravel spilled onto its outer edge (u → 1) where a gravel trap lies next to it (the
+ * world-space gravel mask, bindGravelMask): a narrow strip, 0.25-1.1 m wide and wandering, of the
+ * gravel detail's own pebbles, thinning out (by pebble size) towards the asphalt.
  */
 function shadeRunoff(material, detail) {
   material.color.set(0x4fb9a2);
+  const empty = new DataTexture(new Uint8Array(4), 1, 1, RGBAFormat);
+  empty.needsUpdate = true;
   return patchMaterial(material, 'runoff', detail, {
+    uniforms: { envGravelMask: { value: empty }, envGravelBounds: { value: new Vector4(0, 0, 1, 1) } },
+    fragmentHead: 'uniform sampler2D envGravelMask;\nuniform vec4 envGravelBounds;\n',
     fragment: {
       map_fragment: /* glsl */ `
       {
@@ -318,14 +366,103 @@ function shadeRunoff(material, detail) {
         float marks = smoothstep(0.58, 0.82, texture(envNoise, vec2(vEnvUv.x * 1.3, vEnvUv.y / 9.0)).g);
         vec3 col = vec3(0.86 + 0.24 * dirt);
         col = mix(col, vec3(0.42), marks * 0.4);
-        float speck = texture(envNoise, p / 6.0).a;
-        float zone = smoothstep(0.6, 1.0, vEnvUv.x);
-        float w = fwidth(speck) + 0.02;
-        float spill = smoothstep(1.0 - zone * 0.6 - w, 1.0 - zone * 0.6 + w, speck) * zone;
-        diffuseColor.rgb = mix(diffuseColor.rgb * col, ${linear(0xb5a288)}, spill * 0.85);
+        // spilled gravel: only beside a trap, within a wandering strip at the outer edge
+        float trap = smoothstep(0.03, 0.2, texture(envGravelMask, (p - envGravelBounds.xy) / (envGravelBounds.zw - envGravelBounds.xy)).r);
+        float fromEdge = (1.0 - vEnvUv.x) * ${RUNOFF_WIDTH.toFixed(1)};
+        float reach = 0.25 + 0.85 * texture(envNoise, p / 9.0 + 0.4).g;
+        float density = trap * (1.0 - smoothstep(0.0, reach, fromEdge));
+        vec4 g = envNoTile(envDetail, p / 1.45, 0.07);
+        // a pebble shows where its dome is higher than the density leaves (big ones first)
+        float w = fwidth(g.a) + 0.05;
+        float spill = smoothstep(1.0 - density - w, 1.0 - density + w, g.a) * step(0.001, density);
+        vec3 pebble = ${linear(0xb5a288)} * (1.0 + 0.88 * (g.b - envDetailMean.b));
+        diffuseColor.rgb = mix(diffuseColor.rgb * col, pebble, spill);
       }`,
     },
   });
+}
+
+/**
+ * The gravel mask read by the run-off shader: an R8 world-space map (GRAVEL_MASK_SIZE over
+ * GRAVEL_MASK_BOUNDS, about 3.1 m per texel) with every texel that a gravel triangle covers set and
+ * then a 3 x 3 blur (two separable passes), so the run-off beside a trap reads above zero, fading
+ * out over a few metres past the trap's ends, and the rest reads zero.
+ */
+const GRAVEL_MASK_SIZE = [512, 288];
+const GRAVEL_MASK_BOUNDS = [-800, -450, 800, 450];
+function bindGravelMask(materials, root) {
+  const [w, h] = GRAVEL_MASK_SIZE;
+  const [x0, z0, x1, z1] = GRAVEL_MASK_BOUNDS;
+  const sx = w / (x1 - x0);
+  const sz = h / (z1 - z0);
+  const mask = new Uint8Array(w * h);
+  root.updateMatrixWorld(true);
+  const e = new Float64Array(6);
+  root.traverse((node) => {
+    if (!node.isMesh || node.material !== materials.gravel) return;
+    const position = node.geometry.attributes.position;
+    const p = position.array;
+    const stride = position.isInterleavedBufferAttribute ? position.data.stride : 3;
+    const offset = position.isInterleavedBufferAttribute ? position.offset : 0;
+    const ids = node.geometry.index ? node.geometry.index.array : null;
+    const n = ids ? ids.length : position.count;
+    const m = node.matrixWorld.elements;
+    for (let k = 0; k + 2 < n; k += 3) {
+      for (let c = 0; c < 3; c++) {
+        const o = (ids ? ids[k + c] : k + c) * stride + offset;
+        const x = p[o];
+        const y = p[o + 1];
+        const z = p[o + 2];
+        e[2 * c] = (m[0] * x + m[4] * y + m[8] * z + m[12] - x0) * sx;
+        e[2 * c + 1] = (m[2] * x + m[6] * y + m[10] * z + m[14] - z0) * sz;
+      }
+      // texel centres inside the triangle (plus every texel a vertex falls in)
+      const tx0 = Math.max(0, Math.floor(Math.min(e[0], e[2], e[4])));
+      const tx1 = Math.min(w - 1, Math.floor(Math.max(e[0], e[2], e[4])));
+      const tz0 = Math.max(0, Math.floor(Math.min(e[1], e[3], e[5])));
+      const tz1 = Math.min(h - 1, Math.floor(Math.max(e[1], e[3], e[5])));
+      const area = (e[2] - e[0]) * (e[5] - e[1]) - (e[4] - e[0]) * (e[3] - e[1]);
+      if (!area) continue;
+      for (let tz = tz0; tz <= tz1; tz++)
+        for (let tx = tx0; tx <= tx1; tx++) {
+          const px = tx + 0.5;
+          const pz = tz + 0.5;
+          const a = ((e[2] - e[0]) * (pz - e[1]) - (px - e[0]) * (e[3] - e[1])) * area;
+          const b = ((e[4] - e[2]) * (pz - e[3]) - (px - e[2]) * (e[5] - e[3])) * area;
+          const c = ((e[0] - e[4]) * (pz - e[5]) - (px - e[4]) * (e[1] - e[5])) * area;
+          if (a >= 0 && b >= 0 && c >= 0) mask[tz * w + tx] = 255;
+        }
+      for (let c = 0; c < 3; c++) {
+        const tx = Math.floor(e[2 * c]);
+        const tz = Math.floor(e[2 * c + 1]);
+        if (tx >= 0 && tz >= 0 && tx < w && tz < h) mask[tz * w + tx] = 255;
+      }
+    }
+  });
+  // 3 x 3 box blur, separable (rows, then columns), edges clamped
+  const rows = new Uint16Array(w * h);
+  for (let z = 0; z < h; z++)
+    for (let x = 0; x < w; x++) {
+      const i = z * w + x;
+      rows[i] = mask[i] + (x > 0 ? mask[i - 1] : 0) + (x < w - 1 ? mask[i + 1] : 0);
+    }
+  const blurred = new Uint8Array(w * h);
+  for (let z = 0; z < h; z++)
+    for (let x = 0; x < w; x++) {
+      const i = z * w + x;
+      const sum = rows[i] + (z > 0 ? rows[i - w] : 0) + (z < h - 1 ? rows[i + w] : 0);
+      blurred[i] = Math.round(sum / 9);
+    }
+  const texture = new DataTexture(blurred, w, h, RedFormat);
+  texture.magFilter = texture.minFilter = LinearFilter;
+  texture.generateMipmaps = false;
+  texture.unpackAlignment = 1;
+  texture.name = 'env-gravel-mask';
+  texture.needsUpdate = true;
+  const uniforms = materials.runoff.userData.uniforms;
+  uniforms.envGravelMask.value = texture;
+  uniforms.envGravelBounds.value.set(x0, z0, x1, z1);
+  return texture;
 }
 
 /**
@@ -342,15 +479,29 @@ function shadeGravel(material, detail) {
       map_fragment: /* glsl */ `
       {
         vec2 p = vEnvPos.xz;
+        // pebbles at three scales (2.8 mm, 8.4 mm and 2.3 cm per texel), see the grass
         vec4 g1 = envNoTile(envDetail, p / 1.45, 0.07);
         vec4 g2 = envNoTile(envDetail, p / 4.3 + 0.21, 0.03);
+        float g3 = envNoTile(envDetail, p / 12.0 + 0.43, 0.01).b;
         envPebbleH = g1.a;
+        float pebbles = envMix(envMix(g1.b, g2.b, 0.35, envDetailMean.b), g3, 0.3, envDetailMean.b);
+        // pebble clusters and hollows: rounded dimples 0.15-1.4 m across (cellular, darker at their
+        // centres: kicked-up hollows that show the darker gravel under the sun-bleached top layer),
+        // sandy ripples and scuffed patches at 0.5-2 m (fbm), darker raked-up clumps at 13-90 m. The
+        // dimples carry the grain from a few metres away, where the pebbles are below a pixel.
+        float cluster = texture(envNoise, p / 1.2 + 0.4).b * 0.5 + texture(envNoise, p / 3.7).b * 0.5;
+        float dimples = smoothstep(0.55, 0.95, texture(envNoise, p / 2.3 + 0.15).b) * 0.45
+          + smoothstep(0.6, 0.95, texture(envNoise, p / 5.6 + 0.55).b) * 0.35
+          + smoothstep(0.62, 0.95, texture(envNoise, p / 11.0 + 0.71).b) * 0.2;
+        float ripples = envUnit(texture(envNoise, p / 7.0 + 0.3).r) * 0.8 + envUnit(texture(envNoise, p / 5.0 + 0.8).g) * 0.6;
         float clumps = texture(envNoise, p / 90.0 + 0.2).g * 0.6 + texture(envNoise, p / 13.0).g * 0.4;
         float broad = texture(envNoise, p / 71.0).r;
-        vec3 col = ${linear(0xb5a288)} * (0.78 + 0.44 * mix(g1.b, g2.b, 0.35)) * (0.9 + 0.2 * broad);
+        vec3 col = ${linear(0xb5a288)} * (1.0 + 0.88 * (pebbles - envDetailMean.b)) * (0.72 + 0.56 * cluster) * (0.9 + 0.2 * broad)
+          * max(0.6, 1.0 + 0.11 * ripples) * (1.0 - 0.75 * (dimples - 0.19)); // dimples average about 0.19
         col = mix(col, ${linear(0x94806c)}, smoothstep(0.55, 0.85, clumps) * 0.55);
+        // raked furrows across the trap (about 0.6 m apart), wavering
         float rake = 0.5 + 0.5 * sin(vEnvUv.x * 95.0 + texture(envNoise, p / 11.0).g * 6.0);
-        col *= 0.95 + 0.07 * rake;
+        col *= 0.9 + 0.16 * rake;
         col = mix(col, ${linear(0x8a7660)}, (1.0 - smoothstep(0.0, 0.12, vEnvUv.x)) * 0.5 * texture(envNoise, p / 7.0).g);
         diffuseColor.rgb *= col;
       }`,
@@ -429,4 +580,12 @@ function bindTrackModel(materials, lapTexture, model) {
   fillLapTexture(lapTexture, model);
 }
 
-export { DRY_EDGES, bindTrackModel, createLapTexture, linear, patchMaterial, shadeWorldSurfaces };
+export {
+  DRY_EDGES,
+  bindGravelMask,
+  bindTrackModel,
+  createLapTexture,
+  linear,
+  patchMaterial,
+  shadeWorldSurfaces,
+};
