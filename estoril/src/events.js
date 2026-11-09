@@ -9,14 +9,18 @@
 // Card grids of upcoming events (.evgrid[data-filter-list]: the home page's calendar section, the events
 // index and the category pages, one grid per month) carry the per-category counts of the filter chips of
 // their group ([data-filter] [data-f] .chip__n; the group is the parent of [data-filter], as in site.js).
+// The chips filter these upcoming cards only, so a chip's count is what it shows.
 // The events pages add (every hook is optional):
 //   section[data-month]            a month of upcoming events: removed once its last card has ended
-//   .evgrid[data-ev-past]          "past events": ended cards move here, latest first (not counted); its
-//                                  section is shown once it holds a card
-//   [data-ev-none]                 shown when no upcoming card is left (else [data-filter-empty] is)
-//   [data-ev-hero]                 the page hero: JSON [[end, src, width, height], ...] in date order; it
-//                                  shows the first one not ended (a last entry with end "" is the
-//                                  fallback photo of the circuit, for when no event is left)
+//   .evgrid[data-ev-past]          "past events", outside the filter (no data-filter-list): ended cards
+//                                  move here, latest first, and are always shown; its section is shown
+//                                  once it holds a card
+//   [data-ev-none]                 shown when no upcoming card is left; the filter chips and the
+//                                  per-category note ([data-filter-empty]) are hidden then
+//   [data-ev-hero]                 the page hero: JSON [[end, src, width, height], ...], the page's own
+//                                  upcoming events in date order (a category page lists only its
+//                                  category's); it shows the first one not ended (a last entry with
+//                                  end "" is the fallback photo of the circuit, for when none is left)
 //   a.chip[data-ev-ends]           category links: the count is the number of these end dates not passed
 //   .evgrid[data-ev-more="3"]      "other events" on an event page: ended cards go, the first three show,
 //                                  and the enclosing section hides when none is left
@@ -219,9 +223,7 @@ export function initEvents(root = document) {
 
 /**
  * Ended cards leave the upcoming grids: into the past list when the page has one (latest end first), else
- * out of the page. Then empty months go, and the chip counts and the "nothing here" note follow. site.js
- * wires the chips to the [data-filter-list] cards inside the chips' parent and reads them afresh on
- * every click, so moved and removed cards need nothing more.
+ * out of the page. Then empty months go, and the chip counts, the filter and its notes follow.
  */
 function renderGrids(root, grids, pastList, day) {
   let changed = false;
@@ -233,6 +235,10 @@ function renderGrids(root, grids, pastList, day) {
         const end = lastDay(item);
         const after = [...pastList.children].find((li) => lastDay(readItem(li)) < end);
         pastList.insertBefore(item.el, after || null);
+        // the past list is outside the filter: always shown, whatever the chip was
+        setHidden(item.el, false);
+        item.el.classList.remove('is-out');
+        item.el.style.transform = item.el.style.transition = '';
       } else item.el.remove();
     }
   if (!changed) return;
@@ -244,25 +250,41 @@ function renderGrids(root, grids, pastList, day) {
     const section = pastList.closest('[data-month]') || pastList;
     setHidden(section, !pastList.children.length);
   }
-  const live = grids.filter((grid) => grid.isConnected);
-  const items = live.flatMap(readList);
-  // counts per filter group (the chips' parent element, as in site.js)
-  for (const filter of root.querySelectorAll('[data-filter]')) {
-    const group = filter.parentElement;
-    const own = items.filter((item) => group.contains(item.el));
-    for (const chip of filter.querySelectorAll('[data-f]')) {
-      const f = chip.dataset.f;
-      setText(
-        chip.querySelector('.chip__n'),
-        String(own.filter((it) => f === 'all' || it.cats.includes(f)).length),
-      );
-    }
-  }
-  const empty = root.querySelector('[data-ev-none]') || root.querySelector('[data-filter-empty]');
-  if (empty && !items.length) setHidden(empty, false);
+  const items = grids.filter((grid) => grid.isConnected).flatMap(readList);
+  const none = root.querySelector('[data-ev-none]');
+  if (none && !items.length) setHidden(none, false);
+  for (const filter of root.querySelectorAll('[data-filter]')) applyFilter(filter, items, !items.length);
 }
 
-/** Shows the first hero candidate that has not ended ([[end, src, width, height], ...]). */
+/**
+ * Brings a chip group up to date with its cards (site.js wires the chips; the group is the parent of
+ * [data-filter]): the counts, and the state of the chip that is on, which site.js may have applied
+ * (a ?cat= link) before ended cards moved. With no upcoming card left the chips and the per-category
+ * note give way to the [data-ev-none] note.
+ */
+function applyFilter(filter, allItems, nothingLeft) {
+  const group = filter.parentElement;
+  const items = allItems.filter((item) => group.contains(item.el));
+  const chips = [...filter.querySelectorAll('[data-f]')];
+  const on = chips.find((chip) => chip.classList.contains('is-on')) || chips[0];
+  const f = on ? on.dataset.f : 'all';
+  const shows = (item, cat) => cat === 'all' || item.cats.includes(cat);
+  for (const chip of chips)
+    setText(chip.querySelector('.chip__n'), String(items.filter((it) => shows(it, chip.dataset.f)).length));
+  for (const item of items) setHidden(item.el, !shows(item, f));
+  for (const month of group.querySelectorAll('[data-month]'))
+    month.classList.toggle('is-empty', ![...month.querySelectorAll('[data-cats]')].some((el) => !el.hidden));
+  const empty = group.querySelector('[data-filter-empty]');
+  const none = group.querySelector('[data-ev-none]');
+  if (nothingLeft && none) setHidden(filter, true);
+  if (empty) setHidden(empty, (nothingLeft && Boolean(none)) || items.some((item) => !item.el.hidden));
+}
+
+/**
+ * Shows the first hero candidate that has not ended ([[end, src, width, height], ...]). Once the published
+ * hero's event has ended the browser has usually started on the static image already, so the page
+ * downloads both and swaps; this lasts until the pages are rendered again for a later day.
+ */
 function renderHero(hero, day) {
   let list = [];
   try {

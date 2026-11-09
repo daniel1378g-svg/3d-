@@ -477,6 +477,10 @@ for (const [lang, dir] of [
     PAST.map((e) => e.slug),
   );
   check(
+    `${lang}: events index past list is outside the category filter (no data-filter-list)`,
+    past.every((s) => !('data-filter-list' in s.listAttrs)),
+  );
+  check(
     `${lang}: nothing ended is listed as upcoming on the events index`,
     !upCards.some((c) => hasEnded(c, PUBLISHED)),
   );
@@ -557,9 +561,11 @@ for (const [lang, dir] of [
       problems.push(`${catDir}: past ${cPast.map((c) => c.slug)}, want ${wantPast}`);
     for (const s of secs.filter((s) => !s.past))
       if (!s.cards.length) problems.push(`${catDir}: empty month ${s.name}`);
-    for (const s of secs.filter((s) => s.past))
+    for (const s of secs.filter((s) => s.past)) {
       if (s.hidden !== !s.cards.length)
         problems.push(`${catDir}: past section hidden=${s.hidden} with ${s.cards.length} cards`);
+      if ('data-filter-list' in s.listAttrs) problems.push(`${catDir}: past list carries data-filter-list`);
+    }
     // category links: count = the end dates they carry that have not passed = the upcoming events of that category
     for (const m of page.matchAll(
       /<a class="chip[^"]*" href="([^"]+)"[^>]*?data-ev-ends="([^"]*)">[^<]*<span class="chip__n">(\d+)<\/span>/g,
@@ -578,14 +584,20 @@ for (const [lang, dir] of [
       problems.push(
         `${catDir}: ${(page.match(/data-ev-ends=/g) || []).length} category links with dates, want 7`,
       );
+    // the hero: the category's own upcoming events in date order (their card photos), then the circuit
     const hero = heroOf(page);
-    const wantHero = [...wantUp, ...UPCOMING.filter((e) => !inCat(e))].map((e) => e.end);
+    const photo = (src) => src.replace(/^.*\/|-[lm]\.webp$/g, '');
+    const cardPhotos = [...page.matchAll(/<section class="month" data-month>[\s\S]*?<\/section>/g)].flatMap(
+      (m) => [...m[0].matchAll(/evcard__media"><img src="([^"]+)"/g)].map((p) => photo(p[1])),
+    );
     if (
       !hero ||
       hero.src !== hero.list[0][1] ||
-      JSON.stringify(hero.list.slice(0, -1).map((c) => c[0])) !== JSON.stringify(wantHero)
+      hero.list.at(-1)[0] !== '' ||
+      JSON.stringify(hero.list.slice(0, -1).map((c) => c[0])) !== JSON.stringify(wantUp.map((e) => e.end)) ||
+      JSON.stringify(hero.list.slice(0, -1).map((c) => photo(c[1]))) !== JSON.stringify(cardPhotos)
     )
-      problems.push(`${catDir}: hero ${hero && hero.src}`);
+      problems.push(`${catDir}: hero ${hero && hero.src} [${hero && hero.list.map((c) => c[0])}]`);
     if (/phero__sub">[^<]*\d{4}/.test(page)) problems.push(`${catDir}: subtitle names a year`);
     if (cUp.length && !/<p class="empty" data-ev-none hidden>/.test(page))
       problems.push(`${catDir}: no hidden "nothing here" note`);
