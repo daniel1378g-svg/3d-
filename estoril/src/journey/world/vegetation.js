@@ -7,20 +7,25 @@
 //     asphalt, kerbs, run-off, gravel, barrier walls, pit lane, paddock, roads or buildings: every
 //     instance is checked exactly against its own clearance (crown radius for trees, footprint for
 //     scrub and tufts) and, for trees and scrub, a minimum distance from the track asphalt;
-//   - density is a world-space field: tree belts 30–110 m beyond the asphalt edge (outside the
-//     loop, behind the barriers), woods and clearings farther out from the shared noise image
-//     (env/noise.js, the same values the grass shader reads, so the woods stand on the greener
-//     ground), denser on slopes, a sparse infield (oaks and scrub clumps only, ≥ 45 m from the
-//     track), and a cut-off before the edge of the ground mesh. Candidates sit on a jittered grid
-//     (a cheap Poisson-disc stand-in: no two trunks closer than ~2 m) and are kept with probability
-//     density · k, k solved so the expected count meets the quality budget;
-//   - species follow the reference shares, clustered by noise (eucalyptus stands, oaks in the
-//     infield and on the belt's front edge, maritime pines on slopes, cypresses near buildings);
-//     each instance gets its own yaw, lean, non-uniform scale and tint (drier ground, more olive).
-// Rendering: env/instanced-lod.js (detailed near models with shadows, coarse far models, dithered
-// cross-fade); the grass tufts are one static InstancedMesh that shrinks to nothing between the
-// tuft fade distances (vertex shader) and uses alpha-to-coverage when MSAA is on; the ground under
-// the canopies is darkened by a world-space canopy occlusion map read by the grass shader.
+//   - density is a world-space field (references §4.2): a tree belt 15–40 m deep behind the
+//     barriers, its inner edge wandering 25–37 m from the asphalt and broken by bays and gaps;
+//     woods and clearings farther out from the shared noise image (env/noise.js, the same values
+//     the grass shader reads, so the woods stand on the greener ground), denser on slopes, and a
+//     cut-off before the edge of the ground mesh. The infield (inside the loop) has no trees: open
+//     grass with scrub clumps. Candidates sit on a jittered grid (a cheap Poisson-disc stand-in: no
+//     two trunks closer than ~2 m) and are kept with probability density · k, k solved (bisection on
+//     a histogram) so the expected count meets the quality budget; the scrub's grid is coarser on
+//     the lower tiers;
+//   - species are clustered by noise (eucalyptus stands, stone pines and oaks in the belt, maritime
+//     pines on slopes, cypresses near buildings), with weights scaled so that the overall shares
+//     match the reference (TREE_SPECIES); each instance gets its own yaw, lean, non-uniform scale
+//     and tint (drier ground, more olive). The kept trees are visited in random order, so the
+//     budget's hard cap thins them evenly.
+// Rendering: env/instanced-lod.js (detailed near models with shadows, coarse far models, a short
+// per-tree dithered transition when a tree switches level, none at rest); the grass tufts are one
+// static InstancedMesh that shrinks to nothing between the tuft fade distances (vertex shader) and
+// uses alpha-to-coverage when MSAA is on; the ground under the canopies is darkened by a
+// world-space canopy occlusion map read by the grass shader.
 //
 // The old vegetation drew from the shared ctx.rng before the clouds; buildVegetation() leaves the
 // stream in the state it had reached then, so the clouds stay where they were.
@@ -52,12 +57,15 @@ import { groundHeightAt, groundSlopeAt } from './terrain.js';
 
 /** Instance budgets at density 1 ('high'); context.js scales them by 0.6 ('mid') and 0.35 ('low'). */
 const BUDGET = { trees: 5200, scrub: 4200, pampas: 60, tufts: 9000 };
-/** Near/far cross-fade (metres from the camera) per quality. */
+/**
+ * Near/far level band (metres from the camera) per quality: a tree switches level, with hysteresis,
+ * around the band's middle (env/instanced-lod.js), and is always far beyond its end.
+ */
 const LOD_FADE = { high: [105, 140], mid: [80, 105], low: [48, 62] };
 /** Grass tufts shrink away between these distances (metres) per quality. */
 const TUFT_FADE = { high: [42, 66], mid: [32, 50], low: [20, 30] };
 /** Least distance (metres) from the track asphalt edge: trees (references §4.2), scrub, tufts. */
-const TRACK_CLEARANCE = { tree: 25, infieldTree: 45, scrub: 8, tuft: 1.2 };
+const TRACK_CLEARANCE = { tree: 25, scrub: 8, tuft: 1.2 };
 /** Extra clearance (metres) beyond an instance's own radius from anything solid. */
 const SOLID_MARGIN = { tree: 1.5, scrub: 0.6, tuft: 0.4 };
 /** Tree species: reference share (§4.2), scale range. */
@@ -87,57 +95,74 @@ const dryness = (x, z) =>
 
 const slopeAt = groundSlopeAt;
 
+/** Bins of the histograms that the thinning bisections run on (instead of every candidate). */
+const BINS = 2048;
+
+/** Histogram of values[0..n): { counts, means } over BINS equal bins between their min and max. */
+function histogram(values, n) {
+  let min = Infinity;
+  let max = -Infinity;
+  for (let i = 0; i < n; i++) {
+    min = Math.min(min, values[i]);
+    max = Math.max(max, values[i]);
+  }
+  const counts = new Float64Array(BINS);
+  const means = new Float64Array(BINS);
+  const scale = max > min ? BINS / (max - min) : 0;
+  for (let i = 0; i < n; i++) {
+    const b = Math.min(BINS - 1, Math.floor((values[i] - min) * scale));
+    counts[b]++;
+    means[b] += values[i];
+  }
+  for (let b = 0; b < BINS; b++) if (counts[b]) means[b] /= counts[b];
+  return { counts, means };
+}
+
 /**
- * Keeps candidates with probability min(1, density · k), k chosen (bisection) so that the expected
- * number kept is `budget`. Returns the candidate indices kept, in order.
+ * Keeps candidates with probability min(1, density * k), k chosen (bisection on the densities'
+ * histogram) so that the expected number kept is the budget. Returns the candidate indices kept.
  */
-function thin(density, budget, random) {
-  let total = 0;
-  for (let i = 0; i < density.length; i++) total += density[i];
-  if (!(total > 0)) return [];
+function thin(density, n, budget, random) {
+  const { counts, means } = histogram(density, n);
   let lo = 0;
   let hi = 1e6;
-  for (let iteration = 0; iteration < 28; iteration++) {
+  for (let iteration = 0; iteration < 40; iteration++) {
     const k = (lo + hi) / 2;
     let expected = 0;
-    for (let i = 0; i < density.length; i++) expected += Math.min(1, density[i] * k);
+    for (let b = 0; b < BINS; b++) expected += counts[b] * Math.min(1, means[b] * k);
     if (expected > budget) hi = k;
     else lo = k;
   }
   const kept = [];
-  for (let i = 0; i < density.length; i++) if (random() < Math.min(1, density[i] * lo)) kept.push(i);
+  for (let i = 0; i < n; i++) if (random() < Math.min(1, density[i] * lo)) kept.push(i);
   return kept;
 }
 
 /**
- * Woods with edges: 88 % of `budget` goes to the candidates whose score is above a threshold τ
- * (kept with probability smoothstep over τ ± 0.03, so woods are dense, continuous canopies with
- * soft edges), τ found by bisection; the other 12 % are lone trees spread evenly over the
- * remaining open candidates (`open` = 1). Returns the indices kept, in order.
+ * Woods with edges: 88 % of the budget goes to the candidates whose score is above a threshold tau
+ * (kept with probability smoothstep over tau +- 0.03, so woods are dense, continuous canopies with
+ * soft edges), tau found by bisection on the scores' histogram; the other 12 % are lone trees spread
+ * evenly over the remaining open candidates (open = 1). Returns the indices kept, in order.
  */
-function thinWoods(scores, open, budget, random) {
-  const n = scores.length;
-  const keep = new Float32Array(n);
-  const expectedAbove = (tau) => {
-    let sum = 0;
-    for (let i = 0; i < n; i++) sum += smooth(tau - 0.03, tau + 0.03, scores[i]);
-    return sum;
-  };
+function thinWoods(scores, open, n, budget, random) {
+  const { counts, means } = histogram(scores, n);
   let lo = -1;
   let hi = 2;
   for (let iteration = 0; iteration < 24; iteration++) {
     const tau = (lo + hi) / 2;
-    if (expectedAbove(tau) > budget * 0.88) lo = tau;
+    let above = 0;
+    for (let b = 0; b < BINS; b++) above += counts[b] * smooth(tau - 0.03, tau + 0.03, means[b]);
+    if (above > budget * 0.88) lo = tau;
     else hi = tau;
   }
   let openSum = 0;
-  for (let i = 0; i < n; i++) {
-    keep[i] = smooth(hi - 0.03, hi + 0.03, scores[i]);
-    openSum += open[i] * (1 - keep[i]);
-  }
+  for (let i = 0; i < n; i++) openSum += open[i] * (1 - smooth(hi - 0.03, hi + 0.03, scores[i]));
   const lone = openSum > 0 ? Math.min(1, (budget * 0.12) / openSum) : 0;
   const kept = [];
-  for (let i = 0; i < n; i++) if (random() < keep[i] + (1 - keep[i]) * open[i] * lone) kept.push(i);
+  for (let i = 0; i < n; i++) {
+    const keep = smooth(hi - 0.03, hi + 0.03, scores[i]);
+    if (random() < keep + (1 - keep) * open[i] * lone) kept.push(i);
+  }
   return kept;
 }
 
@@ -203,63 +228,98 @@ function pick(weights, u) {
 }
 
 /**
- * Trees: candidates on a jittered 8 m grid (every other one, at double weight, beyond ground radius
- * 800 m, where trees are only seen from afar), density field, thinning, exact clearance, species.
+ * Trees: candidates on a jittered grid (8 m on 'high', wider on the lower tiers; every other one
+ * beyond ground radius 800 m, where trees are only seen from afar), outside the circuit loop only
+ * (the infield stays open grass with scrub clumps, references 4.2), density field, thinning, exact
+ * clearance, species.
  */
 function placeTrees(occ, shape, models, budget) {
   const random = createRng(4201);
-  const SPACING = 8;
-  const xs = [];
-  const zs = [];
-  const scores = [];
-  const open = [];
+  // the candidate grid thins out with the budget on the lower tiers ('low': 13.5 m), so they score
+  // fewer candidates; the woods keep their extent and become sparser
+  const SPACING = 8 / Math.sqrt(Math.max(0.35, Math.min(1, budget / BUDGET.trees)));
+  const capacity = (Math.floor(3700 / SPACING) + 1) * (Math.floor(2600 / SPACING) + 1);
+  const xs = new Float32Array(capacity);
+  const zs = new Float32Array(capacity);
+  const scores = new Float32Array(capacity);
+  const open = new Uint8Array(capacity);
+  let n = 0;
   for (let iz = 0, gz = -1300; gz <= 1300; gz += SPACING, iz++)
     for (let ix = 0, gx = -1850; gx <= 1850; gx += SPACING, ix++) {
-      const coarse = groundRadius(gx, gz) > 800;
-      if ((coarse && (ix + iz) % 2) || groundRadius(gx, gz) > MAX_GROUND_RADIUS + 10) continue;
+      const cell = groundRadius(gx, gz);
+      if ((cell > 800 && (ix + iz) % 2) || cell > MAX_GROUND_RADIUS + 10) continue;
       const x = gx + (random() - 0.5) * SPACING * 0.75;
       const z = gz + (random() - 0.5) * SPACING * 0.75;
       const radius = groundRadius(x, z);
-      if (radius > MAX_GROUND_RADIUS) continue;
+      if (radius > MAX_GROUND_RADIUS || occ.infield(x, z)) continue;
       const track = occ.trackDistance(x, z);
       if (track < TRACK_CLEARANCE.tree - 3 || shape.isKeepClearZone(x, z)) continue;
-      const infield = occ.infield(x, z);
-      // woodland score: broad woods and clearings, broken up at ~60 m, plus the belt behind the
-      // barriers (outside the loop), slopes, and fewer trees towards the edge of the ground
+      // woodland score: broad woods and clearings, broken up at ~60 m, slopes, fewer trees towards
+      // the edge of the ground
       let score =
         sampleNoise(0, x / 1400 + 0.13, z / 1400 + 0.71) * 0.55 +
         sampleNoise(1, x / 600, z / 600) * 0.25 +
         sampleNoise(2, x / 260, z / 260) * 0.2;
-      if (infield) score -= 0.3 * (1 - smooth(60, 160, track));
-      else score += 0.3 * smooth(28, 38, track) * (1 - smooth(70, 110, track));
+      // the belt behind the barriers: 15-40 m deep, its inner edge 25-37 m from the asphalt, both
+      // edges wandering, broken by bays and gaps
+      const inner = TRACK_CLEARANCE.tree + 12 * sampleNoise(1, x / 340 + 0.2, z / 340 + 0.6);
+      const outer = inner + 15 + 25 * sampleNoise(2, x / 520 + 0.7, z / 520 + 0.1);
+      const gaps = smooth(0.3, 0.42, sampleNoise(0, x / 210 + 0.5, z / 210 + 0.9));
+      score += 0.32 * gaps * smooth(inner, inner + 4, track) * (1 - smooth(outer - 4, outer + 4, track));
       if (radius > 700) score += 0.6 * Math.min(0.3, slopeAt(x, z));
       score -= 0.2 * smooth(950, MAX_GROUND_RADIUS, radius);
-      xs.push(x);
-      zs.push(z);
-      scores.push(score);
-      open.push(radius < 800 && (!infield || track > TRACK_CLEARANCE.infieldTree) ? 1 : 0);
+      xs[n] = x;
+      zs[n] = z;
+      scores[n] = score;
+      open[n] = radius < 800 ? 1 : 0;
+      n++;
     }
-  const kept = thinWoods(Float32Array.from(scores), Uint8Array.from(open), budget * 1.06, random);
+  const kept = thinWoods(scores, open, n, budget * 1.06, random);
+
+  // species weights per kept tree (clustering: stone pines and oaks in the belt, eucalyptus in
+  // stands, maritime pines on slopes, cypresses by buildings), then scaled so that the overall
+  // shares match the reference (TREE_SPECIES share) while keeping the clusters
+  const S = TREE_SPECIES.length;
+  const weights = new Float32Array(kept.length * S);
+  const sums = new Float64Array(S);
+  const row = new Float32Array(S);
+  for (let k = 0; k < kept.length; k++) {
+    const x = xs[kept[k]];
+    const z = zs[kept[k]];
+    const track = occ.trackDistance(x, z);
+    const stand = smooth(0.5, 0.7, sampleNoise(1, x / 2200 + 0.4, z / 2200 + 0.1));
+    const slope = groundRadius(x, z) > 700 ? Math.min(0.3, slopeAt(x, z)) : 0;
+    const belt = 1 - smooth(40, 70, track);
+    row[0] = 1 + 0.6 * belt;
+    row[1] = 0.25 + 3 * stand;
+    row[2] = 1 + 0.8 * belt;
+    row[3] = 1 + 6 * slope;
+    row[4] = occ.solidDistance(x, z) < 45 && track > 40 ? 4 : 0.5;
+    let total = 0;
+    for (let s = 0; s < S; s++) total += row[s];
+    for (let s = 0; s < S; s++) {
+      weights[k * S + s] = row[s] / total;
+      sums[s] += row[s] / total;
+    }
+  }
+  const calibration = TREE_SPECIES.map(({ share }, s) => (sums[s] > 0 ? (share * kept.length) / sums[s] : 0));
+
+  // visit the kept trees in random order, so the hard cap drops trees evenly everywhere (in grid
+  // order it would cut away the last rows: a treeless strip along one edge of the map)
+  const order = Int32Array.from(kept.keys());
+  for (let k = order.length - 1; k > 0; k--) {
+    const j = Math.floor(random() * (k + 1));
+    [order[k], order[j]] = [order[j], order[k]];
+  }
   const arrays = TREE_SPECIES.map(() => instanceArrays(kept.length));
   let placed = 0;
-  for (const i of kept) {
+  for (let o = 0; o < order.length; o++) {
     if (placed >= budget) break; // the budget is a hard cap
-    const x = xs[i];
-    const z = zs[i];
-    const infield = occ.infield(x, z);
-    const track = occ.trackDistance(x, z);
-    const near = occ.solidDistance(x, z);
-    const stand = smooth(0.55, 0.75, sampleNoise(1, x / 2200 + 0.4, z / 2200 + 0.1));
-    const slope = groundRadius(x, z) > 700 ? Math.min(0.3, slopeAt(x, z)) : 0;
-    const belt = infield ? 0 : 1 - smooth(45, 90, track);
-    const weights = [
-      0.33 * (1 + 0.6 * belt),
-      0.24 * (0.3 + 2.6 * stand) * (infield ? 0.2 : 1),
-      0.25 * (infield ? 4 : 1 + 0.8 * belt),
-      0.15 * (1 + 6 * slope),
-      0.03 * (near < 45 && track > 40 ? 4 : 0.5),
-    ];
-    const s = pick(weights, random());
+    const k = order[o];
+    const x = xs[kept[k]];
+    const z = zs[kept[k]];
+    for (let s = 0; s < S; s++) row[s] = weights[k * S + s] * calibration[s];
+    const s = pick(row, random());
     const species = TREE_SPECIES[s];
     const model = models[species.name];
     const scale = species.scale[0] + random() * (species.scale[1] - species.scale[0]);
@@ -267,13 +327,13 @@ function placeTrees(occ, shape, models, budget) {
     const sz = scale * (0.9 + random() * 0.2);
     const sy = scale * (0.88 + random() * 0.24);
     const radius = model.radius * Math.max(sx, sz);
-    const trackClearance = infield ? TRACK_CLEARANCE.infieldTree : TRACK_CLEARANCE.tree;
     const yaw = random() * Math.PI * 2;
     const leanX = (random() - 0.5) * 2 * species.lean;
     const leanZ = (random() - 0.5) * 2 * species.lean;
     const tone = 0.86 + random() * 0.26;
+    if (!occ.clear(x, z, Math.max(TRACK_CLEARANCE.tree, radius * 0.6), radius + SOLID_MARGIN.tree)) continue;
+    const slope = groundRadius(x, z) > 700 ? Math.min(0.3, slopeAt(x, z)) : 0;
     const dry = dryness(x, z);
-    if (!occ.clear(x, z, Math.max(trackClearance, radius * 0.6), radius + SOLID_MARGIN.tree)) continue;
     const y = groundHeightAt(x, z) - 0.12 - 0.5 * slope; // sunk a little, more on slopes
     placed++;
     addInstance(arrays[s], x, y, z, {
@@ -295,11 +355,14 @@ function placeTrees(occ, shape, models, budget) {
 /** Scrub mounds (and pampas clumps on banks behind the barriers). */
 function placeScrub(occ, shape, models, budget, pampasBudget) {
   const random = createRng(4307);
-  const SPACING = 4.5;
+  // candidate spacing grows on the lower tiers (fewer instances, the same clump layout)
+  const SPACING = 4.5 / Math.sqrt(Math.max(0.35, Math.min(1, budget / BUDGET.scrub)));
   const { x0, z0, x1, z1 } = occ.bounds;
-  const xs = [];
-  const zs = [];
-  const density = [];
+  const capacity = (Math.floor((x1 - x0) / SPACING) + 2) * (Math.floor((z1 - z0) / SPACING) + 2);
+  const xs = new Float32Array(capacity);
+  const zs = new Float32Array(capacity);
+  const density = new Float32Array(capacity);
+  let n = 0;
   const banks = [];
   for (let gz = z0; gz <= z1; gz += SPACING)
     for (let gx = x0; gx <= x1; gx += SPACING) {
@@ -317,15 +380,15 @@ function placeScrub(occ, shape, models, budget, pampasBudget) {
       }
       if (shape.isKeepClearZone(x, z)) d *= 0.15;
       if (d > 0.001) {
-        xs.push(x);
-        zs.push(z);
-        density.push(d);
+        xs[n] = x;
+        zs[n] = z;
+        density[n++] = d;
       }
       const solid = occ.solidDistance(x, z);
       if (solid > 2 && solid < 9 && track > 30 && sampleNoise(1, x / 300, z / 300) > 0.6) banks.push([x, z]);
     }
   const scrub = instanceArrays(budget * 2);
-  for (const i of thin(Float32Array.from(density), budget * 1.05, random)) {
+  for (const i of thin(density, n, budget * 1.05, random)) {
     if (scrub.count >= budget) break; // hard cap
     const x = xs[i];
     const z = zs[i];
@@ -392,8 +455,9 @@ function placeTufts(occ, model, budget) {
     const yaw = random() * Math.PI;
     if (!occ.clear(x, z, TRACK_CLEARANCE.tuft, 0.5 * scale + SOLID_MARGIN.tuft)) return;
     const dry = dryness(x, z);
-    // tinted towards the grass under it (the texture is a mid green; × GRASS_GAIN like the ground)
-    const tone = (0.72 + random() * 0.3) * 1.5;
+    // tinted towards the grass under it (the texture is a mid green): a little darker and more
+    // saturated than the ground seen from above, as a tuft's blades shade each other
+    const tone = (0.72 + random() * 0.3) * 1.1;
     addInstance(tufts, x, groundHeightAt(x, z), z, {
       yaw,
       leanX: 0,
@@ -401,9 +465,9 @@ function placeTufts(occ, model, budget) {
       sx: scale,
       sy: scale * (0.8 + random() * 0.4),
       sz: scale,
-      r: tone * (0.78 + 0.5 * dry),
-      g: tone * (0.92 + 0.05 * dry),
-      b: tone * (0.6 + 0.1 * dry),
+      r: tone * (0.7 + 0.55 * dry),
+      g: tone * (0.95 + 0.05 * dry),
+      b: tone * (0.5 + 0.12 * dry),
       scale,
     });
   };
@@ -419,7 +483,10 @@ function placeTufts(occ, model, budget) {
   return trimmed(tufts);
 }
 
-/** The static tuft mesh: alpha-tested (alpha-to-coverage with MSAA), swaying, shrinking with distance. */
+/**
+ * The static tuft mesh: alpha-tested (alpha-to-coverage with MSAA), swaying, shrinking with distance.
+ * Its cards are double-sided with up normals on both faces (they light like the ground under them).
+ */
 function buildTuftMesh(ctx, data, fade) {
   const cards = [];
   for (let k = 0; k < 3; k++) {
@@ -455,6 +522,14 @@ function buildTuftMesh(ctx, data, fade) {
         transformed.z += sway * 0.6;
       }`,
     },
+    fragment: {
+      // both faces of a card keep the up normal: three.js would flip it on back faces (DoubleSide),
+      // so a card seen from behind would face the ground, get no sun and render ~2.4x darker
+      normal_fragment_begin: /* glsl */ `
+      float faceDirection = 1.0;
+      vec3 normal = normalize(vNormal);
+      vec3 nonPerturbedNormal = normal;`,
+    },
   });
   const mesh = new InstancedMesh(geometry, material, Math.max(1, data.count));
   mesh.name = 'grass-tufts';
@@ -470,14 +545,15 @@ function buildTuftMesh(ctx, data, fade) {
 }
 
 /**
- * Canopy occlusion: a world-space R8 map (CANOPY_TEXELS², 1.5 texels per crown radius at least) of
- * soft discs under every tree and scrub instance, read by the grass shader (shading.js) to darken
- * the ground under the woods (the far trees cast no shadow-map shadows).
+ * Canopy occlusion: a world-space R8 map (CANOPY_SIZE per quality: 3.6 m per texel on 'high', 7.2 m
+ * on 'low'; discs at least 1.5 texels wide) of soft discs under every tree and scrub instance, read
+ * by the grass shader (shading.js) to darken the ground under the woods (the far trees cast no
+ * shadow-map shadows).
  */
-const CANOPY_SIZE = [1024, 720];
+const CANOPY_SIZE = { high: [1024, 720], mid: [768, 540], low: [512, 360] };
 const CANOPY_BOUNDS = [-1850, -1300, 1850, 1300];
-function canopyTexture(sets) {
-  const [w, h] = CANOPY_SIZE;
+function canopyTexture(sets, quality) {
+  const [w, h] = CANOPY_SIZE[quality] || CANOPY_SIZE.mid;
   const [bx0, bz0, bx1, bz1] = CANOPY_BOUNDS;
   const sx = w / (bx1 - bx0);
   const sz = h / (bz1 - bz0);
@@ -549,15 +625,14 @@ function buildVegetation(ctx, shape) {
   lap('tufts');
 
   const [fadeStart, fadeEnd] = LOD_FADE[quality] || LOD_FADE.mid;
-  const vegetationMaterials = createVegetationMaterials(ctx.textures.detail, {
-    value: new Vector2(fadeStart, fadeEnd),
-  });
+  const vegetationMaterials = createVegetationMaterials(ctx.textures.detail);
   const castShadow = quality !== 'low';
   const species = [];
   for (const [name, data] of [...Object.entries(trees), ['scrub', scrub], ['pampas', pampas]]) {
     if (!data.count) continue;
     const lod = createLodSpecies(models[name], vegetationMaterials, data, {
       name,
+      fadeStart,
       fadeEnd,
       castShadow: castShadow && name !== 'scrub' && name !== 'pampas',
     });
@@ -566,24 +641,27 @@ function buildVegetation(ctx, shape) {
   }
   const tufts = buildTuftMesh(ctx, tuftData, TUFT_FADE[quality] || TUFT_FADE.mid);
 
-  const canopy = canopyTexture([
-    ...Object.entries(trees).map(([name, data]) => ({ data, radius: models[name].radius, strength: 0.42 })),
-    { data: scrub, radius: models.scrub.radius, strength: 0.3 },
-  ]);
+  const canopy = canopyTexture(
+    [
+      ...Object.entries(trees).map(([name, data]) => ({ data, radius: models[name].radius, strength: 0.42 })),
+      { data: scrub, radius: models.scrub.radius, strength: 0.3 },
+    ],
+    quality,
+  );
   const grassUniforms = materials.ground.userData.uniforms;
   grassUniforms.envCanopy.value = canopy;
   grassUniforms.envCanopyBounds.value.set(...CANOPY_BOUNDS);
   lap('meshes');
 
-  ctx.updaters.push((time, dt, camera) => {
+  ctx.updaters.push((time, dt, camera, snap) => {
     tufts.time.value = time;
     if (!camera) return;
     const p = camera.position;
-    for (let k = 0; k < species.length; k++) species[k].lod.update(p.x, p.y, p.z);
+    for (let k = 0; k < species.length; k++) species[k].lod.update(p.x, p.y, p.z, dt, snap);
   });
   // the shared stream continues where the old vegetation left it (clouds come next)
   ctx.rng = createRng(CLOUD_RNG_STATE[quality] ?? CLOUD_RNG_STATE.high);
   return { species, tufts: { mesh: tufts.mesh, data: tuftData }, occupancy: occ, models, timings };
 }
 
-export { BUDGET, LOD_FADE, TRACK_CLEARANCE, TUFT_FADE, buildVegetation };
+export { BUDGET, LOD_FADE, TRACK_CLEARANCE, TREE_SPECIES, TUFT_FADE, buildVegetation };

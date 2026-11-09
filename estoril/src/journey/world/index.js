@@ -6,7 +6,7 @@
 //  - the vegetation is placed around everything built before it (env/occupancy.js), so it comes
 //    after the track, pits, grandstand and paddock; it has its own random streams and leaves the
 //    shared ctx.rng where the old vegetation left it, for the clouds;
-//  - world.update(time, dt, camera) runs the per-frame updaters in registration order (pit flags,
+//  - world.update(time, dt, camera, snap) runs the per-frame updaters in registration order (pit flags,
 //    vegetation LOD and grass sway, grandstand flags, clouds).
 //
 // Coordinates: metres, world XZ ground plane, +Y up. See layout.js for the fixed positions.
@@ -29,7 +29,8 @@ import { buildVegetation } from './vegetation.js';
  * @param {{quality?: 'high'|'mid'|'low', renderer?: unknown}} [options]  `renderer` is accepted
  *   for API compatibility and not used.
  * @returns {{root: import('three').Group, materials: Object, layout: Object, vegetation: Object,
- *            track: import('three').Vector2[], update: (time: number, dt: number, camera?) => void}}
+ *            track: import('three').Vector2[],
+ *            update: (time: number, dt: number, camera?, snap?: boolean) => void}}
  *   root.userData also carries `openBox` ({x, z} of the open garage front, floorY its floor) and `tower`
  *   (Vector3 look-at point on the control tower).
  */
@@ -63,9 +64,12 @@ function buildWorld(trackPoints, { quality = 'high' } = {}) {
     layout: L,
     track: ctx.track,
     vegetation,
-    /** Per-frame updaters; `camera` (already placed for this frame) drives the vegetation LOD. */
-    update(time, dt, camera) {
-      for (let k = 0; k < updaters.length; k++) updaters[k](time, dt, camera);
+    /**
+     * Per-frame updaters; `camera` (already placed for this frame) drives the vegetation LOD, `snap`
+     * (renderAt) settles its level transitions at once so captures are deterministic.
+     */
+    update(time, dt, camera, snap = false) {
+      for (let k = 0; k < updaters.length; k++) updaters[k](time, dt, camera, snap);
     },
   };
 }
