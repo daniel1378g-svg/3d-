@@ -27,7 +27,7 @@ function createWorldContext(trackPoints, quality) {
   const rng = createRng(42);
   /** Per-frame callbacks `(time, dt)` run by world.update(), in registration order. */
   const updaters = [];
-  const textures = createWorldTextures();
+  const textures = createWorldTextures(quality);
   const materials = createWorldMaterials(textures);
 
   /**

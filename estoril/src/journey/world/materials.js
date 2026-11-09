@@ -2,35 +2,39 @@
 //
 // Construction order matters: three.js sorts opaque draws by material.id, so the textures and
 // materials below must keep being created in exactly this order.
+//
+// The ground, asphalt, rubber, line, kerb, run-off and gravel materials are shaded in world space
+// by env/shading.js (onBeforeCompile patches): the grass, asphalt and gravel come from one shared
+// detail image (512 px; 256 px on 'low') and one 256 px noise image instead of three tiling canvas
+// textures.
 import { DoubleSide, MeshBasicMaterial, MeshStandardMaterial } from 'three';
+import { createLapTexture, shadeWorldSurfaces } from '../env/shading.js';
 import {
   aoFadeTexture,
-  asphaltTexture,
   barrierTexture,
   blobShadowTexture,
   glazingTexture,
-  grassTexture,
-  gravelTexture,
   kerbTexture,
   roundedShadowTexture,
   shutterTexture,
+  surfaceDetailTexture,
 } from '../textures.js';
 
-/** Procedural canvas textures shared by several world materials. */
-function createWorldTextures() {
-  const textures = {
-    asphalt: asphaltTexture(),
-    grass: grassTexture(),
-    gravel: gravelTexture(),
+/** Anisotropic filtering and size (px) of the world-space detail image per quality tier. */
+const DETAIL_ANISOTROPY = { high: 8, mid: 4, low: 2 };
+const DETAIL_SIZE = { high: 512, mid: 512, low: 256 };
+
+/** Procedural textures shared by several world materials. */
+function createWorldTextures(quality = 'high') {
+  return {
+    detail: surfaceDetailTexture(DETAIL_ANISOTROPY[quality] || 4, DETAIL_SIZE[quality] || 512),
+    lap: createLapTexture(),
     kerb: kerbTexture(),
     barrier: barrierTexture(),
     blob: blobShadowTexture(),
     ao: aoFadeTexture(),
     shutter: shutterTexture(),
   };
-  // Ground UVs are written in metres / 9 (see terrain.js), so the texture itself is not repeated.
-  textures.grass.repeat.set(1, 1);
-  return textures;
 }
 
 /**
@@ -51,10 +55,11 @@ const DECAL = {
  */
 function createWorldMaterials(textures) {
   const materials = {
-    // Terrain: grass texture tinted per vertex (see terrain.js).
-    ground: new MeshStandardMaterial({ map: textures.grass, roughness: 1, color: 0xffffff, vertexColors: true }),
-    asphalt: new MeshStandardMaterial({ map: textures.asphalt, roughness: 0.8, metalness: 0, color: 0x9a9ea4 }),
-    pitAsphalt: new MeshStandardMaterial({ map: textures.asphalt, roughness: 0.86, color: 0xbfc3c8 }),
+    // Terrain: world-space grass palette and detail (env/shading.js), tinted per vertex (terrain.js).
+    ground: new MeshStandardMaterial({ roughness: 1, color: 0xffffff, vertexColors: true }),
+    // Asphalt base colour #4E4D4C (references §4.4) times the world-space aggregate and tone patches.
+    asphalt: new MeshStandardMaterial({ roughness: 0.82, metalness: 0, color: 0x4e4d4c }),
+    pitAsphalt: new MeshStandardMaterial({ roughness: 0.86, color: 0x575757 }),
     // Racing-line rubber; its gradient map and final opacity (0.2) are set in track-surfaces.js.
     rubber: new MeshBasicMaterial({ color: 0x0b0c0d, opacity: 0.16, ...DECAL }),
     // Soft ambient-occlusion fade laid along wall bases (ctx.addAoStrip).
@@ -66,16 +71,26 @@ function createWorldMaterials(textures) {
     }),
     line: new MeshStandardMaterial({ color: 0xf2f1ec, roughness: 0.7 }),
     kerb: new MeshStandardMaterial({ map: textures.kerb, roughness: 0.6 }),
-    runoff: new MeshStandardMaterial({ color: 0x3f8f72, roughness: 0.85 }),
-    gravel: new MeshStandardMaterial({ map: textures.gravel, roughness: 1, color: 0xf2ead8 }),
-    barrier: new MeshStandardMaterial({ map: textures.barrier, roughness: 0.8 }),
+    runoff: new MeshStandardMaterial({ color: 0x4fb9a2, roughness: 0.8 }),
+    gravel: new MeshStandardMaterial({ roughness: 1, color: 0xffffff }),
+    barrier: new MeshStandardMaterial({ map: textures.barrier, roughness: 0.85 }),
     concrete: new MeshStandardMaterial({ color: 0xd9d7d0, roughness: 0.92 }),
     concreteDark: new MeshStandardMaterial({ color: 0xa7adb2, roughness: 0.9 }),
     white: new MeshStandardMaterial({ color: 0xe6e4de, roughness: 0.8 }),
     steel: new MeshStandardMaterial({ color: 0x9ba4aa, roughness: 0.45, metalness: 0.6 }),
     steelDark: new MeshStandardMaterial({ color: 0x5d646b, roughness: 0.5, metalness: 0.55 }),
-    glass: new MeshStandardMaterial({ color: 0x5f7684, roughness: 0.12, metalness: 0.9, envMapIntensity: 1.2 }),
-    shutter: new MeshStandardMaterial({ map: textures.shutter, color: 0xffffff, roughness: 0.5, metalness: 0.3 }),
+    glass: new MeshStandardMaterial({
+      color: 0x5f7684,
+      roughness: 0.12,
+      metalness: 0.9,
+      envMapIntensity: 1.2,
+    }),
+    shutter: new MeshStandardMaterial({
+      map: textures.shutter,
+      color: 0xffffff,
+      roughness: 0.5,
+      metalness: 0.3,
+    }),
     seat: new MeshStandardMaterial({ color: 0x4e7f93, roughness: 0.7 }),
     roofW: new MeshStandardMaterial({ color: 0xf1efe9, roughness: 0.6, side: DoubleSide }),
     red: new MeshStandardMaterial({ color: 0xe93325, roughness: 0.55 }),
@@ -88,9 +103,10 @@ function createWorldMaterials(textures) {
     interior: new MeshStandardMaterial({ color: 0xd9d7d1, roughness: 0.8 }),
     floor: new MeshStandardMaterial({ color: 0x8e9298, roughness: 0.55, metalness: 0.1 }),
     blob: new MeshBasicMaterial({ map: textures.blob, transparent: true, depthWrite: false }),
+    // Black tool chests in the open garage (pits.js) and under the paddock awnings (paddock.js).
+    toolChest: new MeshStandardMaterial({ color: 0x141518, roughness: 0.45, metalness: 0.3 }),
   };
-  // Track UVs are written in metres / 12 (see track-surfaces.js), so the texture is not repeated.
-  materials.asphalt.map.repeat.set(1, 1);
+  shadeWorldSurfaces(materials, textures.detail, textures.lap);
   return materials;
 }
 

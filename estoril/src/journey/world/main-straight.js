@@ -3,8 +3,13 @@
 //
 // The straight runs along X at z = straightZ (206), from straightX1 (-534) to straightX0 (420);
 // the pit wall is on its -Z side, the grandstand on its +Z side.
+//
+// Debris fence (docs/references.md §4.5): galvanised posts every 3 m standing on the wall, the top
+// metre cranked towards the track, a chain-link mesh (a mipmapped alpha texture, so it averages to an
+// even veil at a distance instead of shimmering) and top and middle rails. Start gantry: a grey steel
+// (#4D5467) triangular truss — two lower chords and a top chord with diagonals — on two legs, with
+// four black light boxes; its members are merged into one mesh.
 import {
-  BoxGeometry,
   CylinderGeometry,
   DoubleSide,
   Group,
@@ -13,54 +18,94 @@ import {
   Mesh,
   MeshStandardMaterial,
   PlaneGeometry,
+  Quaternion,
+  Vector3,
 } from 'three';
+import { fenceMeshTexture } from '../textures.js';
+import { createBoxBatch } from './batch.js';
 import { LAYERS } from './layers.js';
 
+/** Fence: post spacing, height of the upright part above the wall, length and tilt of the cranked top. */
+const POST_SPACING = 3;
+const FENCE_HEIGHT = 3.4;
+const CRANK_LENGTH = 1.0;
+const CRANK_ANGLE = 0.6; // radians from vertical, towards the track (-Z)
+
 /**
- * Outer (grandstand-side) wall 10.5 m from the centre line: 1.15 m of concrete, then a debris
- * fence on top: instanced posts every 6 m and a faint transparent mesh panel (3.6 m high).
+ * Outer (grandstand-side) wall 10.5 m from the centre line: 1.15 m of concrete, then the debris
+ * fence on top of it.
  */
 function buildOuterWallAndFence(ctx) {
   const { root, materials, addBox: box } = ctx;
   const L = ctx.layout;
   const straightLength = L.straightX0 - L.straightX1;
   const straightCentreX = (L.straightX0 + L.straightX1) / 2;
-  box(straightLength, 1.15, 0.6, materials.concrete, straightCentreX, 0, L.straightZ + 10.5);
+  const wallTop = 1.15;
+  const fenceZ = L.straightZ + 10.6;
+  box(straightLength, wallTop, 0.6, materials.concrete, straightCentreX, 0, L.straightZ + 10.5);
 
-  const posts = new InstancedMesh(
-    new CylinderGeometry(0.07, 0.07, 4.2, 6),
-    materials.steelDark,
-    Math.ceil(straightLength / 6),
-  );
+  // posts: an upright and its cranked top, instanced
+  const count = Math.floor(straightLength / POST_SPACING) + 1;
+  const posts = new InstancedMesh(new CylinderGeometry(0.05, 0.05, 1, 6), materials.steelDark, count * 2);
   const matrix = new Matrix4();
-  let postCount = 0;
-  for (let x = L.straightX1; x < L.straightX0; x += 6) {
-    matrix.makeTranslation(x, 1.15 + 2.1, L.straightZ + 10.6); // centre of a 4.2 m post on the wall
-    posts.setMatrixAt(postCount++, matrix);
+  const tilt = new Quaternion().setFromAxisAngle(new Vector3(1, 0, 0), -CRANK_ANGLE);
+  const crankDz = -Math.sin(CRANK_ANGLE) * CRANK_LENGTH;
+  const crankDy = Math.cos(CRANK_ANGLE) * CRANK_LENGTH;
+  for (let k = 0; k < count; k++) {
+    const x = L.straightX1 + k * POST_SPACING;
+    matrix.makeScale(1, FENCE_HEIGHT, 1).setPosition(x, wallTop + FENCE_HEIGHT / 2, fenceZ);
+    posts.setMatrixAt(2 * k, matrix);
+    matrix.compose(
+      new Vector3(x, wallTop + FENCE_HEIGHT + crankDy / 2, fenceZ + crankDz / 2),
+      tilt,
+      new Vector3(1, CRANK_LENGTH, 1),
+    );
+    posts.setMatrixAt(2 * k + 1, matrix);
   }
-  posts.count = postCount;
   posts.castShadow = true;
+  posts.receiveShadow = true;
   root.add(posts);
 
-  const fence = new Mesh(
-    new PlaneGeometry(straightLength, 3.6),
-    new MeshStandardMaterial({
-      color: 0x8c949a,
-      transparent: true,
-      opacity: 0.18,
-      side: DoubleSide,
-      depthWrite: false,
-    }),
-  );
-  fence.position.set(straightCentreX, 3.1, L.straightZ + 10.6);
-  root.add(fence);
+  // chain-link mesh: the upright panel and the cranked panel, the same veil material
+  const texture = fenceMeshTexture();
+  texture.repeat.set(straightLength / 0.12, FENCE_HEIGHT / 0.12);
+  const mesh = new MeshStandardMaterial({
+    map: texture,
+    color: 0xc4c9cc,
+    transparent: true,
+    depthWrite: false,
+    side: DoubleSide,
+    roughness: 0.6,
+    metalness: 0.3,
+  });
+  const upright = new Mesh(new PlaneGeometry(straightLength, FENCE_HEIGHT), mesh);
+  upright.position.set(straightCentreX, wallTop + FENCE_HEIGHT / 2, fenceZ);
+  root.add(upright);
+  const crankTexture = texture.clone();
+  crankTexture.repeat.set(straightLength / 0.12, CRANK_LENGTH / 0.12);
+  const crank = new Mesh(new PlaneGeometry(straightLength, CRANK_LENGTH), mesh.clone());
+  crank.material.map = crankTexture;
+  crank.position.set(straightCentreX, wallTop + FENCE_HEIGHT + crankDy / 2, fenceZ + crankDz / 2);
+  crank.rotation.x = -CRANK_ANGLE;
+  root.add(crank);
+
+  // rails: along the top of the upright part and halfway up, and along the cranked edge
+  const batch = createBoxBatch();
+  for (const [y, z] of [
+    [wallTop + FENCE_HEIGHT - 0.03, fenceZ],
+    [wallTop + FENCE_HEIGHT / 2, fenceZ],
+    [wallTop + FENCE_HEIGHT + crankDy - 0.03, fenceZ + crankDz],
+  ])
+    batch.add(straightLength, 0.05, 0.05, materials.steelDark, straightCentreX, y, z, { castShadow: false });
+  batch.build(root, 'fence-rails');
 }
 
 /**
  * Start gantry (group 'gantry') at gantryX spanning from the pit wall to beyond the outer wall: two
- * 9 m legs, two chords (8.2 m and 9.2 m), lattice diagonals every 1.2 m and four start-light
- * boxes over the track. Then, on the root, the start/finish line under it and ten staggered grid
- * slots (every 8 m, alternating ±3.2 m from the centre line) towards +X.
+ * 9 m legs, a triangular truss (lower chords at 8.2 m, top chord at 9.3 m) with diagonals every
+ * 1.2 m and four start-light boxes over the track, merged into one mesh. Then, on the root, the
+ * start/finish line under it and ten staggered grid slots (every 8 m, alternating ±3.2 m from the
+ * centre line) towards +X.
  */
 function buildStartGantry(ctx) {
   const { root, materials, addBox: box } = ctx;
@@ -71,28 +116,23 @@ function buildStartGantry(ctx) {
   const x = L.gantryX;
   const pitSideZ = L.pitWallZ - 0.5;
   const outerSideZ = L.straightZ + 11;
-  for (const z of [pitSideZ, outerSideZ]) box(0.6, 9, 0.6, materials.steel, x, 0, z, gantry); // legs
-  box(0.5, 0.5, outerSideZ - pitSideZ + 1, materials.steel, x, 8.2, (pitSideZ + outerSideZ) / 2, gantry); // lower chord
-  box(0.5, 0.5, outerSideZ - pitSideZ + 1, materials.steel, x, 9.2, (pitSideZ + outerSideZ) / 2, gantry); // upper chord
-  // Lattice diagonals (tilted 0.7 rad about X) between the chords.
-  for (let z = pitSideZ; z < outerSideZ; z += 1.2) {
-    const diagonal = new Mesh(new BoxGeometry(0.12, 1.3, 0.12), materials.steel);
-    diagonal.position.set(x, 8.7, z);
-    diagonal.rotation.x = 0.7;
-    gantry.add(diagonal);
-  }
-  // Start lights (each its own material).
-  for (let i = 0; i < 4; i++)
-    box(
-      0.3,
-      0.9,
-      1.6,
-      new MeshStandardMaterial({ color: 0x1c1e21, roughness: 0.4 }),
-      x - 0.2,
-      7.2,
-      L.straightZ - 3 + i * 2,
-      gantry,
-    );
+  const span = outerSideZ - pitSideZ + 1;
+  const midZ = (pitSideZ + outerSideZ) / 2;
+  const steel = new MeshStandardMaterial({ color: 0x4d5467, roughness: 0.55, metalness: 0.5 });
+  const batch = createBoxBatch();
+  for (const z of [pitSideZ, outerSideZ]) batch.add(0.6, 9, 0.6, steel, x, 0, z); // legs
+  for (const dx of [-0.55, 0.55]) batch.add(0.3, 0.3, span, steel, x + dx, 8.2, midZ); // lower chords
+  batch.add(0.3, 0.3, span, steel, x, 9.3, midZ); // top chord
+  // diagonals between the chords (both faces of the truss), and the bottom ties
+  for (let z = pitSideZ; z < outerSideZ; z += 1.2)
+    for (const side of [-1, 1]) {
+      batch.add(0.1, 1.45, 0.1, steel, x + side * 0.28, 8.15, z + 0.3, { pitch: 0.55 * side });
+      batch.add(1.1, 0.08, 0.08, steel, x, 8.3, z, { castShadow: false });
+    }
+  // start lights
+  const lights = new MeshStandardMaterial({ color: 0x1c1e21, roughness: 0.4 });
+  for (let i = 0; i < 4; i++) batch.add(0.3, 0.9, 1.6, lights, x - 0.2, 7.2, L.straightZ - 3 + i * 2);
+  batch.build(gantry, 'gantry');
 
   // Painted marks (layers.js): boxes standing 1 mm above the asphalt, the start line and the slots'
   // front bars with their tops at the paint layer, the slots' side lines (which touch the bars) one

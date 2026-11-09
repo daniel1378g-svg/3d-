@@ -464,7 +464,7 @@ function addWheels(car, spec, materials, axleXs, archRadius) {
       ((rim.rotation.x = Math.PI / 2), wheel.add(rim));
       let hub = new Mesh(
         new CylinderGeometry(spec.wheelRadius * 0.22, spec.wheelRadius * 0.26, spec.tyreWidth + 0.03, 16),
-        spec.chrome ? materials.dark : materials.chrome,
+        spec.chrome ? materials.chrome : materials.dark, // chrome hub caps on the classics, dark centre locks on the racers
       );
       ((hub.rotation.x = Math.PI / 2), wheel.add(hub));
     }

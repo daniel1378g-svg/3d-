@@ -17,6 +17,7 @@ import {
   Quaternion,
   Vector3,
 } from 'three';
+import { LAYERS } from './layers.js';
 
 /**
  * One instance: position (x, y = 0, z) in metres, Euler rotation (rx, ry, rz) in radians, scale
@@ -54,8 +55,12 @@ function addInstances(ctx, geometry, material, specs, castShadow = true) {
 }
 
 /**
- * Paddock asphalt (y 0.02, UVs metres / 12), three connecting aprons (y 0.022), the access road
- * from the infield (y 0.021) and the AO fade along the back of the garages.
+ * Paddock asphalt and the pieces that join it to the pit lane and the infield, all one layer
+ * (LAYERS.paddock) and side by side, never overlapping (coplanar overlaps would z-fight): the
+ * paddock rectangle, the strip behind the garages (z 166-169.25), the east apron north of it, the
+ * link up to the pit lane's end (stopping at the garage-front line, where the pit lane begins) and
+ * the access road from the infield (ending at the paddock's south edge). UVs metres / 12; the AO
+ * fade along the back of the garages.
  */
 function buildPaddockSurfaces(ctx) {
   const { root, materials } = ctx;
@@ -64,31 +69,34 @@ function buildPaddockSurfaces(ctx) {
   const geometry = new PlaneGeometry(P.x1 - P.x0, P.z1 - P.z0);
   geometry.rotateX(-Math.PI / 2);
   const uv = geometry.attributes.uv;
-  for (let i = 0; i < uv.count; i++) uv.setXY(i, (uv.getX(i) * (P.x1 - P.x0)) / 12, (uv.getY(i) * (P.z1 - P.z0)) / 12);
+  for (let i = 0; i < uv.count; i++)
+    uv.setXY(i, (uv.getX(i) * (P.x1 - P.x0)) / 12, (uv.getY(i) * (P.z1 - P.z0)) / 12);
   const paddock = new Mesh(geometry, materials.pitAsphalt);
-  paddock.position.set((P.x0 + P.x1) / 2, 0.02, (P.z0 + P.z1) / 2);
+  paddock.position.set((P.x0 + P.x1) / 2, LAYERS.paddock, (P.z0 + P.z1) / 2);
   paddock.receiveShadow = true;
   root.add(paddock);
-  // [centre x, centre z, width, depth]: east apron, link to the pit-lane end, strip behind the garages.
-  for (const [x, z, width, depth] of [
-    [80, 160, 22, 28],
-    [84, 180, 18, 16],
-    [10, 167.5, 220, 3.5],
-  ]) {
-    const apron = new Mesh(new PlaneGeometry(width, depth), materials.pitAsphalt);
-    apron.rotation.x = -Math.PI / 2;
-    apron.position.set(x, 0.022, z);
-    apron.receiveShadow = true;
-    root.add(apron);
+  // [x0, x1, z0, z1]: strip behind the garages, east apron, link to the pit-lane end, access road
+  for (const [x0, x1, z0, z1] of PADDOCK_LINKS) {
+    const piece = new Mesh(new PlaneGeometry(x1 - x0, z1 - z0), materials.pitAsphalt);
+    piece.rotation.x = -Math.PI / 2;
+    piece.position.set((x0 + x1) / 2, LAYERS.paddock, (z0 + z1) / 2);
+    piece.receiveShadow = true;
+    root.add(piece);
   }
-  const accessRoad = new Mesh(new PlaneGeometry(9, 90), materials.pitAsphalt);
-  accessRoad.rotation.x = -Math.PI / 2;
-  accessRoad.position.set(-60, 0.021, 70);
-  accessRoad.receiveShadow = true;
-  root.add(accessRoad);
   const backZ = L.garageFrontZ - L.garageDepth;
   ctx.addAoStrip(L.pitX0, backZ, L.pitX1, backZ, 2.6, -1, 0.05); // paddock side of the garage back wall
 }
+
+/**
+ * The paddock's link pieces as [x0, x1, z0, z1] (metres): edge to edge with the paddock rectangle
+ * (z 96-166) and with each other, the link ending at the garage-front line z 185.5 (pit lane).
+ */
+const PADDOCK_LINKS = [
+  [-100, 120, 166, 169.25],
+  [69, 91, 169.25, 174],
+  [75, 93, 174, 185.5],
+  [-64.5, -55.5, 25, 96],
+];
 
 /** Geometry and materials shared by several paddock object kinds (created in this order). */
 function createPaddockKit() {
@@ -120,27 +128,128 @@ function buildTransporters(ctx, kit) {
   const shadows = [];
   const stripes = [];
   let index = 0;
+  const skirts = [];
+  const trims = [];
+  const rims = [];
   for (let x = -156; x <= 66; x += 24, index++) {
     const colour = TRANSPORTER_COLOURS[index % TRANSPORTER_COLOURS.length];
     trailers.push({ x, y: 0.95 + 1.95, z: Z, sx: 15.5, sy: 3.9, sz: 2.55, c: colour });
-    if (index % 3 === 1) stripes.push({ x, y: 1.55, z: Z - 1.285, sx: 15.3, sy: 0.18, sz: 0.02, c: 0xe93325 });
-    cabs.push({ x: x + 9.35, y: 0.9 + 1.45, z: Z, sx: 2.6, sy: 2.9, sz: 2.5, c: index % 2 ? 0xf5f3ee : 0x9ba4aa });
+    if (index % 3 === 1)
+      stripes.push({ x, y: 1.55, z: Z - 1.285, sx: 15.3, sy: 0.18, sz: 0.02, c: 0xe93325 });
+    // livery band along both sides of every trailer (team colours), roof edge trim
+    for (const side of [-1, 1])
+      stripes.push({
+        x,
+        y: 3.6,
+        z: Z + side * 1.285,
+        sx: 15.3,
+        sy: 0.32,
+        sz: 0.02,
+        c: index % 2 ? 0x1d2127 : 0xe93325,
+      });
+    trims.push({ x, y: 4.87, z: Z, sx: 15.6, sy: 0.06, sz: 2.62 });
+    // side skirts between the axles, rear doors line, cab bumper and grille
+    for (const side of [-1, 1])
+      skirts.push({ x: x + 1.6, y: 0.62, z: Z + side * 1.2, sx: 8.6, sy: 0.55, sz: 0.06 });
+    skirts.push({ x: x - 7.76, y: 2.9, z: Z, sx: 0.04, sy: 3.7, sz: 0.04 });
+    cabs.push({
+      x: x + 9.35,
+      y: 0.9 + 1.45,
+      z: Z,
+      sx: 2.6,
+      sy: 2.9,
+      sz: 2.5,
+      c: index % 2 ? 0xf5f3ee : 0x9ba4aa,
+    });
+    // roof fairing over the cab, sloping up to the trailer
+    cabs.push({
+      x: x + 9.1,
+      y: 4.18,
+      z: Z,
+      sx: 2.2,
+      sy: 0.75,
+      sz: 2.4,
+      rz: 0.28,
+      c: index % 2 ? 0xf5f3ee : 0x9ba4aa,
+    });
+    skirts.push({ x: x + 10.68, y: 1.05, z: Z, sx: 0.12, sy: 0.35, sz: 2.5 });
+    skirts.push({ x: x + 10.67, y: 1.75, z: Z, sx: 0.05, sy: 0.7, sz: 1.5 });
     windscreens.push({ x: x + 10.67, y: 3, z: Z, sx: 0.05, sy: 0.95, sz: 2.2 });
-    // Wheel sets: cylinders turned to lie across the truck (axle along Z, 2.6 m track).
-    for (const dx of [-6.1, -4.8, -3.5, 7.7, 9.9]) wheels.push({ x: x + dx, y: 0.5, z: Z, rx: Math.PI / 2, sy: 2.6 });
+    for (const side of [-1, 1])
+      windscreens.push({ x: x + 9.6, y: 3.05, z: Z + side * 1.255, sx: 1.3, sy: 0.75, sz: 0.02 });
+    // Wheel sets: cylinders turned to lie across the truck (axle along Z, 2.6 m track), grey hubs.
+    for (const dx of [-6.1, -4.8, -3.5, 7.7, 9.9]) {
+      wheels.push({ x: x + dx, y: 0.5, z: Z, rx: Math.PI / 2, sy: 2.6 });
+      rims.push({ x: x + dx, y: 0.5, z: Z, rx: Math.PI / 2, sx: 0.32, sy: 2.62, sz: 0.32 });
+    }
     awnings.push({ x: x - 0.5, y: 3.7, z: Z - 1.28 - 2.35, sx: 13.6, sy: 0.1, sz: 4.7, rx: -0.05 });
-    for (const dx of [-6.6, 0, 6.6]) awningPoles.push({ x: x - 0.5 + dx, y: 1.8, z: Z - 1.28 - 4.55, sy: 3.6 });
+    for (const dx of [-6.6, 0, 6.6])
+      awningPoles.push({ x: x - 0.5 + dx, y: 1.8, z: Z - 1.28 - 4.55, sy: 3.6 });
     shadows.push({ x: x + 1.5, y: 0.05, z: Z, rx: -Math.PI / 2, sx: 20, sy: 4.4 });
     shadows.push({ x: x - 0.5, y: 0.052, z: Z - 3.6, rx: -Math.PI / 2, sx: 14, sy: 5.2 });
   }
   addInstances(ctx, kit.unitBox, kit.paint, trailers);
   addInstances(ctx, kit.unitBox, kit.paint, cabs);
   addInstances(ctx, kit.unitBox, kit.darkGlass, windscreens, false);
-  if (stripes.length)
-    addInstances(ctx, kit.unitBox, new MeshStandardMaterial({ color: 0xffffff, roughness: 0.5 }), stripes, false);
+  addInstances(
+    ctx,
+    kit.unitBox,
+    new MeshStandardMaterial({ color: 0xffffff, roughness: 0.5 }),
+    stripes,
+    false,
+  );
+  addInstances(ctx, kit.unitBox, kit.rubber, skirts, false);
+  addInstances(ctx, kit.unitBox, materials.steel, trims, false);
   addInstances(ctx, new CylinderGeometry(0.5, 0.5, 1, 16), kit.rubber, wheels);
+  addInstances(ctx, new CylinderGeometry(1, 1, 1, 10), materials.steel, rims, false);
   addInstances(ctx, kit.unitBox, materials.roofW, awnings);
   addInstances(ctx, new CylinderGeometry(0.05, 0.05, 1, 6), materials.steel, awningPoles);
+  addInstances(ctx, new PlaneGeometry(1, 1), materials.contact, shadows, false).renderOrder = 1;
+}
+
+/**
+ * Team equipment under the awnings and between the trucks (references §4.7): pop-up tents (a white
+ * pyramid canopy on four legs), black tool chests with a red stripe, folding tables, with soft contact
+ * shadows; instanced.
+ */
+function buildPaddockEquipment(ctx, kit) {
+  const { materials } = ctx;
+  const Z = TRANSPORTER_Z;
+  const canopies = [];
+  const legs = [];
+  const chests = [];
+  const stripes = [];
+  const tables = [];
+  const shadows = [];
+  let index = 0;
+  for (let x = -156; x <= 66; x += 24, index++) {
+    // under the awning: two tool chests and a folding table
+    for (const dx of [-4.5, -3.2]) {
+      chests.push({ x: x + dx, y: 0.5, z: Z - 2.2, sx: 1.1, sy: 1.0, sz: 0.6 });
+      stripes.push({ x: x + dx, y: 0.82, z: Z - 2.505, sx: 1.12, sy: 0.07, sz: 0.02 });
+    }
+    tables.push({ x: x + 2, y: 0.74, z: Z - 3.2, sx: 1.8, sy: 0.04, sz: 0.75 });
+    shadows.push({ x: x - 3.85, y: 0.054, z: Z - 2.2, rx: -Math.PI / 2, sx: 3.4, sy: 1.6 });
+    // a pop-up tent in front of every other truck
+    if (index % 2 === 0) {
+      const tx = x + 5.5;
+      const tz = Z - 9.5;
+      canopies.push({ x: tx, y: 2.75, z: tz, ry: Math.PI / 4, sx: 2.12, sy: 0.7, sz: 2.12 });
+      for (const [cx, cz] of [
+        [-1, -1],
+        [1, -1],
+        [-1, 1],
+        [1, 1],
+      ])
+        legs.push({ x: tx + cx * 1.45, y: 1.2, z: tz + cz * 1.45, sy: 2.4 });
+      shadows.push({ x: tx, y: 0.054, z: tz, rx: -Math.PI / 2, sx: 3.6, sy: 3.6 });
+    }
+  }
+  addInstances(ctx, new ConeGeometry(1, 1, 4, 1, true), materials.roofW, canopies);
+  addInstances(ctx, new CylinderGeometry(0.03, 0.03, 1, 5), materials.steel, legs, false);
+  addInstances(ctx, kit.unitBox, ctx.materials.toolChest, chests);
+  addInstances(ctx, kit.unitBox, materials.red, stripes, false);
+  addInstances(ctx, kit.unitBox, materials.white, tables);
   addInstances(ctx, new PlaneGeometry(1, 1), materials.contact, shadows, false).renderOrder = 1;
 }
 
@@ -204,18 +313,44 @@ function buildTyreStacks(ctx, kit) {
     const stackHeight = 2 + (i % 3);
     for (let level = 0; level < stackHeight; level++)
       tyres.push({ x, y: 0.16 + level * 0.31, z, sx: 0.66, sy: 0.3, sz: 0.66 });
-    carts.push({ x: x + 2.4, y: 0.45, z: z + 0.3, sx: 1.2, sy: 0.9, sz: 0.8, c: i % 2 ? 0x1c1e21 : 0x9ba4aa });
+    carts.push({
+      x: x + 2.4,
+      y: 0.45,
+      z: z + 0.3,
+      sx: 1.2,
+      sy: 0.9,
+      sz: 0.8,
+      c: i % 2 ? 0x1c1e21 : 0x9ba4aa,
+    });
   }
   addInstances(ctx, new CylinderGeometry(0.5, 0.5, 1, 18), kit.rubber, tyres);
   addInstances(ctx, kit.unitBox, kit.paint, carts);
 }
 
-/** Painted parking bays for the classic cars: seven 5.8 m lines 3.2 m apart and a spine line. */
-function buildParkingBays(ctx, kit) {
+/**
+ * Painted parking bays for the classic cars: seven 5.8 m lines 3.2 m apart and a spine line. The
+ * paint is a flat decal at LAYERS.paddockLines (5 mm above the paddock asphalt), blended without
+ * depth writes and drawn before the hero car's contact decal (renderOrder 0 < 1), which therefore
+ * darkens the lines it covers although it lies only 1 mm higher (layers.js).
+ */
+function buildParkingBays(ctx) {
   const lines = [];
-  for (let i = 0; i < 7; i++) lines.push({ x: -7.4, y: 0.03, z: 126.1 - i * 3.2, sx: 5.8, sy: 0.012, sz: 0.12 });
-  lines.push({ x: -10.3, y: 0.03, z: 126.1 - 3 * 3.2, sx: 0.12, sy: 0.012, sz: 6 * 3.2 + 0.12 });
-  addInstances(ctx, kit.unitBox, ctx.materials.line, lines, false);
+  for (let i = 0; i < 7; i++)
+    lines.push({ x: -7.4, y: LAYERS.paddockLines, z: 126.1 - i * 3.2, sx: 5.8, sz: 0.12 });
+  lines.push({ x: -10.3, y: LAYERS.paddockLines, z: 126.1 - 3 * 3.2, sx: 0.12, sz: 6 * 3.2 + 0.12 });
+  const paint = new MeshStandardMaterial({
+    color: 0xe8e8e6,
+    roughness: 0.6,
+    transparent: true,
+    depthWrite: false,
+    polygonOffset: true,
+    polygonOffsetFactor: -1,
+    polygonOffsetUnits: -2,
+  });
+  const decal = new PlaneGeometry(1, 1).rotateX(-Math.PI / 2);
+  const mesh = addInstances(ctx, decal, paint, lines, false);
+  mesh.name = 'paddock-bay-lines';
+  mesh.renderOrder = 0;
 }
 
 /** Four 22 m floodlight masts every 90 m along the paddock's -Z edge, each with a lamp head. */
@@ -235,7 +370,8 @@ function buildPaddock(ctx) {
   buildHospitalityUnits(ctx, kit);
   buildMarquees(ctx);
   buildTyreStacks(ctx, kit);
-  buildParkingBays(ctx, kit);
+  buildPaddockEquipment(ctx, kit);
+  buildParkingBays(ctx);
   buildFloodlightMasts(ctx);
 }
 
