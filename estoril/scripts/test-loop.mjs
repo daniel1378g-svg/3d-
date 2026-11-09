@@ -16,6 +16,8 @@
 //   rAF          start() adds exactly one requestAnimationFrame chain, a second start() none,
 //                renderAt() neither adds nor cancels one (running or stopped), stop() removes it
 //   cuts         jump(), setVisible(false → true) and start() clear the blur history
+//   fog          with the fog distances forced to ~0, a fogged pixel is the fog colour, which is the
+//                sky's horizon colour, on the direct path and through the blur pass
 //   messages     no page errors, console errors or warnings
 import { createRequire } from 'node:module';
 const { chromium } = createRequire(import.meta.url)('playwright');
@@ -226,6 +228,56 @@ const rates = await page.evaluate(async () => {
   r.pendingAfterStop = J.debugState().pendingFrame;
   return r;
 });
+// fog: with the fog distances forced to ~0 every fogged pixel shows the fog colour, which is the sky's
+// horizon colour (display sRGB), on the direct path (0.102) and through the blur pass (0.5, a still
+// and a frame of a sequence)
+const fog = await page.evaluate(() => {
+  const J = window.__journey;
+  const fog = J.scene.fog;
+  let sky = null;
+  J.scene.traverse((node) => {
+    if (node.material && node.material.uniforms && node.material.uniforms.hor) sky = node.material;
+  });
+  const pixel = () => {
+    const gl = J.renderer.getContext();
+    const px = new Uint8Array(4);
+    gl.readPixels(gl.drawingBufferWidth >> 1, 4, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, px);
+    return [px[0], px[1], px[2]];
+  };
+  Object.defineProperty(fog, 'near', { get: () => 0, set() {}, configurable: true });
+  Object.defineProperty(fog, 'far', { get: () => 1e-3, set() {}, configurable: true });
+  const r = [];
+  for (const [t, dt] of [
+    [0.102, 0],
+    [0.5, 0],
+    [0.501, 1 / 60],
+  ]) {
+    J.renderAt(t, { dt });
+    const hex = fog.color.getHexString('srgb');
+    const expected = [0, 2, 4].map((i) => parseInt(hex.slice(i, i + 2), 16));
+    r.push({
+      t,
+      dt,
+      pixel: pixel(),
+      fog: hex,
+      horizon: sky.uniforms.hor.value.getHexString('srgb-linear'),
+      expected,
+    });
+  }
+  delete fog.near;
+  delete fog.far;
+  J.renderAt(0.5);
+  return r;
+});
+for (const f of fog) {
+  const error = Math.max(...f.pixel.map((v, i) => Math.abs(v - f.expected[i])));
+  check(
+    `a fully fogged pixel is the horizon colour (t=${f.t}${f.dt ? ', sequence frame' : ''})`,
+    error <= 3 && f.fog === f.horizon,
+    `pixel ${f.pixel.join(',')}, fog #${f.fog}, horizon #${f.horizon}`,
+  );
+}
+
 const near = (a, b) => Math.abs(a - b) < 0.2;
 check('start() adds one rAF chain', near(rates.started, rates.idle + 1), JSON.stringify(rates));
 check('a second start() adds none', near(rates.startedTwice, rates.idle + 1));

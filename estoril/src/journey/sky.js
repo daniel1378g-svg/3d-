@@ -2,9 +2,10 @@
 //
 // The sky is a back-faced sphere with a gradient + sun-glow shader. It is drawn in display space:
 // its colours are the display colours of the time-of-day palette (time-of-day.js: the photo samples
-// of docs/references.md 4.9), written to the screen as they are (no tone mapping), and the fog,
-// which three.js mixes in after tone mapping, uses the same display colours, so distant hills fade
-// exactly into the horizon. The motion-blur pass knows this (motion-blur.js).
+// of docs/references.md 4.9), written to the screen as they are (no tone mapping). The fog, which
+// three.js mixes in after tone mapping, is the horizon colour (decoded by lighting.js so that
+// three.js's output encoding gives back that display colour), so a fully fogged hill shows exactly
+// the horizon's colour. The motion-blur pass knows this (motion-blur.js).
 //
 // The environment map (scene.environment) comes from a separate probe: the same shader on a 100 m
 // sphere with a ground disc, in its own scene, with its colours as scene-linear radiance (the

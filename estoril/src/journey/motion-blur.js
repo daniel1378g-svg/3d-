@@ -148,7 +148,6 @@ function createMotionBlur(quality) {
       hasPrev: false, // false after a cut: the next frame takes its own view-projection as previous
       size: new Vector2(),
       fogDisplay: new Color(), // scratch: the fog colour swap
-      fogLinear: new Color(),
       fogRadiance: new Color(),
       ok: true, // false after a failure: plain rendering from then on
     };
@@ -197,14 +196,13 @@ function renderWithMotionBlur(renderer, scene, camera, blur, amount) {
         blur.rt.setSize(width, height);
         blur.maskRT.setSize(width, height);
       }
-      // the fog colour is a display colour (three.js mixes fog in after tone mapping, sky.js); in the
-      // HDR target the mix happens before the pass tone-maps, so it takes the radiance that tone-maps
-      // to that colour
+      // the fog colour is the decoded display colour (three.js mixes fog in after tone mapping and
+      // encodes the uniform for the canvas, lighting.js); in the HDR target the mix happens before the
+      // pass tone-maps, so it takes the radiance that tone-maps to that colour
       const fog = scene.fog;
       if (fog) {
         blur.fogDisplay.copy(fog.color);
-        blur.fogLinear.copy(fog.color).convertSRGBToLinear();
-        fog.color.copy(agxInverse(blur.fogLinear, renderer.toneMappingExposure, blur.fogRadiance));
+        fog.color.copy(agxInverse(blur.fogDisplay, renderer.toneMappingExposure, blur.fogRadiance));
       }
       renderer.setRenderTarget(blur.rt);
       renderer.render(scene, camera);
