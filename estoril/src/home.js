@@ -278,11 +278,13 @@ function initJourney() {
   /**
    * Tells the camera which part of the stage the page leaves free (camera-director.js), as
    * [left, top, right, bottom] fractions of the canvas: `open` is the canvas minus the fixed UI
-   * (the preview strip on top, the ticker at the bottom; on phones also the stage buttons and the
-   * skip link at the top), `panel` is that area minus the panel column (desktop: right of the widest
-   * panel) or minus the bottom sheet (phones: above the tallest panel). Car shots keep the car in
-   * `panel`, the aerial frames the circuit in `open`. Measured from the layout (offset boxes are not
-   * moved by the panels' slide transforms), on resize and once the web fonts have loaded.
+   * (the preview strip on top, the ticker at the bottom; on desktop the stage buttons on the right,
+   * on phones the stage buttons and the skip link at the top), `panel` is that area minus the panel
+   * column (desktop: right of the widest panel) or minus the bottom sheet (phones: above the
+   * tallest panel). Car shots keep the car in `panel` while a panel is shown (the camera follows
+   * PANEL_WINDOWS and PANEL_FADE, passed along), the aerial frames the circuit in `open`. Measured
+   * from the layout (offset boxes are not moved by the panels' slide transforms), on resize and
+   * once the web fonts have loaded.
    */
   function updateFraming() {
     if (!scene || !canvas) return;
@@ -305,18 +307,31 @@ function initJourney() {
     top += isNarrow ? 8 : 20;
     const bottom = (ticker ? ticker.offsetTop : height) - (isNarrow ? 8 : 20);
     const side = isNarrow ? 8 : 24;
-    const open = [side, top, width - side, bottom];
-    const panel = open.slice();
+    // desktop: the stage buttons stand at the right edge, at mid-height; the aerial keeps clear of
+    // them, and so do the car shots where the column between the panels and the buttons is wide
+    // enough for the car (a quarter of the width: not on 4:3 tablets, where the car may pass under
+    // the buttons rather than under a panel)
+    const nav = isNarrow ? null : journey.querySelector('.jr__nav');
+    const navRect = nav && nav.getBoundingClientRect();
+    const navLeft = navRect && navRect.width ? navRect.left - box.left - 24 : width - side;
+    const open = [side, top, Math.min(width - side, navLeft), bottom];
+    const panel = [side, top, width - side, bottom];
     for (const element of panels) {
       if (isNarrow) panel[3] = Math.min(panel[3], element.offsetTop - 10);
       else panel[0] = Math.max(panel[0], element.offsetLeft + element.offsetWidth + 24);
     }
+    if (navLeft - panel[0] >= width * 0.25) panel[2] = Math.min(panel[2], navLeft);
     // a band too thin to show the car (landscape phones and small windows, where the bottom sheet
     // takes most of the height) grows down over the top of the sheet; a column too narrow grows left
-    if (panel[3] - panel[1] < height * 0.1) panel[3] = Math.min(open[3], panel[1] + height * 0.22);
+    if (panel[3] - panel[1] < height * 0.1) panel[3] = Math.min(bottom, panel[1] + height * 0.22);
     panel[0] = Math.min(panel[0], panel[2] - width * 0.25);
     const toFractions = (r) => [r[0] / width, r[1] / height, r[2] / width, r[3] / height];
-    scene.setFraming(0, 0, { panel: toFractions(panel), open: toFractions(open) });
+    scene.setFraming(0, 0, {
+      panel: toFractions(panel),
+      open: toFractions(open),
+      windows: PANEL_WINDOWS,
+      fade: PANEL_FADE,
+    });
   }
 
   addEventListener('resize', updateFraming);

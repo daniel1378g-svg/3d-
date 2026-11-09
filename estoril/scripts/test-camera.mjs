@@ -5,22 +5,29 @@
 // node scripts/test-camera.mjs [--step 0.001] [--verbose] [--dump out.json]     exit code 1 on failure
 //
 // For every journey position t = 0..1 (step 0.001) and every viewport (1440×900 desktop, 390×844
-// phone portrait, 1024×768 tablet), the car is placed as journey.js places it (at rest: the pose of
-// renderAt) and the camera is posed by the director with the framing areas home.js passes for that
-// layout (FRAMING below). Checks:
-//   clearance   the eye stays at least WORLD_CLEARANCE from the static scene (the depth range's
-//               grid: triangles of large meshes, boxes of buildings, instances and sprites) and at
-//               least CAR_CLEARANCE from the car's box
+// phone portrait, 1024×768 tablet), the car, the pit crew and the paddock visitors are placed as
+// journey.js places them (at rest: the pose of renderAt) and the camera is posed by the director
+// with the framing areas home.js passes for that layout (VIEWPORTS below; test-loop.mjs checks
+// them against the live page). Checks:
+//   clearance   the eye stays at least WORLD_CLEARANCE from the scene (the depth range's grid:
+//               triangles of large meshes, boxes of buildings, instances and sprites, plus the crew,
+//               the visitors and the paddock cars) and at least CAR_CLEARANCE from the car's box
 //   continuity  eye, target and FOV are C1 in t: no jumps and no kinks. The second difference over
 //               ±h is compared with the one over ±h/2: a C1 curve's shrinks 4× (O(h²)), a kink's
 //               only 2× and a jump's not at all. Flagged when it shrinks less than 3× and is above
 //               KINK_FLOOR + KINK_REL × the first difference (a velocity change of more than 5 %),
 //               then examined at finer steps (refineKink). Kinks where the car's own path has one
 //               (car-path.js: its arc-length table and joins) are counted as `inherited`, not failed.
-//   car framing during the panel windows (home.js PANEL_WINDOWS) the car's projected outline (a
-//               car-shaped hull in its bounding box, camera-director.js carOutline) is fully
-//               on screen and overlaps the panel's box by at most PANEL_OVERLAP of its area; in the
-//               other car shots it is fully on screen
+//   FOV         stays below the viewport's maxFov (VIEWPORTS: the widest key for that aspect, about
+//               44° on desktop, 47° at 4:3 and 60° on the phone, plus a few degrees for the car
+//               fit), and its second difference per step stays below FOV_D2 (no zoom pumping: the
+//               old fit swung it by 35–40° within 0.01–0.02 of progress, up to 120° on the phone)
+//   car framing in every car shot the car's projected outline (a car-shaped hull in its bounding box,
+//               camera-director.js carOutline) is fully on screen, overlaps the stage buttons (desktop)
+//               by at most PANEL_OVERLAP of its area, and overlaps each panel's box by at most
+//               PANEL_OVERLAP while the panel is fully shown, FADING_OVERLAP once weighted by the
+//               panel's opacity while it fades (home.js: 1 in its window, fading over PANEL_FADE
+//               before and after it)
 //   overhead    between the two overhead keys (the top of the aerial, while the red line closes the
 //               lap) the whole circuit, centre line ± 7 m, is on screen inside the open framing area
 //               (clear of the page header and ticker)
@@ -42,9 +49,11 @@ const { buildWorld } = await import('../src/journey/world/index.js');
 const { buildCarPath } = await import('../src/journey/car-path.js');
 const { carScheduleKeys, computeLandmarks, createCarMotion, createCarSchedule, createPathSampler } =
   await import('../src/journey/car-motion.js');
-const { CAMERA_SHOTS } = await import('../src/journey/camera-shots.js');
-const { carOutline, createCameraDirector, createCameraFrame } =
+const { CAMERA_SHOTS, PANEL_FADE, PANEL_WINDOWS } = await import('../src/journey/camera-shots.js');
+const { carOutline, createCameraDirector, createCameraFrame, viewportTan } =
   await import('../src/journey/camera-director.js');
+const { createPitCrew, placePaddockCars, placePaddockVisitors, updatePaddockVisitors, updatePitCrew } =
+  await import('../src/journey/crew-staging.js');
 const { createDepthRange } = await import('../src/journey/depth-range.js');
 const { createSkyDome, createSkyMaterial } = await import('../src/journey/sky.js');
 
@@ -68,66 +77,30 @@ const KINK_FLOOR = 2e-4;
 const KINK_REL = 0.05;
 /** A second difference that shrinks less than this when h halves is a kink or a jump. */
 const KINK_RATIO = 3;
-/** The car's box may overlap the panel's box by this fraction of its own area. */
-const PANEL_OVERLAP = 0.02;
-/** Panel windows (home.js PANEL_WINDOWS): the panel is fully shown inside them. */
-const PANEL_WINDOWS = [
-  [0, 0.085],
-  [0.2, 0.315],
-  [0.425, 0.56],
-  [0.665, 0.79],
-  [0.885, 1],
-];
 /**
- * Viewports, in CSS pixels, with the boxes of the page layout (site.css, measured in the page at
- * these sizes) and the framing areas home.js updateFraming() derives from them:
+ * The car's box may overlap the stage buttons, or a fully shown panel's box, by PANEL_OVERLAP of its
+ * area; a fading panel's box by FADING_OVERLAP once weighted by the panel's opacity: the car glides
+ * between the free band and the middle of the screen while a panel fades, and may cross a panel's
+ * edge while that panel is faint (all of the car under a panel at 20 %, which darkens it by 15 %, or
+ * half of it at 40 %). The old framing left it under panels at 33–80 % (desktop) and 60 % (phone).
+ */
+const PANEL_OVERLAP = 0.02;
+const FADING_OVERLAP = 0.2;
+/** Largest second difference of the FOV (degrees) between samples STEP apart. */
+const FOV_D2 = 0.25;
+/**
+ * Viewports (scripts/camera-viewports.json), in CSS pixels, with the boxes of the page layout
+ * (site.css, measured in the page at these sizes) and the framing areas home.js updateFraming()
+ * derives from them; test-loop.mjs checks them against the live page:
+ *   maxFov   widest vertical FOV allowed (degrees)
  *   panels   box of the panel of each stage [left, top, right, bottom]
+ *   buttons  box of the stage buttons
+ *   nav      the stage buttons' box where the car must keep clear of it (desktop), or null (on the
+ *            phone they stand above the framing areas; at 4:3 the column between the panels and
+ *            the buttons is too narrow for the car, so car shots may pass under them)
  *   panel    free area with a panel shown; open: free area without one
  */
-const VIEWPORTS = [
-  {
-    name: '1440x900',
-    width: 1440,
-    height: 900,
-    panels: [
-      [56, 215, 696, 750],
-      [56, 137, 616, 797],
-      [56, 137, 616, 797],
-      [56, 137, 616, 797],
-      [56, 137, 616, 568],
-    ],
-    panel: [720, 54, 1416, 816],
-    open: [24, 54, 1416, 816],
-  },
-  {
-    name: '390x844',
-    width: 390,
-    height: 844,
-    panels: [
-      [16, 404, 374, 770],
-      [12, 301, 378, 774],
-      [12, 301, 378, 774],
-      [12, 301, 378, 774],
-      [12, 301, 378, 774],
-    ],
-    panel: [8, 193, 382, 291],
-    open: [8, 193, 382, 780],
-  },
-  {
-    name: '1024x768',
-    width: 1024,
-    height: 768,
-    panels: [
-      [41, 240, 681, 656],
-      [41, 122, 601, 680],
-      [41, 122, 601, 649],
-      [41, 122, 601, 680],
-      [41, 122, 601, 523],
-    ],
-    panel: [705, 54, 1000, 684],
-    open: [24, 54, 1000, 684],
-  },
-];
+const VIEWPORTS = JSON.parse(readFileSync(new URL('camera-viewports.json', import.meta.url), 'utf8'));
 
 const root = new URL('..', import.meta.url).pathname;
 const track = JSON.parse(readFileSync(root + 'site/assets/data/track.json', 'utf8')).pts;
@@ -140,10 +113,24 @@ const sky = createSkyDome(createSkyMaterial());
 scene.add(sky);
 const world = buildWorld(track, { quality: 'high' });
 scene.add(world.root);
+const openBox = world.root.userData.openBox;
+const crew = createPitCrew();
+scene.add(...crew.members);
+placePaddockCars(scene);
+const visitors = placePaddockVisitors(scene);
 scene.updateMatrixWorld(true);
 const camera = new PerspectiveCamera(36, 1, 0.3, 9e3);
 const depthRange = createDepthRange(camera);
-depthRange.build(scene, { sky, movers: [] });
+const movers = [...crew.members, ...visitors.map(([person]) => person)];
+depthRange.build(scene, { sky, movers });
+/** Clearance from the static scenery (movers hidden), as journey.js gives the director. */
+function staticClearance(eye, look) {
+  const shown = movers.map((mover) => mover.visible);
+  for (const mover of movers) mover.visible = false;
+  depthRange.update(eye, look);
+  movers.forEach((mover, i) => (mover.visible = shown[i]));
+  return depthRange.clearance;
+}
 
 const path = buildCarPath(track);
 const sampler = createPathSampler(path);
@@ -152,7 +139,13 @@ const distanceAt = createCarSchedule(carScheduleKeys(landmarks));
 const carStub = { root: { position: new Vector3(), rotation: { y: 0 } }, pose() {} };
 const carMotion = createCarMotion(carStub, sampler, landmarks.arrival);
 const cameraFrame = createCameraFrame(sampler);
-const director = createCameraDirector(camera, CAMERA_SHOTS, cameraFrame, { circuit: track, carBox });
+const keyFrame = createCameraFrame(sampler);
+const director = createCameraDirector(camera, CAMERA_SHOTS, cameraFrame, {
+  circuit: track,
+  carBox,
+  frameAt: (at) => keyFrame.update(distanceAt(at)),
+  clearanceAt: staticClearance,
+});
 const overheadKeys = CAMERA_SHOTS.filter((shot) => shot.pos.fit).map((shot) => shot.u);
 
 /** Poses the car and the camera at progress t for viewport v (at rest, as renderAt does). */
@@ -160,6 +153,8 @@ function pose(t, v) {
   carMotion.lastDistance = distanceAt(t); // a teleport: the car at rest there
   carMotion.update(distanceAt(t), 0);
   cameraFrame.update(distanceAt(t));
+  updatePitCrew(crew, t, 0, sampler, landmarks.pitBox, openBox);
+  updatePaddockVisitors(visitors, t, 0);
   director.update({
     progress: t,
     introEase: 1,
@@ -167,7 +162,7 @@ function pose(t, v) {
     debugCam: null,
     width: v.width,
     height: v.height,
-    framing: { panel: v.panelFractions, open: v.openFractions },
+    framing: { panel: v.panelFractions, open: v.openFractions, windows: PANEL_WINDOWS, fade: PANEL_FADE },
   });
   camera.updateMatrixWorld();
 }
@@ -254,7 +249,19 @@ function refineKink(state, c, t0, h0) {
   return null;
 }
 
-const panelStage = (t) => PANEL_WINDOWS.findIndex(([a, b]) => t >= a - 1e-9 && t <= b + 1e-9);
+/** Panel opacity of `stage` at progress t, as home.js panelOpacity(). */
+function panelOpacity(stage, t) {
+  const [from, to] = PANEL_WINDOWS[stage];
+  if (t < from) return Math.min(1, Math.max(0, 1 - (from - t) / PANEL_FADE));
+  if (t > to && stage < PANEL_WINDOWS.length - 1) return Math.min(1, Math.max(0, 1 - (t - to) / PANEL_FADE));
+  return 1;
+}
+/** Fraction of box a's area inside box b ([x0, y0, x1, y1]). */
+function overlapOf(a, b) {
+  const ox = Math.max(0, Math.min(a[2], b[2]) - Math.max(a[0], b[0]));
+  const oy = Math.max(0, Math.min(a[3], b[3]) - Math.max(a[1], b[1]));
+  return (ox * oy) / Math.max(1, (a[2] - a[0]) * (a[3] - a[1]));
+}
 const failures = [];
 const fail = (message) => {
   failures.push(message);
@@ -296,7 +303,15 @@ for (const v of VIEWPORTS) {
   let worstFrame = { margin: Infinity };
   let worstOverlap = { overlap: 0, t: '-' };
   let worstOverhead = { margin: Infinity };
-  const counts = { clearance: 0, kinks: 0, framing: 0, overhead: 0, inherited: 0 };
+  let worstNav = { overlap: 0, t: '-' };
+  let worstFovD2 = { d2: 0, t: '-' };
+  let widest = { fov: 0, t: '-' };
+  const keyFovs = CAMERA_SHOTS.map(
+    (shot) => (2 * Math.atan(viewportTan(shot.fov, camera.aspect)) * 180) / Math.PI,
+  );
+  const maxFov = v.maxFov;
+  const counts = { clearance: 0, kinks: 0, framing: 0, overhead: 0, inherited: 0, fov: 0 };
+  let carWidths = [];
   for (let i = 0; i <= samples; i++) {
     const t = +(i * STEP).toFixed(6);
     const h = STEP;
@@ -315,7 +330,26 @@ for (const v of VIEWPORTS) {
     if (car < minCar.d) minCar = { d: car, t };
     if (world < WORLD_CLEARANCE || car < CAR_CLEARANCE) {
       counts.clearance++;
-      fail(`${v.name} t=${t}: clearance world ${world.toFixed(3)} m, car ${car.toFixed(3)} m`);
+      const fit = director.fitAt(t);
+      fail(
+        `${v.name} t=${t}: clearance world ${world.toFixed(3)} m, car ${car.toFixed(3)} m (eye ` +
+          `${director.position.toArray().map((x) => x.toFixed(1))}, fit dolly ${fit.back.toFixed(3)})`,
+      );
+    }
+
+    // the FOV: within the viewport's range, no pumping
+    if (s[6] > widest.fov) widest = { fov: +s[6].toFixed(2), t };
+    if (s[6] > maxFov) {
+      counts.fov++;
+      fail(`${v.name} t=${t}: FOV ${s[6].toFixed(1)}° is wider than ${maxFov.toFixed(1)}°`);
+    }
+    if (sMinus && sPlus) {
+      const d2 = Math.abs(sPlus[6] - 2 * s[6] + sMinus[6]);
+      if (d2 > worstFovD2.d2) worstFovD2 = { d2: +d2.toFixed(4), t };
+      if (d2 > FOV_D2) {
+        counts.fov++;
+        fail(`${v.name} t=${t}: the FOV's second difference is ${d2.toFixed(3)}° (zoom pumping)`);
+      }
     }
 
     // continuity (C1): second differences over h and h/2, refined where they look like a kink
@@ -355,22 +389,36 @@ for (const v of VIEWPORTS) {
         const y0 = Math.min(...pts.map((p) => p[1]));
         const y1 = Math.max(...pts.map((p) => p[1]));
         const onScreen = Math.min(x0, y0, v.width - x1, v.height - y1);
-        const stage = panelStage(t);
+        const box = [x0, y0, x1, y1];
+        // each panel's overlap weighted by its opacity, and the stage buttons'
         let overlap = 0;
-        if (stage >= 0) {
-          const [px0, py0, px1, py1] = v.panels[stage];
-          const ox = Math.max(0, Math.min(x1, px1) - Math.max(x0, px0));
-          const oy = Math.max(0, Math.min(y1, py1) - Math.max(y0, py0));
-          overlap = (ox * oy) / Math.max(1, (x1 - x0) * (y1 - y0));
+        let stage = -1;
+        let excess = 0;
+        for (let k = 0; k < PANEL_WINDOWS.length; k++) {
+          const opacity = panelOpacity(k, t);
+          const weighted = overlapOf(box, v.panels[k]) * opacity;
+          const allowed = opacity > 0.999 ? PANEL_OVERLAP : FADING_OVERLAP;
+          if (weighted > overlap) {
+            overlap = weighted;
+            stage = k;
+          }
+          excess = Math.max(excess, weighted - allowed);
         }
+        const nav = v.nav ? overlapOf(box, v.nav) : 0;
+        carWidths.push(x1 - x0);
         if (onScreen < worstFrame.margin)
-          worstFrame = { margin: +onScreen.toFixed(1), t, box: [x0, y0, x1, y1].map(Math.round) };
+          worstFrame = { margin: +onScreen.toFixed(1), t, box: box.map(Math.round) };
         if (overlap > worstOverlap.overlap) worstOverlap = { overlap: +overlap.toFixed(4), t };
-        if (onScreen < 0 || overlap > PANEL_OVERLAP) {
+        if (nav > worstNav.overlap) worstNav = { overlap: +nav.toFixed(4), t };
+        if (onScreen < 0 || excess > 0 || nav > PANEL_OVERLAP) {
           counts.framing++;
           fail(
-            `${v.name} t=${t}: car box ${[x0, y0, x1, y1].map(Math.round)} ` +
-              (onScreen < 0 ? 'leaves the screen' : `overlaps the panel by ${(overlap * 100).toFixed(1)} %`),
+            `${v.name} t=${t}: car box ${box.map(Math.round)} ` +
+              (onScreen < 0
+                ? 'leaves the screen'
+                : excess > 0
+                  ? `overlaps panel ${stage} by ${(overlap * 100).toFixed(1)} % (× its opacity)`
+                  : `overlaps the stage buttons by ${(nav * 100).toFixed(1)} %`),
           );
         }
       }
@@ -397,13 +445,27 @@ for (const v of VIEWPORTS) {
     rows.push({ t, eye: s.slice(0, 3), tgt: s.slice(3, 6), fov: s[6], subject, world, car });
   }
   report[v.name] = rows;
+  if (VERBOSE)
+    director.keyInfo.forEach((key, k) =>
+      console.log(
+        `${v.name} key ${CAMERA_SHOTS[k].u}: dolly ${director.dollies[k].toFixed(2)} of ${key.wanted.toFixed(2)} ` +
+          `(swung ${key.angle}°), ` +
+          `FOV ${key.fov.toFixed(1)}°, eye ${key.eye.map((x) => x.toFixed(1))}, target ${key.look.map((x) => x.toFixed(1))}`,
+      ),
+    );
+  carWidths.sort((a, b) => a - b);
+  const widthAt = (q) => Math.round(carWidths[Math.floor(q * (carWidths.length - 1))]);
   console.log(
     `${v.name}: closest scene ${minWorld.d.toFixed(2)} m at t=${minWorld.t}, closest car ` +
       `${minCar.d.toFixed(2)} m at t=${minCar.t}; lowest h/(h/2) curvature ratio ` +
       `${worstKink.ratio === Infinity ? '-' : worstKink.ratio.toFixed(2)} (${worstKink.channel ?? '-'} at t=${worstKink.t ?? '-'}); ` +
-      `car on screen by at least ${worstFrame.margin} px (t=${worstFrame.t}), panel overlap at most ` +
-      `${(100 * worstOverlap.overlap).toFixed(1)} % (t=${worstOverlap.t}); overhead margin ${worstOverhead.margin} px at t=${worstOverhead.t} ` +
-      `(heading ${director.overhead.heading}°); failures ${JSON.stringify(counts)}`,
+      `FOV ${Math.min(...keyFovs).toFixed(1)}–${widest.fov}° (t=${widest.t}, limit ${maxFov.toFixed(1)}), largest second ` +
+      `difference ${worstFovD2.d2}° (t=${worstFovD2.t}); car on screen by at least ${worstFrame.margin} px ` +
+      `(t=${worstFrame.t}), width ${widthAt(0.1)}/${widthAt(0.5)}/${widthAt(0.9)} px (p10/50/90), panel overlap × opacity ` +
+      `at most ${(100 * worstOverlap.overlap).toFixed(1)} % (t=${worstOverlap.t}), stage buttons ` +
+      `${(100 * worstNav.overlap).toFixed(1)} % (t=${worstNav.t}); overhead margin ${worstOverhead.margin} px at ` +
+      `t=${worstOverhead.t} (heading ${director.overhead.heading}°, eye height ${director.overhead.pos[1].toFixed(0)} m); ` +
+      `dollies ${[...director.dollies].map((d) => d.toFixed(2)).join(' ')}; failures ${JSON.stringify(counts)}`,
   );
 }
 

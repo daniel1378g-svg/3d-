@@ -74,6 +74,20 @@ const INTRO_END_PROGRESS = 0.01;
 /** Journey positions pre-rendered by warmup() so their shaders and textures are ready. */
 const WARMUP_PROGRESS = [0.26, 0.37, 0.47, 0.7, 0.95];
 
+/**
+ * Distance from `eye` to the static scenery (the depth range's index, without the `movers`, which
+ * are hidden for the query), for the camera layout: it must not depend on where the car or the crew
+ * happen to be when the layout is solved. The depth range sets the camera's near/far as a side
+ * effect; the frame's own update follows.
+ */
+function staticClearance(depthRange, movers, eye, look) {
+  const shown = movers.map((mover) => mover.visible);
+  for (const mover of movers) mover.visible = false;
+  depthRange.update(eye, look);
+  movers.forEach((mover, i) => (mover.visible = shown[i]));
+  return depthRange.clearance;
+}
+
 async function createJourney({
   canvas,
   trackUrl,
@@ -127,10 +141,8 @@ async function createJourney({
   scene.add(...crew.members);
   placePaddockCars(scene);
   const visitors = placePaddockVisitors(scene);
-  depthRange.build(scene, {
-    sky: skyDome,
-    movers: [car.root, ...crew.members, ...visitors.map(([person]) => person)],
-  });
+  const movers = [car.root, ...crew.members, ...visitors.map(([person]) => person)];
+  depthRange.build(scene, { sky: skyDome, movers });
 
   // --- choreography ----------------------------------------------------------------------------
   const carPath = buildCarPath(track);
@@ -142,9 +154,12 @@ async function createJourney({
   const road = createRoadHeight(world.root, sampler, scheduleDistances, car.contacts);
   const carMotion = createCarMotion(car, sampler, landmarks.arrival, { roadHeight: road.heightAt });
   const cameraFrame = createCameraFrame(sampler); // the car's frame with a smoothed heading
+  const keyFrame = createCameraFrame(sampler); // the same where the car is at a shot key (layout only)
   const director = createCameraDirector(camera, CAMERA_SHOTS, cameraFrame, {
     circuit: track,
     carBox: carMeta.bounds,
+    frameAt: (at) => keyFrame.update(distanceAt(at)),
+    clearanceAt: (eye, look) => staticClearance(depthRange, movers, eye, look),
   });
   const progress = createProgress();
 
@@ -166,7 +181,7 @@ async function createJourney({
     debugCam: null,
     width: 1,
     height: 1,
-    framing: { panel: null, open: null },
+    framing: { panel: null, open: null, windows: null, fade: 0 },
   };
   const viewport = createViewport(canvas, renderer, camera, maxPixelRatio);
 
@@ -313,16 +328,20 @@ async function createJourney({
       resetMotionBlur(blur);
     },
     /**
-     * Where the subject goes on screen. `areas` = { panel, open }: [left, top, right, bottom]
-     * fractions of the viewport left free while a stage panel is shown (car shots) and with no panel
-     * (aerial), see camera-director.js. Without `areas`, (x, y) shift the subject from the centre as
-     * fractions of the viewport (x right, y up), as before.
+     * Where the subject goes on screen. `areas` = { panel, open, windows, fade }: [left, top, right,
+     * bottom] fractions of the viewport left free while a stage panel is shown (car shots) and with
+     * no panel (aerial), and optionally the panels' progress windows ([[from, to], …]) and fade
+     * length, which time the move between the two (camera-director.js; defaults:
+     * camera-shots.js PANEL_WINDOWS, PANEL_FADE). Without `areas`, (x, y) shift the subject from the
+     * centre as fractions of the viewport (x right, y up), as before.
      */
     setFraming(x = 0, y = 0, areas = null) {
       const framing = cameraInput.framing;
       if (areas) {
         framing.panel = areas.panel;
         framing.open = areas.open || areas.panel;
+        if (areas.windows) framing.windows = areas.windows;
+        if (areas.fade) framing.fade = areas.fade;
         return;
       }
       const cx = 0.5 + clamp(x, -0.4, 0.4);
@@ -380,6 +399,7 @@ async function createJourney({
         highlight: [highlight.mesh.visible, highlight.mesh.material.opacity],
         running,
         pendingFrame: rafId !== 0,
+        framing: { panel: cameraInput.framing.panel, open: cameraInput.framing.open },
       };
     },
     /** Optional camera override for debugging: { pos: [x, y, z], tgt: [x, y, z], fov }. */
