@@ -525,15 +525,17 @@ The step sheets ([chicane](../comparisons/geometry/steps-bend-top.jpg),
 
 ### Remaining artefacts (outside this fix)
 
-* **Camera path:** at t = 0.33 the eye passes 0.16 m from the grandstand roof. Near follows it down to 0.08 m, so that
-  one frame now shows the roof filling the view, where the base build's fixed 0.3 m near plane cut the roof away
-  (0.3275 and 0.3325 are fine). At t ≈ 0.8525 the eye is inside the control tower (near is now 0.33 m there). Both are
-  camera keys for the camera-shots phase, not something the near plane should hide.
-* **O1, O2, O3 are still open:** motion blur switches on at 0.39 while the camera is airborne, the 140 m shadow box
-  follows the car in the aerial, and alpha-tested tufts and shrubs sit on the gravel. Vegetation is still placed with
-  the original 1000-point centre line, which is unchanged on purpose so the seeded placement stays the same.
-* Walls now stop where the chicane clamp starts, so the gravel at the chicane exit (2462–2713) has no wall for its
-  first 48 m, and the 50 m chicane trap keeps a 21 m wall.
-* Cloud sprites draw before the highlight (renderOrder 0 vs 2). A cloud drifting between the camera and the track would
-  be covered by the line. None does in the journey frames.
+These were open when the geometry fix landed. Their status after the later phases (car, environment, lighting and
+camera, site, performance) is below. The numbers are from the final build: `scripts/test-camera.mjs` over the 15
+page-measured layouts in `scripts/camera-viewports.json`, and `scripts/measure-clearance.mjs` over 421 frames.
+
+| item | was | now | where |
+|---|---|---|---|
+| Camera at t = 0.33 | the eye passed 0.16 m from the grandstand roof; one frame showed the roof filling the view | **fixed.** The aerial is now a drone flight: it lifts straight up off the pit lane, clear of the pit wall, the gantry and the roof, then climbs over the grandstand. The closest the eye comes to any scenery anywhere on the journey is 0.54 m (1024x768, t = 0.908); at 1440x900 it is 0.71 m. test-camera requires 0.5 m on every layout | `camera-shots.js`, `camera-director.js` |
+| Camera at t ≈ 0.8525 | the eye was inside the control tower | **fixed.** The drive out of the paddock is filmed from the car's left, away from the tower (keys 0.84 and 0.865). test-camera's 0.5 m clearance holds there on every layout; on 360x740, 375x667, 430x932 and 440x956 the closest point of the whole journey, 0.62 m, is in this move (t = 0.862) | `camera-shots.js` |
+| O1, motion blur while airborne | blur switched on at 0.39 with the camera still in the air | **fixed.** The blur only runs on the lap chase (fades in over 0.43–0.45, out over 0.6–0.635) and fades out with the eye's height above the car (6–14 m), so the aerial never blurs. At zero velocity the blur pass returns the direct frame exactly (test-loop) | `motion-blur.js` |
+| O2, shadow box following the car | a 140 m box stayed on the car, so the aerial had no shadows outside it | **fixed.** The box is fitted every frame to the ground the camera sees: 140 m for close-ups, up to 2.2 km in the aerial; its size is quantised and its centre snapped to texels, so a still camera keeps a still box | `lighting.js` (createShadowFollow) |
+| O3, tufts on the gravel | alpha-tested tufts and shrubs on the gravel beds (dark specks at 0.345) | **fixed.** Vegetation is placed against an occupancy map built from the finished world: nothing grows on the asphalt, kerbs, run-off, gravel, walls, pit lane, paddock or roads. test-environment checks every instance on all three tiers | `world/vegetation.js`, `env/occupancy.js` |
+| Chicane-exit walls | the gravel at the chicane exit (2462–2713) has no wall for its first 48 m; the 50 m chicane trap keeps a 21 m wall | not revisited | `world/track-surfaces.js` |
+| Clouds and the highlight | cloud sprites draw before the highlight (renderOrder 0 vs 2) | unchanged. No cloud passes between the camera and the track in the journey frames | `world/clouds.js`, `track-highlight.js` |
 
