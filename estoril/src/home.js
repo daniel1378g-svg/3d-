@@ -211,6 +211,9 @@ function initJourney() {
   let resCeiling = 1;
   let holdUntil = 0; // frames before this time are ignored (after a change, a resize or a start)
   let lastStepUp = -1e9;
+  /** A scale on the grid of RES_STEP (k / 20), so steps never drift (1 − 0.05 − 0.05 is 0.8999…). */
+  const STEPS_PER_UNIT = Math.round(1 / RES_STEP);
+  const onStep = (scale) => Math.round(scale * STEPS_PER_UNIT) / STEPS_PER_UNIT;
 
   function governResolution(dt) {
     const now = performance.now();
@@ -228,15 +231,16 @@ function initJourney() {
     if (!scene || !scene.setResScale) return;
     // lowest scale: an effective pixel ratio of 0.75 (or no reduction when the base ratio is lower)
     const floor = Math.min(1, 0.75 / Math.max(0.75, scene.basePixelRatio || 1));
-    // a steady cadence slower than 30 ms is a capped refresh rate, not an overloaded GPU
-    if (median > 0.03 && p75 - p25 < 0.0015) return;
+    // a steady cadence of 30–50 ms is a refresh rate capped at 20–33 Hz (a low-power mode), not an
+    // overloaded GPU; slower than that is too slow whatever its rhythm
+    if (median > 0.03 && median < 0.05 && p75 - p25 < 0.0015) return;
     fastBatches = median < RES_FAST ? fastBatches + 1 : 0;
     let next = resScale;
     if (median > RES_SLOW && resScale > floor) {
-      next = Math.max(floor, resScale - RES_STEP);
+      next = Math.max(floor, onStep(resScale - RES_STEP));
       if (now - lastStepUp < 3e3) resCeiling = next;
     } else if (fastBatches >= 2 && resScale < resCeiling) {
-      next = Math.min(resCeiling, resScale + RES_STEP);
+      next = Math.min(resCeiling, onStep(resScale + RES_STEP));
       lastStepUp = now;
       fastBatches = 0;
     }
@@ -256,14 +260,17 @@ function initJourney() {
   function frame(time) {
     requestAnimationFrame(frame);
     if (capturePaused) return;
-    const dt = Math.min(0.1, (time - lastFrameTime) / 1e3);
+    const interval = (time - lastFrameTime) / 1e3;
+    const dt = Math.min(0.1, interval);
     lastFrameTime = time;
     if (!inView) return;
     const target = scrollProgress();
     if (sceneReady && sceneRunning) {
       scene.setProgress(target);
       progress = scene.progress;
-      if (!document.hidden && dt < 0.1) governResolution(dt);
+      // every frame counts, the slowest too (a device below 10 fps must still step down; one long
+      // frame does not move a batch's median); a second or more is a pause, not a frame
+      if (!document.hidden && interval < 1) governResolution(interval);
     } else {
       progress += (target - progress) * (reducedMotion ? 1 : 1 - Math.exp(-dt * 8));
     }
