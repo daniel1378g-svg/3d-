@@ -45,9 +45,11 @@ const CAMERA_SHOTS = [
   { u: 0.368, pos: FIT_CIRCUIT, tgt: FIT_CIRCUIT, scale: 1.05, fov: 50, aerial: true },
   { u: 0.39, pos: FIT_CIRCUIT, tgt: FIT_CIRCUIT, scale: 1, fov: 50, aerial: true },
   { u: 0.407, pos: abs(-455, 120, 345), tgt: rel(40, 0, 0), fov: 42, aerial: true },
-  // stage 3, on track: chase camera behind/beside the car for the lap
-  { u: 0.425, pos: rel(5.3, 1.7, -14.85), tgt: rel(0.3, 0.7, 0), fov: 38 },
-  { u: 0.56, pos: rel(1.2, 1.8, -16.7), tgt: rel(0.6, 0.7, 0), fov: 38 },
+  // stage 3, on track: chase camera beside the car for the lap, 15–17 m to its left, which is about
+  // where the Armco runs (world/barriers.js: at least 9 m beyond the asphalt); at 2.2–2.3 m the eye
+  // clears the 1.13 m posts by the depth range's padding plus test-camera's WORLD_CLEARANCE
+  { u: 0.425, pos: rel(5.3, 2.2, -14.85), tgt: rel(0.3, 0.7, 0), fov: 38 },
+  { u: 0.56, pos: rel(1.2, 2.3, -16.7), tgt: rel(0.6, 0.7, 0), fov: 38 },
   { u: 0.59, pos: rel(-12, 3.2, -4), tgt: rel(2, 0.9, 0), fov: 40 },
   { u: 0.635, pos: rel(-11, 3, 6), tgt: rel(2, 0.9, 0), fov: 40 },
   { u: 0.652, pos: rel(-8.5, 2.4, 15.75), tgt: rel(2, 0.9, 0), fov: 38 },
