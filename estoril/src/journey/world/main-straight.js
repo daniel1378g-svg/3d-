@@ -75,6 +75,9 @@ function buildOuterWallAndFence(ctx) {
     transparent: true,
     depthWrite: false,
     side: DoubleSide,
+    // each panel is one flat quad, so three.js's two-pass drawing of transparent double-sided
+    // materials (back faces, then front faces, each with a program lookup) draws nothing more
+    forceSinglePass: true,
     roughness: 0.6,
     metalness: 0.3,
   });

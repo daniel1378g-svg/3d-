@@ -77,6 +77,20 @@ function tagCarForMask(root) {
 }
 
 /**
+ * Puts every light under `root` (the sun, the sky fill, the garage lamp) on the mask layer too. The
+ * mask pass draws only the car (flat white, unlit), but three.js sets up the lights of each render
+ * from those the camera's layers see, and the programs of lit materials are keyed to that setup: a
+ * mask pass without the lights made every lit material of the scene look its program up again on the
+ * next frame (~100 lookups and ~200 KB of garbage per frame during the lap). With the same lights,
+ * both passes share one setup. Call once the scene is built.
+ */
+function addLightsToMask(root) {
+  root.traverse((node) => {
+    if (node.isLight) node.layers.enable(CAR_MASK_LAYER);
+  });
+}
+
+/**
  * Creates the render targets and the blur pass, or returns null when quality is not 'high' or the
  * setup throws. Targets start at 4×4 and follow the drawing buffer size on use.
  */
@@ -91,7 +105,8 @@ function createMotionBlur(quality) {
     });
     sceneTarget.isXRRenderTarget = true; // drawn like the canvas (header)
     sceneTarget.depthTexture = new DepthTexture(4, 4);
-    const maskTarget = new WebGLRenderTarget(4, 4);
+    // no depth buffer: the mask is the union of the car's fragments, which no depth test changes
+    const maskTarget = new WebGLRenderTarget(4, 4, { depthBuffer: false });
     const material = new ShaderMaterial({
       depthTest: false,
       depthWrite: false,
@@ -249,6 +264,7 @@ function renderWithMotionBlur(renderer, scene, camera, blur, amount) {
 
 export {
   CAR_MASK_LAYER,
+  addLightsToMask,
   createMotionBlur,
   motionBlurAmount,
   renderWithMotionBlur,

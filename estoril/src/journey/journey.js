@@ -44,12 +44,14 @@ import {
 } from './crew-staging.js';
 import { FOG_FAR, FOG_NEAR, applyLighting, createLights, createShadowFollow, fitFog } from './lighting.js';
 import {
+  addLightsToMask,
   createMotionBlur,
   motionBlurAmount,
   renderWithMotionBlur,
   resetMotionBlur,
   tagCarForMask,
 } from './motion-blur.js';
+import { drawOrder, separateProgramVariants } from './program-variants.js';
 import { STAGES, createProgress } from './progress.js';
 import {
   applyAnisotropy,
@@ -154,6 +156,11 @@ async function createJourney({
   const visitors = placePaddockVisitors(scene);
   const movers = [car.root, ...crew.members, ...visitors.map(([person]) => person)];
   depthRange.build(scene, { sky: skyDome, movers });
+  // one program per material and frame (program-variants.js): after every other material is made;
+  // the car mask pass sees the scene's lights (motion-blur.js)
+  separateProgramVariants(scene);
+  renderer.setOpaqueSort(drawOrder);
+  addLightsToMask(scene);
 
   // --- choreography ----------------------------------------------------------------------------
   const carPath = buildCarPath(track);
