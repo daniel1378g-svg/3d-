@@ -48,7 +48,7 @@ for (const t of ts) {
     }, [t, cam]);
     await page.evaluate(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))));
     const file = `${out}/${prefix}${name ? name + '-' : ''}t${t.toFixed(3)}-${w}x${h}.png`;
-    await page.screenshot({ path: file });
+    await page.screenshot({ path: file, timeout: 180000 }); // SwiftShader frames can take long on a busy host
     console.log(file);
   }
 }
