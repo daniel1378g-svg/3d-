@@ -1,10 +1,22 @@
 // Camera motion blur for the chase on the lap (high quality only), used sparingly.
 //
-// When it is on, the scene is rendered into a multisampled HDR target with a depth texture. A
+// When it is on, the scene is rendered into a multisampled target with a depth texture. A
 // full-screen pass reconstructs each pixel's world position from depth (inverse of this frame's
 // view-projection), reprojects it with the previous frame's view-projection and averages the colour
-// along a fraction (SHUTTER) of the screen-space difference. Tone mapping and the output colour space
-// are applied in the pass (except for the sky dome, which is drawn in display colours, sky.js).
+// along a fraction (SHUTTER) of the screen-space difference.
+//
+// The target holds the frame exactly as the canvas would: three r170 draws into a render target in
+// linear light without tone mapping, except into an XR target, which it draws like the canvas (tone
+// mapping, the target texture's colour space as the output encoding, the fog and clear colours
+// encoded the same way). So the target is flagged as one, with an sRGB texture (half float: three
+// stores the encoded values as they are). Every material, the display-colour sky dome, the cloud
+// sprites over it and the fog then come out identical on both paths, and at zero velocity the pass
+// returns the direct frame: the blur fades in and out by its velocity scale, with no jump where it
+// starts or stops (the old HDR path left everything at depth 1 untone-mapped, so the cloud sprites
+// over the sky turned from grey to white, +5.4/255 on the whole frame, when it switched on). The
+// materials also compile to the same programs on both paths. The average is taken over display
+// values, which is a little darker than averaging light on high-contrast edges and invisible over
+// the ≤ 11.5 px the blur is allowed to reach.
 //
 // What keeps it sparing and clean:
 //   when   motionBlurAmount(): only while the camera chases the car on the lap (progress 0.43–0.635)
@@ -32,11 +44,11 @@ import {
   OrthographicCamera,
   PlaneGeometry,
   Scene,
+  SRGBColorSpace,
   ShaderMaterial,
   Vector2,
   WebGLRenderTarget,
 } from 'three';
-import { agxInverse } from './util/agx.js';
 import { clamp, smoothstep } from './util/math.js';
 
 /** Object layer of the meshes that go into the car mask. */
@@ -71,13 +83,19 @@ function tagCarForMask(root) {
 function createMotionBlur(quality) {
   if (quality !== 'high') return null;
   try {
-    // scene colour (HDR, 4× MSAA) with a depth texture; the car mask
-    const sceneTarget = new WebGLRenderTarget(4, 4, { type: HalfFloatType, samples: 4 });
+    // the frame as the canvas would show it (4× MSAA, see the header) with a depth texture; the car mask
+    const sceneTarget = new WebGLRenderTarget(4, 4, {
+      type: HalfFloatType,
+      samples: 4,
+      colorSpace: SRGBColorSpace,
+    });
+    sceneTarget.isXRRenderTarget = true; // drawn like the canvas (header)
     sceneTarget.depthTexture = new DepthTexture(4, 4);
     const maskTarget = new WebGLRenderTarget(4, 4);
     const material = new ShaderMaterial({
       depthTest: false,
       depthWrite: false,
+      toneMapped: false, // the target is already tone-mapped and encoded
       defines: { TAPS },
       uniforms: {
         tColor: { value: sceneTarget.texture },
@@ -94,13 +112,6 @@ function createMotionBlur(quality) {
       vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = vec4(position.xy, 0., 1.); }',
       fragmentShader: `uniform sampler2D tColor, tDepth, tMask; uniform mat4 uInvVP, uPrevVP;
           uniform float uAmt, uMaxLen, uAspect, uDepthTolerance; uniform vec2 uNearFar; varying vec2 vUv;
-          vec3 toDisplay(vec3 c, float d) {
-            if (d > .99999) return c;                       // the sky dome is drawn in display colours
-            #ifdef TONE_MAPPING
-            c = toneMapping(c);
-            #endif
-            return linearToOutputTexel(vec4(c, 1.)).rgb;
-          }
           // view distance of a depth-buffer value (perspective projection)
           float viewDepth(float d) {
             float n = uNearFar.x, f = uNearFar.y;
@@ -108,7 +119,7 @@ function createMotionBlur(quality) {
           }
           void main() {
             float d = texture2D(tDepth, vUv).x;
-            vec3 base = toDisplay(texture2D(tColor, vUv).rgb, d);
+            vec3 base = texture2D(tColor, vUv).rgb;
             float mask = texture2D(tMask, vUv).r;
             vec4 wp = uInvVP * vec4(vUv * 2. - 1., d * 2. - 1., 1.); wp /= wp.w;
             vec4 pp = uPrevVP * wp; vec2 prevUv = pp.xy / pp.w * .5 + .5;
@@ -126,10 +137,12 @@ function createMotionBlur(quality) {
                 float tapDepth = texture2D(tDepth, uv).x;
                 float dz = abs(viewDepth(tapDepth) - z) / z;
                 float w = (1. - texture2D(tMask, uv).r) * mix(1., .1, smoothstep(uDepthTolerance * .5, uDepthTolerance, dz));
-                acc += toDisplay(texture2D(tColor, uv).rgb, tapDepth) * w; wsum += w;
+                acc += texture2D(tColor, uv).rgb * w; wsum += w;
               }
             }
-            gl_FragColor = vec4(acc / wsum + (fract(sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233))) * 43758.5453) - .5) / 255., 1.);
+            // the frame is already dithered; averaging smooths that out, so blurred pixels get it back
+            float noise = fract(sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233))) * 43758.5453) - .5;
+            gl_FragColor = vec4(acc / wsum + noise * clamp(len * 400., 0., 1.) / 255., 1.);
           }`,
     });
     const quad = new Mesh(new PlaneGeometry(2, 2), material); // full-screen, positions are clip space
@@ -147,8 +160,7 @@ function createMotionBlur(quality) {
       prev: new Matrix4(), // last rendered frame's view-projection
       hasPrev: false, // false after a cut: the next frame takes its own view-projection as previous
       size: new Vector2(),
-      fogDisplay: new Color(), // scratch: the fog colour swap
-      fogRadiance: new Color(),
+      clearColor: new Color(), // scratch: the renderer's clear colour, restored after the mask
       ok: true, // false after a failure: plain rendering from then on
     };
   } catch {
@@ -188,7 +200,7 @@ function renderWithMotionBlur(renderer, scene, camera, blur, amount) {
   }
   if (amount > MIN_AMOUNT && blur && blur.ok) {
     try {
-      // 1. the scene into the HDR target (colour + depth)
+      // 1. the frame into the target (colour as the canvas would show it, and depth)
       renderer.getDrawingBufferSize(blur.size);
       const width = blur.size.x;
       const height = blur.size.y;
@@ -196,22 +208,14 @@ function renderWithMotionBlur(renderer, scene, camera, blur, amount) {
         blur.rt.setSize(width, height);
         blur.maskRT.setSize(width, height);
       }
-      // the fog colour is the decoded display colour (three.js mixes fog in after tone mapping and
-      // encodes the uniform for the canvas, lighting.js); in the HDR target the mix happens before the
-      // pass tone-maps, so it takes the radiance that tone-maps to that colour
-      const fog = scene.fog;
-      if (fog) {
-        blur.fogDisplay.copy(fog.color);
-        fog.color.copy(agxInverse(blur.fogDisplay, renderer.toneMappingExposure, blur.fogRadiance));
-      }
       renderer.setRenderTarget(blur.rt);
       renderer.render(scene, camera);
-      if (fog) fog.color.copy(blur.fogDisplay);
       // 2. the car mask: same camera, car layer only, flat white, shadow maps not re-rendered
       const shadowAutoUpdate = renderer.shadowMap.autoUpdate;
       renderer.shadowMap.autoUpdate = false;
       const overrideMaterial = scene.overrideMaterial;
-      const background = scene.background;
+      const clearAlpha = renderer.getClearAlpha();
+      renderer.getClearColor(blur.clearColor);
       scene.overrideMaterial = blur.maskMat;
       camera.layers.set(CAR_MASK_LAYER);
       renderer.setRenderTarget(blur.maskRT);
@@ -220,7 +224,7 @@ function renderWithMotionBlur(renderer, scene, camera, blur, amount) {
       renderer.render(scene, camera);
       camera.layers.set(0);
       scene.overrideMaterial = overrideMaterial;
-      scene.background = background;
+      renderer.setClearColor(blur.clearColor, clearAlpha);
       renderer.shadowMap.autoUpdate = shadowAutoUpdate;
       // 3. the blur pass to the canvas
       const uniforms = blur.mat.uniforms;

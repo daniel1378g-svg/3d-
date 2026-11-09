@@ -6,7 +6,7 @@
 // display colour: the time of day's horizon colour (time-of-day.js). A THREE.Color holds working
 // (linear) values and three.js encodes the fog uniform for the output, so applyLighting() decodes
 // the display colour first; a fully fogged object then shows exactly the horizon's display colour,
-// on the canvas and in the motion-blur target alike (motion-blur.js renders it as an output). The
+// on the canvas and in the motion-blur target alike (motion-blur.js draws it like the canvas). The
 // haze sits in the lowest air: fitFog() lengthens the fog distances with the eye's height by the
 // mean haze density along a ray from the eye down to the ground (an exponential haze of scale
 // height HAZE_SCALE_HEIGHT), so the overhead shots, which see the ground from up to 1.5 km, are not

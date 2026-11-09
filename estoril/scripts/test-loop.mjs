@@ -18,6 +18,8 @@
 //   cuts         jump(), setVisible(false → true) and start() clear the blur history
 //   fog          with the fog distances forced to ~0, a fogged pixel is the fog colour, which is the
 //                sky's horizon colour, on the direct path and through the blur pass
+//   blur path    a still drawn through the blur pass equals the same frame drawn directly, and the
+//                frame does not jump where the pass switches on (0.4305 → 0.4306)
 //   messages     no page errors, console errors or warnings
 import { createRequire } from 'node:module';
 const { chromium } = createRequire(import.meta.url)('playwright');
@@ -277,6 +279,53 @@ for (const f of fog) {
     `pixel ${f.pixel.join(',')}, fog #${f.fog}, horizon #${f.horizon}`,
   );
 }
+
+// the blur pass draws a still (zero velocity) exactly like the direct path, so the blur fades in and
+// out without a jump: the same frame through the pass and drawn directly, and two stills on either
+// side of the point where the pass switches on (0.4305 direct, 0.4306 through the pass)
+const paths = await page.evaluate(() => {
+  const J = window.__journey;
+  const grab = () => {
+    const gl = J.renderer.getContext();
+    const px = new Uint8Array(gl.drawingBufferWidth * gl.drawingBufferHeight * 4);
+    gl.readPixels(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight, gl.RGBA, gl.UNSIGNED_BYTE, px);
+    return px;
+  };
+  const compare = (a, b) => {
+    let sum = 0;
+    let signed = 0;
+    let max = 0;
+    for (let i = 0; i < a.length; i += 4)
+      for (let c = 0; c < 3; c++) {
+        const d = a[i + c] - b[i + c];
+        sum += Math.abs(d);
+        signed += d;
+        max = Math.max(max, Math.abs(d));
+      }
+    const n = (a.length / 4) * 3;
+    return { mad: sum / n, mean: signed / n, max };
+  };
+  J.renderAt(0.5);
+  const pass = grab();
+  J.renderer.setRenderTarget(null);
+  J.renderer.render(J.scene, J.camera);
+  const same = compare(pass, grab());
+  J.renderAt(0.4305);
+  const before = grab();
+  J.renderAt(0.4306);
+  const switched = compare(grab(), before);
+  return { same, switched };
+});
+check(
+  'the blur pass returns the direct frame at zero velocity',
+  paths.same.mad < 0.5 && paths.same.max <= 3,
+  `mean abs ${paths.same.mad.toFixed(3)}, max ${paths.same.max}`,
+);
+check(
+  'switching the blur pass on does not change the frame',
+  Math.abs(paths.switched.mean) < 0.5,
+  `mean change ${paths.switched.mean.toFixed(3)}/255, mean abs ${paths.switched.mad.toFixed(3)}`,
+);
 
 const near = (a, b) => Math.abs(a - b) < 0.2;
 check('start() adds one rAF chain', near(rates.started, rates.idle + 1), JSON.stringify(rates));
