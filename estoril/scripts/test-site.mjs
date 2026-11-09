@@ -5,18 +5,21 @@
 // Exit code 1 on any failure. Every page visited must also be free of page errors and console errors/warnings.
 //
 //   events    the date-driven events pages and home page blocks at ?today=2026-11-23, 2027-01-25, 2027-10-18
-//             (PT and EN): nothing ended listed as upcoming, months, past list, counts, hero, "ended" notes
+//             (PT and EN): nothing ended listed as upcoming, months, past list, counts, hero, "ended" notes;
+//             the category filter of the events index, by chip click and by ?cat= link, on every date: a chip
+//             shows as many upcoming cards as its count, the past list stays whole, one note at most
 //   keyboard  skip link, "Saltar a viagem", stage buttons (focusable, visible focus, Enter/Space jump, [ and ]),
-//             tabbing into a panel shows it, focus order of the journey
+//             tabbing into a panel shows it, focus order of the journey, focused ticker links on screen
 //   motion    prefers-reduced-motion: no 3D (the scene chunk is never requested), still posters that follow
 //             the stages, no panel slide, no ticker animation, no "no 3D" note
 //   fallback  no WebGL, ?3d=off and no JavaScript: still posters, the "no 3D" note (PT and EN)
 //   contrast  every text run over the journey (panels, header, ticker, stage buttons, skip button, note, hint)
-//             at every stage and 6 viewports, worst case over ANY backdrop: its own background layers composited
+//             at every stage and 8 viewports, worst case over ANY backdrop: its own background layers composited
 //             over white and over black, WCAG AA (4.5:1, 3:1 for large text). Independent of the 3D frame.
-//   layout    the same 6 viewports: no horizontal overflow or clipped panel text, no overlap between panels,
-//             ticker, stage buttons, skip button, disclaimer and header; on phones, tablet and short
-//             landscape also tap targets >= 44x44 px and the 3D disclaimer hidden on phones
+//   layout    the same viewports (also 320x568 and 740x360): no horizontal overflow or clipped panel text, no
+//             overlap between panels, ticker, stage buttons, skip button, disclaimer, the "no 3D" note and the
+//             header; a panel that scrolls shows the fade at its bottom until scrolled to the end; on phones,
+//             tablet and short landscape also tap targets >= 44x44 px and the 3D disclaimer hidden on phones
 import { createRequire } from 'node:module';
 const { chromium } = createRequire(import.meta.url)('playwright');
 
@@ -105,10 +108,14 @@ async function goToProgress(page, p) {
 async function testEvents() {
   for (const lang of ['pt', 'en']) {
     const dir = lang === 'pt' ? '' : 'en/';
-    const cats = lang === 'pt' ? 'categorias/auto/' : 'categorias/auto-en-2/';
+    const cats =
+      lang === 'pt'
+        ? ['categorias/auto/', 'categorias/testes/', 'categorias/track-days/']
+        : ['categorias/auto-en-2/', 'categorias/testes-en/', 'categorias/track-days-en/'];
     for (const day of DATES) {
-      // listings: the events index and a category page
-      for (const path of [`${dir}eventos/index.html`, `${dir}${cats}index.html`]) {
+      // listings: the events index and category pages (one with events in the coming months, one whose only
+      // event ends in January 2027, one without events)
+      for (const path of [`${dir}eventos/index.html`, ...cats.map((c) => `${dir}${c}index.html`)]) {
         const page = await open(`${path}?today=${day}`);
         const r = await page.evaluate((day) => {
           const shown = (el) => !!el && el.getClientRects().length > 0;
@@ -117,8 +124,10 @@ async function testEvents() {
             start: li.dataset.start,
             end: li.dataset.end,
             cats: li.dataset.cats.split(' '),
+            photo: (li.querySelector('img').getAttribute('src') || '').replace(/^.*\/|-[lm]\.webp$/g, ''),
           });
           const up = [...document.querySelectorAll('[data-filter-list]:not([data-ev-past]) > li')].map(card);
+          const photo = (src) => (src || '').replace(/^.*\/|-[lm]\.webp$/g, '');
           const past = [...document.querySelectorAll('[data-ev-past] > li')].map(card);
           const months = [...document.querySelectorAll('section[data-month]:not(.month--past)')].map((m) => ({
             shown: shown(m),
@@ -144,9 +153,12 @@ async function testEvents() {
             months,
             hero: hero && hero.querySelector('img').getAttribute('src'),
             wantHero: (heroList.find(([end]) => !end || end >= day) || [])[1],
+            heroPhoto: hero && photo(hero.querySelector('img').getAttribute('src')),
+            fallbackPhoto: photo((heroList.at(-1) || [])[1]),
             counts,
             links,
-            none: shown(document.querySelector('[data-ev-none]')),
+            // the note of a category without events is static: <p class="empty"> without the hook
+            none: shown(document.querySelector('[data-ev-none]') || document.querySelector('main p.empty')),
             pastShown: shown(document.querySelector('.month--past')),
           };
         }, day);
@@ -161,6 +173,11 @@ async function testEvents() {
         if (r.months.some((m) => new Set(m.ym).size > 1 || (m.ym[0] && m.ym[0].slice(0, 4) !== m.em)))
           problems.push('card under the wrong month');
         if (r.hero !== r.wantHero) problems.push(`hero ${r.hero}, want ${r.wantHero}`);
+        // the next event of the page (of its category on a category page), or the circuit
+        if (r.heroPhoto !== (r.up.length ? r.up[0].photo : r.fallbackPhoto))
+          problems.push(
+            `hero ${r.heroPhoto} is not the photo of ${r.up.length ? r.up[0].href : 'the circuit'}`,
+          );
         for (const [f, n] of r.counts)
           if (n !== r.up.filter((c) => f === 'all' || c.cats.includes(f)).length)
             problems.push(`chip ${f} ${n}`);
@@ -228,6 +245,81 @@ async function testEvents() {
       );
       await close(page);
     }
+    await testFilter(lang, dir);
+  }
+}
+
+/**
+ * In the page: what the category filter of the events index shows. The chips filter the upcoming cards
+ * (their counts count them); the past list is outside the filter.
+ */
+function filterState() {
+  const shown = (el) => !!el && el.getClientRects().length > 0;
+  const on = document.querySelector('[data-filter] [data-f].is-on');
+  const f = on ? on.dataset.f : 'all';
+  const has = (li) => f === 'all' || li.dataset.cats.split(' ').includes(f);
+  const up = [...document.querySelectorAll('[data-filter-list]:not([data-ev-past]) > li')];
+  const past = [...document.querySelectorAll('[data-ev-past] > li')];
+  return {
+    f,
+    n: on ? +on.querySelector('.chip__n').textContent : -1,
+    chips: shown(document.querySelector('[data-filter]')),
+    up: up.length,
+    shownUp: up.filter(shown).length,
+    wrongShown: up.filter((li) => shown(li) && !has(li)).length,
+    rightHidden: up.filter((li) => !shown(li) && has(li)).length,
+    past: past.length,
+    shownPast: past.filter(shown).length,
+    pastSection: shown(document.querySelector('.month--past')),
+    notes: [...document.querySelectorAll('[data-filter-empty], [data-ev-none]')]
+      .filter(shown)
+      .map((el) => (el.hasAttribute('data-ev-none') ? 'none' : 'empty')),
+  };
+}
+
+function filterProblems(s) {
+  const problems = [];
+  if (!s.up) {
+    // nothing upcoming: no chips, only the "no upcoming events" note
+    if (s.chips) problems.push('chips shown with no upcoming event');
+    if (s.notes.join() !== 'none') problems.push(`notes [${s.notes}], want [none]`);
+  } else {
+    if (!s.chips) problems.push('chips hidden');
+    if (s.shownUp !== s.n) problems.push(`chip ${s.f} reads ${s.n}, shows ${s.shownUp} upcoming`);
+    if (s.wrongShown || s.rightHidden)
+      problems.push(`chip ${s.f}: ${s.wrongShown} other cards shown, ${s.rightHidden} of its cards hidden`);
+    if (s.notes.join() !== (s.n ? '' : 'empty')) problems.push(`chip ${s.f}: notes [${s.notes}]`);
+  }
+  if (s.shownPast !== s.past) problems.push(`past list shows ${s.shownPast} of ${s.past}`);
+  if (s.pastSection !== s.past > 0) problems.push('past section visibility');
+  return problems;
+}
+
+/** The events index filter, by chip click and by ?cat= link, on the publication date and later ones. */
+async function testFilter(lang, dir) {
+  const path = `${dir}eventos/index.html`;
+  for (const day of ['', ...DATES]) {
+    const query = day ? `today=${day}&` : '';
+    const problems = [];
+    const page = await open(`${path}?${query.slice(0, -1)}`);
+    const chips = await page.$$eval('[data-filter] [data-f]', (cs) => cs.map((c) => c.dataset.f));
+    const visible = await page.isVisible('[data-filter]');
+    for (const f of visible ? [...chips.slice(1), chips[0]] : []) {
+      await page.click(`[data-filter] [data-f="${f}"]`);
+      await settle(page, 450); // the cards fade out (280 ms) before the grid is filtered
+      for (const p of filterProblems(await page.evaluate(filterState))) problems.push(`click: ${p}`);
+    }
+    await close(page);
+    for (const f of chips) {
+      const linked = await open(`${path}?${query}cat=${f}`);
+      for (const p of filterProblems(await linked.evaluate(filterState))) problems.push(`?cat=${f}: ${p}`);
+      await close(linked);
+    }
+    check(
+      `events ${path}${day ? ` on ${day}` : ''}: every chip, clicked or linked, shows its count; past list whole; one note at most`,
+      !problems.length,
+      [...new Set(problems)].join('\n'),
+    );
   }
 }
 
@@ -402,7 +494,34 @@ async function testKeyboard() {
       `${afterNext} ${afterPrev}`,
     );
 
-    // 5. "Saltar a viagem": on screen, focusable, and the next Tab continues in the calendar section
+    // 5. the ticker: every link Tab reaches is on screen (the marquee stops while it holds focus)
+    await settle(page, 900);
+    await page.focus('.jr__skip');
+    const offscreen = [];
+    const tickerLinks = await page.$$eval('.jr__ticker a', (as) => as.length);
+    for (let i = 0; i < tickerLinks; i++) {
+      await page.keyboard.press('Tab');
+      await settle(page, 60);
+      const r = await page.evaluate(() => {
+        const a = document.activeElement;
+        const b = a.getBoundingClientRect();
+        return {
+          inTicker: !!a.closest('.jr__ticker'),
+          text: a.textContent.trim().slice(0, 24),
+          left: Math.round(b.left),
+          right: Math.round(b.right),
+        };
+      });
+      if (!r.inTicker || r.left < 0 || r.right > 1280) offscreen.push(JSON.stringify(r));
+    }
+    await page.evaluate(() => document.activeElement.blur());
+    check(
+      `${lang}: the ${tickerLinks} ticker links are on screen when Tab reaches them`,
+      tickerLinks > 0 && !offscreen.length,
+      offscreen.join('\n'),
+    );
+
+    // 6. "Saltar a viagem": on screen, focusable, and the next Tab continues in the calendar section
     await settle(page, 900);
     const jrSkip = await page.$('.jr__skip');
     await jrSkip.focus();
@@ -535,7 +654,7 @@ async function testFallback() {
 // contrast and layout
 
 // --viewports 961x900,1100x700 checks other sizes
-const VIEWPORTS = arg('viewports', '1440x900,1280x720,820x1180,390x844,360x740,844x390')
+const VIEWPORTS = arg('viewports', '1440x900,1280x720,820x1180,390x844,360x740,844x390,320x568,740x360')
   .split(',')
   .map((size) => size.split('x').map(Number));
 
@@ -744,9 +863,7 @@ async function testLayout() {
                 const b = parts[names[j]];
                 const x = Math.min(a.r, b.r) - Math.max(a.l, b.l);
                 const y = Math.min(a.b, b.b) - Math.max(a.t, b.t);
-                // on touch layouts the 6 s "no 3D" note is a toast over the ticker, by design
-                const toast = innerWidth < 961 && names[i] === 'ticker' && names[j] === 'note';
-                if (x > 1 && y > 1 && !toast)
+                if (x > 1 && y > 1)
                   overlaps.push(`${names[i]}/${names[j]} ${Math.round(x)}x${Math.round(y)}`);
               }
             // clipped or overflowing text inside the panel: horizontally never; vertically only by scrolling
@@ -765,6 +882,18 @@ async function testLayout() {
               if (b.width && (b.left < -1 || b.right > innerWidth + 1))
                 clipped.push('off-screen ' + (el.className || el.tagName));
             }
+            // a panel that scrolls fades out at its bottom (.is-more, a mask) while more of it is below
+            const scrolls = panel.scrollHeight - panel.clientHeight > 2;
+            const fade = (el) =>
+              el.classList.contains('is-more') && getComputedStyle(el).maskImage !== 'none';
+            const cue = { scrolls, atTop: fade(panel) };
+            if (scrolls) {
+              panel.scrollTop = panel.scrollHeight;
+              panel.dispatchEvent(new Event('scroll'));
+              cue.atEnd = fade(panel);
+              panel.scrollTop = 0;
+              panel.dispatchEvent(new Event('scroll'));
+            }
             // tap targets (inline links inside running text are exempt)
             const small = [];
             const targets = [
@@ -776,7 +905,7 @@ async function testLayout() {
             for (const el of targets) {
               const b = box(el);
               if (!b || b.b < 0 || b.t > innerHeight || b.r < 0 || b.l > innerWidth) continue;
-              if (el.closest('p, dd, address') && getComputedStyle(el).display === 'inline') continue;
+              if (el.closest('p') && getComputedStyle(el).display === 'inline') continue;
               const w = b.r - b.l;
               const h = b.b - b.t;
               if (w < 44 - 0.5 || h < 44 - 0.5)
@@ -789,7 +918,7 @@ async function testLayout() {
               clipped,
               small,
               pageOverflow: document.documentElement.scrollWidth > innerWidth,
-              panelScrolls: panel.scrollHeight > panel.clientHeight + 1,
+              cue,
               disclaimer: !!parts.disclaimer,
             };
           },
@@ -800,6 +929,8 @@ async function testLayout() {
         for (const c of new Set(r.clipped)) problems.push(`${at}: clipped ${c}`);
         if (touch) for (const s of new Set(r.small)) problems.push(`${at}: tap target ${s}`);
         if (r.pageOverflow) problems.push(`${at}: horizontal page overflow`);
+        if (r.cue.scrolls !== r.cue.atTop || r.cue.atEnd)
+          problems.push(`${at}: scroll fade ${JSON.stringify(r.cue)} (want it exactly while more is below)`);
         if (phone && r.disclaimer) problems.push(`${at}: 3D disclaimer shown on a phone`);
       }
       await close(page);

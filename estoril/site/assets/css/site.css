@@ -23,12 +23,26 @@ html:not(.menu-open) .pg-home .hdr:not(.is-solid){background:#16181bb8;-webkit-b
 /* journey on touch layouts: tap targets of 44 px, lower bottom sheets in portrait (50svh, their scroll chains on to the journey) so more of the car stays in view, the start hint clear of the first panel on tablets, and a side-panel layout for short landscape phones (scripts/test-site.mjs --only layout) */
 @media (max-width: 960px){.jr__nav ol{gap:0}.jr__nav button{width:44px;height:44px;padding:0;justify-content:center}.jr__bar{display:none}.jr__skip{top:calc(var(--hdr) + var(--strip) + 60px);min-height:44px;display:inline-flex;align-items:center}.jp .chip{min-height:44px}.lang a{min-width:44px;height:44px}}
 @media (max-width: 960px) and (max-height: 500px) and (orientation: landscape){.jp,.jp--1{top:calc(var(--hdr) + var(--strip) + 8px);bottom:64px;left:12px;right:auto;width:min(420px,50vw);max-height:none}.jp--1{overflow:auto}.jp__logo{width:min(200px,30vh)}.jp--1 .jp__lead,.jp--1 .nextev{display:none}.jp--1 .kicker{margin-bottom:4px}.jp__quick{gap:6px;margin-bottom:0}.qcard__k{display:none}.qcard{min-height:48px;padding:10px 12px}.qcard__t{font-size:18px}.jr__nav{left:auto;right:12px;justify-content:flex-end}.jr__skip{top:calc(var(--hdr) + var(--strip) + 60px)}.jr-live .jr__hint{display:none}}
-@media (min-width: 641px) and (max-width: 960px){.jp--1{bottom:98px}.jr__hint{bottom:64px}}
-@media (max-width: 960px) and (orientation: portrait){.jp:not(.jp--1){max-height:50svh;overscroll-behavior-y:auto}}
+@media (min-width: 641px) and (max-width: 960px) and (min-height: 501px){.jp--1{bottom:98px}.jr__hint{bottom:64px}}
+@media (max-width: 960px) and (orientation: portrait){.jp:not(.jp--1){max-height:min(50svh,calc(100% - var(--hdr) - var(--strip) - 182px));overscroll-behavior-y:auto}}
 @media (max-width: 380px){.hdr__bar{gap:12px}.hdr__tools{gap:2px}}
 @media (max-width: 640px){.jp--1{bottom:68px}.jp--1 .kicker{padding:4px 10px;margin-bottom:4px}.jp--1 .jp__lead{padding:5px 10px}}
-/* journey keyboard focus and no-3D note: a dark halo under the white focus ring (visible over any frame), and the no-3D note placed clear of the panels: top right on desktop, over the ticker for its 6 s on phones and tablets (it used to be hidden there) */
+/* journey keyboard focus and no-3D note: a dark halo under the white focus ring (visible over any frame), and the no-3D note placed clear of the panels: top right on desktop; on phones and tablets it takes the place of the ticker for its 6 s (the ticker is hidden meanwhile, so nothing is half covered). The note keeps its place while it fades out. */
 .jr :focus-visible{box-shadow:0 0 0 4px #16181b}
-@media (min-width: 961px){.jr.no-3d .jr__load.is-note{left:auto;right:var(--gut);transform:none;max-width:min(440px,calc(100vw - 2 * var(--gut) - 664px));text-align:left;justify-items:start}}
-@media (max-width: 960px){.jr.no-3d .jr__load.is-note{display:grid;z-index:2;top:auto;bottom:6px;left:12px;right:12px;transform:none;max-width:none;padding:6px 10px;font-size:10px;line-height:1.35;letter-spacing:.03em;text-align:left;justify-items:start;background:#16181bf2}}
-@media (max-width: 960px) and (max-height: 500px) and (orientation: landscape){.jr.no-3d .jr__load.is-note{top:calc(var(--hdr) + var(--strip) + 112px);bottom:auto;left:calc(50vw + 24px)}}
+@media (min-width: 961px){.jr.no-3d .jr__load,.jr.no-3d .jr__load.is-note{top:calc(var(--hdr) + var(--strip) + 14px);left:auto;right:var(--gut);transform:none;max-width:min(440px,calc(100vw - 2 * var(--gut) - 664px));line-height:1.5;letter-spacing:.08em;text-align:left;justify-items:start}}
+@media (max-width: 960px){.jr.no-3d .jr__load,.jr.no-3d .jr__load.is-note{display:flex;align-items:center;z-index:2;top:auto;bottom:0;left:0;right:0;min-height:56px;transform:none;max-width:none;padding:8px 16px;border-radius:0;font-size:10px;line-height:1.35;letter-spacing:.03em;text-align:left;background:#16181b;border-top:1px solid #ffffff1a}.jr.no-3d .jr__load.is-note{pointer-events:auto}.jr.no-3d:has(.jr__load.is-note) .jr__ticker{visibility:hidden}}
+.jr.no-3d .jr__load .jr__load-bar{display:none}
+/* journey on small phones (scripts/test-site.mjs --only layout, 320x568 and 740x360): on portrait phones panel 1 and the bottom sheets stay between the "Saltar a viagem" button and the ticker (they scroll if they ever have to), below 700 px of height panel 1 (transparent) keeps only the vertical padding a focus ring needs, and below 600 px it drops its tagline and shrinks its logo; on landscape phones panel 1 runs down to the ticker, below 400 px of height its logo and spacing shrink so the quick links fit, and below 340 px its stage kicker goes (the stage buttons show the stage) */
+@media (max-width: 640px) and (orientation: portrait){.jp--1{max-height:calc(100% - var(--hdr) - var(--strip) - 180px);overflow:auto}}
+@media (max-width: 640px) and (max-height: 700px) and (orientation: portrait){.jp--1{padding-top:4px;padding-bottom:12px}}
+@media (max-width: 640px) and (max-height: 600px) and (orientation: portrait){.jp--1 .jp__lead{display:none}.jp__logo{width:min(220px,52vw,23vh)}}
+@media (max-width: 960px) and (max-height: 400px) and (orientation: landscape){.jp--1{padding-top:16px;padding-bottom:16px}.jp__logo{width:min(200px,26vh)}.jp--1 .kicker{margin-bottom:2px}.jp--1 .jp__h1{margin:2px 0 8px}}
+@media (max-width: 960px) and (max-height: 340px) and (orientation: landscape){.jp--1 .kicker{display:none}.jp__logo{width:min(200px,22vh)}}
+/* journey details: panels that scroll fade out at the bottom while more is below (.is-more, set by src/home.js; focus scrolling stops above the fade), contact links tall enough to tap, panel buttons that wrap on narrow phones (the e-mail button is wider than a 320 px screen), and the ticker stops and resets while a link in it has keyboard focus, so the focused link is on screen */
+.jp{scroll-padding-bottom:56px}
+.jp.is-more{-webkit-mask-image:linear-gradient(to top,#0003,#000 56px);mask-image:linear-gradient(to top,#0003,#000 56px)}
+@media (max-width: 960px){.jp__dl a{display:inline-block;padding:12px 0;margin:-12px 0}}
+@media (max-width: 640px){.jp__row .btn{max-width:100%;white-space:normal;overflow-wrap:anywhere;line-height:1.2;padding-top:8px;padding-bottom:8px}}
+.jr__ticker:focus-within .ticker{animation:none}
+/* event pages on phones: the single column may shrink below the width of a long link in the text, which then wraps */
+@media (max-width: 960px){.detail__grid,.detail__grid--page{grid-template-columns:minmax(0,1fr)}}
