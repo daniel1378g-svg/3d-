@@ -6,8 +6,8 @@
 // --update-viewports measures the layouts instead of checking them: it writes
 // scripts/camera-viewports.json (test-camera.mjs's layouts) from the page, for every layout already
 // in it plus the sizes listed (e.g. 360x740,844x390), and still runs every other check. Every entry
-// gets its maxFov derived by one rule, an existing one keeps its nav choice and allow, a new one gets
-// its nav derived (layoutEntry below).
+// gets its maxFov derived by one rule, an existing one keeps its nav and skip choices and allow, a
+// new one gets the measured stage buttons and skip link to keep the car clear of (layoutEntry below).
 //
 // Checks (capture mode, ?capture=1&3d=force&q=high, which exposes window.__journey and __cap):
 //   viewport     the canvas covers the viewport exactly (CSS size = innerWidth × innerHeight) and its
@@ -170,12 +170,12 @@ const KEY_SOLVE_FOV = 2;
  *           FIT_FALLBACK_FOV) if that is wider, rounded up, plus KEY_SOLVE_FOV for the key solve,
  *           which widens a key's lens only where the scenery stops its dolly (on none of the
  *           fixture's layouts today): 54° on desktop, 58° at 4:3, 72° on portrait phones,
- *   nav     kept from an existing entry (then the stage buttons' box as measured); for a new one the
- *           stage buttons' box if both framing areas are clear of it (home.js keeps the car's areas
- *           clear of the buttons: beside them on desktop, below or left of them on phones), else null
- *           (4:3 tablets, where car shots pass under them),
- *   skip    the skip link's box if both framing areas are clear of it, else null (by the same rule,
- *           for every entry),
+ *   nav     the stage buttons' box as measured: the car must keep clear of them. Not derived from the
+ *           framing areas home.js passes (that would accept whatever it does): an existing entry
+ *           keeps its choice, null where it says the car may pass under the buttons (4:3 tablets),
+ *           a new entry gets the box (one where the car is meant to pass under them is set to null by
+ *           hand),
+ *   skip    the skip link's box, the same way,
  *   allow   kept from an existing entry.
  */
 function layoutEntry(width, height, layout, old) {
@@ -185,19 +185,17 @@ function layoutEntry(width, height, layout, old) {
   const widestCar = Math.max(...CAMERA_SHOTS.filter((shot) => !shot.aerial).map(fovAt));
   const maxFov = Math.ceil(Math.max(widest, widestCar + FIT_EXTRA_FOV + FIT_FALLBACK_FOV)) + KEY_SOLVE_FOV;
   const { panel, buttons, skip } = layout;
-  const clearOf = (b) =>
-    [panel, layout.open].every((a) => a[2] <= b[0] || a[0] >= b[2] || a[3] <= b[1] || a[1] >= b[3]);
   const entry = {
     name: `${width}x${height}`,
     width,
     height,
     maxFov,
     panels: layout.panels,
-    nav: (old ? old.nav : clearOf(buttons)) ? buttons : null,
+    nav: !old || old.nav ? buttons : null,
     panel,
     open: layout.open,
     buttons,
-    skip: clearOf(skip) ? skip : null,
+    skip: !old || old.skip ? skip : null,
   };
   if (old && old.allow) entry.allow = old.allow;
   if (old && old.maxFov !== maxFov) console.log(`note ${entry.name}: maxFov ${old.maxFov}° → ${maxFov}°`);

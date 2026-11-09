@@ -110,21 +110,21 @@ const AERIAL_FOV = 1;
 /**
  * Viewports (scripts/camera-viewports.json), in CSS pixels, with the boxes of the page layout
  * (site.css, measured in the page at these sizes) and the framing areas home.js updateFraming()
- * derives from them; test-loop.mjs checks them against the live page:
+ * derives from them (framing.js); test-loop.mjs checks them against the live page:
  *   maxFov     widest vertical FOV allowed (degrees)
  *   panels     box of the panel of each stage [left, top, right, bottom]
  *   buttons    box of the stage buttons
- *   nav        the stage buttons' box where the car must keep clear of it (home.js keeps both framing
+ *   nav        the stage buttons' box: the car must keep clear of it (framing.js keeps both framing
  *              areas clear of the buttons: beside them on desktop, below or left of them on phones),
- *              or null (at 4:3 the column between the panels and the buttons is too narrow for the
- *              car, so car shots may pass under them)
- *   skip       the skip link's box where the car must keep clear of it (where both framing areas are
- *              clear of it), or null (at 4:3 car shots may pass under it, as under the buttons)
+ *              or null where the layout lets car shots pass under them (set by hand: at 4:3 the column
+ *              between the panels and the buttons is too narrow for the car)
+ *   skip       the skip link's box, the same way (null at 4:3, where car shots pass under it too)
  *   panel      free area with a panel shown; open: free area without one
  *   allow      optional, for a layout whose page layout cannot keep the car clear (the reason in
  *              `why`, printed with the result): `panelOverlap`, the fraction of the car's box that may
- *              be under a panel (shown or fading, × its opacity), and `areaPx`, how far (CSS px) its
- *              outline may leave the framing area. Without it the defaults above hold
+ *              be under a panel (shown or fading, × its opacity), `areaPx`, how far (CSS px) its
+ *              outline may leave the framing area, and `aerialEye`, how far (metres) the car fit may
+ *              move the eye of a drone shot off its keys. Without it the defaults above hold
  */
 const VIEWPORTS = JSON.parse(readFileSync(new URL('camera-viewports.json', import.meta.url), 'utf8'));
 
@@ -335,6 +335,7 @@ for (const v of VIEWPORTS) {
   const allow = v.allow || {};
   const areaSlack = allow.areaPx || 0;
   const overlapAllowed = allow.panelOverlap || 0;
+  const eyeAllowed = allow.aerialEye || 0;
   let worstOverlap = { overlap: 0, t: '-' };
   let worstOverhead = { margin: Infinity };
   const worstAerial = { turn: 0, eye: 0, fov: 0 };
@@ -483,7 +484,7 @@ for (const v of VIEWPORTS) {
       worstAerial.turn = Math.max(worstAerial.turn, +turn.toFixed(2));
       worstAerial.eye = Math.max(worstAerial.eye, +eye.toFixed(2));
       worstAerial.fov = Math.max(worstAerial.fov, +fov.toFixed(2));
-      if (turn > AERIAL_TURN || eye > AERIAL_EYE || fov > AERIAL_FOV) {
+      if (turn > AERIAL_TURN || eye > Math.max(AERIAL_EYE, eyeAllowed) || fov > AERIAL_FOV) {
         counts.aerial++;
         fail(
           `${v.name} t=${t}: the car fit moves the drone's shot (subject ${subject.toFixed(2)}): view turned ` +
@@ -540,9 +541,13 @@ for (const v of VIEWPORTS) {
       `${worstAerial.eye} m, FOV ${worstAerial.fov}°; ` +
       `dollies ${[...director.dollies].map((d) => d.toFixed(2)).join(' ')}; failures ${JSON.stringify(counts)}` +
       (v.allow
-        ? `; allowed by the layout: ${overlapAllowed ? `panel overlap ${100 * overlapAllowed} %` : ''}` +
-          `${overlapAllowed && areaSlack ? ', ' : ''}${areaSlack ? `${areaSlack} px out of the framing area` : ''}` +
-          ` (${v.allow.why})`
+        ? `; allowed by the layout: ${[
+            overlapAllowed ? `panel overlap ${100 * overlapAllowed} %` : '',
+            areaSlack ? `${areaSlack} px out of the framing area` : '',
+            eyeAllowed ? `a drone shot's eye ${eyeAllowed} m off its keys` : '',
+          ]
+            .filter(Boolean)
+            .join(', ')} (${v.allow.why})`
         : ''),
   );
 }

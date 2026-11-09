@@ -23,10 +23,11 @@
 // value is fixed per layout, so the FOV never pumps.
 //
 // Framing. The page passes two areas of the viewport and its panel timing (setFraming in
-// journey.js, from home.js):
+// journey.js, from home.js and framing.js):
 //   panel   the free part of the screen while a stage panel is shown (right of the panel column and
-//           left of the stage buttons on desktop, the band between the top controls and the bottom
-//           sheet on phones),
+//           left of the stage buttons on desktop, right of the card and clear of the stage buttons on
+//           landscape phones, the band between the top controls and the bottom sheet on portrait
+//           phones),
 //   open    the screen minus the fixed page UI (aerial shots, when no panel is shown),
 //   windows the progress windows in which each panel is fully shown, and `fade`, the progress over
 //           which it fades in before and out after its window (home.js PANEL_WINDOWS, PANEL_FADE).

@@ -15,6 +15,7 @@
 // scripted scroll through the five stages at the real frame rate, with frame-time statistics on screen.
 
 import { initEvents } from './events.js';
+import { framingAreas } from './framing.js';
 
 const journey = document.querySelector('[data-journey]');
 const html = document.documentElement;
@@ -39,11 +40,6 @@ const LAST_STAGE = 4;
 const STAGE_TARGETS = [0, 0.205, 0.43, 0.67, 0.89];
 /** Progress at which the current stage becomes the next one (midway between panel windows). */
 const STAGE_BOUNDARIES = [0.1425, 0.37, 0.6125, 0.8375];
-/**
- * Width over height of the car's outline in the car shots (2.1–3.2 in scripts/test-camera.mjs): of two
- * free parts of the stage, updateFraming() keeps the one that holds the larger car.
- */
-const CAR_ASPECT = 2.5;
 
 try {
   initEvents(document);
@@ -319,19 +315,15 @@ function initJourney() {
 
   /**
    * Tells the camera which part of the stage the page leaves free (camera-director.js), as
-   * [left, top, right, bottom] fractions of the canvas, from the boxes the page actually lays out
-   * (not from the breakpoints, which only set the gaps):
-   *   open   the canvas between the preview strip and the ticker, clear of the stage buttons and the
-   *          skip link wherever they stand (clearOf): the aerial frames the circuit in it;
-   *   panel  for car shots while a panel is shown. Where the panels leave a quarter of the width or
-   *          more beside them (desktop, and landscape phones, whose panel is a card on the left) the
-   *          column right of the widest panel, clear of the controls standing in it; where they are
-   *          bottom sheets (portrait phones and tablets, narrow screens taller than 500 px) the band
-   *          of the open area above the tallest panel or, where that is too thin, the part beside
-   *          the controls (short phones: left of the skip link) or the band grown over the sheet.
-   * Car shots keep the car in `panel` while a panel is shown (the camera follows PANEL_WINDOWS and
-   * PANEL_FADE, passed along) and in `open` otherwise. Measured from the layout (offset boxes are not
-   * moved by the panels' slide transforms) on resize and once the web fonts have loaded.
+   * [left, top, right, bottom] fractions of the canvas: framing.js works the `open` and `panel`
+   * areas out from the boxes the page actually lays out, measured here (the breakpoint only sets the
+   * gaps). Car shots keep the car in `panel` while a panel is shown (the camera follows PANEL_WINDOWS
+   * and PANEL_FADE, passed along) and in `open` otherwise; the aerial frames the circuit in `open`.
+   * The stage controls and the panels are measured against the canvas (offset boxes are not moved by
+   * the panels' slide transforms), the bars fixed at the top of the viewport (the preview strip, the
+   * site header) by their layout boxes, which the header's hide transform does not move, against the
+   * viewport, where the sticky stage stands whenever it is shown (also when the resize comes while
+   * the page is scrolled past the journey). Runs on resize and once the web fonts have loaded.
    */
   function updateFraming() {
     if (!scene || !canvas) return;
@@ -339,83 +331,35 @@ function initJourney() {
     const width = box.width;
     const height = box.height;
     if (!width || !height) return;
-    // the page's gaps: 8 px up to 960 px wide, 24 px beside and 20 px above and below on desktop
-    const compact = narrow.matches;
-    const gapX = compact ? 8 : 24;
-    const gapY = compact ? 8 : 20;
     const rectOf = (element) => {
       const rect = element && element.getBoundingClientRect();
       return rect && rect.width && rect.height
         ? [rect.left - box.left, rect.top - box.top, rect.right - box.left, rect.bottom - box.top]
         : null;
     };
-    const strip = rectOf(document.querySelector('.preview-strip'));
-    const top = (strip && strip[3] > 0 && strip[1] < height * 0.4 ? strip[3] : 0) + gapY;
+    const barBottom = (element) =>
+      element && element.offsetHeight && element.offsetTop < height * 0.4
+        ? element.offsetTop + element.offsetHeight
+        : 0;
     const ticker = journey.querySelector('.jr__ticker');
-    const bottom = (ticker ? ticker.offsetTop : height) - gapY;
-    // the controls on the stage, the stage buttons and the skip link, top first; standing within a gap
-    // of each other (up to 960 px wide, where the skip link stands under the buttons) they are one block
-    const nav = rectOf(journey.querySelector('.jr__nav'));
-    const skip = rectOf(journey.querySelector('.jr__skip'));
-    const controls = (nav && skip && skip[1] < nav[1] ? [skip, nav] : [nav, skip]).filter(Boolean);
-    const blocks = [];
-    for (const rect of controls) {
-      const last = blocks[blocks.length - 1];
-      if (last && rect[1] <= last[3] + gapY && rect[0] <= last[2] + gapX && rect[2] >= last[0] - gapX) {
-        last[0] = Math.min(last[0], rect[0]);
-        last[2] = Math.max(last[2], rect[2]);
-        last[3] = Math.max(last[3], rect[3]);
-      } else blocks.push(rect.slice());
-    }
-    const quarter = width * 0.25;
-    /** Width of the largest car (CAR_ASPECT) that fits in a w × h part of the stage. */
-    const carWidth = (w, h) => Math.min(w, CAR_ASPECT * h);
-    /** Whether box c stands outside `area` (both [left, top, right, bottom]). */
-    const apart = (area, c) => c[0] >= area[2] || c[2] <= area[0] || c[1] >= area[3] || c[3] <= area[1];
-    // Clears `area` of each control (block) standing in it: keeps the part left of it (a quarter of the
-    // width wide or more) or, for one wider than tall (up to 960 px: the stage buttons in a row, the
-    // skip link under them), the part below it (a tenth of the height tall or more), the one that holds
-    // the larger car; with neither the car may pass under it (4:3 tablets: the stage buttons stand at
-    // mid-height at the right edge of a column narrower than that, the skip link at its foot).
-    const clearOf = (area, list) => {
-      for (const c of list) {
-        if (apart(area, c)) continue;
-        const left = c[0] - gapX - area[0];
-        const below = area[3] - c[3] - gapY;
-        const leftFits = left >= quarter;
-        const belowFits = c[2] - c[0] > c[3] - c[1] && below >= height * 0.1;
-        const leftCar = carWidth(left, area[3] - area[1]);
-        if (leftFits && (!belowFits || leftCar >= carWidth(area[2] - area[0], below))) area[2] = c[0] - gapX;
-        else if (belowFits) area[1] = c[3] + gapY;
-      }
-      return area;
-    };
-    const open = clearOf([gapX, top, width - gapX, bottom], blocks);
-    let right = 0;
-    let sheet = bottom;
-    for (const element of panels) {
-      right = Math.max(right, element.offsetLeft + element.offsetWidth);
-      sheet = Math.min(sheet, element.offsetTop - 10);
-    }
-    let panel;
-    if (right <= width - quarter) {
-      // a column too narrow for the car grows left over the panels' edge (desktop windows just over
-      // 960 px), a band too thin grows up towards the controls above it (short landscape phones)
-      panel = clearOf([right + 24, top, width - gapX, bottom], blocks);
-      panel[0] = Math.min(panel[0], panel[2] - quarter);
-      panel[1] = Math.max(top, Math.min(panel[1], panel[3] - height * 0.22));
-    } else {
-      panel = [open[0], open[1], open[2], Math.min(open[3], sheet)];
-      if (panel[3] - panel[1] < height * 0.1) {
-        // too thin to show the car (the sheet takes most of the height): the part beside the controls
-        // (left of the skip link, under the stage buttons) where it holds a car half the width wide,
-        // else the band grows down over the top of the sheet
-        const beside = clearOf([gapX, top, width - gapX, sheet], controls);
-        const besideCar = carWidth(beside[2] - beside[0], beside[3] - beside[1]);
-        if (controls.every((c) => apart(beside, c)) && besideCar >= width / 2) panel = beside;
-        else panel[3] = Math.min(bottom, panel[1] + height * 0.22);
-      }
-    }
+    // the page's gaps: 8 px up to 960 px wide, 24 px beside and 20 px above and below on desktop
+    const compact = narrow.matches;
+    const { panel, open } = framingAreas({
+      width,
+      height,
+      gapX: compact ? 8 : 24,
+      gapY: compact ? 8 : 20,
+      strip: barBottom(document.querySelector('.preview-strip')),
+      header: barBottom(document.querySelector('[data-hdr]')),
+      bottom: ticker ? ticker.offsetTop : height,
+      controls: [rectOf(journey.querySelector('.jr__nav')), rectOf(journey.querySelector('.jr__skip'))],
+      panels: panels.map((el) => [
+        el.offsetLeft,
+        el.offsetTop,
+        el.offsetLeft + el.offsetWidth,
+        el.offsetTop + el.offsetHeight,
+      ]),
+    });
     const toFractions = (r) => [r[0] / width, r[1] / height, r[2] / width, r[3] / height];
     scene.setFraming(0, 0, {
       panel: toFractions(panel),
