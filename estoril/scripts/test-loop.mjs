@@ -14,8 +14,8 @@
 //                drawing buffer is CSS size × device pixel ratio (1440×900 at 1×, 390×844 at 2×,
 //                1024×768)
 //   layouts      for every layout in scripts/camera-viewports.json (test-camera.mjs's), the panels,
-//                the stage buttons and the framing areas home.js passes to the camera match the page
-//                (within 2 px), measured on a page opened at that size
+//                the stage buttons, the skip link and the framing areas home.js passes to the camera
+//                match the page (within 2 px), measured on a page opened at that size
 //   determinism  renderAt(t) twice gives the same pixels (hash of gl.readPixels), and again after
 //                stills of other positions and a debug camera in between (t = 0.05, 0.375, 0.5,
 //                0.95), and again after the real render loop has played frames elsewhere (the
@@ -139,8 +139,8 @@ async function open(width, height, scale = 1) {
 
 // --- viewport and layouts ---------------------------------------------------------------------------
 /**
- * The page layout test-camera.mjs frames the car in, in CSS px (in the page): the panels' and the
- * stage buttons' boxes and the framing areas home.js passed to the camera.
+ * The page layout test-camera.mjs frames the car in, in CSS px (in the page): the panels', the
+ * stage buttons' and the skip link's boxes and the framing areas home.js passed to the camera.
  */
 function pageLayout() {
   const box = (r) => [r.left, r.top, r.right, r.bottom].map(Math.round);
@@ -155,6 +155,7 @@ function pageLayout() {
       el.offsetTop + el.offsetHeight,
     ]),
     buttons: box(document.querySelector('.jr__nav').getBoundingClientRect()),
+    skip: box(document.querySelector('.jr__skip').getBoundingClientRect()),
     panel: px(framing.panel),
     open: px(framing.open),
   };
@@ -170,8 +171,11 @@ const KEY_SOLVE_FOV = 2;
  *           which widens a key's lens only where the scenery stops its dolly (on none of the
  *           fixture's layouts today): 54° on desktop, 58° at 4:3, 72° on portrait phones,
  *   nav     kept from an existing entry (then the stage buttons' box as measured); for a new one the
- *           stage buttons' box if they stand beside the panel-shown framing area (right of it, at
- *           its height: home.js then keeps that area clear of them), else null,
+ *           stage buttons' box if both framing areas are clear of it (home.js keeps the car's areas
+ *           clear of the buttons: beside them on desktop, below or left of them on phones), else null
+ *           (4:3 tablets, where car shots pass under them),
+ *   skip    the skip link's box if both framing areas are clear of it, else null (by the same rule,
+ *           for every entry),
  *   allow   kept from an existing entry.
  */
 function layoutEntry(width, height, layout, old) {
@@ -180,18 +184,20 @@ function layoutEntry(width, height, layout, old) {
   const widest = Math.max(...CAMERA_SHOTS.map(fovAt));
   const widestCar = Math.max(...CAMERA_SHOTS.filter((shot) => !shot.aerial).map(fovAt));
   const maxFov = Math.ceil(Math.max(widest, widestCar + FIT_EXTRA_FOV + FIT_FALLBACK_FOV)) + KEY_SOLVE_FOV;
-  const { panel, buttons } = layout;
-  const beside = panel[2] <= buttons[0] && buttons[1] < panel[3] && buttons[3] > panel[1];
+  const { panel, buttons, skip } = layout;
+  const clearOf = (b) =>
+    [panel, layout.open].every((a) => a[2] <= b[0] || a[0] >= b[2] || a[3] <= b[1] || a[1] >= b[3]);
   const entry = {
     name: `${width}x${height}`,
     width,
     height,
     maxFov,
     panels: layout.panels,
-    nav: (old ? old.nav : beside) ? buttons : null,
+    nav: (old ? old.nav : clearOf(buttons)) ? buttons : null,
     panel,
     open: layout.open,
     buttons,
+    skip: clearOf(skip) ? skip : null,
   };
   if (old && old.allow) entry.allow = old.allow;
   if (old && old.maxFov !== maxFov) console.log(`note ${entry.name}: maxFov ${old.maxFov}° → ${maxFov}°`);
@@ -277,6 +283,7 @@ if (updateViewports) {
     const layoutError = Math.max(
       off(layout.panels, table.panels),
       off(layout.buttons, table.buttons),
+      table.skip ? off(layout.skip, table.skip) : 0,
       off(layout.panel, table.panel),
       off(layout.open, table.open),
     );
