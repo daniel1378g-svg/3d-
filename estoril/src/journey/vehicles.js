@@ -2,7 +2,10 @@
 //
 // Car frame: metres, +x forward (the front bumper is at the largest x), y up from the ground,
 // z across the car (+z right). Bodies are lofted super-ellipse cross-sections along x, shaped by
-// side-view profile curves; wheels, lamps, bumpers and wings are simple primitives.
+// side-view profile curves; wheels, lamps, bumpers and wings are simple primitives. The parked cars
+// never move, so once built a car's 25–27 parts are merged into one mesh per material and shadow
+// flag (util/static-merge.js): 9–11 meshes per car (its contact decal included) instead of 25–27,
+// the same pixels and clearance.
 import {
   BoxGeometry,
   BufferGeometry,
@@ -20,6 +23,7 @@ import {
 } from 'three';
 import { contactShadowMaterial } from './people.js';
 import { monotoneCurve } from './util/math.js';
+import { mergeStaticMeshes } from './util/static-merge.js';
 
 /**
  * Lofts a closed tube along x from xStart to xEnd. `sectionAt(x)` returns the cross-section:
@@ -413,6 +417,7 @@ function buildVehicle(kind, paintColor) {
     rearX = spec.top[0][0];
   if (spec.chrome) addClassicTrim(car, materials, frontX, rearX);
   else addModernAero(car, spec, paint, materials, frontX, topAt);
+  mergeStaticMeshes(car);
 
   // Contact shadow decal under the whole car.
   let contactShadow = new Mesh(

@@ -7,10 +7,12 @@
 // Each person is built from capsules, spheres and boxes posed on a small skeleton (hips, knees,
 // shoulders, elbows), then BAKED: every part is transformed into its frame and merged, with its
 // colour in a vertex attribute, into one geometry per moving piece:
-//   body  everything that does not move on its own (torso, legs, the arms of most poses, props)
-//   head  the head and what is on it (hair or cap with brim, helmet with visor, headset); it turns
+//   body  everything that does not move on its own (torso, legs, the arms of most poses, props,
+//         and the head of those whose head stays still)
+//   head  only when named in `moving`: the head and what is on it (hair or cap with brim, helmet
+//         with visor, headset), turning on its pivot
 //   armL / armR  only for the arms named in `moving` (e.g. a wheel gun that bounces)
-// so a person costs 2–3 draws. All the people of a group share one material (vertex colours) whose
+// so a person costs 1–3 draws. All the people of a group share one material (vertex colours) whose
 // `envFade` uniform fades the whole group in and out with a screen-space dither (shadows included,
 // through a matching depth material), instead of popping. Contact shadow: one soft decal each
 // (one shared plane), with the group's own decal material (its opacity follows the fade).
@@ -309,7 +311,8 @@ const POSES = {
  *   cap with a headset); `helmet: true` is the same as head 'helmet'
  * @param {number} [options.hair=0x2b2119] hair colour
  * @param {keyof POSES} [options.pose='stand']
- * @param {string[]} [options.moving=[]] arms kept as their own moving pieces ('armL', 'armR')
+ * @param {string[]} [options.moving=[]] pieces kept apart to move on their pivots ('head', 'armL',
+ *   'armR'); everything else is baked into the body
  * @param {object} [options.materials] createPeopleMaterials() of the person's group (one is made otherwise)
  * @returns {Group} on the ground, facing +x; userData { hip, head, armL, armR, visor?, brim?,
  *   materials } — head/armL/armR are pivots (shoulders at ±0.2 m z), visor/brim are markers at the
@@ -395,33 +398,35 @@ function buildPerson({
   }
   const props = addProp(baker, propFrame, P.prop, hands, root);
 
-  // head: face, then hair / cap with a brim pointing forward (+x) / helmet with a visor at the front
-  baker.add(headPivot, SPHERE, node(headPivot, 0, 0, 0, 0, 0, 0, 0.105, 0.12, 0.1), skin);
+  // head: face, then hair / cap with a brim pointing forward (+x) / helmet with a visor at the front;
+  // its own piece on the head pivot only when it moves
+  const headFrame = moving.includes('head') ? headPivot : root;
+  baker.add(headFrame, SPHERE, node(headPivot, 0, 0, 0, 0, 0, 0, 0.105, 0.12, 0.1), skin);
   let visor = null;
   let brim = null;
   if (headwear === 'helmet') {
-    baker.add(headPivot, SPHERE, node(headPivot, -0.01, 0.01, 0, 0, 0, 0, 0.15, 0.15, 0.145), 0xf5f3ee);
+    baker.add(headFrame, SPHERE, node(headPivot, -0.01, 0.01, 0, 0, 0, 0, 0.15, 0.15, 0.145), 0xf5f3ee);
     visor = node(headPivot, 0.105, 0.0, 0, 0, 0, 0, 0.06, 0.05, 0.1);
-    baker.add(headPivot, SPHERE_LOW, visor, 0x1c1e21);
-    baker.add(headPivot, TORUS_STRIPE, node(headPivot, -0.01, 0.03, 0, 0, Math.PI / 2, 0, 1, 1, 1), 0xe93325);
+    baker.add(headFrame, SPHERE_LOW, visor, 0x1c1e21);
+    baker.add(headFrame, TORUS_STRIPE, node(headPivot, -0.01, 0.03, 0, 0, Math.PI / 2, 0, 1, 1, 1), 0xe93325);
   } else {
-    baker.add(headPivot, SPHERE, node(headPivot, -0.012, 0.03, 0, 0, 0, 0, 0.11, 0.105, 0.105), hair);
+    baker.add(headFrame, SPHERE, node(headPivot, -0.012, 0.03, 0, 0, 0, 0, 0.11, 0.105, 0.105), hair);
     if (headwear === 'cap' || headwear === 'headset') {
       baker.add(
-        headPivot,
+        headFrame,
         SPHERE,
         node(headPivot, -0.01, 0.045, 0, 0, 0, 0, 0.115, 0.08, 0.112),
         colours.hat,
       );
       // the brim: the front (+x) half of a thin disc, tipped down a little
       brim = node(headPivot, 0.06, 0.05, 0, 0, 0, -0.12, 0.1, 0.012, 0.09);
-      baker.add(headPivot, CYLINDER_HALF, brim, colours.hat);
+      baker.add(headFrame, CYLINDER_HALF, brim, colours.hat);
     }
     if (headwear === 'headset') {
-      baker.add(headPivot, TORUS_BAND, node(headPivot, 0, 0.02, 0, 0, Math.PI / 2, 0, 1, 1, 1), 0x101114);
+      baker.add(headFrame, TORUS_BAND, node(headPivot, 0, 0.02, 0, 0, Math.PI / 2, 0, 1, 1, 1), 0x101114);
       for (const side of [-1, 1])
         baker.add(
-          headPivot,
+          headFrame,
           CYLINDER,
           node(headPivot, 0, -0.01, side * 0.11, Math.PI / 2, 0, 0, 0.045, 0.03, 0.045),
           0x101114,

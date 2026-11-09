@@ -6,7 +6,8 @@
 // the car's frame (forward along the pit lane, right towards the garages): two wheel gunners kneeling
 // at the left wheels with their guns on the hubs, the front-jack man ahead of the nose, the board
 // man, a tyre carrier, the driver's helper with the helmet, the engineer with a tablet at the garage
-// door and a mechanic inside the garage. Small motions (gun arms, heads turning) keep them alive.
+// door and a mechanic inside the garage. Small motions (gun arms, heads turning) keep them alive; a
+// head or an arm that moves is listed in its person's `moving` (people.js), the rest is one body mesh.
 // The whole crew fades in and out with a dither (people.js) instead of popping; so do the visitors.
 // Everyone stands ON the surface under them (layers.js): the crew in the pit lane at LAYERS.pitLane,
 // the engineer and the mechanic on the garage floor (openBox.floorY, pits.js), the visitors and the
@@ -18,6 +19,7 @@
 import { Vector3 } from 'three';
 import { buildPerson, createPeopleMaterials } from './people.js';
 import { clamp, smoothstep } from './util/math.js';
+import { freezeMatrices } from './util/static-merge.js';
 import { buildPaddockCar } from './vehicles.js';
 import { LAYERS } from './world/layers.js';
 
@@ -55,16 +57,20 @@ const CREW = [
     { f: -1.3, r: -1.5, face: 'right' },
   ],
   ['jack', { pose: 'jack', head: 'cap', skin: 0xd2a98a }, { f: 3.95, r: 0, face: 'car' }],
-  ['board', { pose: 'board', head: 'headset', skin: 0xb58566 }, { f: 3.4, r: 1.3, face: 'car', yaw: 0.3 }],
+  [
+    'board',
+    { pose: 'board', head: 'headset', moving: ['head'], skin: 0xb58566 },
+    { f: 3.4, r: 1.3, face: 'car', yaw: 0.3 },
+  ],
   ['tyre', { pose: 'tyre', head: 'cap', skin: 0xe0b896 }, { f: -2.9, r: -2.5, face: 'car', yaw: -0.4 }],
   [
     'helmet',
-    { pose: 'carryHelmet', head: 'hair', skin: 0xb98a6c, hair: 0x6b4a2e },
+    { pose: 'carryHelmet', head: 'hair', moving: ['head'], skin: 0xb98a6c, hair: 0x6b4a2e },
     { f: -3.6, r: 1.6, face: 'left', yaw: 0.4 },
   ],
   [
     'engineer',
-    { kit: 'engineer', pose: 'tablet', head: 'headset', skin: 0xc99f80 },
+    { kit: 'engineer', pose: 'tablet', head: 'headset', moving: ['head'], skin: 0xc99f80 },
     { garage: [1.9, -1.4], face: 'car' },
   ],
   [
@@ -88,6 +94,7 @@ function placePaddockCars(scene) {
     car.position.set(x, LAYERS.paddock, z);
     car.rotation.y = yaw;
     scene.add(car);
+    freezeMatrices(car); // parked: three.js no longer recomposes its matrices every frame
   }
 }
 
@@ -97,7 +104,7 @@ function placePaddockVisitors(scene) {
   const casual = (top, legs, shoes = 0x2b2b2b) => ({ top, accent: top, legs, shoes, hat: 0x2b3440 });
   const visitors = [
     [
-      buildPerson({ kit: casual(0x3a4f6b, 0x34404f), skin: 0xd1a383, materials }),
+      buildPerson({ kit: casual(0x3a4f6b, 0x34404f), skin: 0xd1a383, moving: ['head'], materials }),
       -3.7,
       119.9,
       Math.PI + 0.25,
@@ -121,7 +128,7 @@ function placePaddockVisitors(scene) {
       0.3,
     ],
     [
-      buildPerson({ kit: 'marshal', skin: 0xb98a6c, pose: 'idle', head: 'cap', materials }),
+      buildPerson({ kit: 'marshal', skin: 0xb98a6c, pose: 'idle', head: 'cap', moving: ['head'], materials }),
       -18.5,
       130.2,
       -0.6,

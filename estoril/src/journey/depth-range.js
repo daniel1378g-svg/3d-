@@ -16,6 +16,9 @@
 //       BoxGeometry mesh (buildings, the control tower), whose box IS the mesh: there the distance is
 //       to its nearest face, so a camera path that clips a building keeps a usable near plane.
 //       build() counts the items first and fills typed arrays directly (no intermediate arrays);
+//       A merged mesh (util/static-merge.js) is indexed part by part, each part exactly as the
+//       separate mesh it was (userData.indexParts: its own box and matrix chain, or for a part wider
+//       than LARGE_MESH its triangles), so merging changes no clearance;
 //     - "movers" (the hero car, the pit crew, the paddock visitors): a sphere around each, measured
 //       at build time, at its current position;
 //     - sprites (clouds) whose quad overlaps the view frustum: a sprite is a camera-facing quad that
@@ -33,7 +36,7 @@
 // consistent. The depth clear value (1.0) and the sky's "no depth write" are unchanged.
 //
 // update() allocates nothing.
-import { Box3, Matrix4, Vector3 } from 'three';
+import { Box3, BufferAttribute, Matrix4, Vector3 } from 'three';
 
 /** Near plane as a fraction of the clearance: a 2× safety margin. */
 const NEAR_FRACTION = 0.5;
@@ -109,6 +112,38 @@ function worldVertices(node) {
   const indices = geometry.index ? geometry.index.array : null;
   const corners = indices ? geometry.index.count : position.count;
   return [world, indices, corners - (corners % 3)];
+}
+
+/**
+ * The index's view of one part of a merged mesh (util/static-merge.js, userData.indexParts): the
+ * part's own bounding box under its own world matrix (the merged mesh's world matrix times the
+ * part's chain of local matrices, multiplied in three.js's order, so it is bit-identical to the
+ * separate mesh's), and its triangles, read from its ranges of the merged geometry under the merged
+ * mesh's world matrix (only parts already in the merged mesh's frame are merged when large).
+ */
+function partSource(node, part) {
+  const matrixWorld = node.matrixWorld.clone();
+  for (const link of part.chain) matrixWorld.multiply(link);
+  return {
+    geometry: { boundingBox: part.box },
+    matrixWorld,
+    axisBox: part.axisBox,
+    /** The part's triangles as a { geometry, matrixWorld } for worldVertices / addSlabs. */
+    triangles() {
+      const merged = node.geometry;
+      const first = part.vertexStart;
+      const positions = merged.attributes.position.array;
+      const position = new BufferAttribute(positions.subarray(3 * first, 3 * (first + part.vertexCount)), 3);
+      let index = null;
+      if (merged.index) {
+        const own = new Uint32Array(part.indexCount);
+        const all = merged.index.array;
+        for (let k = 0; k < part.indexCount; k++) own[k] = all[part.indexStart + k] - first;
+        index = new BufferAttribute(own, 1);
+      }
+      return { geometry: { attributes: { position }, index }, matrixWorld: node.matrixWorld };
+    },
+  };
 }
 
 /**
@@ -351,33 +386,42 @@ function createDepthRange(camera) {
     let itemCount = 0;
     let floatCount = 0;
     const skip = new Set([sky, ...moving]);
-    const visit = (node) => {
-      if (skip.has(node)) return;
-      if (node.isSprite) sprites.push(node);
-      else if (node.isMesh) {
-        const geometry = node.geometry;
-        if (!geometry.boundingBox) geometry.computeBoundingBox();
-        box.copy(geometry.boundingBox).applyMatrix4(node.matrixWorld);
-        if (node.isInstancedMesh) {
-          sources.push(node, INSTANCES);
-          itemCount += node.count;
-          floatCount += 6 * node.count;
-        } else if (box.max.x - box.min.x <= LARGE_MESH && box.max.z - box.min.z <= LARGE_MESH) {
-          sources.push(node, BOX);
-          itemCount++;
-          floatCount += 6;
-        } else if (box.max.y - box.min.y <= FLAT_HEIGHT) {
-          const added = addSlabs(node, slabs);
+    // a mesh, or one part of a merged mesh (partSource), as boxes, instance boxes, slabs or triangles
+    const add = (source) => {
+      const geometry = source.geometry;
+      if (!geometry.boundingBox) geometry.computeBoundingBox();
+      box.copy(geometry.boundingBox).applyMatrix4(source.matrixWorld);
+      if (source.isInstancedMesh) {
+        sources.push(source, INSTANCES);
+        itemCount += source.count;
+        floatCount += 6 * source.count;
+      } else if (box.max.x - box.min.x <= LARGE_MESH && box.max.z - box.min.z <= LARGE_MESH) {
+        sources.push(source, BOX);
+        itemCount++;
+        floatCount += 6;
+      } else {
+        const mesh = source.triangles ? source.triangles() : source;
+        if (box.max.y - box.min.y <= FLAT_HEIGHT) {
+          const added = addSlabs(mesh, slabs);
           itemCount += added;
           floatCount += 6 * added;
         } else {
           const triangles = Math.floor(
-            (geometry.index ? geometry.index.count : geometry.attributes.position.count) / 3,
+            (mesh.geometry.index ? mesh.geometry.index.count : mesh.geometry.attributes.position.count) / 3,
           );
-          sources.push(node, TRIANGLE);
+          sources.push(mesh, TRIANGLE);
           itemCount += triangles;
           floatCount += 9 * triangles;
         }
+      }
+    };
+    const visit = (node) => {
+      if (skip.has(node)) return;
+      if (node.isSprite) sprites.push(node);
+      else if (node.isMesh) {
+        const parts = node.userData.indexParts;
+        if (parts) for (const part of parts) add(partSource(node, part));
+        else add(node);
       }
       for (const child of node.children) visit(child);
     };
@@ -430,7 +474,7 @@ function createDepthRange(camera) {
       const node = sources[s];
       const way = sources[s + 1];
       const geometry = node.geometry;
-      const boxShape = isAxisAlignedBox(geometry);
+      const boxShape = node.axisBox ?? isAxisAlignedBox(geometry);
       if (way === BOX) {
         addTransformedBox(
           geometry.boundingBox,
@@ -618,4 +662,4 @@ function createDepthRange(camera) {
   return state;
 }
 
-export { NEAR_FRACTION, NEAR_MAX, NEAR_MIN, createDepthRange };
+export { LARGE_MESH, NEAR_FRACTION, NEAR_MAX, NEAR_MIN, createDepthRange, isAxisAlignedBox };

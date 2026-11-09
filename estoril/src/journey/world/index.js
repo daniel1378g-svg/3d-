@@ -8,10 +8,14 @@
 //    shared ctx.rng where the old vegetation left it, for the clouds;
 //  - world.update(time, dt, camera, snap) runs the per-frame updaters in registration order (pit flags,
 //    vegetation LOD and grass sway, grandstand flags, clouds);
-//  - the matrices of everything but the clouds are computed once at the end (freezeStaticMatrices).
+//  - at the end the static meshes that draw alike are merged (util/static-merge.js: one draw per
+//    material and shadow flag instead of one per part; the same pixels, and the depth range indexes
+//    every part as before) and the matrices of everything but the clouds are computed once
+//    (freezeStaticMatrices). Both run after the vegetation, which is placed around the separate parts.
 //
 // Coordinates: metres, world XZ ground plane, +Y up. See layout.js for the fixed positions.
 import { bindGravelMask, bindTrackModel } from '../env/shading.js';
+import { mergeStaticMeshes } from '../util/static-merge.js';
 import { buildArmco, buildTyreStacks } from './barriers.js';
 import { buildClouds } from './clouds.js';
 import { createWorldContext } from './context.js';
@@ -75,7 +79,9 @@ function buildWorld(trackPoints, { quality = 'high' } = {}) {
   buildFlag(ctx, L.grandstandX0 + 8, 17, L.grandstandZ + 16, 0xe93325, ctx.root);
   buildFlag(ctx, L.grandstandX1 - 8, 17, L.grandstandZ + 16, 0xf5f3ee, ctx.root);
   buildClouds(ctx);
-  freezeStaticMatrices(ctx.root, ctx.root.getObjectByName('clouds'));
+  const clouds = ctx.root.getObjectByName('clouds');
+  mergeStaticMeshes(ctx.root, { skip: clouds });
+  freezeStaticMatrices(ctx.root, clouds);
 
   const { updaters } = ctx;
   return {

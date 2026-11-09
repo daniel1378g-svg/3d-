@@ -237,8 +237,16 @@ function worldChecks(world, indices) {
   root.traverse((node) => {
     if (node.name === 'paddock-bay-lines') lines = node;
     if (!node.isMesh || node.isInstancedMesh || node.material !== world.materials.pitAsphalt) return;
-    const box = new Box3().setFromObject(node);
-    if (box.max.y - box.min.y < 0.001 && Math.abs(box.min.y - LAYERS.paddock) < 0.0005) pieces.push(box);
+    // a merged mesh (util/static-merge.js) is checked piece by piece: each part's own box and matrices
+    const boxes = node.userData.indexParts
+      ? node.userData.indexParts.map((part) => {
+          const world = node.matrixWorld.clone();
+          for (const link of part.chain) world.multiply(link);
+          return part.box.clone().applyMatrix4(world);
+        })
+      : [new Box3().setFromObject(node)];
+    for (const box of boxes)
+      if (box.max.y - box.min.y < 0.001 && Math.abs(box.min.y - LAYERS.paddock) < 0.0005) pieces.push(box);
   });
   let overlaps = 0;
   for (let a = 0; a < pieces.length; a++)
