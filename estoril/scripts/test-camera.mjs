@@ -31,6 +31,9 @@
 //               shown, FADING_OVERLAP once weighted by the panel's opacity while it fades (home.js: 1
 //               in its window, fading over PANEL_FADE before and after it); a layout whose page
 //               layout makes that impossible says so explicitly (`allow` in VIEWPORTS)
+//   drone shots while the car is less than AERIAL_SUBJECT of the subject (the climb, the aerial and
+//               the dive), the car fit leaves the authored shot nearly alone: the view within
+//               AERIAL_TURN of the keys' alone, the eye within AERIAL_EYE, the FOV within AERIAL_FOV
 //   overhead    between the two overhead keys (the top of the aerial, while the red line closes the
 //               lap) the whole circuit, centre line ± 7 m, is on screen inside the open framing area
 //               (clear of the page header and ticker)
@@ -91,6 +94,17 @@ const PANEL_OVERLAP = 0.02;
 const FADING_OVERLAP = 0.2;
 /** Largest second difference of the FOV (degrees) between samples STEP apart. */
 const FOV_D2 = 0.25;
+/**
+ * While the car is less than AERIAL_SUBJECT of the subject (the drone's climb and dive, and the
+ * aerial), the car fit may turn the authored view (the keys alone, director.evaluateShots) by at
+ * most AERIAL_TURN degrees, move its eye by at most AERIAL_EYE metres and widen it by at most
+ * AERIAL_FOV degrees: the climb tilts towards the circuit as authored (a fit that spilled into it
+ * kept looking down at the pit roof, 15° off the keys at subject 0.4).
+ */
+const AERIAL_SUBJECT = 0.5;
+const AERIAL_TURN = 5;
+const AERIAL_EYE = 2;
+const AERIAL_FOV = 1;
 /**
  * Viewports (scripts/camera-viewports.json), in CSS pixels, with the boxes of the page layout
  * (site.css, measured in the page at these sizes) and the framing areas home.js updateFraming()
@@ -175,6 +189,10 @@ function pose(t, v) {
 }
 
 const scratch = new Vector3();
+const keyEye = new Vector3();
+const keyLook = new Vector3();
+const poseEye = new Vector3();
+const poseLook = new Vector3();
 /** Screen position (CSS px) of world point p under the posed camera, or null behind it. */
 function project(p, v) {
   scratch.copy(p).applyMatrix4(camera.matrixWorldInverse);
@@ -302,21 +320,8 @@ for (const v of VIEWPORTS) {
       10 * f.z,
     ];
   };
-  // a camera kink where the car's own path has one is the car's motion, not the camera's: a car
-  // channel has a kink near it (refined from STEP like the camera's), or one in the very stencil that
-  // resolved the camera's (at the coarser steps the car's own curvature, braking hard into the pit
-  // box, can cancel its kink's second difference)
-  const kinkIn = (c, t, h) => {
-    const a = state(t - h)[c];
-    const b = state(t)[c];
-    const d = state(t + h)[c];
-    const d2 = Math.abs(d - 2 * b + a);
-    const d2half = Math.abs(state(t + h / 2)[c] - 2 * b + state(t - h / 2)[c]);
-    const d1 = Math.max(Math.abs(d - b), Math.abs(b - a));
-    return d2 > KINK_FLOOR * (h / STEP) + KINK_REL * d1 && d2 / Math.max(d2half, 1e-12) < KINK_RATIO;
-  };
-  const carKinkNear = (kink) =>
-    [7, 8, 9, 10].some((c) => kinkIn(c, kink.t, kink.h) || refineKink(state, c, kink.t, STEP));
+  // a camera kink where the car's own path has one is the car's motion, not the camera's
+  const carKinkNear = (t, h) => [7, 8, 9, 10].some((c) => refineKink(state, c, t, h));
   let minWorld = { d: Infinity };
   let minCar = { d: Infinity };
   let worstKink = { ratio: Infinity };
@@ -327,6 +332,7 @@ for (const v of VIEWPORTS) {
   const overlapAllowed = allow.panelOverlap || 0;
   let worstOverlap = { overlap: 0, t: '-' };
   let worstOverhead = { margin: Infinity };
+  const worstAerial = { turn: 0, eye: 0, fov: 0 };
   let worstNav = { overlap: 0, t: '-' };
   let worstFovD2 = { d2: 0, t: '-' };
   let widest = { fov: 0, t: '-' };
@@ -334,7 +340,7 @@ for (const v of VIEWPORTS) {
     (shot) => (2 * Math.atan(viewportTan(shot.fov, camera.aspect)) * 180) / Math.PI,
   );
   const maxFov = v.maxFov;
-  const counts = { clearance: 0, kinks: 0, framing: 0, overhead: 0, inherited: 0, fov: 0 };
+  const counts = { clearance: 0, kinks: 0, framing: 0, overhead: 0, inherited: 0, fov: 0, aerial: 0 };
   let carWidths = [];
   for (let i = 0; i <= samples; i++) {
     const t = +(i * STEP).toFixed(6);
@@ -384,7 +390,7 @@ for (const v of VIEWPORTS) {
         const d1 = Math.max(Math.abs(sPlus[c] - s[c]), Math.abs(s[c] - sMinus[c]));
         if (d2 < KINK_FLOOR + KINK_REL * d1 || d2 / Math.max(d2half, 1e-12) >= KINK_RATIO) continue;
         const kink = refineKink(state, c, t, h);
-        if (kink && carKinkNear(kink)) {
+        if (kink && carKinkNear(kink.t, h)) {
           counts.inherited++;
           if (VERBOSE)
             console.log(`${v.name} t=${kink.t.toFixed(5)}: ${CHANNEL_NAMES[c]} kink follows the car path's`);
@@ -455,6 +461,27 @@ for (const v of VIEWPORTS) {
       }
     }
 
+    // the drone's shots as authored: the pose at t (s: the continuity check may have posed the
+    // camera and the car's frame elsewhere since) against the keys' alone
+    if (subject < AERIAL_SUBJECT) {
+      cameraFrame.update(distanceAt(t));
+      const keyFov = director.evaluateShots(t, keyEye, keyLook);
+      poseEye.fromArray(s, 0);
+      const turn = (keyLook.sub(keyEye).angleTo(poseLook.fromArray(s, 3).sub(poseEye)) * 180) / Math.PI;
+      const eye = keyEye.distanceTo(poseEye);
+      const fov = Math.abs(s[6] - keyFov);
+      worstAerial.turn = Math.max(worstAerial.turn, +turn.toFixed(2));
+      worstAerial.eye = Math.max(worstAerial.eye, +eye.toFixed(2));
+      worstAerial.fov = Math.max(worstAerial.fov, +fov.toFixed(2));
+      if (turn > AERIAL_TURN || eye > AERIAL_EYE || fov > AERIAL_FOV) {
+        counts.aerial++;
+        fail(
+          `${v.name} t=${t}: the car fit moves the drone's shot (subject ${subject.toFixed(2)}): view turned ` +
+            `${turn.toFixed(1)}°, eye ${eye.toFixed(2)} m, FOV ${fov.toFixed(2)}° off the keys`,
+        );
+      }
+    }
+
     // the whole circuit at the top of the aerial
     if (t >= overheadKeys[0] - 1e-9 && t <= overheadKeys[overheadKeys.length - 1] + 1e-9) {
       let margin = Infinity;
@@ -498,6 +525,8 @@ for (const v of VIEWPORTS) {
       `at most ${(100 * worstOverlap.overlap).toFixed(1)} % (t=${worstOverlap.t}), stage buttons ` +
       `${(100 * worstNav.overlap).toFixed(1)} % (t=${worstNav.t}); overhead margin ${worstOverhead.margin} px at ` +
       `t=${worstOverhead.t} (heading ${director.overhead.heading}°, eye height ${director.overhead.pos[1].toFixed(0)} m); ` +
+      `drone shots (subject < ${AERIAL_SUBJECT}) off the keys by at most ${worstAerial.turn}°, ` +
+      `${worstAerial.eye} m, FOV ${worstAerial.fov}°; ` +
       `dollies ${[...director.dollies].map((d) => d.toFixed(2)).join(' ')}; failures ${JSON.stringify(counts)}` +
       (v.allow
         ? `; allowed by the layout: ${overlapAllowed ? `panel overlap ${100 * overlapAllowed} %` : ''}` +

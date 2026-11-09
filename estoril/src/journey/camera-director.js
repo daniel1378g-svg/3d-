@@ -36,26 +36,35 @@
 // appears) is moved to the centre of the blended area with a view offset.
 //
 // Car fit. At each car-shot key the eye is pulled back horizontally from the target (a dolly, at
-// most MAX_DOLLY, stopped DOLLY_CLEARANCE short of the scenery: `clearanceAt`) until the car (a
-// car-shaped hull in its bounding box, carOutline) fits in that key's framing area at the key's
-// FOV, so the lens stays as designed and the car keeps the size the screen allows; where a wall
-// stops the dolly, that key's lens widens instead (a fixed value for the layout). Between keys the
-// interpolated target can drift off the car (where the shot changes from car-relative to absolute
-// it follows neither exactly) and the interpolated eye can come closer, so three profiles, solved
-// with the layout, keep the car's outline inside the framing area. update() applies them in this
-// order (poseAt):
+// most MAX_DOLLY, the least that fits, found by bisection; stopped DOLLY_CLEARANCE short of the
+// scenery: `clearanceAt`) until the car (a car-shaped hull in its bounding box, carOutline) fits in
+// CAR_FILL of that key's framing area at the key's FOV, so the lens stays as designed and the car
+// keeps the size the screen allows; where a wall stops the dolly, that key's lens widens instead (a
+// fixed value for the layout). Between keys the interpolated target can drift off the car (where
+// the shot changes from car-relative to absolute it follows neither exactly) and the interpolated
+// eye can come closer, so three profiles, solved with the layout, keep the car's outline inside the
+// framing area. update() applies them in this order (poseAt):
 //   dolly  the eye backs away from the target, by at most MAX_FIT_DOLLY of its distance, kept clear
 //          of the scenery (limitDolly);
 //   aim    the target moves a share of the way to the middle of the car's outline seen from that
-//          eye (soft extents, measured at the pose itself), the share that brings the outline back
-//          inside the area: zero where it already is, never past the middle;
-//   lens   the FOV widens by at most FIT_EXTRA_FOV degrees (about the principal point: the aim holds).
-// The solve asks the aim first, then the lens, and the dolly only for what is left of the car's size.
-// The profiles are sampled every 0.001 of progress with the car where it is at each sample, in
-// FIT_PASSES passes: each poses the camera exactly as update() will with the profiles solved so far
-// and adds what is still missing, so the smoothing's losses and the estimates (size ∝ 1 / distance)
-// are made up. Each profile is spread by a running maximum and smoothed, so it starts before it is
-// needed, is C1 and never pumps; update() applies the profiles as solved. The overhead key is solved
+//          eye (soft extents, measured at the pose itself), never past the middle: the share that
+//          brings the outline inside CAR_FILL of the area (all of it where the outline is wider
+//          than that). The soft extents lie a few % outside the hard ones and CAR_FILL leaves 6 %
+//          of the area on each side, so the aim works wherever the car comes near the area's edge,
+//          not only where it would leave it (gently: in the panel holds it turns the view by < 1°);
+//   lens   the FOV widens by up to FIT_EXTRA_FOV degrees, and by up to FIT_FALLBACK_FOV more where
+//          the dolly cannot back the eye away far enough (about the principal point: the aim holds).
+// The solve asks the aim first, then the lens (up to FIT_EXTRA_FOV), and the dolly for what is left
+// of the car's size; where the scenery or MAX_FIT_DOLLY holds the dolly back, the lens takes the
+// rest, enough for the car to fill FALLBACK_FILL of the area, as a key's lens does where a wall
+// stops its dolly. The profiles are sampled every 0.001 of progress with the car where it is at each
+// sample, in FIT_PASSES passes and then LENS_PASSES lens passes: each poses the camera exactly as
+// update() will with the profiles solved so far and adds what is still missing, so the smoothing's
+// losses and the estimates (size ∝ 1 / distance) are made up. Each profile is spread by a running
+// maximum and smoothed, so it starts before it is needed, is C1 and never pumps. The needs are
+// measured where the car is the whole subject, and update() applies each profile times the car's
+// share of the subject (fitFade, C1): the fit fades out as the drone climbs away from the car and
+// back in as it dives to it, so the aerial keeps its authored framing. The overhead key is solved
 // for the actual aspect: fitCircuitShot() picks, among headings between "from the grandstand side"
 // and "from the first corner", the camera that shows the whole circuit largest inside the open area.
 //
@@ -67,14 +76,23 @@ import { clamp, hermite, lerp, monotoneSlope, smoothstep } from './util/math.js'
 
 const DEG = Math.PI / 180;
 const UP = new Vector3(0, 1, 0);
-/** The car's hull must fit in this fraction of the framing area (a margin on every side). */
+/**
+ * The car's hull must fit in this fraction of the framing area (a margin on every side); where the
+ * eye cannot back away (FIT_FALLBACK_FOV) the lens keeps it inside FALLBACK_FILL of the area.
+ */
 const CAR_FILL = 0.88;
+const FALLBACK_FILL = 0.96;
 /** The keys' FOVs are vertical FOVs at this aspect (1440×900)… */
 const REFERENCE_ASPECT = 1.6;
 /** …narrower screens keep its horizontal FOV, with the vertical FOV softly capped at this (degrees). */
 const MAX_VERTICAL_FOV = 60;
-/** Between keys the car fit may widen the FOV by at most this many degrees. */
+/**
+ * Between keys the car fit widens the FOV by up to FIT_EXTRA_FOV degrees before it backs the eye
+ * away, and by up to FIT_FALLBACK_FOV more where the eye cannot back away far enough (the scenery
+ * stops it, or MAX_FIT_DOLLY): at most FIT_EXTRA_FOV + FIT_FALLBACK_FOV in all.
+ */
 const FIT_EXTRA_FOV = 6;
+const FIT_FALLBACK_FOV = 4;
 /** Sharpness of the soft maximum over the car's hull points (overshoot ≤ ln 20 / this, i.e. 3.7 %). */
 const FIT_LSE_SHARPNESS = 80;
 /**
@@ -85,6 +103,8 @@ const FIT_LSE_SHARPNESS = 80;
 const MAX_DOLLY = 4;
 const MAX_CHASE_DOLLY = 2;
 const DOLLY_RISE = 0.04;
+/** …solved to this relative precision. */
+const DOLLY_PRECISION = 1e-4;
 /**
  * Between keys the dolly aims DOLLY_MARGIN beyond the fit (it is an estimate: size ∝ 1 / distance)
  * and backs the eye away by at most MAX_FIT_DOLLY of its distance; the car-fit profiles are solved
@@ -93,6 +113,8 @@ const DOLLY_RISE = 0.04;
 const DOLLY_MARGIN = 1.04;
 const MAX_FIT_DOLLY = 0.75;
 const FIT_PASSES = 3;
+/** Passes that give the lens what the dolly and the smoothing left (see solveFit). */
+const LENS_PASSES = 3;
 /** Rounds of dents that keep the between-keys dolly under the scenery's limits (limitDolly). */
 const LIMIT_DENTS = 6;
 /**
@@ -166,6 +188,15 @@ function panelWeight(t, windows, fade) {
     if (o > opacity) opacity = o;
   }
   return smoothstep(clamp(4 * opacity, 0, 1));
+}
+
+/**
+ * How much of the between-keys car fit applies at car-subject weight `subject` (1 in car shots … 0
+ * in the aerial, C1): as much as the car is the subject, so the fit fades out with the car as the
+ * drone climbs away and in as it dives back to the car, at the pace of the authored keys.
+ */
+function fitFade(subject) {
+  return subject;
 }
 
 /** Whether two framing areas ([left, top, right, bottom]) are the same. */
@@ -462,8 +493,15 @@ function createCameraDirector(
     back: newProfile(), // dolly: ratio of the eye's horizontal distance from the target
   };
   const allProfiles = [fitProfiles.aim, fitProfiles.widen, fitProfiles.back];
-  /** What poseAt() leaves: the keys' tan(fov/2), the car-subject weight, the dolly, aim and lens applied. */
-  const fitState = { keyTan: 0, subject: 0, aim: 0, widen: 0, back: 0 };
+  /**
+   * What poseAt() leaves: the keys' tan(fov/2), the car-subject weight, the share of the fit that
+   * applies (fitFade), and the dolly, aim and lens applied.
+   */
+  const fitState = { keyTan: 0, subject: 0, fade: 0, aim: 0, widen: 0, back: 0 };
+  // the fit's fade at each profile sample (the subject weight does not depend on the layout)
+  const fitFades = Float64Array.from(PROFILE_TIMES, (u) =>
+    fitFade(clamp(curve(subjectChannel.values, subjectChannel.slopes, segmentOf(u), u), 0, 1)),
+  );
   const extent = { x0: 0, y0: 0, x1: 0, y1: 0, distance: 0 };
   const fitArea = [0, 0, 0, 0];
   const centring = new Vector3();
@@ -492,6 +530,28 @@ function createCameraDirector(
     to.r.copy(from.r);
     return to;
   };
+  // the car's frame at each profile sample (frameAt: the same for every layout, so taken once; the
+  // fit's passes and the dolly's limits read it some 6000 times per layout)
+  const sampleFrames = frameAt ? new Float64Array(9 * PROFILE_SAMPLES) : null;
+  let sampleFramesTaken = false;
+  const sampleFrame = newFrame();
+  /** The car's ground frame at profile sample i (a shared object, valid until the next call). */
+  function frameAtSample(i) {
+    if (!sampleFrames) return carFrame;
+    if (!sampleFramesTaken) {
+      for (let k = 0; k < PROFILE_SAMPLES; k++) {
+        const frame = frameAt(PROFILE_TIMES[k]);
+        frame.p.toArray(sampleFrames, 9 * k);
+        frame.f.toArray(sampleFrames, 9 * k + 3);
+        frame.r.toArray(sampleFrames, 9 * k + 6);
+      }
+      sampleFramesTaken = true;
+    }
+    sampleFrame.p.fromArray(sampleFrames, 9 * i);
+    sampleFrame.f.fromArray(sampleFrames, 9 * i + 3);
+    sampleFrame.r.fromArray(sampleFrames, 9 * i + 6);
+    return sampleFrame;
+  }
 
   /**
    * tan(fov/2) that fits the car's hull, in the ground frame `frame`, into the framing area around
@@ -703,16 +763,25 @@ function createCameraDirector(
       const s = Math.sin(angle * DEG);
       const ux = (dx * c - dz * s) / radius; // unit direction from the target to the swung eye
       const uz = (dx * s + dz * c) / radius;
-      // the dolly the car needs from this side (the car's size on screen ∝ 1 / distance)
-      let wanted = 1;
-      for (let i = 0; i < 12; i++) {
-        scratchEye.set(look.x + ux * radius * wanted, heightAt(wanted), look.z + uz * radius * wanted);
+      // the dolly the car needs from this side: the least that fits it, by bisection (its size on
+      // screen falls as the eye backs away; a fixed-point step, size ∝ 1 / distance, oscillates
+      // where the car's near end is close to the eye and stopped unconverged, the car not fitting)
+      const fitsAt = (scale) => {
+        scratchEye.set(look.x + ux * radius * scale, heightAt(scale), look.z + uz * radius * scale);
         const need = carFitTan(frame, scratchEye, look, aspect, halfX, halfY);
-        if (!(need > 0)) break;
-        const next = clamp(wanted * (need / tan), 1, maxDolly);
-        const done = Math.abs(next - wanted) < 1e-4 * wanted;
-        wanted = next;
-        if (done) break;
+        return need > 0 && need <= tan;
+      };
+      let wanted = 1;
+      scratchEye.set(look.x + ux * radius, heightAt(1), look.z + uz * radius);
+      if (carFitTan(frame, scratchEye, look, aspect, halfX, halfY) > tan) {
+        let low = 1;
+        wanted = maxDolly;
+        if (fitsAt(maxDolly))
+          while (wanted - low > DOLLY_PRECISION * low) {
+            const mid = (low + wanted) / 2;
+            if (fitsAt(mid)) wanted = mid;
+            else low = mid;
+          }
       }
       // how far the eye gets before the scenery stops it: sphere tracing along the path (each
       // step is the clearance in hand minus the floor, so no point of the path comes closer)
@@ -842,11 +911,16 @@ function createCameraDirector(
    * adds to the raw needs what the car still lacks there: the aim that brings its outline inside the
    * framing area (CAR_FILL of it, as at the keys), then, for the outline so aimed, the lens (up to
    * FIT_EXTRA_FOV) and the dolly for what is left of its size (up to MAX_FIT_DOLLY). The needs only
-   * grow from pass to pass and are weighted by the car-subject weight, so the fit fades out towards
-   * the aerial. After each pass every profile is smoothed again from its raw needs and the dolly kept
-   * clear of the scenery.
+   * grow from pass to pass and are measured where the car is the whole subject: in the climb and the
+   * dive the keys turn away from the car on purpose, and the fit fades out there (fitFade). After
+   * each pass every profile is smoothed again from its raw needs and the dolly kept clear of the
+   * scenery. Then LENS_PASSES passes give the lens what is still missing: the share the dolly could
+   * not take (the scenery stopped it, or MAX_FIT_DOLLY), up to FIT_EXTRA_FOV + FIT_FALLBACK_FOV and
+   * enough for the car to fill FALLBACK_FILL of the area, and what the smoothing lost. Each adds the
+   * missing angle to the lens's raw need, so the smoothing's loss shrinks pass by pass; the lens does
+   * not move the eye, so these passes need no clearance probes.
    */
-  function solveFit(aspect, panelArea, openArea, windows, fade) {
+  function solveFit(aspect, panelArea, openArea, windows, panelFade) {
     for (const profile of allProfiles) {
       profile.values.fill(0);
       profile.slopes.fill(0);
@@ -857,28 +931,42 @@ function createCameraDirector(
     dollyRoom.blockedFrom.fill(Infinity);
     if (!carHull) return;
     const maxLens = (FIT_EXTRA_FOV * DEG) / 2;
+    const maxFallback = ((FIT_EXTRA_FOV + FIT_FALLBACK_FOV) * DEG) / 2;
     const aimNeed = fitProfiles.aim.raw;
     const lensNeed = fitProfiles.widen.raw;
+    const lensValues = fitProfiles.widen.values;
     const dollyNeed = fitProfiles.back.raw;
-    for (let pass = 0; pass < FIT_PASSES; pass++) {
+    for (let pass = 0; pass < FIT_PASSES + LENS_PASSES; pass++) {
+      const lensOnly = pass >= FIT_PASSES;
       for (let i = 0; i < PROFILE_SAMPLES; i++) {
         const u = PROFILE_TIMES[i];
-        const frame = frameAt ? frameAt(u) : carFrame;
+        const frame = frameAtSample(i);
         const tan = poseAt(u, frame, fitEye, fitLook);
-        const subject = fitState.subject;
-        if (subject <= 0) continue;
-        const weight = panelWeight(u, windows, fade);
+        // the needs where the car is the whole subject (the fit's spread and smoothing carry them
+        // a little way into the climb and the dive, where the fade takes them out)
+        if (fitState.subject < 1) continue;
+        const weight = panelWeight(u, windows, panelFade);
         for (let a = 0; a < 4; a++) fitArea[a] = lerp(openArea[a], panelArea[a], weight);
         const halfX = fitArea[2] - fitArea[0];
         const halfY = fitArea[3] - fitArea[1];
         const keyTan = fitState.keyTan;
+        const keyAngle = Math.atan(keyTan);
+        if (lensOnly) {
+          // the lens's missing angle, added to its raw need: up to FIT_EXTRA_FOV for the car to fill
+          // CAR_FILL of the area, up to FIT_EXTRA_FOV + FIT_FALLBACK_FOV for FALLBACK_FILL
+          const need = Math.atan(carFitTan(frame, fitEye, fitLook, aspect, halfX, halfY)) - keyAngle;
+          const fallback = Math.atan(Math.tan(keyAngle + need) * (CAR_FILL / FALLBACK_FILL)) - keyAngle;
+          const missing = Math.max(Math.min(need, maxLens), fallback) - lensValues[i];
+          if (missing > 0) lensNeed[i] = Math.min(maxFallback, lensNeed[i] + missing);
+          continue;
+        }
         if (!softExtent(frame, fitEye, fitLook, halfX * aspect * keyTan, halfY * keyTan)) continue;
         // the aim: the share of the rest of the way to the middle of the outline that brings it
         // inside the area (CAR_FILL of it at this FOV), on top of the share already applied
         const half = (CAR_FILL * tan) / keyTan;
         const midX = (extent.x0 + extent.x1) / 2;
         const midY = (extent.y0 + extent.y1) / 2;
-        const share = clamp(
+        const aimShare = clamp(
           Math.max(
             Math.abs(midX) > 1e-9 ? shiftInto(extent.x0, extent.x1, half) / midX : 0,
             Math.abs(midY) > 1e-9 ? shiftInto(extent.y0, extent.y1, half) / midY : 0,
@@ -886,22 +974,22 @@ function createCameraDirector(
           0,
           1,
         );
-        aimNeed[i] = Math.max(aimNeed[i], subject * (fitState.aim + share * (1 - fitState.aim)));
-        fitLook.addScaledVector(centring, share);
+        aimNeed[i] = Math.max(aimNeed[i], fitState.aim + aimShare * (1 - fitState.aim));
+        fitLook.addScaledVector(centring, aimShare);
         // the size, for the outline so aimed: the lens first, then the dolly
         const need = carFitTan(frame, fitEye, fitLook, aspect, halfX, halfY);
         if (!(need > tan)) continue;
-        const keyAngle = Math.atan(keyTan);
         const lens = Math.min(maxLens, Math.atan(need) - keyAngle);
-        lensNeed[i] = Math.max(lensNeed[i], subject * lens);
+        lensNeed[i] = Math.max(lensNeed[i], lens);
         const rest = need / Math.tan(keyAngle + lens);
         if (rest > 1) {
           const back = Math.min(MAX_FIT_DOLLY, (1 + fitState.back) * rest * DOLLY_MARGIN - 1);
-          dollyNeed[i] = Math.max(dollyNeed[i], subject * back);
+          dollyNeed[i] = Math.max(dollyNeed[i], back);
         }
       }
-      smoothProfile(fitProfiles.aim);
       smoothProfile(fitProfiles.widen);
+      if (lensOnly) continue;
+      smoothProfile(fitProfiles.aim);
       smoothProfile(fitProfiles.back);
       if (clearanceAt) limitDolly(fitProfiles.back);
     }
@@ -923,22 +1011,24 @@ function createCameraDirector(
 
   /**
    * The camera pose at progress u with the car at `frame`, as update() draws it before the intro
-   * blend and the bob: the keys, then the car fit: the dolly (the eye backs away from the keys'
-   * target), the aim (the target moves the aim profile's share of the way to the middle of the car's
-   * outline seen from that eye, soft extents, so the share never takes it past the middle) and the
-   * lens (which scales the image about the principal point, so it keeps the aim). Writes `eye` and
-   * `look`; returns tan(fov/2) and leaves the keys' tan, the subject weight and the dolly, aim and
-   * lens applied in fitState.
+   * blend and the bob: the keys, then the car fit, each profile times the fit's fade (fitFade: none
+   * in the aerial): the dolly (the eye backs away from the keys' target), the aim (the target moves
+   * the aim's share of the way to the middle of the car's outline seen from that eye, soft extents,
+   * so the share never takes it past the middle) and the lens (which scales the image about the
+   * principal point, so it keeps the aim). Writes `eye` and `look`; returns tan(fov/2) and leaves the
+   * keys' tan, the subject weight, the fade and the dolly, aim and lens applied in fitState.
    */
   function poseAt(progress, frame, eye, look) {
     const keyTan = keysAt(progress, frame, eye, look);
     fitState.back = fitState.aim = fitState.widen = 0;
-    if (!carHull) return keyTan;
+    const share = carHull ? fitFade(fitState.subject) : 0;
+    fitState.fade = share;
+    if (share <= 0) return keyTan;
     const u = clamp(progress, 0, 1);
-    const back = profileAt(fitProfiles.back, u);
+    const back = share * profileAt(fitProfiles.back, u);
     if (back > 0) dollyEye(eye, look, back);
     fitState.back = back;
-    const aim = profileAt(fitProfiles.aim, u);
+    const aim = share * profileAt(fitProfiles.aim, u);
     if (aim > 0) {
       // the outline's soft extents in units of the framing area's half-size at the keys' FOV
       const weight = panelWeight(u, solved.windows, solved.fade);
@@ -950,7 +1040,7 @@ function createCameraDirector(
         fitState.aim = aim;
       }
     }
-    const widen = profileAt(fitProfiles.widen, u);
+    const widen = share * profileAt(fitProfiles.widen, u);
     fitState.widen = widen;
     return widen > 0 ? Math.tan(Math.atan(keyTan) + widen) : keyTan;
   }
@@ -965,15 +1055,18 @@ function createCameraDirector(
   }
 
   /**
-   * Keeps the between-keys dolly `profile` clear of the scenery: where the dollied eye would come
-   * closer than DOLLY_CLEARANCE (or than the undollied eye already is), the most it can back away
-   * (bisection, remembered for the layout's later passes: dollyRoom). The profile is then smoothed again from its spread needs held under a ceiling,
-   * dented wherever the smoothed profile would still rise above a limit: a Gaussian-shaped dent (the
-   * smoothing's own shape) as deep as lowers the smoothed value there by the excess, the least
-   * change that does (minimum norm), sample by sample, for LIMIT_DENTS rounds; what is left (where
-   * a dent reached 0) is taken by scaling that sample's window down to the limit, which is exact.
-   * The result is under every limit and nowhere above the unlimited profile (the smoothing is
-   * monotone and the ceiling only comes down), so the eye never comes closer than allowed.
+   * Keeps the between-keys dolly `profile` clear of the scenery: where the dollied eye (the profile
+   * times the fit's fade, as poseAt applies it) would come closer than DOLLY_CLEARANCE (or than the
+   * undollied eye already is), the most it can back away (bisection, remembered for the layout's
+   * later passes: dollyRoom). The profile is then smoothed again from its spread needs held under a
+   * ceiling, dented wherever the smoothed profile would still rise above a limit: a Gaussian-shaped
+   * dent (the smoothing's own shape) as deep as lowers the smoothed value there by the excess, the
+   * least change that does (minimum norm), sample by sample, for LIMIT_DENTS rounds; what is left
+   * (where a dent reached 0) is taken by scaling that sample's window down to the limit, which is
+   * exact. The result is under every limit and nowhere above the unlimited profile (the smoothing is
+   * monotone and the ceiling only comes down), so the eye never comes closer than allowed. A limit
+   * of 0 (the eye already at the pit wall's cap, at the lift-off) holds the dolly near 0 for the
+   * smoothing's whole reach around it: there the lens takes over (solveFit's lens passes).
    */
   function limitDolly(profile) {
     const { values, slopes, spread } = profile;
@@ -982,10 +1075,12 @@ function createCameraDirector(
     let limited = false;
     for (let i = 0; i < PROFILE_SAMPLES; i++) {
       limit[i] = Infinity;
-      const back = values[i];
+      // the dolly applied there (the profile times the fit's fade; dollyRoom holds applied dollies)
+      const share = fitFades[i];
+      const back = values[i] * share;
       if (!(back > 1e-4) || back <= clearTo[i]) continue;
       const u = PROFILE_TIMES[i];
-      keysAt(u, frameAt ? frameAt(u) : carFrame, fitEye, fitLook);
+      keysAt(u, frameAtSample(i), fitEye, fitLook);
       if (Number.isNaN(floor[i])) floor[i] = Math.min(DOLLY_CLEARANCE, clearanceAt(fitEye, fitLook));
       const clearAt = (b) => clearanceAt(dollyEye(probeEye.copy(fitEye), fitLook, b), fitLook) >= floor[i];
       if (back < blockedFrom[i]) {
@@ -1001,7 +1096,7 @@ function createCameraDirector(
         if (clearAt(mid)) clearTo[i] = mid;
         else blockedFrom[i] = mid;
       }
-      limit[i] = Math.min(back, clearTo[i]);
+      limit[i] = Math.min(back, clearTo[i]) / share;
       limited = true;
     }
     if (!limited) return;
@@ -1198,15 +1293,20 @@ function createCameraDirector(
     /** Per key for the last layout: the dolly the car needed, the FOV, the resolved eye and target. */
     keyInfo,
     /**
-     * The car-fit profiles at progress u for the last layout (tests): `aim` the share of the way from
-     * the keys' target to the middle of the car, `widen` the extra vertical FOV (degrees), `back` the
-     * dolly (ratio of the eye's distance).
+     * The car fit applied at progress u for the last layout (tests): `fade` the share of it that
+     * applies (fitFade), `aim` the share of the way from the keys' target to the middle of the car,
+     * `widen` the extra vertical FOV (degrees), `back` the dolly (ratio of the eye's distance).
      */
-    fitAt: (u) => ({
-      aim: profileAt(fitProfiles.aim, u),
-      widen: (2 * profileAt(fitProfiles.widen, u)) / DEG,
-      back: profileAt(fitProfiles.back, u),
-    }),
+    fitAt(progress) {
+      const u = clamp(progress, 0, 1);
+      const fade = fitFade(clamp(curve(subjectChannel.values, subjectChannel.slopes, segmentOf(u), u), 0, 1));
+      return {
+        fade,
+        aim: fade * profileAt(fitProfiles.aim, u),
+        widen: (2 * fade * profileAt(fitProfiles.widen, u)) / DEG,
+        back: fade * profileAt(fitProfiles.back, u),
+      };
+    },
   };
 }
 
@@ -1216,6 +1316,7 @@ export {
   createCameraDirector,
   createCameraFrame,
   FIT_EXTRA_FOV,
+  FIT_FALLBACK_FOV,
   fitCircuitShot,
   panelWeight,
   viewportTan,
