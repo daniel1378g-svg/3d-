@@ -1,0 +1,1106 @@
+<title>Estoril Circuit Model</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;1,700&family=Barlow:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  /* Layout: full-bleed WebGL circuit; a fact card top-left, a view and drive bar along the bottom, labels pinned to places */
+  :root {
+    --bg: #d9e3e8;
+    --panel: rgba(247, 248, 246, 0.9);
+    --ink: #14181b;
+    --muted: #586168;
+    --line: rgba(20, 24, 27, 0.14);
+    --accent: #c4271d;
+    --accent-ink: #ffffff;
+    --label: rgba(20, 24, 27, 0.84);
+    --label-ink: #f5f6f4;
+    --band: #14181b;
+    --band-ink: #f2f3f1;
+    --font-display: "Barlow Condensed", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+    --font-ui: "Barlow", "Helvetica Neue", Arial, sans-serif;
+    --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+    --band-h: 26px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #10151a;
+      --panel: rgba(17, 21, 24, 0.88);
+      --ink: #edf0ef;
+      --muted: #9da7ad;
+      --line: rgba(237, 240, 239, 0.14);
+      --accent: #ff5b4c;
+      --accent-ink: #1a0604;
+      --label: rgba(243, 245, 244, 0.92);
+      --label-ink: #14181b;
+      --band: #edf0ef;
+      --band-ink: #14181b;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #10151a;
+    --panel: rgba(17, 21, 24, 0.88);
+    --ink: #edf0ef;
+    --muted: #9da7ad;
+    --line: rgba(237, 240, 239, 0.14);
+    --accent: #ff5b4c;
+    --accent-ink: #1a0604;
+    --label: rgba(243, 245, 244, 0.92);
+    --label-ink: #14181b;
+    --band: #edf0ef;
+    --band-ink: #14181b;
+    color-scheme: dark;
+  }
+
+  [hidden] { display: none !important; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    overflow: hidden;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-ui);
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+  }
+  #scene {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    touch-action: none;
+    outline: none;
+  }
+
+  /* the permanent note that this is a design proposal (project rule for real organisations) */
+  .band {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 5;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    background: var(--band);
+    color: var(--band-ink);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    line-height: var(--band-h);
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .ui {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    padding-top: calc(var(--band-h) + max(12px, env(safe-area-inset-top, 0px)));
+    padding-bottom: max(16px, env(safe-area-inset-bottom, 0px));
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .ui > * { pointer-events: auto; }
+
+  .card {
+    align-self: flex-start;
+    width: min(330px, 100%);
+    background: var(--panel);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 13px 16px 12px;
+    display: grid;
+    gap: 9px;
+  }
+  .eyebrow {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .card h1 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 30px;
+    font-weight: 700;
+    font-style: italic;
+    letter-spacing: 0.005em;
+    line-height: 0.95;
+    text-transform: uppercase;
+    text-wrap: balance;
+  }
+  .card h1 span { color: var(--accent); }
+  .card p { margin: 0; color: var(--muted); line-height: 1.45; font-size: 13px; }
+  .facts { margin: 0; display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; font-size: 13px; }
+  .facts dt { color: var(--muted); }
+  .facts dd { margin: 0; font-family: var(--font-mono); font-variant-numeric: tabular-nums; text-align: right; }
+  .card details summary { cursor: pointer; font-size: 12px; color: var(--muted); }
+  .card details[open] summary { margin-bottom: 8px; }
+
+  .bottom { display: grid; gap: 8px; justify-items: center; }
+  .hint, .hud {
+    margin: 0;
+    font-size: 12px;
+    color: var(--ink);
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 5px 12px;
+    text-align: center;
+    max-width: 100%;
+  }
+  .hud {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    display: flex;
+    gap: 14px;
+    align-items: baseline;
+  }
+  .hud b { font-weight: 500; font-size: 15px; }
+  .hud small { color: var(--muted); font-size: 11px; }
+  .bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+    background: var(--panel);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 6px;
+    max-width: 100%;
+  }
+  .bar button {
+    font: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink);
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    padding: 7px 11px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .bar button:hover { border-color: var(--line); }
+  .bar button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
+  .bar button:disabled { opacity: 0.45; cursor: default; }
+  .bar .sep { width: 1px; background: var(--line); margin: 4px 2px; }
+  button:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .labels { position: fixed; inset: 0; pointer-events: none; overflow: hidden; }
+  .label {
+    position: absolute;
+    left: 0; top: 0;
+    background: var(--label);
+    color: var(--label-ink);
+    border-radius: 4px;
+    padding: 4px 8px 5px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.2;
+    text-align: center;
+    white-space: nowrap;
+    will-change: transform;
+  }
+  .label span { display: block; font-family: var(--font-mono); font-weight: 400; font-size: 11px; opacity: 0.8; }
+
+  .vignette {
+    position: fixed; inset: 0; pointer-events: none;
+    background: radial-gradient(ellipse at center, transparent 58%, rgba(0, 0, 0, 0.2) 100%);
+  }
+  .loading {
+    position: fixed; inset: 0; z-index: 4;
+    display: grid; place-items: center; align-content: center; gap: 12px;
+    background: var(--bg); color: var(--muted); font-size: 14px; letter-spacing: 0.02em;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    text-align: center;
+  }
+  .loading .meter { width: min(260px, 70vw); height: 4px; border-radius: 2px; background: var(--line); overflow: hidden; }
+  .loading .meter i { display: block; height: 100%; width: 0; background: var(--accent); transition: width 0.2s; }
+  .loading strong { font-family: var(--font-display); font-style: italic; font-size: 22px; letter-spacing: 0.01em; color: var(--ink); text-transform: uppercase; }
+
+  @media (max-width: 560px) {
+    :root { --band-h: 22px; }
+    .band { font-size: 10px; }
+    .card { padding: 10px 12px; gap: 6px; }
+    .card h1 { font-size: 24px; }
+    .card .lede { display: none; }
+    .bar { gap: 4px; padding: 5px; }
+    .bar button { padding: 6px 8px; font-size: 12px; }
+    .hint { font-size: 11px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .loading .meter i { transition: none; }
+  }
+</style>
+
+<canvas id="scene" tabindex="0" aria-label="3D model of the Estoril circuit and its car. Use the view buttons to move around."></canvas>
+<div class="vignette" aria-hidden="true"></div>
+<div class="labels" id="labels" aria-hidden="true"></div>
+<div class="band" role="note">Proposta de design · não é o site oficial</div>
+
+<div class="ui">
+  <section class="card" aria-label="About this model">
+    <p class="eyebrow">3D model · metres, 1 : 1</p>
+    <h1>Circuito <span>Estoril</span></h1>
+    <p class="lede">The circuit and its car from the site's 3D journey, as one model: the lap, pit lane, grandstand, paddock and the pine and eucalyptus woods around them.</p>
+    <details id="facts">
+      <summary>Model facts</summary>
+      <dl class="facts" id="facts-list">
+        <dt>Lap, along the centre line</dt><dd id="f-lap">…</dd>
+        <dt>Main straight</dt><dd id="f-straight">…</dd>
+        <dt>Car, nose to tail</dt><dd id="f-car">…</dd>
+        <dt>Trees</dt><dd id="f-trees">…</dd>
+        <dt>Shrubs and grass tufts</dt><dd id="f-scrub">…</dd>
+        <dt>Triangles drawn</dt><dd id="f-tris">…</dd>
+      </dl>
+    </details>
+  </section>
+
+  <div class="bottom">
+    <p class="hud" id="hud" hidden><b id="hud-speed">0 km/h</b><span id="hud-lap">0:00.0</span><small id="hud-best"></small></p>
+    <p class="hint" id="hint">Drag to orbit · scroll or pinch to zoom · double-click the ground to fly there</p>
+    <nav class="bar" aria-label="Views">
+      <button type="button" id="v-overview" data-view="overview" aria-pressed="true">Overview</button>
+      <button type="button" id="v-map" data-view="map" aria-pressed="false">Track map</button>
+      <button type="button" id="v-car" data-view="car" aria-pressed="false">Car</button>
+      <button type="button" id="v-straight" data-view="straight" aria-pressed="false">Main straight</button>
+      <button type="button" id="v-pits" data-view="pits" aria-pressed="false">Pits</button>
+      <button type="button" id="v-paddock" data-view="paddock" aria-pressed="false">Paddock</button>
+      <span class="sep" aria-hidden="true"></span>
+      <button type="button" id="drive" aria-pressed="false">Drive a lap</button>
+      <button type="button" id="golden" aria-pressed="false">Golden hour</button>
+      <button type="button" id="quality" title="Lower the quality if the model runs slowly">Quality: high</button>
+    </nav>
+  </div>
+</div>
+<div class="loading" id="loading" role="status">
+  <strong>Circuito Estoril</strong>
+  <span id="loading-text">Loading the circuit…</span>
+  <div class="meter" aria-hidden="true"><i id="loading-bar"></i></div>
+</div>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+} }
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { Sky } from 'three/addons/objects/Sky.js';
+
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const SMALL = Math.min(innerWidth, innerHeight) < 700;
+const $ = (id) => document.getElementById(id);
+const loadingText = $('loading-text');
+const fail = (message) => {
+  loadingText.textContent = message;
+  $('loading').hidden = false;
+};
+
+/* ---------- Renderer, scene, camera ---------- */
+const canvas = $('scene');
+let renderer;
+try {
+  renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' });
+} catch (e) {
+  fail('This 3D model needs WebGL, which this browser has turned off.');
+  throw e;
+}
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.shadowMap.autoUpdate = false; // the world is static: shadows render when the view, light or car changes
+const MAX_TEX = renderer.capabilities.maxTextureSize;
+const ANISO = renderer.capabilities.getMaxAnisotropy();
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(45, 1, 0.5, 40000);
+const controls = new OrbitControls(camera, canvas);
+controls.enableDamping = true;
+controls.dampingFactor = 0.08;
+controls.screenSpacePanning = false; // pan across the ground
+controls.minDistance = 3;
+controls.maxDistance = 5200;
+controls.maxPolarAngle = 1.5;
+
+/* ---------- Sky, sun, environment ---------- */
+const sky = new Sky();
+sky.scale.setScalar(30000);
+scene.add(sky);
+const envScene = new THREE.Scene();
+const envSky = new Sky();
+envSky.scale.setScalar(1000);
+envScene.add(envSky);
+const envGround = new THREE.Mesh(new THREE.CircleGeometry(900, 32).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ color: 0x5e6b3c }));
+envGround.position.y = -20;
+envScene.add(envGround);
+const pmrem = new THREE.PMREMGenerator(renderer);
+let envRT = null;
+
+const hemi = new THREE.HemisphereLight(0xdfe8f2, 0x5d5a40, 0.5);
+const sun = new THREE.DirectionalLight(0xfff3e2, 3);
+scene.add(hemi, sun, sun.target);
+sun.shadow.bias = -0.0004;
+
+const DAY = { elev: 41, azim: 215, turb: 2.4, ray: 1.1, sun: 3.0, sunColor: 0xfff3e2, hemi: 0.55, hemiSky: 0xdfe8f2, hemiGround: 0x5d5a40, exposure: 0.92, fog: 0xc6d3dd, fogDensity: 0.00019, ground: 0x5e6b3c, env: 1.0 };
+const GOLD = { elev: 5.5, azim: 292, turb: 7, ray: 2.6, sun: 2.6, sunColor: 0xffa860, hemi: 0.3, hemiSky: 0x93a3c4, hemiGround: 0x3a2c22, exposure: 1.0, fog: 0xd8a983, fogDensity: 0.00026, ground: 0x4a3b28, env: 0.75 };
+let golden = false;
+let light = DAY;
+const sunDir = new THREE.Vector3();
+function applyLight() {
+  light = golden ? GOLD : DAY;
+  sunDir.setFromSphericalCoords(1, THREE.MathUtils.degToRad(90 - light.elev), THREE.MathUtils.degToRad(light.azim));
+  for (const s of [sky, envSky]) {
+    const u = s.material.uniforms;
+    u.turbidity.value = light.turb;
+    u.rayleigh.value = light.ray;
+    u.mieCoefficient.value = 0.004;
+    u.mieDirectionalG.value = 0.8;
+    u.sunPosition.value.copy(sunDir);
+  }
+  envGround.material.color.set(light.ground);
+  if (envRT) envRT.dispose();
+  envRT = pmrem.fromScene(envScene, 0, 1, 5000);
+  scene.environment = envRT.texture;
+  scene.environmentIntensity = light.env;
+  sun.intensity = light.sun;
+  sun.color.set(light.sunColor);
+  hemi.intensity = light.hemi;
+  hemi.color.set(light.hemiSky);
+  hemi.groundColor.set(light.hemiGround);
+  renderer.toneMappingExposure = light.exposure;
+  scene.fog = new THREE.FogExp2(light.fog, light.fogDensity);
+  shadowFit.radius = -1; // refit along the new sun direction
+  dirty = true;
+}
+
+/* ---------- Loading: the geometry is base64 text next to the page, the textures WebP files ---------- */
+const bar = $('loading-bar');
+let fetched = 0;
+let expected = 1;
+const progress = (k) => (bar.style.width = `${Math.round(Math.min(1, k) * 100)}%`);
+
+async function fetchText(url) {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`${url} answered ${res.status}`);
+  if (!res.body || !res.body.getReader) {
+    const text = await res.text();
+    fetched += text.length;
+    progress((fetched / expected) * 0.85);
+    return text;
+  }
+  const reader = res.body.getReader();
+  const parts = [];
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    parts.push(value);
+    fetched += value.length;
+    progress((fetched / expected) * 0.85);
+  }
+  return new TextDecoder().decode(await new Blob(parts).arrayBuffer());
+}
+function decodeBase64(text) {
+  if (Uint8Array.fromBase64) return Uint8Array.fromBase64(text.trim());
+  const bin = atob(text.trim());
+  const bytes = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  return bytes;
+}
+
+// the geometry files are joined into one binary glTF in memory (JSON + BIN chunk), so the loader
+// reads the vertex data from memory and fetches only the WebP textures next to the page
+async function loadModel() {
+  const json = await (await fetch('model.json')).json();
+  const files = json.asset.extras.files;
+  expected = Math.ceil((files.geometryBytes * 4) / 3) + files.imageBytes;
+  const parts = await Promise.all(json.buffers.map((b) => fetchText(b.uri).then(decodeBase64)));
+  const offsets = [];
+  let total = 0;
+  parts.forEach((bytes, i) => {
+    const want = json.buffers[i].byteLength;
+    if (bytes.length !== want) throw new Error(`${json.buffers[i].uri} decoded to ${bytes.length} bytes, not ${want}`);
+    offsets.push(total);
+    total += Math.ceil(bytes.length / 4) * 4;
+  });
+  const bin = new Uint8Array(total);
+  parts.forEach((bytes, i) => bin.set(bytes, offsets[i]));
+  for (const view of json.bufferViews) {
+    view.byteOffset = (view.byteOffset || 0) + offsets[view.buffer];
+    view.buffer = 0;
+  }
+  json.buffers = [{ byteLength: total }];
+  let text = new TextEncoder().encode(JSON.stringify(json));
+  const pad = (4 - (text.length % 4)) % 4;
+  const glb = new Uint8Array(12 + 8 + text.length + pad + 8 + total);
+  const dv = new DataView(glb.buffer);
+  dv.setUint32(0, 0x46546c67, true); // 'glTF'
+  dv.setUint32(4, 2, true);
+  dv.setUint32(8, glb.length, true);
+  dv.setUint32(12, text.length + pad, true);
+  dv.setUint32(16, 0x4e4f534a, true); // 'JSON'
+  glb.set(text, 20);
+  glb.fill(0x20, 20 + text.length, 20 + text.length + pad);
+  const binAt = 20 + text.length + pad;
+  dv.setUint32(binAt, total, true);
+  dv.setUint32(binAt + 4, 0x004e4942, true); // 'BIN\0'
+  glb.set(bin, binAt + 8);
+  text = null;
+  loadingText.textContent = 'Building the circuit…';
+  const manager = new THREE.LoadingManager();
+  manager.onProgress = (_, done, count) => progress(0.85 + (0.15 * done) / Math.max(count, 1));
+  return new GLTFLoader(manager).parseAsync(glb.buffer, new URL('./', location.href).href);
+}
+
+/* ---------- Heights: the ground under any point (camera floor, flights) ---------- */
+function heightField(objects, cell) {
+  const tris = [];
+  const v = [new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3()];
+  const meshes = [];
+  for (const o of objects) o.traverse((m) => m.isMesh && !m.isInstancedMesh && meshes.push(m));
+  for (const mesh of meshes) {
+    mesh.updateWorldMatrix(true, false);
+    const pos = mesh.geometry.attributes.position;
+    const index = mesh.geometry.index;
+    const n = index ? index.count : pos.count;
+    for (let i = 0; i < n; i += 3) {
+      for (let k = 0; k < 3; k++) v[k].fromBufferAttribute(pos, index ? index.getX(i + k) : i + k).applyMatrix4(mesh.matrixWorld);
+      tris.push(v[0].x, v[0].y, v[0].z, v[1].x, v[1].y, v[1].z, v[2].x, v[2].y, v[2].z);
+    }
+  }
+  const grid = new Map();
+  const key = (i, j) => i * 100003 + j;
+  for (let t = 0; t < tris.length; t += 9) {
+    const x0 = Math.min(tris[t], tris[t + 3], tris[t + 6]), x1 = Math.max(tris[t], tris[t + 3], tris[t + 6]);
+    const z0 = Math.min(tris[t + 2], tris[t + 5], tris[t + 8]), z1 = Math.max(tris[t + 2], tris[t + 5], tris[t + 8]);
+    for (let i = Math.floor(x0 / cell); i <= Math.floor(x1 / cell); i++)
+      for (let j = Math.floor(z0 / cell); j <= Math.floor(z1 / cell); j++) {
+        const k = key(i, j);
+        if (!grid.has(k)) grid.set(k, []);
+        grid.get(k).push(t);
+      }
+  }
+  return (x, z) => {
+    const list = grid.get(key(Math.floor(x / cell), Math.floor(z / cell)));
+    if (!list) return null;
+    let best = null;
+    for (const t of list) {
+      const ax = tris[t], az = tris[t + 2], bx = tris[t + 3], bz = tris[t + 5], cx = tris[t + 6], cz = tris[t + 8];
+      const d = (bz - cz) * (ax - cx) + (cx - bx) * (az - cz);
+      if (Math.abs(d) < 1e-9) continue;
+      const a = ((bz - cz) * (x - cx) + (cx - bx) * (z - cz)) / d;
+      const b = ((cz - az) * (x - cx) + (ax - cx) * (z - cz)) / d;
+      const c = 1 - a - b;
+      if (a < -1e-6 || b < -1e-6 || c < -1e-6) continue;
+      const y = a * tris[t + 1] + b * tris[t + 4] + c * tris[t + 7];
+      if (best === null || y > best) best = y;
+    }
+    return best;
+  };
+}
+
+/* ---------- Shadows fitted to what the camera looks at ---------- */
+const shadowFit = { center: new THREE.Vector3(), radius: -1 };
+function fitShadow(center, radius) {
+  shadowFit.center.copy(center);
+  shadowFit.radius = radius;
+  const cam = sun.shadow.camera;
+  Object.assign(cam, { left: -radius, right: radius, top: radius, bottom: -radius, near: 1, far: radius * 4 + 800 });
+  cam.updateProjectionMatrix();
+  sun.target.position.copy(center);
+  sun.position.copy(center).addScaledVector(sunDir, radius * 2 + 400);
+  sun.target.updateMatrixWorld();
+  sun.updateMatrixWorld();
+  sun.shadow.normalBias = ((2 * radius) / sun.shadow.mapSize.x) * 1.2;
+  renderer.shadowMap.needsUpdate = true;
+}
+function shadowRadiusFor(distance) {
+  return THREE.MathUtils.clamp(distance * 0.85, 22, 1150);
+}
+
+/* ---------- Quality ---------- */
+const Q_ORDER = ['high', 'balanced', 'fast'];
+const Q_NAME = { high: 'Quality: high', balanced: 'Quality: medium', fast: 'Quality: fast' };
+let quality = SMALL || devicePixelRatio > 2.5 ? 'balanced' : 'high';
+function applyQuality() {
+  renderer.setPixelRatio(Math.min(devicePixelRatio, quality === 'high' ? 2 : quality === 'balanced' ? 1.5 : 1));
+  const size = quality === 'high' ? 4096 : 2048;
+  sun.castShadow = quality !== 'fast';
+  if (sun.shadow.mapSize.x !== size) {
+    sun.shadow.mapSize.set(size, size);
+    if (sun.shadow.map) {
+      sun.shadow.map.dispose();
+      sun.shadow.map = null;
+    }
+  }
+  $('quality').textContent = Q_NAME[quality];
+  shadowFit.radius = -1;
+  resize();
+}
+
+/* ---------- Views ---------- */
+const views = {};
+const hint = $('hint');
+const HINT = 'Drag to orbit · scroll or pinch to zoom · double-click the ground to fly there';
+let anim = null;
+let following = false; // the camera rides along with the car
+const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+function viewPose(v) {
+  if (v.fit) return v.fit();
+  const target = v.target.clone();
+  const pos = v.pos.clone();
+  if (camera.aspect < 1) pos.sub(target).multiplyScalar(1 + (1 - camera.aspect) * 1.15).add(target);
+  return { pos, target };
+}
+function flyTo(pos, target, dur = 1500) {
+  anim = { t0: performance.now(), dur: reduced ? 0 : dur, p0: camera.position.clone(), l0: controls.target.clone(), p1: pos, l1: target };
+  controls.enabled = false;
+  dirty = true;
+}
+function press(name) {
+  for (const b of document.querySelectorAll('[data-view]')) b.setAttribute('aria-pressed', String(b.dataset.view === name));
+}
+function goTo(name) {
+  const v = views[name];
+  if (!v) return;
+  following = name === 'car';
+  controls.enablePan = !following;
+  const { pos, target } = viewPose(v);
+  flyTo(pos, target, name === 'map' || name === 'overview' ? 1800 : 1500);
+  press(name);
+  try {
+    history.replaceState(null, '', '#' + name);
+  } catch {}
+}
+
+/* ---------- Labels ---------- */
+const labelRoot = $('labels');
+const labels = [];
+function addLabel(name, sub, point, follow) {
+  const el = document.createElement('div');
+  el.className = 'label';
+  el.innerHTML = `${name}<span>${sub}</span>`;
+  labelRoot.appendChild(el);
+  labels.push({ el, v: point.clone(), follow });
+}
+const tmp = new THREE.Vector3();
+// labels are listed by priority; one that would cover a label placed before it stays hidden
+const placed = [];
+function updateLabels() {
+  const w = canvas.clientWidth, h = canvas.clientHeight;
+  const show = !anim;
+  placed.length = 0;
+  for (const l of labels) {
+    if (l.follow) l.follow(l.v);
+    tmp.copy(l.v).project(camera);
+    let visible = show && tmp.z < 1 && Math.abs(tmp.x) < 1.05 && Math.abs(tmp.y) < 1.05;
+    const x = (tmp.x * 0.5 + 0.5) * w, y = (-tmp.y * 0.5 + 0.5) * h;
+    if (visible) {
+      if (!l.size) l.size = [l.el.offsetWidth || 90, l.el.offsetHeight || 34];
+      const r = [x - l.size[0] / 2 - 4, y - l.size[1] - 4, x + l.size[0] / 2 + 4, y + 4];
+      if (placed.some((q) => r[0] < q[2] && r[2] > q[0] && r[1] < q[3] && r[3] > q[1])) visible = false;
+      else placed.push(r);
+    }
+    l.el.hidden = !visible;
+    if (visible) l.el.style.transform = `translate(${x}px, ${y}px) translate(-50%, -100%)`;
+  }
+}
+
+/* ---------- The lap: the centre line, a speed profile, the car on it ---------- */
+const lap = { s: 0, v: 0, time: 0, timing: false, best: null, last: null, length: 0, xs: null, zs: null, hs: null, speed: null, step: 1 };
+const VMAX = 72, A_LAT = 15, A_GO = 7, A_BRAKE = 14; // m/s, m/s² (a quick GT car)
+function buildLap(points, roadHeight) {
+  const curve = new THREE.CatmullRomCurve3(points.map(([x, z]) => new THREE.Vector3(x, 0, z)), true, 'centripetal');
+  const length = curve.getLength();
+  const n = Math.round(length / lap.step);
+  const xs = new Float32Array(n), zs = new Float32Array(n), hs = new Float32Array(n), heading = new Float32Array(n);
+  const p = new THREE.Vector3();
+  for (let i = 0; i < n; i++) {
+    curve.getPointAt(i / n, p);
+    xs[i] = p.x;
+    zs[i] = p.z;
+    hs[i] = roadHeight(p.x, p.z) ?? 0;
+  }
+  const at = (i) => ((i % n) + n) % n;
+  // curvature from the heading change over ±8 m, then the fastest speed each point allows
+  const W = 8;
+  const vmax = new Float32Array(n);
+  for (let i = 0; i < n; i++) {
+    const a = Math.atan2(zs[i] - zs[at(i - W)], xs[i] - xs[at(i - W)]);
+    const b = Math.atan2(zs[at(i + W)] - zs[i], xs[at(i + W)] - xs[i]);
+    let d = b - a;
+    d = Math.atan2(Math.sin(d), Math.cos(d));
+    const k = Math.abs(d) / (W * lap.step);
+    heading[i] = k;
+    vmax[i] = Math.min(VMAX, k > 1e-5 ? Math.sqrt(A_LAT / k) : VMAX);
+  }
+  // accelerate out of corners, brake into them (two passes round the loop so the joins agree)
+  const v = Float32Array.from(vmax);
+  for (let pass = 0; pass < 2; pass++) {
+    for (let i = 1; i <= n; i++) {
+      const j = at(i), prev = v[at(i - 1)];
+      v[j] = Math.min(v[j], Math.sqrt(prev * prev + 2 * A_GO * lap.step));
+    }
+    for (let i = n - 2; i >= -n; i--) {
+      const j = at(i), next = v[at(i + 1)];
+      v[j] = Math.min(v[j], Math.sqrt(next * next + 2 * A_BRAKE * lap.step));
+    }
+  }
+  // the longest run of near-straight track (radius over 1 km)
+  let run = 0, longest = 0;
+  for (let i = 0; i < 2 * n; i++) {
+    if (heading[at(i)] < 0.001) longest = Math.max(longest, ++run);
+    else run = 0;
+  }
+  Object.assign(lap, { length, xs, zs, hs, speed: v, n, straight: Math.min(longest, n) * lap.step });
+}
+function sampleLap(s, out) {
+  const n = lap.n;
+  const f = (((s / lap.step) % n) + n) % n;
+  const i = Math.floor(f), j = (i + 1) % n, t = f - i;
+  out.x = lap.xs[i] + (lap.xs[j] - lap.xs[i]) * t;
+  out.z = lap.zs[i] + (lap.zs[j] - lap.zs[i]) * t;
+  out.y = lap.hs[i] + (lap.hs[j] - lap.hs[i]) * t;
+  out.v = lap.speed[i] + (lap.speed[j] - lap.speed[i]) * t;
+  return out;
+}
+function nearestS(x, z) {
+  let best = 0, d = Infinity;
+  for (let i = 0; i < lap.n; i++) {
+    const dd = (lap.xs[i] - x) ** 2 + (lap.zs[i] - z) ** 2;
+    if (dd < d) (d = dd), (best = i);
+  }
+  return best * lap.step;
+}
+
+let car = null;
+const carParts = { wheels: [], radius: 0.34, spin: 0, offset: 0 };
+const A = {}, B = {};
+const fwd = new THREE.Vector3(), up = new THREE.Vector3(), side = new THREE.Vector3(), basis = new THREE.Matrix4();
+const lastCar = new THREE.Vector3();
+function placeCar(s) {
+  sampleLap(s - 2.2, A);
+  sampleLap(s + 2.2, B);
+  fwd.set(B.x - A.x, B.y - A.y, B.z - A.z).normalize();
+  up.set(0, 1, 0).addScaledVector(fwd, -fwd.y).normalize();
+  side.crossVectors(fwd, up);
+  basis.makeBasis(fwd, up, side); // the car's own +X points forward, +Y up
+  car.quaternion.setFromRotationMatrix(basis);
+  sampleLap(s, A);
+  car.position.set(A.x, A.y + carParts.offset, A.z);
+}
+
+// wheels: each part is four instances; spin them about their axle, the right way on each side
+const spinMatrix = new THREE.Matrix4(), spunMatrix = new THREE.Matrix4(), toCentre = new THREE.Matrix4(), fromCentre = new THREE.Matrix4();
+function setupWheels(root) {
+  const tyre = root.getObjectByName('wheel-tyre');
+  if (!tyre || !tyre.isInstancedMesh) return;
+  tyre.geometry.computeBoundingBox();
+  const box = tyre.geometry.boundingBox;
+  const size = box.getSize(new THREE.Vector3());
+  const centre = box.getCenter(new THREE.Vector3());
+  const axis = new THREE.Vector3(size.x < size.y && size.x < size.z ? 1 : 0, size.y <= size.x && size.y < size.z ? 1 : 0, 0);
+  if (!axis.lengthSq()) axis.set(0, 0, 1);
+  carParts.radius = Math.max(size.x, size.y, size.z) / 2;
+  toCentre.makeTranslation(centre.x, centre.y, centre.z);
+  fromCentre.makeTranslation(-centre.x, -centre.y, -centre.z);
+  carParts.axis = axis;
+  root.getObjectByName('wheels').traverse((mesh) => {
+    if (!mesh.isInstancedMesh) return;
+    if (mesh.name === 'wheel-blur') return void (mesh.visible = false);
+    const base = [];
+    const signs = [];
+    for (let i = 0; i < mesh.count; i++) {
+      const m = new THREE.Matrix4();
+      mesh.getMatrixAt(i, m);
+      base.push(m);
+      // the rotation this instance's axle gives in car space; the top of a wheel rolling forward moves to +X
+      const linear = new THREE.Matrix3().setFromMatrix4(m);
+      const det = Math.sign(linear.determinant()) || 1;
+      const axleCar = axis.clone().applyMatrix3(linear).normalize().multiplyScalar(det);
+      signs.push(Math.sign(new THREE.Vector3().crossVectors(axleCar, new THREE.Vector3(0, 1, 0)).x) || 1);
+    }
+    carParts.wheels.push({ mesh, base, signs });
+  });
+}
+function spinWheels(angle) {
+  for (const { mesh, base, signs } of carParts.wheels) {
+    for (let i = 0; i < base.length; i++) {
+      spinMatrix.makeRotationAxis(carParts.axis, signs[i] * angle);
+      spunMatrix.copy(base[i]).multiply(toCentre).multiply(spinMatrix).multiply(fromCentre);
+      mesh.setMatrixAt(i, spunMatrix);
+    }
+    mesh.instanceMatrix.needsUpdate = true;
+  }
+}
+
+// a soft contact shadow under the car (the sun's shadow map is coarse from far away)
+function contactShadow(length, width) {
+  const c = document.createElement('canvas');
+  c.width = 128;
+  c.height = 64;
+  const g = c.getContext('2d');
+  const grad = g.createRadialGradient(64, 32, 4, 64, 32, 62);
+  grad.addColorStop(0, 'rgba(0,0,0,0.62)');
+  grad.addColorStop(0.55, 'rgba(0,0,0,0.38)');
+  grad.addColorStop(1, 'rgba(0,0,0,0)');
+  g.setTransform(1, 0, 0, 0.5, 0, 16);
+  g.fillStyle = grad;
+  g.fillRect(0, 0, 128, 128);
+  const tex = new THREE.CanvasTexture(c);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  const mesh = new THREE.Mesh(
+    new THREE.PlaneGeometry(length * 1.18, width * 1.45).rotateX(-Math.PI / 2),
+    new THREE.MeshBasicMaterial({ map: tex, transparent: true, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -4, fog: true }),
+  );
+  mesh.position.y = 0.01;
+  mesh.renderOrder = 1;
+  return mesh;
+}
+
+/* ---------- Driving ---------- */
+let driving = false;
+const driveBtn = $('drive');
+const hud = $('hud');
+const fmtTime = (t) => `${Math.floor(t / 60)}:${(t % 60).toFixed(1).padStart(4, '0')}`;
+function setDriving(on) {
+  driving = on;
+  driveBtn.setAttribute('aria-pressed', String(on));
+  driveBtn.textContent = on ? 'Stop the car' : 'Drive a lap';
+  hud.hidden = !on && lap.v === 0;
+  dirty = true;
+}
+driveBtn.addEventListener('click', () => setDriving(!driving));
+
+function stepCar(dt) {
+  if (!car || (!driving && lap.v === 0)) return false;
+  const target = driving ? sampleLap(lap.s, A).v : 0;
+  const rate = lap.v < target ? A_GO : A_BRAKE;
+  lap.v = target > lap.v ? Math.min(target, lap.v + rate * dt) : Math.max(target, lap.v - rate * dt);
+  const ds = lap.v * dt;
+  const before = lap.s;
+  lap.s = (lap.s + ds) % lap.length;
+  if (lap.timing) lap.time += dt;
+  // the clock starts when the car first crosses the start / finish line, and each crossing ends a lap
+  const crossed = (before < lap.startS && before + ds >= lap.startS) || before + ds >= lap.length + lap.startS;
+  if (crossed && driving) {
+    if (lap.timing) {
+      lap.last = lap.time;
+      lap.best = lap.best === null ? lap.time : Math.min(lap.best, lap.time);
+    }
+    lap.timing = true;
+    lap.time = 0;
+  }
+  lastCar.copy(car.position);
+  placeCar(lap.s);
+  carParts.spin += ds / carParts.radius;
+  spinWheels(carParts.spin);
+  if (following) {
+    tmp.subVectors(car.position, lastCar);
+    if (anim) {
+      anim.p1.add(tmp);
+      anim.l1.add(tmp);
+    } else {
+      camera.position.add(tmp);
+      controls.target.add(tmp);
+    }
+  }
+  $('hud-speed').textContent = `${Math.round(lap.v * 3.6)} km/h`;
+  $('hud-lap').textContent = lap.timing ? fmtTime(lap.time) : 'to the line';
+  $('hud-best').textContent = lap.best === null ? (lap.timing ? 'first lap' : '') : `best ${fmtTime(lap.best)}`;
+  if (!driving && lap.v === 0) hud.hidden = true;
+  return true;
+}
+
+/* ---------- Interaction ---------- */
+$('golden').addEventListener('click', (e) => {
+  golden = !golden;
+  e.currentTarget.setAttribute('aria-pressed', String(golden));
+  applyLight();
+});
+$('quality').addEventListener('click', () => {
+  quality = Q_ORDER[(Q_ORDER.indexOf(quality) + 1) % 3];
+  applyQuality();
+});
+for (const b of document.querySelectorAll('[data-view]')) b.addEventListener('click', () => goTo(b.dataset.view));
+addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') goTo('overview');
+});
+const ray = new THREE.Raycaster();
+const ndc = new THREE.Vector2();
+let groundMeshes = [];
+canvas.addEventListener('dblclick', (e) => {
+  const r = canvas.getBoundingClientRect();
+  ndc.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
+  ray.setFromCamera(ndc, camera);
+  const hit = ray.intersectObjects(groundMeshes, false)[0];
+  if (!hit) return;
+  following = false;
+  controls.enablePan = true;
+  const dist = Math.min(camera.position.distanceTo(controls.target), 140);
+  const dir = camera.position.clone().sub(controls.target).normalize();
+  flyTo(hit.point.clone().addScaledVector(dir, dist), hit.point.clone(), 1100);
+  press('');
+});
+controls.addEventListener('change', () => (dirty = true));
+controls.addEventListener('start', () => {
+  if (anim) return;
+  for (const b of document.querySelectorAll('[data-view]')) if (b.dataset.view !== 'car' || !following) b.setAttribute('aria-pressed', 'false');
+});
+
+/* ---------- Frame loop (renders only when something changed) ---------- */
+let dirty = true;
+let groundAt = () => null;
+let frames = 0;
+function resize() {
+  const w = innerWidth, h = innerHeight;
+  renderer.setSize(w, h, false);
+  camera.aspect = w / h;
+  camera.updateProjectionMatrix();
+  dirty = true;
+}
+addEventListener('resize', resize);
+const clock = new THREE.Clock();
+function frame(now) {
+  requestAnimationFrame(frame);
+  const dt = Math.min(clock.getDelta(), 0.05);
+  let moving = stepCar(dt);
+  if (anim) {
+    const t = anim.dur ? Math.min((now - anim.t0) / anim.dur, 1) : 1;
+    const k = ease(t);
+    camera.position.lerpVectors(anim.p0, anim.p1, k);
+    // arc over the ground on long flights so the camera never skims the trees
+    const lift = Math.sin(Math.PI * k) * Math.min(anim.p0.distanceTo(anim.p1) * 0.25, 400);
+    camera.position.y += lift;
+    controls.target.lerpVectors(anim.l0, anim.l1, k);
+    camera.lookAt(controls.target);
+    if (t >= 1) {
+      anim = null;
+      controls.enabled = true;
+    }
+    moving = true;
+  } else if (controls.update()) moving = true;
+  // keep the camera above the ground
+  const floor = groundAt(camera.position.x, camera.position.z);
+  if (floor !== null && camera.position.y < floor + 1.2) {
+    camera.position.y = floor + 1.2;
+    moving = true;
+  }
+  if (!moving && !dirty) return;
+  dirty = false;
+  const distance = camera.position.distanceTo(controls.target);
+  camera.near = THREE.MathUtils.clamp(distance * 0.02, 0.05, 60);
+  camera.far = 40000;
+  camera.updateProjectionMatrix();
+  // shadows: refit when the view moved far enough, and follow the car while it drives
+  if (sun.castShadow) {
+    const r = shadowRadiusFor(distance);
+    const centre = controls.target;
+    if (shadowFit.radius < 0 || centre.distanceTo(shadowFit.center) > shadowFit.radius * 0.3 || r / shadowFit.radius > 1.35 || r / shadowFit.radius < 0.7) fitShadow(centre, r);
+    else if (lap.v > 0 && car.position.distanceTo(shadowFit.center) < shadowFit.radius * 1.2 && (quality === 'high' || frames % 2 === 0)) renderer.shadowMap.needsUpdate = true;
+  }
+  updateLabels();
+  renderer.render(scene, camera);
+  frames++;
+}
+
+/* ---------- Start ---------- */
+(async () => {
+  let gltf;
+  let track;
+  try {
+    [gltf, track] = await Promise.all([loadModel(), fetch('track.json').then((r) => r.json())]);
+  } catch (e) {
+    fail(`The model could not load (${e.message}). Reload the page to try again.`);
+    throw e;
+  }
+  const root = gltf.scene;
+  scene.add(root);
+  root.updateMatrixWorld(true);
+
+  // materials, textures, shadows
+  const flat = new Set(['ground-circuit', 'ground-surroundings', 'track', 'hills', 'hills-0', 'hills-1', 'hills-2']);
+  const resized = [];
+  root.traverse((o) => {
+    if (!o.isMesh) return;
+    const name = o.name || '';
+    const isFlat = flat.has(name) || name.startsWith('surface') || (o.parent && o.parent.name === 'hills');
+    o.receiveShadow = true;
+    o.castShadow = !isFlat;
+    for (const m of Array.isArray(o.material) ? o.material : [o.material])
+      for (const key of ['map', 'normalMap', 'roughnessMap', 'metalnessMap', 'aoMap', 'emissiveMap'])
+        if (m[key]) {
+          m[key].anisotropy = ANISO;
+          const img = m[key].image;
+          if (img && (img.width > MAX_TEX || img.height > MAX_TEX)) resized.push(m[key]);
+        }
+  });
+  // phones whose GPU takes textures up to 4096 px get the circuit image at that size
+  for (const t of new Set(resized)) {
+    const k = MAX_TEX / Math.max(t.image.width, t.image.height);
+    const c = document.createElement('canvas');
+    c.width = Math.floor(t.image.width * k);
+    c.height = Math.floor(t.image.height * k);
+    c.getContext('2d').drawImage(t.image, 0, 0, c.width, c.height);
+    t.image = c;
+    t.needsUpdate = true;
+  }
+  root.traverse((o) => {
+    if (o.name !== 'hero-car' && !o.isLight) o.matrixAutoUpdate = false;
+  });
+
+  // heights: the ground for the camera, the road for the car
+  const ground = ['ground-circuit', 'ground-surroundings', 'track'].map((n) => root.getObjectByName(n)).filter(Boolean);
+  groundMeshes = [];
+  for (const o of ground) o.traverse((m) => m.isMesh && groundMeshes.push(m));
+  root.traverse((o) => o.isMesh && (o.name || '').startsWith('surface') && groundMeshes.push(o));
+  groundAt = heightField(groundMeshes, 40);
+  const roadAt = heightField([root.getObjectByName('track')].filter(Boolean), 20);
+
+  // the car
+  car = root.getObjectByName('hero-car');
+  car.matrixAutoUpdate = true;
+  car.matrix.decompose(car.position, car.quaternion, car.scale);
+  setupWheels(car);
+  const carBox = new THREE.Box3();
+  {
+    const inv = car.matrixWorld.clone().invert();
+    car.traverse((o) => {
+      if (!o.isMesh || o.name === 'wheel-blur') return;
+      o.geometry.computeBoundingBox();
+      const b = o.geometry.boundingBox.clone().applyMatrix4(new THREE.Matrix4().multiplyMatrices(inv, o.matrixWorld));
+      carBox.union(b);
+    });
+  }
+  const carSize = carBox.getSize(new THREE.Vector3());
+  car.add(contactShadow(carSize.x, carSize.z));
+
+  buildLap(track.pts, roadAt);
+  lap.startS = nearestS(-96, 206); // the start / finish gantry
+  lap.s = nearestS(car.position.x, car.position.z);
+  carParts.offset = car.position.y - sampleLap(lap.s, A).y;
+  placeCar(lap.s);
+  car.updateMatrixWorld(true);
+
+  // facts
+  const count = (re) => {
+    let n = 0;
+    root.traverse((o) => o.isInstancedMesh && re.test(o.name || '') && (n += o.count));
+    return n;
+  };
+  let tris = 0;
+  root.traverse((o) => {
+    if (!o.isMesh || !o.visible) return;
+    const g = o.geometry;
+    tris += ((g.index ? g.index.count : g.attributes.position.count) / 3) * (o.isInstancedMesh ? o.count : 1);
+  });
+  const nf = new Intl.NumberFormat('en');
+  $('f-lap').textContent = `${(track.pts.reduce((s, p, i, a) => s + Math.hypot(p[0] - a[(i + 1) % a.length][0], p[1] - a[(i + 1) % a.length][1]), 0) / 1000).toFixed(3)} km`;
+  $('f-straight').textContent = `${Math.round(lap.straight)} m`;
+  $('f-car').textContent = `${carSize.x.toFixed(2)} m`;
+  $('f-trees').textContent = nf.format(count(/^(stonePine|eucalyptus|holmOak|maritimePine|cypress)-far$/));
+  $('f-scrub').textContent = nf.format(count(/^(scrub|pampas)-far$|^grass-tufts$/));
+  $('f-tris').textContent = `${(tris / 1e6).toFixed(2)} M`;
+
+  // places: views and labels from the model's own parts
+  const boxOf = (...names) => {
+    const b = new THREE.Box3();
+    for (const n of names) {
+      const o = root.getObjectByName(n);
+      if (o) b.expandByObject(o);
+    }
+    return b;
+  };
+  const gantry = boxOf('gantry');
+  const pits = boxOf('pit-building');
+  const stand = boxOf('grandstand');
+  const paddockBox = new THREE.Box3();
+  root.traverse((o) => /^paddock-car-\d+$/.test(o.name) && paddockBox.expandByObject(o));
+  const c = (b) => b.getCenter(new THREE.Vector3());
+  const trackBox = boxOf('track');
+  const mid = c(trackBox).setY(0);
+  const V = (x, y, z) => new THREE.Vector3(x, y, z);
+
+  views.overview = {
+    fit() {
+      // on a tall screen look along the circuit's long side, so it runs up the screen
+      if (camera.aspect < 0.9) {
+        const k = 1 + (0.9 - camera.aspect) * 0.6;
+        return { pos: V(mid.x + 860 * k, 600 * k, mid.z + 150 * k), target: V(mid.x - 40, 0, mid.z + 30) };
+      }
+      return { pos: V(mid.x - 330, 600, mid.z + 760), target: V(mid.x + 40, 0, mid.z + 20) };
+    },
+  };
+  views.map = {
+    fit() {
+      const size = trackBox.getSize(new THREE.Vector3());
+      const tan = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
+      const portrait = camera.aspect < 1;
+      // on a portrait screen the circuit's long side runs up the screen
+      const across = portrait ? size.z : size.x, along = portrait ? size.x : size.z;
+      const h = (Math.max(along * 1.12, (across * 1.12) / camera.aspect) / 2 / tan) * 1.08;
+      const target = mid.clone();
+      const pos = portrait ? V(mid.x + 0.01 * h, h, mid.z) : V(mid.x, h, mid.z + 0.01 * h);
+      return { pos, target };
+    },
+  };
+  views.car = {
+    fit() {
+      const target = car.position.clone().setY(car.position.y + 0.7);
+      fwd.set(1, 0, 0).applyQuaternion(car.quaternion);
+      side.set(0, 0, 1).applyQuaternion(car.quaternion);
+      const k = camera.aspect < 1 ? 1.5 : 1;
+      const pos = target.clone().addScaledVector(fwd, 6.2 * k).addScaledVector(side, 4.4 * k).setY(target.y + 1.5 * k);
+      return { pos, target };
+    },
+  };
+  views.straight = { pos: V(gantry.min.x - 140, 2.4, 211.5), target: V(gantry.min.x + 120, 2.5, 203) };
+  // from the outside edge of the straight, in front of the grandstand, across to the garages
+  views.pits = { pos: V(c(pits).x + 95, 13, stand.min.z - 6), target: V(c(pits).x - 15, 5, c(pits).z) };
+  views.paddock = { pos: V(c(paddockBox).x + 70, 55, c(paddockBox).z - 60), target: c(paddockBox).setY(0) };
+
+  addLabel('Car', `${carSize.x.toFixed(2)} m`, new THREE.Vector3(), (v) => v.copy(car.position).setY(car.position.y + carSize.y + 0.9));
+  addLabel('Start / finish', `lap ${$('f-lap').textContent}`, V(c(gantry).x, gantry.max.y + 1.5, c(gantry).z));
+  addLabel('Pit building', 'pit lane', V(c(pits).x, pits.max.y + 2, c(pits).z));
+  addLabel('Grandstand', 'main straight', V(c(stand).x, stand.max.y + 2, c(stand).z));
+  let parked = 0;
+  root.traverse((o) => /^paddock-car-\d+$/.test(o.name) && parked++);
+  addLabel('Paddock', `${parked} parked cars`, c(paddockBox).setY(4));
+
+  // start where the link says, else in the overview
+  applyQuality();
+  applyLight();
+  const start = views[location.hash.slice(1)] ? location.hash.slice(1) : 'overview';
+  following = start === 'car';
+  controls.enablePan = !following;
+  const pose = viewPose(views[start]);
+  camera.position.copy(pose.pos);
+  controls.target.copy(pose.target);
+  controls.update();
+  press(start);
+  addEventListener('hashchange', () => views[location.hash.slice(1)] && goTo(location.hash.slice(1)));
+  requestAnimationFrame((t) => {
+    frame(t);
+    requestAnimationFrame(() => ($('loading').hidden = true));
+  });
+})();
+</script>

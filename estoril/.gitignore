@@ -5,3 +5,4 @@ tools/recon/ids.json
 captures/tmp/
 .cache/
 artifact/
+model-viewer/dist/
