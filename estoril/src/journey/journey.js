@@ -70,6 +70,11 @@ const MAX_SEQUENCE_STEP = 0.02;
 const MAX_FRAME_TIME = 0.05;
 /** jump() past this progress ends the intro fly-in (progress.js INTRO_SKIP_PROGRESS). */
 const INTRO_END_PROGRESS = 0.01;
+/**
+ * A still (renderAt with dt 0) is drawn at this scene clock, whatever ran before it: the clock
+ * drives the camera's slow bob, the crew's and visitors' idle moves, the flags and the grass.
+ */
+const STILL_CLOCK = 0;
 
 /** Journey positions pre-rendered by warmup() so their shaders and textures are ready. */
 const WARMUP_PROGRESS = [0.26, 0.37, 0.47, 0.7, 0.95];
@@ -124,6 +129,12 @@ async function createJourney({
   const track = trackData.pts; // circuit centreline, [x, z] pairs
   const world = buildWorld(track, { quality, renderer });
   scene.add(world.root);
+  // world parts that move by integrating the frame time instead of reading the clock: the drifting
+  // cloud sprites (world/clouds.js). A still puts them back where they started, as it sets the
+  // clock, so it shows the same sky however long the page has been running.
+  const drifting = world.root.getObjectByName('clouds')?.children ?? [];
+  const driftStart = Float64Array.from(drifting, (cloud) => cloud.position.x);
+  const driftSaved = new Float64Array(drifting.length);
   onProgress(0.35);
   const car = await buildHeroCar(carUrl, carMeta, {
     quality,
@@ -249,6 +260,7 @@ async function createJourney({
       wheelDistance: carMotion.wheelDistance,
       speed: carMotion.speed,
       prevSpeed: carMotion.prevSpeed,
+      drift: drifting.reduce((sum, cloud) => sum + cloud.position.x, 0),
     };
   }
 
@@ -279,8 +291,10 @@ async function createJourney({
     /**
      * Cuts to `value` without smoothing (the car is placed there at rest, the blur forgets the last
      * frame). A cut past the arrival (value > INTRO_END_PROGRESS: a stage reached by scrolling while
-     * the scene was stopped, a deep link) ends the intro; a cut to the top of the journey keeps it,
-     * so the fly-in plays when the page opens at the arrival (home.js skips it with reduced motion).
+     * the scene was stopped, a deep link) ends the intro at once, since a cut has no motion to
+     * continue; a cut to the top of the journey keeps it, so the fly-in plays when the page opens at
+     * the arrival (home.js skips it with reduced motion). Scrolling during the fly-in (the stage
+     * buttons included) does not cut it: it plays out faster (progress.js).
      */
     jump(value) {
       progress.target = progress.value = clamp(value, 0, 1);
@@ -309,6 +323,7 @@ async function createJourney({
       // and clock; the car (restoring lastDistance is a teleport, car-motion.js: at rest there on the
       // next update); the environment map and the red line of this position; no blur history
       const saved = saveState();
+      for (let i = 0; i < drifting.length; i++) driftSaved[i] = drifting[i].position.x;
       for (const at of WARMUP_PROGRESS) {
         api.renderAt(at);
         await new Promise((resolve) => requestAnimationFrame(resolve));
@@ -323,6 +338,7 @@ async function createJourney({
       carMotion.wheelDistance = saved.wheelDistance;
       carMotion.speed = saved.speed;
       carMotion.prevSpeed = saved.prevSpeed;
+      for (let i = 0; i < drifting.length; i++) drifting[i].position.x = driftSaved[i];
       environment.update(solarHourAt(progress.value));
       highlight.update(progress.value, 0, true, api.basePixelRatio * viewport.resScale);
       resetMotionBlur(blur);
@@ -373,10 +389,11 @@ async function createJourney({
      * Renders one frame at `value` (clamped to 0..1) right now, without smoothing, and leaves the
      * render loop as it is (running or not). `intro` sets the intro timeline, `speed` overrides the
      * car speed (m/s), `dt` is the frame time in seconds (clamped to 0..MAX_FRAME_TIME): with dt 0 the
-     * frame is a still (car at rest, no time passes, no blur), so the same call gives the same pixels
-     * whatever was rendered before; with dt > 0 it is the next frame of a sequence (the car moves
-     * from the last frame's position, the blur reprojects the last frame) unless the step is longer
-     * than MAX_SEQUENCE_STEP, which counts as a cut.
+     * frame is a still (car at rest, the clock at STILL_CLOCK, the clouds where they started, no
+     * blur), so the same call gives the same pixels whatever was rendered or played before; with
+     * dt > 0 it is the next frame of a sequence (the clock advances by dt, the car moves from the last
+     * frame's position, the blur reprojects the last frame) unless the step is longer than
+     * MAX_SEQUENCE_STEP, which counts as a cut for the blur.
      */
     renderAt(value, { intro = 1, speed = null, dt = 0 } = {}) {
       const at = clamp(Number(value) || 0, 0, 1);
@@ -386,7 +403,11 @@ async function createJourney({
       progress.velocity = 0;
       progress.intro = clamp(intro, 0, 1);
       progress.introDone = progress.intro >= 1;
-      if (!frameTime) carMotion.lastDistance = distanceAt(at); // a teleport: no speed from the jump
+      if (!frameTime) {
+        carMotion.lastDistance = distanceAt(at); // a teleport: no speed from the jump
+        clock = STILL_CLOCK;
+        for (let i = 0; i < drifting.length; i++) drifting[i].position.x = driftStart[i];
+      }
       if (speed != null) carMotion.speed = speed;
       step(frameTime, true);
     },

@@ -5,13 +5,20 @@
 //
 // Checks (capture mode, ?capture=1&3d=force&q=high, which exposes window.__journey and __cap):
 //   viewport     the canvas covers the viewport exactly (CSS size = innerWidth × innerHeight) and its
-//                drawing buffer is CSS size × device pixel ratio (1440×900 at 1×, 390×844 at 2×)
+//                drawing buffer is CSS size × device pixel ratio (1440×900 at 1×, 390×844 at 2×,
+//                1024×768); the panels, the stage buttons and the framing areas home.js passes to
+//                the camera match scripts/camera-viewports.json, test-camera.mjs's layouts
 //   determinism  renderAt(t) twice gives the same pixels (hash of gl.readPixels), and again after
 //                stills of other positions and a debug camera in between (t = 0.05, 0.375, 0.5,
-//                0.95); a still advances no time, renderAt(t, { dt }) advances the scene clock by
+//                0.95), and again after the real render loop has played frames elsewhere (the
+//                clock, the camera bob, the crew and the drifting clouds); a still is drawn at the
+//                still clock (0), renderAt(t, { dt }) advances the scene clock by
 //                exactly dt (clamped to 0.05 s), the progress is clamped to 0..1
+//   intro        scrolling during the intro fly-in hurries it along: camera, car and FOV speeds stay
+//                bounded (no cut) and the intro still completes
 //   warmup       warmup() leaves the journey state as it found it (progress, target, spring velocity,
-//                intro, clock, car distance, wheel distance, speeds, environment step, red line),
+//                intro, clock, car distance, wheel distance, speeds, cloud drift, environment step,
+//                red line),
 //                ends with no blur history, and renderAt() draws the same pixels before and after it
 //   rAF          start() adds exactly one requestAnimationFrame chain, a second start() none,
 //                renderAt() neither adds nor cancels one (running or stopped), stop() removes it
@@ -21,8 +28,11 @@
 //   blur path    a still drawn through the blur pass equals the same frame drawn directly, and the
 //                frame does not jump where the pass switches on (0.4305 → 0.4306)
 //   messages     no page errors, console errors or warnings
+import { readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 const { chromium } = createRequire(import.meta.url)('playwright');
+/** The layouts test-camera.mjs frames the car in (scripts/camera-viewports.json). */
+const VIEWPORTS = JSON.parse(readFileSync(new URL('camera-viewports.json', import.meta.url), 'utf8'));
 
 const arg = (k, d) => {
   const i = process.argv.indexOf('--' + k);
@@ -103,20 +113,50 @@ async function open(width, height, scale = 1) {
 for (const [width, height, scale] of [
   [1440, 900, 1],
   [390, 844, 2],
+  [1024, 768, 1],
 ]) {
   const { page, messages } = await open(width, height, scale);
   const size = await page.evaluate(() => {
     window.__journey.renderAt(0.5);
     const canvas = document.querySelector('.jr__canvas');
     const rect = canvas.getBoundingClientRect();
+    const box = (r) => [r.left, r.top, r.right, r.bottom].map(Math.round);
+    const framing = window.__journey.debugState().framing;
+    const px = (f) =>
+      [f[0] * innerWidth, f[1] * innerHeight, f[2] * innerWidth, f[3] * innerHeight].map(Math.round);
     return {
       css: [rect.left, rect.top, rect.width, rect.height],
       viewport: [innerWidth, innerHeight],
       buffer: [canvas.width, canvas.height],
       dpr: devicePixelRatio,
       scale: window.__journey.resScale,
+      layout: {
+        panels: [...document.querySelectorAll('[data-journey] [data-panel]')].map((el) => [
+          el.offsetLeft,
+          el.offsetTop,
+          el.offsetLeft + el.offsetWidth,
+          el.offsetTop + el.offsetHeight,
+        ]),
+        buttons: box(document.querySelector('.jr__nav').getBoundingClientRect()),
+        panel: px(framing.panel),
+        open: px(framing.open),
+      },
     };
   });
+  // the layout test-camera.mjs frames the car in is the page's (within 2 px)
+  const table = VIEWPORTS.find((v) => v.width === width && v.height === height);
+  const off = (a, b) => Math.max(...a.flat().map((v, i) => Math.abs(v - b.flat()[i])));
+  const layoutError = Math.max(
+    off(size.layout.panels, table.panels),
+    off(size.layout.buttons, table.buttons),
+    off(size.layout.panel, table.panel),
+    off(size.layout.open, table.open),
+  );
+  check(
+    `test-camera's ${width}x${height} layout matches the page`,
+    layoutError <= 2,
+    `largest difference ${layoutError} px; page ${JSON.stringify(size.layout)}`,
+  );
   check(
     `canvas covers the ${width}x${height} viewport`,
     size.css[0] === 0 && size.css[1] === 0 && size.css[2] === width && size.css[3] === height,
@@ -161,10 +201,10 @@ const timing = await page.evaluate(() => {
   const J = window.__journey;
   const clock = () => J.debugState().clock;
   const r = {};
-  let c = clock();
+  J.renderAt(0.5, { dt: 1 / 60 });
   J.renderAt(0.5);
-  r.still = clock() - c;
-  c = clock();
+  r.still = clock();
+  let c = clock();
   J.renderAt(0.501, { dt: 1 / 60 });
   r.frame = clock() - c;
   c = clock();
@@ -176,10 +216,93 @@ const timing = await page.evaluate(() => {
   r.low = J.progress;
   return r;
 });
-check('a still advances no time', timing.still === 0, JSON.stringify(timing));
+check('a still is drawn at the still clock (0)', timing.still === 0, JSON.stringify(timing));
 check('renderAt(t, { dt }) advances the clock by dt', Math.abs(timing.frame - 1 / 60) < 1e-12);
 check('renderAt clamps dt to the frame-time cap', Math.abs(timing.long - 0.05) < 1e-12);
 check('renderAt clamps the progress to 0..1', timing.high === 1 && timing.low === 0);
+
+// stills do not depend on how long the real loop has run: play 40 frames at another position
+for (const t of [0.5, 0.95]) {
+  const result = await page.evaluate(async (t) => {
+    const J = window.__journey;
+    const first = window.__renderHash(t);
+    J.setProgress(0.62);
+    J.start();
+    await new Promise((resolve) => {
+      let n = 0;
+      const tick = () => (++n >= 40 ? resolve() : window.__rafRaw(tick));
+      window.__rafRaw(tick);
+    });
+    J.stop();
+    const played = J.debugState().clock;
+    return { first, after: window.__renderHash(t), played };
+  }, t);
+  check(
+    `renderAt(${t}) does not depend on the frames the loop played before`,
+    result.first === result.after,
+    `${result.first} / ${result.after}, the loop played ${result.played.toFixed(2)} s`,
+  );
+}
+
+// scrolling during the intro fly-in hurries it along without a cut: from the start of the intro, the
+// real loop plays 8 frames, the page scrolls to 0.03, the loop plays on; the speed of the camera,
+// of the car and of the FOV change stays bounded (the intro's own peaks × the skip speed 2.5:
+// car ≤ 400 m/s, eye ≤ 90 m/s, FOV ≤ 60°/s; a cut moved the car 87 m and the eye 25 m in one frame)
+const intro = await page.evaluate(async () => {
+  const J = window.__journey;
+  J.renderAt(0, { intro: 0 });
+  J.setProgress(0);
+  const samples = [];
+  const sample = () => {
+    const s = J.debugState();
+    samples.push({
+      clock: s.clock,
+      intro: s.intro,
+      eye: J.camera.position.toArray(),
+      car: J.car.root.position.toArray(),
+      fov: J.camera.fov,
+    });
+  };
+  J.start();
+  await new Promise((resolve) => {
+    let n = 0;
+    const tick = () => {
+      sample();
+      n++;
+      if (n === 8) J.setProgress(0.03);
+      if (n >= 160 || samples[samples.length - 1].intro >= 1) return resolve();
+      window.__rafRaw(tick);
+    };
+    window.__rafRaw(tick);
+  });
+  J.stop();
+  const rates = { eye: 0, car: 0, fov: 0 };
+  let jump = { eye: 0, car: 0, fov: 0 };
+  for (let i = 1; i < samples.length; i++) {
+    const a = samples[i - 1];
+    const b = samples[i];
+    const dt = b.clock - a.clock;
+    const eye = Math.hypot(...b.eye.map((v, k) => v - a.eye[k]));
+    const car = Math.hypot(...b.car.map((v, k) => v - a.car[k]));
+    const fov = Math.abs(b.fov - a.fov);
+    jump = { eye: Math.max(jump.eye, eye), car: Math.max(jump.car, car), fov: Math.max(jump.fov, fov) };
+    if (dt > 0) {
+      rates.eye = Math.max(rates.eye, eye / dt);
+      rates.car = Math.max(rates.car, car / dt);
+      rates.fov = Math.max(rates.fov, fov / dt);
+    }
+  }
+  const last = samples[samples.length - 1];
+  return { rates, jump, frames: samples.length, intro: last.intro, introAt8: samples[7].intro };
+});
+check(
+  'scrolling during the intro hurries it without a cut',
+  intro.rates.car <= 400 && intro.rates.eye <= 90 && intro.rates.fov <= 60 && intro.intro >= 1,
+  `peak speeds car ${intro.rates.car.toFixed(0)} m/s, eye ${intro.rates.eye.toFixed(1)} m/s, ` +
+    `FOV ${intro.rates.fov.toFixed(1)}°/s; largest frame steps car ${intro.jump.car.toFixed(2)} m, eye ` +
+    `${intro.jump.eye.toFixed(2)} m, FOV ${intro.jump.fov.toFixed(2)}°; intro ${intro.introAt8.toFixed(3)} at ` +
+    `the scroll, ${intro.intro} after ${intro.frames} frames`,
+);
 
 const warm = await page.evaluate(async () => {
   const J = window.__journey;
@@ -191,7 +314,7 @@ const warm = await page.evaluate(async () => {
   return { before, after, state0, state1 };
 });
 const keys = ['progress', 'target', 'velocity', 'intro', 'introDone', 'clock', 'carDistance'];
-keys.push('wheelDistance', 'speed', 'prevSpeed', 'envStep', 'highlight', 'running', 'pendingFrame');
+keys.push('wheelDistance', 'speed', 'prevSpeed', 'drift', 'envStep', 'highlight', 'running', 'pendingFrame');
 const changed = keys.filter((k) => JSON.stringify(warm.state0[k]) !== JSON.stringify(warm.state1[k]));
 check(
   'warmup() restores the journey state',

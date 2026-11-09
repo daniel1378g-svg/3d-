@@ -15,8 +15,14 @@ const SMOOTH_TIME = 0.26;
 /** Length of the intro fly-in, in seconds of rendered time. */
 const INTRO_SECONDS = 2.6;
 
-/** The intro also ends as soon as the scroll target passes this progress. */
+/**
+ * Once the scroll target passes INTRO_SKIP_PROGRESS the rest of the intro plays INTRO_SKIP_SPEED
+ * times faster (at most 1.04 s), so scrolling during the fly-in hurries it along without cutting
+ * the camera or the car: both are continuous functions of the intro timeline (camera-director.js,
+ * car-motion.js introRunIn). Ending it at once teleported the car 87 m and the camera 25 m.
+ */
 const INTRO_SKIP_PROGRESS = 0.01;
+const INTRO_SKIP_SPEED = 2.5;
 
 /**
  * One step of a critically damped spring towards `target` (the SmoothDamp formulation: exact for
@@ -55,13 +61,15 @@ function createProgress() {
     intro: 0,
     introDone: false,
     /**
-     * One frame step of `dt` seconds: runs the intro clock and the spring; with `snap` (renderAt)
-     * the value lands on the target exactly.
+     * One frame step of `dt` seconds: runs the intro clock (faster once the page has scrolled on,
+     * see INTRO_SKIP_SPEED) and the spring; with `snap` (renderAt) the value lands on the target
+     * exactly.
      */
     advance(dt, snap = false) {
       if (!state.introDone) {
-        state.intro += dt / INTRO_SECONDS;
-        if (state.intro >= 1 || state.target > INTRO_SKIP_PROGRESS) state.finishIntro();
+        const speed = state.target > INTRO_SKIP_PROGRESS ? INTRO_SKIP_SPEED : 1;
+        state.intro += (dt * speed) / INTRO_SECONDS;
+        if (state.intro >= 1) state.finishIntro();
       }
       // the spring always runs (it updates `velocity`); a snap then overrides its result
       state.value = smoothDamp(state, state.value, state.target, dt);
@@ -70,6 +78,7 @@ function createProgress() {
         state.velocity = 0;
       }
     },
+    /** Ends the intro at once (a cut: jump(), reduced motion). */
     finishIntro() {
       state.intro = 1;
       state.introDone = true;
