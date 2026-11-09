@@ -89,6 +89,34 @@ function initJourney() {
     }),
   );
 
+  // A panel that scrolls (bottom sheets, short screens) fades out at its bottom edge while more of it is
+  // below (.is-more in site.css). Measured on scroll, resize and font load only, never per frame.
+  const markMore = (panel) =>
+    panel.classList.toggle('is-more', panel.scrollHeight - panel.clientHeight - panel.scrollTop > 2);
+  const markAllMore = () => panels.forEach(markMore);
+  panels.forEach((panel) => panel.addEventListener('scroll', () => markMore(panel), { passive: true }));
+  addEventListener('resize', markAllMore);
+  addEventListener('load', markAllMore);
+  if (document.fonts) document.fonts.ready.then(markAllMore, () => {});
+  markAllMore();
+
+  // The ticker stops while a link in it has focus (site.css) and scrolls the focused link fully into view
+  // (the browser leaves a partly visible one where it is); once focus leaves, it starts again from its
+  // first item.
+  const tickerBar = journey.querySelector('.jr__ticker');
+  if (tickerBar) {
+    tickerBar.addEventListener('focusin', (event) => {
+      const bar = tickerBar.getBoundingClientRect(); // read after the focus: the ticker is stopped
+      const link = event.target.getBoundingClientRect();
+      if (link.left < bar.left) tickerBar.scrollLeft -= bar.left - link.left + 16;
+      else if (link.right > bar.right) tickerBar.scrollLeft += link.right - bar.right + 16;
+    });
+    if (!reducedMotion)
+      tickerBar.addEventListener('focusout', (event) => {
+        if (!tickerBar.contains(event.relatedTarget)) tickerBar.scrollLeft = 0;
+      });
+  }
+
   // [ and ] step back and forward while the section covers the middle of the viewport.
   document.addEventListener('keydown', (event) => {
     if (event.target.closest && event.target.closest('input, textarea, select')) return;
@@ -321,7 +349,9 @@ function initJourney() {
 
     let gl = null;
     try {
-      gl = document.createElement('canvas').getContext('webgl2', { failIfMajorPerformanceCaveat: mode !== 'force' });
+      gl = document
+        .createElement('canvas')
+        .getContext('webgl2', { failIfMajorPerformanceCaveat: mode !== 'force' });
     } catch {
       gl = null;
     }
@@ -346,7 +376,8 @@ function initJourney() {
     const memory = navigator.deviceMemory || 8;
     const cores = navigator.hardwareConcurrency || 8;
     if (memory <= 2 || cores <= 2) return 'low';
-    if (coarsePointer || memory <= 4 || cores <= 4 || Math.min(screen.width, screen.height) < 700) return 'mid';
+    if (coarsePointer || memory <= 4 || cores <= 4 || Math.min(screen.width, screen.height) < 700)
+      return 'mid';
     return 'high';
   }
 
