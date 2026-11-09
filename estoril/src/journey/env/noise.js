@@ -17,25 +17,7 @@ const SIZE = 256;
 let data = null;
 let texture = null;
 
-/** Periodic gradient noise on a `period`-cell lattice; x, y in cells. */
-function periodicNoise(gradients, period, x, y) {
-  const x0 = Math.floor(x);
-  const y0 = Math.floor(y);
-  const fx = x - x0;
-  const fy = y - y0;
-  const fade = (t) => t * t * t * (t * (t * 6 - 15) + 10);
-  const corner = (cx, cy, dx, dy) => {
-    const i = (((cx % period) + period) % period) + (((cy % period) + period) % period) * period;
-    return gradients[2 * i] * dx + gradients[2 * i + 1] * dy;
-  };
-  const u = fade(fx);
-  const v = fade(fy);
-  const a = corner(x0, y0, fx, fy) + (corner(x0 + 1, y0, fx - 1, fy) - corner(x0, y0, fx, fy)) * u;
-  const b =
-    corner(x0, y0 + 1, fx, fy - 1) +
-    (corner(x0 + 1, y0 + 1, fx - 1, fy - 1) - corner(x0, y0 + 1, fx, fy - 1)) * u;
-  return a + (b - a) * v;
-}
+const fade = (t) => t * t * t * (t * (t * 6 - 15) + 10);
 
 /** Random unit gradients for a period × period lattice. */
 function gradientTable(random, period) {
@@ -48,20 +30,59 @@ function gradientTable(random, period) {
   return table;
 }
 
-/** Periodic fbm over the image: `cells` lattice cells across at the first octave, doubling. */
+/**
+ * Periodic fbm over the image: `cells` lattice cells across at the first octave, doubling. Each
+ * octave is periodic gradient noise on a `period`-cell lattice (a power of two, so lattice corners
+ * wrap with a mask); the per-column lattice index, offset and fade weight are computed once per
+ * octave, as they are the same for every row.
+ */
 function periodicFbm(random, cells, octaves) {
   const out = new Float64Array(SIZE * SIZE);
+  const column = new Int32Array(SIZE);
+  const offset = new Float64Array(SIZE);
+  const weight = new Float64Array(SIZE);
   let amplitude = 0.5;
   for (let octave = 0; octave < octaves; octave++) {
     const period = cells << octave;
-    const gradients = gradientTable(random, period);
+    const mask = period - 1;
+    const g = gradientTable(random, period);
     const scale = period / SIZE;
-    for (let y = 0; y < SIZE; y++)
-      for (let x = 0; x < SIZE; x++)
-        out[y * SIZE + x] += amplitude * periodicNoise(gradients, period, x * scale, y * scale);
+    for (let x = 0; x < SIZE; x++) {
+      const px = x * scale;
+      column[x] = Math.floor(px);
+      offset[x] = px - column[x];
+      weight[x] = fade(offset[x]);
+    }
+    for (let y = 0; y < SIZE; y++) fbmRow(out, y, scale, mask, period, g, column, offset, weight, amplitude);
     amplitude *= 0.5;
   }
   return out;
+}
+
+/** One row of one fbm octave (see periodicFbm), added to `out` with weight `amplitude`. */
+function fbmRow(out, y, scale, mask, period, g, column, offset, weight, amplitude) {
+  const py = y * scale;
+  const y0 = Math.floor(py);
+  const fy = py - y0;
+  const v = fade(fy);
+  const r0 = (y0 & mask) * period;
+  const r1 = ((y0 + 1) & mask) * period;
+  const row = y * SIZE;
+  for (let x = 0; x < SIZE; x++) {
+    const x0 = column[x];
+    const fx = offset[x];
+    const i00 = 2 * (r0 + (x0 & mask));
+    const i10 = 2 * (r0 + ((x0 + 1) & mask));
+    const i01 = 2 * (r1 + (x0 & mask));
+    const i11 = 2 * (r1 + ((x0 + 1) & mask));
+    const c00 = g[i00] * fx + g[i00 + 1] * fy;
+    const c10 = g[i10] * (fx - 1) + g[i10 + 1] * fy;
+    const c01 = g[i01] * fx + g[i01 + 1] * (fy - 1);
+    const c11 = g[i11] * (fx - 1) + g[i11 + 1] * (fy - 1);
+    const a0 = c00 + (c10 - c00) * weight[x];
+    const a1 = c01 + (c11 - c01) * weight[x];
+    out[row + x] += amplitude * (a0 + (a1 - a0) * v);
+  }
 }
 
 /** 1 - distance to the nearest of one random feature point per cell (periodic), in cell units. */

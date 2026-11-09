@@ -5,7 +5,8 @@
 //
 // The ground, asphalt, rubber, line, kerb, run-off and gravel materials are shaded in world space
 // by env/shading.js (onBeforeCompile patches): the grass, asphalt and gravel come from one shared
-// 512 px detail image and one 256 px noise image instead of three tiling canvas textures.
+// detail image (512 px; 256 px on 'low') and one 256 px noise image instead of three tiling canvas
+// textures.
 import { DoubleSide, MeshBasicMaterial, MeshStandardMaterial } from 'three';
 import { createLapTexture, shadeWorldSurfaces } from '../env/shading.js';
 import {
@@ -19,13 +20,14 @@ import {
   surfaceDetailTexture,
 } from '../textures.js';
 
-/** Anisotropic filtering of the world-space detail image per quality tier. */
+/** Anisotropic filtering and size (px) of the world-space detail image per quality tier. */
 const DETAIL_ANISOTROPY = { high: 8, mid: 4, low: 2 };
+const DETAIL_SIZE = { high: 512, mid: 512, low: 256 };
 
 /** Procedural textures shared by several world materials. */
 function createWorldTextures(quality = 'high') {
   return {
-    detail: surfaceDetailTexture(DETAIL_ANISOTROPY[quality] || 4),
+    detail: surfaceDetailTexture(DETAIL_ANISOTROPY[quality] || 4, DETAIL_SIZE[quality] || 512),
     lap: createLapTexture(),
     kerb: kerbTexture(),
     barrier: barrierTexture(),

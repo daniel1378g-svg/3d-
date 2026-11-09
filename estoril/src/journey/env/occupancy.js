@@ -19,7 +19,7 @@
 //     triangle, so a query allocates nothing), used only when the bounds cannot decide.
 // clear(x, z, trackClearance, solidClearance) is therefore exact, and cheap for the many points that
 // are far from everything. infield(x, z) tells whether a point lies inside the circuit loop.
-import { Box3, Matrix4, Vector3 } from 'three';
+import { Box3, Matrix4 } from 'three';
 
 /** Distance-field cell and the margin (metres) of the grid around everything indexed. */
 const CELL = 2;
@@ -37,6 +37,64 @@ const CHAMFER = 1.0824;
  */
 const R = CELL / 2;
 const HALF_DIAGONAL = CELL * Math.SQRT1_2;
+
+/**
+ * Appends the plan (x, z) of every triangle corner of `geometry` under the world matrix elements
+ * `e` to `out` from `at`; returns the new end. Kept small and separate so it is compiled on its own
+ * (it runs over a few hundred thousand corners).
+ */
+function planCorners(geometry, e, out, at) {
+  const position = geometry.attributes.position;
+  const index = geometry.index;
+  const corners = index ? index.count : position.count;
+  const end = corners - (corners % 3);
+  const ids = index ? index.array : null;
+  const p = position.isInterleavedBufferAttribute || position.itemSize !== 3 ? null : position.array;
+  for (let k = 0; k < end; k++) {
+    const i = ids ? ids[k] : k;
+    const x = p ? p[3 * i] : position.getX(i);
+    const y = p ? p[3 * i + 1] : position.getY(i);
+    const z = p ? p[3 * i + 2] : position.getZ(i);
+    out[at++] = e[0] * x + e[4] * y + e[8] * z + e[12];
+    out[at++] = e[2] * x + e[6] * y + e[10] * z + e[14];
+  }
+  return at;
+}
+
+/** Writes the two plan triangles of box `b`'s footprint to `out` from `at`; returns the new end. */
+function planRect(b, out, at) {
+  const { min, max } = b;
+  out[at++] = min.x;
+  out[at++] = min.z;
+  out[at++] = max.x;
+  out[at++] = min.z;
+  out[at++] = max.x;
+  out[at++] = max.z;
+  out[at++] = min.x;
+  out[at++] = min.z;
+  out[at++] = max.x;
+  out[at++] = max.z;
+  out[at++] = min.x;
+  out[at++] = max.z;
+  return at;
+}
+
+/** Grows `extent` [minX, minZ, maxX, maxZ] by the (x, z) pairs in data[0..length). */
+function growExtent(data, length, extent) {
+  let [minX, minZ, maxX, maxZ] = extent;
+  for (let k = 0; k < length; k += 2) {
+    const x = data[k];
+    const z = data[k + 1];
+    if (x < minX) minX = x;
+    if (x > maxX) maxX = x;
+    if (z < minZ) minZ = z;
+    if (z > maxZ) maxZ = z;
+  }
+  extent[0] = minX;
+  extent[1] = minZ;
+  extent[2] = maxX;
+  extent[3] = maxZ;
+}
 
 /** Distance from (px, pz) to the segment (ax, az)–(bx, bz). */
 function segmentDistance(px, pz, ax, az, bx, bz) {
@@ -64,6 +122,53 @@ function triangleDistance(px, pz, ax, az, bx, bz, cx, cz) {
     segmentDistance(px, pz, bx, bz, cx, cz),
     segmentDistance(px, pz, cx, cz, ax, az),
   );
+}
+
+/**
+ * Marks in `mask` (width x height cells of CELL metres from (x0, z0)) every cell that a plan
+ * triangle of `tris` touches. Scanline: per row of cell centres pz, the triangle's x extent within
+ * the slab |z - pz| <= R, widened by R; every cell the triangle touches is marked (its centre is
+ * within R in x and z).
+ */
+function rasterize(tris, mask, x0, z0, width, height) {
+  for (let o = 0; o < tris.length; o += 6) {
+    const gz0 = Math.max(0, Math.floor((Math.min(tris[o + 1], tris[o + 3], tris[o + 5]) - R - z0) / CELL));
+    const gz1 = Math.min(
+      height - 1,
+      Math.floor((Math.max(tris[o + 1], tris[o + 3], tris[o + 5]) + R - z0) / CELL),
+    );
+    for (let gz = gz0; gz <= gz1; gz++) {
+      const pz = z0 + (gz + 0.5) * CELL;
+      const zLo = pz - R;
+      const zHi = pz + R;
+      let lo = Infinity;
+      let hi = -Infinity;
+      for (let e = 0; e < 3; e++) {
+        const ax = tris[o + 2 * e];
+        const az = tris[o + 2 * e + 1];
+        const bx = tris[o + ((2 * e + 2) % 6)];
+        const bz = tris[o + ((2 * e + 3) % 6)];
+        if (az >= zLo && az <= zHi) {
+          if (ax < lo) lo = ax;
+          if (ax > hi) hi = ax;
+        }
+        if ((az - zLo) * (bz - zLo) < 0) {
+          const x = ax + ((zLo - az) / (bz - az)) * (bx - ax);
+          if (x < lo) lo = x;
+          if (x > hi) hi = x;
+        }
+        if ((az - zHi) * (bz - zHi) < 0) {
+          const x = ax + ((zHi - az) / (bz - az)) * (bx - ax);
+          if (x < lo) lo = x;
+          if (x > hi) hi = x;
+        }
+      }
+      if (lo > hi) continue;
+      const gx0 = Math.max(0, Math.ceil((lo - R - x0) / CELL - 0.5));
+      const gx1 = Math.min(width - 1, Math.floor((hi + R - x0) / CELL - 0.5));
+      mask.fill(1, gz * width + gx0, gz * width + gx1 + 1);
+    }
+  }
 }
 
 /** Two-pass (1, √2) chamfer distance transform of a mask, in cells (Infinity where nothing). */
@@ -175,73 +280,56 @@ function createExactIndex(tris, x0, z0, x1, z1) {
  */
 function createOccupancy(root, { trackMaterial, skip = new Set(), loop = null }) {
   root.updateMatrixWorld(true);
-  const shapes = { track: [], solid: [] }; // plan triangles, 6 numbers each
   const box = new Box3();
   const matrix = new Matrix4();
-  const v = new Vector3();
-  const pushRect = (list, b) =>
-    list.push(
-      b.min.x,
-      b.min.z,
-      b.max.x,
-      b.min.z,
-      b.max.x,
-      b.max.z,
-      b.min.x,
-      b.min.z,
-      b.max.x,
-      b.max.z,
-      b.min.x,
-      b.max.z,
-    );
 
+  // pass 1: the meshes of each class, how each is indexed, and how many numbers they need
   const decal = (material) =>
     (material.transparent && !material.depthWrite) || material.userData.envSkipOccupancy;
+  const items = { track: [], solid: [] };
+  const sizes = { track: 0, solid: 0 };
   const visit = (node) => {
     if (skip.has(node)) return;
     if (node.isMesh && ![].concat(node.material).every(decal)) {
-      const list = [].concat(node.material).includes(trackMaterial) ? shapes.track : shapes.solid;
+      const kind = [].concat(node.material).includes(trackMaterial) ? 'track' : 'solid';
       const geometry = node.geometry;
       if (!geometry.boundingBox) geometry.computeBoundingBox();
-      if (node.isInstancedMesh) {
-        for (let i = 0; i < node.count; i++) {
-          node.getMatrixAt(i, matrix);
-          matrix.premultiply(node.matrixWorld);
-          pushRect(list, box.copy(geometry.boundingBox).applyMatrix4(matrix));
-        }
-      } else {
+      let large = false;
+      if (!node.isInstancedMesh) {
         box.copy(geometry.boundingBox).applyMatrix4(node.matrixWorld);
-        if (box.max.x - box.min.x > LARGE || box.max.z - box.min.z > LARGE) {
-          const position = geometry.attributes.position;
-          const index = geometry.index;
-          const corners = index ? index.count : position.count;
-          const e = node.matrixWorld.elements;
-          for (let k = 0; k < corners - (corners % 3); k++) {
-            v.fromBufferAttribute(position, index ? index.getX(k) : k);
-            list.push(
-              e[0] * v.x + e[4] * v.y + e[8] * v.z + e[12],
-              e[2] * v.x + e[6] * v.y + e[10] * v.z + e[14],
-            );
-          }
-        } else pushRect(list, box);
+        large = box.max.x - box.min.x > LARGE || box.max.z - box.min.z > LARGE;
       }
+      const corners = geometry.index ? geometry.index.count : geometry.attributes.position.count;
+      items[kind].push({ node, large });
+      sizes[kind] += node.isInstancedMesh ? 12 * node.count : large ? 2 * (corners - (corners % 3)) : 12;
     }
     for (const child of node.children) visit(child);
   };
   visit(root);
 
-  // grid bounds: everything indexed, plus a margin
-  let minX = Infinity;
-  let minZ = Infinity;
-  let maxX = -Infinity;
-  let maxZ = -Infinity;
-  for (const list of [shapes.track, shapes.solid])
-    for (let k = 0; k < list.length; k += 2) {
-      minX = Math.min(minX, list[k]);
-      maxX = Math.max(maxX, list[k]);
-      minZ = Math.min(minZ, list[k + 1]);
-      maxZ = Math.max(maxZ, list[k + 1]);
+  // pass 2: their plan triangles (6 numbers each), one typed array per class
+  const shapes = {};
+  const extent = [Infinity, Infinity, -Infinity, -Infinity];
+  for (const kind of ['track', 'solid']) {
+    const data = new Float64Array(sizes[kind]);
+    let at = 0;
+    for (const { node, large } of items[kind]) {
+      const geometry = node.geometry;
+      if (node.isInstancedMesh)
+        for (let i = 0; i < node.count; i++) {
+          node.getMatrixAt(i, matrix);
+          matrix.premultiply(node.matrixWorld);
+          at = planRect(box.copy(geometry.boundingBox).applyMatrix4(matrix), data, at);
+        }
+      else if (large) at = planCorners(geometry, node.matrixWorld.elements, data, at);
+      else at = planRect(box.copy(geometry.boundingBox).applyMatrix4(node.matrixWorld), data, at);
     }
+    shapes[kind] = data;
+    growExtent(data, at, extent);
+  }
+
+  // grid bounds: everything indexed, plus a margin
+  const [minX, minZ, maxX, maxZ] = extent;
   const x0 = Math.floor((minX - MARGIN) / CELL) * CELL;
   const z0 = Math.floor((minZ - MARGIN) / CELL) * CELL;
   const width = Math.ceil((maxX + MARGIN - x0) / CELL);
@@ -253,72 +341,56 @@ function createOccupancy(root, { trackMaterial, skip = new Set(), loop = null })
   const exact = {};
   const counts = {};
   for (const kind of ['track', 'solid']) {
-    const tris = Float64Array.from(shapes[kind]);
+    const tris = shapes[kind];
     counts[kind] = tris.length / 6;
     const mask = new Uint8Array(width * height);
-    // scanline: per row of cell centres pz, the triangle's x extent within the slab |z - pz| <= R,
-    // widened by R; every cell the triangle touches is marked (its centre is within R in x and z)
-    for (let o = 0; o < tris.length; o += 6) {
-      const gz0 = Math.max(0, Math.floor((Math.min(tris[o + 1], tris[o + 3], tris[o + 5]) - R - z0) / CELL));
-      const gz1 = Math.min(
-        height - 1,
-        Math.floor((Math.max(tris[o + 1], tris[o + 3], tris[o + 5]) + R - z0) / CELL),
-      );
-      for (let gz = gz0; gz <= gz1; gz++) {
-        const pz = z0 + (gz + 0.5) * CELL;
-        const zLo = pz - R;
-        const zHi = pz + R;
-        let lo = Infinity;
-        let hi = -Infinity;
-        for (let e = 0; e < 3; e++) {
-          const ax = tris[o + 2 * e];
-          const az = tris[o + 2 * e + 1];
-          const bx = tris[o + ((2 * e + 2) % 6)];
-          const bz = tris[o + ((2 * e + 3) % 6)];
-          if (az >= zLo && az <= zHi) {
-            if (ax < lo) lo = ax;
-            if (ax > hi) hi = ax;
-          }
-          if ((az - zLo) * (bz - zLo) < 0) {
-            const x = ax + ((zLo - az) / (bz - az)) * (bx - ax);
-            if (x < lo) lo = x;
-            if (x > hi) hi = x;
-          }
-          if ((az - zHi) * (bz - zHi) < 0) {
-            const x = ax + ((zHi - az) / (bz - az)) * (bx - ax);
-            if (x < lo) lo = x;
-            if (x > hi) hi = x;
-          }
-        }
-        if (lo > hi) continue;
-        const gx0 = Math.max(0, Math.ceil((lo - R - x0) / CELL - 0.5));
-        const gx1 = Math.min(width - 1, Math.floor((hi + R - x0) / CELL - 0.5));
-        mask.fill(1, gz * width + gx0, gz * width + gx1 + 1);
-      }
-    }
+    rasterize(tris, mask, x0, z0, width, height);
     fields[kind] = chamfer(mask, width, height);
     exact[kind] = createExactIndex(tris, x0, z0, x1, z1);
   }
 
-  // infield: crossing-number fill of the closed centre line, row by row (cell centres)
+  // infield: crossing-number fill of the closed centre line, row by row (cell centres); the loop's
+  // segments are bucketed by the rows they span, so a row only visits its own crossings
   const inside = new Uint8Array(width * height);
   if (loop) {
-    const crossings = [];
+    const rowOf = (z) => (z - z0) / CELL - 0.5; // fractional row of a z
+    const first = new Int32Array(height + 1);
+    const segmentRows = (i) => {
+      const za = loop.z[i];
+      const zb = loop.z[(i + 1) % loop.count];
+      return [
+        Math.max(0, Math.ceil(rowOf(Math.min(za, zb)))),
+        Math.min(height - 1, Math.floor(rowOf(Math.max(za, zb)))),
+      ];
+    };
+    for (let i = 0; i < loop.count; i++) {
+      const [r0, r1] = segmentRows(i);
+      for (let r = r0; r <= r1; r++) first[r + 1]++;
+    }
+    for (let r = 0; r < height; r++) first[r + 1] += first[r];
+    const segments = new Int32Array(first[height]);
+    const fillAt = first.slice(0, height);
+    for (let i = 0; i < loop.count; i++) {
+      const [r0, r1] = segmentRows(i);
+      for (let r = r0; r <= r1; r++) segments[fillAt[r]++] = i;
+    }
+    const crossings = new Float64Array(64);
     for (let gz = 0; gz < height; gz++) {
       const pz = z0 + (gz + 0.5) * CELL;
-      crossings.length = 0;
-      for (let i = 0; i < loop.count; i++) {
+      let found = 0;
+      for (let k = first[gz]; k < first[gz + 1] && found < crossings.length; k++) {
+        const i = segments[k];
         const j = (i + 1) % loop.count;
         const za = loop.z[i];
         const zb = loop.z[j];
         if (za > pz !== zb > pz)
-          crossings.push(loop.x[i] + ((pz - za) / (zb - za)) * (loop.x[j] - loop.x[i]));
+          crossings[found++] = loop.x[i] + ((pz - za) / (zb - za)) * (loop.x[j] - loop.x[i]);
       }
-      crossings.sort((a, b) => a - b);
-      for (let c = 0; c + 1 < crossings.length; c += 2) {
-        const gx0 = Math.max(0, Math.ceil((crossings[c] - x0) / CELL - 0.5));
-        const gx1 = Math.min(width - 1, Math.floor((crossings[c + 1] - x0) / CELL - 0.5));
-        for (let gx = gx0; gx <= gx1; gx++) inside[gz * width + gx] = 1;
+      const row = crossings.subarray(0, found).sort();
+      for (let c = 0; c + 1 < found; c += 2) {
+        const gx0 = Math.max(0, Math.ceil((row[c] - x0) / CELL - 0.5));
+        const gx1 = Math.min(width - 1, Math.floor((row[c + 1] - x0) / CELL - 0.5));
+        if (gx1 >= gx0) inside.fill(1, gz * width + gx0, gz * width + gx1 + 1);
       }
     }
   }
