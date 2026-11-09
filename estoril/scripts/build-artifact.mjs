@@ -82,6 +82,19 @@ addDir('assets/js');
 // hero-car-mesh.json and hero-car-mr.webp are the bake source (tools/car/bake_body.py), kept for the
 // published reference build (serve.mjs --reference); the page loads hero-car-body.* and hero-car-orm.webp
 addDir('assets/models', (f) => !/hero-car-(mesh\.json|mr\.webp)$/.test(f));
+// the Artifact host serves no binary files (.bin), so ship each packed mesh buffer as base64 text and
+// point that descriptor at it (car/body-asset.js reads `bufferEncoding`)
+for (const rel of Object.keys(files).filter((f) => /^assets\/models\/.*\.json$/.test(f))) {
+  const desc = JSON.parse(readFileSync(join(dest, rel), 'utf8'));
+  if (desc.format !== 'ce-mesh/2' || !desc.buffer.endsWith('.bin')) continue;
+  const binRel = `${dirname(rel)}/${desc.buffer}`;
+  const textName = desc.buffer.replace(/\.bin$/, '.b64.txt');
+  writeFileSync(join(dest, dirname(rel), textName), readFileSync(join(dest, binRel)).toString('base64'));
+  rmSync(join(dest, binRel));
+  delete files[binRel];
+  files[`${dirname(rel)}/${textName}`] = `${dirname(rel)}/${textName}`;
+  writeFileSync(join(dest, rel), JSON.stringify({ ...desc, buffer: textName, bufferEncoding: 'base64' }));
+}
 addDir('assets/img', (f) => /\/stage-\d(-p)?\.webp$/.test(f));
 add('assets/favicon.svg');
 add('assets/data/track.json');

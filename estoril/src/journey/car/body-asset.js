@@ -9,6 +9,9 @@
 // the car's baked ground occlusion (a grayscale image over `size` metres of road), and `lowPoints`.
 // The page only wraps the buffer in typed-array views (the position transform goes on the mesh): no
 // per-vertex work at load time.
+//
+// `bufferEncoding: "base64"` means the buffer file is the same bytes as base64 text. The Artifact
+// preview uses it (scripts/build-artifact.mjs), because its host does not serve binary files.
 import {
   BufferAttribute,
   BufferGeometry,
@@ -27,6 +30,14 @@ function view(buffer, spec, count) {
   return new Type(buffer, spec.offset, count);
 }
 
+/** The bytes of base64 `text` as a fresh ArrayBuffer (offset 0, so typed-array views stay aligned). */
+function decodeBase64(text) {
+  const binary = atob(text.trim());
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+  return bytes.buffer;
+}
+
 /**
  * @param {string} url hero-car-body.json
  * @param {(progress: {loaded: number, total: number}) => void} [onProgress] after the buffer (1/2)
@@ -39,7 +50,9 @@ async function loadBodyAsset(url, onProgress) {
   const baseUrl = url.slice(0, url.lastIndexOf('/') + 1);
   const desc = await (await fetch(url)).json();
   if (desc.format !== 'ce-mesh/2') throw new Error(`${url}: expected ce-mesh/2, got ${desc.format}`);
-  const buffer = await (await fetch(baseUrl + desc.buffer)).arrayBuffer();
+  const response = await fetch(baseUrl + desc.buffer);
+  const buffer =
+    desc.bufferEncoding === 'base64' ? decodeBase64(await response.text()) : await response.arrayBuffer();
   onProgress && onProgress({ loaded: 1, total: 2 });
 
   const geometry = new BufferGeometry();
