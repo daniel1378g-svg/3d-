@@ -5,8 +5,9 @@
 //
 // --update-viewports measures the layouts instead of checking them: it writes
 // scripts/camera-viewports.json (test-camera.mjs's layouts) from the page, for every layout already
-// in it plus the sizes listed (e.g. 360x740,844x390), and still runs every other check. An entry
-// keeps its maxFov, nav and allow; a new one gets them derived (layoutEntry below).
+// in it plus the sizes listed (e.g. 360x740,844x390), and still runs every other check. Every entry
+// gets its maxFov derived by one rule, an existing one keeps its nav choice and allow, a new one gets
+// its nav derived (layoutEntry below).
 //
 // Checks (capture mode, ?capture=1&3d=force&q=high, which exposes window.__journey and __cap):
 //   viewport     the canvas covers the viewport exactly (CSS size = innerWidth × innerHeight) and its
@@ -39,7 +40,7 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { CAMERA_SHOTS } from '../src/journey/camera-shots.js';
-import { FIT_EXTRA_FOV, viewportTan } from '../src/journey/camera-director.js';
+import { FIT_EXTRA_FOV, FIT_FALLBACK_FOV, viewportTan } from '../src/journey/camera-director.js';
 const { chromium } = createRequire(import.meta.url)('playwright');
 /** The layouts test-camera.mjs frames the car in (scripts/camera-viewports.json). */
 const VIEWPORTS_FILE = new URL('camera-viewports.json', import.meta.url);
@@ -159,30 +160,33 @@ function pageLayout() {
   };
 }
 
+/** The key solve's allowance in maxFov (degrees; see layoutEntry). */
+const KEY_SOLVE_FOV = 2;
 /**
- * The fixture entry for a layout measured at width × height. An existing entry keeps its maxFov,
- * whether it has a nav box (then the stage buttons' box as measured) and its allow
- * (test-camera.mjs explains them). A new one gets
- *   maxFov  the widest key FOV for its aspect, or the widest car-shot key's plus the car fit's
- *           FIT_EXTRA_FOV if that is wider, rounded up, plus 4° for the key solve, which widens a
- *           key's lens where the scenery stops its dolly (by 4° at the pit box on a 412×915 phone);
- *           this gives the 56° of 1024×768 (1440×900 and 390×844 keep their 52° and 68°),
- *   nav     the stage buttons' box if they stand beside the panel-shown framing area (right of it,
- *           at its height: home.js then keeps that area clear of them), else null.
+ * The fixture entry for a layout measured at width × height (test-camera.mjs explains the fields):
+ *   maxFov  for every entry, the widest the director may go: the widest key FOV for its aspect, or
+ *           the widest car-shot key's widened by the whole between-keys fit (FIT_EXTRA_FOV +
+ *           FIT_FALLBACK_FOV) if that is wider, rounded up, plus KEY_SOLVE_FOV for the key solve,
+ *           which widens a key's lens only where the scenery stops its dolly (on none of the
+ *           fixture's layouts today): 54° on desktop, 58° at 4:3, 72° on portrait phones,
+ *   nav     kept from an existing entry (then the stage buttons' box as measured); for a new one the
+ *           stage buttons' box if they stand beside the panel-shown framing area (right of it, at
+ *           its height: home.js then keeps that area clear of them), else null,
+ *   allow   kept from an existing entry.
  */
 function layoutEntry(width, height, layout, old) {
   const aspect = width / height;
   const fovAt = (shot) => (2 * Math.atan(viewportTan(shot.fov, aspect)) * 180) / Math.PI;
   const widest = Math.max(...CAMERA_SHOTS.map(fovAt));
   const widestCar = Math.max(...CAMERA_SHOTS.filter((shot) => !shot.aerial).map(fovAt));
-  const maxFov = Math.ceil(Math.max(widest, widestCar + FIT_EXTRA_FOV)) + 4;
+  const maxFov = Math.ceil(Math.max(widest, widestCar + FIT_EXTRA_FOV + FIT_FALLBACK_FOV)) + KEY_SOLVE_FOV;
   const { panel, buttons } = layout;
   const beside = panel[2] <= buttons[0] && buttons[1] < panel[3] && buttons[3] > panel[1];
   const entry = {
     name: `${width}x${height}`,
     width,
     height,
-    maxFov: old ? old.maxFov : maxFov,
+    maxFov,
     panels: layout.panels,
     nav: (old ? old.nav : beside) ? buttons : null,
     panel,
@@ -190,8 +194,7 @@ function layoutEntry(width, height, layout, old) {
     buttons,
   };
   if (old && old.allow) entry.allow = old.allow;
-  if (old && old.maxFov !== maxFov)
-    console.log(`note ${entry.name}: keeps maxFov ${old.maxFov}° (derived ${maxFov}°)`);
+  if (old && old.maxFov !== maxFov) console.log(`note ${entry.name}: maxFov ${old.maxFov}° → ${maxFov}°`);
   return entry;
 }
 

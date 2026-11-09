@@ -18,11 +18,12 @@
 //               KINK_FLOOR + KINK_REL × the first difference (a velocity change of more than 5 %),
 //               then examined at finer steps (refineKink). Kinks where the car's own path has one
 //               (car-path.js: its arc-length table and joins) are counted as `inherited`, not failed.
-//   FOV         stays below the viewport's maxFov (VIEWPORTS: the widest key for that aspect, 50° on
-//               desktop, 51° at 4:3 and 60° on the phone, or the widest car-shot key plus the car
-//               fit's FIT_EXTRA_FOV, plus a few degrees), and its second difference per step stays
-//               below FOV_D2 (no zoom pumping: the old fit swung it by 35–40° within 0.01–0.02 of
-//               progress, up to 120° on the phone)
+//   FOV         stays below the viewport's maxFov (VIEWPORTS, one rule for every layout, test-loop.mjs
+//               layoutEntry: the widest key for that aspect, 50° on desktop, 51° at 4:3 and 60° on
+//               the phone, or the widest car-shot key widened by the whole between-keys car fit,
+//               FIT_EXTRA_FOV + FIT_FALLBACK_FOV, plus 2° for the key solve), and its second
+//               difference per step stays below FOV_D2 (no zoom pumping: the old fit swung it by
+//               35–40° within 0.01–0.02 of progress, up to 120° on the phone)
 //   car framing in every car shot the car's projected outline (a car-shaped hull in its bounding box,
 //               camera-director.js carOutline) is fully on screen and inside the framing area the
 //               director frames it in (the panel and open areas blended by camera-director.js
