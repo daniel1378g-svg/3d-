@@ -1,6 +1,16 @@
-// Sun and sky light: creation, applying a time-of-day sample (time-of-day.js), and the sun's
-// shadow box, fitted every frame to the ground the camera sees.
+// Sun and sky light: creation, applying a time-of-day sample (time-of-day.js), the fog, and the
+// sun's shadow box, fitted every frame to the ground the camera sees.
 // World XZ plane, y up; distances in metres, angles in radians unless noted.
+//
+// Fog. three.js mixes the fog in after tone mapping and the output encoding, so the fog colour is a
+// display colour: the time of day's horizon colour (time-of-day.js). A THREE.Color holds working
+// (linear) values and three.js encodes the fog uniform for the output, so applyLighting() decodes
+// the display colour first; a fully fogged object then shows exactly the horizon's display colour,
+// on the canvas and in the motion-blur target alike (motion-blur.js renders it as an output). The
+// haze sits in the lowest air: fitFog() lengthens the fog distances with the eye's height by the
+// mean haze density along a ray from the eye down to the ground (an exponential haze of scale
+// height HAZE_SCALE_HEIGHT), so the overhead shots, which see the ground from up to 1.5 km, are not
+// washed out by fog meant for the horizontal views.
 //
 // Shadow box (createShadowFollow). The orthographic shadow camera looks down the sun direction. Its
 // square cross-section is fitted to the camera's ground footprint: the ground points under the eye
@@ -19,6 +29,12 @@ import { DirectionalLight, HemisphereLight, Vector3 } from 'three';
 import { clamp } from './util/math.js';
 
 const UP = new Vector3(0, 1, 0);
+
+/** Linear fog from FOG_NEAR to FOG_FAR (metres) for an eye at ground level (see fitFog). */
+const FOG_NEAR = 140;
+const FOG_FAR = 3300;
+/** Scale height (metres) of the haze density, exp(−y / H). */
+const HAZE_SCALE_HEIGHT = 900;
 
 /** Half-size (metres) of the shadow box for ground-level shots, and its upper limit (aerial). */
 const BASE_HALF_EXTENT = 70;
@@ -99,9 +115,8 @@ function createLights(scene, renderer, quality) {
 
 /**
  * Applies a sampleTimeOfDay() result: sun and hemisphere lights (sky fill and ground bounce), the
- * fog colour (a display colour:
- * three.js mixes fog in after tone mapping), the tone-mapping exposure and the strength of the
- * sky's image-based light.
+ * fog colour (the display colour `fog` decoded, see the header), the tone-mapping exposure and the
+ * strength of the sky's image-based light.
  */
 function applyLighting(light, { sun, hemi, scene, renderer }) {
   sun.color.copy(light.sun);
@@ -110,9 +125,21 @@ function applyLighting(light, { sun, hemi, scene, renderer }) {
   hemi.intensity = 1;
   hemi.color.copy(light.sky).multiplyScalar(light.hemiI);
   hemi.groundColor.copy(light.gnd).multiplyScalar(GROUND_BOUNCE * groundIlluminance(light));
-  scene.fog.color.copy(light.fog);
+  scene.fog.color.copy(light.fog).convertSRGBToLinear();
   scene.environmentIntensity = light.env;
   renderer.toneMappingExposure = exposureFor(light);
+}
+
+/**
+ * Fog distances for an eye `eyeHeight` metres above the ground: FOG_NEAR..FOG_FAR stretched by the
+ * inverse of the mean haze density along a ray from the eye to the ground, h / (H (1 − e^(−h/H))):
+ * 1 at ground level, 1.4 at 600 m, 2.0 at 1.5 km.
+ */
+function fitFog(fog, eyeHeight) {
+  const h = Math.max(0, eyeHeight) / HAZE_SCALE_HEIGHT;
+  const stretch = h > 1e-4 ? h / -Math.expm1(-h) : 1 + h / 2;
+  fog.near = FOG_NEAR * stretch;
+  fog.far = FOG_FAR * stretch;
 }
 
 /**
@@ -150,7 +177,7 @@ function createShadowFollow(sun) {
   let sunDirRef = UP;
 
   /**
-   * `sunDir` unit vector to the sun, `camera` the posed scene camera (fov, aspect, matrixWorld up
+   * `sunDir` unit vector to the sun, `camera` the posed scene camera (projection and matrixWorld up
    * to date), `target` the point it looks at.
    */
   function update(sunDir, camera, target) {
@@ -167,12 +194,13 @@ function createShadowFollow(sun) {
     const reach = Math.min(MAX_REACH, REACH_BASE + REACH_PER_HEIGHT * height);
     include(eye.x, 0, eye.z);
     include(target.x, Math.min(target.y, 0), target.z);
-    const tanY = Math.tan((camera.fov * Math.PI) / 360);
-    const tanX = tanY * camera.aspect;
+    // the frame's corners at unit view depth from the projection matrix (view offset included):
+    // x_ndc = P[0]·x + P[8]·(−z) at z = −1
+    const p = camera.projectionMatrix.elements;
     const e = camera.matrixWorld.elements; // columns: right, up, back
     for (let i = 0; i < 4; i++) {
-      const sx = corners[i][0] * tanX;
-      const sy = corners[i][1] * tanY;
+      const sx = (corners[i][0] + p[8]) / p[0];
+      const sy = (corners[i][1] + p[9]) / p[5];
       ray.set(e[0] * sx + e[4] * sy - e[8], e[1] * sx + e[5] * sy - e[9], e[2] * sx + e[6] * sy - e[10]);
       // where the corner ray meets the ground, or its point at the reach if that is nearer
       const horizontal = Math.hypot(ray.x, ray.z) || 1e-6;
@@ -216,11 +244,14 @@ function createShadowFollow(sun) {
 }
 
 export {
+  FOG_FAR,
+  FOG_NEAR,
   BASE_HALF_EXTENT,
   MAX_HALF_EXTENT,
   applyLighting,
   exposureFor,
   createLights,
   createShadowFollow,
+  fitFog,
   shadowMapSizeFor,
 };

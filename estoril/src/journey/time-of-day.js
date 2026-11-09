@@ -16,10 +16,12 @@
 //   arrival 06:45–06:54 (20–22°), pit lane 07:24–07:48 (26–31°), aerial 07:48 → 09:36,
 //   on track 09:36–10:24 (52–60°), paddock 14:36–15:24 (51–41°), golden hour 18:15–18:37 (9–5°).
 //
-// Palette. Keys by solar hour, authored as DISPLAY colours (sRGB hex as seen on screen; the sky and
-// fog values are the photo samples of references.md 4.9 where the brief gives them). The sky dome
-// and the fog are drawn in display space (sky.js, lighting.js), the lights are scene-linear. Keys are
-// blended with a smoothstep in linear light.
+// Palette. Keys by solar hour. The sky's zenith and horizon are DISPLAY colours (sRGB hex as seen on
+// screen: the photo samples of references.md 4.9 where the brief gives them), blended in display
+// space and drawn as they are by the sky dome (sky.js). The fog colour is the horizon colour itself,
+// so a fully fogged object fades exactly into the horizon behind it (lighting.js turns the display
+// colour into the working colour three.js expects for fog). The lights are scene-linear (the hex is
+// decoded) and blended in linear light. Keys are blended with a smoothstep.
 //
 // sampleTimeOfDay(hour, out) fills `out` (createTimeOfDaySample()) and allocates nothing.
 import { Color, LinearSRGBColorSpace, Vector3 } from 'three';
@@ -94,8 +96,8 @@ function sunVector(sunEl, sunAz, target) {
  *   sun     sun light colour (display sRGB hex; used as a light colour, i.e. decoded to linear)
  *   sunI    sun illuminance (three.js directional-light intensity)
  *   sky     hemisphere light sky colour (hex), gnd its ground colour, hemiI its intensity
- *   zen     sky-dome zenith colour (display hex), hor horizon colour (display hex)
- *   fog     fog colour (display hex): distant objects fade towards it (≈ the horizon haze)
+ *   zen     sky-dome zenith colour (display hex), hor horizon colour (display hex); the sample's
+ *           `fog` is `hor` (distant objects fade into the horizon)
  *   env     scene.environmentIntensity (image-based light from the sky probe)
  *   exp     exposure trim on top of the automatic exposure (lighting.js exposureFor)
  *   lift    how much the sky's middle band (between horizon and zenith) pales towards white: a
@@ -113,7 +115,6 @@ const PALETTE = [
     hemiI: 0.4,
     zen: 0x518ad5,
     hor: 0x94c9f1,
-    fog: 0xb2d2ec,
     env: 0.6,
     exp: 1.35,
     lift: 0.06,
@@ -127,7 +128,6 @@ const PALETTE = [
     hemiI: 0.4,
     zen: 0x4d86d3,
     hor: 0x9dcdf1,
-    fog: 0xb8d5ec,
     env: 0.6,
     exp: 1.12,
     lift: 0.06,
@@ -142,7 +142,6 @@ const PALETTE = [
     hemiI: 0.4,
     zen: 0x4a82d0,
     hor: 0xa9d2f0,
-    fog: 0xbfd9ed,
     env: 0.6,
     exp: 1,
     lift: 0.05,
@@ -157,7 +156,6 @@ const PALETTE = [
     hemiI: 0.4,
     zen: 0x5085cd,
     hor: 0xaccfea,
-    fog: 0xc2d6e6,
     env: 0.6,
     exp: 1,
     lift: 0.07,
@@ -172,7 +170,6 @@ const PALETTE = [
     hemiI: 0.4,
     zen: 0x6185c2,
     hor: 0xdfc7a2,
-    fog: 0xdcc9ad,
     env: 0.6,
     exp: 1.1,
     lift: 0.18,
@@ -187,16 +184,15 @@ const PALETTE = [
     hemiI: 0.4,
     zen: 0x6e8fc0,
     hor: 0xf2b572,
-    fog: 0xe8c39a,
     env: 0.6,
     exp: 1.25,
     lift: 0.3,
   },
 ];
-const COLOR_FIELDS = ['sun', 'sky', 'gnd', 'zen', 'hor', 'fog'];
+const COLOR_FIELDS = ['sun', 'sky', 'gnd', 'zen', 'hor'];
 const NUMBER_FIELDS = ['sunI', 'hemiI', 'env', 'exp', 'lift'];
 /** Display colours: kept as display values (not decoded to linear) for the sky dome and fog. */
-const DISPLAY_FIELDS = new Set(['zen', 'hor', 'fog']);
+const DISPLAY_FIELDS = new Set(['zen', 'hor']);
 
 // the keys' colours as THREE.Color: lights decoded to linear, display colours kept as display values
 const paletteColors = PALETTE.map((key) => {
@@ -210,7 +206,7 @@ const paletteColors = PALETTE.map((key) => {
 
 /** A reusable sample object for sampleTimeOfDay(). */
 function createTimeOfDaySample() {
-  const sample = { hour: 0, sunEl: 0, sunAz: 0, sunDir: new Vector3() };
+  const sample = { hour: 0, sunEl: 0, sunAz: 0, sunDir: new Vector3(), fog: new Color() };
   for (const field of COLOR_FIELDS) sample[field] = new Color();
   for (const field of NUMBER_FIELDS) sample[field] = 0;
   return sample;
@@ -219,7 +215,8 @@ function createTimeOfDaySample() {
 /**
  * Lighting at local solar time `hour` into `out` (a createTimeOfDaySample() object): the sun's
  * elevation, azimuth and direction (sunDir, unit vector towards the sun), and the palette blended
- * between the surrounding keys with a smoothstep. Allocates nothing.
+ * between the surrounding keys with a smoothstep; `fog` (a display colour, like `hor`) is the
+ * horizon colour. Allocates nothing.
  */
 function sampleTimeOfDay(hour, out) {
   out.hour = hour;
@@ -233,6 +230,7 @@ function sampleTimeOfDay(hour, out) {
   for (const field of NUMBER_FIELDS) out[field] = from[field] + (to[field] - from[field]) * blend;
   for (const field of COLOR_FIELDS)
     out[field].copy(paletteColors[k][field]).lerp(paletteColors[k + 1][field], blend);
+  out.fog.copy(out.hor);
   return out;
 }
 

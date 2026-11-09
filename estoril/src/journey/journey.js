@@ -42,7 +42,7 @@ import {
   updatePaddockVisitors,
   updatePitCrew,
 } from './crew-staging.js';
-import { applyLighting, createLights, createShadowFollow } from './lighting.js';
+import { FOG_FAR, FOG_NEAR, applyLighting, createLights, createShadowFollow, fitFog } from './lighting.js';
 import {
   createMotionBlur,
   motionBlurAmount,
@@ -86,7 +86,8 @@ async function createJourney({
   const renderer = createRenderer(canvas, quality);
   const maxPixelRatio = maxPixelRatioFor(quality);
   const scene = new Scene();
-  scene.fog = new Fog(14279913, 140, 3300); // metres; the colour follows the time of day
+  // metres; the colour follows the time of day, the distances the eye's height (lighting.js)
+  scene.fog = new Fog(14279913, FOG_NEAR, FOG_FAR);
   // the blur pass reconstructs positions from depth with each frame's own matrices
   // near/far start at 0.3 m / 9 km and then follow the camera's clearance every frame
   const camera = new PerspectiveCamera(36, 1, 0.3, 9e3);
@@ -200,6 +201,7 @@ async function createJourney({
     cameraInput.height = viewport.height;
     director.update(cameraInput);
     depthRange.update(director.position, director.target);
+    fitFog(scene.fog, director.position.y);
     camera.updateMatrixWorld();
     shadowFollow.update(light.sunDir, camera, director.target);
 
