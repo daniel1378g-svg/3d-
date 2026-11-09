@@ -7,7 +7,8 @@
 //    after the track, pits, grandstand and paddock; it has its own random streams and leaves the
 //    shared ctx.rng where the old vegetation left it, for the clouds;
 //  - world.update(time, dt, camera, snap) runs the per-frame updaters in registration order (pit flags,
-//    vegetation LOD and grass sway, grandstand flags, clouds).
+//    vegetation LOD and grass sway, grandstand flags, clouds);
+//  - the matrices of everything but the clouds are computed once at the end (freezeStaticMatrices).
 //
 // Coordinates: metres, world XZ ground plane, +Y up. See layout.js for the fixed positions.
 import { bindGravelMask, bindTrackModel } from '../env/shading.js';
@@ -23,6 +24,23 @@ import { buildGround, buildHills } from './terrain.js';
 import { analyseTrack } from './track-analysis.js';
 import { buildTrackSurfaces } from './track-surfaces.js';
 import { buildVegetation } from './vegetation.js';
+
+/**
+ * Nothing in the world moves after the build but the drifting clouds (the flags wave and the grass
+ * sways in their shaders, the vegetation levels are instance attributes), so every other part keeps
+ * the matrices computed here, and three.js's per-frame updateMatrixWorld skips those subtrees instead
+ * of recomposing their ~260 object matrices every frame (measured: 3.4 → 2.8 ms of CPU per frame for a
+ * scripted sweep on this host with the draws skipped, scripts/bench.mjs). A part that must move later
+ * needs matrixAutoUpdate and matrixWorldAutoUpdate turned back on for its subtree.
+ */
+function freezeStaticMatrices(root, moving) {
+  root.updateMatrixWorld(true);
+  for (const child of root.children) {
+    if (child === moving) continue;
+    child.traverse((node) => (node.matrixAutoUpdate = false));
+    child.matrixWorldAutoUpdate = false;
+  }
+}
 
 /**
  * @param {Array<[number, number]>} trackPoints  closed track centre line as [x, z] pairs (metres)
@@ -57,6 +75,7 @@ function buildWorld(trackPoints, { quality = 'high' } = {}) {
   buildFlag(ctx, L.grandstandX0 + 8, 17, L.grandstandZ + 16, 0xe93325, ctx.root);
   buildFlag(ctx, L.grandstandX1 - 8, 17, L.grandstandZ + 16, 0xf5f3ee, ctx.root);
   buildClouds(ctx);
+  freezeStaticMatrices(ctx.root, ctx.root.getObjectByName('clouds'));
 
   const { updaters } = ctx;
   return {

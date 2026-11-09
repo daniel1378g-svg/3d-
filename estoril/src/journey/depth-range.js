@@ -169,8 +169,61 @@ function isAxisAligned(matrix) {
   );
 }
 
-/** Distance from (px, py, pz) to triangle (a, b, c) (Ericson, Real-Time Collision Detection 5.1.5). */
-function triangleDistance(px, py, pz, ax, ay, az, bx, by, bz, cx, cy, cz) {
+/**
+ * Math.hypot(x, y, z) without its allocation (V8's builtin copies its arguments into a new array):
+ * V8's own algorithm (the largest magnitude scales the others, Kahan-compensated sum; NaN ignored for
+ * the maximum, Infinity before NaN before 0), so the result is the same to the bit there (checked in
+ * Chromium on 3 million random triples and every triple of 0, -0, ±Infinity, NaN and finite values; a
+ * degenerate triangle still gives NaN, which the search ignores).
+ */
+function hypot3(x, y, z) {
+  const ax = Math.abs(x);
+  const ay = Math.abs(y);
+  const az = Math.abs(z);
+  let max = 0;
+  if (ax > max) max = ax;
+  if (ay > max) max = ay;
+  if (az > max) max = az;
+  if (max === Infinity) return Infinity;
+  if (ax !== ax || ay !== ay || az !== az) return NaN;
+  if (max === 0) return 0;
+  let sum = 0;
+  let compensation = 0;
+  let n = ax / max;
+  let summand = n * n - compensation;
+  let preliminary = sum + summand;
+  compensation = preliminary - sum - summand;
+  sum = preliminary;
+  n = ay / max;
+  summand = n * n - compensation;
+  preliminary = sum + summand;
+  compensation = preliminary - sum - summand;
+  sum = preliminary;
+  n = az / max;
+  summand = n * n - compensation;
+  preliminary = sum + summand;
+  return Math.sqrt(preliminary) * max;
+}
+
+/**
+ * Distance from the eye (eye[0..2]) to the triangle at data[o..o+8] (a, b, c) (Ericson, Real-Time
+ * Collision Detection 5.1.5), written to out[0]. Only arrays and an integer go in and nothing comes
+ * out: this call is not inlined, and V8 passes and returns doubles between such calls as new heap
+ * numbers (12 per triangle tested, ~26 KB per frame over the journey, ~40 KB near the pit building).
+ */
+function triangleDistance(out, eye, data, o) {
+  const px = eye[0];
+  const py = eye[1];
+  const pz = eye[2];
+  const ax = data[o];
+  const ay = data[o + 1];
+  const az = data[o + 2];
+  const bx = data[o + 3];
+  const by = data[o + 4];
+  const bz = data[o + 5];
+  const cx = data[o + 6];
+  const cy = data[o + 7];
+  const cz = data[o + 8];
   const abx = bx - ax,
     aby = by - ay,
     abz = bz - az;
@@ -233,7 +286,7 @@ function triangleDistance(px, py, pz, ax, ay, az, bx, by, bz, cx, cy, cz) {
       qz = az + abz * v + acz * w;
     }
   }
-  return Math.hypot(px - qx, py - qy, pz - qz);
+  out[0] = hypot3(px - qx, py - qy, pz - qz);
 }
 
 /**
@@ -251,6 +304,11 @@ function createDepthRange(camera) {
   const movers = []; // { object, radius }
   const sprites = [];
   const skyCentre = new Vector3();
+  // the eye, the search's running minimum and one triangle's distance (typed arrays, so the search
+  // passes no doubles between calls: see triangleDistance)
+  const eye = new Float64Array(3);
+  const nearest = new Float64Array(1);
+  const triangle = new Float64Array(1);
   let skyRadius = 8000;
   const forward = new Vector3();
   const right = new Vector3();
@@ -447,8 +505,12 @@ function createDepthRange(camera) {
     }
   }
 
-  /** Exact distance from the eye to every item of cell k, if any can beat `best`. */
-  function cellDistance(k, ex, ey, ez, best) {
+  /** Lowers nearest[0] to the exact distance from the eye to any item of cell k that beats it. */
+  function cellDistance(k) {
+    const ex = eye[0];
+    const ey = eye[1];
+    const ez = eye[2];
+    let best = nearest[0];
     for (let j = cellStart[k]; j < cellStart[k + 1]; j++) {
       const item = cellItems[j];
       const o = itemOffset[item];
@@ -469,34 +531,26 @@ function createDepthRange(camera) {
             ez - d[o + 2],
             d[o + 5] - ez,
           );
-      } else
-        distance = triangleDistance(
-          ex,
-          ey,
-          ez,
-          d[o],
-          d[o + 1],
-          d[o + 2],
-          d[o + 3],
-          d[o + 4],
-          d[o + 5],
-          d[o + 6],
-          d[o + 7],
-          d[o + 8],
-        );
+      } else {
+        triangleDistance(triangle, eye, d, o);
+        distance = triangle[0];
+      }
       if (distance < best) best = distance;
     }
-    return best;
+    nearest[0] = best;
   }
 
   /** Clearance of the static scene: rings of cells outwards from the eye's cell. */
   function staticClearance(ex, ey, ez) {
-    let best = Infinity;
+    eye[0] = ex;
+    eye[1] = ey;
+    eye[2] = ez;
+    nearest[0] = Infinity;
     const cx0 = cellOf(ex);
     const cz0 = cellOf(ez);
     for (let ring = 0; ring < SIDE; ring++) {
       // every cell of this ring is at least (ring - 1) cells away horizontally
-      if ((ring - 1) * CELL >= best) break;
+      if ((ring - 1) * CELL >= nearest[0]) break;
       for (let cz = cz0 - ring; cz <= cz0 + ring; cz++) {
         if (cz < 0 || cz >= SIDE) continue;
         const edgeRow = cz === cz0 - ring || cz === cz0 + ring;
@@ -510,11 +564,11 @@ function createDepthRange(camera) {
           const dx = Math.max(x0 - ex, 0, ex - x0 - CELL);
           const dz = Math.max(z0 - ez, 0, ez - z0 - CELL);
           const dy = Math.max(0, ey - ceiling[k]);
-          if (Math.sqrt(dx * dx + dy * dy + dz * dz) < best) best = cellDistance(k, ex, ey, ez, best);
+          if (Math.sqrt(dx * dx + dy * dy + dz * dz) < nearest[0]) cellDistance(k);
         }
       }
     }
-    return best;
+    return nearest[0];
   }
 
   const state = {
