@@ -82,6 +82,12 @@ const STILL_CLOCK = 0;
 const WARMUP_PROGRESS = [0.26, 0.37, 0.47, 0.7, 0.95];
 
 /**
+ * Load phases as performance marks (ce:data, ce:world, ce:car here; src/home.js adds the others),
+ * read by scripts/bench.mjs and the ?bench=1 overlay (src/bench.js). Once per load, never per frame.
+ */
+const mark = (name) => performance.mark && performance.mark(name);
+
+/**
  * Distance from `eye` to the static scenery (the depth range's index, without the `movers`, which
  * are hidden for the query), for the camera layout: it must not depend on where the car or the crew
  * happen to be when the layout is solved. The depth range sets the camera's near/far as a side
@@ -128,6 +134,7 @@ async function createJourney({
     fetch(carMetaUrl).then((res) => res.json()),
   ]);
   onProgress(0.15);
+  mark('ce:data');
   const track = trackData.pts; // circuit centreline, [x, z] pairs
   const world = buildWorld(track, { quality, renderer });
   scene.add(world.root);
@@ -138,6 +145,7 @@ async function createJourney({
   const driftStart = Float64Array.from(drifting, (cloud) => cloud.position.x);
   const driftSaved = new Float64Array(drifting.length);
   onProgress(0.35);
+  mark('ce:world');
   const car = await buildHeroCar(carUrl, carMeta, {
     quality,
     onProgress: (e) => e.total && onProgress(0.35 + (0.55 * e.loaded) / e.total),
@@ -145,6 +153,7 @@ async function createJourney({
   scene.add(car.root);
   tagCarForMask(car.root);
   onProgress(0.92);
+  mark('ce:car');
 
   // --- extras ----------------------------------------------------------------------------------
   const highlight = createTrackHighlight(world.root.userData.trackModel);

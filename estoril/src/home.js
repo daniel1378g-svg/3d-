@@ -10,7 +10,9 @@
 // The upcoming-event blocks are handled by ./events.js, whether or not 3D runs.
 //
 // Query parameters: ?3d=force skips the device check (and ?q=low|mid|high then picks the quality),
-// ?3d=off (or 0) shows the stills, ?capture=1 exposes window.__cap(t, dt) for deterministic stills.
+// ?3d=off (or 0) shows the stills, ?capture=1 exposes window.__cap(t, dt) for deterministic stills,
+// ?bench=1 loads src/bench.js (a separate chunk, never fetched otherwise) once the scene is ready: a
+// scripted scroll through the five stages at the real frame rate, with frame-time statistics on screen.
 
 import { initEvents } from './events.js';
 
@@ -470,10 +472,15 @@ function initJourney() {
     { once: true },
   );
 
+  // load phases as performance marks (src/journey/journey.js adds ce:data, ce:world, ce:car)
+  const mark = (name) => performance.mark && performance.mark(name);
+
   (async () => {
     try {
+      mark('ce:3d-start');
       // keep this specifier: esbuild names the chunk after it (chunks/journey-[hash].js)
       const { createJourney } = await import('./journey/journey.js');
+      mark('ce:chunk');
       scene = await createJourney({
         canvas,
         quality,
@@ -482,9 +489,11 @@ function initJourney() {
         carUrl: journey.dataset.car,
         carMetaUrl: journey.dataset.carMeta,
       });
+      mark('ce:created');
       try {
         await scene.warmup();
       } catch {}
+      mark('ce:warm');
     } catch (err) {
       console.warn('[journey] 3D unavailable, using stills', err);
       useStills(no3dNote());
@@ -521,9 +530,16 @@ function initJourney() {
     // fade the canvas in once a frame is on screen, then retire the posters behind it
     requestAnimationFrame(() =>
       requestAnimationFrame(() => {
+        mark('ce:shown');
         journey.classList.add('is-3d');
         setTimeout(() => posters.forEach((poster) => poster.classList.remove('is-on')), 1400);
       }),
     );
+
+    if (params.get('bench') === '1' && params.get('capture') !== '1')
+      import('./bench.js').then(
+        ({ runBench }) => runBench({ scene, quality, journey, scrollRange }),
+        (err) => console.warn('[bench] could not load', err),
+      );
   })();
 }
