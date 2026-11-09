@@ -75,8 +75,12 @@ function buildCarPath(trackPoints) {
   for (let [x, z] of PADDOCK_AND_RETURN) addPoint(x, z);
   // Tension (0.5) is ignored by the centripetal parameterisation.
   let curve = new CatmullRomCurve3(controlPoints, false, 'centripetal', 0.5);
-  // getPointAt()/getLength() use this many samples: ~0.16 m over the ~2.6 km path.
-  return ((curve.arcLengthDivisions = 16e3), curve);
+  // getPointAt()/getLength() use this many samples: ~0.16 m over the ~2.6 km path, a whole number per
+  // segment between control points. The curve's speed in its parameter jumps at the control points
+  // (each segment has its own centripetal scale), so a table sample that straddled one made the car
+  // speed up or slow down for a sample's length there (by up to 66 %, a kink the camera follows).
+  const segments = controlPoints.length - 1;
+  return ((curve.arcLengthDivisions = segments * Math.ceil(16e3 / segments)), curve);
 }
 
 /**
