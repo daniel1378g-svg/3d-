@@ -27,7 +27,8 @@
 //   car framing in every car shot the car's projected outline (a car-shaped hull in its bounding box,
 //               camera-director.js carOutline) is fully on screen and inside the framing area the
 //               director frames it in (the panel and open areas blended by camera-director.js
-//               panelWeight), overlaps the stage buttons (desktop) by at most PANEL_OVERLAP of its
+//               panelWeight), overlaps the stage buttons and the skip link (where the layout keeps the
+//               framing areas clear of them: `nav`, `skip`) by at most PANEL_OVERLAP of its
 //               area, and overlaps each panel's box by at most PANEL_OVERLAP while the panel is fully
 //               shown, FADING_OVERLAP once weighted by the panel's opacity while it fades (home.js: 1
 //               in its window, fading over PANEL_FADE before and after it); a layout whose page
@@ -85,11 +86,11 @@ const KINK_REL = 0.05;
 /** A second difference that shrinks less than this when h halves is a kink or a jump. */
 const KINK_RATIO = 3;
 /**
- * The car's box may overlap the stage buttons, or a fully shown panel's box, by PANEL_OVERLAP of its
- * area; a fading panel's box by FADING_OVERLAP once weighted by the panel's opacity: the car glides
- * between the free band and the middle of the screen while a panel fades, and may cross a panel's
- * edge while that panel is faint (all of the car under a panel at 20 %, which darkens it by 15 %, or
- * half of it at 40 %). The old framing left it under panels at 33–80 % (desktop) and 60 % (phone).
+ * The car's box may overlap the stage buttons, the skip link or a fully shown panel's box by
+ * PANEL_OVERLAP of its area; a fading panel's box by FADING_OVERLAP once weighted by the panel's
+ * opacity: the car glides between the free band and the middle of the screen while a panel fades, and
+ * may cross a panel's edge while that panel is faint (all of the car under a panel at 20 %, which
+ * darkens it by 15 %, or half of it at 40 %). The old framing left it under panels at 33–80 % (desktop) and 60 % (phone).
  */
 const PANEL_OVERLAP = 0.02;
 const FADING_OVERLAP = 0.2;
@@ -113,9 +114,12 @@ const AERIAL_FOV = 1;
  *   maxFov     widest vertical FOV allowed (degrees)
  *   panels     box of the panel of each stage [left, top, right, bottom]
  *   buttons    box of the stage buttons
- *   nav        the stage buttons' box where the car must keep clear of it (desktop), or null (on
- *              phones they stand above the framing areas; at 4:3 the column between the panels and
- *              the buttons is too narrow for the car, so car shots may pass under them)
+ *   nav        the stage buttons' box where the car must keep clear of it (home.js keeps both framing
+ *              areas clear of the buttons: beside them on desktop, below or left of them on phones),
+ *              or null (at 4:3 the column between the panels and the buttons is too narrow for the
+ *              car, so car shots may pass under them)
+ *   skip       the skip link's box where the car must keep clear of it (where both framing areas are
+ *              clear of it), or null (at 4:3 car shots may pass under it, as under the buttons)
  *   panel      free area with a panel shown; open: free area without one
  *   allow      optional, for a layout whose page layout cannot keep the car clear (the reason in
  *              `why`, printed with the result): `panelOverlap`, the fraction of the car's box that may
@@ -335,6 +339,7 @@ for (const v of VIEWPORTS) {
   let worstOverhead = { margin: Infinity };
   const worstAerial = { turn: 0, eye: 0, fov: 0 };
   let worstNav = { overlap: 0, t: '-' };
+  let worstSkip = { overlap: 0, t: '-' };
   let worstFovD2 = { d2: 0, t: '-' };
   let widest = { fov: 0, t: '-' };
   const keyFovs = CAMERA_SHOTS.map(
@@ -426,7 +431,7 @@ for (const v of VIEWPORTS) {
         const area = v.open.map((o, a) => o + (v.panel[a] - o) * w);
         const inArea = Math.min(x0 - area[0], y0 - area[1], area[2] - x1, area[3] - y1);
         if (inArea < worstArea.margin) worstArea = { margin: +inArea.toFixed(1), t };
-        // each panel's overlap weighted by its opacity, and the stage buttons'
+        // each panel's overlap weighted by its opacity, the stage buttons' and the skip link's
         let overlap = 0;
         let stage = -1;
         let excess = 0;
@@ -441,12 +446,14 @@ for (const v of VIEWPORTS) {
           excess = Math.max(excess, weighted - allowed);
         }
         const nav = v.nav ? overlapOf(box, v.nav) : 0;
+        const skip = v.skip ? overlapOf(box, v.skip) : 0;
         carWidths.push(x1 - x0);
         if (onScreen < worstFrame.margin)
           worstFrame = { margin: +onScreen.toFixed(1), t, box: box.map(Math.round) };
         if (overlap > worstOverlap.overlap) worstOverlap = { overlap: +overlap.toFixed(4), t };
         if (nav > worstNav.overlap) worstNav = { overlap: +nav.toFixed(4), t };
-        if (onScreen < 0 || inArea < -areaSlack || excess > 0 || nav > PANEL_OVERLAP) {
+        if (skip > worstSkip.overlap) worstSkip = { overlap: +skip.toFixed(4), t };
+        if (onScreen < 0 || inArea < -areaSlack || excess > 0 || Math.max(nav, skip) > PANEL_OVERLAP) {
           counts.framing++;
           fail(
             `${v.name} t=${t}: car box ${box.map(Math.round)} ` +
@@ -456,7 +463,9 @@ for (const v of VIEWPORTS) {
                   ? `leaves the framing area ${area.map(Math.round)} by ${(-inArea).toFixed(1)} px`
                   : excess > 0
                     ? `overlaps panel ${stage} by ${(overlap * 100).toFixed(1)} % (× its opacity)`
-                    : `overlaps the stage buttons by ${(nav * 100).toFixed(1)} %`),
+                    : nav > PANEL_OVERLAP
+                      ? `overlaps the stage buttons by ${(nav * 100).toFixed(1)} %`
+                      : `overlaps the skip link by ${(skip * 100).toFixed(1)} %`),
           );
         }
       }
@@ -524,7 +533,8 @@ for (const v of VIEWPORTS) {
       `${areaSlack ? `, ${areaSlack} px allowed` : ''}), width ${widthAt(0.1)}/${widthAt(0.5)}/${widthAt(0.9)} px ` +
       `(p10/50/90), panel overlap × opacity ` +
       `at most ${(100 * worstOverlap.overlap).toFixed(1)} % (t=${worstOverlap.t}), stage buttons ` +
-      `${(100 * worstNav.overlap).toFixed(1)} % (t=${worstNav.t}); overhead margin ${worstOverhead.margin} px at ` +
+      `${(100 * worstNav.overlap).toFixed(1)} % (t=${worstNav.t}), skip link ` +
+      `${(100 * worstSkip.overlap).toFixed(1)} % (t=${worstSkip.t}); overhead margin ${worstOverhead.margin} px at ` +
       `t=${worstOverhead.t} (heading ${director.overhead.heading}°, eye height ${director.overhead.pos[1].toFixed(0)} m); ` +
       `drone shots (subject < ${AERIAL_SUBJECT}) off the keys by at most ${worstAerial.turn}°, ` +
       `${worstAerial.eye} m, FOV ${worstAerial.fov}°; ` +
