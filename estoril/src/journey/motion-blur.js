@@ -8,15 +8,18 @@
 // The target holds the frame exactly as the canvas would: three r170 draws into a render target in
 // linear light without tone mapping, except into an XR target, which it draws like the canvas (tone
 // mapping, the target texture's colour space as the output encoding, the fog and clear colours
-// encoded the same way). So the target is flagged as one, with an sRGB texture (half float: three
-// stores the encoded values as they are). Every material, the display-colour sky dome, the cloud
-// sprites over it and the fog then come out identical on both paths, and at zero velocity the pass
-// returns the direct frame: the blur fades in and out by its velocity scale, with no jump where it
-// starts or stops (the old HDR path left everything at depth 1 untone-mapped, so the cloud sprites
-// over the sky turned from grey to white, +5.4/255 on the whole frame, when it switched on). The
-// materials also compile to the same programs on both paths. The average is taken over display
-// values, which is a little darker than averaging light on high-contrast edges and invisible over
-// the ≤ 11.5 px the blur is allowed to reach.
+// encoded the same way). So the target is flagged as one, with an sRGB texture stored as plain RGBA8
+// (internalFormat: three's default for an 8-bit sRGB texture, SRGB8_ALPHA8, would encode a second
+// time on write): the shader's display-encoded output is stored as the canvas stores it, 8 bits per
+// channel, 4 samples resolved alike. Half float, as it was, kept the same values in twice the bytes
+// (79 MB more multisampled colour and 20 MB more resolved colour at 2880×1800). Every material, the
+// display-colour sky dome, the cloud sprites over it and the fog then come out identical on both
+// paths, and at zero velocity the pass returns the direct frame: the blur fades in and out by its
+// velocity scale, with no jump where it starts or stops (the old HDR path left everything at depth 1
+// untone-mapped, so the cloud sprites over the sky turned from grey to white, +5.4/255 on the whole
+// frame, when it switched on). The materials also compile to the same programs on both paths. The
+// average is taken over display values, which is a little darker than averaging light on
+// high-contrast edges and invisible over the ≤ 11.5 px the blur is allowed to reach.
 //
 // What keeps it sparing and clean:
 //   when   motionBlurAmount(): only while the camera chases the car on the lap (progress 0.43–0.635)
@@ -31,18 +34,19 @@
 //          noise), so a long blur becomes fine grain instead of TAPS distinct ghost copies: those
 //          copies of the red line, the mint run-off and the blue kerbs were the cyan/red "fringes"
 //          of the blurred aerial frames
+//   mask     one 8-bit channel (R8, the pass reads .r), no depth buffer: 5 MB at 2880×1800, not 20
 //   history  the previous view-projection is reset by resetMotionBlur() (jump, renderAt stills,
 //          resize, the page becoming visible, warmup), so the first frame after a cut is sharp
 // render allocates nothing.
 import {
   Color,
   DepthTexture,
-  HalfFloatType,
   Matrix4,
   Mesh,
   MeshBasicMaterial,
   OrthographicCamera,
   PlaneGeometry,
+  RedFormat,
   Scene,
   SRGBColorSpace,
   ShaderMaterial,
@@ -97,16 +101,18 @@ function addLightsToMask(root) {
 function createMotionBlur(quality) {
   if (quality !== 'high') return null;
   try {
-    // the frame as the canvas would show it (4× MSAA, see the header) with a depth texture; the car mask
+    // the frame as the canvas would show it (4× MSAA, 8 bits per channel, see the header) with a depth
+    // texture; the car mask
     const sceneTarget = new WebGLRenderTarget(4, 4, {
-      type: HalfFloatType,
       samples: 4,
       colorSpace: SRGBColorSpace,
+      internalFormat: 'RGBA8',
     });
     sceneTarget.isXRRenderTarget = true; // drawn like the canvas (header)
     sceneTarget.depthTexture = new DepthTexture(4, 4);
-    // no depth buffer: the mask is the union of the car's fragments, which no depth test changes
-    const maskTarget = new WebGLRenderTarget(4, 4, { depthBuffer: false });
+    // one channel and no depth buffer: the mask is the union of the car's fragments, which no depth
+    // test changes
+    const maskTarget = new WebGLRenderTarget(4, 4, { depthBuffer: false, format: RedFormat });
     const material = new ShaderMaterial({
       depthTest: false,
       depthWrite: false,
