@@ -1,7 +1,7 @@
 // Headless screenshots of the built viewer:  node scripts/shot.cjs <out-prefix> "<query>" [width height] ...
 const { chromium } = require('playwright');
 const http = require('http'), fs = require('fs'), path = require('path');
-const root = path.join(__dirname, '..', 'dist');
+const root = path.join(__dirname, '..', process.env.SHOT_ROOT || 'dist');
 const types = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.glb': 'model/gltf-binary', '.webp': 'image/webp', '.jpg': 'image/jpeg', '.png': 'image/png' };
 const server = http.createServer((req, res) => {
   let p = decodeURIComponent(req.url.split('?')[0]); if (p === '/') p = '/index.html';
@@ -22,7 +22,7 @@ const server = http.createServer((req, res) => {
     page.on('console', (m) => { if (m.type() === 'error' || m.type() === 'warning') errors.push(m.type() + ': ' + m.text().slice(0, 300)); });
     page.on('pageerror', (e) => errors.push('pageerror: ' + e.message));
     const t0 = Date.now();
-    await page.goto(`http://127.0.0.1:${port}/index.html?${j.q || ''}`);
+    await page.goto(`http://127.0.0.1:${port}/${process.env.SHOT_PAGE || 'index.html'}?${j.q || ''}`);
     try {
       await page.waitForFunction(() => document.getElementById('app').dataset.state !== 'loading', null, { timeout: 180000 });
     } catch (e) { errors.push('timeout waiting for load'); }

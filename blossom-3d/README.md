@@ -56,7 +56,16 @@ npm install
 npm run dev                 # http://127.0.0.1:5173
 npm run build               # static site in dist/
 npm run build:artifact      # also packs artifact/ (page + files) for the claude.ai Artifact preview
+npm test                    # behaviour checks in headless Chromium (needs Playwright)
 ```
+
+`npm test` walks the model by stepping the viewer's own logic: collisions with walls and furniture,
+doors opening on approach, crossing the step-over bench, the whole guided tour without touching a wall,
+the room list, the model view and the language switch. `scripts/shot.cjs` takes screenshots at any
+viewpoint (`?shot=1&at=REF`, `&mode=overview`, `&x=…&z=…&yaw=…`).
+
+Useful URL parameters: `at=<room id>` to start somewhere else, `tm=agx|aces|neutral` and `exp=<number>`
+to compare tone mapping.
 
 ## Rebuild the model
 
@@ -65,10 +74,10 @@ Needs Python 3.13 with `bpy` 5.2 (Blender as a module), `numpy`, `Pillow` and `s
 ```bash
 pip install bpy==5.2.3 numpy pillow shapely
 python3 -m pipeline.textures                          # procedural textures → textures/
-python3 -m pipeline.run build lm:4096 export bake:96  # scene → lightmap UVs → model.glb + scene.json → lightmaps
+python3 -m pipeline.run build lm:4096 export bake:64  # scene → lightmap UVs → model.glb + scene.json → lightmaps
 python3 -m pipeline.run build preview:ref_ne,balf     # quick Cycles stills into build/preview/
 ```
 
-The bake takes roughly half an hour on four CPU cores. `web/public/assets/model.glb` is a standard glTF
+The bake takes roughly half an hour on four CPU cores (64 samples per texel, adaptive, then denoised). `web/public/assets/model.glb` is a standard glTF
 binary and opens in Blender or any glTF viewer (the lightmaps are applied by the web viewer, through the
 second UV set).

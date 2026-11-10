@@ -31,8 +31,8 @@ def _down(r=0.085):
 
 def _batten():
     k = Kit()
-    k.box((-0.6, -0.04, 0.0), (0.6, 0.04, 0.05), 'frame_white')
-    k.quad([(-0.59, -0.035, -0.002), (-0.59, 0.035, -0.002), (0.59, 0.035, -0.002), (0.59, -0.035, -0.002)], 'led_panel')
+    k.box((-0.6, -0.07, 0.0), (0.6, 0.07, 0.05), 'frame_white')
+    k.quad([(-0.59, -0.062, -0.002), (-0.59, 0.062, -0.002), (0.59, 0.062, -0.002), (0.59, -0.062, -0.002)], 'led_panel')
     return k
 
 
@@ -71,7 +71,7 @@ LAYOUT = [
     ('TRM', 'panel', [(46.5, 21.3), (46.5, 23.7), (46.5, 26.1)]),
     ('ANTE', 'panel', [(45.3, 18.9), (47.1, 18.9)]),
     ('ISMC', 'down', [(28.3, 16.1), (29.6, 16.1)]),
-    ('TEC', 'batten', [(24.4, 17.3), (26.2, 17.3)]),
+    ('TEC', 'batten', [(23.9, 17.6), (25.3, 17.6), (26.7, 17.6)]),
 ]
 
 
@@ -105,4 +105,4 @@ def set_bake_emission():
         nt.links.new(geo.outputs['Backfacing'], mul.inputs[0])
         nt.links.new(mul.outputs['Value'], bsdf.inputs['Emission Strength'])
         # warm-neutral white, about 4000 K
-        bsdf.inputs['Emission Color'].default_value = (1.0, 0.86, 0.70, 1.0) if name == 'led_panel' else (1.0, 0.84, 0.66, 1.0)
+        bsdf.inputs['Emission Color'].default_value = (1.0, 0.95, 0.88, 1.0) if name == 'led_panel' else (1.0, 0.93, 0.84, 1.0)

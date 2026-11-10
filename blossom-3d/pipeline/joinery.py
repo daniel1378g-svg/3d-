@@ -78,13 +78,15 @@ def _door_frame(k, o, alu=False):
         a = plan.W(ax0, ay0, az0); b = plan.W(ax1, ay1, az1)
         k.box(a, b, mat, bevel=0.002)
     if o['axis'] == 'y':
-        pbox(x0 - proud, y0 - cas, 0, x1 + proud, y0 + lin, head)
-        pbox(x0 - proud, y1 - lin, 0, x1 + proud, y1 + cas, head)
-        pbox(x0 - proud, y0 - cas, head - lin, x1 + proud, y1 + cas, head + cas)
+        pbox(x0, y0, 0, x1, y0 + lin, head); pbox(x0, y1 - lin, 0, x1, y1, head); pbox(x0, y0 + lin, head - lin, x1, y1 - lin, head)
+        for (xa, xb) in ((x0 - proud, x0), (x1, x1 + proud)):
+            pbox(xa, y0 - cas, 0, xb, y0 + lin, head + cas); pbox(xa, y1 - lin, 0, xb, y1 + cas, head + cas)
+            pbox(xa, y0 + lin, head - lin, xb, y1 - lin, head + cas)
     else:
-        pbox(x0 - cas, y0 - proud, 0, x0 + lin, y1 + proud, head)
-        pbox(x1 - lin, y0 - proud, 0, x1 + cas, y1 + proud, head)
-        pbox(x0 - cas, y0 - proud, head - lin, x1 + cas, y1 + proud, head + cas)
+        pbox(x0, y0, 0, x0 + lin, y1, head); pbox(x1 - lin, y0, 0, x1, y1, head); pbox(x0 + lin, y0, head - lin, x1 - lin, y1, head)
+        for (ya, yb) in ((y0 - proud, y0), (y1, y1 + proud)):
+            pbox(x0 - cas, ya, 0, x0 + lin, yb, head + cas); pbox(x1 - lin, ya, 0, x1 + cas, yb, head + cas)
+            pbox(x0 + lin, ya, head - lin, x1 - lin, yb, head + cas)
 
 
 SWING_N = {'W': Vector((-1, 0)), 'E': Vector((1, 0)), 'N': Vector((0, 1)), 'S': Vector((0, -1))}     # world XY

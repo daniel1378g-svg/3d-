@@ -213,7 +213,7 @@ export class Player {
     // gentle head bob
     const sp = this.vel.length();
     this.bobT = (this.bobT || 0) + sp * dt * 3.2;
-    this.bob = Math.sin(this.bobT * 2) * 0.012 * Math.min(1, sp / 1.2);
+    this.bob = this.noBob ? 0 : Math.sin(this.bobT * 2) * 0.012 * Math.min(1, sp / 1.2);
     this.apply();
   }
 

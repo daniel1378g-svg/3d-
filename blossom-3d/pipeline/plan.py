@@ -130,9 +130,9 @@ ROOMS = [
     dict(id='BALM_SH', name='Duches', parent='BALM', rects=[(30.462, 23.021, 34.7, 27.14)], floor='floor_wet', wall=('tile_wet', 'tile_wet'), ceil=2.80, ceiling='ceil_plain'),
     dict(id='BALF', name='Balneário Feminino', area='111,25 m²', note='53 lugares', rects=[(30.462, 10.817, 44.333, 18.868)], floor='floor_bal', wall=('tile_bal', 'paint_white'), ceil=2.80, ceiling='ceil_plain'),
     dict(id='BALM', name='Balneário Masculino', area='111,25 m²', note='53 lugares', rects=[(30.462, 19.069, 44.333, 27.14)], floor='floor_bal', wall=('tile_bal', 'paint_white'), ceil=2.80, ceiling='ceil_plain'),
-    dict(id='TRF', name='Sala Transição', area='24,30 m²', rects=[(44.483, 10.817, 48.055, 17.706)], floor='floor_clean', wall=('panel_clean', 'panel_clean'), ceil=2.80, ceiling='ceil_clean'),
+    dict(id='TRF', name='Sala Transição – Fem.', area='24,30 m²', rects=[(44.483, 10.817, 48.055, 17.706)], floor='floor_clean', wall=('panel_clean', 'panel_clean'), ceil=2.80, ceiling='ceil_clean'),
     dict(id='ANTE', name='Ante-Câmara Entrada', area='7,90 m²', rects=[(44.483, 17.856, 48.055, 20.068)], floor='floor_clean', wall=('panel_clean', 'panel_clean'), ceil=2.80, ceiling='ceil_clean'),
-    dict(id='TRM', name='Sala Transição', area='24,65 m²', rects=[(44.483, 20.218, 48.055, 27.14)], floor='floor_clean', wall=('panel_clean', 'panel_clean'), ceil=2.80, ceiling='ceil_clean'),
+    dict(id='TRM', name='Sala Transição – Mas.', area='24,65 m²', rects=[(44.483, 20.218, 48.055, 27.14)], floor='floor_clean', wall=('panel_clean', 'panel_clean'), ceil=2.80, ceiling='ceil_clean'),
     dict(id='ISMC', name='I.S. Mobilidade Condicionada', area='5,00 m²', rects=[(27.62, 15.16, 30.315, 17.022)], floor='floor_bal', wall=('tile_bal', 'paint_white'), ceil=2.60, ceiling='ceil_plain'),
     dict(id='TEC', name='Área Técnica', area='8,60 m²', rects=[(23.093, 16.296, 27.37, 18.302)], floor='floor_concrete', wall=('paint_tech', 'paint_tech'), ceil=3.10, ceiling='ceil_plain'),
     dict(id='CIRC', name='Zona de Circulação', area='75,15 m²', rects=[(23.093, 18.553, 30.315, 21.251), (27.62, 17.174, 30.315, 18.553), (26.238, 21.251, 30.315, 27.36), (26.238, 27.36, 29.238, 29.991)], floor='floor_main', wall=('paint_white', 'paint_white'), ceil=3.00, ceiling='ceil_grid'),
@@ -158,6 +158,10 @@ EXIST_BLOCKS = [
 ]
 
 
+# wall faces painted in the accent colour: rectangles around the probe point just in front of the face
+ACCENTS = [(13.112, 22.74, 13.26, 28.86), (13.68, 29.98, 13.82, 34.32)]
+
+
 def room_at(x, y, eps=0.0):
     for r in ROOMS:
         for (x0, y0, x1, y1) in r['rects']:
@@ -170,7 +174,7 @@ def room_at(x, y, eps=0.0):
 # room -> (stand x, y, look-at x, y)
 VIEWPOINTS = {
     'EXT': (20.4, 18.3, 23.0, 19.9), 'CIRC': (24.4, 19.9, 30.0, 19.9), 'REF': (24.8, 22.8, 16.0, 31.0),
-    'BALF': (36.4, 15.8, 41.0, 13.0), 'BALM': (36.4, 22.2, 41.0, 25.0), 'TRF': (46.3, 14.9, 46.3, 11.0), 'TRM': (46.3, 23.0, 46.3, 27.0),
+    'BALF': (43.5, 16.0, 36.5, 17.2), 'BALM': (43.5, 21.9, 36.5, 20.7), 'TRF': (46.3, 14.9, 46.3, 11.0), 'TRM': (46.3, 23.0, 46.3, 27.0),
     'ANTE': (45.2, 18.95, 48.0, 18.95), 'ISMC': (29.4, 16.6, 28.0, 15.6), 'TEC': (24.3, 17.8, 26.5, 16.6),
     'CORR': (13.5, 22.0, 5.0, 22.0), 'VEST': (7.6, 25.9, 5.2, 23.4), 'DESC': (7.8, 28.3, 5.2, 30.2), 'LIMPOS': (9.2, 27.6, 12.4, 24.2),
     'SUJOS': (5.2, 31.6, 10.5, 33.0), 'LIMPEZA': (11.0, 34.9, 8.4, 34.0), 'TRAY': (12.5, 35.0, 12.8, 30.0), 'EXC': (30.5, 28.7, 36.0, 28.7),
@@ -191,7 +195,7 @@ TOUR = [
     (36.3, 22.1), (35.2, 21.9), (34.9, 20.85), (33.5, 19.9), (31.4, 19.72), (30.39, 19.72), (29.2, 19.8, dict(room='CIRC')), (28.2, 21.2),
     (27.3, 22.81), (26.16, 22.81), (25.2, 22.7, dict(room='REF')), (21.0, 23.4), (16.0, 23.4), (14.26, 23.3), (14.26, 22.67), (14.1, 22.0, dict(room='CORR')),
     (7.4, 22.0), (6.575, 22.05), (6.575, 22.73), (6.6, 24.3, dict(room='VEST', pause=2.0, look=(5.0, 24.0))), (7.5, 26.02), (8.459, 26.02),
-    (9.6, 26.0, dict(room='LIMPOS', pause=2.0, look=(12.3, 25.6))), (9.25, 27.5), (9.23, 29.5), (9.23, 30.9),
+    (9.6, 26.0, dict(room='LIMPOS', pause=2.0, look=(12.3, 25.6))), (10.6, 27.3), (10.9, 28.9), (10.85, 29.9), (10.0, 30.14), (9.2, 30.25), (9.2, 30.9),
     (9.2, 31.9, dict(room='SUJOS', pause=2.0, look=(8.0, 33.0))), (10.9, 31.85), (11.648, 31.81), (12.4, 31.8, dict(room='TRAY')), (12.4, 29.7), (13.15, 29.42),
     (14.2, 29.45, dict(room='REF')), (14.6, 30.15), (18.3, 30.15, dict(pause=1.0, look=(22.0, 33.0))),
 ]

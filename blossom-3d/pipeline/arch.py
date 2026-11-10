@@ -133,6 +133,7 @@ def build():
         if r is None: return 'ext_wall', 'EXT'
         root = r.get('parent', r['id'])
         if zlo >= r['ceil'] - 1e-6: return 'void', root          # above the ceiling: never seen
+        if any(a[0] <= x <= a[2] and a[1] <= y <= a[3] for a in plan.ACCENTS): return 'paint_accent', root
         return (r['wall'][0] if zmid < 2.10 else r['wall'][1]), root
     for k in range(nz):
         for j in range(ny):
@@ -203,7 +204,6 @@ def build():
 
     # ---- floors and ceilings per room
     for ri, room in enumerate(plan.ROOMS):
-        if room.get('closed'): continue
         root = room.get('parent', room['id']); prt = part(root)
         cells = [(j, i) for j in range(ny) for i in range(nx) if near[j, i] == ri]
         if not cells: continue
@@ -218,7 +218,7 @@ def build():
                     if n in cset and n not in seen: seen.add(n); dq.append(n)
             umin = min(xs[i] for j, i in comp); vmin = min(ys[j] for j, i in comp)
             umax = max(xs[i + 1] for j, i in comp); vmax = max(ys[j + 1] for j, i in comp)
-            for kind in ('floor', 'ceil'):
+            for kind in (('floor',) if room.get('closed') else ('floor', 'ceil')):
                 isl = len(prt.islands); prt.islands.append((umax - umin, vmax - vmin, 'hi' if kind == 'floor' else 'mid'))
                 z = 0.0 if kind == 'floor' else room['ceil']
                 m = room['floor'] if kind == 'floor' else room['ceiling']

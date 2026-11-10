@@ -17,7 +17,7 @@ MATERIALS = {
     'ceil_grid':    dict(color='#FFFFFF', rough=0.95, tex='ceil_grid', scale=1.2),
     'ceil_plain':   dict(color='#F4F3EF', rough=0.95),
     'ceil_clean':   dict(color='#FFFFFF', rough=0.60, tex='ceil_clean', scale=1.2),
-    'ext_wall':     dict(color='#E3E0D8', rough=0.95, tex='plaster', scale=1.5),
+    'ext_wall':     dict(color='#D6D2C9', rough=0.95, tex='plaster', scale=1.5),
     'wall_cut':     dict(color='#2E3033', rough=0.9),
     'sill':         dict(color='#D2CEC5', rough=0.4),
     # ---- floors
@@ -77,8 +77,8 @@ MATERIALS = {
     'led_panel':    dict(color='#FFF6E8', rough=0.5, emit=1.0),
     'led_down':     dict(color='#FFF4E2', rough=0.5, emit=1.0),
     # ---- outside
-    'ground_paving': dict(color='#B9B5AC', rough=0.85, tex='paving', scale=2.0),
-    'ground_gravel': dict(color='#A7A296', rough=0.95, tex='concrete', scale=3.0),
+    'ground_paving': dict(color='#D8D4CC', rough=0.85, tex='paving', scale=2.0),
+    'ground_gravel': dict(color='#8E8A80', rough=0.95, tex='concrete', scale=3.0),
     'ground_grass': dict(color='#6F8450', rough=1.0, tex='grass', scale=2.5),
     'roof':         dict(color='#8F9092', rough=0.9),
     'exist_wall':   dict(color='#D6D3CB', rough=0.95),

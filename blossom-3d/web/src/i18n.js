@@ -31,7 +31,7 @@ export const STR = {
 
 // the plan's own room names stay in Portuguese; English gets a gloss next to them
 export const ROOM_EN = {
-  REF: 'Canteen', CIRC: 'Circulation hall', BALF: 'Women’s changing room', BALM: 'Men’s changing room', TRF: 'Transition room (women)', TRM: 'Transition room (men)',
+  REF: 'Canteen', CIRC: 'Circulation hall', BALF: 'Women’s changing room', BALM: 'Men’s changing room', TRF: 'Transition room, women', TRM: 'Transition room, men',
   ANTE: 'Entrance airlock', ISMC: 'Accessible WC', TEC: 'Plant room', CORR: 'Staff corridor', VEST: 'Staff changing room', DESC: 'Food delivery',
   LIMPOS: 'Clean zone (servery)', SUJOS: 'Dishwashing', LIMPEZA: 'Cleaning store', TRAY: 'Tray return', EXC: 'Existing corridor', EXT: 'Outside',
 };

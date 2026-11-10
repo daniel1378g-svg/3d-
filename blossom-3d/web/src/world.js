@@ -56,8 +56,18 @@ async function loadModelBytes(base, manifest, onProgress) {
   return m.gzip ? gunzip(all.buffer) : all.buffer;
 }
 
-function loadTexture(url) {
-  return new Promise((resolve, reject) => new THREE.TextureLoader().load(url, resolve, undefined, reject));
+// lightmaps: decoded off the main thread; phones get them at half size (a 4096 px atlas is 64 MB of GPU memory)
+async function loadLightmap(url, maxSize) {
+  const blob = await (await fetch(url)).blob();
+  let bmp;
+  try {
+    const probe = await createImageBitmap(blob);
+    if (probe.width > maxSize) { bmp = await createImageBitmap(blob, { resizeWidth: maxSize, resizeHeight: maxSize, resizeQuality: 'high' }); probe.close(); } else bmp = probe;
+  } catch {
+    return new Promise((resolve, reject) => new THREE.TextureLoader().load(url, resolve, undefined, reject));
+  }
+  const t = new THREE.Texture(bmp); t.needsUpdate = true;
+  return t;
 }
 
 // ---------------------------------------------------------------------------------------------- materials
@@ -101,7 +111,7 @@ function patchLit(mat, { instanced, probe }) {
   return mat;
 }
 
-export async function loadWorld({ base = 'assets/', renderer, onProgress = () => {}, quality }) {
+export async function loadWorld({ base = 'assets/', renderer, onProgress = () => {}, quality, lightmapSize }) {
   const prog = { m: 0, t: 0 };
   const report = () => onProgress(prog.m * 0.8 + prog.t * 0.2);
   const [sceneData, manifest] = await Promise.all([
@@ -110,7 +120,8 @@ export async function loadWorld({ base = 'assets/', renderer, onProgress = () =>
   ]);
   const lmFiles = sceneData.lightmaps.files;
   let tdone = 0;
-  const lmPromise = Promise.all(lmFiles.map((f) => loadTexture(base + f).then((t) => { tdone++; prog.t = tdone / lmFiles.length; report(); return t; })));
+  const lmMax = Math.min(renderer.capabilities.maxTextureSize, lightmapSize || 4096);
+  const lmPromise = Promise.all(lmFiles.map((f) => loadLightmap(base + f, lmMax).then((t) => { tdone++; prog.t = tdone / lmFiles.length; report(); return t; })));
   const bytes = await loadModelBytes(base, manifest, (p) => { prog.m = p; report(); });
   const gltf = await new Promise((resolve, reject) => new GLTFLoader().parse(bytes, base, resolve, reject));
   const lms = await lmPromise;
@@ -195,7 +206,7 @@ export async function loadWorld({ base = 'assets/', renderer, onProgress = () =>
       for (const mesh of meshesOf(node)) {
         const key = `${mesh.geometry.uuid}|${mesh.material.name}|${ud.lmi}|${room}`;
         let b = groups.get(key);
-        if (!b) groups.set(key, b = { geometry: mesh.geometry, material: mesh.material, lmi: ud.lmi, room, items: [] });
+        if (!b) groups.set(key, b = { geometry: mesh.geometry, material: mesh.material, lmi: ud.lmi, room, kind: ud.kind, items: [] });
         b.items.push({ matrix: mesh.matrixWorld.clone(), st: ud.lmst });
       }
     } else {
@@ -215,7 +226,7 @@ export async function loadWorld({ base = 'assets/', renderer, onProgress = () =>
     im.geometry.setAttribute('lmST', new THREE.InstancedBufferAttribute(st, 4));
     im.instanceMatrix.needsUpdate = true;
     im.computeBoundingSphere(); im.computeBoundingBox();
-    im.userData.room = b.room;
+    im.userData.room = b.room; im.userData.kind = b.kind;
     root.add(im);
   }
 
@@ -243,7 +254,7 @@ export async function loadWorld({ base = 'assets/', renderer, onProgress = () =>
   root.traverse((o) => {
     if (!o.isMesh) return;
     const n = o.material.name || '';
-    if (n.startsWith('ceil') || n.startsWith('led_') || n === 'roof' || o.userData.room === 'ROOF') hideInOverview.push(o);
+    if (n.startsWith('ceil') || n.startsWith('led_') || n === 'roof' || n === 'exist_wall' || o.userData.room === 'ROOF' || o.userData.kind === 'light') hideInOverview.push(o);
     if (n === 'glass') o.renderOrder = 5;
   });
 

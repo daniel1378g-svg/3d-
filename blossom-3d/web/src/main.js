@@ -28,6 +28,7 @@ try {
   renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance', alpha: false, preserveDrawingBuffer: params.has('shot') });
 } catch (e) { fail(t('noWebgl')); throw e; }
 const touchDevice = matchMedia('(pointer: coarse)').matches;
+const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const state = {
   mode: 'walk', running: false, quality: 'auto', scale: 1, room: null, hintT: 0,
   maxDpr: Math.min(window.devicePixelRatio || 1, touchDevice ? 1.6 : 2),
@@ -35,8 +36,9 @@ const state = {
 try { const q = localStorage.getItem('rb3d.quality'); if (q) state.quality = q; } catch { /* optional */ }
 $('optQuality').value = state.quality;
 renderer.outputColorSpace = THREE.SRGBColorSpace;
-renderer.toneMapping = THREE.AgXToneMapping;
-renderer.toneMappingExposure = 1.0;
+const TM = { agx: THREE.AgXToneMapping, aces: THREE.ACESFilmicToneMapping, neutral: THREE.NeutralToneMapping, linear: THREE.LinearToneMapping };
+renderer.toneMapping = TM[params.get('tm')] ?? THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = +(params.get('exp') || 1.05);
 
 const camera = new THREE.PerspectiveCamera(touchDevice ? 72 : 66, 1, 0.06, 400);
 camera.rotation.order = 'YXZ';
@@ -49,6 +51,30 @@ function skyTexture() {
   g.fillStyle = gr; g.fillRect(0, 0, 8, 256);
   const tex = new THREE.CanvasTexture(c); tex.mapping = THREE.EquirectangularReflectionMapping; tex.colorSpace = THREE.SRGBColorSpace;
   return tex;
+}
+
+// a ring of trees far outside, painted once on a canvas: gives the windows and the entrance something to look at
+function treeLine() {
+  const W = 2048, H = 256;
+  const c = document.createElement('canvas'); c.width = W; c.height = H;
+  const g = c.getContext('2d');
+  let seed = 11; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  const tones = [[52, 76, 50], [66, 94, 58], [84, 110, 66]];
+  for (let layer = 0; layer < 3; layer++) {
+    for (let x = 0; x < W; x += 16 + rnd() * 34) {
+      const h = 84 + rnd() * 120 - layer * 30, w = 50 + rnd() * 64, k = 0.82 + rnd() * 0.36, t = tones[layer];
+      g.fillStyle = `rgb(${(t[0] * k) | 0},${(t[1] * k) | 0},${(t[2] * k) | 0})`;
+      const blobs = []; for (let i = 0; i < 6; i++) blobs.push([(rnd() - 0.5) * w * 0.7, h * 0.4 + rnd() * h * 0.55, w * (0.28 + rnd() * 0.26), h * (0.2 + rnd() * 0.2)]);
+      for (const dx of [-W, 0, W]) {      // drawn three times so the strip tiles
+        for (const b of blobs) { g.beginPath(); g.ellipse(x + dx + b[0], H - b[1], b[2], b[3], 0, 0, Math.PI * 2); g.fill(); }
+        g.fillRect(x + dx - w * 0.5, H - h * 0.42, w, h * 0.42);
+      }
+    }
+  }
+  const tex = new THREE.CanvasTexture(c); tex.colorSpace = THREE.SRGBColorSpace; tex.wrapS = THREE.RepeatWrapping; tex.repeat.x = 4; tex.anisotropy = 4;
+  const mesh = new THREE.Mesh(new THREE.CylinderGeometry(78, 78, 13, 72, 1, true), new THREE.MeshBasicMaterial({ map: tex, alphaTest: 0.5, side: THREE.BackSide, color: new THREE.Color(1.5, 1.5, 1.45) }));
+  mesh.position.set(0, 6.4, 0); mesh.name = 'treeline';
+  return mesh;
 }
 
 function resize() {
@@ -188,6 +214,7 @@ function togglePanel(which, force) {
     const el = $(id), btn = $(id === 'rooms' ? 'btnRooms' : 'btnMenu');
     const show = id === which ? (force ?? el.hidden) : false;
     el.hidden = !show; btn.setAttribute('aria-expanded', String(show));
+    if (show) { $('hint').hidden = true; state.hintT = 0; }
   }
 }
 
@@ -202,14 +229,16 @@ async function boot() {
   resize();
   try {
     world = await loadWorld({
-      renderer, quality: state.quality,
+      renderer, quality: state.quality, lightmapSize: (touchDevice || state.quality === 'low') ? 2048 : 4096,
       onProgress: (p) => { $('bar').style.width = Math.round(p * 92) + '%'; },
     });
   } catch (e) { console.error(e); fail(t('failed')); return; }
   const { scene, sceneData } = world;
   scene.background = skyTexture();
+  const trees = treeLine(); scene.add(trees); world.hideInOverview.push(trees);
   collider = new Collider(sceneData);
   player = new Player(camera, canvas, collider, sceneData);
+  player.noBob = reducedMotion;
   orbit = new Orbit(camera, canvas);
   tour = new Tour(player, sceneData);
   minimap = new Minimap($('map'), sceneData, { onPick: (x, z) => { tour.stop(); if (state.mode !== 'walk') setMode('walk'); const [fx, fz] = collider.snapFree(x, z); player.set(fx, fz, THREE.MathUtils.radToDeg(player.yaw)); } });
@@ -241,7 +270,7 @@ async function boot() {
   // a second pass picks up the reflections of the first one in glossy floors
   if (state.quality !== 'low') await world.captureProbes();
   buildRoomList();
-  setMode('overview'); orbit.auto = true;
+  setMode('overview'); orbit.auto = !reducedMotion;
   app.dataset.state = 'ready';
   $('loadText').textContent = t('ready'); $('btnEnter').disabled = false; $('btnEnterTour').disabled = false;
   window.__viewer = { world, player, state, renderer, camera, goTo, setMode, startTour, tour };

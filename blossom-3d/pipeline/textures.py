@@ -27,10 +27,16 @@ def srgb(h):
     h = h.lstrip('#'); return np.array([int(h[i:i + 2], 16) for i in (0, 2, 4)], np.float32) / 255.0
 
 
+HALF = {'plaster', 'steel', 'concrete', 'grass', 'paving', 'panel', 'ceil_clean', 'floor_kitchen', 'floor_clean',
+        'floor_bal_n', 'floor_wet_n', 'tile_bal_n', 'tile_wet_n', 'tile_kit_n'}       # low-detail maps are stored at 512 px
+
+
 def save(name, img, q=90):
     os.makedirs(OUT, exist_ok=True)
     a = np.clip(img * 255.0 + 0.5, 0, 255).astype(np.uint8)
-    Image.fromarray(a).save(os.path.join(OUT, name + '.jpg'), quality=q, subsampling=0)
+    im = Image.fromarray(a)
+    if name in HALF: im = im.resize((im.width // 2, im.height // 2), Image.LANCZOS)
+    im.save(os.path.join(OUT, name + '.jpg'), quality=q, subsampling=0)
 
 
 def normal_from_height(h, strength):
