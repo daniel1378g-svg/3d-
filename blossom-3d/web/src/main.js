@@ -229,7 +229,7 @@ async function boot() {
   resize();
   try {
     world = await loadWorld({
-      renderer, quality: state.quality, lightmapSize: (touchDevice || state.quality === 'low') ? 2048 : 4096,
+      renderer, quality: state.quality, lightmapSize: (touchDevice || state.quality === 'low') ? 2048 : 4096, textureSize: (touchDevice || state.quality === 'low') ? 512 : 0,
       onProgress: (p) => { $('bar').style.width = Math.round(p * 92) + '%'; },
     });
   } catch (e) { console.error(e); fail(t('failed')); return; }

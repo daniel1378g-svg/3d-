@@ -200,4 +200,4 @@ TOUR = [
     (14.2, 29.45, dict(room='REF')), (14.6, 30.15), (18.3, 30.15, dict(pause=1.0, look=(22.0, 33.0))),
 ]
 STEPOVERS = [o['rect'] for o in OPENINGS if o['id'] in ('X1', 'X2')]
-NORTH_DEG = 30.0      # the plan's "up" points this many degrees east of north (north arrow on the sheet)
+NORTH_DEG = 26.5      # the plan's "up" points this many degrees east of north (measured on the sheet's north arrow)

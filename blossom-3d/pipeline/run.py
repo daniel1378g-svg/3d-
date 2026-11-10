@@ -2,6 +2,10 @@
 
   build            assemble the scene (architecture, joinery, furniture, lights) in Blender
   preview[:names]  quick Cycles stills into build/preview/ (top, and a few eye-level views)
+  still[:names]    path-traced stills at 1920 x 1080 into renders/
+  lm:<size>        lightmap UVs and atlas packing
+  export           web/public/assets/model.glb and scene.json
+  bake:<samples>   lightmaps (run after lm and export)
   save             write build/scene.blend
 """
 import os, sys, time
@@ -67,12 +71,13 @@ VIEWS = {
 }
 
 
-def stage_preview(opts, names):
+def stage_preview(opts, names, still=False):
     import bpy
-    sc = bl.setup_cycles(samples=int(os.environ.get('SPP', '24')), res=(1280, 720))
+    sc = bl.setup_cycles(samples=int(os.environ.get('SPP', '160' if still else '24')), res=(1280, 720))
     from . import bake
     bake.setup_light()
-    out = os.path.join(BUILD, 'preview')
+    out = os.path.join(ROOT, 'renders') if still else os.path.join(BUILD, 'preview')
+    os.makedirs(out, exist_ok=True)
     names = names or ['top']
     for n in names:
         t = time.time()
@@ -85,8 +90,10 @@ def stage_preview(opts, names):
         else:
             e, tg, lens = VIEWS[n]
             cam = bl.camera('cam_' + n, plan.W(*e), plan.W(*tg), lens=lens)
-            sc.render.resolution_x, sc.render.resolution_y = 1280, 720
-        bl.render(os.path.join(out, n + '.png'), cam)
+            sc.render.resolution_x, sc.render.resolution_y = (1920, 1080) if still else (1280, 720)
+        if still:
+            sc.render.image_settings.file_format = 'JPEG'; sc.render.image_settings.quality = 92
+        bl.render(os.path.join(out, n + ('.jpg' if still else '.png')), cam)
         print('rendered', n, round(time.time() - t, 1), 's')
 
 
@@ -135,6 +142,7 @@ def main(argv):
         args = [s for s in arg.split(',') if s]
         if name == 'build': info = stage_build(args)
         elif name == 'preview': stage_preview([], args)
+        elif name == 'still': stage_preview([], args, still=True)
         elif name == 'lm': stage_lm(args)
         elif name == 'export': stage_export(args)
         elif name == 'bake': stage_bake(args)

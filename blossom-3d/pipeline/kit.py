@@ -2,6 +2,9 @@
 and box-projected texture UVs in metres.  A `Kit` builds one mesh datablock (a prototype) in local coordinates.
 
 Local frame convention for furniture: +Z up, the *front* of the object faces -Y, X is the width.
+
+Element lists are kept in creation order (never Python sets), so two runs of the pipeline produce the same
+meshes face for face: the lightmap UVs of a rebuild then still match an earlier bake.
 """
 import math
 import bpy, bmesh
@@ -57,12 +60,12 @@ class Kit:
         verts = r['verts']
         size = hi - lo; c = (lo + hi) / 2
         for v in verts: v.co = Vector((v.co.x * size.x + c.x, v.co.y * size.y + c.y, v.co.z * size.z + c.z))
-        faces = list({f for v in verts for f in v.link_faces})
+        faces = list(dict.fromkeys(f for v in verts for f in v.link_faces))
         if bevel > 0 and min(size) > bevel * 2.2:
-            edges = list({e for v in verts for e in v.link_edges})
+            edges = list(dict.fromkeys(e for v in verts for e in v.link_edges))
             rr = bmesh.ops.bevel(self.bm, geom=edges, offset=bevel, segments=1, affect='EDGES', profile=0.5)
-            faces = list({f for v in rr['verts'] for f in v.link_faces} | set(f for f in faces if f.is_valid))
-            verts = list({v for f in faces for v in f.verts})
+            faces = list(dict.fromkeys([f for v in rr['verts'] for f in v.link_faces] + [f for f in faces if f.is_valid]))
+            verts = list(dict.fromkeys(v for f in faces for v in f.verts))
         return self._finish(verts, faces, mat, M, grain=grain, low=low)
 
     def cyl(self, base, r, h, mat, seg=16, r2=None, cap=True, M=None, smooth=True, axis='z', low=False):
@@ -74,7 +77,7 @@ class Kit:
         if axis == 'x': R = RY(90)
         elif axis == 'y': R = RX(-90)
         MM = T(*base) @ R
-        faces = list({f for v in verts for f in v.link_faces})
+        faces = list(dict.fromkeys(f for v in verts for f in v.link_faces))
         out = self._finish(verts, faces, mat, (M @ MM) if M is not None else MM, smooth=smooth, low=low)
         for f in out:
             if len(f.verts) > 4: f.smooth = False
@@ -142,8 +145,8 @@ class Kit:
         if bevel > 0 and cap[1]:
             top = [e for e in faces[-1].edges]
             rr = bmesh.ops.bevel(self.bm, geom=top, offset=bevel, segments=1, affect='EDGES', profile=0.5)
-            allf = {f for v in rr['verts'] for f in v.link_faces} | {f for f in faces + sides if f.is_valid}
-            verts = list({v for f in allf for v in f.verts}); out = self._finish(verts, list(allf), mat, M, low=low)
+            allf = list(dict.fromkeys([f for v in rr['verts'] for f in v.link_faces] + [f for f in faces + sides if f.is_valid]))
+            verts = list(dict.fromkeys(v for f in allf for v in f.verts)); out = self._finish(verts, allf, mat, M, low=low)
             return out
         out = self._finish(verts, faces + sides, mat, M, low=low)
         if smooth_sides:

@@ -111,7 +111,7 @@ function patchLit(mat, { instanced, probe }) {
   return mat;
 }
 
-export async function loadWorld({ base = 'assets/', renderer, onProgress = () => {}, quality, lightmapSize }) {
+export async function loadWorld({ base = 'assets/', renderer, onProgress = () => {}, quality, lightmapSize, textureSize }) {
   const prog = { m: 0, t: 0 };
   const report = () => onProgress(prog.m * 0.8 + prog.t * 0.2);
   const [sceneData, manifest] = await Promise.all([
@@ -132,6 +132,22 @@ export async function loadWorld({ base = 'assets/', renderer, onProgress = () =>
     t.needsUpdate = true;
   }
   const LM_INT = sceneData.lightmaps.range * Math.PI;
+  // phones: surface textures at 512 px are plenty and save a lot of GPU memory
+  if (textureSize) {
+    const seen = new Set(); const jobs = [];
+    gltf.scene.traverse((o) => {
+      if (!o.isMesh) return;
+      for (const key of ['map', 'normalMap', 'roughnessMap']) {
+        const t = o.material[key];
+        if (!t || seen.has(t) || !t.image || t.image.width <= textureSize || /signs/.test(t.name + (t.image.src || ''))) continue;
+        seen.add(t);
+        if (t.image.width > 1100) continue;         // the sign atlas
+        jobs.push(createImageBitmap(t.image, { resizeWidth: textureSize, resizeHeight: Math.round(textureSize * t.image.height / t.image.width), resizeQuality: 'high' })
+          .then((bmp) => { t.image.close?.(); t.image = bmp; t.needsUpdate = true; }).catch(() => {}));
+      }
+    });
+    await Promise.all(jobs);
+  }
 
   const scene = new THREE.Scene();
   const root = new THREE.Group(); root.name = 'world'; scene.add(root);
