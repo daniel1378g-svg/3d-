@@ -8,6 +8,7 @@ import numpy as np
 import bpy
 from . import bl, lightmap, lights
 
+FINISH = {0: 'oidn', 1: 'diffuse'}      # atlas 0 = architecture, atlas 1 = joinery, furniture, fittings
 M_RANGE = 3.0          # lightmap stores D / M_RANGE, sRGB encoded 8 bit (viewer: lightMapIntensity = M_RANGE * pi)
 
 
@@ -89,10 +90,35 @@ def dilate(img, mask, iters=8):
     return img
 
 
-def finish(D, mask):
-    """denoise (OIDN lightmap filter) with the gutters filled first so islands do not bleed into black, then re-dilate."""
+def diffuse(D, mask, iters=6):
+    """island-aware smoothing: repeated 3x3 binomial blur that only mixes covered texels, so light never leaks
+    across the gutters between islands (about a Gaussian of sigma = sqrt(iters / 2) texels)."""
+    m = mask.astype(np.float32)
+    out = np.clip(D, 0, 12).astype(np.float32) * m[..., None]
+    K = [(0, 0, 4), (0, 1, 2), (0, -1, 2), (1, 0, 2), (-1, 0, 2), (1, 1, 1), (1, -1, 1), (-1, 1, 1), (-1, -1, 1)]
+    wacc = np.zeros_like(m)
+    for dy, dx, w in K: wacc += w * np.roll(m, (dy, dx), (0, 1))
+    wacc = np.maximum(wacc, 1e-6)[..., None]
+    for _ in range(iters):
+        acc = np.zeros_like(out)
+        for dy, dx, w in K: acc += w * np.roll(out, (dy, dx), (0, 1))
+        out = acc / wacc * m[..., None]
+    return out
+
+
+def finish(D, mask, mode='oidn'):
+    """mode 'oidn': Open Image Denoise with the gutters filled first (large architectural islands);
+    mode 'diffuse': island-aware blur (atlases made of thousands of small furniture islands, where an image
+    denoiser smears neighbouring islands into each other).  Both end with a dilation into the gutters."""
     from . import oidn
     t = time.time()
+    if mode == 'diffuse':
+        # pull outlier texels towards their neighbourhood first, then smooth
+        ref = diffuse(D, mask, iters=3)
+        D = np.clip(D, ref * 0.7, ref * 1.4)
+        out = dilate(diffuse(D, mask, iters=14), mask, iters=8)
+        print(f'  island blur + dilate {time.time() - t:.1f}s')
+        return out
     filled = dilate(D, mask, iters=6)
     try:
         den = oidn.denoise(filled)
@@ -157,7 +183,17 @@ def run(groups, sizes, out_dir, samples=64, tag='lm'):
         D = np.nan_to_num(px[..., :3], nan=0.0, posinf=0.0, neginf=0.0)
         print(f'  baked atlas {gi} ({size}px) in {time.time() - t:.0f}s  coverage {mask.mean() * 100:.0f}%  mean {D[mask].mean():.3f}  p50 {np.median(D[mask]):.3f}  p99 {np.percentile(D[mask], 99):.2f}')
         np.save(os.path.join(out_dir, f'{tag}{gi}.npy'), np.concatenate([D, mask[..., None].astype(np.float32)], -1).astype(np.float16))
-        D = finish(D, mask)
+        D = finish(D, mask, FINISH.get(gi, 'oidn'))
         Image.fromarray(encode(D)).save(os.path.join(out_dir, f'{tag}{gi}.png'))
         images[gi] = img
     return bobs
+
+
+def refinish(out_dir, atlases=(0, 1), tag='lm'):
+    """redo denoise / dilate / encode from the raw bakes saved as .npy (no path tracing)."""
+    from PIL import Image
+    for gi in atlases:
+        raw = np.load(os.path.join(out_dir, f'{tag}{gi}.npy')).astype(np.float32)
+        D, mask = raw[..., :3], raw[..., 3] > 0.5
+        D = finish(D, mask, FINISH.get(gi, 'oidn'))
+        Image.fromarray(encode(D)).save(os.path.join(out_dir, f'{tag}{gi}.png'))

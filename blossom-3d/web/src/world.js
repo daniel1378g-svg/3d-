@@ -270,7 +270,7 @@ export async function loadWorld({ base = 'assets/', renderer, onProgress = () =>
   root.traverse((o) => {
     if (!o.isMesh) return;
     const n = o.material.name || '';
-    if (n.startsWith('ceil') || n.startsWith('led_') || n === 'roof' || n === 'exist_wall' || o.userData.room === 'ROOF' || o.userData.kind === 'light') hideInOverview.push(o);
+    if (n.startsWith('ceil') || n.startsWith('led_') || n === 'roof' || o.userData.room === 'ROOF' || o.userData.kind === 'light') hideInOverview.push(o);
     if (n === 'glass') o.renderOrder = 5;
   });
 

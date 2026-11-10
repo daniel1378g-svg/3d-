@@ -6,6 +6,7 @@
   lm:<size>        lightmap UVs and atlas packing
   export           web/public/assets/model.glb and scene.json
   bake:<samples>   lightmaps (run after lm and export)
+  refinish[:ids]   redo denoise + encode of the lightmaps from the raw bakes in build/ (no path tracing)
   save             write build/scene.blend
 """
 import os, sys, time
@@ -146,6 +147,14 @@ def main(argv):
         elif name == 'lm': stage_lm(args)
         elif name == 'export': stage_export(args)
         elif name == 'bake': stage_bake(args)
+        elif name == 'refinish':
+            from . import bake
+            from PIL import Image
+            ids = [int(a) for a in args] or [0, 1]
+            bake.refinish(BUILD, ids)
+            for gi in ids:
+                Image.open(os.path.join(BUILD, f'lm{gi}.png')).save(os.path.join(OUT, f'lm{gi}.webp'), quality=94, method=6)
+                print('  ', f'lm{gi}.webp', os.path.getsize(os.path.join(OUT, f'lm{gi}.webp')) // 1024, 'kB')
         elif name == 'save':
             import bpy
             bpy.ops.wm.save_as_mainfile(filepath=os.path.join(BUILD, 'scene.blend'))

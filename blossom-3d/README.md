@@ -78,6 +78,8 @@ python3 -m pipeline.run build lm:4096 export bake:64  # scene â†’ lightmap UVs â
 python3 -m pipeline.run build preview:ref_ne,balf     # quick Cycles stills into build/preview/
 ```
 
-The bake takes roughly half an hour on four CPU cores (64 samples per texel, adaptive, then denoised). `web/public/assets/model.glb` is a standard glTF
+The bake takes about 40 minutes on four CPU cores (two 4096 px atlases at roughly 64 texels per metre,
+64 samples per texel, adaptive). The raw result is kept in `build/`, so the denoising and encoding can be
+redone in a minute with `python3 -m pipeline.run refinish`. `web/public/assets/model.glb` is a standard glTF
 binary and opens in Blender or any glTF viewer (the lightmaps are applied by the web viewer, through the
 second UV set).

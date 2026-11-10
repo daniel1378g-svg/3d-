@@ -27,44 +27,10 @@ def srgb(h):
     h = h.lstrip('#'); return np.array([int(h[i:i + 2], 16) for i in (0, 2, 4)], np.float32) / 255.0
 
 
-HALF = {'plaster', 'steel', 'concrete', 'grass', 'paving', 'panel', 'ceil_clean', 'floor_kitchen', 'floor_clean',
-        'floor_bal_n', 'floor_wet_n', 'tile_bal_n', 'tile_wet_n', 'tile_kit_n'}       # low-detail maps are stored at 512 px
-
-
 def save(name, img, q=90):
     os.makedirs(OUT, exist_ok=True)
     a = np.clip(img * 255.0 + 0.5, 0, 255).astype(np.uint8)
-    im = Image.fromarray(a)
-    if name in HALF: im = im.resize((im.width // 2, im.height // 2), Image.LANCZOS)
-    im.save(os.path.join(OUT, name + '.jpg'), quality=q, subsampling=0)
-
-
-def normal_from_height(h, strength):
-    dx = (np.roll(h, -1, 1) - np.roll(h, 1, 1)) * strength; dy = (np.roll(h, -1, 0) - np.roll(h, 1, 0)) * strength
-    n = np.dstack([-dx, dy, np.ones_like(h)]); n /= np.linalg.norm(n, axis=2, keepdims=True)
-    return n * 0.5 + 0.5
-
-
-def tiles(n, nx, ny, joint_px, base, joint, var=0.03, cloud=0.03, speck=0.012, bevel_px=2.0, offset=False, seed=1):
-    """rectangular tiles: returns (albedo, height) ; per-tile tone variation, soft clouding, fine speckle."""
-    r = np.random.default_rng(seed)
-    y, x = np.mgrid[0:n, 0:n].astype(np.float32)
-    tw, th = n / nx, n / ny
-    row = np.floor(y / th)
-    xo = (x + (row % 2) * tw * 0.5) % n if offset else x
-    col = np.floor(xo / tw)
-    u = xo - col * tw; v = y - row * th
-    d = np.minimum(np.minimum(u, tw - u), np.minimum(v, th - v))          # distance to the tile edge
-    tone = r.normal(0, var, size=(ny, nx)).astype(np.float32)[row.astype(int) % ny, col.astype(int) % nx]
-    cl = (fbm(n, 2.4, seed=seed + 11) - 0.5) * 2 * cloud
-    sp = (fbm(n, 0.4, seed=seed + 23) - 0.5) * 2 * speck
-    lum = 1.0 + tone + cl + sp
-    alb = base[None, None, :] * lum[..., None]
-    jm = np.clip((joint_px / 2 + 0.6 - d) / 1.2, 0, 1)                    # 1 in the joint
-    alb = alb * (1 - jm[..., None]) + joint[None, None, :] * jm[..., None]
-    h = np.clip(d / (joint_px / 2 + bevel_px), 0, 1)
-    h = h * h * (3 - 2 * h)
-    return alb, h
+    Image.fromarray(a).save(os.path.join(OUT, name + '.jpg'), quality=q, subsampling=0)
 
 
 def run():
