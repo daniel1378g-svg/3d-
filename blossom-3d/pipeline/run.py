@@ -23,8 +23,10 @@ def stage_build(opts):
         else:
             keep = range(len(p.faces))
         if name == 'TOP' and 'noceil' not in opts: pass
+        DENS = {'ext_wall': 0.22, 'wall_cut': 0.12}
+        dens = [DENS.get(p.mats[i], 0.6 if p.mats[i].startswith('ceil') else 1.0) for i in keep]
         ob = bl.mesh_object('A_' + name, p.verts, [p.faces[i] for i in keep], [p.mats[i] for i in keep],
-                            [p.uv0[i] for i in keep], [p.lm[i] for i in keep], coll='ARCH')
+                            [p.uv0[i] for i in keep], None, coll='ARCH', dens=dens)
         ob['room'] = name; ob['kind'] = 'arch'
     print('arch', round(time.time() - t, 2), 's')
     try:
@@ -37,6 +39,9 @@ def stage_build(opts):
         furnish.build(info)
     except ImportError:
         pass
+    from . import lights
+    lights.build(info)
+    print('objects', len(bpy.data.objects), 'meshes', len(bpy.data.meshes), 'tris', sum(sum(len(p.vertices) - 2 for p in o.data.polygons) for o in bpy.data.objects if o.type == 'MESH'))
     return info
 
 
@@ -65,9 +70,8 @@ VIEWS = {
 def stage_preview(opts, names):
     import bpy
     sc = bl.setup_cycles(samples=int(os.environ.get('SPP', '24')), res=(1280, 720))
-    if not bpy.data.worlds:
-        bl.world_sky(strength=0.6, sun_elev=40, sun_rot=0)
-        bl.sun(elev=40, azim=60, strength=3.0)
+    from . import bake
+    bake.setup_light()
     out = os.path.join(BUILD, 'preview')
     names = names or ['top']
     for n in names:
@@ -86,6 +90,44 @@ def stage_preview(opts, names):
         print('rendered', n, round(time.time() - t, 1), 's')
 
 
+STATE = {}
+OUT = os.path.join(ROOT, 'web', 'public', 'assets')
+
+
+def stage_lm(args):
+    """lightmap UVs: lm:<atlas size>"""
+    import bpy
+    from . import lightmap
+    size = int(args[0]) if args else 1024
+    groups = {0: [], 1: []}
+    for ob in bpy.data.objects:
+        if ob.type != 'MESH' or ob.get('kind') is None: continue
+        groups[0 if ob.get('kind') == 'arch' else 1].append(ob)
+    sizes = {0: size, 1: size}
+    t = time.time()
+    STATE['lm'] = lightmap.assign(groups, sizes)
+    STATE['groups'], STATE['sizes'] = groups, sizes
+    print('lightmap uv', round(time.time() - t, 1), 's')
+
+
+def stage_export(args):
+    from . import export
+    os.makedirs(OUT, exist_ok=True)
+    export.run(STATE['groups'], OUT)
+
+
+def stage_bake(args):
+    """bake:<samples>  (after lm, and after export because the bake simplifies the materials)"""
+    from . import bake
+    from PIL import Image
+    spp = int(args[0]) if args else 32
+    bake.run(STATE['groups'], STATE['sizes'], BUILD, samples=spp)
+    os.makedirs(OUT, exist_ok=True)
+    for gi in STATE['groups']:
+        Image.open(os.path.join(BUILD, f'lm{gi}.png')).save(os.path.join(OUT, f'lm{gi}.webp'), quality=94, method=6)
+        print('  ', f'lm{gi}.webp', os.path.getsize(os.path.join(OUT, f'lm{gi}.webp')) // 1024, 'kB')
+
+
 def main(argv):
     info = None
     for a in argv:
@@ -93,6 +135,9 @@ def main(argv):
         args = [s for s in arg.split(',') if s]
         if name == 'build': info = stage_build(args)
         elif name == 'preview': stage_preview([], args)
+        elif name == 'lm': stage_lm(args)
+        elif name == 'export': stage_export(args)
+        elif name == 'bake': stage_bake(args)
         elif name == 'save':
             import bpy
             bpy.ops.wm.save_as_mainfile(filepath=os.path.join(BUILD, 'scene.blend'))

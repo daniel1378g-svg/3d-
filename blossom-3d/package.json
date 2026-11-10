@@ -1,0 +1,19 @@
+{
+  "name": "refeitorio-balnearios-3d",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite web",
+    "build": "vite build web",
+    "preview": "vite preview web",
+    "build:artifact": "vite build web && node scripts/build-artifact.mjs",
+    "pipeline": "python3 -m pipeline.run build lm:4096 export bake:96"
+  },
+  "dependencies": {
+    "three": "0.170.0"
+  },
+  "devDependencies": {
+    "vite": "^5.4.11"
+  }
+}

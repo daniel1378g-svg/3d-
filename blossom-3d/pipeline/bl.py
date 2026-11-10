@@ -53,6 +53,14 @@ def material(name):
             mix.inputs['A'].default_value = (*col, 1)
             nt.links.new(img.outputs['Color'], mix.inputs['B'])
             nt.links.new(mix.outputs['Result'], bsdf.inputs['Base Color'])
+    if tex and os.path.exists(os.path.join(TEX_DIR, tex + '_n.jpg')):
+        nimg = nt.nodes.new('ShaderNodeTexImage'); nimg.name = 'normal'
+        nimg.image = bpy.data.images.load(os.path.join(TEX_DIR, tex + '_n.jpg'), check_existing=True)
+        nimg.image.colorspace_settings.name = 'Non-Color'
+        nt.links.new(mp.outputs['Vector'], nimg.inputs['Vector'])
+        nm = nt.nodes.new('ShaderNodeNormalMap'); nm.uv_map = 'UVMap'; nm.inputs['Strength'].default_value = spec.get('nstrength', 1.0)
+        nt.links.new(nimg.outputs['Color'], nm.inputs['Color'])
+        nt.links.new(nm.outputs['Normal'], bsdf.inputs['Normal'])
     if spec.get('alpha', 1.0) < 1.0:
         bsdf.inputs['Alpha'].default_value = spec['alpha']
         try: m.surface_render_method = 'BLENDED'
@@ -65,7 +73,7 @@ def material(name):
     return m
 
 
-def mesh_object(name, verts, faces, mats, uv0=None, lm=None, coll='ARCH', smooth=False):
+def mesh_object(name, verts, faces, mats, uv0=None, lm=None, coll='ARCH', smooth=False, dens=None):
     """verts [(x,y,z)], faces [tuple of indices], mats [material name per face], uv0/lm per face per corner."""
     me = bpy.data.meshes.new(name)
     me.from_pydata(verts, [], faces)
@@ -82,6 +90,9 @@ def mesh_object(name, verts, faces, mats, uv0=None, lm=None, coll='ARCH', smooth
         l = me.uv_layers.new(name='LM')
         l.data.foreach_set('uv', [c for f in lm for uv in f for c in uv])
     if smooth: me.polygons.foreach_set('use_smooth', [True] * len(me.polygons))
+    if dens is not None:
+        a = me.attributes.new('dens', 'FLOAT', 'FACE')
+        a.data.foreach_set('value', dens)
     me.update()
     ob = bpy.data.objects.new(name, me)
     collection(coll).objects.link(ob)

@@ -198,7 +198,7 @@ def build():
                 lm = [(u0 - umin, v0 - vmin), (u1 - umin, v0 - vmin), (u1 - umin, v1 - vmin), (u0 - umin, v1 - vmin)]
                 # to world (y flips) -> winding flips once more
                 wpts = [plan.W(*q) for q in pts]
-                if not flip: wpts, uv, lm = wpts[::-1], uv[::-1], lm[::-1]
+                if flip: wpts, uv, lm = wpts[::-1], uv[::-1], lm[::-1]
                 prt.quad(wpts, m, uv, lm, isl)
 
     # ---- floors and ceilings per room
