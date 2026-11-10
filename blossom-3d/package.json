@@ -8,6 +8,7 @@
     "build": "vite build web",
     "preview": "vite preview web",
     "build:artifact": "vite build web && node scripts/build-artifact.mjs",
+    "build:standalone": "vite build web && node scripts/build-standalone.mjs",
     "test": "vite build web && node scripts/test-interactions.cjs",
     "pipeline": "python3 -m pipeline.run build lm:4096 export bake:64"
   },

@@ -39,9 +39,11 @@ function b64ToBytes(b64) {
   return out;
 }
 
-// The model is either one .glb, or (Artifact preview, which serves no binary files) gzip + base64 in JSON parts.
+// The model is one .glb, or gzip + base64 in JSON parts (Artifact preview, which serves no binary files),
+// or a base64 string embedded in the page itself (single-file build, which must work from file:// with no fetch).
 async function loadModelBytes(base, manifest, onProgress) {
   const m = manifest.model;
+  if (m.b64) { const b = b64ToBytes(m.b64); onProgress?.(1); return m.gzip ? gunzip(b.buffer) : b.buffer; }
   if (m.file) return fetchBytes(base + m.file, onProgress);
   const parts = [];
   let done = 0;
@@ -58,7 +60,9 @@ async function loadModelBytes(base, manifest, onProgress) {
 
 // lightmaps: decoded off the main thread; phones get them at half size (a 4096 px atlas is 64 MB of GPU memory)
 async function loadLightmap(url, maxSize) {
-  const blob = await (await fetch(url)).blob();
+  const blob = url.startsWith('data:')
+    ? new Blob([b64ToBytes(url.slice(url.indexOf(',') + 1))], { type: url.slice(5, url.indexOf(';')) })
+    : await (await fetch(url)).blob();
   let bmp;
   try {
     const probe = await createImageBitmap(blob);
@@ -114,14 +118,15 @@ function patchLit(mat, { instanced, probe }) {
 export async function loadWorld({ base = 'assets/', renderer, onProgress = () => {}, quality, lightmapSize, textureSize }) {
   const prog = { m: 0, t: 0 };
   const report = () => onProgress(prog.m * 0.8 + prog.t * 0.2);
-  const [sceneData, manifest] = await Promise.all([
+  const embed = window.__RB3D_EMBED;        // single-file build: everything is already in the page
+  const [sceneData, manifest] = embed ? [embed.scene, { model: { b64: embed.model, gzip: true } }] : await Promise.all([
     fetch(base + 'scene.json').then((r) => r.json()),
     fetch(base + 'manifest.json').then((r) => (r.ok ? r.json() : { model: { file: 'model.glb' } })).catch(() => ({ model: { file: 'model.glb' } })),
   ]);
-  const lmFiles = sceneData.lightmaps.files;
+  const lmFiles = embed ? embed.lightmaps : sceneData.lightmaps.files.map((f) => base + f);
   let tdone = 0;
   const lmMax = Math.min(renderer.capabilities.maxTextureSize, lightmapSize || 4096);
-  const lmPromise = Promise.all(lmFiles.map((f) => loadLightmap(base + f, lmMax).then((t) => { tdone++; prog.t = tdone / lmFiles.length; report(); return t; })));
+  const lmPromise = Promise.all(lmFiles.map((f) => loadLightmap(f, lmMax).then((t) => { tdone++; prog.t = tdone / lmFiles.length; report(); return t; })));
   const bytes = await loadModelBytes(base, manifest, (p) => { prog.m = p; report(); });
   const gltf = await new Promise((resolve, reject) => new GLTFLoader().parse(bytes, base, resolve, reject));
   const lms = await lmPromise;
