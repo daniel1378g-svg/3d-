@@ -49,6 +49,13 @@ in `pipeline/plan.py`, `materials.py` and `furnish.py`:
 | The box across the opening between changing room and transition room | read as a hygiene step-over bench |
 | Outside, the existing corridor, offices and EDP room | shown only as simple volumes; doors leading out of the modelled area stay closed |
 
+## Share it
+
+| | |
+| --- | --- |
+| **Public link** | https://daniel1378g-svg.github.io/3d-/refeitorio-balnearios/ — served by GitHub Pages from the `gh-pages` branch, which holds only the built site. Opens on phones and computers, no login. `npm run publish:pages` rebuilds and updates it. To take it offline: repository Settings → Pages → Unpublish (or delete the `gh-pages` branch). |
+| **One file** | `npm run build:standalone` writes `standalone/Refeitorio-Balnearios-3D.html` (about 8 MB) with everything inside: send it as an attachment and open it by double-click on a computer. It needs no server and no internet (only the web fonts are fetched when online). |
+
 ## Run it
 
 ```bash
