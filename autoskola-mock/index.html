@@ -1,0 +1,766 @@
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Jízda Nanečisto</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700&display=swap">
+<style>
+/* Layout: the road view fills the screen; examiner strip on top, instrument cluster and (on touch) pedals below. */
+:root {
+  --bg: #14171a; --panel: #1d2226; --panel-2: #262c31; --line: #3a434a; --ink: #f1f3f2; --ink-2: #a9b3b8;
+  --amber: #ffb400; --green: #37c871; --red: #ef4a3c; --blue: #2f7fd6;
+  --font: "Barlow", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --cond: "Barlow Condensed", "Arial Narrow", system-ui, sans-serif;
+  --gl: max(16px, env(safe-area-inset-left, 0px)); --gr: max(16px, env(safe-area-inset-right, 0px));
+  color-scheme: dark;
+}
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { height: 100%; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.4 var(--font); overflow: hidden; overscroll-behavior: none; }
+#app { height: 100%; display: flex; flex-direction: column; -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent; touch-action: none; }
+#view { position: relative; flex: 1; min-height: 0; background: #6f8f5a; }
+#cv { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+
+/* examiner strip */
+.exam { position: absolute; top: 10px; left: var(--gl); right: var(--gr); display: flex; gap: 8px; align-items: stretch; pointer-events: none; }
+.say { flex: 1; min-width: 0; background: rgba(20, 23, 26, 0.9); border-left: 4px solid var(--amber); padding: 7px 12px 8px; border-radius: 3px; }
+.say b { display: block; font: 700 19px/1.15 var(--cond); letter-spacing: 0.02em; text-wrap: balance; }
+.say span { display: block; font-size: 13px; color: var(--ink-2); }
+.limit { flex: none; width: 52px; height: 52px; border-radius: 50%; background: #fff; border: 6px solid #d22b22; color: #111; font: 700 22px/40px var(--cond); text-align: center; align-self: center; }
+.faults { flex: none; align-self: center; background: rgba(20, 23, 26, 0.9); border-radius: 3px; padding: 5px 10px; text-align: center; font: 600 12px/1.2 var(--cond); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2); }
+.faults b { display: block; font-size: 22px; color: var(--ink); }
+.toast { position: absolute; left: 50%; top: 84px; transform: translateX(-50%); max-width: min(520px, calc(100% - 32px)); background: var(--red); color: #fff; padding: 7px 14px; border-radius: 3px; font-weight: 600; text-align: center; pointer-events: none; }
+.toast.ok { background: var(--green); color: #06230f; }
+.tip { position: absolute; left: 50%; bottom: 10px; transform: translateX(-50%); max-width: calc(100% - 32px); background: rgba(20, 23, 26, 0.88); color: var(--ink); padding: 5px 12px; border-radius: 3px; font-size: 14px; text-align: center; pointer-events: none; }
+
+/* instrument cluster */
+.dash { flex: none; display: flex; align-items: center; gap: 12px; padding: 8px var(--gr) 8px var(--gl); background: var(--panel); border-top: 1px solid var(--line); }
+.ind { width: 0; height: 0; border: 11px solid transparent; opacity: 0.25; }
+.ind.l { border-right-color: var(--green); border-left-width: 0; } .ind.r { border-left-color: var(--green); border-right-width: 0; }
+.ind.on { opacity: 1; }
+.speed { font: 700 34px/1 var(--cond); min-width: 2.2ch; text-align: right; font-variant-numeric: tabular-nums; }
+.unit { font: 600 12px/1 var(--cond); color: var(--ink-2); letter-spacing: 0.08em; }
+.rpm { flex: 1; min-width: 60px; height: 14px; background: var(--panel-2); border-radius: 2px; overflow: hidden; position: relative; }
+.rpm i { position: absolute; inset: 0 auto 0 0; width: 0%; background: var(--green); }
+.rpm::after { content: ""; position: absolute; inset: 0 0 0 78%; background: repeating-linear-gradient(90deg, rgba(239, 74, 60, 0.55) 0 4px, transparent 4px 8px); }
+.gear { font: 700 30px/1 var(--cond); width: 1.4ch; text-align: center; padding: 2px 0; background: var(--panel-2); border-radius: 3px; }
+.peds { display: flex; gap: 4px; align-items: flex-end; height: 30px; }
+.peds span { width: 9px; height: 100%; background: var(--panel-2); border-radius: 2px; position: relative; overflow: hidden; }
+.peds span i { position: absolute; left: 0; right: 0; bottom: 0; height: 0%; background: var(--ink-2); }
+.peds span:nth-child(3) i { background: var(--green); } .peds span:nth-child(2) i { background: var(--red); } .peds span:nth-child(1) i { background: var(--amber); }
+.eng { font: 600 12px/1.1 var(--cond); letter-spacing: 0.08em; text-transform: uppercase; color: var(--red); min-width: 4ch; }
+.eng.on { color: var(--green); }
+
+/* touch controls */
+.pad { flex: none; display: none; padding: 8px var(--gr) calc(10px + env(safe-area-inset-bottom, 0px)) var(--gl); background: var(--panel); gap: 8px; flex-direction: column; }
+.touch .pad { display: flex; }
+.row { display: flex; gap: 8px; }
+.key { flex: 1; min-width: 0; height: 46px; border: 1px solid var(--line); border-radius: 4px; background: var(--panel-2); font: 600 15px/1 var(--cond); letter-spacing: 0.05em; text-transform: uppercase; touch-action: none; }
+.key.on { background: var(--amber); color: #201600; border-color: var(--amber); }
+.key.mir.on { background: var(--blue); color: #fff; border-color: var(--blue); }
+.steer { flex: 1.25; height: 112px; border: 1px solid var(--line); border-radius: 4px; background: var(--panel-2); position: relative; touch-action: none; }
+.steer::before { content: "STEER"; position: absolute; left: 0; right: 0; top: 8px; text-align: center; font: 600 12px/1 var(--cond); letter-spacing: 0.14em; color: var(--ink-2); }
+.steer i { position: absolute; top: 50%; left: 50%; width: 54px; height: 54px; margin: -22px 0 0 -27px; border-radius: 50%; border: 5px solid var(--ink); background: transparent; }
+.pedal { flex: 0.62; height: 112px; border: 1px solid var(--line); border-radius: 4px; background: var(--panel-2); font: 600 14px/1.1 var(--cond); letter-spacing: 0.05em; text-transform: uppercase; touch-action: none; padding: 0 2px; }
+.pedal.on { background: var(--ink); color: #111; }
+.pedal small { display: block; font-size: 11px; color: inherit; opacity: 0.7; letter-spacing: 0.04em; margin-top: 4px; }
+
+/* sheets */
+.sheet { position: fixed; inset: 0; z-index: 20; display: grid; place-items: center; padding: calc(14px + env(safe-area-inset-top, 0px)) var(--gr) calc(14px + env(safe-area-inset-bottom, 0px)) var(--gl); background: rgba(12, 14, 16, 0.86); overflow: auto; touch-action: pan-y; }
+.card { width: min(600px, 100%); margin: auto; background: var(--panel); border: 1px solid var(--line); border-top: 5px solid var(--amber); border-radius: 4px; padding: 20px 22px; display: grid; gap: 12px; -webkit-user-select: text; user-select: text; }
+.card h1 { margin: 0; font: 700 38px/1 var(--cond); letter-spacing: 0.01em; }
+.card h2 { margin: 0; font: 700 26px/1.05 var(--cond); text-wrap: balance; }
+.card p { margin: 0; color: var(--ink-2); }
+.card p strong { color: var(--ink); }
+.kick { font: 600 12px/1 var(--cond); letter-spacing: 0.16em; text-transform: uppercase; color: var(--amber); }
+.checks { display: grid; gap: 6px; }
+.checks label { display: flex; gap: 10px; align-items: center; padding: 8px 10px; background: var(--panel-2); border-radius: 3px; cursor: pointer; }
+.checks input { width: 18px; height: 18px; accent-color: var(--amber); }
+.btns { display: flex; gap: 8px; flex-wrap: wrap; }
+.go { height: 46px; padding: 0 22px; border: 0; border-radius: 4px; background: var(--amber); color: #201600; font: 700 18px/1 var(--cond); letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; }
+.alt { height: 46px; padding: 0 16px; border: 1px solid var(--line); border-radius: 4px; background: transparent; font: 600 16px/1 var(--cond); letter-spacing: 0.05em; text-transform: uppercase; cursor: pointer; }
+.keys { display: grid; grid-template-columns: auto 1fr; gap: 3px 12px; font-size: 13.5px; color: var(--ink-2); }
+.keys b { color: var(--ink); font-weight: 600; white-space: nowrap; }
+.touch .keys.kb, #app:not(.touch) .keys.tc { display: none; }
+.list { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; max-height: 38vh; overflow: auto; }
+.list li { padding: 8px 10px; background: var(--panel-2); border-left: 4px solid var(--amber); border-radius: 2px; font-size: 14px; color: var(--ink-2); }
+.list li b { display: block; color: var(--ink); }
+.list li.crit { border-left-color: var(--red); }
+.verdict { font: 700 44px/1 var(--cond); }
+.verdict.pass { color: var(--green); } .verdict.fail { color: var(--red); }
+.fine { font-size: 12.5px; color: var(--ink-2); }
+@media (max-width: 520px) { .card { padding: 16px 16px; gap: 10px; } .card h1 { font-size: 32px; } .card p { font-size: 14px; } .checks label { padding: 7px 10px; } }
+@media (max-height: 520px) { .steer, .pedal { height: 84px; } .card { padding: 14px 16px; gap: 8px; } .card h1 { font-size: 28px; } }
+</style>
+
+<div id="app">
+  <div id="view">
+    <canvas id="cv"></canvas>
+    <div class="exam">
+      <div class="say"><b id="sayCz">—</b><span id="sayEn"></span></div>
+      <div class="limit" id="limit">50</div>
+      <div class="faults">Faults<b id="faults">0</b></div>
+    </div>
+    <div class="toast" id="toast" hidden></div>
+    <div class="tip" id="tip" hidden></div>
+
+    <div class="sheet" id="menu">
+      <div class="card">
+        <span class="kick">Autoškola · skupina B · manual</span>
+        <h1>Jízda Nanečisto</h1>
+        <p>A mock of the Czech practical exam in a manual car. The examiner gives directions in Czech with a translation. You are marked on what fails real candidates: <strong>priority from the right, STOP and give-way signs, oncoming traffic when turning left, a red light, pedestrians, a 30 zone</strong>, signals and mirrors. One serious mistake fails the exam.</p>
+        <div class="checks" id="checks">
+          <label><input type="checkbox" id="ckBelt"> Fasten the seat belt</label>
+          <label><input type="checkbox" id="ckMir"> Adjust seat and mirrors</label>
+          <label><input type="checkbox" id="ckLight"> Lights on (required all year in Czechia)</label>
+        </div>
+        <div class="keys kb">
+          <b>↑ / ↓</b><span>gas / brake</span><b>← / →</b><span>steer</span><b>Space (hold)</b><span>clutch</span>
+          <b>E / Q or 1–5, 0</b><span>gear up / down, or direct (0 = neutral) — clutch must be down</span>
+          <b>Z / C</b><span>left / right indicator</span><b>M</b><span>check mirrors</span><b>Enter</b><span>start the engine (clutch down or neutral)</span>
+        </div>
+        <div class="keys tc">
+          <b>Clutch</b><span>tap to press, tap again to let it up (it rises slowly, like a careful foot)</span>
+          <b>Brake / Gas</b><span>hold; press higher on the pedal for more</span>
+          <b>Steer</b><span>drag left and right</span><b>Gear − / +</b><span>only with the clutch down</span>
+        </div>
+        <p class="fine">Moving off: clutch down → 1st → mirrors → signal → a little gas → clutch up. Before you stop: clutch down, or the engine stalls.</p>
+        <div class="btns">
+          <button class="go" id="btnStart" type="button">Start the exam</button>
+          <button class="alt" id="btnDemo" type="button">Watch a model drive</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="sheet" id="crit" hidden>
+      <div class="card" style="border-top-color: var(--red)">
+        <span class="kick" style="color: var(--red)">Exam failed here · Neprospěl(a)</span>
+        <h2 id="critTitle"></h2>
+        <p id="critText"></p>
+        <div class="btns">
+          <button class="go" id="btnRetry" type="button">Practise this part again</button>
+          <button class="alt" id="btnRestart" type="button">Restart the exam</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="sheet" id="result" hidden>
+      <div class="card">
+        <span class="kick">Result · Výsledek zkoušky</span>
+        <div class="verdict" id="verdict"></div>
+        <p id="resText"></p>
+        <ul class="list" id="resList"></ul>
+        <div class="btns">
+          <button class="go" id="btnAgain" type="button">Drive again</button>
+          <button class="alt" id="btnMenu" type="button">Back to start</button>
+        </div>
+        <p class="fine">This trains rules, order of actions and decisions. It cannot teach the feel of a real clutch.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="dash">
+    <span class="ind l" id="indL"></span>
+    <span><span class="speed" id="speed">0</span> <span class="unit">km/h</span></span>
+    <div class="rpm" aria-label="Engine speed"><i id="rpm"></i></div>
+    <span class="gear" id="gear">N</span>
+    <div class="peds" aria-hidden="true"><span><i id="pC"></i></span><span><i id="pB"></i></span><span><i id="pG"></i></span></div>
+    <span class="eng" id="eng">Engine off</span>
+    <span class="ind r" id="indR"></span>
+  </div>
+
+  <div class="pad">
+    <div class="row">
+      <button class="key" id="kL" type="button">◄ Signal</button>
+      <button class="key mir" id="kM" type="button">Mirrors</button>
+      <button class="key" id="kR" type="button">Signal ►</button>
+    </div>
+    <div class="row">
+      <button class="key" id="kS" type="button">Start</button>
+      <button class="key" id="kGd" type="button">Gear −</button>
+      <button class="key" id="kGu" type="button">Gear +</button>
+    </div>
+    <div class="row">
+      <div class="steer" id="steer"><i id="knob"></i></div>
+      <button class="pedal" id="kC" type="button">Clutch<small>tap</small></button>
+      <button class="pedal" id="kB" type="button">Brake</button>
+      <button class="pedal" id="kG" type="button">Gas</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(() => {
+'use strict';
+const $ = (id) => document.getElementById(id);
+const clamp = (v, a, b) => (v < a ? a : v > b ? b : v);
+const cv = $('cv'), ctx = cv.getContext('2d'), app = $('app');
+
+// ------------------------------------------------------------------------------------------------ town
+const S = 90, HW = 3.5, LANE = 1.75, BOX = 8, FIL = 3;          // metres: block size, half road, lane centre, junction zone, kerb radius
+const DIR = { N: [0, 1], E: [1, 0], S: [0, -1], W: [-1, 0] };
+const right = (d) => [d[1], -d[0]];
+const letter = (d) => (d[1] > 0 ? 'N' : d[1] < 0 ? 'S' : d[0] > 0 ? 'E' : 'W');
+const SEGS = [[0, 0, 0, 1], [0, 1, 0, 2], [0, 2, 0, 3], [0, 3, 0, 4], [-1, 1, 0, 1], [0, 1, 1, 1], [-1, 2, 0, 2], [0, 2, 1, 2], [1, 2, 2, 2], [2, 2, 3, 2],
+  [1, 1, 1, 2], [1, 2, 1, 3], [1, 3, 1, 4], [2, 1, 2, 2], [2, 2, 2, 3], [2, 3, 2, 4], [-1, 3, 0, 3], [0, 3, 1, 3], [1, 3, 2, 3], [2, 3, 3, 3]];
+const JX = { '0,1': { t: 'right' }, '0,2': { t: 'main', ax: 'x' }, '1,2': { t: 'lights' }, '2,2': { t: 'main', ax: 'x' }, '2,3': { t: 'main', ax: 'x', stop: 'S' }, '1,3': { t: 'right' }, '0,3': { t: 'right' } };
+const ROUTE = [[0, 0], [0, 1], [0, 2], [1, 2], [2, 2], [2, 3], [1, 3], [0, 3], [0, 2]];
+const LIMITS = [50, 50, 30, 50, 50, 50, 50, 50];
+// what waits at the junction that ends each leg (arm the car comes from, relative to the junction)
+const SCN = [
+  { npcs: [{ from: 'E', pri: true, eta: 0.8 }], why: 'right' },
+  { npcs: [{ from: 'W', pri: true, eta: 1.8 }], why: 'giveway' },
+  { npcs: [], why: 'lights' },
+  { npcs: [{ from: 'E', pri: true, eta: 0.9 }], why: 'oncoming' },
+  { npcs: [{ from: 'E', pri: true, eta: 0.5 }, { from: 'W', pri: true, eta: 3.0 }], why: 'stop' },
+  { npcs: [{ from: 'S', pri: false }], why: 'yours' },
+  { npcs: [{ from: 'N', pri: true, eta: 0.8 }], why: 'right' },
+];
+const ZEBRAS = [{ leg: 1, at: 46, side: 1 }, { leg: 5, at: 44, side: -1 }];       // side: which kerb the pedestrian starts from (+1 = the driver's right)
+const END = { from: 40, to: 66 };
+const P = (n) => ({ x: n[0] * S, y: n[1] * S });
+const legDir = (k) => [Math.sign(ROUTE[k + 1][0] - ROUTE[k][0]), Math.sign(ROUTE[k + 1][1] - ROUTE[k][1])];
+const turnAt = (k) => { const a = legDir(k), b = legDir(k + 1), c = a[0] * b[1] - a[1] * b[0]; return c > 0 ? 'L' : c < 0 ? 'R' : 'S'; };
+const arms = {};
+for (const [a, b, c, d] of SEGS) { const dd = [Math.sign(c - a), Math.sign(d - b)]; (arms[a + ',' + b] ||= []).push(dd); (arms[c + ',' + d] ||= []).push([-dd[0], -dd[1]]); }
+
+// lane-centre path of the whole route (also used by the model drive)
+const PATH = [], LINE_S = [];
+(() => {
+  let s = 0; const push = (x, y) => { const q = PATH[PATH.length - 1]; if (q) s += Math.hypot(x - q.x, y - q.y); PATH.push({ x, y, s }); };
+  const d0 = legDir(0), r0 = right(d0), a0 = P(ROUTE[0]);
+  push(a0.x + r0[0] * 2.5 + d0[0] * 25, a0.y + r0[1] * 2.5 + d0[1] * 25);
+  push(a0.x + r0[0] * LANE + d0[0] * 40, a0.y + r0[1] * LANE + d0[1] * 40);
+  for (let k = 0; k < ROUTE.length - 2; k++) {
+    const d = legDir(k), r = right(d), B = P(ROUTE[k + 1]), t = turnAt(k);
+    const ex = B.x - d[0] * BOX + r[0] * LANE, ey = B.y - d[1] * BOX + r[1] * LANE;
+    push(ex, ey); LINE_S[k] = s;
+    if (t !== 'S') {
+      const sg = t === 'R' ? 1 : -1, R = BOX - sg * LANE, cx = ex + r[0] * sg * R, cy = ey + r[1] * sg * R;
+      const a1 = Math.atan2(ey - cy, ex - cx);
+      for (let i = 1; i <= 10; i++) { const a = a1 - sg * (Math.PI / 2) * i / 10; push(cx + Math.cos(a) * R, cy + Math.sin(a) * R); }
+    } else push(B.x + d[0] * BOX + r[0] * LANE, B.y + d[1] * BOX + r[1] * LANE);
+  }
+  const k = ROUTE.length - 2, d = legDir(k), r = right(d), A = P(ROUTE[k]);
+  push(A.x + d[0] * 30 + r[0] * LANE, A.y + d[1] * 30 + r[1] * LANE);
+  push(A.x + d[0] * 46 + r[0] * 2.4, A.y + d[1] * 46 + r[1] * 2.4);
+  push(A.x + d[0] * 80 + r[0] * 2.4, A.y + d[1] * 80 + r[1] * 2.4);
+})();
+
+function onRoad(x, y) {
+  for (const [a, b, c, d] of SEGS) {
+    const x0 = Math.min(a, c) * S, x1 = Math.max(a, c) * S, y0 = Math.min(b, d) * S, y1 = Math.max(b, d) * S, m = HW + 0.3, e = a === c ? 0 : 60, f = a === c ? 60 : 0;
+    const ex0 = arms[Math.min(a, c) + ',' + Math.min(b, d)].length === 1 ? 1 : 0, ex1 = arms[Math.max(a, c) + ',' + Math.max(b, d)].length === 1 ? 1 : 0;
+    if (x >= x0 - m - e * ex0 && x <= x1 + m + e * ex1 && y >= y0 - m - f * ex0 && y <= y1 + m + f * ex1) return true;
+  }
+  const i = Math.round(x / S), j = Math.round(y / S), ar = arms[i + ',' + j];
+  if (ar && ar.length > 1) {                       // rounded kerb corners
+    const dx = Math.abs(x - i * S), dy = Math.abs(y - j * S);
+    if (dx < HW + FIL && dy < HW + FIL && Math.hypot(dx - HW - FIL, dy - HW - FIL) > FIL - 0.3) return true;
+  }
+  return false;
+}
+
+// scenery, deterministic
+let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+const BUILD = [], TREES = [];
+for (let i = -2; i < 4; i++) for (let j = -1; j < 5; j++) {
+  const x0 = i * S + 11, y0 = j * S + 11, w = S - 22;
+  const n = 2 + ((rnd() * 2) | 0);
+  for (let q = 0; q < n; q++) {
+    const bw = 16 + rnd() * 22, bh = 14 + rnd() * 20, bx = x0 + rnd() * (w - bw), by = y0 + rnd() * (w - bh);
+    BUILD.push({ x: bx, y: by, w: bw, h: bh, c: ['#b9a58f', '#c4b8a6', '#a8887a', '#d2c7b2', '#9aa3a8', '#b48f72'][(rnd() * 6) | 0], r: ['#7d4a3a', '#5d5f66', '#8a5a40', '#6b6f75'][(rnd() * 4) | 0] });
+  }
+  for (let q = 0; q < 5; q++) TREES.push({ x: x0 - 4 + rnd() * (w + 8), y: y0 - 4 + rnd() * (w + 8), r: 2 + rnd() * 2.2 });
+}
+
+// ------------------------------------------------------------------------------------------------ texts
+const SAY = {
+  start: ['Vyjeďte od okraje vozovky.', 'Move off from the kerb.'],
+  S: ['Na křižovatce pokračujte rovně.', 'Go straight on at the junction.'],
+  R: ['Na křižovatce odbočte vpravo.', 'Turn right at the junction.'],
+  L: ['Na křižovatce odbočte vlevo.', 'Turn left at the junction.'],
+  end: ['Zastavte vpravo u okraje vozovky.', 'Pull over and stop at the right-hand kerb.'],
+  done: ['Děkuji, zkouška skončila.', 'Thank you, the exam is over.'],
+  demo: ['Ukázková jízda', 'Model drive — watch the pedals, gear and signals below.'],
+};
+const CRIT = {
+  right: ['You did not give way to the car from the right', 'This junction has no priority signs, so the rule is <strong>přednost zprava</strong>: every vehicle coming from your right goes first. Slow down on the approach, look right, and stop before the junction if someone is coming.'],
+  giveway: ['You did not give way at the "Dej přednost v jízdě" sign', 'The inverted triangle means the crossing road is the main road. Traffic on it goes first, including the lane you are joining. Stop or roll slowly until there is a real gap.'],
+  stop: ['You pulled out in front of traffic on the main road', 'After stopping at STOP you still have to give way. Wait until both directions are clear; when turning left you cross one lane and join the other.'],
+  nostop: ['You did not stop at the STOP sign', '<strong>Stůj, dej přednost v jízdě</strong> means a full stop every time, wheels still, at the line where you can see, even if the road is empty. Rolling through is an immediate fail.'],
+  oncoming: ['You turned left across an oncoming car', 'Even on the main road, a driver <strong>turning left gives way to oncoming traffic</strong>. Signal, move towards the centre line, wait for the gap, then turn.'],
+  red: ['You crossed the stop line on red', 'On red ("Stůj!") you stop before the line. Amber means stop too, unless you are so close that you cannot stop safely.'],
+  ped: ['You did not give way to a pedestrian on the crossing', 'A driver must let a pedestrian who is on the crossing, or clearly about to step onto it, cross safely. Slow down for every crossing and stop before the stripes.'],
+  speed: ['You were far over the speed limit', 'In a town (obec) the limit is 50 km/h unless a sign says less. A limit sign applies until the next junction.'],
+  crash: ['Collision', 'In the exam the instructor would have braked for you long before this, which is a fail.'],
+  offroad: ['You left the road', 'Mounting the kerb or leaving the carriageway ends the exam. Slow down before the turn, not in it: second gear, about 15–20 km/h.'],
+};
+const MINOR = {
+  belt: ['Seat belt not fastened', 'Fasten it before you start the engine.'],
+  adjust: ['Seat and mirrors not adjusted', 'Do it before moving; you cannot check mirrors you cannot see in.'],
+  lights: ['Lights off', 'Dipped or daytime lights are required all year in Czechia.'],
+  offmirror: ['No mirror check before moving off', 'Mirrors, then a look over the left shoulder, before leaving the kerb.'],
+  offsignal: ['No left signal when moving off', 'Signal left before you pull away from the kerb.'],
+  signal: ['No signal, or too late, before the turn', 'Signal in good time, about 30 m before the junction.'],
+  mirror: ['No mirror check before the turn', 'Mirrors → signal → then slow down.'],
+  stall: ['Engine stalled', 'Clutch down before you stop; when moving off give a little gas as the clutch comes up.'],
+  grind: ['Tried to change gear without the clutch', 'Clutch fully down first.'],
+  speed: ['Slightly over the speed limit', 'Watch the limit sign in the top bar.'],
+  lane: ['Driving on the wrong side of the road', 'Keep to the right-hand lane.'],
+  wait: ['Unnecessary waiting — you had priority', 'The other car came from your left at an unmarked junction, so it waits for you.'],
+  route: ['Did not follow the examiner\'s direction', 'Not a fail in a real exam if done safely; here you are put back before the junction.'],
+  endsignal: ['No right signal before pulling over', 'Signal right before you slow down to stop at the kerb.'],
+  endmirror: ['No mirror check before pulling over', 'Check the mirrors before you brake to stop.'],
+  kerb: ['Stopped too far from the kerb', 'Stop parallel and close to the right-hand edge.'],
+  missed: ['Drove past the place to stop', 'Start slowing as soon as the examiner asks.'],
+};
+
+// ------------------------------------------------------------------------------------------------ state
+const KG = [0, 420, 230, 150, 110, 88], RAD = Math.PI / 30;       // rpm per (m/s) in each gear
+const G = { mode: 'menu', demo: false, in: { steer: 0, gas: 0, brake: 0, clutch: false }, keys: {}, toastT: 0 };
+const torque = (rpm) => 150 * clamp(1 - ((rpm - 3600) / 5200) ** 2, 0.35, 1);
+
+function newExam(demo, auto) {
+  const d = legDir(0);
+  Object.assign(G, {
+    mode: 'drive', demo, auto: !!auto, t: 0, leg: 0, minors: [], crits: [], npcs: [], failed: false, ps: 0,
+    car: { x: PATH[0].x, y: PATH[0].y, th: Math.atan2(d[1], d[0]), v: 0, steer: 0, rpm: 0, gear: 0, cl: 0, gas: 0, brk: 0, engine: false, locked: false, ind: null, indSince: 0, biteT: 0 },
+    mirrorT: -99, mirrorFlash: 0, movedOff: false, stalls: 0, bot: { st: 0, mir: -1, hold: false },
+  });
+  G.in.steer = G.in.gas = G.in.brake = 0; G.in.clutch = false;
+  legReset(); G.scn = SCN.map(() => ({ on: false })); G.light = { ph: 'green', t: 0 };
+  G.zeb = ZEBRAS.map((z) => ({ ...z, on: false, p: 0, done: false }));
+  if (demo) say('demo'); else say('start');
+  if (!demo) {
+    if (!$('ckBelt').checked) minor('belt', true); if (!$('ckMir').checked) minor('adjust', true); if (!$('ckLight').checked) minor('lights', true);
+  }
+  for (const id of ['menu', 'crit', 'result']) $(id).hidden = true;
+}
+function legReset() { Object.assign(G, { entered: false, inside: false, stopOK: false, overT: 0, speedHit: false, laneT: 0, laneHit: false, waitT: 0, waitHit: false }); }
+function say(k) { $('sayCz').textContent = SAY[k][0]; $('sayEn').textContent = SAY[k][1]; }
+function toast(text, ok) { const el = $('toast'); el.textContent = text; el.className = 'toast' + (ok ? ' ok' : ''); el.hidden = false; G.toastT = 3.2; }
+function minor(key, quiet) {
+  if (G.demo) return;
+  G.minors.push(key); $('faults').textContent = G.minors.length;
+  if (!quiet) toast(MINOR[key][0]);
+}
+function critical(key) {
+  if (G.mode !== 'drive') return;
+  if (G.demo) { G.demoFail = key; return; }
+  G.crits.push(key); G.failed = true; G.mode = 'crit';
+  $('critTitle').textContent = CRIT[key][0]; $('critText').innerHTML = CRIT[key][1]; $('crit').hidden = false;
+  G.in.gas = G.in.brake = 0;
+}
+function checkpoint() {
+  const k = G.leg, d = legDir(k), r = right(d), A = P(ROUTE[k]), c = G.car;
+  const al = k === 0 ? 25 : k === ROUTE.length - 2 ? 12 : 20, off = k === 0 ? 2.5 : LANE;
+  Object.assign(c, { x: A.x + d[0] * al + r[0] * off, y: A.y + d[1] * al + r[1] * off, th: Math.atan2(d[1], d[0]), v: 0, steer: 0, gear: 0, cl: 0, gas: 0, brk: 0, engine: true, rpm: 850, locked: false, ind: null });
+  G.npcs = []; if (G.scn[k]) G.scn[k].on = G.scn[k].npc = false; if (k === 2) G.light = { ph: 'green', t: 0 };
+  for (const z of G.zeb) if (z.leg === k) Object.assign(z, { on: false, p: 0, done: false });
+  legReset(); G.in.clutch = false; G.in.gas = G.in.brake = G.in.steer = 0; G.ps = 0; G.mirrorT = -99;
+  if (k === 0) G.movedOff = true;
+  G.mode = 'drive'; $('crit').hidden = true;
+}
+
+// ------------------------------------------------------------------------------------------------ car
+function startEngine() { const c = G.car; if (c.engine) return; if (c.gear === 0 || c.cl > 0.8) { c.engine = true; c.rpm = 900; } else toast('Clutch down (or neutral) to start'); }
+function setGear(g) {
+  const c = G.car; g = clamp(g, 0, 5); if (g === c.gear) return;
+  if (c.cl < 0.8) { if (G.t - (G.grindT || -9) > 2) { minor('grind'); G.grindT = G.t; } return; }
+  c.gear = g; c.locked = false;
+}
+function indicator(s) { const c = G.car; c.ind = c.ind === s ? null : s; c.indSince = G.t; }
+function mirrors() { G.mirrorT = G.t; G.mirrorFlash = 0.7; }
+
+function stepCar(dt) {
+  const c = G.car, I = G.in;
+  c.gas += clamp(I.gas - c.gas, -6 * dt, 4 * dt); c.brk += clamp(I.brake - c.brk, -8 * dt, 6 * dt);
+  if (I.clutch) { c.cl = Math.min(1, c.cl + 5 * dt); c.biteT = 0; } else if (c.cl > 0) {
+    let rate = 1.6;                                   // the foot comes up slowly, and waits at the bite point while the engine is struggling
+    if (c.cl < 0.72 && c.cl > 0.26 && c.engine && c.gear > 0 && !c.locked) { rate = c.rpm < 830 && c.biteT < 3 ? 0 : 0.45; c.biteT += dt; }
+    c.cl = Math.max(0, c.cl - rate * dt);
+  }
+  const e = c.gear === 0 ? 0 : clamp((0.75 - c.cl) / 0.5, 0, 1), K = KG[c.gear], ww = c.v * K * RAD;
+  let we = c.rpm * RAD, F = 0;
+  if (c.engine) {
+    let Te = c.gas * torque(c.rpm) - (12 + c.rpm * 0.01);
+    if (c.rpm < 880) Te += Math.min(55, (880 - c.rpm) * 0.5);
+    if (c.rpm > 6200) Te = -40;
+    if (e > 0 && c.locked) { F = Te * K * RAD * 0.92; if (e < 0.98) c.locked = false; }
+    else if (e > 0) {
+      const cap = e * e * 340, Tc = clamp((we - ww) * 9, -cap, cap);
+      we += (Te - Tc) / 0.22 * dt; F = Tc * K * RAD * 0.92;
+      if (e >= 0.98 && Math.abs(we - ww) < 5) c.locked = true;
+    } else { c.locked = false; we += Te / 0.22 * dt; }
+  } else { we = Math.max(0, we - 300 * dt); c.locked = false; if (e > 0 && c.v > 0.05) F = -2600 * e; }
+  const res = 120 + 0.42 * c.v * c.v + c.brk * 9500;
+  if (c.v > 0.02 || F > res) c.v = Math.max(0, c.v + (F - (c.v > 0.02 ? res : 0)) / 1250 * dt); else c.v = 0;
+  if (c.engine) {
+    c.rpm = c.locked ? c.v * K : we / RAD;
+    if (c.rpm < 380) { c.engine = false; c.locked = false; c.rpm = 0; G.stalls++; minor('stall'); }
+  } else c.rpm = we / RAD;
+  // steering
+  const tgt = clamp(I.steer, -1, 1);
+  if (I.direct) c.steer = tgt; else c.steer += clamp(tgt - c.steer, -(tgt === 0 ? 3.5 : 2.4) * dt, (tgt === 0 ? 3.5 : 2.4) * dt);
+  const delta = c.steer * 0.6 / (1 + (c.v / 11) ** 2);
+  c.th -= c.v / 2.6 * Math.tan(delta) * dt;            // steer > 0 turns right
+  c.x += Math.cos(c.th) * c.v * dt; c.y += Math.sin(c.th) * c.v * dt;
+}
+
+// ------------------------------------------------------------------------------------------------ other road users
+function spawnNpcs(k, eta) {          // eta: seconds until the candidate would reach the middle of the junction
+  const B = P(ROUTE[k + 1]);
+  SCN[k].npcs.forEach((n, i) => {
+    const a = DIR[n.from], u = [-a[0], -a[1]], r = right(u), dist = n.pri ? clamp(9 * (eta + n.eta), 45, 100) : 42;
+    G.npcs.push({ k, pri: n.pri, eta: n.eta || 0, u, x: B.x + a[0] * dist + r[0] * LANE, y: B.y + a[1] * dist + r[1] * LANE, v: 9, B, cleared: false, col: ['#c8423a', '#2f6fb3', '#e0e2e4', '#3d4046'][(k + i) % 4], brake: false });
+  });
+}
+function stepNpcs(dt) {
+  const c = G.car, ch = [Math.cos(c.th), Math.sin(c.th)];
+  const pts = [[c.x + ch[0] * 2.1, c.y + ch[1] * 2.1], [c.x, c.y], [c.x - ch[0] * 2.1, c.y - ch[1] * 2.1]];
+  const B = P(ROUTE[Math.min(G.leg + 1, ROUTE.length - 1)]);
+  const nearBox = pts.some((p) => Math.abs(p[0] - B.x) < BOX + 2 && Math.abs(p[1] - B.y) < BOX + 2);
+  for (const n of G.npcs) {
+    const dn = (n.B.x - n.x) * n.u[0] + (n.B.y - n.y) * n.u[1];           // distance to the junction centre (negative once past)
+    let vt = 10, blocked = false;
+    for (const p of pts) {
+      const al = (p[0] - n.x) * n.u[0] + (p[1] - n.y) * n.u[1], lat = Math.abs((p[0] - n.x) * n.u[1] - (p[1] - n.y) * n.u[0]);
+      if (lat < LANE + 0.25 && al > 0) {
+        if (al < n.v * 1.3 + 7) blocked = true;
+        if (n.pri && !n.cleared && n.k === G.leg && nearBox && al < n.v * 2.8 + 6 && G.entered) critical(SCN[n.k].why);
+      }
+    }
+    if (n.pri) {
+      if (dn > 14 && c.v > 2 && n.k === G.leg && !G.entered) {   // timed to meet the candidate at the junction
+        const fl = (S - BOX) - ((c.x - P(ROUTE[G.leg]).x) * legDir(G.leg)[0] + (c.y - P(ROUTE[G.leg]).y) * legDir(G.leg)[1] + 2.1);
+        vt = clamp(dn / (Math.max(fl + BOX, 1) / c.v + n.eta), 4.5, 13.5);
+      } else vt = Math.max(n.v, c.v > 2 && dn > 0 && n.k === G.leg ? 6 : 8.5);
+    } else if (n.k === G.leg) {                        // it must give way to the candidate: stops at its line
+      const stopD = dn - (BOX + 2.3); vt = stopD > 0.2 ? Math.min(9, Math.sqrt(2 * 2.2 * stopD)) : 0;
+    }
+    if (n.lights) vt = 9;
+    if (blocked) vt = 0;
+    n.brake = vt < n.v - 0.2;
+    n.v += clamp(vt - n.v, -8 * dt, 2.5 * dt); if (n.v < 0) n.v = 0;
+    n.x += n.u[0] * n.v * dt; n.y += n.u[1] * n.v * dt;
+    if (dn < -8) n.cleared = true;
+    for (const p of pts) for (const o of [-1.3, 0, 1.3]) if (Math.hypot(p[0] - n.x - n.u[0] * o, p[1] - n.y - n.u[1] * o) < 1.75) critical('crash');
+  }
+  G.npcs = G.npcs.filter((n) => (n.B.x - n.x) * n.u[0] + (n.B.y - n.y) * n.u[1] > -130);
+}
+
+// ------------------------------------------------------------------------------------------------ examiner
+function rules(dt) {
+  const c = G.car, k = G.leg, last = k === ROUTE.length - 2, d = legDir(k), r = right(d), A = P(ROUTE[k]), B = P(ROUTE[k + 1]);
+  const along = (c.x - A.x) * d[0] + (c.y - A.y) * d[1], lat = (c.x - A.x) * r[0] + (c.y - A.y) * r[1];
+  const toLine = (S - BOX) - (along + 2.1), limit = LIMITS[k], kmh = c.v * 3.6;
+  $('limit').textContent = limit;
+
+  // moving off from the kerb
+  if (!G.movedOff && c.v > 0.8) {
+    G.movedOff = true;
+    if (G.t - G.mirrorT > 8) minor('offmirror'); if (c.ind !== 'L') minor('offsignal');
+    say(turnAt(0));
+  }
+  if (k === 0 && G.movedOff && c.ind === 'L' && along > 45) c.ind = null;
+
+  // speed
+  if (kmh > limit + 12) critical('speed');
+  else if (kmh > limit + 3) { G.overT += dt; if (G.overT > 2 && !G.speedHit) { G.speedHit = true; minor('speed'); } } else G.overT = 0;
+
+  // position on the road
+  if (!onRoad(c.x, c.y)) critical('offroad');
+  if (along > BOX + 4 && along < S - BOX - 4 && lat < -0.4) { G.laneT += dt; if (G.laneT > 1.5 && !G.laneHit) { G.laneHit = true; minor('lane'); } } else G.laneT = 0;
+
+  // pedestrian crossings on this leg
+  for (const z of G.zeb) {
+    if (z.leg !== k) continue;
+    const dz = z.at - (along + 2.1);
+    if (!z.on && !z.done && dz < 38) z.on = true;
+    if (z.on) { z.p += 1.4 * dt; if (z.p > 2 * HW + 3) { z.on = false; z.done = true; } }
+    const pl = z.side * (HW + 1.5 - z.p);                                  // pedestrian's lateral position
+    z.px = A.x + d[0] * z.at + r[0] * pl; z.py = A.y + d[1] * z.at + r[1] * pl;
+    const onCarriageway = z.on && Math.abs(pl) < HW + 0.9;
+    if (onCarriageway && along + 2.1 > z.at - 2 && along - 2.1 < z.at + 2) critical('ped');
+    if (z.on || z.done) for (const o of [-1.4, 0, 1.4]) if (Math.hypot(c.x + Math.cos(c.th) * o - z.px, c.y + Math.sin(c.th) * o - z.py) < 1.25 && !z.done) critical('ped');
+  }
+
+  if (last) {                                                              // pull over and stop
+    if (along > END.to + 8) { minor('missed'); checkpoint(); say('end'); return; }
+    if (c.v < 0.15 && along > END.from - 3 && along < END.to + 3 && lat > 0.8 && G.t - G.legT > 2) {
+      if (c.ind !== 'R') minor('endsignal', true); if (G.t - G.mirrorT > 12) minor('endmirror', true); if (lat < 1.6) minor('kerb', true);
+      finish();
+    }
+    return;
+  }
+
+  // approach
+  const jx = JX[ROUTE[k + 1].join(',')] || {}, sc = G.scn[k], turn = turnAt(k);
+  if (!sc.on && toLine < 54) { sc.on = true; if (jx.t === 'lights') G.light = { ph: 'amber', t: 0 }; }
+  if (!sc.npc && toLine < 30) { sc.npc = true; spawnNpcs(k, (toLine + BOX + 2.1) / Math.max(c.v, 2.5)); }
+  if (jx.t === 'lights') {
+    const L = G.light; L.t += dt;
+    if (L.ph === 'amber' && L.t > 2.5) { L.ph = 'red'; L.t = 0; const u = [0, -1]; G.npcs.push({ k, lights: true, pri: false, u, x: B.x - LANE, y: B.y + 46, v: 9, B, cleared: true, col: '#e0e2e4' }); }
+    else if (L.ph === 'red' && L.t > 7) { L.ph = 'redamber'; L.t = 0; } else if (L.ph === 'redamber' && L.t > 1.2) { L.ph = 'green'; L.t = 0; }
+  }
+  if (jx.stop && toLine < 7 && toLine > -0.6 && c.v < 0.25) G.stopOK = true;
+  if (SCN[k].why === 'yours' && sc.on && !G.entered && c.v < 0.3 && toLine < 14) { G.waitT += dt; if (G.waitT > 5 && !G.waitHit) { G.waitHit = true; minor('wait'); } }
+
+  if (!G.entered && toLine < 0) {                                          // the front crosses the line
+    G.entered = true;
+    if (jx.stop && !G.stopOK) critical('nostop');
+    if (jx.t === 'lights' && G.light.ph !== 'green') critical('red');
+    if (turn !== 'S') { if (c.ind !== turn || G.t - c.indSince < 1.2) minor('signal'); if (G.t - G.mirrorT > 10) minor('mirror'); }
+  }
+  const inBox = Math.abs(c.x - B.x) <= BOX && Math.abs(c.y - B.y) <= BOX;
+  if (G.entered && inBox) G.inside = true;
+  if (G.inside && !inBox) {                                                // leaving the junction
+    const rx = c.x - B.x, ry = c.y - B.y, ex = Math.abs(rx) > Math.abs(ry) ? [Math.sign(rx), 0] : [0, Math.sign(ry)], nd = legDir(k + 1);
+    if (ex[0] === nd[0] && ex[1] === nd[1]) {
+      G.leg++; G.legT = G.t; legReset(); if (turn !== 'S') c.ind = null;
+      say(G.leg === ROUTE.length - 2 ? 'end' : turnAt(G.leg));
+    } else { minor('route'); checkpoint(); }
+  }
+}
+function finish() {
+  G.mode = 'result'; say('done');
+  if (G.demo) { backToMenu(); return; }
+  const pass = !G.failed && G.minors.length <= 4;
+  $('verdict').textContent = pass ? 'Prospěl(a) · Pass' : 'Neprospěl(a) · Fail'; $('verdict').className = 'verdict ' + (pass ? 'pass' : 'fail');
+  $('resText').textContent = pass ? (G.minors.length ? `No serious mistakes and ${G.minors.length} minor fault${G.minors.length > 1 ? 's' : ''}.` : 'A clean drive: no faults.')
+    : G.failed ? `${G.crits.length} serious mistake${G.crits.length > 1 ? 's' : ''} (each one ends a real exam) and ${G.minors.length} minor fault${G.minors.length === 1 ? '' : 's'}.` : `${G.minors.length} minor faults is too many; an examiner would not pass this drive.`;
+  const ul = $('resList'); ul.textContent = '';
+  const add = (key, tbl, cls) => { const li = document.createElement('li'); if (cls) li.className = cls; const b = document.createElement('b'); b.textContent = tbl[key][0]; li.append(b); const s = document.createElement('span'); s.innerHTML = tbl[key][1]; li.append(s); ul.append(li); };
+  for (const key of [...new Set(G.crits)]) add(key, CRIT, 'crit');
+  const cnt = {}; for (const m of G.minors) cnt[m] = (cnt[m] || 0) + 1;
+  for (const key in cnt) { add(key, MINOR); if (cnt[key] > 1) ul.lastChild.firstChild.textContent += ` × ${cnt[key]}`; }
+  $('result').hidden = false;
+}
+function backToMenu() { G.mode = 'menu'; G.demo = false; $('menu').hidden = false; $('result').hidden = true; $('crit').hidden = true; }
+
+// ------------------------------------------------------------------------------------------------ model drive
+function bot(dt) {
+  const c = G.car, I = G.in, b = G.bot, k = G.leg, last = k === ROUTE.length - 2, X = G.cheat && (G.cheat.leg == null || G.cheat.leg === k) ? G.cheat : {};
+  while (G.ps < PATH.length - 2) { const a = PATH[G.ps], n = PATH[G.ps + 1]; if ((c.x - a.x) * (n.x - a.x) + (c.y - a.y) * (n.y - a.y) > (n.s - a.s) ** 2) G.ps++; else break; }
+  // where am I along the path, and a point a little ahead to steer at
+  const p0 = PATH[G.ps], p1 = PATH[Math.min(G.ps + 1, PATH.length - 1)], sl = Math.max(p1.s - p0.s, 1e-3);
+  const tt = clamp(((c.x - p0.x) * (p1.x - p0.x) + (c.y - p0.y) * (p1.y - p0.y)) / (sl * sl), 0, 1), sp = p0.s + tt * sl;
+  const ld = 4.2 + 0.4 * c.v; let i = G.ps; while (i < PATH.length - 1 && PATH[i].s < sp + ld) i++;
+  const q0 = PATH[i - 1] || PATH[0], q1 = PATH[i], u = clamp((sp + ld - q0.s) / Math.max(q1.s - q0.s, 1e-3), 0, 1), tx = q0.x + (q1.x - q0.x) * u, ty = q0.y + (q1.y - q0.y) * u;
+  let al = Math.atan2(ty - c.y, tx - c.x) - c.th; al = Math.atan2(Math.sin(al), Math.cos(al));
+  const delta = Math.atan2(2 * 2.6 * Math.sin(al), Math.hypot(tx - c.x, ty - c.y));
+  I.direct = true; I.steer = clamp(-delta / (0.6 / (1 + (c.v / 11) ** 2)), -1, 1);
+  // how fast, and where to stop
+  let vt = (X.fast ? 75 : LIMITS[k] * 0.9) / 3.6, tip = '';
+  const stopAt = (s0, why) => { const dd = s0 - (sp + 2.1); const v = dd <= 0.25 ? 0 : Math.sqrt(2 * 1.5 * dd); if (v < vt) { vt = v; if (v < 3) tip = why; } };
+  const d = legDir(k), A = P(ROUTE[k]), along = (c.x - A.x) * d[0] + (c.y - A.y) * d[1];
+  if (!last) {
+    const jx = JX[ROUTE[k + 1].join(',')] || {}, turn = turnAt(k), dl = LINE_S[k] - (sp + 2.1);
+    if (!G.entered) {
+      if (jx.stop && !G.stopOK && !X.noStop) stopAt(LINE_S[k] - 0.5, 'STOP: a full stop at the line');
+      if (jx.t === 'lights' && G.light.ph !== 'green' && !X.noRed) stopAt(LINE_S[k] - 0.6, 'Red light: stop before the line');
+      if (!X.noYield && G.npcs.some((n) => n.k === k && n.pri && !n.cleared)) stopAt(LINE_S[k] - 0.6, { right: 'Car from the right goes first', giveway: 'Give way to the main road', stop: 'Wait for a gap in both directions', oncoming: 'Oncoming car goes first' }[SCN[k].why] || '');
+      if (dl > 0) vt = Math.min(vt, Math.sqrt((turn === 'S' ? (jx.t === 'right' ? 7 : 12) : 4.6) ** 2 + 2 * 1.4 * dl));
+      if (turn !== 'S') { if (dl < 42 && G.t - G.mirrorT > 6 && !X.noMirror) mirrors(); if (dl < 34 && c.ind !== turn && !X.noSignal) { c.ind = turn; c.indSince = G.t; } }
+    } else if (turn !== 'S') vt = Math.min(vt, 5);
+  } else {
+    stopAt(PATH[PATH.length - 1].s - 26, 'Mirrors, signal right, stop at the kerb');
+    if (along > 14 && G.t - G.mirrorT > 6) mirrors(); if (along > 18 && c.ind !== 'R') { c.ind = 'R'; c.indSince = G.t; }
+  }
+  for (const z of G.zeb) if (z.leg === k && !z.done) {
+    const zs = sp + (z.at - along);
+    if (z.on && !X.noPed) stopAt(zs - 3.2, 'Pedestrian on the crossing: stop and wait'); else if (z.at - along > 0) vt = Math.min(vt, Math.sqrt(9 ** 2 + 2 * 1.2 * Math.max(z.at - along - 30, 0)));
+  }
+  // start-up routine
+  if (!G.movedOff) {
+    b.st += dt; I.clutch = true; I.gas = I.brake = 0;
+    if (b.st > 0.8) startEngine(); if (b.st > 1.5 && c.gear !== 1) setGear(1);
+    if (b.st > 2.2 && G.t - G.mirrorT > 5) mirrors(); if (b.st > 3 && c.ind !== 'L') { c.ind = 'L'; c.indSince = G.t; }
+    G.tipText = ['Clutch down, start the engine', 'Select 1st gear', 'Mirrors', 'Signal left', 'A little gas, clutch up slowly'][Math.min(4, (b.st / 0.8) | 0)];
+    if (b.st < 3.8) return;
+  }
+  // pedals and gears
+  const want = c.v < (c.gear > 1 ? 2.2 : 3.3) ? 1 : c.v < (c.gear > 2 ? 6.2 : 7.6) ? 2 : c.v < (c.gear > 3 ? 11 : 12.6) ? 3 : 4;
+  const stopping = vt < 0.6 && c.v < 2.6;
+  if (stopping) { I.clutch = true; I.gas = 0; I.brake = c.v > 0.1 || vt < 0.05 ? clamp(0.25 + (c.v - vt) * 0.3, 0.2, 0.8) : 0; if (c.cl > 0.9 && c.gear !== 1) setGear(1); }
+  else {
+    if (c.gear !== want) { I.clutch = true; I.gas = 0; if (c.cl > 0.9) setGear(want); }
+    else I.clutch = false;
+    if (c.v > vt + 0.5) { I.brake = clamp((c.v - vt) * 0.3, 0.08, 1); I.gas = 0; }
+    else { I.brake = 0; if (c.gear === want) I.gas = c.locked ? clamp((vt - c.v) * 0.45, 0, 0.7) : 0.34; }
+  }
+  if (!c.engine) { I.clutch = true; if (c.cl > 0.9) startEngine(); }
+  G.tipText = tip || (c.gear !== want && !stopping ? `Clutch down → ${want}${['', 'st', 'nd', 'rd', 'th'][want]} gear` : '');
+}
+
+// ------------------------------------------------------------------------------------------------ loop
+function update(dt) {
+  if (G.mode !== 'drive') return;
+  G.t += dt;
+  if (G.demo || G.auto) bot(dt); else human(dt);
+  stepCar(dt); stepNpcs(dt); if (G.mode === 'drive') rules(dt);
+  if (G.demo && G.demoFail) { toast('Model drive stopped: ' + CRIT[G.demoFail][0]); G.demoFail = null; backToMenu(); }
+  if (G.mirrorFlash > 0) G.mirrorFlash -= dt;
+}
+function human() {
+  const K = G.keys, I = G.in; I.direct = G.touchSteer != null;
+  if (G.touchSteer != null) I.steer = G.touchSteer; else I.steer = (K.ArrowRight || K.d ? 1 : 0) - (K.ArrowLeft || K.a ? 1 : 0);
+  I.gas = G.touchGas != null ? G.touchGas : (K.ArrowUp || K.w ? 0.75 : 0);
+  I.brake = G.touchBrake != null ? G.touchBrake : (K.ArrowDown || K.s ? 0.8 : 0);
+  I.clutch = !!(K[' '] || G.touchClutch);
+  const c = G.car; let tip = '';
+  if (!c.engine) tip = G.stalls && G.movedOff ? 'Stalled — clutch down, then Start' : 'Clutch down, then start the engine';
+  else if (c.gear === 0 && c.v < 0.3) tip = 'Clutch down and select 1st gear';
+  else if (c.locked && c.rpm > 3600 && c.gear < 5) tip = 'Shift up';
+  else if (c.locked && c.rpm < 1000 && c.v > 0.5) tip = c.gear > 1 ? 'Too slow for this gear: shift down or press the clutch' : 'Press the clutch before you stop';
+  G.tipText = tip;
+}
+
+// ------------------------------------------------------------------------------------------------ drawing
+let W = 0, H = 0, sc = 8, dpr = 1;
+function resize() { const r = $('view').getBoundingClientRect(); dpr = Math.min(2, window.devicePixelRatio || 1); W = r.width; H = r.height; cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); sc = clamp(Math.min(H / 58, W / 30), 4.5, 12); }
+function proj(x, y) { const c = G.car || G.idle, a = c.th - Math.PI / 2, dx = (x - c.x) * sc, dy = -(y - c.y) * sc; return [W / 2 + dx * Math.cos(a) - dy * Math.sin(a), H * 0.7 + dx * Math.sin(a) + dy * Math.cos(a)]; }
+function rr(x, y, w, h) { ctx.fillRect(x, y, w, h); }
+function drawCar(x, y, th, col, o = {}) {
+  ctx.save(); ctx.translate(x, y); ctx.rotate(th);
+  ctx.fillStyle = 'rgba(0,0,0,0.25)'; ctx.fillRect(-2.2, -1.05, 4.5, 2.1);
+  ctx.fillStyle = col; ctx.beginPath(); ctx.roundRect(-2.1, -0.9, 4.2, 1.8, 0.45); ctx.fill();
+  ctx.fillStyle = 'rgba(20,28,34,0.82)'; ctx.beginPath(); ctx.roundRect(-1.3, -0.72, 2.2, 1.44, 0.3); ctx.fill();
+  ctx.fillStyle = col; ctx.fillRect(-0.75, -0.66, 1.1, 1.32);
+  ctx.fillStyle = '#fff6c8'; ctx.fillRect(1.9, -0.8, 0.2, 0.36); ctx.fillRect(1.9, 0.44, 0.2, 0.36);
+  ctx.fillStyle = o.brake ? '#ff2a1c' : '#7a1510'; ctx.fillRect(-2.1, -0.8, 0.18, 0.4); ctx.fillRect(-2.1, 0.4, 0.18, 0.4);
+  if (o.ind && (performance.now() % 700) < 350) { ctx.fillStyle = '#ffb400'; const s = o.ind === 'L' ? 1 : -1; ctx.beginPath(); ctx.arc(1.9, s * 0.86, 0.3, 0, 7); ctx.arc(-1.9, s * 0.86, 0.3, 0, 7); ctx.fill(); }
+  ctx.restore();
+}
+function sign(kind, x, y, extra) {
+  const [px, py] = proj(x, y), z = clamp(sc * 2.5, 17, 30);
+  if (px < -40 || px > W + 40 || py < -40 || py > H + 40) return;
+  ctx.save(); ctx.translate(px, py); ctx.lineJoin = 'round';
+  ctx.fillStyle = 'rgba(0,0,0,0.3)'; ctx.beginPath(); ctx.ellipse(1.5, 2.5, z * 0.5, z * 0.5, 0, 0, 7); ctx.fill();
+  const tri = (up) => { ctx.beginPath(); ctx.moveTo(0, up ? -z * 0.56 : z * 0.56); ctx.lineTo(z * 0.58, up ? z * 0.42 : -z * 0.42); ctx.lineTo(-z * 0.58, up ? z * 0.42 : -z * 0.42); ctx.closePath(); ctx.fillStyle = '#fff'; ctx.fill(); ctx.strokeStyle = '#d22b22'; ctx.lineWidth = z * 0.13; ctx.stroke(); };
+  if (kind === 'right') { tri(true); ctx.strokeStyle = '#111'; ctx.lineWidth = z * 0.09; ctx.beginPath(); ctx.moveTo(-z * 0.16, -z * 0.04); ctx.lineTo(z * 0.16, z * 0.26); ctx.moveTo(z * 0.16, -z * 0.04); ctx.lineTo(-z * 0.16, z * 0.26); ctx.stroke(); }
+  else if (kind === 'give') tri(false);
+  else if (kind === 'main') { ctx.rotate(Math.PI / 4); ctx.fillStyle = '#fff'; ctx.fillRect(-z * 0.42, -z * 0.42, z * 0.84, z * 0.84); ctx.fillStyle = '#f5c400'; ctx.fillRect(-z * 0.3, -z * 0.3, z * 0.6, z * 0.6); }
+  else if (kind === 'stop') { ctx.beginPath(); for (let i = 0; i < 8; i++) { const a = Math.PI / 8 + i * Math.PI / 4; ctx.lineTo(Math.cos(a) * z * 0.56, Math.sin(a) * z * 0.56); } ctx.closePath(); ctx.fillStyle = '#d22b22'; ctx.fill(); ctx.strokeStyle = '#fff'; ctx.lineWidth = z * 0.06; ctx.stroke(); ctx.fillStyle = '#fff'; ctx.font = `700 ${z * 0.36}px "Barlow Condensed", sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('STOP', 0, z * 0.02); }
+  else if (kind === 'limit') { ctx.beginPath(); ctx.arc(0, 0, z * 0.5, 0, 7); ctx.fillStyle = '#fff'; ctx.fill(); ctx.strokeStyle = '#d22b22'; ctx.lineWidth = z * 0.13; ctx.stroke(); ctx.fillStyle = '#111'; ctx.font = `700 ${z * 0.5}px "Barlow Condensed", sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(extra, 0, z * 0.03); }
+  else if (kind === 'zebra') { ctx.fillStyle = '#1f5fb8'; ctx.fillRect(-z * 0.46, -z * 0.46, z * 0.92, z * 0.92); ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.moveTo(0, -z * 0.32); ctx.lineTo(z * 0.34, z * 0.3); ctx.lineTo(-z * 0.34, z * 0.3); ctx.closePath(); ctx.fill(); ctx.fillStyle = '#111'; ctx.beginPath(); ctx.arc(0, -z * 0.06, z * 0.07, 0, 7); ctx.fill(); ctx.fillRect(-z * 0.035, 0, z * 0.07, z * 0.22); }
+  else if (kind === 'light') { ctx.fillStyle = '#16181a'; ctx.beginPath(); ctx.roundRect(-z * 0.26, -z * 0.7, z * 0.52, z * 1.4, z * 0.12); ctx.fill(); const on = { red: [1, 0, 0], redamber: [1, 1, 0], amber: [0, 1, 0], green: [0, 0, 1] }[extra]; [['#ff3b2e', -0.42], ['#ffb400', 0], ['#2fd66b', 0.42]].forEach(([col, o], i) => { ctx.beginPath(); ctx.arc(0, z * o, z * 0.17, 0, 7); ctx.fillStyle = on[i] ? col : '#3a3d40'; ctx.fill(); }); }
+  ctx.restore();
+}
+function render() {
+  const c = G.car || G.idle;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.fillStyle = '#6f8f5a'; ctx.fillRect(0, 0, W, H);
+  ctx.save(); ctx.translate(W / 2, H * 0.7); ctx.rotate(c.th - Math.PI / 2); ctx.scale(sc, -sc); ctx.translate(-c.x, -c.y);
+  const seg = (h, col) => { ctx.fillStyle = col; for (const [a, b, cc, d] of SEGS) { const e0 = arms[a + ',' + b].length === 1 ? 60 : 0, e1 = arms[cc + ',' + d].length === 1 ? 60 : 0; if (a === cc) rr(a * S - h, b * S - e0, 2 * h, (d - b) * S + e0 + e1); else rr(a * S - e0, b * S - h, (cc - a) * S + e0 + e1, 2 * h); } };
+  seg(HW + 2.4, '#b9b4a8');
+  ctx.fillStyle = '#b9b4a8'; for (const key in arms) if (arms[key].length > 1) { const [i, j] = key.split(',').map(Number); rr(i * S - HW - FIL - 2.4, j * S - HW - FIL - 2.4, 2 * (HW + FIL + 2.4), 2 * (HW + FIL + 2.4)); }
+  seg(HW, '#4b4f54');
+  for (const key in arms) if (arms[key].length > 1) {                       // rounded corners
+    const [i, j] = key.split(',').map(Number), x = i * S, y = j * S; ctx.fillStyle = '#4b4f54';
+    for (const sx of [-1, 1]) for (const sy of [-1, 1]) { ctx.beginPath(); ctx.moveTo(x + sx * HW, y + sy * HW); ctx.lineTo(x + sx * (HW + FIL), y + sy * HW); ctx.arc(x + sx * (HW + FIL), y + sy * (HW + FIL), FIL, sy > 0 ? -Math.PI / 2 : Math.PI / 2, sx > 0 ? Math.PI : 0, (sx > 0) === (sy > 0)); ctx.closePath(); ctx.fill(); }
+  }
+  // markings
+  ctx.strokeStyle = '#e9e7df'; ctx.lineWidth = 0.14; ctx.setLineDash([3, 4.5]); ctx.beginPath();
+  for (const [a, b, cc, d] of SEGS) { const j0 = arms[a + ',' + b].length > 1 ? BOX : -60, j1 = arms[cc + ',' + d].length > 1 ? BOX : -60; if (a === cc) { ctx.moveTo(a * S, b * S + j0); ctx.lineTo(a * S, d * S - j1); } else { ctx.moveTo(a * S + j0, b * S); ctx.lineTo(cc * S - j1, b * S); } }
+  ctx.stroke(); ctx.setLineDash([]);
+  for (const key in JX) {                                                 // stop and give-way lines
+    const [i, j] = key.split(',').map(Number), jx = JX[key];
+    for (const a of arms[key]) {
+      const u = [-a[0], -a[1]], r = right(u), x = i * S + a[0] * BOX, y = j * S + a[1] * BOX, L = letter(a), side = jx.t === 'main' && (jx.ax === 'x') !== (a[0] !== 0);
+      if (jx.t === 'lights' || (side && jx.stop === L)) { ctx.strokeStyle = '#e9e7df'; ctx.lineWidth = 0.5; ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + r[0] * HW, y + r[1] * HW); ctx.stroke(); }
+      else if (side) { ctx.strokeStyle = '#e9e7df'; ctx.lineWidth = 0.5; ctx.setLineDash([0.6, 0.5]); ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + r[0] * HW, y + r[1] * HW); ctx.stroke(); ctx.setLineDash([]); }
+    }
+  }
+  for (const z of ZEBRAS) {                                               // zebra stripes
+    const d = legDir(z.leg), r = right(d), A = P(ROUTE[z.leg]); ctx.fillStyle = '#e9e7df';
+    for (let q = -3; q <= 3; q++) { const cx = A.x + d[0] * z.at + r[0] * q, cy = A.y + d[1] * z.at + r[1] * q; rr(cx - (d[0] ? 1.6 : 0.3), cy - (d[1] ? 1.6 : 0.3), d[0] ? 3.2 : 0.6, d[1] ? 3.2 : 0.6); }
+  }
+  { const k = ROUTE.length - 2, d = legDir(k), r = right(d), A = P(ROUTE[k]); ctx.strokeStyle = 'rgba(255,180,0,0.85)'; ctx.lineWidth = 0.18; ctx.setLineDash([1.2, 0.8]); ctx.strokeRect(Math.min(A.x + r[0] * 1.3, A.x + r[0] * 3.4), A.y + d[1] * END.to, 2.1, END.to - END.from); ctx.setLineDash([]); }
+  // buildings and trees
+  for (const b of BUILD) { ctx.fillStyle = 'rgba(0,0,0,0.22)'; rr(b.x + 1.6, b.y - 1.6, b.w, b.h); ctx.fillStyle = b.c; rr(b.x, b.y, b.w, b.h); ctx.fillStyle = b.r; rr(b.x + 1.2, b.y + 1.2, b.w - 2.4, b.h - 2.4); ctx.fillStyle = 'rgba(255,255,255,0.12)'; rr(b.x + 1.2, b.y + b.h / 2, b.w - 2.4, 0.3); }
+  for (const t of TREES) if (!onRoad(t.x, t.y) && Math.min(Math.abs(t.x - Math.round(t.x / S) * S), Math.abs(t.y - Math.round(t.y / S) * S)) > HW + 3.5) { ctx.fillStyle = 'rgba(0,0,0,0.2)'; ctx.beginPath(); ctx.arc(t.x + 0.8, t.y - 0.8, t.r, 0, 7); ctx.fill(); ctx.fillStyle = '#4d7a45'; ctx.beginPath(); ctx.arc(t.x, t.y, t.r, 0, 7); ctx.fill(); ctx.fillStyle = '#5d8c52'; ctx.beginPath(); ctx.arc(t.x - t.r * 0.25, t.y + t.r * 0.25, t.r * 0.55, 0, 7); ctx.fill(); }
+  // road users
+  if (G.zeb) for (const z of G.zeb) if ((z.on || z.done) && z.px != null) { ctx.fillStyle = 'rgba(0,0,0,0.25)'; ctx.beginPath(); ctx.arc(z.px + 0.15, z.py - 0.15, 0.42, 0, 7); ctx.fill(); ctx.fillStyle = '#2c4a7a'; ctx.beginPath(); ctx.ellipse(z.px, z.py, 0.42, 0.26, Math.atan2(legDir(z.leg)[1], legDir(z.leg)[0]), 0, 7); ctx.fill(); ctx.fillStyle = '#e8c39e'; ctx.beginPath(); ctx.arc(z.px, z.py, 0.2, 0, 7); ctx.fill(); }
+  if (G.npcs) for (const n of G.npcs) drawCar(n.x, n.y, Math.atan2(n.u[1], n.u[0]), n.col, { brake: n.brake });
+  if (G.car) drawCar(c.x, c.y, c.th, '#f2c230', { brake: c.brk > 0.05, ind: c.ind });
+  ctx.restore();
+  // signs, upright on the screen
+  for (const key in JX) {
+    const [i, j] = key.split(',').map(Number), jx = JX[key];
+    for (const a of arms[key]) {
+      const u = [-a[0], -a[1]], r = right(u), L = letter(a), sx = (dist) => [i * S + a[0] * dist + r[0] * (HW + 1.5), j * S + a[1] * dist + r[1] * (HW + 1.5)];
+      if (jx.t === 'right') sign('right', ...sx(BOX + 16));
+      else if (jx.t === 'main') { const side = (jx.ax === 'x') !== (a[0] !== 0); sign(side ? (jx.stop === L ? 'stop' : 'give') : 'main', ...sx(BOX + (side ? 2.5 : 14))); }
+      else if (jx.t === 'lights') { const mine = a[0] !== 0, ph = G.light ? G.light.ph : 'green'; sign('light', ...sx(BOX + 1), mine ? ph : (ph === 'red' ? 'green' : ph === 'green' ? 'red' : ph === 'amber' ? 'red' : 'amber')); }
+    }
+  }
+  for (const z of ZEBRAS) { const d = legDir(z.leg), r = right(d), A = P(ROUTE[z.leg]); sign('zebra', A.x + d[0] * (z.at - 3) + r[0] * (HW + 1.5), A.y + d[1] * (z.at - 3) + r[1] * (HW + 1.5)); }
+  { const d = legDir(2), r = right(d), A = P(ROUTE[2]); sign('limit', A.x + d[0] * (BOX + 9) + r[0] * (HW + 1.5), A.y + d[1] * (BOX + 9) + r[1] * (HW + 1.5), '30'); }
+  if (G.mirrorFlash > 0) { ctx.fillStyle = `rgba(47,127,214,${G.mirrorFlash * 0.5})`; ctx.fillRect(0, 0, W, 5); ctx.fillRect(0, 0, 5, H); ctx.fillRect(W - 5, 0, 5, H); }
+}
+function hud(dt) {
+  const c = G.car; if (!c) return;
+  $('speed').textContent = Math.round(c.v * 3.6); $('gear').textContent = c.gear || 'N';
+  const rp = $('rpm'); rp.style.width = clamp(c.rpm / 6500 * 100, 0, 100) + '%'; rp.style.background = c.rpm > 5000 ? 'var(--red)' : c.rpm > 3600 ? 'var(--amber)' : 'var(--green)';
+  const blink = (performance.now() % 700) < 350; $('indL').classList.toggle('on', c.ind === 'L' && blink); $('indR').classList.toggle('on', c.ind === 'R' && blink);
+  $('pC').style.height = c.cl * 100 + '%'; $('pB').style.height = c.brk * 100 + '%'; $('pG').style.height = c.gas * 100 + '%';
+  const e = $('eng'); e.textContent = c.engine ? 'Engine on' : 'Engine off'; e.classList.toggle('on', c.engine);
+  $('kC').classList.toggle('on', c.cl > 0.5); $('kL').classList.toggle('on', c.ind === 'L'); $('kR').classList.toggle('on', c.ind === 'R'); $('kM').classList.toggle('on', G.mirrorFlash > 0);
+  const tip = $('tip'); if (G.tipText && G.mode === 'drive') { tip.textContent = G.tipText; tip.hidden = false; } else tip.hidden = true;
+  if (G.toastT > 0) { G.toastT -= dt; if (G.toastT <= 0) $('toast').hidden = true; }
+}
+G.idle = { x: PATH[0].x, y: PATH[0].y + 30, th: Math.PI / 2 };
+let prev = performance.now(), acc = 0;
+function frame(now) {
+  const dt = Math.min(0.1, (now - prev) / 1000); prev = now; acc += dt;
+  while (acc >= 1 / 120) { update(1 / 120); acc -= 1 / 120; }
+  render(); hud(dt); requestAnimationFrame(frame);
+}
+
+// ------------------------------------------------------------------------------------------------ input
+addEventListener('keydown', (e) => {
+  if (e.repeat) { if ([' ', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) e.preventDefault(); return; }
+  const k = e.key.length === 1 ? e.key.toLowerCase() : e.key; G.keys[k] = true;
+  if (G.mode !== 'drive' || G.demo) { if (G.demo && k === 'Escape') backToMenu(); return; }
+  if ([' ', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(k)) e.preventDefault();
+  if (k === 'e') setGear(G.car.gear + 1); else if (k === 'q') setGear(G.car.gear - 1); else if (k >= '0' && k <= '5') setGear(+k);
+  else if (k === 'z') indicator('L'); else if (k === 'c') indicator('R'); else if (k === 'm') mirrors(); else if (k === 'Enter') startEngine();
+});
+addEventListener('keyup', (e) => { G.keys[e.key.length === 1 ? e.key.toLowerCase() : e.key] = false; });
+addEventListener('blur', () => { G.keys = {}; });
+const live = () => G.mode === 'drive' && !G.demo;
+const tap = (id, fn) => $(id).addEventListener('pointerdown', (e) => { e.preventDefault(); if (live()) fn(); });
+tap('kL', () => indicator('L')); tap('kR', () => indicator('R')); tap('kM', mirrors); tap('kS', startEngine);
+tap('kGu', () => setGear(G.car.gear + 1)); tap('kGd', () => setGear(G.car.gear - 1)); tap('kC', () => { G.touchClutch = !G.touchClutch; });
+function hold(id, set) {
+  const el = $(id); const amt = (e) => { const r = el.getBoundingClientRect(); return clamp(0.3 + 0.7 * (1 - (e.clientY - r.top) / r.height) * 1.25, 0.3, 1); };
+  el.addEventListener('pointerdown', (e) => { e.preventDefault(); el.setPointerCapture(e.pointerId); el.classList.add('on'); set(amt(e)); });
+  el.addEventListener('pointermove', (e) => { if (el.classList.contains('on')) set(amt(e)); });
+  const up = () => { el.classList.remove('on'); set(null); }; el.addEventListener('pointerup', up); el.addEventListener('pointercancel', up);
+}
+hold('kG', (v) => { G.touchGas = v; }); hold('kB', (v) => { G.touchBrake = v; });
+{ const el = $('steer'), knob = $('knob'); let on = false;
+  const mv = (e) => { const r = el.getBoundingClientRect(), v = clamp((e.clientX - r.left - r.width / 2) / (r.width * 0.4), -1, 1); G.touchSteer = v; knob.style.transform = `translateX(${v * r.width * 0.34}px) rotate(${v * 90}deg)`; };
+  el.addEventListener('pointerdown', (e) => { e.preventDefault(); on = true; el.setPointerCapture(e.pointerId); mv(e); });
+  el.addEventListener('pointermove', (e) => { if (on) mv(e); });
+  const up = () => { on = false; G.touchSteer = null; knob.style.transform = ''; };
+  el.addEventListener('pointerup', up); el.addEventListener('pointercancel', up); }
+if (matchMedia('(pointer: coarse)').matches) app.classList.add('touch');
+addEventListener('touchstart', () => app.classList.add('touch'), { once: true, passive: true });
+$('btnStart').addEventListener('click', () => { G.touchClutch = false; newExam(false); });
+$('btnDemo').addEventListener('click', () => newExam(true));
+$('btnRetry').addEventListener('click', checkpoint);
+$('btnRestart').addEventListener('click', () => { G.touchClutch = false; newExam(false); });
+$('btnAgain').addEventListener('click', () => { G.touchClutch = false; newExam(false); });
+$('btnMenu').addEventListener('click', backToMenu);
+cv.addEventListener('pointerdown', () => { if (G.demo && G.mode === 'drive') backToMenu(); });
+new ResizeObserver(resize).observe($('view')); resize();
+window.__game = { G, update, newExam, PATH, checkpoint };
+requestAnimationFrame(frame);
+})();
+</script>
