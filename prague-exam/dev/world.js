@@ -14,15 +14,17 @@ window.addEventListener('unhandledrejection', (e) => fail(e.reason));
 
 const canvas = document.getElementById('view');
 const [graph, buildings, ground] = await Promise.all(['graph', 'buildings', 'ground'].map((n) => loadSection(n, { base: '/data/' })));
+const parking = P.get('parking') === '0' ? undefined : await loadSection('parking', { base: '/data/' }).catch(() => undefined);
 const net = new RoadNet(graph);
 const eye = { x: num('x', 0), y: num('y', 1.2), z: num('z', 0), heading: num('h', 1.75), yaw: 0, pitch: num('pitch', 0) };
+if (P.has('fov')) eye.fov = num('fov', 62);
 if (P.has('place')) {
   const pl = net.places.find((p) => p.id === P.get('place')) || net.places[0];
   const p = net.lanePos(pl.edge, pl.dir, net.lanes(pl.edge, pl.dir) - 1, pl.s);
   eye.x = p.x; eye.z = p.z; eye.heading = num('h', p.h);
 }
 let quality = P.get('q') || 'medium';
-const world = await createWorld({ canvas, net, packs: { buildings, ground }, quality, onProgress: (p, stage) => { hud.textContent = `${stage} ${(p * 100).toFixed(0)}%`; } });
+const world = await createWorld({ canvas, net, packs: { buildings, ground, parking }, quality, onProgress: (p, stage) => { hud.textContent = `${stage} ${(p * 100).toFixed(0)}%`; } });
 world.resize();
 await world.prewarm(eye.x, eye.z);
 
@@ -135,7 +137,7 @@ function loop(now) {
   requestAnimationFrame(loop);
 }
 // Hooks for the screenshot script.
-window.__world = world; window.__frame = frame; window.__net = net;
+window.__world = world; window.__frame = frame; window.__net = net; window.__parking = parking;
 window.__set = async (o) => { Object.assign(eye, o.eye || {}); if (o.q) { quality = o.q; world.setQuality(o.q); } if (o.t !== undefined) frame.t = o.t; if (o.mirrors !== undefined) mirrorsOn = o.mirrors; await world.prewarm(eye.x, eye.z); step(0); world.render(frame); world.render(frame); return world.stats(); };
 window.__bench = (n = 60) => { const t0 = performance.now(); for (let i = 0; i < n; i++) { step(1 / 60); world.render(frame); } world.debug.renderer.getContext().finish(); return (performance.now() - t0) / n; };
 requestAnimationFrame(loop);

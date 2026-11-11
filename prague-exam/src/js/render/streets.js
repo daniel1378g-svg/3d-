@@ -40,6 +40,17 @@ function buildSurfaceArray(surfaces, anisotropy) {
       g.fillStyle = 'rgba(60, 50, 42, 0.92)';
       for (const y of [0.14, 0.64]) g.fillRect(TILE * 0.12, TILE * y, TILE * 0.76, TILE * 0.21);
       metres[i] = 1.2;
+    } else if (name === 'kerb') { drawKerb(g); metres[i] = 1; }
+    else if (name === 'iron') { drawIron(g); metres[i] = 1; }
+    else if (name === 'mosaic') {
+      // The mosaic canvas is a hard black-and-white chequer. From the car that shouts, so most of
+      // the contrast is washed out towards its mean colour and the cubes are drawn a little smaller.
+      metres[i] = draw(name) * 0.8;
+      const px = g.getImageData(0, 0, TILE, TILE).data;
+      let r = 0, gr = 0, b = 0, n = 0;
+      for (let q = 0; q < px.length; q += 4 * 37) { r += px[q]; gr += px[q + 1]; b += px[q + 2]; n++; }
+      g.fillStyle = `rgba(${Math.round(r / n + 14)}, ${Math.round(gr / n + 12)}, ${Math.round(b / n + 8)}, 0.64)`;
+      g.fillRect(0, 0, TILE, TILE);
     } else metres[i] = draw(name);
     data.set(g.getImageData(0, 0, TILE, TILE).data, i * TILE * TILE * 4);
   });
@@ -51,6 +62,42 @@ function buildSurfaceArray(surfaces, anisotropy) {
   texture.anisotropy = anisotropy;
   texture.needsUpdate = true;
   return { texture, metres };
+}
+
+// Kerb stones: light speckled granite, one block per tile (1 m) with a dark joint at the tile edge.
+function drawKerb(g) {
+  const img = g.createImageData(TILE, TILE), d = img.data;
+  for (let y = 0; y < TILE; y++) for (let x = 0; x < TILE; x++) {
+    let h = (Math.imul(x >> 2, 374761393) + Math.imul(y >> 2, 668265263)) | 0;
+    h = Math.imul(h ^ (h >>> 13), 1274126177);
+    const r = (h ^ (h >>> 16)) & 255;
+    let v = 200 + (r & 31) - 16;
+    if (r > 236) v -= 62; else if (r < 14) v += 26;              // dark mica and pale feldspar grains
+    if (x < 5 || x >= TILE - 4) v = 92;                          // the joint between two stones
+    const o = (y * TILE + x) * 4;
+    d[o] = v + 3; d[o + 1] = v + 1; d[o + 2] = v - 5; d[o + 3] = 255;
+  }
+  g.putImageData(img, 0, 0);
+}
+
+// Cast iron in the road: a manhole cover in the left half of the tile, a drain grate in the right.
+function drawIron(g) {
+  const T = TILE;
+  g.fillStyle = '#3b3a39'; g.fillRect(0, 0, T, T);
+  const cx = T * 0.25, cy = T * 0.5, R = T * 0.235;
+  g.fillStyle = '#4c4a47'; g.beginPath(); g.arc(cx, cy, R, 0, 7); g.fill();
+  g.fillStyle = '#2c2b2a'; g.beginPath(); g.arc(cx, cy, R * 0.88, 0, 7); g.fill();
+  g.strokeStyle = '#514e4a'; g.lineWidth = 5;
+  for (const k of [0.3, 0.58]) { g.beginPath(); g.arc(cx, cy, R * k, 0, 7); g.stroke(); }
+  for (let a = 0; a < 12; a++) {
+    const co = Math.cos((a * Math.PI) / 6), si = Math.sin((a * Math.PI) / 6);
+    g.beginPath(); g.moveTo(cx + co * R * 0.3, cy + si * R * 0.3); g.lineTo(cx + co * R * 0.84, cy + si * R * 0.84); g.stroke();
+  }
+  const x0 = T * 0.52, y0 = T * 0.27, w = T * 0.46;
+  g.fillStyle = '#4a4845'; g.fillRect(x0, y0, w, w);
+  g.fillStyle = '#121212';
+  for (let b = 0; b < 7; b++) g.fillRect(x0 + w * 0.08, y0 + w * (0.09 + b * 0.124), w * 0.84, w * 0.07);
+  g.fillStyle = '#4a4845'; g.fillRect(x0 + w * 0.47, y0, w * 0.06, w);
 }
 
 function surfaceMaterial(texture, overlay) {

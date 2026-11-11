@@ -11,7 +11,9 @@
 // frame = { t, eye: { x, y, z, heading, yaw, pitch }, mirrors: [{ x, y, w, h, yaw, fov }],
 //           cars: { n, x, z, heading, variant, colour, state }, trams: { n, x, z, heading },
 //           peds: { n, x, z, heading, phase } }
-// eye.pitch is positive upwards. mirror.fov is the horizontal field of view in radians.
+// eye.pitch is positive upwards. eye.fov (optional) = vertical field of view in degrees for a
+// landscape canvas, default 62. mirror.fov is the horizontal field of view in radians.
+// packs.parking (optional) = parked cars; world.invalidateParking() after editing its `kind`.
 // Uses the global THREE (0.159).
 import { createSurfaceTextures, createFacadeAtlas, SIGNS, createSignAtlas, models, createStreets } from './world/deps.js';
 import { CHUNK, CHUNKS, chunkCoord, chunkX0, chunkZ0 } from './world/util.js';
@@ -21,20 +23,24 @@ import { createSignals } from './world/signals.js';
 import { createProps } from './world/props.js';
 import { createActors } from './world/actors.js';
 import { createMirrors } from './world/mirrors.js';
+import { createParking } from './world/parking.js';
 
 // Fog ends inside the loaded square (radius * 240 m at the least), so chunks appear unseen.
 const QUALITY = {
-  low: { pixelRatio: 1, radius: 1, fogNear: 60, fogFar: 232, mirrorEvery: 3, propTris: 30000 },
-  medium: { pixelRatio: 1.5, radius: 2, fogNear: 130, fogFar: 468, mirrorEvery: 2, propTris: 60000 },
-  high: { pixelRatio: 2, radius: 3, fogNear: 200, fogFar: 700, mirrorEvery: 1, propTris: 110000 },
+  low: { pixelRatio: 1, radius: 1, fogNear: 45, fogFar: 232, mirrorEvery: 3, propTris: 30000 },
+  medium: { pixelRatio: 1.5, radius: 2, fogNear: 90, fogFar: 468, mirrorEvery: 2, propTris: 60000 },
+  high: { pixelRatio: 2, radius: 3, fogNear: 140, fogFar: 700, mirrorEvery: 1, propTris: 110000 },
 };
-const HORIZON = 0xd3dce2, ZENITH = 0x93adc6;
+const HORIZON = 0xd5e0e9, ZENITH = 0x5b8fca;
+const SUN = [-0.56, 0.66, 0.5];          // direction to the sun: south-west, about 41 degrees up
+const DEFAULT_FOV = 62;                  // vertical, landscape; frame.eye.fov overrides it
 const BUILD_BUDGET = 6;                  // ms of chunk building per frame, at the very most
 const PARTS = 3;                         // streets, buildings, signs + furniture
 const tick = () => new Promise((resolve) => setTimeout(resolve, 0));
 
-// Bright overcast sky: a gradient that is exactly the fog colour at and below the horizon, with
-// a faint cloud pattern higher up. Drawn at the far plane after everything opaque.
+// Daytime sky: exactly the fog colour at and just above the horizon (so the hazy far chunks melt
+// into it), a soft gradient to blue overhead, faint drifting-looking clouds and a glow round the
+// sun. Drawn at the far plane after everything opaque.
 function createSky() {
   const c = document.createElement('canvas');
   c.width = c.height = 128;
@@ -53,7 +59,7 @@ function createSky() {
   const clouds = new THREE.CanvasTexture(c);
   clouds.wrapS = clouds.wrapT = THREE.RepeatWrapping;
   const material = new THREE.ShaderMaterial({
-    uniforms: { horizon: { value: new THREE.Color(HORIZON) }, zenith: { value: new THREE.Color(ZENITH) }, clouds: { value: clouds } },
+    uniforms: { horizon: { value: new THREE.Color(HORIZON) }, zenith: { value: new THREE.Color(ZENITH) }, sunDir: { value: new THREE.Vector3(...SUN).normalize() }, clouds: { value: clouds } },
     vertexShader: `
       varying vec3 vDir;
       void main() {
@@ -62,15 +68,18 @@ function createSky() {
         gl_Position = p.xyww;
       }`,
     fragmentShader: `
-      uniform vec3 horizon; uniform vec3 zenith; uniform sampler2D clouds;
+      uniform vec3 horizon; uniform vec3 zenith; uniform vec3 sunDir; uniform sampler2D clouds;
       varying vec3 vDir;
       void main() {
         vec3 d = normalize( vDir );
         float h = max( d.y, 0.0 );
-        vec3 col = mix( horizon, zenith, smoothstep( 0.14, 0.85, h ) );
+        vec3 col = mix( horizon, zenith, pow( smoothstep( 0.09, 1.0, h ), 0.75 ) );
         vec2 uv = d.xz / ( d.y + 0.3 );
         float c = texture2D( clouds, uv * 0.21 ).r + 0.5 * texture2D( clouds, uv * 0.57 + 0.37 ).r;
-        col += ( c - 0.75 ) * 0.34 * smoothstep( 0.1, 0.42, h );
+        float cover = smoothstep( 0.74, 1.02, c ) * smoothstep( 0.1, 0.4, h );
+        col = mix( col, vec3( 0.93, 0.95, 0.97 ) - ( 1.0 - smoothstep( 0.8, 1.1, c ) ) * 0.1, cover * 0.8 );
+        float s = max( dot( d, sunDir ), 0.0 );
+        col += vec3( 1.0, 0.86, 0.62 ) * ( pow( s, 12.0 ) * 0.12 + pow( s, 700.0 ) * 1.5 );
         gl_FragColor = vec4( col, 1.0 );
         #include <colorspace_fragment>
       }`,
@@ -94,12 +103,14 @@ export async function createWorld({ canvas, net, packs, quality = 'medium', onPr
   const scene = new THREE.Scene();
   scene.matrixWorldAutoUpdate = true;
   scene.fog = new THREE.Fog(HORIZON, Q.fogNear, Q.fogFar);
-  const camera = new THREE.PerspectiveCamera(62, 16 / 9, 0.15, Q.fogFar + 30);
+  const camera = new THREE.PerspectiveCamera(DEFAULT_FOV, 16 / 9, 0.15, Q.fogFar + 30);
+  let baseFov = DEFAULT_FOV;
   camera.rotation.order = 'YXZ';
   camera.layers.enable(1);               // layer 1 = detail that the mirrors leave out
-  const hemi = new THREE.HemisphereLight(0xe9f0f7, 0x8f897e, 2.5);
-  const sun = new THREE.DirectionalLight(0xfff2dc, 1.7);
-  sun.position.set(-0.5, 0.82, 0.38);    // high in the south-west
+  // A slightly warm sun against cool sky light: sunlit and shaded facades differ clearly.
+  const hemi = new THREE.HemisphereLight(0xd9e6f6, 0x9a9184, 1.55);
+  const sun = new THREE.DirectionalLight(0xffe9c6, 2.4);
+  sun.position.set(...SUN);
   const sky = createSky();
   scene.add(hemi, sun, sky.mesh);
 
@@ -117,8 +128,8 @@ export async function createWorld({ canvas, net, packs, quality = 'medium', onPr
     if (w !== lastW || h !== lastH) { renderer.setSize(w, h, false); lastW = w; lastH = h; }
     const aspect = w / h;
     camera.aspect = aspect;
-    // 62° in landscape. A canvas taller than wide keeps that angle across, up to a limit.
-    camera.fov = aspect >= 1 ? 62 : Math.min(92, (2 * Math.atan(Math.tan((31 * Math.PI) / 180) / aspect) * 180) / Math.PI);
+    // baseFov in landscape. A canvas taller than wide keeps that angle across, up to a limit.
+    camera.fov = aspect >= 1 ? baseFov : Math.min(Math.max(92, baseFov), (2 * Math.atan(Math.tan((baseFov * Math.PI) / 360) / aspect) * 180) / Math.PI);
     camera.far = Q.fogFar + 30;
     camera.updateProjectionMatrix();
   }
@@ -142,11 +153,13 @@ export async function createWorld({ canvas, net, packs, quality = 'medium', onPr
   const props = createProps({ net, ground: packs.ground, models, scene });
   const actors = createActors({ models, scene });
   const mirrors = createMirrors({ renderer, scene, canvas });
+  const parking = createParking({ pack: packs.parking, models, scene, shadowTexture: actors.shadowTexture });
   report(1, 'assets');
 
   // ---- chunks -----------------------------------------------------------------------------------
   const chunks = new Map();              // id -> { id, cx, cz, group, stage, streets, walls, roofs, signs, props }
   let centreKey = -1, centreX = 0, centreZ = 0, version = 0, seenVersion = -1, propX = 1e9, propZ = 1e9;
+  let parkVersion = -1, parkX = 1e9, parkZ = 1e9, parkDirty = false;
 
   function drop(ch) {
     scene.remove(ch.group);
@@ -184,7 +197,11 @@ export async function createWorld({ canvas, net, packs, quality = 'medium', onPr
     try {
       if (stage === 0) {
         ch.streets = streets.buildChunk(ch.cx, ch.cz);
-        if (ch.streets) ch.group.add(ch.streets);
+        if (ch.streets) {
+          // Lane arrows (the decals drawn from the sign atlas) are left out of the mirrors.
+          for (const m of ch.streets.children) if (m.material && m.material.map === signAtlas.texture) m.layers.set(1);
+          ch.group.add(ch.streets);
+        }
       } else if (stage === 1) {
         const b = buildings.build(ch.id);
         ch.walls = b.walls; ch.roofs = b.roofs;
@@ -206,6 +223,13 @@ export async function createWorld({ canvas, net, packs, quality = 'medium', onPr
     props.refill(done, x, z, Q.fogFar, Q.propTris);
     seenVersion = version; propX = x; propZ = z;
   }
+  // Parked cars switch between the full and the cheap model by distance, so refill more often.
+  function refillParking(x, z) {
+    const ids = [];
+    for (const ch of chunks.values()) if (ch.stage >= PARTS) ids.push(ch.id);
+    parking.refill(ids, x, z);
+    parkVersion = version; parkX = x; parkZ = z; parkDirty = false;
+  }
   function complain(err) {
     const key = String(err && err.message);
     if (errors.has(key)) return;
@@ -224,6 +248,7 @@ export async function createWorld({ canvas, net, packs, quality = 'medium', onPr
       if (performance.now() - t0 > 14) { report(Math.min(0.98, done / total), 'chunks'); await tick(); t0 = performance.now(); if (disposed) return; }
     }
     refillProps(x, z);
+    refillParking(x, z);
     // Compile the shaders and upload the big textures now rather than in the first frames.
     try {
       camera.position.set(x, 1.2, z);
@@ -245,12 +270,16 @@ export async function createWorld({ canvas, net, packs, quality = 'medium', onPr
       const eye = frame.eye, t = frame.t || 0;
       camera.position.set(eye.x, eye.y, eye.z);
       camera.rotation.set(eye.pitch || 0, -(eye.heading + (eye.yaw || 0)), 0);
+      const fov = eye.fov >= 30 && eye.fov <= 120 ? eye.fov : DEFAULT_FOV;
+      if (fov !== baseFov) { baseFov = fov; resize(); }
 
       retarget(eye.x, eye.z);
       const t0 = performance.now();
       // One chunk part per frame; a few more only when they were nearly free (empty chunks).
       while (buildNext(eye.x, eye.z) && performance.now() - t0 < BUILD_BUDGET * 0.3);
       if (seenVersion !== version || Math.hypot(eye.x - propX, eye.z - propZ) > 30) refillProps(eye.x, eye.z);
+
+      if (parkDirty || parkVersion !== version || Math.hypot(eye.x - parkX, eye.z - parkZ) > 12) refillParking(eye.x, eye.z);
 
       signals.update(t, eye.x, eye.z);
       actors.update(frame);
@@ -273,6 +302,8 @@ export async function createWorld({ canvas, net, packs, quality = 'medium', onPr
     mirrors.invalidate();
     resize();
   }
+  // Call after changing packs.parking.buf.kind (255 = removed): the instances are refilled next frame.
+  function invalidateParking() { parkDirty = true; }
 
   // ---- context loss -----------------------------------------------------------------------------
   // three.js restores its own state; the chunk meshes gave up their arrays after the upload, so
@@ -297,10 +328,10 @@ export async function createWorld({ canvas, net, packs, quality = 'medium', onPr
     canvas.removeEventListener('webglcontextlost', onLost, false);
     canvas.removeEventListener('webglcontextrestored', onRestored, false);
     for (const ch of [...chunks.values()]) drop(ch);
-    for (const part of [buildings, signs, signals, props, actors, mirrors, sky]) { try { part.dispose(); } catch (err) { console.error(err); } }
+    for (const part of [buildings, signs, signals, props, parking, actors, mirrors, sky]) { try { part.dispose(); } catch (err) { console.error(err); } }
     if (streets.dispose) streets.dispose();
     renderer.dispose();
   }
 
-  return { setQuality, resize, prewarm, render, stats: () => lastStats, dispose, debug: { renderer, scene, camera, chunks } };
+  return { setQuality, resize, prewarm, render, stats: () => lastStats, dispose, invalidateParking, debug: { renderer, scene, camera, chunks } };
 }

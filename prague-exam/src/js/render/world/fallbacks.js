@@ -38,7 +38,7 @@ export function fallbackFacadeAtlas() {
 }
 
 // ---- models: boxes with vertex colours, origin on the ground, front towards -z --------------------
-function boxes(list) {
+export function boxes(list) {
   const pos = [], nrm = [], col = [];
   const F = [[1, 0, 0, 0, 0, -1, 0, 1, 0], [-1, 0, 0, 0, 0, 1, 0, 1, 0], [0, 1, 0, 1, 0, 0, 0, 0, -1], [0, -1, 0, 1, 0, 0, 0, 0, 1], [0, 0, 1, 1, 0, 0, 0, 1, 0], [0, 0, -1, -1, 0, 0, 0, 1, 0]];
   for (const [w, h, d, x, y, z, hex] of list) {

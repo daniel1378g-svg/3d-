@@ -18,6 +18,8 @@ sheet: pass or fail, what went wrong, where, what the rule requires and the lega
   Most junctions will match the street, some will not.
 - **Buildings** stand in their real positions with their real footprints and mapped heights, as
   simplified blocks with generic facades. They do not look like the actual buildings.
+- **Parked cars are generated**, not mapped: along the kerbs of ordinary streets, clear of
+  junctions, crossings and tram tracks. They are solid; hitting one fails the drive.
 - **The ground is flat.** Prague's hills are not modelled yet.
 - **The clutch is not simulated.** The car has a P-R-N-D selector. This trains rules, observation
   and signalling, not the feel of a manual car.
@@ -32,7 +34,13 @@ npm install
 npm run build      # dist/site (any web host) and dist/artifact (claude.ai Artifact)
 npm run serve      # http://127.0.0.1:4173/
 npm test           # simulation tests, including a full headless exam
+npm run publish:pages   # rebuild and publish dist/site to GitHub Pages
 ```
+
+**Public link:** https://daniel1378g-svg.github.io/3d-/prague-exam/ is served by GitHub Pages from
+the `gh-pages` branch, which holds only built sites. `npm run publish:pages` replaces the
+`prague-exam/` folder there and leaves everything else on the branch alone. To take the game
+offline, delete that folder from the branch.
 
 Keyboard on a desktop: `W A S D` or the arrows drive, `Q` and `E` indicate, `B` belt, `I` engine,
 `L` lights, `F` drive gear, `Space` handbrake, `C` and `V` look over the shoulder, `Esc` pauses.
@@ -45,11 +53,11 @@ The generated map is committed in `data/`. To rebuild it from OpenStreetMap:
 curl -o .cache/praha.osm.pbf https://download.openstreetmap.fr/extracts/europe/czech_republic/praha-latest.osm.pbf
 pip install osmium
 npm run extract    # .cache/raw.json: everything inside the game area
-npm run data       # data/graph.pack, buildings.pack, ground.pack
+npm run data       # data/graph.pack, buildings.pack, ground.pack, parking.pack
 ```
 
 `tools/steps/10-graph.mjs` builds the road network and its rules, `40-buildings.mjs` the
-buildings, `50-ground.mjs` the ground cover, trees and lamps. To move or resize the area, change
+buildings, `50-ground.mjs` the ground cover, trees and lamps, `60-parking.mjs` the parked cars. To move or resize the area, change
 the constants in `src/js/data/geo.js` and `tools/extract.py` together.
 
 ## How it is put together

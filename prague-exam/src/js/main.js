@@ -14,7 +14,7 @@ import { createScreens } from './ui/screens.js';
 import { createAudio } from './ui/audio.js';
 
 const STEP = 1 / 60;
-const EYE = { left: 0.36, forward: 0.1, height: 1.2 };           // driver's eye relative to the car's centre
+const EYE = { left: 0.36, forward: -0.12, height: 1.22 };        // driver's eye relative to the car's centre
 const BOOK = {
   ...LAWBOOK,
   TOO_MANY_MINOR: {
@@ -32,13 +32,13 @@ const canvas = document.getElementById('view');
 const audio = createAudio();
 const hud = createHud(root);
 let input = null, world = null, net = null, statics = null, screens = null;
-let settings = { steering: 'pad', sensitivity: 1, mirrors: true, showLimit: true, voice: true, sound: true, quality: 'medium', minimap: true };
+let settings = { steering: 'pad', sensitivity: 1, mirrors: true, showLimit: true, voice: true, sound: true, quality: 'medium', minimap: true, fov: 74 };
 let run = null;                                                  // the drive in progress
 let state = 'loading';                                           // loading | menu | driving | paused | result
 let lastOptions = null;
 
 const frame = {
-  t: 0, eye: { x: 0, y: EYE.height, z: 0, heading: 0, yaw: 0, pitch: 0 }, mirrors: [],
+  t: 0, eye: { x: 0, y: EYE.height, z: 0, heading: 0, yaw: 0, pitch: 0, fov: 74 }, mirrors: [],
   cars: { n: 0, x: new Float32Array(64), z: new Float32Array(64), heading: new Float32Array(64), variant: new Uint8Array(64), colour: new Uint32Array(64), state: new Uint8Array(64) },
   trams: { n: 0, x: new Float32Array(12), z: new Float32Array(12), heading: new Float32Array(12) },
   peds: { n: 0, x: new Float32Array(48), z: new Float32Array(48), heading: new Float32Array(48), phase: new Float32Array(48) },
@@ -86,6 +86,7 @@ async function startDrive(options, seed) {
   const traffic = createTraffic({ net, seed, density: options.traffic });
   const exam = createExam({ net, statics, traffic, seed, mode: options.mode, duration: options.duration * 60, placeId: options.placeId, minorLimit: MINOR_LIMIT, severities: SEVERITY });
   const car = createVehicle(exam.start);
+  if (world.invalidateParking) world.invalidateParking();         // the examiner cleared the kerb space the car starts in
   const locator = createLocator(net);
   locator.update(car);
   run = { seed, options, traffic, exam, car, locator, t: 0, acc: 0, said: '', mapTick: 0, slow: 0 };
@@ -165,6 +166,7 @@ function draw() {
   frame.eye.heading = car.heading;
   frame.eye.yaw = input.state.lookYaw * 1.75;
   frame.eye.pitch = input.state.lookPitch * 0.45 + car.pitch;
+  frame.eye.fov = Math.max(50, Math.min(100, Number(settings.fov) || 74));
   mirrorRects();
   traffic.fill(frame);
   world.render(frame);
@@ -278,13 +280,13 @@ async function boot() {
   hud.onBlink = (on) => audio.tick(on);                           // indicator relay click, in step with the dashboard arrows
   screens.showLoading(0.02, 'Loading the map');
   hud.setVisible(false);
-  const [graph, buildings, ground] = await Promise.all([loadSection('graph'), loadSection('buildings'), loadSection('ground')]);
+  const [graph, buildings, ground, parking] = await Promise.all([loadSection('graph'), loadSection('buildings'), loadSection('ground'), loadSection('parking').catch(() => null)]);
   screens.showLoading(0.3, 'Building the road network');
   await new Promise((r) => setTimeout(r, 20));
   net = new RoadNet(graph);
-  statics = createStatics(buildings);
+  statics = createStatics(buildings, parking);
   screens.showLoading(0.45, 'Preparing the streets');
-  world = await createWorld({ canvas, net, packs: { buildings, ground }, quality: settings.quality, onProgress: (f, stage) => { if (state === 'loading') screens.showLoading(0.45 + 0.5 * f, stage === 'chunks' ? 'Building the streets around you' : 'Preparing the streets'); } });
+  world = await createWorld({ canvas, net, packs: { buildings, ground, parking }, quality: settings.quality, onProgress: (f, stage) => { if (state === 'loading') screens.showLoading(0.45 + 0.5 * f, stage === 'chunks' ? 'Building the streets around you' : 'Preparing the streets'); } });
   input = createInput(root, settings);
   input.setEnabled(false);
   window.addEventListener('resize', () => world.resize());

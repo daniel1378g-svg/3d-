@@ -36,6 +36,13 @@
   --tt-amber: #ffb637;
   --tt-amber-bg: #38270a;
 
+  /* The driver. */
+  --skin: #d6a079;
+  --skin-lit: #e2b28c;
+  --skin-shade: #a06d49;
+  --sleeve: #1f2329;
+  --sleeve-edge: #363c45;
+
   /* Czech road-sign palette. */
   --sign-blue: #0d57a6;
   --sign-yellow: #f6c21c;
@@ -89,7 +96,10 @@ body {
 
   --top: 8px;
   --limit: 42px;
-  --dash-h: clamp(84px, 24cqh, 132px);
+  /* The dashboard is only a low sill; the wheel and the hands rise out of it. */
+  --dash-h: clamp(40px, 13cqh, 84px);
+  --helm-y: var(--dash-h);
+  --wheel-d: clamp(150px, 50cqh, 300px);
   --bonnet-h: clamp(6px, 2.4cqh, 16px);
   --map: clamp(88px, 26cqh, 118px);
   --mir-w: clamp(116px, 17cqw, 196px);
@@ -99,7 +109,7 @@ body {
   --pedal-h: clamp(92px, 30cqh, 156px);
   --brake-w: clamp(82px, 11.5cqw, 128px);
   --gas-w: clamp(60px, 8.5cqw, 96px);
-  --dial-d: calc(var(--dash-h) * 1.25);
+  --right-w: calc(var(--brake-w) + var(--gas-w) + 8px);
   --deck-pad: 6px;
 
   position: relative;
@@ -156,14 +166,13 @@ body {
   pointer-events: none;
 }
 
-/* Roof edge, then the tinted band along the top of the windscreen with the visor line. */
+/* Roof edge: a thin lip, then a light tint where the top controls sit. */
 .roof {
   position: absolute;
   inset: 0 0 auto 0;
-  height: calc(var(--top) + 50px);
-  background: rgba(9, 8, 7, 0.34);
-  border-top: 7px solid var(--cab-0);
-  border-bottom: 1px solid rgba(9, 8, 7, 0.55);
+  height: calc(var(--top) + 46px);
+  background: rgba(9, 8, 7, 0.18);
+  border-top: 3px solid var(--cab-0);
   box-sizing: border-box;
 }
 
@@ -450,27 +459,36 @@ body {
 }
 #game[data-limit="off"] .limit { display: none; }
 
-/* Landscape: to the right of the banner column, clear of the gear strip and the pedals. */
+/* Pre-drive checklist. Landscape: two columns under the status line, so it ends above the
+   wheel. Portrait: one column under the banner. */
 .checklist {
-  /* No grid area here: an absolute grid child would be placed against that row instead. */
-  position: absolute;
-  top: 84px;
-  right: calc(var(--brake-w) + var(--gas-w) - var(--map) - var(--limit) - var(--mir-w) - 2px);
+  grid-area: check;
   box-sizing: border-box;
-  width: min(216px, 46cqw);
-  padding: 7px 11px 8px;
+  width: calc(100% - 52px);
+  margin: -6px 0 0 52px;
+  padding: 6px 10px 7px;
   border: 1px solid var(--glass-line);
   border-radius: 9px;
-  background: rgba(15, 14, 12, 0.84);
+  background: rgba(15, 14, 12, 0.8);
 }
 .checklist-title {
+  display: none;
   margin: 0 0 5px;
   font: 600 11px/1.2 var(--font);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--ink-3);
 }
-.checklist-items { display: grid; gap: 2px; margin: 0; padding: 0; list-style: none; }
+.checklist-items {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(4, auto);
+  grid-auto-columns: minmax(0, 1fr);
+  gap: 2px 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
 .checklist-items li {
   display: grid;
   grid-template-columns: 16px minmax(0, 1fr);
@@ -518,6 +536,12 @@ body {
   height: var(--dash-h);
   padding: 0 var(--gut-r) var(--deck-pad) var(--gut-l);
   pointer-events: none;
+  /* Landscape: the controls float over the picture, so they are lighter than the top row. */
+  --glass: rgba(15, 14, 12, 0.42);
+  --glass-line: rgba(244, 240, 230, 0.38);
+  --tt-green-bg: rgba(18, 48, 31, 0.72);
+  --tt-red-bg: rgba(58, 21, 18, 0.74);
+  --tt-amber-bg: rgba(56, 39, 10, 0.74);
 }
 #deck > * { flex: none; }
 
@@ -656,14 +680,15 @@ body {
 .steer-btn svg { width: 34px; height: 34px; }
 .steer-btn.is-down { background: var(--glass-down); border-color: var(--amber); color: var(--amber); }
 
-/* Dashboard switches. The icon lights up as the tell-tale for what the switch controls. */
+/* Switches: a column on each side of the wheel. The icon lights up as the tell-tale for what
+   the switch controls. */
 .sw {
   display: grid;
-  grid-template-columns: repeat(2, 44px);
+  grid-template-columns: 44px;
   gap: 4px;
   pointer-events: auto;
 }
-.sw-r { grid-template-columns: 44px; }
+.sw-r { margin-left: auto; }
 .sbtn {
   display: grid;
   grid-template-rows: 21px auto;
@@ -673,10 +698,10 @@ body {
   box-sizing: border-box;
   height: 44px;
   padding: 3px 0 2px;
-  border: 1px solid var(--cab-line);
+  border: 1px solid var(--glass-line);
   border-radius: 8px;
-  background: var(--cab-2);
-  color: var(--ink-2);
+  background: var(--glass);
+  color: var(--ink);
   touch-action: none;
   cursor: pointer;
 }
@@ -685,46 +710,61 @@ body {
   font: 600 9.5px/1 var(--font-cond);
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--ink-3);
+  color: var(--ink-2);
 }
 .sbtn.is-down,
-.sbtn:active { background: var(--cab-3); }
+.sbtn:active { background: var(--glass-down); }
 .sbtn[data-lamp="green"] { border-color: var(--tt-green); background: var(--tt-green-bg); color: var(--tt-green); }
 .sbtn[data-lamp="red"] { border-color: var(--tt-red); background: var(--tt-red-bg); color: var(--tt-red); }
 .sbtn[data-lamp="amber"] { border-color: var(--tt-amber); background: var(--tt-amber-bg); color: var(--tt-amber); }
 .sbtn[data-lamp] span { color: inherit; }
 
-/* Instrument cluster with the steering wheel in front of it. */
-.cluster {
-  position: relative;
-  flex: 0 1 var(--dial-d) !important;
-  min-width: 84px;
-  height: calc(var(--dash-h) - var(--deck-pad));
-  margin: 0 auto calc(var(--deck-pad) * -1);
-  pointer-events: none;
+/* Steering wheel, the driver's hands on it, and the dial seen through the upper opening.
+   The box is the wheel's square; its centre sits --helm-y above the bottom of the view. */
+.helm {
+  position: absolute;
+  left: calc(50% + (var(--left-w) - var(--right-w)) / 2);
+  bottom: calc(var(--helm-y) - var(--wheel-d) / 2);
+  width: var(--wheel-d);
+  height: var(--wheel-d);
+  margin-left: calc(var(--wheel-d) / -2);
 }
 .dial {
   position: absolute;
-  left: 0;
-  bottom: 0;
+  left: 24%;
+  top: 7.7%;
   display: block;
-  width: 100%;
+  width: 52%;
   height: auto;
   aspect-ratio: 200 / 156;
   overflow: visible;
 }
 .wheel {
   position: absolute;
-  left: 50%;
-  bottom: 0;
-  width: 180.8%;
-  aspect-ratio: 1;
-  margin-left: -90.4%;
-  /* Hub on the bottom edge of the cluster: only the upper half of the wheel shows. */
-  transform: translateY(50%) rotate(var(--rot, 0deg));
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotate(var(--rot, 0deg));
   will-change: transform;
+  --cab-line: #5f594f;
 }
-.dial-face { fill: var(--cab-0); stroke: var(--cab-line); stroke-width: 1.5; }
+.hands {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.arm-sleeve,
+.arm-cuff,
+.arm-wrist { fill: none; stroke-linejoin: round; }
+.arm-sleeve { stroke: var(--sleeve); stroke-width: 34; stroke-linecap: round; }
+.arm-cuff { stroke: var(--sleeve-edge); stroke-width: 36; }
+.arm-wrist { stroke: var(--skin); stroke-width: 26; stroke-linecap: round; }
+.fist-back { fill: var(--skin); stroke: var(--skin-shade); stroke-width: 1.4; }
+.fist-line { stroke: var(--skin-shade); stroke-width: 1.7; stroke-linecap: round; }
+.fist-thumb { fill: var(--skin-lit); stroke: var(--skin-shade); stroke-width: 1.4; }
+.dial-face { fill: rgba(11, 10, 9, 0.88); stroke: var(--cab-line); stroke-width: 1.5; }
 .dial-tick { stroke: var(--ink-2); stroke-width: 1.6; stroke-linecap: butt; }
 .dial-tick-major { stroke: var(--ink); stroke-width: 2.8; }
 .dial-tick-50 { stroke: var(--sign-red); stroke-width: 5; }
@@ -851,30 +891,30 @@ body {
 
 @container game (aspect-ratio < 1) {
   #game {
-    --row-a: clamp(92px, 13cqh, 114px);
     --row-b: 44px;
     --row-c: 48px;
     --row-d: clamp(84px, 13.5cqh, 120px);
     --row-gap: 8px;
     --deck-pad: 8px;
-    --deck-h: calc(var(--row-a) + var(--row-b) + var(--row-c) + var(--row-d) + 3 * var(--row-gap) + 2 * var(--deck-pad));
-    --dash-h: var(--row-a);
-    --map: var(--row-a);
+    --deck-h: calc(var(--row-b) + var(--row-c) + var(--row-d) + 2 * var(--row-gap) + 2 * var(--deck-pad));
+    --lip: 18px;
+    --dash-h: var(--lip);
+    --helm-y: 40px;
+    --wheel-d: clamp(150px, 46cqw, 240px);
+    --map: clamp(80px, 22cqw, 104px);
     --limit: 40px;
     --mir-w: clamp(100px, 29cqw, 150px);
     --mir-l-w: clamp(84px, 24cqw, 120px);
     --pad-h: calc(var(--row-d) * 0.72);
     --pedal-h: var(--row-d);
-    --lip: 20px;
   }
 
   #stage { inset: 0 0 var(--deck-h) 0; }
-
-  .dashtop { height: var(--lip); }
-  .bonnet { bottom: calc(var(--lip) * 0.8); height: calc(var(--bonnet-h) + var(--lip) * 0.2); }
+  .helm { left: 50%; }
 
   .mirror-rear { right: calc(var(--gut-r) + var(--limit) + 8px); }
-  .mirror-left { bottom: calc(var(--lip) + 8px); }
+  /* Door mirror and minimap sit just above the hands, one in each lower corner of the view. */
+  .mirror-left { bottom: 68px; }
   .limit { right: var(--gut-r); }
 
   .hud-main {
@@ -898,42 +938,41 @@ body {
   .toasts { margin-left: 0; max-width: 100%; }
 
   .checklist {
-    grid-area: check;
-    position: static;
     justify-self: center;
     width: min(250px, 64cqw);
+    margin: 0;
+    padding: 7px 11px 8px;
   }
+  .checklist-title { display: block; }
+  .checklist-items { grid-auto-flow: row; grid-template-rows: none; gap: 2px; }
 
-  .look { top: 52%; }
+  .look { top: 46%; }
 
+  /* The band below the view is solid, so its controls are solid too. */
   #deck {
     display: grid;
     grid-template-columns: repeat(6, minmax(0, 1fr));
-    grid-template-rows: var(--row-a) var(--row-b) var(--row-c) var(--row-d);
+    grid-template-rows: var(--row-b) var(--row-c) var(--row-d);
     gap: var(--row-gap);
     align-items: stretch;
     height: var(--deck-h);
     padding: var(--deck-pad) var(--gut-r) var(--deck-pad) var(--gut-l);
     background: var(--cab-1);
+    --glass: var(--cab-2);
+    --glass-line: var(--cab-line);
+    --tt-green-bg: #12301f;
+    --tt-red-bg: #3a1512;
+    --tt-amber-bg: #38270a;
   }
   .ctl-left,
   .ctl-right { display: contents; }
 
-  .cluster {
-    grid-area: 1 / 1 / 2 / 5;
-    justify-self: center;
-    width: var(--dial-d);
-    height: 100%;
-    margin: 0;
-    /* The wheel is cut off by the switch panel below but may rise over the top edge. */
-    clip-path: inset(-60px -300px 0 -300px);
-  }
-  .sw-l { grid-area: 2 / 1 / 3 / 5; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--row-gap); }
-  .sw-r { grid-area: 2 / 5 / 3 / 7; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--row-gap); }
-  .ind-row { grid-area: 3 / 1 / 4 / 4; height: auto; margin-left: 0; gap: var(--row-gap); }
-  .gearbox { grid-area: 3 / 4 / 4 / 7; height: auto; min-width: 0; }
-  .steer-slot { grid-area: 4 / 1 / 5 / 4; align-self: end; }
-  .pedals { grid-area: 4 / 4 / 5 / 7; justify-content: flex-end; }
+  .sw-l { grid-area: 1 / 1 / 2 / 4; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--row-gap); }
+  .sw-r { grid-area: 1 / 4 / 2 / 7; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--row-gap); margin-left: 0; }
+  .ind-row { grid-area: 2 / 1 / 3 / 4; height: auto; margin-left: 0; gap: var(--row-gap); }
+  .gearbox { grid-area: 2 / 4 / 3 / 7; height: auto; min-width: 0; }
+  .steer-slot { grid-area: 3 / 1 / 4 / 4; align-self: end; }
+  .pedals { grid-area: 3 / 4 / 4 / 7; justify-content: flex-end; }
   .pedal-brake { flex: 1.35 1 0; width: auto; }
   .pedal-gas { flex: 1 1 0; width: auto; }
   .wheelctl-art {
@@ -944,31 +983,23 @@ body {
 
   .minimap-box {
     top: auto;
-    bottom: calc(var(--deck-h) - var(--deck-pad) - var(--row-a));
+    bottom: calc(var(--deck-h) + 68px);
   }
 }
 
-/* Narrow landscape phones: tighter controls so the dashboard row still fits. */
+/* Narrow landscape phones: tighter controls and a smaller wheel so the bottom row still fits. */
 @container game (aspect-ratio >= 1) and (max-width: 720px) {
   #game {
     --left-w: 190px;
     --mir-l-w: 88px;
     --brake-w: 78px;
     --gas-w: 58px;
+    --right-w: 176px;
     --limit: 38px;
+    --wheel-d: 40cqh;
   }
   .gearbox { min-width: 176px; }
-  /* Less room beside the banner here: a narrower, tighter checklist left of the gear strip. */
-  .checklist {
-    top: 100px;
-    right: calc(162px - var(--map) - var(--limit) - var(--mir-w));
-    width: 190px;
-    padding: 6px 10px 7px;
-  }
-  .checklist-items { gap: 1px; }
   .checklist-items li { font-size: 12.5px; }
-  /* The status line wraps onto two lines rather than run under the checklist. */
-  .status { max-width: 196px; }
 }
 
 /* ---------- Screens: loading, menu, pause, result ---------- */
@@ -995,6 +1026,8 @@ body {
 .screen-loading,
 .screen-menu,
 .screen-result { background: var(--cab-0); }
+/* The view shows through the pause sheet, so a change of view angle can be judged at once. */
+.screen-pause { background: rgba(9, 8, 7, 0.8); }
 
 .screen-body {
   flex: 1 1 auto;
@@ -1486,7 +1519,7 @@ body {
 }
 /* Very short landscape boxes: a tighter checklist so it stays above the dashboard. */
 @container game (aspect-ratio >= 1) and (max-height: 360px) {
-  .checklist { top: 76px; padding: 6px 10px 7px; }
+  .checklist { padding: 4px 9px 5px; }
   .checklist-items { gap: 1px; }
   .checklist-items li { font-size: 12.5px; }
 }

@@ -10,8 +10,9 @@
 
 const STORE_KEY = 'prague-exam.ui.v1';
 const DEFAULT_SETTINGS = {
-  steering: 'pad', sensitivity: 1, mirrors: true, showLimit: true, voice: true, sound: true, quality: 'medium', minimap: true,
+  steering: 'pad', sensitivity: 1, mirrors: true, showLimit: true, voice: true, sound: true, quality: 'medium', minimap: true, fov: 74,
 };
+const RANGES = { sensitivity: [0.5, 1.5], fov: [55, 95] };
 const CHOICES = {
   steering: ['pad', 'wheel', 'buttons'],
   quality: ['low', 'medium', 'high'],
@@ -69,7 +70,7 @@ function cleanSettings(base, patch) {
   for (const k of Object.keys(DEFAULT_SETTINGS)) {
     const v = patch[k];
     if (typeof DEFAULT_SETTINGS[k] === 'boolean') { if (typeof v === 'boolean') out[k] = v; }
-    else if (k === 'sensitivity') { if (Number.isFinite(v)) out[k] = Math.min(1.5, Math.max(0.5, v)); }
+    else if (RANGES[k]) { if (Number.isFinite(v)) out[k] = Math.min(RANGES[k][1], Math.max(RANGES[k][0], v)); }
     else if (CHOICES[k].includes(v)) out[k] = v;
   }
   return out;
@@ -141,21 +142,25 @@ export function createScreens(root, handlers = {}) {
   };
 
   const settingsGroup = (open) => {
-    const out = h('output', { for: 'set-sensitivity', text: `${settings.sensitivity.toFixed(2)}×` });
-    const range = h('input', {
-      type: 'range', id: 'set-sensitivity', min: '0.5', max: '1.5', step: '0.05', value: String(settings.sensitivity),
-      'aria-label': 'Steering sensitivity',
-      oninput: (e) => {
-        const v = Number(e.target.value);
-        out.textContent = `${v.toFixed(2)}×`;
-        changeSetting('sensitivity', v);
-      },
-    });
+    const slider = (key, label, step, format) => {
+      const out = h('output', { for: `set-${key}`, text: format(settings[key]) });
+      const range = h('input', {
+        type: 'range', id: `set-${key}`, min: String(RANGES[key][0]), max: String(RANGES[key][1]), step: String(step),
+        value: String(settings[key]), 'aria-label': label,
+        oninput: (e) => {
+          const v = Number(e.target.value);
+          out.textContent = format(v);
+          changeSetting(key, v);
+        },
+      });
+      return h('div.range', null, range, out);
+    };
     return h('details.settings', { open },
       h('summary', { text: 'Settings' }),
       h('div.rows', null,
         row('Steering', segmented('Steering control', [['pad', 'Slider'], ['wheel', 'Wheel'], ['buttons', 'Buttons']], settings.steering, (v) => changeSetting('steering', v))),
-        row('Sensitivity', h('div.range', null, range, out)),
+        row('Sensitivity', slider('sensitivity', 'Steering sensitivity', 0.05, (v) => `${v.toFixed(2)}×`)),
+        row('View angle', slider('fov', 'View angle in degrees', 1, (v) => `${Math.round(v)}°`)),
         row('Mirrors', toggle('Mirrors', settings.mirrors, (v) => changeSetting('mirrors', v))),
         row('Speed limit sign', toggle('Show the speed limit sign', settings.showLimit, (v) => changeSetting('showLimit', v))),
         row('Minimap', toggle('Minimap', settings.minimap, (v) => changeSetting('minimap', v))),

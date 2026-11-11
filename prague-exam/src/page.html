@@ -38,10 +38,10 @@
     <div class="cockpit" aria-hidden="true">
       <div class="roof"></div>
       <svg class="pillars" viewBox="0 0 100 100" preserveAspectRatio="none">
-        <polygon class="pillar" points="0,0 8.6,0 3,100 0,100"/>
-        <polygon class="pillar-trim" points="8.6,0 9.1,0 3.4,100 3,100"/>
-        <polygon class="pillar" points="100,0 98.8,0 96.4,100 100,100"/>
-        <polygon class="pillar-trim" points="98.8,0 98.5,0 96.1,100 96.4,100"/>
+        <polygon class="pillar" points="0,0 4,0 1.1,100 0,100"/>
+        <polygon class="pillar-trim" points="4,0 4.3,0 1.4,100 1.1,100"/>
+        <polygon class="pillar" points="100,0 99.4,0 98.3,100 100,100"/>
+        <polygon class="pillar-trim" points="99.4,0 99.2,0 98.1,100 98.3,100"/>
       </svg>
       <svg class="bonnet" viewBox="0 0 1000 100" preserveAspectRatio="none">
         <path class="bonnet-body" d="M70 100C180 46 380 16 560 9c170-5 320 3 440 22v69z"/>
@@ -53,6 +53,12 @@
       </svg>
       <div class="mirror mirror-rear"><div id="mirror-rear" class="mirror-glass"></div></div>
       <div class="mirror mirror-left"><div id="mirror-left" class="mirror-glass"></div></div>
+      <!-- Steering wheel with the driver's hands; the dial shows through the upper opening. -->
+      <div class="helm">
+        <svg class="dial" id="dial" viewBox="0 0 200 156"></svg>
+        <svg class="wheel" id="wheel"><use href="#wheel-art"/></svg>
+        <svg class="hands" id="hands" viewBox="-120 -120 240 240"></svg>
+      </div>
     </div>
 
     <div id="hud">
@@ -114,17 +120,12 @@
       <button type="button" class="sbtn" data-action="belt" data-lamp-for="belt" aria-label="Seat belt"><svg aria-hidden="true"><use href="#i-belt"/></svg><span>Belt</span></button>
       <button type="button" class="sbtn" data-action="lights" data-lamp-for="lights" aria-label="Dipped headlights"><svg aria-hidden="true"><use href="#i-lights"/></svg><span>Lights</span></button>
       <button type="button" class="sbtn" data-action="engine" data-lamp-for="engine" aria-label="Engine start or stop"><svg aria-hidden="true"><use href="#i-engine"/></svg><span>Engine</span></button>
-      <button type="button" class="sbtn" data-action="horn" data-hold="horn" aria-label="Horn"><svg aria-hidden="true"><use href="#i-horn"/></svg><span>Horn</span></button>
-    </div>
-
-    <div class="cluster" aria-hidden="true">
-      <svg class="wheel" id="wheel"><use href="#wheel-art"/></svg>
-      <svg class="dial" id="dial" viewBox="0 0 200 156"></svg>
     </div>
 
     <div class="sw sw-r">
       <button type="button" class="sbtn" data-action="handbrake" data-lamp-for="handbrake" aria-label="Handbrake"><svg aria-hidden="true"><use href="#i-handbrake"/></svg><span>P-brake</span></button>
       <button type="button" class="sbtn" data-action="hazard" data-lamp-for="hazard" aria-label="Hazard lights"><svg aria-hidden="true"><use href="#i-hazard"/></svg><span>Hazard</span></button>
+      <button type="button" class="sbtn" data-action="horn" data-hold="horn" aria-label="Horn"><svg aria-hidden="true"><use href="#i-horn"/></svg><span>Horn</span></button>
     </div>
 
     <div class="ctl-right">

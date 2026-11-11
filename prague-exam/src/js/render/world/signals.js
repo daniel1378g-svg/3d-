@@ -1,13 +1,12 @@
 // Traffic lights. Every signal stop line gets a pole with a three-lamp head on the right-hand
-// kerb, wide approaches a second one on the left. Poles, dark lenses and the lit glow are three
-// global instanced meshes that hold the heads of the loaded chunks; the glow is rewritten every
-// frame from net.signalState so the lamps follow the simulation exactly.
+// kerb, wide approaches a second one on the left. Poles (whose model has dark lenses) and the
+// lit glow are two global instanced meshes that hold the heads of the loaded chunks; the glow is
+// rewritten every frame from net.signalState so the lamps follow the simulation exactly.
 import { CTRL, SIG } from '../../sim/roadnet.js';
 import { CHUNKS, chunkCoord, setInstance, makeInstanced, commitInstances } from './util.js';
 
 const RANGE = 250;                       // lamps are lit within this distance of the eye
 const LIT = { red: 0xff2a14, amber: 0xffa214, green: 0x1dff84 };
-const DARK = { red: 0x3a0c08, amber: 0x3a2606, green: 0x06301a };
 
 function glowTexture() {
   const c = document.createElement('canvas');
@@ -48,26 +47,23 @@ export function createSignals({ net, models, scene }) {
   const lampKeys = ['red', 'amber', 'green'];
   const poleGeo = models.buildSignalGeometry();
   const poleMat = new THREE.MeshLambertMaterial({ vertexColors: true });
-  const lensGeo = new THREE.CircleGeometry(R, 12).rotateY(Math.PI);
-  const lensMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
   const glowGeo = new THREE.PlaneGeometry(1, 1).rotateY(Math.PI);
   const glowTex = glowTexture();
   const glowMat = new THREE.MeshBasicMaterial({ map: glowTex, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, fog: false, toneMapped: false });
-  let cap = 64, poles, lenses, glow;
+  let cap = 64, poles, glow;
   const make = () => {
     poles = makeInstanced(poleGeo, poleMat, cap);
-    lenses = makeInstanced(lensGeo, lensMat, cap * 3, { colour: true });
     glow = makeInstanced(glowGeo, glowMat, cap * 2, { colour: true });
     glow.renderOrder = 20;
-    lenses.layers.set(1); glow.layers.set(1);                    // not drawn in the mirrors
-    scene.add(poles, lenses, glow);
+    glow.layers.set(1);                                          // not drawn in the mirrors
+    scene.add(poles, glow);
   };
-  const drop = () => { for (const m of [poles, lenses, glow]) { scene.remove(m); m.dispose(); } };
+  const drop = () => { for (const m of [poles, glow]) { scene.remove(m); m.dispose(); } };
   make();
 
   const col = new THREE.Color();
-  const lit = {}, dark = {};
-  for (const k of lampKeys) { lit[k] = col.setHex(LIT[k]).toArray(); dark[k] = col.setHex(DARK[k]).toArray(); }
+  const lit = {};
+  for (const k of lampKeys) lit[k] = col.setHex(LIT[k]).toArray();
   let active = [];
 
   // Lamp position in the world for a head whose front faces heading hm.
@@ -81,17 +77,8 @@ export function createSignals({ net, models, scene }) {
     active = [];
     for (const id of chunkIds) { const list = byChunk.get(id); if (list) for (const i of list) active.push(heads[i]); }
     if (active.length > cap) { drop(); while (cap < active.length) cap *= 2; make(); }
-    const q = {};
-    active.forEach((hd, i) => {
-      setInstance(poles.instanceMatrix.array, i, hd.x, 0, hd.z, hd.h + Math.PI);
-      lampKeys.forEach((key, k) => {
-        lampAt(hd, key, 0.012, q);
-        setInstance(lenses.instanceMatrix.array, i * 3 + k, q.x, q.y, q.z, hd.h + Math.PI);
-        lenses.instanceColor.array.set(dark[key], (i * 3 + k) * 3);
-      });
-    });
+    active.forEach((hd, i) => setInstance(poles.instanceMatrix.array, i, hd.x, 0, hd.z, hd.h + Math.PI));
     commitInstances(poles, active.length);
-    commitInstances(lenses, active.length * 3);
   }
 
   // Lit lamps for this instant. Far heads grow a little so the colour stays readable.
@@ -116,6 +103,6 @@ export function createSignals({ net, models, scene }) {
     commitInstances(glow, n);
   }
 
-  function dispose() { drop(); poleGeo.dispose(); lensGeo.dispose(); glowGeo.dispose(); poleMat.dispose(); lensMat.dispose(); glowMat.dispose(); glowTex.dispose(); }
+  function dispose() { drop(); poleGeo.dispose(); glowGeo.dispose(); poleMat.dispose(); glowMat.dispose(); glowTex.dispose(); }
   return { refill, update, dispose, heads, get active() { return active; } };
 }

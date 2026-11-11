@@ -37,6 +37,7 @@ export function createExam({ net, statics, traffic, seed = 1, mode = 'exam', dur
     const p = net.pos(e, s);
     const off = net.width[e] / 2 - 0.9 - 0.35;                          // car's right side 35 cm from the kerb
     start.x = p.x - p.dz * off * dir; start.z = p.z + p.dx * off * dir; start.heading = headingOf(p.dx * dir, p.dz * dir);
+    if (statics && statics.clearParked) statics.clearParked(start.x, start.z, 9);   // the space this car is parked in
   }
 
   const ex = {
@@ -216,6 +217,7 @@ export function createExam({ net, statics, traffic, seed = 1, mode = 'exam', dur
   const AP = traffic.AP();
   const fp = new Float32Array(8);
   const pedSeen = new Map();
+  const PARKED = { x: 0, z: 0 };
 
   function approachingBehind() {
     // A vehicle coming up from behind in the lane the car is about to pull into.
@@ -372,6 +374,10 @@ export function createExam({ net, statics, traffic, seed = 1, mode = 'exam', dur
       const behind = (c.x - car.x) * Math.sin(car.heading) + (c.z - car.z) * -Math.cos(car.heading) < -1.0;
       if (behind && v >= -0.2 && Math.abs(angDiff(c.h, car.heading)) < 0.9) continue;   // run into from behind: not the candidate's fault
       fault('COLLISION_VEHICLE');
+    }
+    if (statics && statics.parkedNear && av > 0.3) {
+      // Parked cars stand half on the kerb; only a clear hit counts, not a near miss.
+      statics.parkedNear(car.x, car.z, 5, (px, pz, h) => { PARKED.x = px; PARKED.z = pz; if (overlapsRect(PARKED, 4.0, 1.5, h)) fault('COLLISION_VEHICLE', 'a parked car'); });
     }
     for (const tr of traffic.trams) {
       const fwd = (tr.x - car.x) * Math.sin(car.heading) + (tr.z - car.z) * -Math.cos(car.heading);

@@ -5,7 +5,7 @@ import { LIN, hash2, toByte, releaseAfterUpload } from './util.js';
 
 const MIN_WALL = 0.4;                    // shorter ring segments are merged into their neighbour
 const CORNER_COS = Math.cos(0.5);        // a turn sharper than this starts a new wall run
-const GROUND_SHADE = 0.8;                // walls darken towards the pavement (cheap contact shadow)
+const FOOT = 0.6, FOOT_SHADE = 0.72, FOOT_TOP = 0.95;   // the lowest 0.6 m of a wall darkens towards the pavement
 const PASSAGE = 4.6;                     // buildings over a road (flags bit 1) start this high
 const PASSAGE_MIN = 6.5;                 // ... and lower ones are left out altogether
 
@@ -98,12 +98,13 @@ export function createBuildings({ pack, atlas, anisotropy = 1 }) {
     const ax = px[i], az = pz[i], bx = px[j], bz = pz[j], L = seg[i];
     const nx = (bz - az) / L, nz = -(bx - ax) / L;               // outward: left of a -> b
     const r1 = toByte(cr), g1 = toByte(cg), b1 = toByte(cb);
-    const quad = (y0, y1, v0, v1, shade0) => {
+    const quad = (y0, y1, v0, v1, shade0, shade1 = 1) => {
       const r0 = shade0 === 1 ? r1 : toByte(cr * shade0), g0 = shade0 === 1 ? g1 : toByte(cg * shade0), b0 = shade0 === 1 ? b1 : toByte(cb * shade0);
+      const rt = shade1 === 1 ? r1 : toByte(cr * shade1), gt = shade1 === 1 ? g1 : toByte(cg * shade1), bt = shade1 === 1 ? b1 : toByte(cb * shade1);
       const A = walls.vert(ax, y0, az, nx, 0, nz, r0, g0, b0, ua, v0);
       const B = walls.vert(bx, y0, bz, nx, 0, nz, r0, g0, b0, ub, v0);
-      const C = walls.vert(bx, y1, bz, nx, 0, nz, r1, g1, b1, ub, v1);
-      const D = walls.vert(ax, y1, az, nx, 0, nz, r1, g1, b1, ua, v1);
+      const C = walls.vert(bx, y1, bz, nx, 0, nz, rt, gt, bt, ub, v1);
+      const D = walls.vert(ax, y1, az, nx, 0, nz, rt, gt, bt, ua, v1);
       walls.tri(A, D, C); walls.tri(A, C, B);
     };
     let gh = base, rest = wallH - base;
@@ -111,7 +112,12 @@ export function createBuildings({ pack, atlas, anisotropy = 1 }) {
       gh = Math.min(st.groundH, wallH);
       rest = wallH - gh;
       if (rest < 0.12 * st.floor) { gh = wallH; rest = 0; }      // no sliver above the ground floor
-      quad(0, gh, st.g0, st.g0 + (st.g1 - st.g0) * Math.min(1, gh / st.groundH), GROUND_SHADE);
+      const vTop = st.g0 + (st.g1 - st.g0) * Math.min(1, gh / st.groundH);
+      if (gh > FOOT + 0.4) {
+        const vFoot = st.g0 + (vTop - st.g0) * (FOOT / gh);
+        quad(0, FOOT, st.g0, vFoot, FOOT_SHADE, FOOT_TOP);
+        quad(FOOT, gh, vFoot, vTop, FOOT_TOP);
+      } else quad(0, gh, st.g0, vTop, FOOT_SHADE);
     }
     if (rest <= 0) return;
     let full = Math.floor(rest / st.floor), cut = rest - full * st.floor, fh = st.floor;
@@ -134,7 +140,7 @@ export function createBuildings({ pack, atlas, anisotropy = 1 }) {
       if (corner[i] && first < 0) first = i;
     }
     if (first < 0) { first = 0; corner[0] = 1; }
-    walls.reserve(n * 4 * (3 + Math.ceil(wallH / st.floor)), n * 6 * (3 + Math.ceil(wallH / st.floor)));
+    walls.reserve(n * 4 * (4 + Math.ceil(wallH / st.floor)), n * 6 * (4 + Math.ceil(wallH / st.floor)));
     let k = 0;
     while (k < n) {
       // run = segments starting at ring points (first + k) ... until the next corner
@@ -290,8 +296,10 @@ export function createBuildings({ pack, atlas, anisotropy = 1 }) {
       // A road runs through or under this one: only the part above the passage is drawn.
       const base = buf.flags[bi] & 2 ? PASSAGE : 0;
       if (base && h < PASSAGE_MIN) continue;
-      const cr = LIN[buf.colour[bi * 3]], cg = LIN[buf.colour[bi * 3 + 1]], cb = LIN[buf.colour[bi * 3 + 2]];
       const seed = hash2(bi, 977);
+      // Neighbours with the same plaster colour still differ a little: brightness within about 8 %.
+      const tint = 0.92 + ((seed >>> 16) % 1000) / 6250;
+      const cr = Math.min(1, LIN[buf.colour[bi * 3]] * tint), cg = Math.min(1, LIN[buf.colour[bi * 3 + 1]] * tint), cb = Math.min(1, LIN[buf.colour[bi * 3 + 2]] * tint);
       let wallH = h;
       let pitched = (buf.flags[bi] & 1) !== 0 && n <= 16;
       if (pitched) {

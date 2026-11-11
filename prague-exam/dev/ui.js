@@ -177,7 +177,8 @@ function frame(now) {
   const touching = s.throttle > 0 || s.brake > 0 || s.steer !== 0;
   if (state === 'drive' && auto && !touching) {
     // Demo drive for screenshots: about 47 km/h with a gentle weave.
-    car.speed = 13 + Math.sin(now / 2600) * 1.2; car.steer = Math.sin(now / 1700) * 0.07; car.throttle = 0.3;
+    car.speed = 13 + Math.sin(now / 2600) * 1.2; car.throttle = 0.3;
+    car.steer = q.has('steer') ? Number(q.get('steer')) : Math.sin(now / 1700) * 0.07;   // ?steer=-0.3 holds a turn
   } else {
     car.steer = s.steer * 0.6; car.throttle = s.throttle; car.brake = s.brake;
     const drive = car.engineOn && !car.handbrake && (car.gear === 'D' || car.gear === 'R') ? s.throttle * 3.2 * (car.gear === 'R' ? -1 : 1) : 0;

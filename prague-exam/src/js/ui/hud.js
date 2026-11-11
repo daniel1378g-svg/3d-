@@ -70,6 +70,68 @@ function buildDial(svg) {
   return { rev, arrowL, arrowR, gear, speed, needle };
 }
 
+// The driver's arms, in the wheel's own coordinates (rim centre line at radius 110).
+const HAND_R = 110;
+const HAND_LIMIT = 100;                 // degrees the hands follow the rim before it slips through
+const SHOULDER = { l: [-180, 215], r: [180, 215] };
+
+function buildHands(svg) {
+  svg.textContent = '';
+  const arm = (side) => {
+    const g = svgEl('g', { class: `arm arm-${side}` }, svg);
+    const sleeve = svgEl('path', { class: 'arm-sleeve' }, g);
+    const cuff = svgEl('path', { class: 'arm-cuff' }, g);
+    const wrist = svgEl('path', { class: 'arm-wrist' }, g);
+    // Fist in its own frame: x runs along the rim, -y points away from the hub.
+    const fist = svgEl('g', { class: 'fist' }, g);
+    svgEl('rect', { class: 'fist-back', x: -21, y: -23, width: 42, height: 35, rx: 13 }, fist);
+    for (const x of [-10.5, 0, 10.5]) svgEl('line', { class: 'fist-line', x1: x, y1: -17, x2: x, y2: 1 }, fist);
+    svgEl('rect', { class: 'fist-thumb', x: 3, y: 7, width: 27, height: 13, rx: 6.5, transform: 'rotate(-8 16 13)' }, fist);
+    return { side, sleeve, cuff, wrist, fist };
+  };
+  return [arm('l'), arm('r')];
+}
+
+function placeHand(arm, deg) {
+  const clock = (arm.side === 'l' ? -90 : 90) + deg;      // 0 = twelve o'clock, clockwise
+  const a = (clock * Math.PI) / 180;
+  const hx = HAND_R * Math.sin(a);
+  const hy = -HAND_R * Math.cos(a);
+  const [sx, sy] = SHOULDER[arm.side];
+  // As a hand climbs over the top of the wheel its elbow swings out, so the forearm curves
+  // round the dial instead of lying across the speed.
+  const lift = Math.max(0, Math.min(1, -hy / HAND_R));
+  const cx = (hx + sx) / 2 + (arm.side === 'l' ? -120 : 120) * lift;
+  const cy = (hy + sy) / 2 - 60 * lift;
+  const N = 24;
+  const pts = [];
+  const cum = [0];
+  for (let i = 0; i <= N; i++) {
+    const s = i / N;
+    const u = 1 - s;
+    pts.push([u * u * hx + 2 * s * u * cx + s * s * sx, u * u * hy + 2 * s * u * cy + s * s * sy]);
+    if (i) cum.push(cum[i - 1] + Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]));
+  }
+  const len = cum[N];
+  const at = (d) => {
+    let i = 1;
+    while (i < N && cum[i] < d) i++;
+    const f = (d - cum[i - 1]) / (cum[i] - cum[i - 1] || 1);
+    return [pts[i - 1][0] + (pts[i][0] - pts[i - 1][0]) * f, pts[i - 1][1] + (pts[i][1] - pts[i - 1][1]) * f];
+  };
+  const fmt = (pt) => `${pt[0].toFixed(1)} ${pt[1].toFixed(1)}`;
+  // One stretch of the arm, measured along it from the hand.
+  const stretch = (el, from, to) => {
+    let d = `M${fmt(at(from))}`;
+    for (let i = 1; i < N; i++) if (cum[i] > from && cum[i] < to) d += `L${fmt(pts[i])}`;
+    el.setAttribute('d', `${d}L${fmt(at(Math.min(to, len)))}`);
+  };
+  stretch(arm.wrist, 6, 36);
+  stretch(arm.cuff, 36, 48);
+  stretch(arm.sleeve, 44, len);
+  arm.fist.setAttribute('transform', `translate(${hx.toFixed(1)} ${hy.toFixed(1)}) rotate(${clock.toFixed(1)})${arm.side === 'r' ? ' scale(-1 1)' : ''}`);
+}
+
 // Examiner's direction arrows: white on the blue plate, in a 40 x 40 box.
 const S = 'fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"';
 const ICONS = {
@@ -99,6 +161,9 @@ export function createHud(root) {
   const $ = (sel) => root.querySelector(sel);
   const dial = buildDial($('#dial'));
   const wheel = $('#wheel');
+  const handsSvg = $('#hands');
+  const hands = handsSvg ? buildHands(handsSvg) : [];
+  for (const arm of hands) placeHand(arm, 0);
   const el = {
     banner: $('#instruction'), icon: $('#instruction-icon'), cz: $('#instruction-cz'), en: $('#instruction-en'), dist: $('#instruction-dist'),
     street: $('#status-street'), time: $('#status-time'), faults: $('#status-faults'),
@@ -160,7 +225,10 @@ export function createHud(root) {
       set('rev', Math.round(rev * 100), (v) => dial.rev.setAttribute('stroke-dasharray', `${v} 100`));
 
       // 0.6 rad at the front wheels is 450 degrees at the steering wheel.
-      set('wheel', (((car.steer || 0) / 0.6) * 450).toFixed(1), (deg) => wheel.style.setProperty('--rot', `${deg}deg`));
+      const turn = ((car.steer || 0) / 0.6) * 450;
+      set('wheel', turn.toFixed(1), (deg) => wheel.style.setProperty('--rot', `${deg}deg`));
+      // The hands go round with the rim for the first 100 degrees, then hold while it slides on.
+      set('hands', Math.max(-HAND_LIMIT, Math.min(HAND_LIMIT, turn)).toFixed(1), (deg) => { for (const arm of hands) placeHand(arm, Number(deg)); });
 
       // Indicators blink at 1.5 Hz and start lit the moment they are switched on.
       const ind = car.indicator || 'off';

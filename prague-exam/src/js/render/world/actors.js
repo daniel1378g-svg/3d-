@@ -31,7 +31,7 @@ function lampSpots(geo) {
   return { tail: scan(yTail, true), head: scan(yHead, false), w: bb.max.x - bb.min.x, l: bb.max.z - bb.min.z, zc: (bb.max.z + bb.min.z) / 2 };
 }
 
-function shadowTexture() {
+export function shadowTexture() {
   const c = document.createElement('canvas');
   c.width = 64; c.height = 128;
   const g = c.getContext('2d');
@@ -58,6 +58,7 @@ export function createActors({ models, scene }) {
   const shadowMat = new THREE.MeshBasicMaterial({ map: shadowTex, color: 0x000000, transparent: true, opacity: 0.5, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -4, polygonOffsetUnits: -4 });
   const shadows = makeInstanced(shadowGeo, shadowMat, MAX_CARS + MAX_TRAMS + MAX_PEDS);
   shadows.renderOrder = 5;
+  shadows.layers.set(1);                 // contact shadows are left out of the mirrors
   scene.add(...cars, trams, ...peds, lamps, shadows);
 
   const tmp = new THREE.Color(), lampCol = {};
@@ -120,5 +121,5 @@ export function createActors({ models, scene }) {
     for (const g of [...carGeo, tramGeo, ...pedGeo, lampGeo, shadowGeo]) g.dispose();
     mat.dispose(); lampMat.dispose(); shadowMat.dispose(); shadowTex.dispose();
   }
-  return { update, dispose };
+  return { update, dispose, shadowTexture: shadowTex };
 }

@@ -11,12 +11,12 @@
 import { CTRL, FLAG } from '../../sim/roadnet.js';
 import { HALF, CHUNK, CHUNKS, chunkBounds } from '../../data/geo.js';
 
-export const LAYERS = ['asphalt', 'asphaltWorn', 'sett', 'paving', 'mosaic', 'concrete', 'ballast', 'grass', 'dirt', 'flat', 'sleepers'];
-export const DEFAULT_METRES = [4, 4, 2, 2, 2, 4, 2, 3, 3, 1, 1.2];
-const L_ASPHALT = 0, L_WORN = 1, L_SETT = 2, L_PAVING = 3, L_MOSAIC = 4, L_CONCRETE = 5, L_BALLAST = 6, L_GRASS = 7, L_FLAT = 9, L_SLEEPERS = 10;
+export const LAYERS = ['asphalt', 'asphaltWorn', 'sett', 'paving', 'mosaic', 'concrete', 'ballast', 'grass', 'dirt', 'flat', 'sleepers', 'kerb', 'iron'];
+export const DEFAULT_METRES = [4, 4, 2, 2, 2, 4, 2, 3, 3, 1, 1.2, 1, 1];
+const L_ASPHALT = 0, L_WORN = 1, L_SETT = 2, L_PAVING = 3, L_MOSAIC = 4, L_CONCRETE = 5, L_BALLAST = 6, L_GRASS = 7, L_FLAT = 9, L_SLEEPERS = 10, L_KERB = 11, L_IRON = 12;
 // Carriageway height per layer: a couple of millimetres apart so that two different surfaces
 // that do overlap (a rare, degenerate junction) settle one way instead of flickering.
-const LY = [0, 0.002, 0.008, 0.006, 0, 0.004, 0, 0, 0, 0, 0];
+const LY = [0, 0.002, 0.008, 0.006, 0, 0.004, 0, 0, 0, 0, 0, 0, 0];
 
 const PW = 2.2, KW = 0.24, KH = 0.13;           // pavement width, kerb stone width, kerb height
 const Y_FLUSH = 0.012, Y_BED = 0.01, Y_RAIL = 0.026, Y_MARK = 0.018, Y_DECAL = 0.022;
@@ -35,13 +35,14 @@ const PAL_SRGB = [
   [236, 236, 228],   // 7 road paint
   [238, 190, 40],    // 8 yellow paint
   [205, 203, 198],   // 9 concrete edge of an open track
+  [226, 226, 226],   // 10 asphalt repair patch
 ];
 const PR = new Uint8Array(PAL_SRGB.length), PG = new Uint8Array(PAL_SRGB.length), PB = new Uint8Array(PAL_SRGB.length);
 PAL_SRGB.forEach((c, i) => {
   const lin = (v) => { v /= 255; return Math.round(255 * (v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4))); };
   PR[i] = lin(c[0]); PG[i] = lin(c[1]); PB[i] = lin(c[2]);
 });
-const C_WHITE = 0, C_KERB = 1, C_FLUSH = 2, C_RAIL = 3, C_RAILTOP = 4, C_BED = 5, C_HUMP = 6, C_PAINT = 7, C_YELLOW = 8, C_TEDGE = 9;
+const C_WHITE = 0, C_KERB = 1, C_FLUSH = 2, C_RAIL = 3, C_RAILTOP = 4, C_BED = 5, C_HUMP = 6, C_PAINT = 7, C_YELLOW = 8, C_TEDGE = 9, C_PATCH = 10;
 
 const ARROW_W = { M_ARROW_S: 0.75, M_ARROW_L: 1.25, M_ARROW_R: 1.25, M_ARROW_SL: 1.5, M_ARROW_SR: 1.5, M_ARROW_LR: 2 };
 const ARROW_OF = [null, ['M_ARROW_L'], ['M_ARROW_S'], ['M_ARROW_SL'], ['M_ARROW_R'], ['M_ARROW_LR'], ['M_ARROW_SR'], ['M_ARROW_SL', 'M_ARROW_SR']];
@@ -463,6 +464,33 @@ export function createStreetBuilder(net, { ground = null, uvOf = null, metres = 
     }
     dense[cz * CHUNKS + cx] = sum / cnt >= 4.5 ? 1 : 0;
   }
+  // Roundabout islands: one per ring of roundabout edges, centred on the ring's points.
+  const islOf = new Int32Array(E).fill(-1), islands = [];
+  {
+    const parent = new Int32Array(N);
+    for (let n = 0; n < N; n++) parent[n] = n;
+    const find = (i) => { while (parent[i] !== i) { parent[i] = parent[parent[i]]; i = parent[i]; } return i; };
+    for (let e = 0; e < E; e++) if (flags[e] & FLAG.ROUNDABOUT) parent[find(edgeA[e])] = find(edgeB[e]);
+    const groups = new Map();
+    for (let e = 0; e < E; e++) {
+      if (!(flags[e] & FLAG.ROUNDABOUT)) continue;
+      const r = find(edgeA[e]);
+      if (!groups.has(r)) groups.set(r, []);
+      groups.get(r).push(e);
+    }
+    for (const edges of groups.values()) {
+      let sx = 0, sz = 0, cnt = 0, r = Infinity;
+      for (const e of edges) for (let p = edgePt[e]; p < edgePt[e + 1] - 1; p++) { sx += ptX[p]; sz += ptZ[p]; cnt++; }
+      if (!cnt) continue;
+      sx /= cnt; sz /= cnt;
+      for (const e of edges) for (let p = edgePt[e]; p < edgePt[e + 1]; p++) r = Math.min(r, Math.hypot(ptX[p] - sx, ptZ[p] - sz) - HW[e]);
+      if (r < 1) continue;                                        // a painted mini roundabout: nothing to raise
+      // Small islands are a low sett apron that a lorry may run over, larger ones a grassed mound.
+      const small = r < 3.5;
+      for (const e of edges) islOf[e] = islands.length;
+      islands.push({ x: sx, z: sz, h: small ? 0.06 : KH, top: small ? 0.1 : KH + Math.min(0.45, r * 0.07), layer: small ? L_SETT : L_GRASS });
+    }
+  }
   const NOPAV = FLAG.BRIDGE | FLAG.TUNNEL | FLAG.LINK;
   const edgeChunk = new Int32Array(E), pavLayer = new Uint8Array(E), mid = {};
   for (let e = 0; e < E; e++) {
@@ -483,7 +511,7 @@ export function createStreetBuilder(net, { ground = null, uvOf = null, metres = 
   const seenRoad = new Int32Array(P), seenTrack = new Int32Array(tk.n);
   let seenId = 0;
   function cutsOf(e) {
-    const soft = [[], []], hard = [[], []];
+    const soft = [[], []], hard = [[], []], gs = [[], []], gg = [[], []];
     const L = len[e], hw = HW[e], p0 = edgePt[e], p1 = edgePt[e + 1] - 1;
     const n = Math.max(2, Math.ceil(L / 8)), half = L / n / 2;
     for (let i = 0; i < n; i++) {
@@ -491,6 +519,7 @@ export function createStreetBuilder(net, { ground = null, uvOf = null, metres = 
       calc(e, s);
       const x = _x, z = _z, nl = Math.hypot(_nx, _nz) || 1, nx = _nx / nl, nz = _nz / nl, tx = nz, tz = -nx, R = hw + 14;
       const x0 = gi(x - R), x1 = gi(x + R), z0 = gi(z - R), z1 = gi(z + R);
+      let g0 = Infinity, g1 = Infinity;
       for (let gz = z0; gz <= z1; gz++) for (let gx = x0; gx <= x1; gx++) {
         const c = gz * GN + gx;
         for (let q = roadGrid.start[c]; q < roadGrid.start[c + 1]; q++) {
@@ -505,9 +534,12 @@ export function createStreetBuilder(net, { ground = null, uvOf = null, metres = 
           if (al < 1 || Math.abs(alo) > 0.5 * al + 0.5) continue;
           const gap = al - hw - HW[f];
           if (gap >= (rank[e] >= 3 && rank[f] >= 3 ? 5 : PW + 0.3)) continue;
-          (gap < 0.3 ? hard : soft)[lat > 0 ? 1 : 0].push(s - half - 0.5, s + half + 0.5);
+          if (gap < 0.3) hard[lat > 0 ? 1 : 0].push(s - half - 0.5, s + half + 0.5);
+          else if (lat > 0) { if (gap < g1) g1 = gap; } else if (gap < g0) g0 = gap;
         }
       }
+      if (g0 < Infinity) { soft[0].push(s - half - 0.5, s + half + 0.5); gs[0].push(s); gg[0].push(g0); }
+      if (g1 < Infinity) { soft[1].push(s - half - 0.5, s + half + 0.5); gs[1].push(s); gg[1].push(g1); }
     }
     for (let p = p0; p < p1; p++) {
       const ax = ptX[p], az = ptZ[p], ux = ptX[p + 1] - ax, uz = ptZ[p + 1] - az, ul = Math.hypot(ux, uz);
@@ -543,8 +575,8 @@ export function createStreetBuilder(net, { ground = null, uvOf = null, metres = 
             const al = (px * ux + pz * uz) / ul;
             if (al < -1 || al > ul + 1) continue;
             const d = (px * -uz + pz * ux) / ul, s = ptS[p] + al;
-            if (d + bh > hw - 0.1 && d - bh < hw + PW) { if (s < l1) l1 = s; if (s > h1) h1 = s; }
-            if (-d + bh > hw - 0.1 && -d - bh < hw + PW) { if (s < l0) l0 = s; if (s > h0) h0 = s; }
+            if (d + bh > hw - 0.1 && d - bh < hw + 2.7) { if (s < l1) l1 = s; if (s > h1) h1 = s; }
+            if (-d + bh > hw - 0.1 && -d - bh < hw + 2.7) { if (s < l0) l0 = s; if (s > h0) h0 = s; }
           }
           if (h0 >= l0) hard[0].push(l0 - 2.5, h0 + 2.5);
           if (h1 >= l1) hard[1].push(l1 - 2.5, h1 + 2.5);
@@ -552,37 +584,38 @@ export function createStreetBuilder(net, { ground = null, uvOf = null, metres = 
       }
       }
     }
-    return { soft, hard: [mergeIv(hard[0]), mergeIv(hard[1])] };
+    return { soft, hard: [mergeIv(hard[0]), mergeIv(hard[1])], gs, gg };
   }
   const runsCache = new Array(E);
-  // -> { r: [runs left, runs right], f: [flush left, flush right] } as interval lists in s.
+  // -> { r, f, m } : per side, the stretches (interval lists in s) with a pavement, with only the
+  // flush edge strip, and with a raised median shared with a carriageway running alongside.
   function runsOf(e) {
     let R = runsCache[e];
     if (R) return R;
     const cuts = cutsOf(e);
-    R = { r: [[], []], f: [[], []] };
+    R = { r: [[], []], f: [[], []], m: [[], []], gs: cuts.gs, gg: cuts.gg };
     for (let side = 0; side < 2; side++) {
       const a = pavS[e * 4 + side], b = pavS[e * 4 + 2 + side];
       if (b - a < 0.3) continue;
-      const hard = cuts.hard[side];
-      if (pavKind(e, side)) {
-        const all = mergeIv(cuts.hard[side].concat(cuts.soft[side]));
-        const runs = subIv(a, b, all, 1.5);
-        for (let i = 0; i < runs.length; i++) runs[i] = snap(e, runs[i]);
-        R.r[side] = runs;
-        const softOnly = mergeIv(cuts.soft[side]);
-        for (let i = 0; i < softOnly.length; i += 2) {
-          const part = subIv(Math.max(a, softOnly[i]), Math.min(b, softOnly[i + 1]), hard, 1);
-          for (const v of part) R.f[side].push(snap(e, v));
-        }
-      } else {
-        const fl = subIv(a, b, hard, 1);
-        for (let i = 0; i < fl.length; i++) fl[i] = snap(e, fl[i]);
-        R.f[side] = fl;
+      const hard = cuts.hard[side], soft = mergeIv(cuts.soft[side]);
+      for (let i = 0; i < soft.length; i += 2) {
+        const part = subIv(Math.max(a, soft[i]), Math.min(b, soft[i + 1]), hard, 1);
+        for (const v of part) R.m[side].push(snap(e, v));
       }
+      const kind = pavKind(e, side), rest = subIv(a, b, mergeIv(hard.concat(soft)), kind ? 1.5 : 1);
+      for (let i = 0; i < rest.length; i++) rest[i] = snap(e, rest[i]);
+      if (kind) R.r[side] = rest; else R.f[side] = rest;
     }
     runsCache[e] = R;
     return R;
+  }
+  // Half the width of the strip between this side and the carriageway alongside, at s.
+  function halfGap(R, side, s) {
+    const S = R.gs[side], G = R.gg[side], n = S.length;
+    if (!n) return 0.3;
+    if (s <= S[0]) return G[0] / 2;
+    for (let i = 1; i < n; i++) if (s <= S[i]) return (G[i - 1] + ((G[i] - G[i - 1]) * (s - S[i - 1])) / (S[i] - S[i - 1] || 1)) / 2;
+    return G[n - 1] / 2;
   }
   // Does the pavement on this side run right up to this end of the edge?
   function touches(e, end, side) {
@@ -722,16 +755,36 @@ export function createStreetBuilder(net, { ground = null, uvOf = null, metres = 
         sl.x[k + 1] + sl.nx[k + 1] * b, sl.z[k + 1] + sl.nz[k + 1] * b, y, sl.x[k + 1] - sl.nx[k + 1] * b, sl.z[k + 1] - sl.nz[k + 1] * b, y, L, C_WHITE);
     }
   }
-  // One cross-section step of kerb face, kerb stone and pavement. (x, z) on the kerb line,
-  // (nx, nz) pointing away from the road, h = kerb height at each end.
+  // One cross-section step of kerb: the upright face and the granite stone on top, k wide.
+  // (x, z) on the kerb line, (nx, nz) pointing away from the road, h = kerb height at each end.
+  // The texture runs along the kerb, so its joints fall every metre whatever way the street lies.
+  function kerbStep(x0, z0, nx0, nz0, h0, x1, z1, nx1, nz1, h1, k0, k1) {
+    let fx = -(nx0 + nx1), fz = -(nz0 + nz1);
+    const fl = Math.hypot(fx, fz) || 1;
+    fx /= fl; fz /= fl;
+    wq(B0, x0, z0, 0, h0, x1, z1, 0, h1, fx, fz, L_KERB, C_WHITE);
+    const B = B0, ax = x0 + nx0 * k0, az = z0 + nz0 * k0, bx = x1 + nx1 * k1, bz = z1 + nz1 * k1;
+    B.need(4, 6);
+    const a = vx(B, x0, h0, z0, 0, 1, 0, (x0 - ox) * -fz + (z0 - oz) * fx, 0.3, L_KERB, C_WHITE), b = vx(B, x1, h1, z1, 0, 1, 0, (x1 - ox) * -fz + (z1 - oz) * fx, 0.3, L_KERB, C_WHITE);
+    const c = vx(B, bx, h1, bz, 0, 1, 0, (bx - ox) * -fz + (bz - oz) * fx, 0.3 + k1, L_KERB, C_WHITE), d = vx(B, ax, h0, az, 0, 1, 0, (ax - ox) * -fz + (az - oz) * fx, 0.3 + k0, L_KERB, C_WHITE);
+    up(B, a, b, c); up(B, a, c, d);
+  }
   function pavStep(x0, z0, nx0, nz0, h0, x1, z1, nx1, nz1, h1, PL) {
-    wq(B0, x0, z0, 0, h0, x1, z1, 0, h1, -(nx0 + nx1), -(nz0 + nz1), L_CONCRETE, C_KERB);
-    fq(B0, x0, z0, h0, x1, z1, h1, x1 + nx1 * KW, z1 + nz1 * KW, h1, x0 + nx0 * KW, z0 + nz0 * KW, h0, L_CONCRETE, C_KERB);
+    kerbStep(x0, z0, nx0, nz0, h0, x1, z1, nx1, nz1, h1, KW, KW);
     fq(B0, x0 + nx0 * KW, z0 + nz0 * KW, h0, x1 + nx1 * KW, z1 + nz1 * KW, h1, x1 + nx1 * PW, z1 + nz1 * PW, KH, x0 + nx0 * PW, z0 + nz0 * PW, KH, PL, C_WHITE);
   }
   // Closes the open end of a pavement: (fx, fz) points out of the end.
   function pavCap(x, z, nx, nz, h, fx, fz) {
-    wq(B0, x, z, 0, h, x + nx * PW, z + nz * PW, 0, KH, fx, fz, L_CONCRETE, C_KERB);
+    wq(B0, x, z, 0, h, x + nx * PW, z + nz * PW, 0, KH, fx, fz, L_KERB, C_WHITE);
+  }
+  // Kerb of a roundabout island and the slice of island between it and the centre.
+  function islStep(x0, z0, nx0, nz0, x1, z1, nx1, nz1, isl) {
+    const I = islands[isl], h = I.h;
+    kerbStep(x0, z0, nx0, nz0, h, x1, z1, nx1, nz1, h, KW, KW);
+    const ax = x0 + nx0 * KW, az = z0 + nz0 * KW, bx = x1 + nx1 * KW, bz = z1 + nz1 * KW;
+    if ((I.x - ax) * nx0 + (I.z - az) * nz0 < 0.1 || (I.x - bx) * nx1 + (I.z - bz) * nz1 < 0.1) return;
+    B0.need(3, 3);
+    up(B0, sv(B0, I.x, I.top, I.z, I.layer, C_WHITE), sv(B0, ax, h, az, I.layer, C_WHITE), sv(B0, bx, h, bz, I.layer, C_WHITE));
   }
 
   // ---- edges ----------------------------------------------------------------------------------------
@@ -744,8 +797,8 @@ export function createStreetBuilder(net, { ground = null, uvOf = null, metres = 
     const R = runsOf(e), cross = net.crossingsOn(e), bumps = bumpsOn.get(e);
     const lay = layerOf[e], sl = slotE;
     let nex = 0;
-    for (let side = 0; side < 2; side++) { for (const v of R.r[side]) exS[nex++] = v; for (const v of R.f[side]) exS[nex++] = v; }
-    const hasPav = R.r[0].length || R.r[1].length;
+    for (let side = 0; side < 2; side++) { for (const v of R.r[side]) exS[nex++] = v; for (const v of R.f[side]) exS[nex++] = v; for (const v of R.m[side]) exS[nex++] = v; }
+    const hasPav = R.r[0].length || R.r[1].length || R.m[0].length || R.m[1].length;
     if (hasPav) for (const c of cross) { if (nex > 1000) break; exS[nex++] = c.s - 3.2; exS[nex++] = c.s - 2.4; exS[nex++] = c.s + 2.4; exS[nex++] = c.s + 3.2; }
     stations(e, sl, exS, nex);
     if (hasPav && cross.length) {
@@ -797,10 +850,32 @@ export function createStreetBuilder(net, { ground = null, uvOf = null, metres = 
           pavCap(sl.x[i] + sl.nx[i] * a, sl.z[i] + sl.nz[i] * a, sl.nx[i] * sg, sl.nz[i] * sg, sl.kh[i], (sl.nz[i] / nl) * d, (-sl.nx[i] / nl) * d);
         }
       }
-      const fls = R.f[side];
+      // Raised median: each carriageway builds its half of the strip between the two.
+      const med = R.m[side];
+      for (let r = 0; r < med.length; r += 2) {
+        const i0 = at(sl, med[r]), i1 = at(sl, med[r + 1]);
+        let w0 = Math.max(0.12, halfGap(R, side, sl.s[i0]) + 0.02);
+        for (let i = i0; i < i1; i++) {
+          const w1 = Math.max(0.12, halfGap(R, side, sl.s[i + 1]) + 0.02), a = sl.hw[i] * sg, b = sl.hw[i + 1] * sg;
+          const x0 = sl.x[i] + sl.nx[i] * a, z0 = sl.z[i] + sl.nz[i] * a, n0x = sl.nx[i] * sg, n0z = sl.nz[i] * sg, h0 = sl.kh[i];
+          const x1 = sl.x[i + 1] + sl.nx[i + 1] * b, z1 = sl.z[i + 1] + sl.nz[i + 1] * b, n1x = sl.nx[i + 1] * sg, n1z = sl.nz[i + 1] * sg, h1 = sl.kh[i + 1];
+          const k0 = Math.min(KW, w0), k1 = Math.min(KW, w1);
+          kerbStep(x0, z0, n0x, n0z, h0, x1, z1, n1x, n1z, h1, k0, k1);
+          if (w0 > k0 + 0.01 || w1 > k1 + 0.01) fq(B0, x0 + n0x * k0, z0 + n0z * k0, h0, x1 + n1x * k1, z1 + n1z * k1, h1, x1 + n1x * w1, z1 + n1z * w1, h1, x0 + n0x * w0, z0 + n0z * w0, h0, w0 + w1 > 2 ? L_GRASS : L_PAVING, C_WHITE);
+          if (i === i0) wq(B0, x0, z0, 0, h0, x0 + n0x * w0, z0 + n0z * w0, 0, h0, -sl.nz[i], sl.nx[i], L_KERB, C_WHITE);
+          if (i === i1 - 1) wq(B0, x1, z1, 0, h1, x1 + n1x * w1, z1 + n1z * w1, 0, h1, sl.nz[i + 1], -sl.nx[i + 1], L_KERB, C_WHITE);
+          w0 = w1;
+        }
+      }
+      const fls = R.f[side], isl = side === 0 && (flags[e] & FLAG.ROUNDABOUT) ? islOf[e] : -1;
       for (let r = 0; r < fls.length; r += 2) {
         const i0 = at(sl, fls[r]), i1 = at(sl, fls[r + 1]);
         for (let i = i0; i < i1; i++) {
+          if (isl >= 0) {
+            const a = sl.hw[i] * sg, b = sl.hw[i + 1] * sg;
+            islStep(sl.x[i] + sl.nx[i] * a, sl.z[i] + sl.nz[i] * a, sl.nx[i] * sg, sl.nz[i] * sg, sl.x[i + 1] + sl.nx[i + 1] * b, sl.z[i + 1] + sl.nz[i + 1] * b, sl.nx[i + 1] * sg, sl.nz[i + 1] * sg, isl);
+            continue;
+          }
           const a = (sl.hw[i] - 0.05) * sg, b = (sl.hw[i + 1] - 0.05) * sg, a2 = (sl.hw[i] + 0.25) * sg, b2 = (sl.hw[i + 1] + 0.25) * sg;
           fq(B1, sl.x[i] + sl.nx[i] * a, sl.z[i] + sl.nz[i] * a, Y_FLUSH, sl.x[i + 1] + sl.nx[i + 1] * b, sl.z[i + 1] + sl.nz[i + 1] * b, Y_FLUSH,
             sl.x[i + 1] + sl.nx[i + 1] * b2, sl.z[i + 1] + sl.nz[i + 1] * b2, Y_FLUSH, sl.x[i] + sl.nx[i] * a2, sl.z[i] + sl.nz[i] * a2, Y_FLUSH, L_CONCRETE, C_FLUSH);
@@ -808,6 +883,7 @@ export function createStreetBuilder(net, { ground = null, uvOf = null, metres = 
       }
     }
     edgeMarks(e, sl, cross, bumps);
+    if (rank[e] >= 1 && L > 25) edgeDetail(e, sl, R);
   }
 
   // ---- markings -------------------------------------------------------------------------------------
@@ -855,14 +931,15 @@ export function createStreetBuilder(net, { ground = null, uvOf = null, metres = 
       if (p >= b) break;
     }
   }
-  function decal(cx, cz, dx, dz, w, l, code) {
+  function decal(cx, cz, dx, dz, w, l, code, part = 1) {
     const uv = uvOf && uvOf(code);
     if (!uv) return;
+    const u1 = uv[0] + (uv[2] - uv[0]) * part;
     const B = B3;
     B.need(4, 6);
     const rx = -dz * w / 2, rz = dx * w / 2, fx = dx * l / 2, fz = dz * l / 2;
-    const a = vx(B, cx - fx - rx, Y_DECAL, cz - fz - rz, 0, 1, 0, uv[0], uv[1], 0, C_PAINT), b = vx(B, cx - fx + rx, Y_DECAL, cz - fz + rz, 0, 1, 0, uv[2], uv[1], 0, C_PAINT);
-    const c = vx(B, cx + fx + rx, Y_DECAL, cz + fz + rz, 0, 1, 0, uv[2], uv[3], 0, C_PAINT), d = vx(B, cx + fx - rx, Y_DECAL, cz + fz - rz, 0, 1, 0, uv[0], uv[3], 0, C_PAINT);
+    const a = vx(B, cx - fx - rx, Y_DECAL, cz - fz - rz, 0, 1, 0, uv[0], uv[1], 0, C_PAINT), b = vx(B, cx - fx + rx, Y_DECAL, cz - fz + rz, 0, 1, 0, u1, uv[1], 0, C_PAINT);
+    const c = vx(B, cx + fx + rx, Y_DECAL, cz + fz + rz, 0, 1, 0, u1, uv[3], 0, C_PAINT), d = vx(B, cx + fx - rx, Y_DECAL, cz + fz - rz, 0, 1, 0, uv[0], uv[3], 0, C_PAINT);
     up(B, a, b, c); up(B, a, c, d);
   }
 
@@ -911,7 +988,11 @@ export function createStreetBuilder(net, { ground = null, uvOf = null, metres = 
         for (const c of cross) if (Math.abs(c.s - l.s) < 2.3) inZebra = true;
         if (inZebra) continue;
         const s0 = Math.max(0, l.s - 0.25), s1 = Math.min(L, l.s + 0.25);
-        if (l.kind === CTRL.GIVE_WAY) {
+        if (l.kind === CTRL.GIVE_WAY && uvOf && uvOf('M_GIVEWAY')) {
+          // A row of white triangles pointing at the approaching driver: one 3 m decal per lane or so.
+          const span = oR - oL, cnt = Math.max(1, Math.round(span / 3)), w = span / cnt;
+          for (let q = 0; q < cnt; q++) { ptAt(sl, l.s, oL + (q + 0.5) * w); decal(_px, _pz, _tx * dir, _tz * dir, w, 0.6, 'M_GIVEWAY', w < 2 ? 0.5 : 1); }
+        } else if (l.kind === CTRL.GIVE_WAY) {
           for (let o = oL + 0.1; o + 0.5 <= oR + 0.01; o += 1) {
             ptAt(sl, s0, o); const ax = _px, az = _pz; ptAt(sl, s0, o + 0.5); const bx = _px, bz = _pz;
             ptAt(sl, s1, o + 0.5); const cx = _px, cz = _pz; ptAt(sl, s1, o);
@@ -979,6 +1060,59 @@ export function createStreetBuilder(net, { ground = null, uvOf = null, metres = 
     }
   }
 
+  // ---- small things that give the asphalt some life ----------------------------------------------
+  const hsh = (a, b) => { let h = (Math.imul(a, 374761393) + Math.imul(b, 668265263)) | 0; h = Math.imul(h ^ (h >>> 13), 1274126177); return (h ^ (h >>> 16)) >>> 0; };
+  const freeAt = (s, pad) => { for (let i = 0; i < exM.length; i += 2) if (s > exM[i] - pad && s < exM[i + 1] + pad) return false; return true; };
+  // Manhole covers, drain grates by the kerb and repair patches, placed by a hash of the edge so
+  // they are the same on every run. All go into the overlay buffer.
+  function edgeDetail(e, sl, R) {
+    const L = len[e], k = e * 2, hw = HW[e], B = B1;
+    const a = Math.max(JS[k], taper[k]) + 4, b = Math.min(JS[k + 1], L - taper[k + 1]) - 4;
+    if (b - a < 8) return;
+    let i = 0;
+    for (let s = a + (hsh(e, 1) % 40); s < b; s += 45 + (hsh(e, i + 7) % 50), i++) {
+      if (!freeAt(s, 1)) continue;
+      ptAt(sl, s, ((hsh(e, i + 31) % 1000) / 1000 - 0.5) * Math.max(0, 2 * hw - 1.6));
+      const cx = _px, cz = _pz;
+      B.need(13, 36);
+      const c = vx(B, cx, 0.011, cz, 0, 1, 0, 0.25, 0.5, L_IRON, C_WHITE);
+      let prev = -1, first = -1;
+      for (let j = 0; j < 12; j++) {
+        const an = (j / 12) * Math.PI * 2, co = Math.cos(an), si = Math.sin(an);
+        const v = vx(B, cx + co * 0.31, 0.011, cz + si * 0.31, 0, 1, 0, 0.25 + co * 0.235, 0.5 + si * 0.235, L_IRON, C_WHITE);
+        if (prev >= 0) up(B, c, prev, v); else first = v;
+        prev = v;
+      }
+      up(B, c, prev, first);
+    }
+    for (let side = 0; side < 2; side++) {
+      const runs = R.r[side], sg = side ? 1 : -1;
+      for (let r = 0; r < runs.length; r += 2) {
+        let j = 0;
+        for (let s = runs[r] + 6 + (hsh(e, side + 90) % 20); s < runs[r + 1] - 3 && s < b; s += 32 + (hsh(e, j + 120) % 14), j++) {
+          if (s < a || !freeAt(s, 0.5)) continue;
+          ptAt(sl, s, (hw - 0.3) * sg);
+          const tx = _tx * 0.25, tz = _tz * 0.25, nx = -_tz * 0.21, nz = _tx * 0.21, cx = _px, cz = _pz;
+          B.need(4, 6);
+          const v0 = vx(B, cx - tx - nx, 0.011, cz - tz - nz, 0, 1, 0, 0.52, 0.27, L_IRON, C_WHITE), v1 = vx(B, cx - tx + nx, 0.011, cz - tz + nz, 0, 1, 0, 0.98, 0.27, L_IRON, C_WHITE);
+          const v2 = vx(B, cx + tx + nx, 0.011, cz + tz + nz, 0, 1, 0, 0.98, 0.73, L_IRON, C_WHITE), v3 = vx(B, cx + tx - nx, 0.011, cz + tz - nz, 0, 1, 0, 0.52, 0.73, L_IRON, C_WHITE);
+          up(B, v0, v1, v2); up(B, v0, v2, v3);
+        }
+      }
+    }
+    if (layerOf[e] > L_WORN || rank[e] < 2) return;
+    const lanes = Math.max(1, net.lanesF[e] + net.lanesB[e]), lw = width[e] / lanes;
+    i = 0;
+    for (let s = a + 10 + (hsh(e, 3) % 60); s < b - 6; s += 60 + (hsh(e, i + 50) % 80), i++) {
+      const pl = 1.5 + (hsh(e, i + 70) % 30) / 10;
+      if (!freeAt(s, 0.5) || !freeAt(s + pl, 0.5)) continue;
+      const o0 = -hw + (hsh(e, i + 11) % lanes) * lw + 0.25, o1 = o0 + lw - 0.5;
+      ptAt(sl, s, o0); const x0 = _px, z0 = _pz; ptAt(sl, s, o1); const x1 = _px, z1 = _pz;
+      ptAt(sl, s + pl, o1); const x2 = _px, z2 = _pz; ptAt(sl, s + pl, o0);
+      fq(B, x0, z0, 0.005, x1, z1, 0.005, x2, z2, 0.005, _px, _pz, 0.005, L_ASPHALT, C_PATCH);
+    }
+  }
+
   // ---- junctions --------------------------------------------------------------------------------
   let bX = new Float64Array(512), bZ = new Float64Array(512);
   const rX = new Float64Array(12), rZ = new Float64Array(12), rNX = new Float64Array(12), rNZ = new Float64Array(12);
@@ -1020,9 +1154,19 @@ export function createStreetBuilder(net, { ground = null, uvOf = null, metres = 
       else for (let q = pj; q < sj.n; q++) { bX[nb] = sj.x[q] + sj.nx[q] * sj.hw[q] * sgj; bZ[nb++] = sj.z[q] + sj.nz[q] * sj.hw[q] * sgj; }
       for (let q = 0; q + 1 < nb; q++) ft(B0, x0, z0, bX[q], bZ[q], bX[q + 1], bZ[q + 1], y, jl, C_WHITE);
 
+      // The island of a roundabout carries on round the inside of the ring.
+      if (sdi === 0 && sdj === 0 && (flags[ei] & flags[ej] & FLAG.ROUNDABOUT) && islOf[ei] >= 0) {
+        if (!cornBlocked[c0 + i]) for (let q = 0; q < m; q++) islStep(rX[q], rZ[q], rNX[q], rNZ[q], rX[q + 1], rZ[q + 1], rNX[q + 1], rNZ[q + 1], islOf[ei]);
+        continue;
+      }
       // The pavement round the corner.
-      if (cornBlocked[c0 + i]) continue;
       const ji = touches(ei, ai.end, sdi), jj = touches(ej, aj.end, sdj);
+      if (cornBlocked[c0 + i]) {
+        // Arms that part at a shallow angle: join their pavements straight across, but only where
+        // both exist and the gap between the two kerbs is already wider than a pavement.
+        const dx = rX[m] - rX[0], dz = rZ[m] - rZ[0];
+        if (!ji || !jj || dx * dx + dz * dz > 144 || dx * rNX[0] + dz * rNZ[0] < PW + 0.2 || -dx * rNX[m] - dz * rNZ[m] < PW + 0.2) continue;
+      }
       if (!ji && !jj) continue;
       const PL = ji ? pavLayer[ei] : pavLayer[ej];
       for (let q = 0; q < m; q++) pavStep(rX[q], rZ[q], rNX[q], rNZ[q], KH, rX[q + 1], rZ[q + 1], rNX[q + 1], rNZ[q + 1], KH, PL);

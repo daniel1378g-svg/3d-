@@ -17,7 +17,7 @@ import { headingOf, angDiff } from '../src/js/data/geo.js';
 
 let net = null, statics = null;
 export function world() {
-  if (!net) { net = new RoadNet(readSection('graph')); statics = createStatics(readSection('buildings')); }
+  if (!net) { net = new RoadNet(readSection('graph')); statics = createStatics(readSection('buildings'), readSection('parking')); }
   return { net, statics };
 }
 

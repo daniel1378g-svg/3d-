@@ -9,7 +9,8 @@
     "data": "node tools/build-data.mjs",
     "build": "node tools/build.mjs",
     "serve": "node tools/serve.mjs",
-    "test": "node --test"
+    "test": "node --test",
+    "publish:pages": "node tools/build.mjs && bash tools/publish-pages.sh"
   },
   "devDependencies": {
     "esbuild": "^0.24.0",

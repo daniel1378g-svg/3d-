@@ -18,6 +18,38 @@ export function createProps({ net, ground, models, scene }) {
   const makeLamps = () => { lamps = makeInstanced(lampGeo, mat, lampCap); lamps.layers.set(1); scene.add(lamps); };
   makeTrees(); makeLamps();
 
+  // Tram stop shelters: on the pavement of the nearer kerb when the track runs in a road (open
+  // side to the road), otherwise 3.3 m to the right of the track. One per stop position.
+  const shelterList = [];
+  {
+    const T = net.tram, q2 = {};
+    for (const st of T.stopList || []) {
+      let best = Infinity, tx = 0, tz = 1;
+      for (let i = 0; i < T.pt.length - 1; i++) for (let p = T.pt[i]; p < T.pt[i + 1]; p++) {
+        const d = (T.x[p] - st.x) * (T.x[p] - st.x) + (T.z[p] - st.z) * (T.z[p] - st.z);
+        if (d >= best) continue;
+        best = d;
+        const a = Math.max(T.pt[i], p - 1), b = Math.min(T.pt[i + 1] - 1, p + 1), L = Math.hypot(T.x[b] - T.x[a], T.z[b] - T.z[a]) || 1;
+        tx = (T.x[b] - T.x[a]) / L; tz = (T.z[b] - T.z[a]) / L;
+      }
+      const rx = -tz, rz = tx;                                   // right of the tram's direction
+      let x = st.x + rx * 3.3, z = st.z + rz * 3.3, h = headingOf(-rx, -rz);
+      const hit = net.nearest(st.x, st.z, 14);
+      if (hit && Math.abs(hit.d) < net.width[hit.e] / 2 + 1.5) {
+        net.pos(hit.e, hit.s, q2);
+        const nx = -q2.dz, nz = q2.dx;
+        const side = hit.d > 0.8 ? 1 : hit.d < -0.8 ? -1 : rx * nx + rz * nz >= 0 ? 1 : -1;
+        const off = net.width[hit.e] / 2 + 1.9;
+        x = q2.x + nx * side * off; z = q2.z + nz * side * off; h = headingOf(-nx * side, -nz * side);
+      }
+      if (net.onRoad(x, z, 0.8) || shelterList.some((s) => Math.hypot(s.x - x, s.z - z) < 9)) continue;
+      shelterList.push({ x, z, h, id: Math.min(CHUNKS - 1, Math.max(0, Math.floor((z + HALF) / CHUNK))) * CHUNKS + Math.min(CHUNKS - 1, Math.max(0, Math.floor((x + HALF) / CHUNK))) });
+    }
+  }
+  const shelterGeo = models.buildShelterGeometry ? models.buildShelterGeometry() : null;
+  const shelters = shelterGeo && shelterList.length ? makeInstanced(shelterGeo, mat, shelterList.length) : null;
+  if (shelters) { shelters.layers.set(1); scene.add(shelters); }
+
   // Move a point off the carriageway to the nearer kerb, or report that it has to go.
   const q = {};
   function offRoad(x, z, clear, out) {
@@ -98,12 +130,19 @@ export function createProps({ net, ground, models, scene }) {
     }
     trees.forEach((m, v) => commitInstances(m, n[v]));
     commitInstances(lamps, nl);
+    if (shelters) {
+      const loaded = new Set();
+      for (const ch of chunks) loaded.add(ch.id);
+      let ns = 0;
+      for (const s of shelterList) if (loaded.has(s.id)) setInstance(shelters.instanceMatrix.array, ns++, s.x, 0, s.z, s.h);
+      commitInstances(shelters, ns);
+    }
   }
 
   function dispose() {
-    for (const m of [...trees, lamps]) { scene.remove(m); m.dispose(); }
-    for (const g of [...treeGeo, lampGeo]) g.dispose();
+    for (const m of [...trees, lamps, shelters]) if (m) { scene.remove(m); m.dispose(); }
+    for (const g of [...treeGeo, lampGeo, shelterGeo]) if (g) g.dispose();
     mat.dispose();
   }
-  return { chunkProps, refill, dispose };
+  return { chunkProps, refill, dispose, shelters: shelterList };
 }
