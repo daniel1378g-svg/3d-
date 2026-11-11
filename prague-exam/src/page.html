@@ -1,0 +1,155 @@
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&amp;family=Barlow+Semi+Condensed:wght@500;600;700&amp;display=swap">
+
+<svg class="sprite" width="0" height="0" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-ind-l" viewBox="0 0 24 24"><path fill="currentColor" d="M11 3.5 1.5 12l9.5 8.5V15H22V9H11z"/></symbol>
+    <symbol id="i-ind-r" viewBox="0 0 24 24"><path fill="currentColor" d="M13 3.5 22.5 12 13 20.5V15H2V9h11z"/></symbol>
+    <symbol id="i-hazard" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linejoin="round"><path stroke-width="2.2" d="M12 3.2 22 20.4H2z"/><path stroke-width="1.5" d="M12 10 16.3 17.4H7.7z"/></g></symbol>
+    <symbol id="i-lights" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 5.5c5 0 7.5 3 7.5 6.5s-2.5 6.5-7.5 6.5z"/><path d="M10 7 3 9.2M10 10.7l-7 2.2M10 14.4l-7 2.2M10 18.1l-7 2.2"/></g></symbol>
+    <symbol id="i-belt" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5.2" r="2.7"/><path d="M6.5 21v-6.5a5.5 5.5 0 0 1 11 0V21"/><path d="M7.8 10.5 17.5 19"/></g></symbol>
+    <symbol id="i-engine" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 3v8.5"/><path d="M7 6.3a8 8 0 1 0 10 0"/></g></symbol>
+    <symbol id="i-handbrake" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="6.2"/><path d="M10.6 15.3V8.7h2a2.05 2.05 0 0 1 0 4.1h-2"/><path d="M3.6 6.2a10.2 10.2 0 0 0 0 11.6M20.4 6.2a10.2 10.2 0 0 1 0 11.6"/></g></symbol>
+    <symbol id="i-horn" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 10.2h6.3c3.6 0 6.2-1.7 9.2-4.7v13c-3-3-5.6-4.7-9.2-4.7H2.5z"/><path d="M5.5 13.8V18h3v-4.2M21 9.5v5"/></g></symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24"><path fill="currentColor" d="M6.5 5h3.8v14H6.5zM13.7 5h3.8v14h-3.8z"/></symbol>
+    <symbol id="i-look-l" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12c1.8-3.2 4.3-4.8 7.2-4.8S21.4 8.8 23 12c-1.6 3.2-3.9 4.8-6.8 4.8S10.8 15.2 9 12z"/><circle cx="15" cy="12" r="1.9" fill="currentColor"/><path d="M5.5 7 1.5 12l4 5"/></g></symbol>
+    <symbol id="i-look-r" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 12c-1.8-3.2-4.3-4.8-7.2-4.8S2.6 8.8 1 12c1.6 3.2 3.9 4.8 6.8 4.8S13.2 15.2 15 12z"/><circle cx="9" cy="12" r="1.9" fill="currentColor"/><path d="M18.5 7l4 5-4 5"/></g></symbol>
+    <symbol id="i-steer-l" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" d="M14.5 5 7.5 12l7 7"/></symbol>
+    <symbol id="i-steer-r" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" d="m9.5 5 7 7-7 7"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+    <symbol id="i-rotate" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="14" height="9" rx="1.8"/><path d="M8 7.5V5.8A1.8 1.8 0 0 1 9.8 4H13M18 4.5c1.9.9 3 2.6 3 4.7M18 4.5l.3 2.8M18 4.5l-2.7.8"/></g></symbol>
+    <!-- Steering wheel: three spokes, an amber stripe at twelve o'clock so the rotation reads at a glance. -->
+    <symbol id="wheel-art" viewBox="-120 -120 240 240">
+      <circle r="110" fill="none" stroke="var(--cab-2)" stroke-width="16"/>
+      <circle r="118" fill="none" stroke="var(--cab-line)" stroke-width="1.2"/>
+      <circle r="102" fill="none" stroke="var(--cab-0)" stroke-width="1.6"/>
+      <path fill="var(--cab-2)" stroke="var(--cab-line)" stroke-width="1" d="M-103 -4C-72 -12-46 -10-30 -8v30c-22 0-48 4-72 12zM103 -4C72 -12 46 -10 30 -8v30c22 0 48 4 72 12zM-14 24h28l5 80h-38z"/>
+      <path fill="var(--cab-3)" stroke="var(--cab-line)" stroke-width="1.2" d="M-18 -24h36c6 0 10 4 11 10l5 32c1 8-4 14-12 14h-44c-8 0-13-6-12-14l5-32c1-6 5-10 11-10z"/>
+      <rect x="-4" y="-118.5" width="8" height="17" rx="1.5" fill="var(--amber)"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div id="game" data-steering="pad" data-hud="off">
+  <div id="stage">
+    <canvas id="view"></canvas>
+
+    <!-- Cockpit: drawn over the 3D view, never catches a touch. -->
+    <div class="cockpit" aria-hidden="true">
+      <div class="roof"></div>
+      <svg class="pillars" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <polygon class="pillar" points="0,0 8.6,0 3,100 0,100"/>
+        <polygon class="pillar-trim" points="8.6,0 9.1,0 3.4,100 3,100"/>
+        <polygon class="pillar" points="100,0 98.8,0 96.4,100 100,100"/>
+        <polygon class="pillar-trim" points="98.8,0 98.5,0 96.1,100 96.4,100"/>
+      </svg>
+      <svg class="bonnet" viewBox="0 0 1000 100" preserveAspectRatio="none">
+        <path class="bonnet-body" d="M70 100C180 46 380 16 560 9c170-5 320 3 440 22v69z"/>
+        <path class="bonnet-edge" d="M70 100C180 46 380 16 560 9c170-5 320 3 440 22" fill="none"/>
+      </svg>
+      <svg class="dashtop" viewBox="0 0 1000 100" preserveAspectRatio="none">
+        <path class="dashtop-body" d="M0 100V13C250 2 750 2 1000 13v87z"/>
+        <path class="dashtop-edge" d="M0 13C250 2 750 2 1000 13" fill="none"/>
+      </svg>
+      <div class="mirror mirror-rear"><div id="mirror-rear" class="mirror-glass"></div></div>
+      <div class="mirror mirror-left"><div id="mirror-left" class="mirror-glass"></div></div>
+    </div>
+
+    <div id="hud">
+      <div class="hud-main">
+        <button type="button" class="gbtn btn-pause" data-action="pause" aria-label="Pause"><svg aria-hidden="true"><use href="#i-pause"/></svg></button>
+        <div class="banner" id="instruction" role="status" aria-live="polite" hidden>
+          <span class="banner-icon" id="instruction-icon" aria-hidden="true"></span>
+          <span class="banner-text">
+            <span class="banner-cz" id="instruction-cz" lang="cs"></span>
+            <span class="banner-en" id="instruction-en" lang="en"></span>
+          </span>
+          <span class="banner-dist" id="instruction-dist"></span>
+        </div>
+        <div class="status" id="status">
+          <span class="status-street" id="status-street"></span>
+          <span class="status-rest">
+            <span class="status-time" id="status-time"></span>
+            <span class="status-faults" id="status-faults"></span>
+          </span>
+        </div>
+        <div class="toasts" id="toasts" role="log" aria-live="assertive"></div>
+      </div>
+      <div class="limit" id="limit" aria-label="Speed limit" hidden><span id="limit-value"></span></div>
+      <div class="checklist" id="checklist" hidden>
+        <p class="checklist-title">Before you pull away</p>
+        <ol class="checklist-items" id="checklist-items"></ol>
+      </div>
+    </div>
+
+    <button type="button" class="gbtn look look-l" data-look="-1" aria-label="Look over the left shoulder"><svg aria-hidden="true"><use href="#i-look-l"/></svg></button>
+    <button type="button" class="gbtn look look-r" data-look="1" aria-label="Look over the right shoulder"><svg aria-hidden="true"><use href="#i-look-r"/></svg></button>
+  </div>
+
+  <div id="deck">
+    <div class="ctl-left">
+      <div class="ind-row">
+        <button type="button" class="ibtn" data-action="indicatorLeft" data-ind="left" aria-label="Left indicator"><svg aria-hidden="true"><use href="#i-ind-l"/></svg></button>
+        <button type="button" class="ibtn" data-action="indicatorRight" data-ind="right" aria-label="Right indicator"><svg aria-hidden="true"><use href="#i-ind-r"/></svg></button>
+      </div>
+      <div class="steer-slot">
+        <div class="pad" id="steer-pad" role="slider" aria-label="Steering" aria-valuemin="-100" aria-valuemax="100" aria-valuenow="0">
+          <svg class="pad-end pad-end-l" aria-hidden="true"><use href="#i-steer-l"/></svg>
+          <span class="pad-rail" aria-hidden="true"></span>
+          <svg class="pad-end pad-end-r" aria-hidden="true"><use href="#i-steer-r"/></svg>
+          <span class="pad-zero" aria-hidden="true"></span>
+          <span class="pad-knob" aria-hidden="true"></span>
+        </div>
+        <div class="wheelctl" id="steer-wheel" role="slider" aria-label="Steering wheel" aria-valuemin="-100" aria-valuemax="100" aria-valuenow="0">
+          <svg class="wheelctl-art" aria-hidden="true"><use href="#wheel-art"/></svg>
+        </div>
+        <div class="steer-btns">
+          <button type="button" class="steer-btn" data-steer="-1" aria-label="Steer left"><svg aria-hidden="true"><use href="#i-steer-l"/></svg></button>
+          <button type="button" class="steer-btn" data-steer="1" aria-label="Steer right"><svg aria-hidden="true"><use href="#i-steer-r"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="sw sw-l">
+      <button type="button" class="sbtn" data-action="belt" data-lamp-for="belt" aria-label="Seat belt"><svg aria-hidden="true"><use href="#i-belt"/></svg><span>Belt</span></button>
+      <button type="button" class="sbtn" data-action="lights" data-lamp-for="lights" aria-label="Dipped headlights"><svg aria-hidden="true"><use href="#i-lights"/></svg><span>Lights</span></button>
+      <button type="button" class="sbtn" data-action="engine" data-lamp-for="engine" aria-label="Engine start or stop"><svg aria-hidden="true"><use href="#i-engine"/></svg><span>Engine</span></button>
+      <button type="button" class="sbtn" data-action="horn" data-hold="horn" aria-label="Horn"><svg aria-hidden="true"><use href="#i-horn"/></svg><span>Horn</span></button>
+    </div>
+
+    <div class="cluster" aria-hidden="true">
+      <svg class="wheel" id="wheel"><use href="#wheel-art"/></svg>
+      <svg class="dial" id="dial" viewBox="0 0 200 156"></svg>
+    </div>
+
+    <div class="sw sw-r">
+      <button type="button" class="sbtn" data-action="handbrake" data-lamp-for="handbrake" aria-label="Handbrake"><svg aria-hidden="true"><use href="#i-handbrake"/></svg><span>Brake</span></button>
+      <button type="button" class="sbtn" data-action="hazard" data-lamp-for="hazard" aria-label="Hazard lights"><svg aria-hidden="true"><use href="#i-hazard"/></svg><span>Hazard</span></button>
+    </div>
+
+    <div class="ctl-right">
+      <div class="gearbox" role="radiogroup" aria-label="Gear selector">
+        <button type="button" class="gear" data-action="gearP" data-gear="P" role="radio" aria-checked="false" aria-label="Park">P</button>
+        <button type="button" class="gear" data-action="gearR" data-gear="R" role="radio" aria-checked="false" aria-label="Reverse">R</button>
+        <button type="button" class="gear" data-action="gearN" data-gear="N" role="radio" aria-checked="false" aria-label="Neutral">N</button>
+        <button type="button" class="gear" data-action="gearD" data-gear="D" role="radio" aria-checked="false" aria-label="Drive">D</button>
+      </div>
+      <div class="pedals" id="pedals">
+        <div class="pedal pedal-brake" data-pedal="brake" role="slider" aria-label="Brake" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <span class="pedal-fill" aria-hidden="true"></span>
+          <span class="pedal-ribs" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span class="pedal-label">Brake</span>
+        </div>
+        <div class="pedal pedal-gas" data-pedal="throttle" role="slider" aria-label="Accelerator" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <span class="pedal-fill" aria-hidden="true"></span>
+          <span class="pedal-ribs" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          <span class="pedal-label">Gas</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="minimap-box"><canvas id="minimap" class="minimap" aria-label="Map"></canvas></div>
+
+  <div id="screens"></div>
+</div>

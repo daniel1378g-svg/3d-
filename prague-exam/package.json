@@ -1,0 +1,18 @@
+{
+  "name": "prague-exam",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "First-person mock of the Czech practical driving exam on real Prague streets (Libeň, Vysočany, Prosek, Žižkov).",
+  "scripts": {
+    "extract": "python3 tools/extract.py",
+    "data": "node tools/build-data.mjs",
+    "build": "node tools/build.mjs",
+    "serve": "node tools/serve.mjs",
+    "test": "node --test"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.0",
+    "three": "^0.159.0"
+  }
+}
