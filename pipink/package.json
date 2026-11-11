@@ -1,0 +1,26 @@
+{
+  "name": "pipink",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Scroll-driven cinematic site for a car and motorcycle detailing and wrap studio.",
+  "scripts": {
+    "prepare:assets": "python3 tools/prepare.py",
+    "build": "node tools/build.mjs",
+    "serve": "node tools/serve.mjs",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "gsap": "^3.12.5",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "three": "^0.170.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@types/three": "^0.170.0",
+    "esbuild": "^0.24.0",
+    "typescript": "^5.6.3"
+  }
+}
