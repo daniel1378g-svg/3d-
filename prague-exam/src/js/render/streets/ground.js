@@ -52,7 +52,7 @@ export function createGround(ground, anisotropy) {
     sh.vertexShader = sh.vertexShader.replace('#include <common>', '#include <common>\nvarying vec2 vGroundXZ;')
       .replace('#include <begin_vertex>', '#include <begin_vertex>\nvGroundXZ = position.xz;');
     sh.fragmentShader = sh.fragmentShader.replace('#include <common>', '#include <common>\nuniform sampler2D groundDetail;\nvarying vec2 vGroundXZ;')
-      .replace('#include <map_fragment>', '#include <map_fragment>\ndiffuseColor.rgb *= texture2D( groundDetail, vGroundXZ * 0.31 ).g * texture2D( groundDetail, vGroundXZ * 0.043 ).g * 4.0;');
+      .replace('#include <map_fragment>', '#include <map_fragment>\ndiffuseColor.rgb *= ( texture2D( groundDetail, vGroundXZ * 0.31 ).g * 1.3 + 0.35 ) * ( texture2D( groundDetail, vGroundXZ * 0.043 ).g * 0.6 + 0.7 );');
   };
   material.customProgramCacheKey = () => 'streets-ground';
 

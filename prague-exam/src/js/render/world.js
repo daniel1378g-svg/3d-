@@ -276,10 +276,13 @@ export async function createWorld({ canvas, net, packs, quality = 'medium', onPr
   // ---- context loss -----------------------------------------------------------------------------
   // three.js restores its own state; the chunk meshes gave up their arrays after the upload, so
   // they are thrown away and built again round the eye over the next frames.
-  const onLost = (e) => { e.preventDefault(); lost = true; };
+  const onLost = (e) => {
+    e.preventDefault();
+    lost = true;
+    for (const ch of [...chunks.values()]) drop(ch);            // now, while deleting is a silent no-op
+  };
   const onRestored = () => {
     lost = false;
-    for (const ch of [...chunks.values()]) drop(ch);
     centreKey = -1; lastW = -1; propX = 1e9;
     mirrors.invalidate();
     resize();
