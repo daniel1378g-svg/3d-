@@ -284,6 +284,11 @@ export function createTraffic({ net, seed = 1, density = 'normal' }) {
           const blocker = mustWait(c, t, player, playerLoc);
           if (blocker) { cap(dLine < 0.5 ? 0 : plan(dLine - 0.5, 0), 'yield'); if (dLine < 3) hold = true; c.waitingFor = blocker; } else c.waitingFor = null;
         }
+        // A short link between two junctions: wait here if its far end is red, so the car does
+        // not stand across the first junction.
+        if (dLine < 20 && net.len[c.next.e] < 16) {
+          for (const l of net.linesOn(c.next.e, c.next.dir)) if (l.kind === CTRL.SIGNAL && net.signalState(l.ctrlId, l.phase, t) !== SIG.GREEN) { cap(dLine < 0.5 ? 0 : plan(dLine - 0.5, 0), 'signal'); if (dLine < 3) hold = true; }
+        }
         // Do not enter a junction whose exit is jammed.
         if (dLine < 6 && dLine > -1) {
           const k = net.connector(c.M, c.lane);
@@ -403,8 +408,10 @@ export function createTraffic({ net, seed = 1, density = 'normal' }) {
     }
     ahead(tram, tram.x, tram.z, tram.h, 0, 14 + tram.v * 3.5, 1.3, A);
     tram.brakeForPlayer = 0;
+    tram.seenPlayer = A.who && A.who.isPlayer ? (tram.seenPlayer || 0) + dt : 0;
     if (A.gap < Infinity) {
-      const safe = A.gap < 3 ? 0 : Math.sqrt(2 * 1.3 * (A.gap - 3)) + A.v * 0.9;
+      // Trams brake far less hard than cars, so they also keep a time gap to whatever is ahead.
+      const safe = A.gap < 3 ? 0 : Math.min(Math.sqrt(2 * 1.3 * (A.gap - 3)) + A.v * 0.5, (A.gap - 3) / 1.3 + A.v * 0.3);
       if (safe < tram.v && A.who && A.who.isPlayer) tram.brakeForPlayer = (tram.v * tram.v - safe * safe) / (2 * Math.max(0.5, A.gap));   // deceleration the tram needs
       target = Math.min(target, safe);
     }

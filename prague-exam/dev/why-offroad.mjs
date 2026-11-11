@@ -1,0 +1,11 @@
+import { runExam, world } from './bot.mjs';
+import { footprint } from '../src/js/sim/vehicle.js';
+const [place, seed] = process.argv.slice(2);
+const { result, car, exam } = runExam({ placeId: place, seed: Number(seed) || 1, minutes: 8 });
+const { net } = world();
+const f = result.reason; console.log(f.code, f.street, f.x.toFixed(1), f.z.toFixed(1));
+const fp = footprint(car);
+for (let i = 0; i < 8; i += 2) console.log('corner', i / 2, fp[i].toFixed(1), fp[i + 1].toFixed(1), JSON.stringify(net.onRoad(fp[i], fp[i + 1], 0.6)));
+for (const c of net.candidates(car.x, car.z, 25)) console.log('cand e', c.e, 's', c.s.toFixed(1), '/', net.len[c.e].toFixed(1), 'dist', c.dist.toFixed(2), 'd', c.d.toFixed(2), 'width', net.width[c.e], 'rank', net.rank[c.e], 'oneway', net.oneway(c.e), net.name(c.e), 'A', net.edgeA[c.e], 'B', net.edgeB[c.e]);
+console.log('plan', exam.plan.slice(0, 4).map((p) => `${p.e}:${p.dir}:${p.turn}`).join(' '), 'heading', car.heading.toFixed(2), 'speed', car.speed.toFixed(1));
+for (const n of new Set(net.candidates(car.x, car.z, 25).flatMap((c) => [net.edgeA[c.e], net.edgeB[c.e]]))) console.log('node', n, 'arms', net.arms[n].length, 'at', net.nodeX[n].toFixed(1), net.nodeZ[n].toFixed(1), 'dist', Math.hypot(car.x - net.nodeX[n], car.z - net.nodeZ[n]).toFixed(1), 'radius', net.junctionRadius(n).toFixed(1), net.arms[n].map((a) => `e${a.e}/${a.end} trim ${net.trim[a.e * 2 + a.end].toFixed(1)} h ${a.h.toFixed(2)}`).join(' | '));

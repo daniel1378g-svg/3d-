@@ -263,7 +263,7 @@ body {
   right: calc(var(--gut-r) + var(--map) + var(--limit) + var(--mir-w) + 26px);
   display: grid;
   grid-template-columns: 44px minmax(0, 1fr);
-  grid-template-areas: "pause banner" "status status" "toasts toasts";
+  grid-template-areas: "pause banner" "status status" "toasts toasts" "check check";
   gap: 6px 8px;
   align-items: start;
   justify-items: start;
@@ -323,6 +323,9 @@ body {
 }
 .banner-en { font: 500 12.5px/1.2 var(--font); opacity: 0.9; }
 .banner-en:empty { display: none; }
+/* A long sentence (the examiner's greeting) is set smaller so the plate stays low. */
+.banner.is-long .banner-cz { font-size: 15.5px; line-height: 1.15; }
+.banner.is-long .banner-en { font-size: 12px; }
 .banner-dist {
   padding-left: 10px;
   border-left: 1.5px solid rgba(248, 247, 242, 0.55);
@@ -330,9 +333,27 @@ body {
   white-space: nowrap;
 }
 .banner-dist:empty { display: none; }
+/* The quiet "carry on" hint: no plate, just a small line. */
+.banner.is-quiet {
+  min-height: 0;
+  gap: 6px;
+  align-self: center;
+  padding: 3px 9px 4px 5px;
+  border-color: transparent;
+  border-radius: 6px;
+  background: var(--glass);
+  box-shadow: none;
+  color: var(--ink);
+}
+.banner.is-quiet .banner-icon { width: 20px; height: 20px; }
+.banner.is-quiet .banner-cz { font: 500 13.5px/1.2 var(--font); }
+.banner.is-quiet .banner-en,
+.banner.is-quiet .banner-dist { display: none; }
 
 .status {
   grid-area: status;
+  /* In line with the banner, clear of the look button on the left edge. */
+  margin-left: 52px;
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
@@ -429,13 +450,15 @@ body {
 }
 #game[data-limit="off"] .limit { display: none; }
 
+/* Landscape: to the right of the banner column, clear of the gear strip and the pedals. */
 .checklist {
+  /* No grid area here: an absolute grid child would be placed against that row instead. */
   position: absolute;
-  top: calc(var(--top) + 58px);
-  right: calc(var(--gut-r) + var(--brake-w) + var(--gas-w) + 24px);
+  top: 84px;
+  right: calc(var(--brake-w) + var(--gas-w) - var(--map) - var(--limit) - var(--mir-w) - 2px);
   box-sizing: border-box;
-  width: min(230px, 46cqw);
-  padding: 8px 12px 9px;
+  width: min(216px, 46cqw);
+  padding: 7px 11px 8px;
   border: 1px solid var(--glass-line);
   border-radius: 9px;
   background: rgba(15, 14, 12, 0.84);
@@ -447,13 +470,13 @@ body {
   text-transform: uppercase;
   color: var(--ink-3);
 }
-.checklist-items { display: grid; gap: 3px; margin: 0; padding: 0; list-style: none; }
+.checklist-items { display: grid; gap: 2px; margin: 0; padding: 0; list-style: none; }
 .checklist-items li {
   display: grid;
   grid-template-columns: 16px minmax(0, 1fr);
   align-items: center;
   gap: 8px;
-  font: 500 13.5px/1.2 var(--font);
+  font: 500 13px/1.2 var(--font);
   color: var(--ink);
 }
 .checklist-items li::before {
@@ -469,7 +492,7 @@ body {
 .checklist-items li.is-done { color: var(--ink-3); }
 .checklist-items li.is-done::before {
   border-color: var(--tt-green);
-  background: var(--tt-green) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='%230b0a09' stroke-width='4' stroke-linecap='round' stroke-linejoin='round' d='m5 12.500 4.500 4.500L19 7.500'/%3E%3C/svg%3E") center / 12px no-repeat;
+  background: var(--tt-green) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='%230b0a09' stroke-width='4' stroke-linecap='round' stroke-linejoin='round' d='m5 12.5 4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 12px no-repeat;
 }
 
 .look {
@@ -577,8 +600,10 @@ body {
   margin-left: -1px;
   border-radius: 1px;
   background: var(--amber);
+  opacity: 0;
   transform: translateX(var(--zx, 0px));
 }
+.pad.is-down .pad-zero { opacity: 1; }
 .pad-knob {
   position: absolute;
   top: 50%;
@@ -691,11 +716,12 @@ body {
 .wheel {
   position: absolute;
   left: 50%;
-  bottom: -90.4%;
+  bottom: 0;
   width: 180.8%;
   aspect-ratio: 1;
   margin-left: -90.4%;
-  transform: rotate(var(--rot, 0deg));
+  /* Hub on the bottom edge of the cluster: only the upper half of the wheel shows. */
+  transform: translateY(50%) rotate(var(--rot, 0deg));
   will-change: transform;
 }
 .dial-face { fill: var(--cab-0); stroke: var(--cab-line); stroke-width: 1.5; }
@@ -720,7 +746,7 @@ body {
   box-sizing: border-box;
   width: 100%;
   min-width: 178px;
-  height: 44px;
+  height: 46px;
   border: 1px solid var(--glass-line);
   border-radius: 10px;
   background: var(--glass);
@@ -853,23 +879,29 @@ body {
 
   .hud-main {
     right: var(--gut-r);
-    grid-template-areas: "pause status" "banner banner" "toasts toasts";
+    grid-template-areas: "pause status" "banner banner" "toasts toasts" "check check";
   }
   .status {
     align-self: center;
+    justify-self: stretch;
+    min-width: 0;
+    margin-left: 0;
     margin-right: calc(var(--mir-w) + var(--limit) + 16px);
     display: grid;
     gap: 0;
+    padding: 2px 8px 3px;
+    font-size: 12.5px;
+    line-height: 1.18;
   }
+  .status-rest { display: grid; gap: 0; }
   .banner { justify-self: stretch; }
   .toasts { margin-left: 0; max-width: 100%; }
 
   .checklist {
-    top: calc(var(--top) + 116px);
-    right: auto;
-    left: 50%;
-    width: min(240px, 62cqw);
-    transform: translateX(-50%);
+    grid-area: check;
+    position: static;
+    justify-self: center;
+    width: min(250px, 64cqw);
   }
 
   .look { top: 52%; }
@@ -1440,6 +1472,12 @@ body {
 }
 @container game (aspect-ratio < 1) {
   .rotate-hint { display: flex; }
+}
+/* Very short landscape boxes: a tighter checklist so it stays above the dashboard. */
+@container game (aspect-ratio >= 1) and (max-height: 360px) {
+  .checklist { top: 76px; padding: 6px 10px 7px; }
+  .checklist-items { gap: 1px; }
+  .checklist-items li { font-size: 12.5px; }
 }
 /* Short landscape phones: keep the sheet compact. */
 @container game (max-height: 430px) {

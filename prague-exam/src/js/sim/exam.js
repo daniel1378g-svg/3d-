@@ -16,11 +16,28 @@ export function createExam({ net, statics, traffic, seed = 1, mode = 'exam', dur
   const serious = (code) => (severities[code] || DEFAULT_SEVERITY[code] || 'minor') === 'serious';
 
   // ---- start pose: parked at the right-hand kerb -------------------------------------------------
-  const start = (() => {
-    const p = net.pos(place.edge, place.s);
-    const off = net.width[place.edge] / 2 - 0.9 - 0.35;                 // car's right side 35 cm from the kerb
-    return { x: p.x - p.dz * off * place.dir, z: p.z + p.dx * off * place.dir, heading: headingOf(p.dx * place.dir, p.dz * place.dir) };
-  })();
+  const start = { x: 0, z: 0, heading: 0 };
+  function setStart() {
+    // The mapped place may sit in a dead-end pocket: start on the nearest street that leads on.
+    let e = place.edge, dir = place.dir, s = place.s;
+    if (!roomy(e, dir)) {
+      if (!net.oneway(e) && roomy(e, -dir)) dir = -dir;
+      else {
+        const p0 = net.pos(place.edge, place.s);
+        let bestD = 900;
+        for (let c = 0; c < net.E; c++) {
+          if (net.rank[c] < 2 || net.rank[c] > 3 || net.oneway(c) || net.len[c] < 70 || net.speedKmh[c] > 50 || net.flags[c] & (FLAG.LIMITED | FLAG.BRIDGE | FLAG.TUNNEL | FLAG.NARROW)) continue;
+          const m = net.pos(c, net.len[c] * 0.35), d = Math.hypot(m.x - p0.x, m.z - p0.z);
+          if (d >= bestD) continue;
+          const cd = roomy(c, 1) ? 1 : roomy(c, -1) ? -1 : 0;
+          if (cd) { bestD = d; e = c; dir = cd; s = net.len[c] * (cd > 0 ? 0.35 : 0.65); }
+        }
+      }
+    }
+    const p = net.pos(e, s);
+    const off = net.width[e] / 2 - 0.9 - 0.35;                          // car's right side 35 cm from the kerb
+    start.x = p.x - p.dz * off * dir; start.z = p.z + p.dx * off * dir; start.heading = headingOf(p.dx * dir, p.dz * dir);
+  }
 
   const ex = {
     mode, seed, place, start, state: 'predrive', t: 0, elapsed: 0,
@@ -69,16 +86,42 @@ export function createExam({ net, statics, traffic, seed = 1, mode = 'exam', dur
     if (depth === 0) return true;
     return net.turnsFrom(e, dir).some((o) => usable(o, false) && leadsOn(o.e, o.dir, depth - 1));
   };
-  function usable(o, deep = true) {
+  function basic(o) {
     if (!o.allowed || o.turn === 'uturn') return false;
     const r = net.rank[o.e], fl = net.flags[o.e];
     if (r < 2 || r > 5 || fl & FLAG.LIMITED) return false;
     const far = net.nodeOf(o.e, o.dir > 0 ? 1 : 0);
-    if (Math.abs(net.nodeX[far]) > HALF - 260 || Math.abs(net.nodeZ[far]) > HALF - 260) return false;
-    return deep ? leadsOn(o.e, o.dir, 3) : true;
+    return Math.abs(net.nodeX[far]) <= HALF - 260 && Math.abs(net.nodeZ[far]) <= HALF - 260;
+  }
+  // Does this road lead into the wider network, or into a pocket with no way on? Counts the
+  // stretches of road reachable from it; small numbers mean a dead-end pocket.
+  const roomMemo = new Map();
+  function roomy(e, dir) {
+    const key = e * 2 + (dir > 0 ? 1 : 0);
+    let v = roomMemo.get(key);
+    if (v !== undefined) return v;
+    const seen = new Set([key]), queue = [[e, dir]];
+    while (queue.length && seen.size < 40) {
+      const [ce, cd] = queue.shift();
+      for (const o of net.turnsFrom(ce, cd)) {
+        if (!basic(o)) continue;
+        const k = o.e * 2 + (o.dir > 0 ? 1 : 0);
+        if (!seen.has(k)) { seen.add(k); queue.push([o.e, o.dir]); }
+      }
+    }
+    v = seen.size >= 40;
+    roomMemo.set(key, v);
+    return v;
+  }
+  function usable(o, deep = true) {
+    return basic(o) && (!deep || roomy(o.e, o.dir));
   }
   function choose(step) {
-    const opts = net.turnsFrom(step.e, step.dir).filter((o) => usable(o));
+    // Prefer roads that lead on for a while; in a pocket of the map take what there is.
+    const all = net.turnsFrom(step.e, step.dir);
+    let opts = all.filter((o) => usable(o));
+    if (!opts.length) opts = all.filter((o) => usable(o, false) && leadsOn(o.e, o.dir, 1));
+    if (!opts.length) opts = all.filter((o) => o.allowed && o.turn !== 'uturn' && net.rank[o.e] >= 1 && net.rank[o.e] <= 5);
     if (!opts.length) return null;
     if (opts.length === 1) return opts[0];
     const end = net.nodeOf(step.e, step.dir > 0 ? 1 : 0);
@@ -114,6 +157,8 @@ export function createExam({ net, statics, traffic, seed = 1, mode = 'exam', dur
     manoeuvre = null;
     extendPlan();
   }
+
+  setStart();
 
   // The next thing worth announcing on the plan: a group of turns close together counts as one.
   let manoeuvre = null;                                                // { first, lastIdx, node, icon, key, exitNode }
@@ -153,7 +198,7 @@ export function createExam({ net, statics, traffic, seed = 1, mode = 'exam', dur
     return null;
   }
   function distanceTo(idx) {
-    let d = loc.rem;
+    let d = ex.plan[0].e === loc.e ? loc.rem : 0;
     for (let i = 1; i < idx; i++) d += net.len[ex.plan[i].e];
     return d;
   }
@@ -293,10 +338,16 @@ export function createExam({ net, statics, traffic, seed = 1, mode = 'exam', dur
     // ---- position on the road ----
     if (loc.wrongWay && loc.junction < 0 && av > 0.5) { wrongWayD += av * dt; if (wrongWayD > 8) fault('WRONG_WAY'); } else wrongWayD = 0;
     footprint(car, fp);
-    let off = false, hitWall = false;
-    for (let i = 0; i < 8; i += 2) { if (!net.onRoad(fp[i], fp[i + 1], 0.6)) off = true; if (statics && statics.hitsBuilding(fp[i], fp[i + 1])) hitWall = true; }
+    // Kerbs: a wheel just over the edge is a minor fault, the car up on the pavement is serious.
+    // The margins allow for the map's road widths being approximate.
+    let off = false, kerb = false, hitWall = false;
+    for (let i = 0; i < 8; i += 2) {
+      if (!net.onRoad(fp[i], fp[i + 1], 0.35)) { kerb = true; if (!net.onRoad(fp[i], fp[i + 1], 1.3)) off = true; }
+      if (statics && statics.hitsBuilding(fp[i], fp[i + 1])) hitWall = true;
+    }
     if (hitWall) fault('COLLISION_OBJECT');
-    if (off && av > 0.3) { offT += dt; if (offT > 0.45) fault('OFF_ROAD'); } else offT = 0;
+    if (off && av > 0.3) { offT += dt; if (offT > 0.5) fault('OFF_ROAD'); } else offT = 0;
+    if (kerb && !off && av > 0.3) { kerbT += dt; if (kerbT > 0.6) { fault('LANE_POSITION', 'a wheel over the kerb'); kerbT = 0; } } else kerbT = 0;
     const twoWay = !net.oneway(loc.e) && !(net.flags[loc.e] & FLAG.NARROW) && net.rank[loc.e] >= 2;
     if (twoWay && loc.junction < 0 && loc.oncoming > 0.9 && av > 2 && loc.rem > net.trim[loc.e * 2 + loc.end] + 6) {
       oncomingT += dt;
@@ -321,8 +372,16 @@ export function createExam({ net, statics, traffic, seed = 1, mode = 'exam', dur
       fault('COLLISION_VEHICLE');
     }
     for (const tr of traffic.trams) {
-      for (const b of tr.bodies) if (Math.abs(b.x - car.x) < 14 && Math.abs(b.z - car.z) < 14 && overlapsRect(b, b.len, b.wid, b.h)) fault('NO_YIELD_TRAM', 'collision with a tram');
-      if (tr.brakeForPlayer > 2.2 && Math.abs(angDiff(tr.h, car.heading)) > 0.5 && av > 0.5) fault('NO_YIELD_TRAM');
+      const fwd = (tr.x - car.x) * Math.sin(car.heading) + (tr.z - car.z) * -Math.cos(car.heading);
+      const sameWay = Math.abs(angDiff(tr.h, car.heading)) < 0.5;
+      // Cutting in front of a tram or crossing its path so that it has to brake hard.
+      const cutIn = tr.brakeForPlayer > 2.2 && av > 0.5 && (!sameWay || (tr.seenPlayer || 0) < 1.5);
+      if (cutIn) fault('NO_YIELD_TRAM');
+      for (const b of tr.bodies) {
+        if (Math.abs(b.x - car.x) > 14 || Math.abs(b.z - car.z) > 14 || !overlapsRect(b, b.len, b.wid, b.h)) continue;
+        if (sameWay && fwd < -1.5 && v >= -0.2) continue;               // run into from behind by the tram
+        fault('NO_YIELD_TRAM', 'collision with a tram');
+      }
     }
     for (const p of traffic.peds) {
       const rx = p.x - car.x, rz = p.z - car.z;
@@ -418,10 +477,10 @@ export function createExam({ net, statics, traffic, seed = 1, mode = 'exam', dur
         const within = net.roundabout(X.e) && net.roundabout(X.out);
         const sameRoad = mv.turn !== 'straight' && Math.abs(mv.angle) < 0.85 && net.name(X.e) && net.name(X.e) === net.name(X.out) && turns.filter((o) => net.rank[o.e] >= 2).length === 1;
         if (roundOut) { if (!(entry.ind === 'right' || car.indicator === 'right' || t - ind.lastRight < 3)) fault('NO_SIGNAL_ROUNDABOUT_EXIT'); }
-        else if (!roundIn && !within && !sameRoad && (mv.turn === 'left' || mv.turn === 'right')) {
+        else if (!roundIn && !within && !sameRoad && net.len[X.e] > 18 && (mv.turn === 'left' || mv.turn === 'right')) {
           const lastOn = mv.turn === 'left' ? ind.lastLeft : ind.lastRight;
           if (entry.ind !== mv.turn && !(lastOn > entry.t - 0.3)) fault('NO_SIGNAL_TURN', `turning ${mv.turn}`);
-          else if (entry.ind === mv.turn && entry.t - entry.indSince < 1.2 && entry.odo - entry.indOdo < 10) fault('LATE_SIGNAL');
+          else if (entry.ind === mv.turn && net.len[X.e] > 35 && entry.t - entry.indSince < 1.2 && entry.odo - entry.indOdo < 10) fault('LATE_SIGNAL');
         }
         if (entry.mask) {
           const bit = mv.turn === 'left' ? 1 : mv.turn === 'right' ? 4 : 2;
@@ -506,7 +565,9 @@ export function createExam({ net, statics, traffic, seed = 1, mode = 'exam', dur
 
     // ---- directions ----
     if (!manoeuvre) manoeuvre = findManoeuvre();
-    if (manoeuvre) {
+    if (ex.plan.length === 1 && loc.rem < 90 && !net.turnsFrom(loc.e, loc.dir).some((o) => o.allowed && o.turn !== 'uturn' && net.rank[o.e] >= 1)) {
+      ex.instruction = { key: 'uturn', icon: 'uturn', distance: null };   // dead end ahead
+    } else if (manoeuvre) {
       const d = distanceTo(manoeuvre.first);
       if (manoeuvre.silent) ex.instruction = d < 70 ? { key: 'straight', icon: 'straight', distance: Math.round(d / 10) * 10, quiet: true } : null;
       else if (d < Math.max(120, av * 9) || manoeuvre.said) { manoeuvre.said = true; ex.instruction = { key: manoeuvre.key, icon: manoeuvre.icon, distance: Math.max(0, Math.round(d / 10) * 10) }; }
@@ -514,7 +575,7 @@ export function createExam({ net, statics, traffic, seed = 1, mode = 'exam', dur
       if (manoeuvre.silent && d > 70) manoeuvre = null;                 // look again next step: a turn may be nearer on a longer plan
     } else ex.instruction = null;
   }
-  let idleCross = 0;
+  let idleCross = 0, kerbT = 0;
   function manoeuvreSoon() { return manoeuvre && !manoeuvre.silent && distanceTo(manoeuvre.first) < 220; }
   function isOncoming(A, B) {
     const arms = net.arms[net.nodeOf(A.e, A.end)];

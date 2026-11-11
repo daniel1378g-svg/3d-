@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Prague Exam Drive: UI harness</title>
+<link rel="stylesheet" href="/src/css/game.css">
+<style>
+  /* Harness only: a small state switcher. Add ?bar=0 to hide it. */
+  #devbar { position: fixed; left: 50%; bottom: 4px; z-index: 99; transform: translateX(-50%); display: flex; gap: 4px; padding: 3px; border-radius: 6px; background: #000c; font: 12px system-ui, sans-serif; }
+  #devbar button { font: inherit; padding: 4px 7px; border: 1px solid #666; border-radius: 4px; background: #222; color: #eee; }
+</style>
+</head>
+<body>
+<!-- Body markup comes from /src/page.html at load, so the harness always tests the real page.
+     Query: ?state=drive|predrive|menu|pause|result|pass|loading  &steering=pad|wheel|buttons
+            &safe=iphone (fake notch and home-bar insets)  &auto=0 (stop the demo drive)  &bar=0 -->
+<script type="module" src="/dev/ui.js"></script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+import { runExam, world } from './bot.mjs';
+const [place, seed] = process.argv.slice(2);
+const hist = [];
+const { result, car, exam } = runExam({ placeId: place, seed: Number(seed) || 1, minutes: 8, trace: ({ t, car, loc, exam, input, i }) => { if (i % 12 === 0) { hist.push(`${t.toFixed(1)} e${loc.e} d${loc.dir} s${loc.s.toFixed(0)} off${loc.d.toFixed(1)} J${loc.junction} v${car.speed.toFixed(1)} h${car.heading.toFixed(2)} thr${input.throttle.toFixed(1)} br${input.brake.toFixed(1)} plan ${exam.plan.slice(0, 3).map((p) => p.e + ':' + p.turn).join(' ')}`); if (hist.length > 14) hist.shift(); } } });
+const { net } = world();
+const f = result.reason; console.log(f.code, f.note, f.street, f.x.toFixed(1), f.z.toFixed(1), 't', f.t);
+console.log(hist.join('\n'));
+const fx = Math.sin(car.heading), fz = -Math.cos(car.heading);
+const rel = (m) => { const rx = m.x - car.x, rz = m.z - car.z; return `fwd ${(rx * fx + rz * fz).toFixed(1)} right ${(rx * -fz + rz * fx).toFixed(1)}`; };
+for (const c of exam.__traffic.cars) if (Math.hypot(c.x - car.x, c.z - car.z) < 25) console.log('car', c.id, rel(c), `v${c.v.toFixed(1)} h${c.h.toFixed(2)} e${c.e} d${c.dir} s${c.s.toFixed(0)} ${c.junc ? 'J' + c.junc.turn : ''} why:${c.why} wait:${c.waitT.toFixed(1)} next:${c.next ? c.next.e + ':' + c.next.turn : '-'}`);
+for (const tr of exam.__traffic.trams) if (Math.hypot(tr.x - car.x, tr.z - car.z) < 60) console.log('tram', rel(tr), `v${tr.v.toFixed(1)} h${tr.h.toFixed(2)} brakeForPlayer ${tr.brakeForPlayer.toFixed(1)}`, tr.bodies.map((b) => rel(b)).join(' | '));
+for (const p of exam.__traffic.peds) if (Math.hypot(p.x - car.x, p.z - car.z) < 25) console.log('ped', rel(p), p.state, 'q', p.q.toFixed(1), 'kerb', p.kerb.toFixed(1), 'waited', p.waited.toFixed(1), 'crossing e', p.cross.e, 's', p.cross.s.toFixed(0), p.cross.signal ? 'signal' : 'zebra');
+for (const l of net.linesOn(exam.__loc.e, exam.__loc.dir)) console.log('line', l.kind, 's', l.s.toFixed(1), 'ctrl', l.ctrlId, l.phase);

@@ -41,8 +41,11 @@ export function createLocator(net) {
     const W = net.width[e], lw = net.laneWidth(e), divider = -W / 2 + net.lanesB[e] * lw;
     const n = Math.max(1, net.lanes(e, dir) || net.lanes(e, -dir));
     const off = dir > 0 ? c.d - divider : divider - c.d;        // metres right of the centre line, as travelled
+    const raw = Math.max(0, Math.min(n - 1, Math.floor(off / lw)));
+    // Hysteresis: the lane only changes once the car's centre is clearly inside the new lane.
+    if (loc.changedEdge || loc.lanes !== n || Math.abs(raw - loc.lane) > 1) loc.lane = raw;
+    else if (raw !== loc.lane && Math.abs(off - (loc.lane + 0.5) * lw) > lw * 0.5 + 0.45) loc.lane = raw;
     loc.lanes = n;
-    loc.lane = Math.max(0, Math.min(n - 1, Math.floor(off / lw)));
     loc.oncoming = net.oneway(e) ? 0 : Math.max(0, -off);
     loc.wrongWay = net.oneway(e) && dir < 0;
     loc.end = dir > 0 ? 1 : 0;

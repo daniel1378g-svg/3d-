@@ -239,7 +239,7 @@ export class RoadNet {
   }
   junctionRadius(node) {
     let r = 0;
-    for (const a of this.arms[node]) r = Math.max(r, this.trim[a.e * 2 + a.end]);
+    for (const a of this.arms[node]) r = Math.max(r, Math.hypot(this.trim[a.e * 2 + a.end], this.width[a.e] / 2));
     return r;
   }
 
