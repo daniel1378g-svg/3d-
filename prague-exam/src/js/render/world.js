@@ -181,6 +181,8 @@ export async function createWorld({ canvas, net, packs, quality = 'medium', onPr
       scene.add(group);
       chunks.set(id, { id, cx, cz, group, stage: 0, streets: null, walls: null, roofs: null, signs: null, props: null });
     }
+    // Chunks kept one ring further out (so that turning back is free) lie wholly in the fog: not drawn.
+    for (const ch of chunks.values()) ch.group.visible = Math.max(Math.abs(ch.cx - cx0), Math.abs(ch.cz - cz0)) <= r;
   }
   const wanted = (ch) => Math.max(Math.abs(ch.cx - centreX), Math.abs(ch.cz - centreZ)) <= Q.radius;
   function pendingParts() { let n = 0; for (const ch of chunks.values()) if (wanted(ch)) n += PARTS - ch.stage; return n; }
