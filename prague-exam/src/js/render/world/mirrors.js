@@ -1,6 +1,7 @@
 // Mirrors: the scene seen from the driver's eye along heading + yaw, rendered into a small
 // target per mirror and drawn over the main picture inside the mirror's rectangle, flipped left
-// to right as a real mirror shows it.
+// to right as a real mirror shows it. The mirror camera sees layer 0 only; small things that do
+// not matter in a mirror (sign plates, street lamps, signal lamps) sit on layer 1.
 const FAR = 160;
 const MAX_W = 384, MAX_H = 192;
 
@@ -45,6 +46,9 @@ export function createMirrors({ renderer, scene, canvas }) {
     for (let i = 0; i < slots.length; i++) slots[i].mesh.visible = i < shown;
     if (!shown) return;
     const pr = renderer.getPixelRatio(), near0 = fog.near, far0 = fog.far;
+    // Below 'high' at most one mirror is redrawn per frame, in turn: with three mirrors each one
+    // is then refreshed every third frame, which keeps the frame inside the draw-call budget.
+    const period = every > 1 ? Math.max(every, shown) : 1;
     fog.near = Math.min(near0, FAR * 0.4); fog.far = Math.min(far0, FAR - 4);       // hide the short far plane
     for (let i = 0; i < shown; i++) {
       const m = list[i], s = slot(i);
@@ -52,7 +56,7 @@ export function createMirrors({ renderer, scene, canvas }) {
       targetFor(s, m, pr);
       s.mesh.position.set(m.x + m.w / 2, -(m.y + m.h / 2), 0);
       s.mesh.scale.set(m.w, m.h, 1);
-      if (s.fresh && (frameNo + i) % every !== 0) continue;
+      if (s.fresh && (frameNo + i) % period !== 0) continue;
       // m.fov = horizontal field of view in radians (values above PI are read as degrees).
       let fov = m.fov > 0 ? m.fov : 0.7;
       if (fov > Math.PI) fov *= Math.PI / 180;

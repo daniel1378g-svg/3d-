@@ -18,16 +18,21 @@ function hash(a, b) {
 
 export function createGround(ground, anisotropy) {
   const T = THREE, { meta, buf } = ground, N = meta.size, cover = buf.cover;
-  const table = meta.cover.map((name) => COVER_COLOURS[name] || COVER_COLOURS.urban);
+  // Colour and noise amplitude per class, then one integer pass over the pixels.
+  const nc = meta.cover.length, cr = new Int32Array(nc), cg = new Int32Array(nc), cb = new Int32Array(nc), cn = new Int32Array(nc);
+  meta.cover.forEach((name, i) => { const t = COVER_COLOURS[name] || COVER_COLOURS.urban; cr[i] = t[0]; cg[i] = t[1]; cb[i] = t[2]; cn[i] = t[3]; });
   const data = new Uint8Array(SIZE * SIZE * 4), k = N / SIZE;
-  for (let j = 0; j < SIZE; j++) {
-    for (let i = 0; i < SIZE; i++) {
+  for (let j = 0, o = 0; j < SIZE; j++) {
+    for (let i = 0; i < SIZE; i++, o += 4) {
       const h = hash(i, j);
       // Jitter the lookup by up to half a cell so class borders are ragged instead of stair-stepped.
-      let c = Math.floor((i + 0.5) * k + ((h & 255) / 255 - 0.5) * 1.2), r = Math.floor((j + 0.5) * k + (((h >>> 8) & 255) / 255 - 0.5) * 1.2);
-      c = c < 0 ? 0 : c >= N ? N - 1 : c; r = r < 0 ? 0 : r >= N ? N - 1 : r;
-      const t = table[cover[r * N + c]] || table[0], n = (((h >>> 16) & 255) / 255 - 0.5) * 2 * t[3], o = (j * SIZE + i) * 4;
-      data[o] = t[0] + n; data[o + 1] = t[1] + n; data[o + 2] = t[2] + n * 0.8; data[o + 3] = 255;
+      let c = ((i + 0.5) * k + ((h & 255) - 128) * 0.0047) | 0, r = ((j + 0.5) * k + (((h >>> 8) & 255) - 128) * 0.0047) | 0;
+      if (c >= N) c = N - 1;
+      if (r >= N) r = N - 1;
+      let cls = cover[r * N + c];
+      if (cls >= nc) cls = 0;
+      const n = ((((h >>> 16) & 255) - 128) * cn[cls]) >> 7;
+      data[o] = cr[cls] + n; data[o + 1] = cg[cls] + n; data[o + 2] = cb[cls] + n; data[o + 3] = 255;
     }
   }
   const map = new T.DataTexture(data, SIZE, SIZE, T.RGBAFormat, T.UnsignedByteType);

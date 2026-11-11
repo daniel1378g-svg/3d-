@@ -59,6 +59,7 @@ export function createSignals({ net, models, scene }) {
     lenses = makeInstanced(lensGeo, lensMat, cap * 3, { colour: true });
     glow = makeInstanced(glowGeo, glowMat, cap * 2, { colour: true });
     glow.renderOrder = 20;
+    lenses.layers.set(1); glow.layers.set(1);                    // not drawn in the mirrors
     scene.add(poles, lenses, glow);
   };
   const drop = () => { for (const m of [poles, lenses, glow]) { scene.remove(m); m.dispose(); } };

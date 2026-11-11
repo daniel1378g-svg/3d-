@@ -3,7 +3,7 @@
 // Every building footprint in the area with a height, a facade style and a plaster colour,
 // sorted by chunk. Heights come from the height or building:levels tags where mapped (about two
 // thirds of the buildings) and from the building type otherwise.
-import { readRaw, writeSection } from '../lib/packio.mjs';
+import { readRaw, readSection, writeSection } from '../lib/packio.mjs';
 import { forEachArea, ringArea, centroid, simplifyRing, chunkId, hash } from '../lib/osm.mjs';
 import { HALF, CHUNKS } from '../../src/js/data/geo.js';
 
@@ -78,6 +78,38 @@ export default async function run() {
     const pitched = roofShape ? !['flat', 'many', 'round', 'dome'].includes(roofShape) : (style === S.house || (style === S.tenement && area < 1200));
     list.push({ r, h, style, col, pitched: pitched && r.length <= 12 && area < 1500, chunk: chunkId(c[0], c[1]) });
   });
+  // Buildings that a road runs through or under (passages, covered streets, bridges mapped as
+  // buildings) must not block the road: flag them so the game neither collides with them nor
+  // draws their lower floors.
+  {
+    const g = readSection('graph').buf, cell = 60, grid = new Map();
+    const X = (i) => g.ptX[i] / 8, Z = (i) => g.ptZ[i] / 8;
+    for (let e = 0; e < g.edgeA.length; e++) for (let p = g.edgePt[e]; p < g.edgePt[e + 1] - 1; p++) {
+      const x0 = Math.floor(Math.min(X(p), X(p + 1)) / cell), x1 = Math.floor(Math.max(X(p), X(p + 1)) / cell);
+      const z0 = Math.floor(Math.min(Z(p), Z(p + 1)) / cell), z1 = Math.floor(Math.max(Z(p), Z(p + 1)) / cell);
+      for (let gz = z0; gz <= z1; gz++) for (let gx = x0; gx <= x1; gx++) { const k = `${gx},${gz}`; if (!grid.has(k)) grid.set(k, []); grid.get(k).push(p); }
+    }
+    const inside = (r, x, z) => { let hit = false; for (let i = 0, j = r.length - 1; i < r.length; j = i++) if ((r[i][1] > z) !== (r[j][1] > z) && x < r[i][0] + ((z - r[i][1]) / (r[j][1] - r[i][1])) * (r[j][0] - r[i][0])) hit = !hit; return hit; };
+    const cross = (ax, az, bx, bz, cx, cz, dx, dz) => { const d = (bx - ax) * (dz - cz) - (bz - az) * (dx - cx); if (Math.abs(d) < 1e-9) return false; const t = ((cx - ax) * (dz - cz) - (cz - az) * (dx - cx)) / d, u = ((cx - ax) * (bz - az) - (cz - az) * (bx - ax)) / d; return t >= 0 && t <= 1 && u >= 0 && u <= 1; };
+    let n = 0;
+    for (const b of list) {
+      let minX = Infinity, maxX = -Infinity, minZ = Infinity, maxZ = -Infinity;
+      for (const p of b.r) { minX = Math.min(minX, p[0]); maxX = Math.max(maxX, p[0]); minZ = Math.min(minZ, p[1]); maxZ = Math.max(maxZ, p[1]); }
+      const seen = new Set();
+      search: for (let gz = Math.floor(minZ / cell); gz <= Math.floor(maxZ / cell); gz++) for (let gx = Math.floor(minX / cell); gx <= Math.floor(maxX / cell); gx++) {
+        for (const p of grid.get(`${gx},${gz}`) || []) {
+          if (seen.has(p)) continue;
+          seen.add(p);
+          const ax = X(p), az = Z(p), bx = X(p + 1), bz = Z(p + 1);
+          if (Math.max(ax, bx) < minX || Math.min(ax, bx) > maxX || Math.max(az, bz) < minZ || Math.min(az, bz) > maxZ) continue;
+          let hit = inside(b.r, (ax + bx) / 2, (az + bz) / 2);
+          for (let i = 0, j = b.r.length - 1; i < b.r.length && !hit; j = i++) hit = cross(ax, az, bx, bz, b.r[i][0], b.r[i][1], b.r[j][0], b.r[j][1]);
+          if (hit) { b.overRoad = true; n++; break search; }
+        }
+      }
+    }
+    console.log(`  ${n} buildings stand over a road`);
+  }
   list.sort((a, b) => a.chunk - b.chunk);
 
   const B = list.length;
@@ -95,12 +127,12 @@ export default async function run() {
     for (const p of b.r) { buf.x[k] = q(p[0]); buf.z[k] = q(p[1]); k++; }
     buf.height[i] = Math.round(b.h * 2);
     buf.style[i] = b.style;
-    buf.flags[i] = b.pitched ? 1 : 0;
+    buf.flags[i] = (b.pitched ? 1 : 0) | (b.overRoad ? 2 : 0);
     buf.colour.set(b.col, i * 3);
   });
   while (c <= CHUNKS * CHUNKS) buf.chunkStart[c++] = B;
   buf.start[B] = k;
   const byStyle = STYLES.map((s, i) => `${s}:${list.filter((b) => b.style === i).length}`).join(' ');
   console.log(`  ${B} buildings, ${nPts} points; ${byStyle}`);
-  writeSection('buildings', { styles: STYLES, doc: 'x/z = metres * 8, rings clockwise on screen; height = metres * 2; flags bit0 = pitched roof; chunkStart indexes buildings by chunk id (cz * 30 + cx).' }, buf);
+  writeSection('buildings', { styles: STYLES, doc: 'x/z = metres * 8, rings clockwise on screen; height = metres * 2; flags bit0 = pitched roof, bit1 = a road passes through or under it; chunkStart indexes buildings by chunk id (cz * 30 + cx).' }, buf);
 }

@@ -96,6 +96,7 @@ export async function createWorld({ canvas, net, packs, quality = 'medium', onPr
   scene.fog = new THREE.Fog(HORIZON, Q.fogNear, Q.fogFar);
   const camera = new THREE.PerspectiveCamera(62, 16 / 9, 0.15, Q.fogFar + 30);
   camera.rotation.order = 'YXZ';
+  camera.layers.enable(1);               // layer 1 = detail that the mirrors leave out
   const hemi = new THREE.HemisphereLight(0xe9f0f7, 0x8f897e, 2.5);
   const sun = new THREE.DirectionalLight(0xfff2dc, 1.7);
   sun.position.set(-0.5, 0.82, 0.38);    // high in the south-west
@@ -191,7 +192,7 @@ export async function createWorld({ canvas, net, packs, quality = 'medium', onPr
         if (b.roofs) ch.group.add(b.roofs);
       } else {
         ch.signs = signs.build(ch.id);
-        if (ch.signs) ch.group.add(ch.signs);
+        if (ch.signs) { ch.signs.layers.set(1); ch.group.add(ch.signs); }
         ch.props = props.chunkProps(ch.cx, ch.cz);
         version++;
       }

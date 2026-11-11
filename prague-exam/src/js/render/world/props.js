@@ -15,7 +15,7 @@ export function createProps({ net, ground, models, scene }) {
   const treeTris = Math.max(1, treeGeo.reduce((s, g) => s + triangleCount(g), 0) / 3), lampTris = Math.max(1, triangleCount(lampGeo));
   let treeCap = 512, lampCap = 256, trees, lamps;
   const makeTrees = () => { trees = treeGeo.map((g) => makeInstanced(g, mat, treeCap)); scene.add(...trees); };
-  const makeLamps = () => { lamps = makeInstanced(lampGeo, mat, lampCap); scene.add(lamps); };
+  const makeLamps = () => { lamps = makeInstanced(lampGeo, mat, lampCap); lamps.layers.set(1); scene.add(lamps); };
   makeTrees(); makeLamps();
 
   // Move a point off the carriageway to the nearer kerb, or report that it has to go.

@@ -231,7 +231,7 @@ export function createTraffic({ net, seed = 1, density = 'normal' }) {
     const dir = net.oneway(e) ? 1 : rng.chance(0.5) ? 1 : -1;
     const s = Math.max(12, Math.min(net.len[e] - 12, hit.s));
     const c = { id: nextId++, len: 4.3, wid: 1.8, v: 0, a: 0, x: 0, z: 0, h: 0, variant: rng.int(5), colour: rng.pick(COLOURS), vmax: rng.range(0.86, 1.0), brake: false, ind: 0, blockedT: 0, laneF: 0, lane: 0 };
-    if (c.variant === 4) { c.len = 5.2; c.wid = 2.0; }
+    if (c.variant === 4) { c.len = 5.2; c.wid = 1.95; }
     enterEdge(c, e, dir, s, 0);
     c.laneF = c.lane;
     place(c);
@@ -293,6 +293,7 @@ export function createTraffic({ net, seed = 1, density = 'normal' }) {
         if (dLine < 6 && dLine > -1) {
           const k = net.connector(c.M, c.lane);
           for (const o of cars) if (o !== c && !o.junc && o.e === c.next.e && o.dir === c.next.dir && o.v < 0.8 && Math.hypot(o.x - k.x1, o.z - k.z1) < 7.5) { cap(0, 'jam'); hold = true; }
+          if (player.speed < 0.8 && Math.hypot(player.x - k.x1, player.z - k.z1) < 7.5) { cap(0, 'jam'); hold = true; }
         }
         if (c.next.turn === 'left') c.ind = r < 45 ? -1 : c.ind; else if (c.next.turn === 'right') c.ind = r < 45 ? 1 : c.ind;
       } else if (!c.next && r < 30) {
@@ -309,9 +310,35 @@ export function createTraffic({ net, seed = 1, density = 'normal' }) {
         }
       }
       // Drift to the wanted lane.
-      if (c.laneF !== c.lane) { const step = 0.45 * dt * (c.v > 1 ? 1 : 0); c.laneF += Math.max(-step, Math.min(step, c.lane - c.laneF)); if (Math.abs(c.lane - c.laneF) > 0.2 && c.ind === 0) c.ind = c.lane > c.laneF ? 1 : -1; }
+      if (c.laneF !== c.lane) {
+        // Only move over when nobody is alongside in the lane being entered.
+        const toRight = c.lane > c.laneF, fx = Math.sin(c.h), fz = -Math.cos(c.h);
+        let free = true;
+        for (const m of movers) {
+          if (m === c || m.owner === c) continue;
+          const rx = m.x - c.x, rz = m.z - c.z, f = rx * fx + rz * fz, l = rx * -fz + rz * fx;
+          if (Math.abs(f) < 8 && (toRight ? l > 0.6 && l < 4.6 : l < -0.6 && l > -4.6)) { free = false; break; }
+        }
+        const step = free ? 0.45 * dt * (c.v > 1 ? 1 : 0) : 0; c.laneF += Math.max(-step, Math.min(step, c.lane - c.laneF)); if (Math.abs(c.lane - c.laneF) > 0.2 && c.ind === 0) c.ind = c.lane > c.laneF ? 1 : -1;
+      }
     }
 
+    // On the curve through a junction, look along the curve for anything standing in the way.
+    if (c.junc) {
+      const k = c.junc.conn;
+      for (let j = 1; j <= 5; j++) {
+        const u = Math.min(1.25, c.junc.u + (j * 2.4) / c.junc.L), w = 1 - Math.min(1, u);
+        let px, pz;
+        if (u <= 1) { px = w * w * k.x0 + 2 * w * u * k.cx + u * u * k.x1; pz = w * w * k.z0 + 2 * w * u * k.cz + u * u * k.z1; }
+        else { px = k.x1 + Math.sin(k.h1) * (u - 1) * c.junc.L; pz = k.z1 - Math.cos(k.h1) * (u - 1) * c.junc.L; }
+        for (const m of movers) {
+          if (!m.isPlayer) continue;                                    // other cars are handled by the junction rules
+          const mv = m.speed;
+          if (mv > 2.5) continue;
+          if (Math.hypot(m.x - px, m.z - pz) < 2.3) { cap(j <= 2 ? 0 : plan((j - 2) * 2.4, 0), m.isPlayer ? 'player' : 'gap'); break; }
+        }
+      }
+    }
     // Keep clear of whatever is ahead.
     ahead(c, c.x, c.z, c.h, c.len, 10 + c.v * 3.2, c.wid / 2, A);
     if (A.gap < Infinity) {
@@ -390,6 +417,32 @@ export function createTraffic({ net, seed = 1, density = 'normal' }) {
       b.x = (P.x + Q.x) / 2; b.z = (P.z + Q.z) / 2; b.h = headingOf(P.x - Q.x, P.z - Q.z); b.v = tram.v;
     });
   }
+  // What is on the track ahead of a tram: follows the rails, so a car beside a curve is not in the way.
+  function trackAhead(tram, reach, out) {
+    out.gap = Infinity; out.v = 0; out.who = null;
+    const i = tram.edge;
+    for (let d = 3; d <= reach; d += 3) {
+      const s = tram.s + d;
+      if (s <= tramLen[i]) tramPos(i, s, Q);
+      else { tramPos(i, tramLen[i], Q); const over = s - tramLen[i]; Q.x += Math.sin(Q.h) * over; Q.z -= Math.cos(Q.h) * over; }
+      for (const m of movers) {
+        if (m.owner === tram) continue;
+        const mLen = m.len || m.length || 4.4, mWid = m.wid || m.width || 1.8;
+        const dist = Math.hypot(m.x - Q.x, m.z - Q.z);
+        if (dist > 1.25 + mLen / 2) continue;
+        // Treat the mover as a box: project onto its own axes.
+        const mh = m.h !== undefined ? m.h : m.heading;
+        const rx = Q.x - m.x, rz = Q.z - m.z, fx = Math.sin(mh), fz = -Math.cos(mh);
+        if (Math.abs(rx * fx + rz * fz) > mLen / 2 + 1.25 || Math.abs(rx * -fz + rz * fx) > mWid / 2 + 1.25) continue;
+        const rel = Math.abs(angDiff(mh, Q.h));
+        const mv = m.v !== undefined ? m.v : m.speed;
+        out.gap = Math.max(0, d - 2.5); out.v = rel < 0.9 ? Math.max(0, mv * Math.cos(rel)) : 0; out.who = m;
+        return out;
+      }
+      for (const p of peds) if (p.state === 'cross' && Math.hypot(p.x - Q.x, p.z - Q.z) < 1.9) { out.gap = Math.max(0, d - 2); out.v = 0; out.who = p; return out; }
+    }
+    return out;
+  }
   function stepTram(tram, dt, t, player) {
     let target = TRAM_V;
     const i = tram.edge;
@@ -406,7 +459,7 @@ export function createTraffic({ net, seed = 1, density = 'normal' }) {
       if (st === SIG.GREEN || (st === SIG.AMBER && d < tram.v * tram.v / 2.4)) continue;
       target = Math.min(target, Math.sqrt(2 * 1.2 * Math.max(0, d - 1)));
     }
-    ahead(tram, tram.x, tram.z, tram.h, 0, 14 + tram.v * 3.5, 1.3, A);
+    trackAhead(tram, 14 + tram.v * 3.5, A);
     tram.brakeForPlayer = 0;
     tram.seenPlayer = A.who && A.who.isPlayer ? (tram.seenPlayer || 0) + dt : 0;
     if (A.gap < Infinity) {
@@ -439,7 +492,8 @@ export function createTraffic({ net, seed = 1, density = 'normal' }) {
       if (peds.some((p) => p.c === x.id)) continue;
       if (Math.hypot(x.x - player.x, x.z - player.z) < 28) continue;
       const kerb = net.width[x.e] / 2 + 0.7;
-      peds.push({ id: nextId++, c: x.id, cross: x, side: rng.chance(0.5) ? 1 : -1, q: -(kerb + rng.range(3, 9)), kerb, speed: rng.range(1.15, 1.5), state: 'approach', waited: 0, x: 0, z: 0, h: 0, phase: rng.next(), arrivedD: Infinity });
+      const away = x.s < net.len[x.e] / 2 ? 1 : -1;                  // along the road, away from the nearer junction
+      peds.push({ id: nextId++, c: x.id, cross: x, side: rng.chance(0.5) ? 1 : -1, q: -kerb, along: rng.range(4, 9), away, kerb, speed: rng.range(1.15, 1.5), state: 'approach', waited: 0, x: 0, z: 0, h: 0, phase: rng.next(), arrivedD: Infinity });
       return true;
     }
     return false;
@@ -466,21 +520,26 @@ export function createTraffic({ net, seed = 1, density = 'normal' }) {
     const x = p.cross;
     const rxv = Math.cos(x.h), rzv = Math.sin(x.h);                        // unit vector to the right of the road direction
     if (p.state === 'approach') {
-      p.q += p.speed * dt;
-      if (p.q >= -p.kerb) { p.q = -p.kerb; p.state = 'wait'; p.waited = 0; }
+      p.along -= p.speed * dt;
+      if (p.along <= 0) { p.along = 0; p.state = 'wait'; p.waited = 0; }
     } else if (p.state === 'wait') {
       p.waited += dt;
       const go = x.signal ? net.pedWalk(x.ctrlId, x.phase, t) && crossingClear(x, player) : p.waited > 0.5 && crossingClear(x, player);
       if (go) p.state = 'cross';
       else if (p.waited > 40) p.dead = true;
-    } else {
+    } else if (p.state === 'cross') {
       p.q += p.speed * dt;
-      if (p.state === 'cross' && p.q > p.kerb) p.state = 'leave';
-      if (p.q > p.kerb + 7) p.dead = true;
+      if (p.q > p.kerb) { p.q = p.kerb; p.state = 'leave'; }
+    } else {
+      p.along += p.speed * dt;
+      if (p.along > 8) p.dead = true;
     }
-    const lat = p.q * p.side;
-    p.x = x.x + rxv * lat; p.z = x.z + rzv * lat;
-    p.h = x.h + (p.side > 0 ? Math.PI / 2 : -Math.PI / 2);
+    // On the pavement they stand a step back from the kerb and walk along the road.
+    const lat = (p.q + (p.state === 'cross' ? 0 : Math.sign(p.q) * 0.5)) * p.side;
+    const al = p.along * p.away;
+    p.x = x.x + rxv * lat + Math.sin(x.h) * al; p.z = x.z + rzv * lat - Math.cos(x.h) * al;
+    const across = x.h + (p.side > 0 ? Math.PI / 2 : -Math.PI / 2);
+    p.h = p.state === 'approach' ? x.h + (p.away > 0 ? Math.PI : 0) : p.state === 'leave' ? x.h + (p.away > 0 ? 0 : Math.PI) : across;
     if (p.state !== 'wait') p.phase = (p.phase + dt * 1.8) % 1;
   }
 

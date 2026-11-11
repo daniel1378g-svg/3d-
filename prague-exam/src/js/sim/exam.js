@@ -121,7 +121,7 @@ export function createExam({ net, statics, traffic, seed = 1, mode = 'exam', dur
     const all = net.turnsFrom(step.e, step.dir);
     let opts = all.filter((o) => usable(o));
     if (!opts.length) opts = all.filter((o) => usable(o, false) && leadsOn(o.e, o.dir, 1));
-    if (!opts.length) opts = all.filter((o) => o.allowed && o.turn !== 'uturn' && net.rank[o.e] >= 1 && net.rank[o.e] <= 5);
+    if (!opts.length) opts = all.filter((o) => o.allowed && o.turn !== 'uturn' && net.rank[o.e] >= 1);   // even a trunk road beats a dead end
     if (!opts.length) return null;
     if (opts.length === 1) return opts[0];
     const end = net.nodeOf(step.e, step.dir > 0 ? 1 : 0);
@@ -366,9 +366,10 @@ export function createExam({ net, statics, traffic, seed = 1, mode = 'exam', dur
     // ---- collisions ----
     for (const c of traffic.cars) {
       if (Math.abs(c.x - car.x) > 8 || Math.abs(c.z - car.z) > 8) continue;
-      if (!overlapsRect(c, c.len, c.wid, c.h)) continue;
-      const behind = (c.x - car.x) * Math.sin(car.heading) + (c.z - car.z) * -Math.cos(car.heading) < -1.6;
-      if (behind && v >= -0.2) continue;                                // run into from behind: not the candidate's fault
+      if (av < 0.3) continue;                                           // standing still: whoever touches the car drove into it
+      if (!overlapsRect(c, c.len - 0.3, c.wid - 0.25, c.h)) continue;   // a clear overlap, not a brush past
+      const behind = (c.x - car.x) * Math.sin(car.heading) + (c.z - car.z) * -Math.cos(car.heading) < -1.0;
+      if (behind && v >= -0.2 && Math.abs(angDiff(c.h, car.heading)) < 0.9) continue;   // run into from behind: not the candidate's fault
       fault('COLLISION_VEHICLE');
     }
     for (const tr of traffic.trams) {
@@ -385,7 +386,7 @@ export function createExam({ net, statics, traffic, seed = 1, mode = 'exam', dur
     }
     for (const p of traffic.peds) {
       const rx = p.x - car.x, rz = p.z - car.z;
-      if (Math.abs(rx) > 6 || Math.abs(rz) > 6) continue;
+      if (p.state !== 'cross' || Math.abs(rx) > 6 || Math.abs(rz) > 6) continue;
       const f = rx * Math.sin(car.heading) + rz * -Math.cos(car.heading), l = rx * Math.cos(car.heading) + rz * Math.sin(car.heading);
       if (Math.abs(f) < car.length / 2 + 0.35 && Math.abs(l) < car.width / 2 + 0.35 && av > 0.3) fault('COLLISION_PEDESTRIAN');
     }
@@ -442,13 +443,22 @@ export function createExam({ net, statics, traffic, seed = 1, mode = 'exam', dur
         if (Math.abs(c.x - car.x) > 80 || Math.abs(c.z - car.z) > 80) continue;
         traffic.approach(c, J.node, null, AP);
         if (!AP.n || AP.stopped) continue;
-        if (AP.t > 3.2) continue;
+        if (AP.t > 2.0) continue;                                      // close enough that it must brake for certain
         if (AP.t > 0 && c.v < 2) continue;
         threats.push({ M: AP.M[0], t: AP.t });
       }
       const masks = net.turnLanes[J.e] ? net.turnLanes[J.e][J.end ? 0 : 1] : null;
-      entry = { node: J.node, e: J.e, end: J.end, t, threats, ind: car.indicator, indSince: ind.since, indOdo: ind.odo, odo: car.odometer, mask: masks ? masks[Math.min(masks.length - 1, loc.lane)] : 0, ctrl: net.ctrl[J.e * 2 + J.end] };
+      entry = { node: J.node, e: J.e, end: J.end, t, threats, ind: car.indicator, indSince: ind.since, indOdo: ind.odo, odo: car.odometer, mask: masks ? masks[Math.min(masks.length - 1, loc.lane)] : 0, needs: masks ? masks.reduce((a, m) => a | m, 0) : 0, ctrl: net.ctrl[J.e * 2 + J.end], forced: [] };
       if (entry.ctrl === CTRL.STOP && stopWatch === null && av > 0.6) { /* line already judged above */ }
+    }
+    // While crossing a junction, note every driver who has to brake hard because of this car
+    // (§ 2 písm. q: giving way means the other driver need not suddenly change speed or direction).
+    if (entry && loc.junction >= 0) {
+      for (const c of traffic.cars) {
+        if (c.why !== 'player' || c.a > -3.4 || c.v < 1.5 || Math.abs(c.x - car.x) > 40 || Math.abs(c.z - car.z) > 40) continue;
+        const M = c.junc ? (c.junc.node === entry.node ? c.junc.M : null) : (c.M && net.nodeOf(c.e, c.dir > 0 ? 1 : 0) === entry.node ? c.M : null);
+        if (M && !entry.forced.some((f) => f.id === c.id)) entry.forced.push({ id: c.id, M, t });
+      }
     }
     if (loc.exited && entry && entry.node === loc.exited.node) {
       const X = loc.exited, M = { e: X.e, end: X.end, out: X.out };
@@ -458,7 +468,7 @@ export function createExam({ net, statics, traffic, seed = 1, mode = 'exam', dur
       if (X.out !== X.e && mv) {
         if (!mv.allowed) fault('TURN_RESTRICTION');
         // Priority.
-        for (const th of entry.threats) {
+        for (const th of [...entry.threats, ...entry.forced]) {
           if (!net.conflict(M, th.M) || !net.mustYield(M, th.M, entry.t)) continue;
           const c = entry.ctrl;
           const round = net.roundabout(X.out) && !net.roundabout(X.e);
@@ -483,8 +493,12 @@ export function createExam({ net, statics, traffic, seed = 1, mode = 'exam', dur
           else if (entry.ind === mv.turn && net.len[X.e] > 35 && entry.t - entry.indSince < 1.2 && entry.odo - entry.indOdo < 10) fault('LATE_SIGNAL');
         }
         if (entry.mask) {
+          // The arrows may belong to a junction further on: judge only where every arrowed
+          // direction actually exists.
           const bit = mv.turn === 'left' ? 1 : mv.turn === 'right' ? 4 : 2;
-          if (!(entry.mask & bit)) fault('WRONG_LANE', `went ${mv.turn} from a lane marked for another direction`);
+          let have = 0;
+          for (const o of turns) if (o.allowed) have |= o.turn === 'left' ? 1 : o.turn === 'right' ? 4 : o.turn === 'straight' ? 2 : 0;
+          if (!(entry.needs & ~have & 7) && !(entry.mask & bit)) fault('WRONG_LANE', `went ${mv.turn} from a lane marked for another direction`);
         }
         // Did the candidate go where the examiner asked?
         const P = ex.plan;

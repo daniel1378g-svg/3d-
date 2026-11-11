@@ -9,7 +9,7 @@
 // Flat pieces that share a material may overlap freely: they lie at the same height with
 // world-space texture coordinates, so the overlap cannot be seen.
 import { CTRL, FLAG } from '../../sim/roadnet.js';
-import { HALF, CHUNK, CHUNKS, chunkOf, chunkBounds } from '../../data/geo.js';
+import { HALF, CHUNK, CHUNKS, chunkBounds } from '../../data/geo.js';
 
 export const LAYERS = ['asphalt', 'asphaltWorn', 'sett', 'paving', 'mosaic', 'concrete', 'ballast', 'grass', 'dirt', 'flat', 'sleepers'];
 export const DEFAULT_METRES = [4, 4, 2, 2, 2, 4, 2, 3, 3, 1, 1.2];
@@ -31,7 +31,7 @@ const PAL_SRGB = [
   [66, 58, 54],      // 3 rail, web
   [168, 172, 180],   // 4 rail, running edge
   [232, 232, 232],   // 5 track bed
-  [176, 150, 140],   // 6 speed hump
+  [236, 208, 196],   // 6 speed hump
   [236, 236, 228],   // 7 road paint
   [238, 190, 40],    // 8 yellow paint
   [205, 203, 198],   // 9 concrete edge of an open track
@@ -78,16 +78,22 @@ function growSlot(sl, n) {
 
 // Interval lists are flat arrays [a0, b0, a1, b1, ...].
 function mergeIv(iv) {
-  if (iv.length <= 2) return iv;
-  const pairs = [];
-  for (let i = 0; i < iv.length; i += 2) pairs.push([iv[i], iv[i + 1]]);
-  pairs.sort((p, q) => p[0] - q[0]);
-  const out = [pairs[0][0], pairs[0][1]];
-  for (let i = 1; i < pairs.length; i++) {
-    if (pairs[i][0] <= out[out.length - 1]) { if (pairs[i][1] > out[out.length - 1]) out[out.length - 1] = pairs[i][1]; }
-    else out.push(pairs[i][0], pairs[i][1]);
+  const n = iv.length;
+  if (n <= 2) return iv;
+  // Insertion sort by start, in place: the lists are short and mostly sorted already.
+  for (let i = 2; i < n; i += 2) {
+    const a = iv[i], b = iv[i + 1];
+    let j = i - 2;
+    while (j >= 0 && iv[j] > a) { iv[j + 2] = iv[j]; iv[j + 3] = iv[j + 1]; j -= 2; }
+    iv[j + 2] = a; iv[j + 3] = b;
   }
-  return out;
+  let m = 0;
+  for (let i = 2; i < n; i += 2) {
+    if (iv[i] <= iv[m + 1]) { if (iv[i + 1] > iv[m + 1]) iv[m + 1] = iv[i + 1]; }
+    else { m += 2; iv[m] = iv[i]; iv[m + 1] = iv[i + 1]; }
+  }
+  iv.length = m + 2;
+  return iv;
 }
 // [a, b] minus a merged, sorted interval list.
 function subIv(a, b, cuts, minLen) {
@@ -111,6 +117,10 @@ export function createStreetBuilder(net, { ground = null, uvOf = null, metres = 
   for (let i = 0; i < LAYERS.length; i++) IM[i] = 1 / (metres[i] || 2);
   const UO = new Float64Array(LAYERS.length), VO = new Float64Array(LAYERS.length);
   const armsN = (n) => net.arms[n].length;
+  const cid = (x, z) => {
+    const cx = Math.min(CHUNKS - 1, Math.max(0, Math.floor((x + HALF) / CHUNK))), cz = Math.min(CHUNKS - 1, Math.max(0, Math.floor((z + HALF) / CHUNK)));
+    return cz * CHUNKS + cx;
+  };
 
   // ---- per-edge constants -----------------------------------------------------------------------
   const HW = new Float32Array(E), layerOf = new Uint8Array(E), segEdge = new Int32Array(P);
@@ -300,24 +310,32 @@ export function createStreetBuilder(net, { ground = null, uvOf = null, metres = 
 
   // ---- search grids ---------------------------------------------------------------------------------
   const gi = (v) => { const i = Math.floor((v + HALF + 120) / GRID); return i < 0 ? 0 : i >= GN ? GN - 1 : i; };
-  function makeGrid(count, bounds) {                              // bounds(i, out) -> false to skip
-    const start = new Int32Array(GN * GN + 1), bb = [0, 0, 0, 0];
+  function makeGrid(count, seg) {                                 // seg(i, out) -> false to skip; out = [ax, az, bx, bz]
+    const start = new Int32Array(GN * GN + 1), stamp = new Int32Array(GN * GN), bb = [0, 0, 0, 0];
+    let items = null, fill = null;
     for (let pass = 0; pass < 2; pass++) {
+      const mark = pass ? -1 : 1;
       for (let i = 0; i < count; i++) {
-        if (!bounds(i, bb)) continue;
-        const x0 = gi(bb[0]), x1 = gi(bb[2]), z0 = gi(bb[1]), z1 = gi(bb[3]);
-        for (let gz = z0; gz <= z1; gz++) for (let gx = x0; gx <= x1; gx++) {
-          if (pass === 0) start[gz * GN + gx + 1]++; else items[fill[gz * GN + gx]++] = i;
+        if (!seg(i, bb)) continue;
+        const n = Math.max(1, Math.ceil(Math.hypot(bb[2] - bb[0], bb[3] - bb[1]) / GRID)), id = (i + 1) * mark;
+        for (let k = 0; k < n; k++) {
+          const ax = bb[0] + ((bb[2] - bb[0]) * k) / n, az = bb[1] + ((bb[3] - bb[1]) * k) / n, bx = bb[0] + ((bb[2] - bb[0]) * (k + 1)) / n, bz = bb[1] + ((bb[3] - bb[1]) * (k + 1)) / n;
+          const x0 = gi(Math.min(ax, bx)), x1 = gi(Math.max(ax, bx)), z0 = gi(Math.min(az, bz)), z1 = gi(Math.max(az, bz));
+          for (let gz = z0; gz <= z1; gz++) for (let gx = x0; gx <= x1; gx++) {
+            const c = gz * GN + gx;
+            if (stamp[c] === id) continue;
+            stamp[c] = id;
+            if (pass === 0) start[c + 1]++; else items[fill[c]++] = i;
+          }
         }
       }
-      if (pass === 0) { for (let c = 0; c < GN * GN; c++) start[c + 1] += start[c]; var items = new Int32Array(start[GN * GN]), fill = start.slice(0, GN * GN); }
+      if (pass === 0) { for (let c = 0; c < GN * GN; c++) start[c + 1] += start[c]; items = new Int32Array(start[GN * GN]); fill = start.slice(0, GN * GN); }
     }
     return { start, items };
   }
   const roadGrid = makeGrid(P, (p, bb) => {
     if (p + 1 >= P || segEdge[p + 1] !== segEdge[p]) return false;
-    bb[0] = Math.min(ptX[p], ptX[p + 1]); bb[2] = Math.max(ptX[p], ptX[p + 1]);
-    bb[1] = Math.min(ptZ[p], ptZ[p + 1]); bb[3] = Math.max(ptZ[p], ptZ[p + 1]);
+    bb[0] = ptX[p]; bb[1] = ptZ[p]; bb[2] = ptX[p + 1]; bb[3] = ptZ[p + 1];
     return true;
   });
 
@@ -396,8 +414,7 @@ export function createStreetBuilder(net, { ground = null, uvOf = null, metres = 
   }
   const trackGrid = makeGrid(tk.n, (i, bb) => {
     if (tk.f[i] & 16) return false;
-    bb[0] = Math.min(tk.x[i], tk.x[i + 1]); bb[2] = Math.max(tk.x[i], tk.x[i + 1]);
-    bb[1] = Math.min(tk.z[i], tk.z[i + 1]); bb[3] = Math.max(tk.z[i], tk.z[i + 1]);
+    bb[0] = tk.x[i]; bb[1] = tk.z[i]; bb[2] = tk.x[i + 1]; bb[3] = tk.z[i + 1];
     return true;
   });
   // Open tram tracks: how far the bed reaches on each side. Next to a parallel track it stops
@@ -433,7 +450,7 @@ export function createStreetBuilder(net, { ground = null, uvOf = null, metres = 
     if (arms.length < 3) continue;
     let real = 0;
     for (const a of arms) if (rank[a.e] >= 2) real++;
-    if (real >= 3) junctionsIn[chunkOf(net.nodeX[n], net.nodeZ[n]).id]++;
+    if (real >= 3) junctionsIn[cid(net.nodeX[n], net.nodeZ[n])]++;
   }
   // "Dense city" = many real street corners around: there the pavements are the Prague mosaic.
   const dense = new Uint8Array(CHUNKS * CHUNKS);
@@ -447,10 +464,10 @@ export function createStreetBuilder(net, { ground = null, uvOf = null, metres = 
     dense[cz * CHUNKS + cx] = sum / cnt >= 4.5 ? 1 : 0;
   }
   const NOPAV = FLAG.BRIDGE | FLAG.TUNNEL | FLAG.LINK;
-  const edgeChunk = new Int32Array(E), pavLayer = new Uint8Array(E);
+  const edgeChunk = new Int32Array(E), pavLayer = new Uint8Array(E), mid = {};
   for (let e = 0; e < E; e++) {
-    const m = net.pos(e, len[e] / 2);
-    edgeChunk[e] = chunkOf(m.x, m.z).id;
+    net.pos(e, len[e] / 2, mid);
+    edgeChunk[e] = cid(mid.x, mid.z);
     pavLayer[e] = rank[e] >= 2 && rank[e] <= 3 && dense[edgeChunk[e]] ? L_MOSAIC : L_PAVING;
   }
   // 1 = raised pavement, 0 = flush edge strip.
@@ -463,6 +480,8 @@ export function createStreetBuilder(net, { ground = null, uvOf = null, metres = 
   // Stretches of each side of an edge where the pavement must give way: another carriageway runs
   // alongside too closely, a road crosses without a junction (bridges in a flat world), or a
   // track runs through. Soft cuts still get the flush edge strip, hard cuts get nothing.
+  const seenRoad = new Int32Array(P), seenTrack = new Int32Array(tk.n);
+  let seenId = 0;
   function cutsOf(e) {
     const soft = [[], []], hard = [[], []];
     const L = len[e], hw = HW[e], p0 = edgePt[e], p1 = edgePt[e + 1] - 1;
@@ -493,13 +512,18 @@ export function createStreetBuilder(net, { ground = null, uvOf = null, metres = 
     for (let p = p0; p < p1; p++) {
       const ax = ptX[p], az = ptZ[p], ux = ptX[p + 1] - ax, uz = ptZ[p + 1] - az, ul = Math.hypot(ux, uz);
       if (ul < 1e-3) continue;
-      const pad = hw + PW + 3;
-      const x0 = gi(Math.min(ax, ax + ux) - pad), x1 = gi(Math.max(ax, ax + ux) + pad), z0 = gi(Math.min(az, az + uz) - pad), z1 = gi(Math.max(az, az + uz) + pad);
+      const pad = hw + PW + 3, np = Math.max(1, Math.ceil(ul / 30));
+      seenId++;
+      for (let k = 0; k < np; k++) {
+      const cax = ax + (ux * k) / np, caz = az + (uz * k) / np, cbx = ax + (ux * (k + 1)) / np, cbz = az + (uz * (k + 1)) / np;
+      const x0 = gi(Math.min(cax, cbx) - pad), x1 = gi(Math.max(cax, cbx) + pad), z0 = gi(Math.min(caz, cbz) - pad), z1 = gi(Math.max(caz, cbz) + pad);
       for (let gz = z0; gz <= z1; gz++) for (let gx = x0; gx <= x1; gx++) {
         const c = gz * GN + gx;
         // Roads that cross this segment without sharing a node with the edge.
         for (let q = roadGrid.start[c]; q < roadGrid.start[c + 1]; q++) {
           const r = roadGrid.items[q], f = segEdge[r];
+          if (seenRoad[r] === seenId) continue;
+          seenRoad[r] = seenId;
           if (f === e || edgeA[f] === edgeA[e] || edgeA[f] === edgeB[e] || edgeB[f] === edgeA[e] || edgeB[f] === edgeB[e]) continue;
           const vx = ptX[r + 1] - ptX[r], vz = ptZ[r + 1] - ptZ[r], den = ux * vz - uz * vx;
           if (Math.abs(den) < 1e-6) continue;
@@ -511,18 +535,24 @@ export function createStreetBuilder(net, { ground = null, uvOf = null, metres = 
         }
         for (let q = trackGrid.start[c]; q < trackGrid.start[c + 1]; q++) {
           const j = trackGrid.items[q], fl = tk.f[j], bh = fl & 1 ? 0.85 : fl & 2 ? 1.75 : 1.3;
+          if (seenTrack[j] === seenId) continue;
+          seenTrack[j] = seenId;
+          let l0 = Infinity, h0 = -Infinity, l1 = Infinity, h1 = -Infinity;
           for (let m = 0; m < 3; m++) {
             const px = tk.x[j] + (tk.x[j + 1] - tk.x[j]) * m * 0.5 - ax, pz = tk.z[j] + (tk.z[j + 1] - tk.z[j]) * m * 0.5 - az;
             const al = (px * ux + pz * uz) / ul;
             if (al < -1 || al > ul + 1) continue;
             const d = (px * -uz + pz * ux) / ul, s = ptS[p] + al;
-            if (d + bh > hw - 0.1 && d - bh < hw + PW) hard[1].push(s - 2.5, s + 2.5);
-            if (-d + bh > hw - 0.1 && -d - bh < hw + PW) hard[0].push(s - 2.5, s + 2.5);
+            if (d + bh > hw - 0.1 && d - bh < hw + PW) { if (s < l1) l1 = s; if (s > h1) h1 = s; }
+            if (-d + bh > hw - 0.1 && -d - bh < hw + PW) { if (s < l0) l0 = s; if (s > h0) h0 = s; }
           }
+          if (h0 >= l0) hard[0].push(l0 - 2.5, h0 + 2.5);
+          if (h1 >= l1) hard[1].push(l1 - 2.5, h1 + 2.5);
         }
       }
+      }
     }
-    return { soft, hard };
+    return { soft, hard: [mergeIv(hard[0]), mergeIv(hard[1])] };
   }
   const runsCache = new Array(E);
   // -> { r: [runs left, runs right], f: [flush left, flush right] } as interval lists in s.
@@ -534,7 +564,7 @@ export function createStreetBuilder(net, { ground = null, uvOf = null, metres = 
     for (let side = 0; side < 2; side++) {
       const a = pavS[e * 4 + side], b = pavS[e * 4 + 2 + side];
       if (b - a < 0.3) continue;
-      const hard = mergeIv(cuts.hard[side]);
+      const hard = cuts.hard[side];
       if (pavKind(e, side)) {
         const all = mergeIv(cuts.hard[side].concat(cuts.soft[side]));
         const runs = subIv(a, b, all, 1.5);
@@ -572,8 +602,8 @@ export function createStreetBuilder(net, { ground = null, uvOf = null, metres = 
     return { start, items };
   }
   const idxEdges = csr(E, (e) => edgeChunk[e]);
-  const idxNodes = csr(N, (n) => (armsN(n) >= 3 ? chunkOf(net.nodeX[n], net.nodeZ[n]).id : -1));
-  const idxTracks = csr(tk.n, (i) => (tk.f[i] & 16 ? -1 : chunkOf((tk.x[i] + tk.x[i + 1]) / 2, (tk.z[i] + tk.z[i + 1]) / 2).id));
+  const idxNodes = csr(N, (n) => (armsN(n) >= 3 ? cid(net.nodeX[n], net.nodeZ[n]) : -1));
+  const idxTracks = csr(tk.n, (i) => (tk.f[i] & 16 ? -1 : cid((tk.x[i] + tk.x[i + 1]) / 2, (tk.z[i] + tk.z[i + 1]) / 2)));
   const bumpsOn = new Map();
   for (const b of net.bumps || []) { if (!bumpsOn.has(b.e)) bumpsOn.set(b.e, []); bumpsOn.get(b.e).push(b.s); }
 
@@ -615,8 +645,10 @@ export function createStreetBuilder(net, { ground = null, uvOf = null, metres = 
     const fl = Math.hypot(fx, fz) || 1;
     fx /= fl; fz /= fl;
     const u0 = ((x0 - ox) * -fz + (z0 - oz) * fx) * IM[L], u1 = ((x1 - ox) * -fz + (z1 - oz) * fx) * IM[L];
-    const a = vx(B, x0, b0, z0, fx, 0, fz, u0, b0 * IM[L], L, ci), b = vx(B, x1, b1, z1, fx, 0, fz, u1, b1 * IM[L], L, ci);
-    const c = vx(B, x1, t1, z1, fx, 0, fz, u1, t1 * IM[L], L, ci), d = vx(B, x0, t0, z0, fx, 0, fz, u0, t0 * IM[L], L, ci);
+    // The normal leans upwards: a kerb face lit only by the sky reads as a black line from the car.
+    const hx = fx * 0.8, hz = fz * 0.8;
+    const a = vx(B, x0, b0, z0, hx, 0.6, hz, u0, b0 * IM[L], L, ci), b = vx(B, x1, b1, z1, hx, 0.6, hz, u1, b1 * IM[L], L, ci);
+    const c = vx(B, x1, t1, z1, hx, 0.6, hz, u1, t1 * IM[L], L, ci), d = vx(B, x0, t0, z0, hx, 0.6, hz, u0, t0 * IM[L], L, ci);
     const o = B.ni, I = B.idx;
     if (-(z1 - z0) * fx + (x1 - x0) * fz >= 0) { I[o] = a; I[o + 1] = b; I[o + 2] = c; I[o + 3] = a; I[o + 4] = c; I[o + 5] = d; }
     else { I[o] = a; I[o + 1] = c; I[o + 2] = b; I[o + 3] = a; I[o + 4] = d; I[o + 5] = c; }
@@ -835,7 +867,7 @@ export function createStreetBuilder(net, { ground = null, uvOf = null, metres = 
     exM.length = 0;
     for (const c of cross) exM.push(c.s - 2.4, c.s + 2.4);
     if (bumps) for (const s of bumps) exM.push(s - 2, s + 2);
-    if (exM.length > 2) { const m = mergeIv(exM); exM.length = 0; for (const v of m) exM.push(v); }
+    mergeIv(exM);
     const fw = net.linesOn(e, 1), bw = net.linesOn(e, -1);
     let lastF = null, lastB = null;
     for (const l of fw) if (marked(l.kind)) lastF = l;
@@ -923,7 +955,7 @@ export function createStreetBuilder(net, { ground = null, uvOf = null, metres = 
       for (let i = 0; i < 3; i++) {
         const a = prof[i * 2], ya = prof[i * 2 + 1], b = prof[i * 2 + 2], yb = prof[i * 2 + 3];
         fq(B1, cx + tx * a - nx * w, cz + tz * a - nz * w, ya, cx + tx * a + nx * w, cz + tz * a + nz * w, ya,
-          cx + tx * b + nx * w, cz + tz * b + nz * w, yb, cx + tx * b - nx * w, cz + tz * b - nz * w, yb, L_ASPHALT, C_HUMP);
+          cx + tx * b + nx * w, cz + tz * b + nz * w, yb, cx + tx * b - nx * w, cz + tz * b - nz * w, yb, L_WORN, C_HUMP);
       }
       for (const sg of [-1, 1]) {
         let i = 0;

@@ -80,8 +80,9 @@ export const fallbackModels = {
 export function createFallbackStreets({ net }) {
   const groundMat = new THREE.MeshLambertMaterial({ color: 0x8f9a83 });
   const roadMat = new THREE.MeshLambertMaterial({ color: 0x55585c });
-  const ground = new THREE.Mesh(new THREE.PlaneGeometry(2 * HALF + 2400, 2 * HALF + 2400).rotateX(-Math.PI / 2), groundMat);
-  ground.position.y = -0.02;
+  // Subdivided and well below the ribbons: depth across one enormous triangle is not exact enough.
+  const ground = new THREE.Mesh(new THREE.PlaneGeometry(2 * HALF + 2400, 2 * HALF + 2400, 48, 48).rotateX(-Math.PI / 2), groundMat);
+  ground.position.y = -0.1;
   const byChunk = new Map();
   for (let e = 0; e < net.E; e++) {
     const m = net.pos(e, net.len[e] / 2), id = chunkCoord(m.z) * CHUNKS + chunkCoord(m.x);

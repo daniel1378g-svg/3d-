@@ -6,6 +6,8 @@ import { LIN, hash2, toByte, releaseAfterUpload } from './util.js';
 const MIN_WALL = 0.4;                    // shorter ring segments are merged into their neighbour
 const CORNER_COS = Math.cos(0.5);        // a turn sharper than this starts a new wall run
 const GROUND_SHADE = 0.8;                // walls darken towards the pavement (cheap contact shadow)
+const PASSAGE = 4.6;                     // buildings over a road (flags bit 1) start this high
+const PASSAGE_MIN = 6.5;                 // ... and lower ones are left out altogether
 
 const TILE = [0x9a4b33, 0x8a4330, 0xa55a3e, 0x7c4a3a, 0x6d5548, 0x8f3d2d, 0x74463a];   // pitched roofs
 const GRAVEL = [0x5d5f61, 0x67635d, 0x525456, 0x6e6b66, 0x595651];                     // flat roofs
@@ -92,7 +94,7 @@ export function createBuildings({ pack, atlas, anisotropy = 1 }) {
 
   // ---- walls ------------------------------------------------------------------------------------
   // One quad per floor between ring points i and j. ua, ub = texture u at each end.
-  function wallQuads(i, j, ua, ub, st, wallH, cr, cg, cb) {
+  function wallQuads(i, j, ua, ub, st, wallH, cr, cg, cb, base) {
     const ax = px[i], az = pz[i], bx = px[j], bz = pz[j], L = seg[i];
     const nx = (bz - az) / L, nz = -(bx - ax) / L;               // outward: left of a -> b
     const r1 = toByte(cr), g1 = toByte(cg), b1 = toByte(cb);
@@ -104,10 +106,13 @@ export function createBuildings({ pack, atlas, anisotropy = 1 }) {
       const D = walls.vert(ax, y1, az, nx, 0, nz, r1, g1, b1, ua, v1);
       walls.tri(A, D, C); walls.tri(A, C, B);
     };
-    let gh = Math.min(st.groundH, wallH);
-    let rest = wallH - gh;
-    if (rest < 0.12 * st.floor) { gh = wallH; rest = 0; }        // no sliver above the ground floor
-    quad(0, gh, st.g0, st.g0 + (st.g1 - st.g0) * Math.min(1, gh / st.groundH), GROUND_SHADE);
+    let gh = base, rest = wallH - base;
+    if (!base) {
+      gh = Math.min(st.groundH, wallH);
+      rest = wallH - gh;
+      if (rest < 0.12 * st.floor) { gh = wallH; rest = 0; }      // no sliver above the ground floor
+      quad(0, gh, st.g0, st.g0 + (st.g1 - st.g0) * Math.min(1, gh / st.groundH), GROUND_SHADE);
+    }
     if (rest <= 0) return;
     let full = Math.floor(rest / st.floor), cut = rest - full * st.floor, fh = st.floor;
     const frac = cut / st.floor;
@@ -118,7 +123,7 @@ export function createBuildings({ pack, atlas, anisotropy = 1 }) {
     if (cut > 0) quad(y, wallH, st.u0, st.u0 + (st.u1 - st.u0) * frac, 1);
   }
 
-  function buildWalls(n, st, wallH, cr, cg, cb) {
+  function buildWalls(n, st, wallH, cr, cg, cb, base) {
     // Split the ring into runs at real corners so that window bays are laid out per facade and
     // flow round gentle bends. Each run gets a whole number of bays where that fits.
     let first = -1;
@@ -144,7 +149,7 @@ export function createBuildings({ pack, atlas, anisotropy = 1 }) {
       for (let q = 0; q < m; q++) {
         const i = (first + k + q) % n, j = (i + 1) % n;
         const ub = u - seg[i] * perMetre;
-        wallQuads(i, j, u, ub, st, wallH, cr, cg, cb);
+        wallQuads(i, j, u, ub, st, wallH, cr, cg, cb, base);
         u = ub;
       }
       k += m;
@@ -173,16 +178,16 @@ export function createBuildings({ pack, atlas, anisotropy = 1 }) {
     const TA = roofs.vert(tax, tay, taz, fnx, fny, fnz, r, g, b), TB = roofs.vert(tbx, tby, tbz, fnx, fny, fnz, r, g, b);
     roofs.tri(B, A, TA); roofs.tri(B, TA, TB);
   }
-  function cap(xs, zs, n, y, r, g, b) {
+  function cap(xs, zs, n, y, r, g, b, down = false) {
     if (n < 3) return;
     const faces = n === 3 ? [[0, 1, 2]] : THREE.ShapeUtils.triangulateShape(contour(xs, zs, n), []);
     const base = roofs.nv;
-    for (let i = 0; i < n; i++) roofs.vert(xs[i], y, zs[i], 0, 1, 0, r, g, b);
+    for (let i = 0; i < n; i++) roofs.vert(xs[i], y, zs[i], 0, down ? -1 : 1, 0, r, g, b);
     for (const f of faces) {
       const a = f[0], b2 = f[1], c = f[2];
       // Face up whatever winding the triangulation chose.
       const up = (zs[b2] - zs[a]) * (xs[c] - xs[a]) - (xs[b2] - xs[a]) * (zs[c] - zs[a]);
-      if (up >= 0) roofs.tri(base + a, base + b2, base + c); else roofs.tri(base + a, base + c, base + b2);
+      if (up >= 0 !== down) roofs.tri(base + a, base + b2, base + c); else roofs.tri(base + a, base + c, base + b2);
     }
   }
   const ringArea = (xs, zs, n) => { let a = 0; for (let i = 0, j = n - 1; i < n; j = i++) a += xs[j] * zs[i] - xs[i] * zs[j]; return a / 2; };
@@ -282,12 +287,19 @@ export function createBuildings({ pack, atlas, anisotropy = 1 }) {
 
       const st = styles[buf.style[bi]] || styles[0];
       const h = Math.max(2.4, buf.height[bi] / 2);
+      // A road runs through or under this one: only the part above the passage is drawn.
+      const base = buf.flags[bi] & 2 ? PASSAGE : 0;
+      if (base && h < PASSAGE_MIN) continue;
       const cr = LIN[buf.colour[bi * 3]], cg = LIN[buf.colour[bi * 3 + 1]], cb = LIN[buf.colour[bi * 3 + 2]];
       const seed = hash2(bi, 977);
       let wallH = h;
-      const pitched = (buf.flags[bi] & 1) !== 0 && n <= 16;
-      if (pitched) wallH = pitchedRoof(n, h, area, perimeter, seed, true) || h;
-      buildWalls(n, st, wallH, cr, cg, cb);
+      let pitched = (buf.flags[bi] & 1) !== 0 && n <= 16;
+      if (pitched) {
+        const eaves = pitchedRoof(n, h, area, perimeter, seed, true);
+        if (!eaves || (base && eaves < base + 1.2)) pitched = false; else wallH = eaves;
+      }
+      buildWalls(n, st, wallH, cr, cg, cb, base);
+      if (base) { roofs.reserve(n, n * 3); cap(px, pz, n, base, toByte(cr * 0.5), toByte(cg * 0.5), toByte(cb * 0.5), true); }
       if (!pitched || !pitchedRoof(n, h, area, perimeter, seed, false)) flatRoof(n, wallH, cr, cg, cb, seed);
     }
     const out = { walls: null, roofs: null };

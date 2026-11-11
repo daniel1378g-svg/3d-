@@ -8,6 +8,7 @@ export function createStatics({ buf }) {
     if (c) return c;
     c = [];
     for (let b = buf.chunkStart[id]; b < buf.chunkStart[id + 1]; b++) {
+      if (buf.flags[b] & 2) continue;                              // a road runs through it: not an obstacle
       const p0 = buf.start[b], p1 = buf.start[b + 1];
       let minX = Infinity, maxX = -Infinity, minZ = Infinity, maxZ = -Infinity;
       const ring = new Float32Array((p1 - p0) * 2);

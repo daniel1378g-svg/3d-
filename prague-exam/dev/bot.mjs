@@ -33,7 +33,7 @@ export function runExam({ placeId = null, seed = 1, minutes = 10, density = 'nor
   const AP = traffic.AP();
   const dt = 1 / 60;
   let t = 0, stopped = new Set(), stopT = 0, laneWant = -1, laneSince = 0, readyAt = 1.2, moveOffAt = -1;
-  const set = (name, on) => { if (on) applyAction(car, name); };
+  const amberGo = new Map();
 
   const laneFor = (step, next) => {
     const n = Math.max(1, net.lanes(step.e, step.dir));
@@ -158,8 +158,9 @@ export function runExam({ placeId = null, seed = 1, minutes = 10, density = 'nor
       if (d < -0.5 || d > 90) continue;
       if (l.kind === CTRL.SIGNAL) {
         const st = net.signalState(l.ctrlId, l.phase, t);
-        if (st === SIG.GREEN) continue;
-        if (st === SIG.AMBER && d < v * 0.9 + (v * v) / (2 * 3.8)) continue;
+        if (st === SIG.GREEN) { amberGo.delete(l.id); continue; }
+        // Decide once, when the amber comes on, whether there is room to stop.
+        if (st === SIG.AMBER) { if (!amberGo.has(l.id)) amberGo.set(l.id, d < v * 0.9 + (v * v) / (2 * 3.8)); if (amberGo.get(l.id)) continue; } else amberGo.delete(l.id);
         stopD = Math.min(stopD, d - 1);
       } else if (l.kind === CTRL.STOP && !stopped.has(l.id)) {
         stopD = Math.min(stopD, d - 0.8);
