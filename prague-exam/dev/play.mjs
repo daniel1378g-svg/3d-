@@ -1,0 +1,31 @@
+// Drives the built game with the keyboard in a headless browser and takes screenshots.
+//   node dev/play.mjs <outPrefix> [width] [height] [place]
+import { createRequire } from 'node:module';
+const require = createRequire(import.meta.url);
+const { chromium } = require('playwright');
+const [out, w = 1280, h = 720, place = ''] = process.argv.slice(2);
+const b = await chromium.launch({ args: ['--use-gl=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
+const pg = await b.newPage({ viewport: { width: Number(w), height: Number(h) }, deviceScaleFactor: 1 });
+const logs = [];
+pg.on('console', (m) => { if (m.type() === 'error') logs.push(`error: ${m.text().slice(0, 300)}`); });
+pg.on('pageerror', (e) => logs.push(`pageerror: ${String(e.stack || e).slice(0, 600)}`));
+await pg.goto('http://127.0.0.1:4180/', { waitUntil: 'load' });
+await pg.waitForFunction(() => window.__game && window.__game.state === 'menu', null, { timeout: 90000 });
+await pg.evaluate((p) => window.__game.start({ placeId: p || null, duration: 10 }, 3), place);
+await pg.waitForFunction(() => window.__game.state === 'driving', null, { timeout: 120000 });
+const press = async (code, ms = 60) => { await pg.keyboard.down(code); await pg.waitForTimeout(ms); await pg.keyboard.up(code); await pg.waitForTimeout(80); };
+for (const k of ['KeyB', 'KeyI', 'KeyL', 'KeyF', 'Space', 'KeyQ']) await press(k);
+await press('KeyC', 700);
+await pg.screenshot({ path: `${out}-1.png` });
+await pg.keyboard.down('KeyW'); await pg.waitForTimeout(600);
+await pg.keyboard.down('KeyA'); await pg.waitForTimeout(450); await pg.keyboard.up('KeyA');
+await pg.waitForTimeout(5000);
+await pg.screenshot({ path: `${out}-2.png` });
+await pg.waitForTimeout(6000); await pg.keyboard.up('KeyW');
+await pg.screenshot({ path: `${out}-3.png` });
+const info = await pg.evaluate(() => { const g = window.__game, r = g.run; return { state: g.state, speed: r.car.speed, x: r.car.x, z: r.car.z, gear: r.car.gear, engine: r.car.engineOn, exam: r.exam.state, faults: r.exam.faults.map((f) => f.code), instr: r.exam.instruction, stats: g.world.stats(), cars: r.traffic.cars.length }; });
+console.log(JSON.stringify(info));
+await pg.waitForTimeout(2500);
+await pg.screenshot({ path: `${out}-4.png` });
+console.log(logs.slice(0, 10).join('\n') || 'console clean');
+await b.close();

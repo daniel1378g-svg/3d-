@@ -958,6 +958,17 @@ body {
     --limit: 38px;
   }
   .gearbox { min-width: 176px; }
+  /* Less room beside the banner here: a narrower, tighter checklist left of the gear strip. */
+  .checklist {
+    top: 100px;
+    right: calc(162px - var(--map) - var(--limit) - var(--mir-w));
+    width: 190px;
+    padding: 6px 10px 7px;
+  }
+  .checklist-items { gap: 1px; }
+  .checklist-items li { font-size: 12.5px; }
+  /* The status line wraps onto two lines rather than run under the checklist. */
+  .status { max-width: 196px; }
 }
 
 /* ---------- Screens: loading, menu, pause, result ---------- */

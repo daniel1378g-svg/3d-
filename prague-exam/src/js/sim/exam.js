@@ -73,7 +73,7 @@ export function createExam({ net, statics, traffic, seed = 1, mode = 'exam', dur
     const minor = ex.faults.filter((f) => f.severity === 'minor').length;
     ex.result = {
       passed: !reason, mode, reason: reason || null, faults: ex.faults.slice(),
-      stats: { duration: Math.round(ex.elapsed), distance: Math.round(stats.distance), avgSpeed: ex.elapsed > 1 ? Math.round((stats.distance / ex.elapsed) * KMH) : 0, maxSpeed: Math.round(stats.maxSpeed * KMH), junctions: stats.junctions, stopsAtSigns: stats.stopsAtSigns, minor, serious: ex.faults.length - minor },
+      stats: { duration: Math.round(ex.elapsed), distance: Math.round(stats.distance), avgSpeed: ex.elapsed > 1 ? stats.distance / ex.elapsed : 0, maxSpeed: stats.maxSpeed, /* both in m/s */ junctions: stats.junctions, stopsAtSigns: stats.stopsAtSigns, minor, serious: ex.faults.length - minor },
       path: Float32Array.from(path), seed, startId: place.id,
     };
     ex.instruction = { key: reason ? (reason.code.startsWith('COLLISION') || reason.code.startsWith('NO_YIELD') || reason.code === 'RED_LIGHT' ? 'intervention' : 'failed') : 'passed', icon: 'stop', distance: null };

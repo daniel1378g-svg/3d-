@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Streets · Prague Exam Drive</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #9fb4c8; overflow: hidden; font: 12px/1.4 system-ui, sans-serif; }
+  canvas { display: block; width: 100%; height: 100%; }
+  #hud { position: absolute; left: 8px; top: 8px; padding: 6px 8px; background: rgba(0, 0, 0, .6); color: #fff; border-radius: 4px; white-space: pre; pointer-events: none; }
+  #bar { position: absolute; right: 8px; top: 8px; display: flex; gap: 4px; flex-wrap: wrap; max-width: 60%; justify-content: flex-end; }
+  #bar button, #bar input { font: inherit; padding: 3px 6px; }
+  #err { position: absolute; left: 8px; bottom: 8px; color: #ffb4a8; background: rgba(0, 0, 0, .7); padding: 4px 8px; white-space: pre-wrap; }
+</style>
+</head>
+<body>
+<div id="hud">loading…</div>
+<div id="bar"><input id="where" size="22" placeholder="x, z [, heading°]"><button id="go">go</button><button id="top">top 150 m</button><button id="eye">eye 1.2 m</button></div>
+<div id="err"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.159.0/three.min.js"></script>
+<script type="module" src="streets.js"></script>
+</body>
+</html>

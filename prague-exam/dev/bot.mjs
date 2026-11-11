@@ -218,5 +218,5 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   const t0 = performance.now();
   const { result, exam } = runExam({ placeId: placeId || null, seed: Number(seed) || 1, minutes: Number(minutes) || 10, density: density || 'normal', log: true });
   if (!result) console.log('no result: the exam never finished', exam.state, exam.info);
-  else console.log(`${result.passed ? 'PASSED' : `FAILED: ${result.reason.code} ${result.reason.note}`}  ${result.stats.distance} m in ${result.stats.duration} s, avg ${result.stats.avgSpeed} km/h, junctions ${result.stats.junctions}, minor ${result.stats.minor}  (${(performance.now() - t0).toFixed(0)} ms)`);
+  else console.log(`${result.passed ? 'PASSED' : `FAILED: ${result.reason.code} ${result.reason.note}`}  ${result.stats.distance} m in ${result.stats.duration} s, avg ${Math.round(result.stats.avgSpeed * 3.6)} km/h, junctions ${result.stats.junctions}, minor ${result.stats.minor}  (${(performance.now() - t0).toFixed(0)} ms)`);
 }

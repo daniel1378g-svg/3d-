@@ -321,6 +321,23 @@ export function createStreetBuilder(net, { ground = null, uvOf = null, metres = 
     return true;
   });
 
+  // The carriageway under a point (edge id, or -1), allowing `margin` metres beyond its edge.
+  function roadAt(x, z, margin) {
+    const R = 9 + margin, x0 = gi(x - R), x1 = gi(x + R), z0 = gi(z - R), z1 = gi(z + R);
+    let best = -1, bestSlack = 0;
+    for (let gz = z0; gz <= z1; gz++) for (let gx = x0; gx <= x1; gx++) {
+      const c = gz * GN + gx;
+      for (let q = roadGrid.start[c]; q < roadGrid.start[c + 1]; q++) {
+        const p = roadGrid.items[q], vx = ptX[p + 1] - ptX[p], vz = ptZ[p + 1] - ptZ[p], L2 = vx * vx + vz * vz || 1;
+        let f = ((x - ptX[p]) * vx + (z - ptZ[p]) * vz) / L2;
+        f = f < 0 ? 0 : f > 1 ? 1 : f;
+        const slack = HW[segEdge[p]] + margin - Math.hypot(x - ptX[p] - vx * f, z - ptZ[p] - vz * f);
+        if (slack >= bestSlack) { bestSlack = slack; best = segEdge[p]; }
+      }
+    }
+    return best;
+  }
+
   // ---- tracks -----------------------------------------------------------------------------------
   // Tram and railway polylines resampled to short pieces, each piece classed as embedded in a
   // carriageway or open. Flags: 1 embedded, 2 railway, 4 grass bed, 8 sett bed, 16 last point.
@@ -372,9 +389,9 @@ export function createStreetBuilder(net, { ground = null, uvOf = null, metres = 
     if (tk.f[i] & 16) continue;
     const mx = (tk.x[i] + tk.x[i + 1]) / 2, mz = (tk.z[i] + tk.z[i + 1]) / 2, rail = tk.f[i] & 2;
     const m = rail ? 0.3 : 1.5;
-    const hm = net.onRoad(mx, mz, m);
-    const hit = hm || (net.onRoad(tk.x[i], tk.z[i], m) && net.onRoad(tk.x[i + 1], tk.z[i + 1], m));
-    if (hit) { tk.f[i] |= 1; if (!rail && hm && rank[hm.e] <= 3) tk.f[i] |= 8; }
+    const hm = roadAt(mx, mz, m);
+    const hit = hm >= 0 || (roadAt(tk.x[i], tk.z[i], m) >= 0 && roadAt(tk.x[i + 1], tk.z[i + 1], m) >= 0);
+    if (hit) { tk.f[i] |= 1; if (!rail && hm >= 0 && rank[hm] <= 3) tk.f[i] |= 8; }
     else if (!rail && greenClass[coverAt(mx, mz)]) tk.f[i] |= 4;
   }
   const trackGrid = makeGrid(tk.n, (i, bb) => {
@@ -704,7 +721,7 @@ export function createStreetBuilder(net, { ground = null, uvOf = null, metres = 
     for (let end = 0; end < 2; end++) {
       if ((end ? kB : kA) !== 1) continue;
       const i = end ? sl.n - 1 : 0, cx = sl.x[i], cz = sl.z[i], nx = sl.nx[i], nz = sl.nz[i], hw = sl.hw[i];
-      const bx = end ? -nz : nz, bz = end ? nx : -nx;             // straight on past the end
+      const bx = end ? nz : -nz, bz = end ? -nx : nx;             // straight on past the end
       const ring = touches(e, end, 0) && touches(e, end, 1), fl = !pavKind(e, 0) && !pavKind(e, 1);
       let px = cx - nx * hw, pz = cz - nz * hw, pnx = -nx, pnz = -nz;
       for (let j = 1; j <= 8; j++) {
@@ -924,7 +941,7 @@ export function createStreetBuilder(net, { ground = null, uvOf = null, metres = 
   }
 
   // ---- junctions --------------------------------------------------------------------------------
-  const bX = new Float64Array(512), bZ = new Float64Array(512);
+  let bX = new Float64Array(512), bZ = new Float64Array(512);
   const rX = new Float64Array(12), rZ = new Float64Array(12), rNX = new Float64Array(12), rNZ = new Float64Array(12);
   function buildNode(n) {
     const arms = net.arms[n], k = arms.length, c0 = nodeCorner[n], x0 = net.nodeX[n], z0 = net.nodeZ[n];
@@ -942,7 +959,8 @@ export function createStreetBuilder(net, { ground = null, uvOf = null, metres = 
       const ps = pavS[ei * 4 + ai.end * 2 + sdi], qs = pavS[ej * 4 + aj.end * 2 + sdj];
       // Outline of the wedge between the two arms: out along the right edge of arm i, round the
       // corner curve, back in along the left edge of arm j. Fanned from the node.
-      let nb = 0, m0 = 0;
+      let nb = 0;
+      if (si.n + sj.n + 16 > bX.length) { bX = new Float64Array((si.n + sj.n + 16) * 2); bZ = new Float64Array(bX.length); }
       const pi = at(si, ps);
       if (ai.end === 0) for (let q = 0; q <= pi; q++) { bX[nb] = si.x[q] + si.nx[q] * si.hw[q] * sgi; bZ[nb++] = si.z[q] + si.nz[q] * si.hw[q] * sgi; }
       else for (let q = si.n - 1; q >= pi; q--) { bX[nb] = si.x[q] + si.nx[q] * si.hw[q] * sgi; bZ[nb++] = si.z[q] + si.nz[q] * si.hw[q] * sgi; }
@@ -959,7 +977,6 @@ export function createStreetBuilder(net, { ground = null, uvOf = null, metres = 
         rNX[q] = dz / dl; rNZ[q] = -dx / dl;
         bX[nb] = rX[q]; bZ[nb++] = rZ[q];
       }
-      m0 = nb;
       if (aj.end === 0) for (let q = pj; q >= 0; q--) { bX[nb] = sj.x[q] + sj.nx[q] * sj.hw[q] * sgj; bZ[nb++] = sj.z[q] + sj.nz[q] * sj.hw[q] * sgj; }
       else for (let q = pj; q < sj.n; q++) { bX[nb] = sj.x[q] + sj.nx[q] * sj.hw[q] * sgj; bZ[nb++] = sj.z[q] + sj.nz[q] * sj.hw[q] * sgj; }
       for (let q = 0; q + 1 < nb; q++) ft(B0, x0, z0, bX[q], bZ[q], bX[q + 1], bZ[q + 1], y, jl, C_WHITE);

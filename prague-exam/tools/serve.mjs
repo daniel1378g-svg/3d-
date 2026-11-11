@@ -20,7 +20,9 @@ createServer(async (req, res) => {
   if (path.endsWith('/')) path += 'index.html';
   const rel = normalize(path).replace(/^([/\\])+/, '');
   const top = rel.split(/[/\\]/)[0];
-  const file = ['dev', 'src', 'data'].includes(top) ? join(ROOT, rel) : join(ROOT, 'dist', 'site', rel);
+  // Built data scripts (data/<section>.js) live in dist/site; raw packs and sources in the project.
+  const source = ['dev', 'src'].includes(top) || (top === 'data' && rel.endsWith('.pack'));
+  const file = source ? join(ROOT, rel) : join(ROOT, 'dist', 'site', rel);
   if (!file.startsWith(ROOT)) { res.writeHead(403).end(); return; }
   try {
     const body = await readFile(file);

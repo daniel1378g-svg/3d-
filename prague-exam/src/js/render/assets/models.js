@@ -146,7 +146,8 @@ const STEEL = col(0x7d8388);
 const DARK_STEEL = col(0x3b3f44);
 
 // A wheel on the x axis: tyre with smooth sides, hub cap facing outwards (side = +1 or -1).
-function wheel(m, x, y, z, r, width, side, sides = 8) {
+// `plain` wheels (bus) get a single shaded disc instead of a separate hub and tyre wall.
+function wheel(m, x, y, z, r, width, side, plain = false, sides = 8) {
   const inner = [x - side * width, y, z], outer = [x, y, z];
   m.tube(inner, outer, r, r, sides, TYRE, { smooth: true });
   const ring = (rad) => {
@@ -160,8 +161,14 @@ function wheel(m, x, y, z, r, width, side, sides = 8) {
   const tyre = ring(r), rim = ring(r * 0.62), out = [side, 0, 0];
   for (let i = 0; i < sides; i++) {
     const j = (i + 1) % sides;
-    m.quad(tyre[i], tyre[j], rim[j], rim[i], TYRE, out);
-    m.tri(outer, rim[i], rim[j], HUB, out);
+    if (plain) {
+      m.tri(outer, tyre[i], tyre[j], [HUB, TYRE, TYRE], out);
+    } else {
+      m.quad(tyre[i], tyre[j], rim[j], rim[i], TYRE, out);
+      m.tri(outer, rim[i], rim[j], HUB, out);
+    }
+    // Inner face, seen under the car from the far side.
+    m.tri(inner, [inner[0], tyre[i][1], tyre[i][2]], [inner[0], tyre[j][1], tyre[j][2]], TYRE, [-side, 0, 0]);
   }
 }
 
@@ -384,8 +391,7 @@ export function buildBusGeometry() {
     nose: [[0.3, 0.96, 0.02]],
     back: [red, red, red, white, roof, roof],
   });
-  m.box(-0.9, 2.5, -6.05, 0.9, 2.86, -5.99, col(0x15161a), { 'z+': null });          // destination display
-  m.box(-0.75, 2.58, -6.07, 0.75, 2.78, -6.04, col(0xd98a1e), { 'z+': null });
+  m.box(-0.9, 2.5, -6.06, 0.9, 2.86, -5.99, col(0x15161a), { 'z+': null, 'z-': col(0xc77f1c) });   // destination display
   m.box(-0.8, 3.04, -1.5, 0.8, 3.24, 1.3, roof, { 'y-': null });                      // air conditioning
   for (const x of [-0.85, 0.85]) {
     m.box(x - 0.17, 0.62, -6.05, x + 0.17, 0.82, -5.98, HEADLAMP, { 'z+': null });
@@ -394,10 +400,9 @@ export function buildBusGeometry() {
   for (const side of [1, -1]) {
     m.box(side > 0 ? 1.24 : -1.5, 2.0, -5.95, side > 0 ? 1.5 : -1.24, 2.42, -5.85, under);   // mirrors
     for (const z of [-3.55, 3.2]) {
-      wheel(m, side * 1.3, 0.48, z, 0.48, 0.3, side);
+      wheel(m, side * 1.3, 0.48, z, 0.48, 0.3, side, true);
     }
   }
-  m.box(-1.2, 0.2, -5.6, 1.2, 0.36, 5.6, under, { 'y+': null });
   return m.build();
 }
 

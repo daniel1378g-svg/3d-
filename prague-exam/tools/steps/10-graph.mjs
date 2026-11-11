@@ -573,8 +573,8 @@ export default async function run() {
   for (const b of bumps) {
     const e = edges[b.e];
     if (e.A.rank < 2) continue;
-    placeSign('A7a', e, b.s - 12, 1);
-    if (!oneway(e)) placeSign('A7a', e, b.s + 12, -1);
+    placeSign('A7b', e, b.s - 12, 1);
+    if (!oneway(e)) placeSign('A7b', e, b.s + 12, -1);
   }
   const RSIGN = { no_left_turn: 'B24b', no_right_turn: 'B24a', only_straight_on: 'C2a', only_right_turn: 'C2b', only_left_turn: 'C2c' };
   for (const [fe, node, , , kind] of restrictions) {

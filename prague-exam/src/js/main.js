@@ -63,9 +63,7 @@ function applySettings(s) {
   if (input) input.setSettings(settings);
   if (world && quality) world.setQuality(settings.quality);
   audio.setEnabled(settings.sound);
-  root.classList.toggle('no-limit', !settings.showLimit);
-  root.classList.toggle('no-minimap', !settings.minimap);
-  root.classList.toggle('no-mirrors', !settings.mirrors);
+  if (audio.setVoice) audio.setVoice(settings.voice);
 }
 
 function showMenu() {
@@ -181,7 +179,6 @@ function draw() {
   run.said = key;
   hud.setChecklist(exam.state === 'predrive' ? exam.checklist.map((c) => ({ id: c.id, label: LABEL[c.id] || c.id, done: c.done })) : null);
   audio.engine(car.rpm, car.throttle, car.engineOn);
-  audio.tick(car.indicator !== 'off' && Math.floor(run.t * 3) % 2 === 0);
   if (settings.minimap && hud.minimap && run.mapTick++ % 5 === 0) drawMinimap(hud.minimap, car);
 }
 
@@ -276,6 +273,8 @@ function tick(now) {
 
 async function boot() {
   screens = createScreens(root, handlers);
+  if (screens.settings) settings = { ...settings, ...screens.settings };
+  hud.onBlink = (on) => audio.tick(on);                           // indicator relay click, in step with the dashboard arrows
   screens.showLoading(0.02, 'Loading the map');
   hud.setVisible(false);
   const [graph, buildings, ground] = await Promise.all([loadSection('graph'), loadSection('buildings'), loadSection('ground')]);
