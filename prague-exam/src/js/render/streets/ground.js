@@ -61,12 +61,24 @@ export function createGround(ground, anisotropy) {
   };
   material.customProgramCacheKey = () => 'streets-ground';
 
-  const R = HALF + MARGIN, u0 = -MARGIN / (2 * HALF), u1 = 1 - u0;
+  // A grid, not one big quad: depth interpolated across a 9 km triangle is too coarse to keep the
+  // ground 6 cm under the roads right in front of the camera.
+  const R = HALF + MARGIN, CELLS = 56, step = (2 * R) / CELLS, V = CELLS + 1;
+  const pos = new Float32Array(V * V * 3), nrm = new Float32Array(V * V * 3), uv = new Float32Array(V * V * 2), idx = new Uint16Array(CELLS * CELLS * 6);
+  for (let j = 0, v = 0; j < V; j++) for (let i = 0; i < V; i++, v++) {
+    const x = -R + i * step, z = -R + j * step;
+    pos[v * 3] = x; pos[v * 3 + 1] = Y; pos[v * 3 + 2] = z; nrm[v * 3 + 1] = 1;
+    uv[v * 2] = (x + HALF) / (2 * HALF); uv[v * 2 + 1] = (z + HALF) / (2 * HALF);
+  }
+  for (let j = 0, o = 0; j < CELLS; j++) for (let i = 0; i < CELLS; i++, o += 6) {
+    const a = j * V + i, b = a + 1, c = a + V, d = c + 1;
+    idx[o] = a; idx[o + 1] = d; idx[o + 2] = b; idx[o + 3] = a; idx[o + 4] = c; idx[o + 5] = d;
+  }
   const geometry = new T.BufferGeometry();
-  geometry.setAttribute('position', new T.BufferAttribute(new Float32Array([-R, Y, -R, R, Y, -R, R, Y, R, -R, Y, R]), 3));
-  geometry.setAttribute('normal', new T.BufferAttribute(new Float32Array([0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0]), 3));
-  geometry.setAttribute('uv', new T.BufferAttribute(new Float32Array([u0, u0, u1, u0, u1, u1, u0, u1]), 2));
-  geometry.setIndex([0, 2, 1, 0, 3, 2]);
+  geometry.setAttribute('position', new T.BufferAttribute(pos, 3));
+  geometry.setAttribute('normal', new T.BufferAttribute(nrm, 3));
+  geometry.setAttribute('uv', new T.BufferAttribute(uv, 2));
+  geometry.setIndex(new T.BufferAttribute(idx, 1));
   const mesh = new T.Mesh(geometry, material);
   mesh.name = 'ground';
   mesh.frustumCulled = false;

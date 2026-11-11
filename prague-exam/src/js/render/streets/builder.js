@@ -678,14 +678,21 @@ export function createStreetBuilder(net, { ground = null, uvOf = null, metres = 
     if (taper[k + 1] > 0) add(snap(e, L - taper[k + 1]));
     for (let i = 0; i < nex; i++) add(snap(e, ex[i]));
     const arr = tmpS.subarray(0, n).sort();
-    if (n > sl.cap) growSlot(sl, n);
+    // No two stations more than 40 m apart: very long quads lose depth precision close to the camera.
+    let total = 1;
+    for (let i = 1; i < n; i++) if (arr[i] - arr[i - 1] >= 1e-9) total += Math.ceil((arr[i] - arr[i - 1]) / 40);
+    if (total > sl.cap) growSlot(sl, total);
     let m = 0;
+    const put = (s) => { calc(e, s); sl.s[m] = s; sl.x[m] = _x; sl.z[m] = _z; sl.nx[m] = _nx; sl.nz[m] = _nz; sl.hw[m] = _hw; sl.kh[m] = KH; m++; };
     for (let i = 0; i < n; i++) {
       const s = arr[i];
-      if (m && s - sl.s[m - 1] < 1e-9) continue;
-      calc(e, s);
-      sl.s[m] = s; sl.x[m] = _x; sl.z[m] = _z; sl.nx[m] = _nx; sl.nz[m] = _nz; sl.hw[m] = _hw; sl.kh[m] = KH;
-      m++;
+      if (m) {
+        const prev = sl.s[m - 1], gap = s - prev;
+        if (gap < 1e-9) continue;
+        const parts = Math.ceil(gap / 40);
+        for (let q = 1; q < parts; q++) put(prev + (gap * q) / parts);
+      }
+      put(s);
     }
     sl.n = m;
   }

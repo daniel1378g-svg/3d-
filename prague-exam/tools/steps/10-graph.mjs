@@ -650,13 +650,15 @@ export default async function run() {
       if (!named.has(t.name)) named.set(t.name, p);
     }
     for (const name of want) {
-      const p = named.get(name);
+      // The first entry is the centre of the map (the pin): always offer it, searching wider.
+      const pin = name === want[0];
+      const p = named.get(name) || (pin ? [0, 0] : null);
       if (!p) continue;
-      let best = null, bestD = 320;
+      let best = null, bestD = pin ? 700 : 320;
       for (const e of edges) {
         const A = e.A;
         if (A.rank < 2 || A.rank > 3 || A.oneway || e.len < 70 || A.speed > 50 || A.flags & (FLAG.LIMITED | FLAG.BRIDGE | FLAG.TUNNEL | FLAG.NARROW)) continue;
-        if (e.feats.length) continue;
+        if (e.feats.length && !pin) continue;
         const m = along(e.pts, e.cum, e.len * 0.4);
         const d = Math.hypot(m.x - p[0], m.z - p[1]);
         if (d < bestD) { bestD = d; best = e; }

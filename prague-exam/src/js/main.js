@@ -92,6 +92,7 @@ async function startDrive(options, seed) {
   try {
     await world.prewarm(car.x, car.z);
   } catch (err) { console.error(err); }
+  if (run.seed !== seed) return;                                  // another start was requested meanwhile
   screens.hide();
   hud.setVisible(true);
   input.setEnabled(true);
@@ -283,7 +284,7 @@ async function boot() {
   net = new RoadNet(graph);
   statics = createStatics(buildings);
   screens.showLoading(0.45, 'Preparing the streets');
-  world = await createWorld({ canvas, net, packs: { buildings, ground }, quality: settings.quality, onProgress: (f, label) => screens.showLoading(0.45 + 0.5 * f, label || 'Preparing the streets') });
+  world = await createWorld({ canvas, net, packs: { buildings, ground }, quality: settings.quality, onProgress: (f, stage) => { if (state === 'loading') screens.showLoading(0.45 + 0.5 * f, stage === 'chunks' ? 'Building the streets around you' : 'Preparing the streets'); } });
   input = createInput(root, settings);
   input.setEnabled(false);
   window.addEventListener('resize', () => world.resize());
@@ -300,4 +301,7 @@ boot().catch((err) => {
 });
 
 // For tests and debugging from the console.
-window.__game = { get run() { return run; }, get net() { return net; }, get world() { return world; }, get state() { return state; }, start: (o, seed = 1) => startDrive({ mode: 'exam', placeId: null, duration: 10, traffic: 'normal', settings, ...o }, seed) };
+window.__game = {
+  // Dev helper: put the car somewhere else on the map.
+  async teleport(x, z, heading) { const c = run.car; c.x = x; c.z = z; c.heading = heading; c.speed = 0; run.locator.reset(); await world.prewarm(x, z); },
+  get run() { return run; }, get net() { return net; }, get world() { return world; }, get state() { return state; }, start: (o, seed = 1) => startDrive({ mode: 'exam', placeId: null, duration: 10, traffic: 'normal', settings, ...o }, seed) };

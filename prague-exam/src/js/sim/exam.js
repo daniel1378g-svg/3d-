@@ -292,6 +292,7 @@ export function createExam({ net, statics, traffic, seed = 1, mode = 'exam', dur
     if (ex.state === 'done' || loc.e < 0) return;
     const v = car.speed, av = Math.abs(v), kmh = av * KMH;
 
+    if (av < 0.35) lastStillOdo = car.odometer;
     // Indicator and observation history.
     if (car.indicator !== ind.side) { ind.side = car.indicator; ind.since = t; ind.odo = car.odometer; }
     if (car.indicator === 'left') ind.lastLeft = t;
@@ -404,13 +405,19 @@ export function createExam({ net, statics, traffic, seed = 1, mode = 'exam', dur
           if (st === SIG.AMBER) { if (!amber || amber.id !== l.id) amber = { id: l.id, canStop: d > av * 1.0 + (av * av) / (2 * 3.6) }; }
           else if (amber && amber.id === l.id && st !== SIG.AMBER) amber = st === SIG.GREEN ? null : amber;
         }
-        if (passed(l.s) && v > 0.3) {
+        const justPast = !sameEdge && d <= 0 && d > -2.5;              // the line lies right at the start of a new edge
+        if ((passed(l.s) || justPast) && v > 0.3) {
           if (st === SIG.RED || st === SIG.RED_AMBER) redPending = { id: l.id, s: l.s, e: loc.e };
           else if (st === SIG.AMBER && amber && amber.id === l.id && amber.canStop) fault('RED_LIGHT', 'the light was amber and there was room to stop');
         }
       } else if (l.kind === CTRL.STOP) {
-        if (d < 9 && d > -1) { if (!stopWatch || stopWatch.id !== l.id) stopWatch = { id: l.id, min: av }; else stopWatch.min = Math.min(stopWatch.min, av); }
-        if (stopWatch && stopWatch.id === l.id && d < -1.2) { if (stopWatch.min > 0.35) fault('STOP_SIGN', `slowest speed ${Math.round(stopWatch.min * KMH)} km/h`); else stats.stopsAtSigns++; stopWatch = null; }
+        // Judged when the front crosses the line (or is first seen just past it on a new edge):
+        // the car must have stood still within the last few metres before it.
+        if (d < 12 && d > -3) { if (!stopWatch || stopWatch.id !== l.id) stopWatch = { id: l.id, min: av, judged: false }; else stopWatch.min = Math.min(stopWatch.min, av); }
+        if (stopWatch && stopWatch.id === l.id && !stopWatch.judged && d <= 0 && d > -3) {
+          stopWatch.judged = true;
+          if (car.odometer - lastStillOdo > 9 - d) fault('STOP_SIGN', `slowest speed ${Math.round(stopWatch.min * KMH)} km/h`); else stats.stopsAtSigns++;
+        }
       }
     }
     if (redPending) {
@@ -589,7 +596,7 @@ export function createExam({ net, statics, traffic, seed = 1, mode = 'exam', dur
       if (manoeuvre.silent && d > 70) manoeuvre = null;                 // look again next step: a turn may be nearer on a longer plan
     } else ex.instruction = null;
   }
-  let idleCross = 0, kerbT = 0;
+  let idleCross = 0, kerbT = 0, lastStillOdo = 0;
   function manoeuvreSoon() { return manoeuvre && !manoeuvre.silent && distanceTo(manoeuvre.first) < 220; }
   function isOncoming(A, B) {
     const arms = net.arms[net.nodeOf(A.e, A.end)];

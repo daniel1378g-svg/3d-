@@ -21,7 +21,13 @@ export function createLocator(net) {
       if (onlyNode >= 0 && net.edgeA[c.e] !== onlyNode && net.edgeB[c.e] !== onlyNode) continue;
       const over = Math.max(0, c.dist - net.width[c.e] / 2);
       const align = Math.abs(fx * c.dx + fz * c.dz);
-      let score = over * 2 + c.dist * 0.4 + (1 - align) * 7;
+      // Past the end of an edge the car belongs to the next one: without this the current edge
+      // is kept for a few metres and lines just beyond a node are seen too late.
+      // (Only at plain nodes: inside a junction the heading decides between the arms.)
+      const atA = c.s <= 0.01, atB = c.s >= net.len[c.e] - 0.01;
+      const plain = (atA || atB) && net.arms[atA ? net.edgeA[c.e] : net.edgeB[c.e]].length < 3;
+      const beyond = plain ? Math.sqrt(Math.max(0, c.dist * c.dist - c.d * c.d)) : 0;
+      let score = over * 2 + c.dist * 0.4 + (1 - align) * 7 + (beyond > 0.3 ? beyond * 3 : 0);
       if (c.e === loc.e) score -= 1.6;                          // stay on the current edge when in doubt
       if (net.rank[c.e] === 0) score += 0.8;
       if (score < bestScore) { bestScore = score; best = c; }

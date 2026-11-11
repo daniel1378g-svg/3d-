@@ -82,7 +82,7 @@ export function stepVehicle(car, input, dt) {
   car.odometer += Math.abs(d);
   // Body motion for the camera: a little dive under braking and lean in bends.
   const lat = car.speed * car.speed * Math.tan(car.steer) / car.wheelbase;
-  car.pitch += ((-car.accel * 0.0045) - car.pitch) * Math.min(1, dt * 6);
+  car.pitch += ((car.accel * 0.0045) - car.pitch) * Math.min(1, dt * 6);   // + = nose up
   car.roll += ((lat * 0.006) - car.roll) * Math.min(1, dt * 6);
 
   // Indicator self-cancels after the wheel has been turned and straightened again.

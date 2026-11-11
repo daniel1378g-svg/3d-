@@ -54,6 +54,7 @@ export function runExam({ placeId = null, seed = 1, minutes = 10, density = 'nor
     const q = {};
     for (let i = 0; i < P.length && left > 0; i++) {
       const st = P[i], end = st.dir > 0 ? 1 : 0, node = net.nodeOf(st.e, end), next = P[i + 1];
+      lane = Math.min(lane, Math.max(1, net.lanes(st.e, st.dir)) - 1);     // the lane count can drop from one edge to the next
       const junction = net.isJunction(node) && next;
       const s0 = i === 0 && st.e === loc.e ? loc.s : (st.dir > 0 ? (net.isJunction(net.nodeOf(st.e, 0)) ? net.trim[st.e * 2] : 0) : net.len[st.e] - (net.isJunction(net.nodeOf(st.e, 1)) ? net.trim[st.e * 2 + 1] : 0));
       const s1 = st.dir > 0 ? net.len[st.e] - (junction ? net.trim[st.e * 2 + 1] : 0) : (junction ? net.trim[st.e * 2] : 0);
@@ -94,7 +95,9 @@ export function runExam({ placeId = null, seed = 1, minutes = 10, density = 'nor
     } else moveOffAt = -1;
     const P = exam.plan;
     if (!P.length) { if (exam.state === 'predrive') { input.throttle = 0.4; input.steer = 0; } else input.brake = 0.5; return; }
-    const here = P[0], next = P[1];
+    // The plan is shifted by the examiner a moment after the car reaches a new edge.
+    const at = Math.max(0, P.findIndex((p) => p.e === loc.e && p.dir === loc.dir));
+    const here = P[at], next = P[at + 1];
     if (!next && loc.rem < 30) { input.brake = 0.6; return; }             // dead end: the bot cannot turn round
     const kerb = key === 'pullOver' || key === 'finish';
 
@@ -135,7 +138,7 @@ export function runExam({ placeId = null, seed = 1, minutes = 10, density = 'nor
 
     // Speed.
     const plan = (d, vEnd = 0, b = 2.2) => Math.sqrt(vEnd * vEnd + 2 * b * Math.max(0, d));
-    let target = Math.max(3, (net.speedKmh[loc.e] - 5) / 3.6);
+    let target = Math.max(3, (net.speedKmh[loc.e] - 5 + (rules.overLimit || 0)) / 3.6);   // rules.overLimit: a driver who cruises too fast
     if (pts.length > 6) {                                                  // bends ahead
       const h0 = headingOf(pts[2].x - pts[0].x, pts[2].z - pts[0].z), h1 = headingOf(pts[pts.length - 1].x - pts[pts.length - 3].x, pts[pts.length - 1].z - pts[pts.length - 3].z);
       const bend = Math.abs(angDiff(h1, h0));
@@ -191,7 +194,6 @@ export function runExam({ placeId = null, seed = 1, minutes = 10, density = 'nor
     for (const p of traffic.peds) if (p.state === 'cross') lead({ x: p.x, z: p.z, h: car.heading + Math.PI / 2, v: 0 }, 1, 1);
     if (kerb) { const offR = loc.dir > 0 ? loc.d : -loc.d; const gap = net.width[loc.e] / 2 - offR - car.width / 2; target = Math.min(target, gap < 0.55 ? 0 : 3); }
     if (stopD < Infinity) target = Math.min(target, stopD < 0.3 ? 0 : plan(stopD));
-    if (rules.speed) target = Math.max(target, rules.speed);
 
     const err = target - v;
     if (target < 0.2 && v < 0.6) input.brake = 0.6;
