@@ -4,7 +4,10 @@ import { CONFIG } from './config.js';
 import { LANGS, LOCALES, translate } from './i18n.js';
 import { COLORS, DEFAULT_SELECTION, colorById } from './colors.js';
 import { createStory, SHOTS } from './story.js';
-import { PHASES, AMBIENT_READY } from './three/experience.js';
+import { SEQUENCES } from './three/experience.js';
+
+const SEQ = SEQUENCES[CONFIG.interior];                       // what the interior sequence shows for this business
+const NS = CONFIG.key === 'fastwheels' ? 'fw' : CONFIG.key;   // prefix for what is remembered in the browser
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
@@ -19,7 +22,7 @@ const reduced = () => reducedQuery.matches;
 
 // ---------------------------------------------------------------------------------------------- language
 let lang = (() => {
-  const saved = store.get('fw.lang');
+  const saved = store.get(`${NS}.lang`);
   return LANGS.includes(saved) ? saved : CONFIG.defaultLanguage;
 })();
 const t = (key, vars) => translate(lang, key, vars);
@@ -51,12 +54,12 @@ function setLanguage(next, { silent = false } = {}) {
   const anchor = silent ? null : scrollAnchor();
   lang = next;
   root.lang = LOCALES[lang];
-  document.title = CONFIG.brand.name;
+  document.title = CONFIG.brand.title;
   $('meta[name="description"]')?.setAttribute('content', t('meta.description'));
   applyTexts();
   renderReadout(); renderWrapChoice(); renderOfflineText(); renderHours(); updateViewerLabel();
   $('#lang-select').value = lang;
-  store.set('fw.lang', lang);
+  store.set(`${NS}.lang`, lang);
   if (anchor) { const drift = anchor.el.getBoundingClientRect().top - anchor.top; if (Math.abs(drift) > 1) window.scrollBy(0, drift); }
   if (!silent) {
     for (const el of $$('.logo')) { el.classList.remove('is-sweeping'); void el.offsetWidth; el.classList.add('is-sweeping'); }
@@ -72,12 +75,12 @@ let staticInterior = false;
 
 function targetTop(id) {
   if (id === 'top') return 0;
-  if ((id === 'ambient' || id === 'starlight') && !staticInterior) {
+  if (id in SEQ.anchors && !staticInterior) {                  // a point inside the pinned sequence
     const cine = $('#cine'), r = cine.getBoundingClientRect();
-    return window.scrollY + r.top + (cine.offsetHeight - window.innerHeight) * (id === 'ambient' ? AMBIENT_READY + 0.02 : 0.995);
+    return window.scrollY + r.top + (cine.offsetHeight - window.innerHeight) * SEQ.anchors[id];
   }
   let el = document.getElementById(id);
-  if ((id === 'ambient' || id === 'starlight') && staticInterior) el = $$('#stills .compare')[id === 'ambient' ? 0 : 1];
+  if (id in SEQ.anchors && staticInterior) el = $$('#stills .compare')[Object.keys(SEQ.anchors).indexOf(id)] || $('#stills');
   if (!el) return null;
   const top = window.scrollY + el.getBoundingClientRect().top;
   return el.classList.contains('step') ? top : top - headerHeight() + 1;
@@ -129,7 +132,7 @@ function initStory() {
   const canvas = $('#story-canvas');
   if (reduced()) { root.classList.add('static-story'); return; }
   const small = Math.min(window.innerWidth, window.innerHeight) < 760 || (navigator.connection && navigator.connection.saveData);
-  story = createStory(canvas, { small, onReady: () => $('.story').classList.add('story-live') });
+  story = createStory(canvas, { small, grade: CONFIG.story.grade, onReady: () => $('.story').classList.add('story-live') });
   if (!story) { root.classList.add('static-story'); return; }
   new IntersectionObserver(([e]) => story.setVisible(e.isIntersecting), { rootMargin: '10% 0px' }).observe($('.story'));
 }
@@ -142,8 +145,8 @@ function updateStory() {
 
 // ---------------------------------------------------------------------------------------------- configurator
 const selection = (() => {
-  const saved = store.get('fw.wrap') || {};
-  const s = { ...DEFAULT_SELECTION };
+  const saved = store.get(`${NS}.wrap`) || {};
+  const s = { ...(CONFIG.defaultSelection || DEFAULT_SELECTION) };
   if (saved.vehicle === 'car' || saved.vehicle === 'bike') s.vehicle = saved.vehicle;
   if (COLORS.some((c) => c.id === saved.color)) s.color = saved.color;
   if (['gloss', 'satin', 'matte'].includes(saved.finish)) s.finish = saved.finish;
@@ -177,7 +180,7 @@ function syncSelection({ fromUser = false } = {}) {
   $('#effect-note').hidden = !anyOff;
   showFamily(c.family);
   renderReadout(); updateViewerLabel();
-  store.set('fw.wrap', selection);
+  store.set(`${NS}.wrap`, selection);
   scene?.setPaint(paintSpec());
   scene?.setVehicle(selection.vehicle);
   if (!$('#viewer-stage').classList.contains('is-live')) $('#viewer-poster').src = `img/poster-${selection.vehicle}.webp`;
@@ -218,7 +221,7 @@ function initConfigurator() {
   $('#config-request').addEventListener('click', (e) => {
     e.preventDefault();
     wrapChoice = { ...selection };
-    $('#f-service-wrap').checked = true;
+    $(`#f-service-${CONFIG.wrapService[selection.vehicle]}`).checked = true;
     $(`#f-type-${selection.vehicle}`).checked = true;
     renderWrapChoice();
     clearError('services');
@@ -264,7 +267,8 @@ function ensureScene() {
   if (!scenePromise) {
     if (!supports3d()) { disable3d(); return Promise.resolve(null); }
     scenePromise = loadSceneBundle().then(() => {
-      scene = window.FWScene.createScene({ reducedMotion: reduced(), modelBase: 'models/', onState: onSceneState, tier: window.FW_CONFIG?.tier, instant: !!window.FW_CONFIG?.instant });
+      scene = window.FWScene.createScene({ reducedMotion: reduced(), modelBase: 'models/', onState: onSceneState, tier: window.FW_CONFIG?.tier, instant: !!window.FW_CONFIG?.instant, accent: CONFIG.scene.accent, sequence: CONFIG.interior });
+      scene.setTintLevel(tintLevel);
       scene.setPaint(paintSpec(), true);
       scene.setVehicle(selection.vehicle);
       scene.setAmbientColor(light.color);
@@ -329,11 +333,9 @@ function initScene() {
 }
 
 // ---------------------------------------------------------------------------------------------- interior sequence
-const light = (() => { const saved = store.get('fw.light') || {}; return { color: /^#[0-9a-f]{6}$/i.test(saved.color) ? saved.color : '#3d6bff', brightness: clamp(Number(saved.brightness) || 0.85, 0.2, 1) }; })();
-const CAPTION = { approach: 'door', door: 'door', enter: 'door', cabin: 'cabin', ambient: 'ambient', tilt: 'tilt', stars: 'stars' };
-const STILL = { approach: 'exterior', door: 'door', enter: 'door', cabin: 'cabin-off', ambient: 'cabin-on', tilt: 'roof-off', stars: 'roof-on' };
-const RAIL = ['door', 'cabin', 'ambient', 'tilt', 'stars'];
-let caption = 'door', sequencePhase = '';
+const light = (() => { const saved = store.get(`${NS}.light`) || {}; return { color: /^#[0-9a-f]{6}$/i.test(saved.color) ? saved.color : '#3d6bff', brightness: clamp(Number(saved.brightness) || 0.85, 0.2, 1) }; })();
+let tintLevel = ['light', 'medium', 'dark'].includes(store.get(`${NS}.tint`)) ? store.get(`${NS}.tint`) : 'medium';
+let caption = SEQ.rail[0], sequencePhase = '';
 
 function updateInterior() {
   if (staticInterior) return;
@@ -341,12 +343,12 @@ function updateInterior() {
   const span = cine.offsetHeight - window.innerHeight;
   const p = clamp(-r.top / span, 0, 1);
   if (activeStage === 'interior') scene?.setProgress(p);
-  const phase = (PHASES.find((ph) => p >= ph.from && p < ph.to) || PHASES[PHASES.length - 1]).id;
+  const phase = (SEQ.phases.find((ph) => p >= ph.from && p < ph.to) || SEQ.phases[SEQ.phases.length - 1]).id;
   if (phase !== sequencePhase) {
     sequencePhase = phase;
-    if (!$('#cine-pic').classList.contains('is-live')) $('#cine-poster').src = `img/still-${STILL[phase]}.webp`;
-    const next = CAPTION[phase];
-    const at = RAIL.indexOf(next);
+    if (!$('#cine-pic').classList.contains('is-live')) $('#cine-poster').src = `img/still-${SEQ.still[phase]}.webp`;
+    const next = SEQ.caption[phase];
+    const at = SEQ.rail.indexOf(next);
     $$('#rail li').forEach((li, n) => { li.classList.toggle('is-current', n === at); li.classList.toggle('is-done', n < at); if (n === at) li.setAttribute('aria-current', 'step'); else li.removeAttribute('aria-current'); });
     if (next !== caption) {
       caption = next;
@@ -356,14 +358,20 @@ function updateInterior() {
       const box = $('#caption'); box.classList.remove('is-swapping'); void box.offsetWidth; box.classList.add('is-swapping');
     }
   }
-  $('#lights').hidden = p < AMBIENT_READY;
+  $('#lights').hidden = p < SEQ.controlsFrom;
 }
 function initInterior() {
-  const current = $$('input[name="light-color"]').find((i) => i.value.toLowerCase() === light.color.toLowerCase());
-  if (current) current.checked = true;
-  $('#light-brightness').value = String(Math.round(light.brightness * 100));
-  for (const input of $$('input[name="light-color"]')) input.addEventListener('change', () => { light.color = input.value; scene?.setAmbientColor(light.color); store.set('fw.light', light); });
-  $('#light-brightness').addEventListener('input', (e) => { light.brightness = clamp(Number(e.target.value) / 100, 0.2, 1); scene?.setAmbientBrightness(light.brightness); store.set('fw.light', light); });
+  if ($('#light-brightness')) {                                // ambient lighting: colour and brightness
+    const current = $$('input[name="light-color"]').find((i) => i.value.toLowerCase() === light.color.toLowerCase());
+    if (current) current.checked = true;
+    $('#light-brightness').value = String(Math.round(light.brightness * 100));
+    for (const input of $$('input[name="light-color"]')) input.addEventListener('change', () => { light.color = input.value; scene?.setAmbientColor(light.color); store.set(`${NS}.light`, light); });
+    $('#light-brightness').addEventListener('input', (e) => { light.brightness = clamp(Number(e.target.value) / 100, 0.2, 1); scene?.setAmbientBrightness(light.brightness); store.set(`${NS}.light`, light); });
+  }
+  for (const input of $$('input[name="tint-level"]')) {         // window film: how dark
+    input.checked = input.value === tintLevel;
+    input.addEventListener('change', () => { tintLevel = input.value; scene?.setTintLevel(tintLevel); store.set(`${NS}.tint`, tintLevel); });
+  }
   for (const box of $$('[data-compare]')) for (const button of $$('[data-show]', box)) button.addEventListener('click', () => {
     for (const b of $$('[data-show]', box)) { const on = b === button; b.classList.toggle('is-on', on); b.setAttribute('aria-pressed', String(on)); }
     for (const side of $$('[data-side]', box)) side.hidden = side.dataset.side !== button.dataset.show;
@@ -427,7 +435,12 @@ function showStatus(kind) {
   if (kind === 'invalid') box.innerHTML = p('err.summary');
   if (kind === 'failed') box.innerHTML = h('fail.title') + p('fail.text');
   if (kind === 'offline') {
-    box.innerHTML = `${h('off.title')}${p('off.text')}<div class="actions"><button class="btn btn-primary" type="button" id="copy-request" data-i18n="off.copy"></button>${CONFIG.instagram ? `<a class="btn btn-ghost" href="${CONFIG.instagram.url}" target="_blank" rel="noopener"><span data-i18n="off.instagram"></span><span class="sr-only" data-i18n="contact.newtab"></span></a>` : ''}</div><div id="copy-fallback" hidden><p class="hint-line" data-i18n="off.select"></p><textarea id="copy-text" readonly rows="8"></textarea></div>`;
+    const newTab = '<span class="sr-only" data-i18n="contact.newtab"></span>';
+    const copy = (kind) => `<button class="btn ${kind}" type="button" id="copy-request" data-i18n="off.copy"></button>`;
+    const direct = CONFIG.whatsapp                              // with a WhatsApp number the request can be sent straight away
+      ? `<a class="btn btn-primary" id="wa-request" href="https://wa.me/${CONFIG.whatsapp}" target="_blank" rel="noopener"><span data-i18n="off.whatsapp"></span>${newTab}</a>${copy('btn-ghost')}`
+      : `${copy('btn-primary')}${CONFIG.instagram ? `<a class="btn btn-ghost" href="${CONFIG.instagram.url}" target="_blank" rel="noopener"><span data-i18n="off.instagram"></span>${newTab}</a>` : ''}`;
+    box.innerHTML = `${h('off.title')}${p('off.text')}<div class="actions">${direct}</div><div id="copy-fallback" hidden><p class="hint-line" data-i18n="off.select"></p><textarea id="copy-text" readonly rows="8"></textarea></div>`;
     $('#copy-request').addEventListener('click', copyRequest);
   }
   applyTexts(box);
@@ -449,6 +462,7 @@ function renderOfflineText() {
   if ($('#form-status').dataset.kind !== 'offline') return;
   lastRequestText = requestText(readForm());
   const area = $('#copy-text'); if (area) area.value = lastRequestText;
+  const wa = $('#wa-request'); if (wa) wa.href = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(lastRequestText)}`;   // WhatsApp opens with the request written out
 }
 async function copyRequest() {
   lastRequestText = requestText(readForm());
@@ -489,7 +503,7 @@ async function submitForm(e) {
   if (Object.keys(errors).length) {
     showStatus('invalid');
     const first = Object.keys(FIELDS).find((f) => errors[f]);
-    const target = first === 'services' ? $('#f-service-detailing') : $(FIELDS[first]);
+    const target = first === 'services' ? $(`#f-service-${CONFIG.services[0]}`) : $(FIELDS[first]);
     target.focus();
     return;
   }
@@ -527,7 +541,7 @@ function initForm() {
   for (const field of ['make', 'model', 'year', 'date', 'name', 'phone', 'email']) $(FIELDS[field]).addEventListener('input', () => recheck(field));
   for (const input of $$('input[name="services"]')) input.addEventListener('change', () => recheck('services'));
   form.addEventListener('input', () => { if ($('#form-status').dataset.kind === 'offline') renderOfflineText(); });
-  $('#wrap-choice-remove').addEventListener('click', () => { wrapChoice = null; renderWrapChoice(); $('#f-service-wrap').focus(); });
+  $('#wrap-choice-remove').addEventListener('click', () => { wrapChoice = null; renderWrapChoice(); $(`#f-service-${CONFIG.services[0]}`).focus(); });
   $('#form-again').addEventListener('click', () => { form.reset(); wrapChoice = null; renderWrapChoice(); showStatus(null); $('#form-done').hidden = true; form.hidden = false; $('#f-date').min = todayISO(); $('#book-title').focus(); });
 }
 function renderHours() {
@@ -548,13 +562,18 @@ function updateFab() {
   fab.tabIndex = hide ? -1 : 0;
   fab.setAttribute('aria-hidden', String(hide));
 }
-const NAV_SPANS = [['detailing', () => $('#detailing')], ['ceramic', () => $('#ceramic')], ['wrap', () => $('#wrap')], ['booking', () => $('#booking')], ['ambient', () => $('#interior')], ['starlight', () => null]];
 function updateNav() {
-  const line = window.innerHeight * 0.4;
-  let current = '';
-  for (const [id, get] of NAV_SPANS) { const el = get(); if (el && el.getBoundingClientRect().top <= line) current = id; }
-  if (current === 'ambient' && !staticInterior) { const cine = $('#cine'), r = cine.getBoundingClientRect(); const p = -r.top / (cine.offsetHeight - window.innerHeight); if (p > 0.8) current = 'starlight'; if (r.bottom < line) current = ''; }
-  if (current === 'detailing' && $('#detailing').getBoundingClientRect().bottom < 0 && $('#ceramic').getBoundingClientRect().top > line) current = 'detailing';
+  // The current item is the one whose part of the page started last, measured 40% down the screen. The booking
+  // section and the closing band are marks too, so that nothing stays highlighted while they are on screen.
+  const line = window.scrollY + window.innerHeight * 0.4;
+  const inside = Object.keys(SEQ.anchors);                     // menu items that point into the interior sequence
+  const sectionTop = (id) => window.scrollY + document.getElementById(id).getBoundingClientRect().top;
+  let current = '', at = -Infinity;
+  for (const id of [...CONFIG.nav.map(([id]) => id), 'booking', 'finale']) {
+    const top = id === inside[0] ? sectionTop('interior') : id === 'finale' ? sectionTop('finale') : targetTop(id);
+    if (top !== null && top <= line && top >= at) { current = id; at = top; }
+  }
+  if (inside.includes(current) && $('#interior').getBoundingClientRect().bottom < window.innerHeight * 0.4) current = '';
   for (const link of $$('.nav-link')) { const on = link.dataset.nav === current; link.classList.toggle('is-current', on); if (on) link.setAttribute('aria-current', 'true'); else link.removeAttribute('aria-current'); }
 }
 let ticking = false;

@@ -7,14 +7,17 @@
 // /dev/scene.html?mode=config&vehicle=car|bike&az=-41&paint=1b2f8f&finish=gloss&effect=solid
 // /dev/scene.html?mode=interior&p=0.5&ambient=3d6bff&bright=0.85
 //   &tier=low|mid|high   &dpr=1   &live=1 (keep animating: auto-rotate, twinkle)
+//   &brand=overlay (that business's room lighting and interior sequence)   &tint=light|medium|dark
 import * as THREE from 'three';
 import { createScene } from '/src/three/scene.js';
 window.THREE = THREE;
 const q = new URLSearchParams(location.search);
 const mode = q.get('mode') || 'config';
-const s = createScene({ tier: q.get('tier') || 'high', reducedMotion: !q.has('live'), modelBase: '/public/models/', pixelRatio: q.has('dpr') ? Number(q.get('dpr')) : undefined,
+const brand = q.has('brand') ? (await import(`/src/brands/${q.get('brand')}.js`)).default : null;
+const s = createScene({ accent: brand?.scene.accent ?? null, sequence: brand?.interior ?? 'lights', tier: q.get('tier') || 'high', reducedMotion: !q.has('live'), modelBase: '/public/models/', pixelRatio: q.has('dpr') ? Number(q.get('dpr')) : undefined,
   onState: (e) => { if (e.type === 'ready') requestAnimationFrame(() => requestAnimationFrame(() => { window.__ready = true; })); if (e.type === 'error') console.error(e.error); } });
 window.__scene = s;
+if (q.has('tint')) s.setTintLevel(q.get('tint'));
 if (q.has('paint')) s.setPaint({ hex: '#' + q.get('paint'), finish: q.get('finish') || 'gloss', effect: q.get('effect') || 'solid' }, true);
 if (mode === 'config') { s.setVehicle(q.get('vehicle') || 'car'); s.setAutoRotate(q.has('live')); if (q.has('az')) s.setAngle(Number(q.get('az'))); }
 else { if (q.has('ambient')) s.setAmbientColor('#' + q.get('ambient')); if (q.has('bright')) s.setAmbientBrightness(Number(q.get('bright'))); s.setProgress(Number(q.get('p') || 0), true); }

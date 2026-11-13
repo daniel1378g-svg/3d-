@@ -1,0 +1,78 @@
+/* Overlay: black and gold. Dark bands carry a warm tint and a gold glow; the quote band and the closing band are solid gold. */
+:root {
+  --gold: #e1b45b;          /* Overlay's yellow, as text and as key colour on dark */
+  --gold-hi: #f2cb78;
+  --gold-deep: #bf8f2e;     /* Overlay's button gold */
+  --on-gold: #140f05;
+  --on-gold-dim: rgba(20, 15, 5, 0.8);
+  --gold-band: linear-gradient(135deg, #ecc468 0%, #dcab45 48%, #c4932f 100%);
+
+  --bg: #0f0c06;
+  --bg-rgb: 15, 12, 6;
+  --deep: #090703;
+  --deep-rgb: 9, 7, 3;
+  --bg-2: #18130a;
+  --bg-3: #241c0e;
+  --ink: #f7f1e3;
+  --dim: rgba(247, 241, 227, 0.76);
+  --faint: rgba(247, 241, 227, 0.56);
+  --line: rgba(225, 180, 91, 0.2);
+  --line-2: rgba(225, 180, 91, 0.4);
+  --accent: var(--gold);
+  --key: var(--gold);
+  --key-hover: var(--gold-hi);
+  --on-key: var(--on-gold);
+  --strip: var(--gold);
+  --on-strip: var(--on-gold);
+  --logo-h: 44px;
+  --bar-h: 64px;
+}
+@media (min-width: 900px) { :root { --logo-h: 56px; --bar-h: 80px; } }
+
+body { background: var(--bg); }
+.kicker { color: var(--gold); }
+.proposal { font-weight: 600; }
+.logo-lg .logo-svg { height: clamp(84px, 14vw, 128px); }
+.tagline { color: var(--gold); letter-spacing: 0.24em; }
+.link { text-decoration-color: var(--gold); }
+.lang select { border-color: var(--line-2); }
+.burger, .tool { border-color: var(--line-2); }
+.menu-link { border-bottom-color: var(--line); }
+.meter i { background: var(--gold); }
+h1 em, h2 em { font-style: normal; color: var(--gold); }
+
+/* Pictures: the same warm grade as the animated hero */
+.story-poster, .step-still img { filter: sepia(0.72) saturate(2.1) hue-rotate(-8deg) brightness(0.95) contrast(1.05); }
+.story-pic::after { background: linear-gradient(90deg, rgba(var(--deep-rgb), 0.78), rgba(var(--deep-rgb), 0.2) 46%, rgba(var(--deep-rgb), 0) 70%), linear-gradient(0deg, rgba(var(--deep-rgb), 0.6), rgba(var(--deep-rgb), 0) 30%), radial-gradient(90% 70% at 88% 8%, rgba(225, 180, 91, 0.22), rgba(225, 180, 91, 0) 60%); }
+.hero-copy h1 { text-shadow: 0 2px 30px rgba(0, 0, 0, 0.55); }
+
+/* Dark bands: black with a gold glow */
+.config { background: radial-gradient(120% 60% at 100% 0%, rgba(225, 180, 91, 0.2), rgba(225, 180, 91, 0) 58%), linear-gradient(180deg, var(--deep), var(--bg) 220px); }
+.interior { background: radial-gradient(90% 420px at 0% 0%, rgba(225, 180, 91, 0.17), rgba(225, 180, 91, 0) 70%), var(--deep); }
+.extras { background: radial-gradient(110% 520px at 100% 0%, rgba(225, 180, 91, 0.18), rgba(225, 180, 91, 0) 62%), var(--bg); }
+.site-footer { background: linear-gradient(180deg, #151006, var(--bg) 60%); border-top-color: var(--line-2); }
+.viewer-stage, .cine-stage { background: var(--deep); }
+.svc { border-color: var(--line-2); background: linear-gradient(160deg, #1f180b, var(--bg-2) 62%); }
+.svc h3 { color: var(--gold); }
+.badge { border-color: var(--gold); color: var(--gold); }
+.tags li { border-color: var(--line-2); }
+.about-title { color: var(--gold); }
+.form, .done, .info, .how { border-color: rgba(20, 15, 5, 0.5); }
+
+/* Gold bands: the quote section and the closing call */
+.booking, .finale { background: var(--gold-band); color: var(--on-gold); border-top: 0; }
+.booking > .section-head .kicker, .finale .kicker, .booking .aside-title { color: var(--on-gold); }
+.booking > .section-head .lead, .finale .lead { color: var(--on-gold-dim); }
+.booking :is(.form, .done, .info, .how) { color: var(--ink); box-shadow: 0 18px 50px rgba(60, 40, 0, 0.28); }
+.finale h2 { color: var(--on-gold); }
+.finale .btn-primary { background: var(--on-gold); color: var(--gold-hi); }
+.finale .btn-ghost { background: transparent; border-color: rgba(20, 15, 5, 0.55); color: var(--on-gold); }
+.finale :focus-visible, .booking > .section-head :focus-visible { outline-color: var(--on-gold); }
+@media (hover: hover) {
+  .finale .btn-primary:hover { background: #000; }
+  .finale .btn-ghost:hover { border-color: var(--on-gold); }
+}
+@media (max-width: 899px) {
+  /* The sticky vehicle viewer keeps a solid backdrop so the palette can scroll underneath. */
+  .viewer { background: var(--bg); }
+}

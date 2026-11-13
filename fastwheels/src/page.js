@@ -1,10 +1,11 @@
 // The page markup, rendered at build time in the default language. Every translatable node carries data-i18n
 // (text) or data-i18n-attr ("attribute:key;…"), which is how the app swaps languages without rebuilding the DOM.
 import { CONFIG } from './config.js';
-import { translate } from './i18n.js';
+import { translate, hasString } from './i18n.js';
 import { LANGS, LANG_NAMES } from './i18n.js';
 import { COLORS, FAMILIES, FINISHES, EFFECTS, DEFAULT_SELECTION } from './colors.js';
-import { LOGO } from './logo.js';
+import { SEQUENCES } from './three/experience.js';
+import { LOGOS } from './brands/logos.js';
 
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
@@ -15,7 +16,12 @@ export function renderPage({ lang = CONFIG.defaultLanguage, artifact = false } =
   const i = (tag, key, attrs = '') => `<${tag}${attrs ? ' ' + attrs : ''} data-i18n="${key}">${t(key)}</${tag}>`;
   /** attribute(s) that follow the language: at({ 'aria-label': 'nav.label' }) */
   const at = (map) => `data-i18n-attr="${Object.entries(map).map(([a, k]) => `${a}:${k}`).join(';')}" ${Object.entries(map).map(([a, k]) => `${a}="${t(k)}"`).join(' ')}`;
-  const logo = (cls = '') => `<svg class="logo-svg ${cls}" viewBox="${LOGO.viewBox}" role="img" aria-label="${esc(CONFIG.brand.name)}" focusable="false"><use href="#fw-logo"/><g clip-path="url(#fw-logo-clip)"><rect class="logo-sweep" x="-320" y="0" width="300" height="190" fill="url(#fw-logo-shine)"/></g></svg>`;
+  const LOGO = LOGOS[CONFIG.key];
+  const [lx, ly, lw, lh] = LOGO.viewBox.split(/\s+/).map(Number);
+  const logoTransform = LOGO.transform ? ` transform="${LOGO.transform}"` : '';
+  const logo = (cls = '') => `<svg class="logo-svg ${cls}" viewBox="${LOGO.viewBox}" style="aspect-ratio:${lw}/${lh};--sweep:${Math.round(lw * 1.8)}px" role="img" aria-label="${esc(CONFIG.brand.name)}" focusable="false"><use href="#fw-logo"/><g clip-path="url(#fw-logo-clip)"><rect class="logo-sweep" x="${Math.round(lx - lw * 0.4)}" y="${ly}" width="${Math.round(lw * 0.36)}" height="${lh}" fill="url(#fw-logo-shine)"/></g></svg>`;
+  const selection = CONFIG.defaultSelection || DEFAULT_SELECTION;
+  const SEQ = SEQUENCES[CONFIG.interior];
   const icon = {
     left: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6 4 11l5 5M4 11h9a6 6 0 0 1 6 6v1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     right: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 6 5 5-5 5m5-5h-9a6 6 0 0 0-6 6v1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
@@ -25,14 +31,14 @@ export function renderPage({ lang = CONFIG.defaultLanguage, artifact = false } =
     out: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 16 16 8M9 8h7v7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     check: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   };
-  const navItems = [['detailing', 'nav.detailing'], ['ceramic', 'nav.ceramic'], ['wrap', 'nav.wrap'], ['ambient', 'nav.ambient'], ['starlight', 'nav.starlight']];
+  const navItems = CONFIG.nav;
   const navLinks = (cls) => navItems.map(([id, key]) => `<a class="${cls}" href="#${id}" data-nav="${id}" data-i18n="${key}">${t(key)}</a>`).join('');
   const newTab = `<span class="sr-only" data-i18n="contact.newtab">${t('contact.newtab')}</span>`;
   const step = (n, id, img) => `
     <article class="step" data-step="${n}"${id ? ` id="${id}"` : ''}>
       <figure class="step-still"><img src="img/${img}_m.webp" srcset="img/${img}_m.webp 1152w, img/${img}.webp 2048w" sizes="(min-width: 900px) 60vw, 100vw" width="1152" height="651" loading="lazy" decoding="async" ${at({ alt: `care.alt.${n}` })}></figure>
       <div class="card">
-        ${i('p', 'care.kicker', 'class="kicker"')}
+        ${i('p', hasString(`care.${n}.kicker`) ? `care.${n}.kicker` : 'care.kicker', 'class="kicker"')}
         ${i('h2', `care.${n}.title`)}
         ${i('p', `care.${n}.text`)}
       </div>
@@ -40,27 +46,108 @@ export function renderPage({ lang = CONFIG.defaultLanguage, artifact = false } =
   const still = (name, altKey) => `<img src="img/still-${name}.webp" width="1280" height="720" loading="lazy" decoding="async" ${at({ alt: altKey })}>`;
   const lightColors = [['ice', '#dfe9ff'], ['blue', '#3d6bff'], ['violet', '#8f4dff'], ['red', '#ff2a3c'], ['amber', '#ff9a2e'], ['green', '#2be38a']];
   const A = CONFIG.address;
+  const social = [
+    CONFIG.instagram ? `<a class="link" href="${esc(CONFIG.instagram.url)}" target="_blank" rel="noopener"><span translate="no">Instagram ${esc(CONFIG.instagram.handle)}</span>${icon.out}${newTab}</a>` : '',
+    CONFIG.facebook ? `<a class="link" href="${esc(CONFIG.facebook)}" target="_blank" rel="noopener"><span translate="no">Facebook</span>${icon.out}${newTab}</a>` : '',
+    CONFIG.youtube ? `<a class="link" href="${esc(CONFIG.youtube)}" target="_blank" rel="noopener"><span translate="no">YouTube</span>${icon.out}${newTab}</a>` : '',
+  ].filter(Boolean);
+  // Phone and e-mail are plain text in the design proposal (its preview frame cannot start a call or a message)
+  // and links on the real site.
+  const phone = !CONFIG.phone ? '' : artifact ? `<p class="copyable" translate="no">${esc(CONFIG.phone)}</p>` : `<p><a class="link" href="tel:${esc(CONFIG.phone.replace(/[^+\d]/g, ''))}" translate="no">${esc(CONFIG.phone)}</a></p>`;
+  const email = !CONFIG.email ? '' : artifact ? `<p class="copyable" translate="no">${esc(CONFIG.email)}</p>` : `<p><a class="link" href="mailto:${esc(CONFIG.email)}" translate="no">${esc(CONFIG.email)}</a></p>`;
   const contactCards = [
     `<div class="info">
       ${i('h3', 'contact.address')}
       <p class="addr"><span translate="no">${esc(A.street)}</span><br><span translate="no">${esc(A.postalCode)} ${esc(A.city)}</span>, ${i('span', 'contact.country')}</p>
       <a class="link" href="${esc(A.directionsUrl)}" target="_blank" rel="noopener">${i('span', 'contact.directions')}${icon.out}${newTab}</a>
     </div>`,
-    CONFIG.instagram ? `<div class="info">
-      <h3>Instagram</h3>
-      <a class="link" href="${esc(CONFIG.instagram.url)}" target="_blank" rel="noopener"><span translate="no">${esc(CONFIG.instagram.handle)}</span>${icon.out}${newTab}</a>
+    social.length ? `<div class="info">
+      <h3 translate="no">${social.length > 1 ? 'Instagram · Facebook · YouTube' : 'Instagram'}</h3>
+      ${social.join('')}
     </div>` : '',
-    CONFIG.phone ? `<div class="info">${i('h3', 'contact.phone')}<p class="copyable" translate="no">${esc(CONFIG.phone)}</p></div>` : '',
-    CONFIG.whatsapp ? `<div class="info"><h3>WhatsApp</h3><a class="link" href="https://wa.me/${esc(CONFIG.whatsapp)}" target="_blank" rel="noopener"><span translate="no">+${esc(CONFIG.whatsapp)}</span>${icon.out}${newTab}</a></div>` : '',
-    CONFIG.email ? `<div class="info">${i('h3', 'contact.email')}<p class="copyable" translate="no">${esc(CONFIG.email)}</p></div>` : '',
+    CONFIG.phone ? `<div class="info">${i('h3', 'contact.phone')}${phone}</div>` : '',
+    CONFIG.whatsapp ? `<div class="info"><h3>WhatsApp</h3><a class="link" href="https://wa.me/${esc(CONFIG.whatsapp)}" target="_blank" rel="noopener"><span translate="no">${esc(CONFIG.phone || '+' + CONFIG.whatsapp)}</span>${icon.out}${newTab}</a></div>` : '',
+    CONFIG.email ? `<div class="info">${i('h3', 'contact.email')}${email}</div>` : '',
     CONFIG.hours ? `<div class="info">${i('h3', 'contact.hours')}<ul class="hours" id="hours"></ul></div>` : '',
   ].join('');
+
+  const lightsMode = CONFIG.interior === 'lights';
+  const beforeAfter = `<div class="seg seg-2 seg-compact"><button type="button" class="seg-btn is-on" data-show="before" aria-pressed="true" data-i18n="still.before">${t('still.before')}</button><button type="button" class="seg-btn" data-show="after" aria-pressed="false" data-i18n="still.after">${t('still.after')}</button></div>`;
+  // What the visitor can adjust during the interior sequence: lighting colour and brightness, or the film shade.
+  const controls = lightsMode ? `        <div class="lights" id="lights" hidden>
+          <fieldset class="field">
+            ${i('legend', 'light.title')}
+            <div class="light-swatches">
+              ${lightColors.map(([k, hex], n) => `<label class="sw sw-light" style="--c:${hex}" ${at({ title: 'light.' + k })}><input type="radio" name="light-color" id="light-color-${k}" value="${hex}"${n === 1 ? ' checked' : ''}><span class="sw-dot">${icon.check}</span><span class="sr-only" data-i18n="light.${k}">${t('light.' + k)}</span></label>`).join('')}
+            </div>
+          </fieldset>
+          <div class="control range"><label for="light-brightness" data-i18n="light.brightness">${t('light.brightness')}</label><input id="light-brightness" type="range" min="20" max="100" step="5" value="85"></div>
+        </div>` : `        <div class="lights tint-controls" id="lights">
+          <fieldset class="field">
+            ${i('legend', 'tint.title')}
+            <div class="seg seg-3">
+              ${['light', 'medium', 'dark'].map((k) => `<label class="seg-item"><input type="radio" name="tint-level" id="tint-level-${k}" value="${k}"${k === 'medium' ? ' checked' : ''}><span data-i18n="tint.${k}">${t('tint.' + k)}</span></label>`).join('')}
+            </div>
+          </fieldset>
+          ${i('p', 'tint.note', 'class="hint-line"')}
+        </div>`;
+  // The same content as still images, for reduced motion and for devices without 3D.
+  const stillsBlock = lightsMode ? `    <figure class="still-single">${still('door', 'still.door')}</figure>
+    <div class="compare" data-compare>
+      <div class="compare-head">${i('h3', 'cap.ambient.title')}<div class="seg seg-2 seg-compact"><button type="button" class="seg-btn is-on" data-show="before" aria-pressed="true" data-i18n="still.before">${t('still.before')}</button><button type="button" class="seg-btn" data-show="after" aria-pressed="false" data-i18n="still.after">${t('still.after')}</button></div></div>
+      <figure><span data-side="before">${still('cabin-off', 'still.cabinOff')}</span><span data-side="after" hidden>${still('cabin-on', 'still.cabinOn')}</span></figure>
+      ${i('p', 'cap.ambient.text')}
+    </div>
+    <div class="compare" data-compare>
+      <div class="compare-head">${i('h3', 'cap.stars.title')}<div class="seg seg-2 seg-compact"><button type="button" class="seg-btn is-on" data-show="before" aria-pressed="true" data-i18n="still.before">${t('still.before')}</button><button type="button" class="seg-btn" data-show="after" aria-pressed="false" data-i18n="still.after">${t('still.after')}</button></div></div>
+      <figure><span data-side="before">${still('roof-off', 'still.roofOff')}</span><span data-side="after" hidden>${still('roof-on', 'still.roofOn')}</span></figure>
+      ${i('p', 'cap.stars.text')}
+    </div>` : `    <div class="compare" data-compare>
+      <div class="compare-head">${i('h3', 'cap.tint.title')}${beforeAfter}</div>
+      <figure><span data-side="before">${still('tint-off', 'still.tintOff')}</span><span data-side="after" hidden>${still('tint-on', 'still.tintOn')}</span></figure>
+      ${i('p', 'cap.tint.text')}
+    </div>
+    <div class="compare">
+      <div class="compare-head">${i('h3', 'cap.inside.title')}</div>
+      <figure>${still('inside', 'still.inside')}</figure>
+      ${i('p', 'cap.inside.text')}
+    </div>
+    <figure class="still-single">${still('door', 'still.door')}</figure>`;
+  const X = CONFIG.extras;
+  const extras = !X ? '' : `
+<section class="extras band" id="services" aria-labelledby="svc-title">
+  <div class="section-head">
+    ${i('p', 'nav.services', 'class="kicker"')}
+    ${i('h2', 'svc.title', 'id="svc-title" tabindex="-1"')}
+  </div>
+  <ul class="svc-grid">
+    ${X.services.filter((sv) => hasString(`svc.${sv.id}.text`)).map((sv) => `<li class="svc">${i('h3', `svc.${sv.id}.name`)}${i('p', `svc.${sv.id}.text`)}${sv.warranty ? i('span', sv.warranty, 'class="badge"') : ''}</li>`).join('')}
+  </ul>
+  ${X.services.some((sv) => !hasString(`svc.${sv.id}.text`)) ? `<div class="svc-more">
+    ${i('h3', 'svc.also')}
+    <ul class="tags">${X.services.filter((sv) => !hasString(`svc.${sv.id}.text`)).map((sv) => i('li', `svc.${sv.id}.name`)).join('')}</ul>
+  </div>` : ''}
+  <div class="extras-row">
+    <div class="films">
+      ${i('h3', 'svc.films.title')}
+      ${i('p', 'svc.films.vinyl')}
+      ${i('p', 'svc.films.ppf')}
+    </div>
+    <div class="about" id="about">
+      ${i('p', 'about.kicker', 'class="kicker"')}
+      ${i('h3', 'about.title', 'class="about-title"')}
+      <ol class="timeline">${X.about.map((k) => i('li', k)).join('')}</ol>
+    </div>
+  </div>
+</section>
+`;
 
   return `
 <svg class="sprite" width="0" height="0" aria-hidden="true" focusable="false">
   <defs>
-    <symbol id="fw-logo" viewBox="${LOGO.viewBox}"><path fill="currentColor" fill-rule="evenodd" d="${LOGO.d}"/></symbol>
-    <clipPath id="fw-logo-clip"><path fill-rule="evenodd" clip-rule="evenodd" d="${LOGO.d}"/></clipPath>
+    ${LOGO.gradient ? `<linearGradient id="fw-logo-fill" gradientUnits="userSpaceOnUse" x1="${LOGO.gradient.x1}" x2="${LOGO.gradient.x2}" y1="0" y2="0">${LOGO.gradient.stops.map(([o, c]) => `<stop offset="${o}" stop-color="${c}"/>`).join('')}</linearGradient>` : ''}
+    <symbol id="fw-logo" viewBox="${LOGO.viewBox}"><path${logoTransform} fill="${LOGO.gradient ? 'url(#fw-logo-fill)' : 'currentColor'}" fill-rule="evenodd" d="${LOGO.d}"/></symbol>
+    <clipPath id="fw-logo-clip"><path${logoTransform} fill-rule="evenodd" clip-rule="evenodd" d="${LOGO.d}"/></clipPath>
     <linearGradient id="fw-logo-shine" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#8f6bff" stop-opacity="0"/><stop offset="0.45" stop-color="#9db6ff" stop-opacity="0.95"/><stop offset="0.6" stop-color="#ffffff" stop-opacity="1"/><stop offset="1" stop-color="#4d7dff" stop-opacity="0"/></linearGradient>
   </defs>
 </svg>
@@ -108,10 +195,7 @@ export function renderPage({ lang = CONFIG.defaultLanguage, artifact = false } =
         </div>
       </div>
     </div>
-    ${step(1, 'detailing', 'b_foam')}
-    ${step(2, '', 'c_clean')}
-    ${step(3, 'ceramic', 'e_macro')}
-    ${step(4, '', 'd_bike')}
+    ${CONFIG.story.steps.map(([n, id, img]) => step(n, id, img)).join('')}
   </div>
 </section>
 
@@ -146,7 +230,7 @@ export function renderPage({ lang = CONFIG.defaultLanguage, artifact = false } =
       <fieldset class="field seg-field">
         ${i('legend', 'config.vehicle')}
         <div class="seg seg-2">
-          ${['car', 'bike'].map((v) => `<label class="seg-item"><input type="radio" name="wrap-vehicle" id="wrap-vehicle-${v}" value="${v}"${v === DEFAULT_SELECTION.vehicle ? ' checked' : ''}><span><b data-i18n="vehicle.${v}">${t('vehicle.' + v)}</b><small translate="no">${v === 'car' ? 'BMW M4 Competition' : 'BMW S 1000 RR'}</small></span></label>`).join('')}
+          ${['car', 'bike'].map((v) => `<label class="seg-item"><input type="radio" name="wrap-vehicle" id="wrap-vehicle-${v}" value="${v}"${v === selection.vehicle ? ' checked' : ''}><span><b data-i18n="vehicle.${v}">${t('vehicle.' + v)}</b><small translate="no">${v === 'car' ? 'BMW M4 Competition' : 'BMW S 1000 RR'}</small></span></label>`).join('')}
         </div>
       </fieldset>
       <fieldset class="field">
@@ -155,20 +239,20 @@ export function renderPage({ lang = CONFIG.defaultLanguage, artifact = false } =
           ${FAMILIES.map((f) => `<label class="family"><input type="radio" name="wrap-family" id="wrap-family-${f}" value="${f}"><span data-i18n="family.${f}">${t('family.' + f)}</span></label>`).join('')}
         </div>
         <div class="swatches" id="swatches">
-          ${COLORS.map((c) => `<label class="sw" data-family="${c.family}" style="--c:${c.hex}" title="${esc(c.name[L])}"><input type="radio" name="wrap-color" id="wrap-color-${c.id}" value="${c.id}"${c.id === DEFAULT_SELECTION.color ? ' checked' : ''}><span class="sw-dot">${icon.check}</span><span class="sr-only" data-color="${c.id}">${esc(c.name[L])}</span></label>`).join('')}
+          ${COLORS.map((c) => `<label class="sw" data-family="${c.family}" style="--c:${c.hex}" title="${esc(c.name[L])}"><input type="radio" name="wrap-color" id="wrap-color-${c.id}" value="${c.id}"${c.id === selection.color ? ' checked' : ''}><span class="sw-dot">${icon.check}</span><span class="sr-only" data-color="${c.id}">${esc(c.name[L])}</span></label>`).join('')}
         </div>
       </fieldset>
       <div class="field-row">
         <fieldset class="field seg-field">
           ${i('legend', 'config.finish')}
           <div class="seg seg-3">
-            ${FINISHES.map((f) => `<label class="seg-item"><input type="radio" name="wrap-finish" id="wrap-finish-${f}" value="${f}"${f === DEFAULT_SELECTION.finish ? ' checked' : ''}><span data-i18n="finish.${f}">${t('finish.' + f)}</span></label>`).join('')}
+            ${FINISHES.map((f) => `<label class="seg-item"><input type="radio" name="wrap-finish" id="wrap-finish-${f}" value="${f}"${f === selection.finish ? ' checked' : ''}><span data-i18n="finish.${f}">${t('finish.' + f)}</span></label>`).join('')}
           </div>
         </fieldset>
         <fieldset class="field seg-field">
           ${i('legend', 'config.effect')}
           <div class="seg seg-3">
-            ${EFFECTS.map((f) => `<label class="seg-item"><input type="radio" name="wrap-effect" id="wrap-effect-${f}" value="${f}"${f === DEFAULT_SELECTION.effect ? ' checked' : ''}><span data-i18n="effect.${f}">${t('effect.' + f)}</span></label>`).join('')}
+            ${EFFECTS.map((f) => `<label class="seg-item"><input type="radio" name="wrap-effect" id="wrap-effect-${f}" value="${f}"${f === selection.effect ? ' checked' : ''}><span data-i18n="effect.${f}">${t('effect.' + f)}</span></label>`).join('')}
           </div>
           ${i('p', 'config.effect.note', 'class="hint-line" id="effect-note" hidden')}
         </fieldset>
@@ -192,7 +276,7 @@ export function renderPage({ lang = CONFIG.defaultLanguage, artifact = false } =
         <fieldset class="field" id="f-services-group" aria-describedby="e-services">
           <legend><span data-i18n="form.services">${t('form.services')}</span> <small data-i18n="form.services.hint">${t('form.services.hint')}</small></legend>
           <div class="checks">
-            ${['detailing', 'ceramic', 'wrap', 'ambient', 'starlight'].map((s) => `<label class="check"><input type="checkbox" name="services" id="f-service-${s}" value="${s}"><span>${icon.check}<span data-i18n="service.${s}">${t('service.' + s)}</span></span></label>`).join('')}
+            ${CONFIG.services.map((s) => `<label class="check"><input type="checkbox" name="services" id="f-service-${s}" value="${s}"><span>${icon.check}<span data-i18n="service.${s}">${t('service.' + s)}</span></span></label>`).join('')}
           </div>
           <p class="error" id="e-services" hidden></p>
         </fieldset>
@@ -263,49 +347,31 @@ export function renderPage({ lang = CONFIG.defaultLanguage, artifact = false } =
     ${i('p', 'int.kicker', 'class="kicker"')}
     ${i('h2', 'int.title', 'id="int-title" tabindex="-1"')}
     ${i('p', 'int.text', 'class="lead"')}
-    <a class="btn btn-ghost" id="int-skip-top" href="#finale" data-nav="finale" data-i18n="int.skip">${t('int.skip')}</a>
+    <a class="btn btn-ghost" id="int-skip-top" href="#${CONFIG.extras ? 'services' : 'finale'}" data-nav="${CONFIG.extras ? 'services' : 'finale'}" data-i18n="int.skip">${t('int.skip')}</a>
   </div>
-  <div class="cine" id="cine">
-    <span class="anchor" id="ambient"></span><span class="anchor" id="starlight"></span>
+  <div class="cine" id="cine" data-sequence="${CONFIG.interior}">
+    ${Object.keys(SEQ.anchors).map((id) => `<span class="anchor" id="${id}"></span>`).join('')}
     <div class="cine-stage" id="cine-stage">
-      <div class="cine-pic" id="cine-pic"><img class="poster" id="cine-poster" src="img/still-exterior.webp" width="1280" height="720" alt="" loading="lazy" decoding="async"></div>
+      <div class="cine-pic" id="cine-pic"><img class="poster" id="cine-poster" src="img/still-${SEQ.poster}.webp" width="1280" height="720" alt="" loading="lazy" decoding="async"></div>
       <div class="cine-ui">
-        <a class="btn btn-solid cine-skip" href="#finale" data-nav="finale" data-i18n="int.skip">${t('int.skip')}</a>
+        <a class="btn btn-solid cine-skip" href="#${CONFIG.extras ? 'services' : 'finale'}" data-nav="${CONFIG.extras ? 'services' : 'finale'}" data-i18n="int.skip">${t('int.skip')}</a>
         <ol class="rail" id="rail" ${at({ 'aria-label': 'int.progress' })}>
-          ${['door', 'cabin', 'ambient', 'tilt', 'stars'].map((p) => `<li data-phase="${p}"><span data-i18n="rail.${p}">${t('rail.' + p)}</span></li>`).join('')}
+          ${SEQ.rail.map((p) => `<li data-phase="${p}"><span data-i18n="rail.${p}">${t('rail.' + p)}</span></li>`).join('')}
         </ol>
         <div class="caption" id="caption" aria-live="polite">
-          <h3 id="caption-title" data-i18n="cap.door.title">${t('cap.door.title')}</h3>
-          <p id="caption-text" data-i18n="cap.door.text">${t('cap.door.text')}</p>
+          <h3 id="caption-title" data-i18n="cap.${SEQ.rail[0]}.title">${t(`cap.${SEQ.rail[0]}.title`)}</h3>
+          <p id="caption-text" data-i18n="cap.${SEQ.rail[0]}.text">${t(`cap.${SEQ.rail[0]}.text`)}</p>
         </div>
-        <div class="lights" id="lights" hidden>
-          <fieldset class="field">
-            ${i('legend', 'light.title')}
-            <div class="light-swatches">
-              ${lightColors.map(([k, hex], n) => `<label class="sw sw-light" style="--c:${hex}" ${at({ title: 'light.' + k })}><input type="radio" name="light-color" id="light-color-${k}" value="${hex}"${n === 1 ? ' checked' : ''}><span class="sw-dot">${icon.check}</span><span class="sr-only" data-i18n="light.${k}">${t('light.' + k)}</span></label>`).join('')}
-            </div>
-          </fieldset>
-          <div class="control range"><label for="light-brightness" data-i18n="light.brightness">${t('light.brightness')}</label><input id="light-brightness" type="range" min="20" max="100" step="5" value="85"></div>
-        </div>
+${controls}
       </div>
     </div>
   </div>
   <div class="stills band" id="stills" hidden>
-    <figure class="still-single">${still('door', 'still.door')}</figure>
-    <div class="compare" data-compare>
-      <div class="compare-head">${i('h3', 'cap.ambient.title')}<div class="seg seg-2 seg-compact"><button type="button" class="seg-btn is-on" data-show="before" aria-pressed="true" data-i18n="still.before">${t('still.before')}</button><button type="button" class="seg-btn" data-show="after" aria-pressed="false" data-i18n="still.after">${t('still.after')}</button></div></div>
-      <figure><span data-side="before">${still('cabin-off', 'still.cabinOff')}</span><span data-side="after" hidden>${still('cabin-on', 'still.cabinOn')}</span></figure>
-      ${i('p', 'cap.ambient.text')}
-    </div>
-    <div class="compare" data-compare>
-      <div class="compare-head">${i('h3', 'cap.stars.title')}<div class="seg seg-2 seg-compact"><button type="button" class="seg-btn is-on" data-show="before" aria-pressed="true" data-i18n="still.before">${t('still.before')}</button><button type="button" class="seg-btn" data-show="after" aria-pressed="false" data-i18n="still.after">${t('still.after')}</button></div></div>
-      <figure><span data-side="before">${still('roof-off', 'still.roofOff')}</span><span data-side="after" hidden>${still('roof-on', 'still.roofOn')}</span></figure>
-      ${i('p', 'cap.stars.text')}
-    </div>
+${stillsBlock}
     ${i('p', 'still.note', 'class="note"')}
   </div>
 </section>
-
+${extras}
 <section class="finale band" id="finale" aria-labelledby="fin-title">
   ${i('h2', 'fin.title', 'id="fin-title" tabindex="-1"')}
   ${i('p', 'fin.text', 'class="lead"')}
@@ -326,7 +392,9 @@ export function renderPage({ lang = CONFIG.defaultLanguage, artifact = false } =
       ${i('h3', 'contact.address')}
       <p><span translate="no">${esc(A.street)}<br>${esc(A.postalCode)} ${esc(A.city)}</span>, ${i('span', 'contact.country')}</p>
       <p><a class="link" href="${esc(A.directionsUrl)}" target="_blank" rel="noopener">${i('span', 'contact.directions')}${icon.out}${newTab}</a></p>
-      ${CONFIG.instagram ? `<p><a class="link" href="${esc(CONFIG.instagram.url)}" target="_blank" rel="noopener"><span translate="no">Instagram ${esc(CONFIG.instagram.handle)}</span>${icon.out}${newTab}</a></p>` : ''}
+      ${social.map((link) => `<p>${link}</p>`).join('')}
+      ${phone}
+      ${email}
     </div>
     <nav ${at({ 'aria-label': 'nav.services' })}>
       ${i('h3', 'nav.services')}
@@ -339,7 +407,9 @@ export function renderPage({ lang = CONFIG.defaultLanguage, artifact = false } =
   </div>
   <div class="foot-base">
     <p translate="no">© <span id="year">2026</span> ${esc(CONFIG.brand.name)}</p>
-    ${i('p', 'foot.note')}
+    ${i('p', 'foot.note', 'class="foot-note"')}
+    ${CONFIG.links.privacy ? `<a class="link" href="${esc(CONFIG.links.privacy)}" target="_blank" rel="noopener">${i('span', 'foot.privacy')}${newTab}</a>` : ''}
+    ${CONFIG.links.complaints ? `<a class="link" href="${esc(CONFIG.links.complaints)}" target="_blank" rel="noopener">${i('span', 'foot.complaints')}${newTab}</a>` : ''}
     <a class="link" href="#top" data-nav="top" data-i18n="foot.top">${t('foot.top')}</a>
   </div>
 </footer>

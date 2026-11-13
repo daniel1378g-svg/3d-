@@ -13,6 +13,7 @@ varying vec2 vUv;
 uniform sampler2D tA, tB, dA, dB;
 uniform vec2 uRes, uFocusA, uFocusB, uPar;
 uniform float uAspect, uSeed, uMix, uMode, uDim, uZoomA, uZoomB;
+uniform vec4 uGrade;                                   // rgb tint and amount: re-lights the stills in a brand colour
 
 float hash(vec2 p) { p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
 float noise(vec2 p) {
@@ -65,6 +66,7 @@ void main() {
   }
   rim *= clamp(length(a - b) * 2.5, 0.0, 1.0);
   vec3 col = mix(a, b, k) + rim;
+  col = mix(col, vec3(dot(col, vec3(0.299, 0.587, 0.114))) * uGrade.rgb, uGrade.a);
   col *= 1.0 - uDim * smoothstep(0.8, 0.0, uv.x) * 0.5;                  // darker side for the text
   vec2 v = uv - 0.5;
   col *= 1.0 - dot(v, v) * 0.55;                                         // vignette
@@ -85,7 +87,7 @@ const ease = (v) => v * v * (3 - 2 * v);
  * @param {{ small: boolean, onReady: () => void }} options  small = load the 1152 px stills
  * @returns {{ setProgress(u: number): void, resize(): void, setVisible(on: boolean): void } | null}  null without WebGL
  */
-export function createStory(canvas, { small, onReady }) {
+export function createStory(canvas, { small, onReady, grade = null }) {
   let gl;
   try { gl = canvas.getContext('webgl', { antialias: false, alpha: false, depth: false, stencil: false }); } catch { gl = null; }
   if (!gl) return null;
@@ -104,9 +106,10 @@ export function createStory(canvas, { small, onReady }) {
   gl.enableVertexAttribArray(loc);
   gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
   const U = {};
-  for (const name of ['tA', 'tB', 'dA', 'dB', 'uRes', 'uFocusA', 'uFocusB', 'uPar', 'uAspect', 'uSeed', 'uMix', 'uMode', 'uDim', 'uZoomA', 'uZoomB']) U[name] = gl.getUniformLocation(program, name);
+  for (const name of ['tA', 'tB', 'dA', 'dB', 'uRes', 'uFocusA', 'uFocusB', 'uPar', 'uAspect', 'uSeed', 'uMix', 'uMode', 'uDim', 'uZoomA', 'uZoomB', 'uGrade']) U[name] = gl.getUniformLocation(program, name);
   gl.uniform1i(U.tA, 0); gl.uniform1i(U.tB, 1); gl.uniform1i(U.dA, 2); gl.uniform1i(U.dB, 3);
   gl.uniform1f(U.uAspect, 2048 / 1158);
+  gl.uniform4f(U.uGrade, ...(grade || [1, 1, 1, 0]));
   gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
 
   const textures = new Map();

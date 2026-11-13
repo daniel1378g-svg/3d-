@@ -1,7 +1,5 @@
 node_modules/
-dist/
-dist-artifact/
-dist-pages/
+dist*/
 dev/raw/
 data/
 .cache/

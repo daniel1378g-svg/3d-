@@ -25,9 +25,46 @@ folder `fastwheels/`). It is the `node tools/build.mjs --pages` build: the same 
 strip and `noindex`, because it shows the garage's name and logo before the garage has adopted it. To update it,
 rebuild and replace that folder on `gh-pages`. Once the garage takes the site over, publish `dist/` instead.
 
+## Two businesses, one codebase
+
+The same site is built for more than one business. Each one is a file in `src/brands/`:
+
+| Brand | Build | What changes |
+| --- | --- | --- |
+| `fastwheels` (default) | `node tools/build.mjs` | this README's subject |
+| `overlay` | `node tools/build.mjs --brand overlay` | Overlay · The Wrap Specialists, Lisbon (overlay.pt) |
+
+A brand file holds the name, address, contacts, links, default language, menu, the services in the form, the
+wording that differs (rows of `[fr, en, pt, it, de]` that replace or add to `src/i18n.js`), the colour of the
+3D room lighting, the starting colour of the configurator and which interior sequence is shown. Its logo is in
+`src/brands/logos.js`, an optional stylesheet next to it (`overlay.css`) is appended to `src/styles.css`, and its
+own pictures in `public/brands/<key>/img/` replace the shared ones. Only the chosen brand ends up in a build.
+
+**Overlay** (everything taken from overlay.pt, nothing invented):
+
+- Logo, black and gold colours (gold key colour, gold quote and closing bands, warm dark backgrounds, gold room
+  lighting in 3D, a yellow car to start with), Portuguese by default.
+- Address, phone, WhatsApp, e-mail, Instagram, Facebook, YouTube, privacy policy and complaints book links.
+  Opening hours are not on overlay.pt, so none are shown.
+- Services as on Overlay's own quote form; warranties (3 years wrapping, 10 years PPF), film brands and the
+  company history in an extra "services" section.
+- Ambient lighting and starlight headliners are not Overlay services, so the interior sequence shows **window
+  tint** instead (`interior: 'tint'`): the glass darkens, the door opens, the camera gets in; the visitor picks a
+  light, medium or dark film. The story step on ceramic coating becomes paint protection film.
+- With no booking service connected, the form offers "send on WhatsApp" with the request written out.
+
+```bash
+node tools/build.mjs --artifact --brand overlay    # dist-artifact-overlay/
+node tools/serve.mjs 5175 dist-artifact-overlay &
+node tools/qa-overlay.mjs                          # checks what differs from the FASTWHEELS site
+node tools/render-posters.mjs --brand overlay      # its stills (needs `node tools/serve.mjs 5173 &`)
+```
+
+To add a business: copy a brand file, register it in `src/brands/index.js` and `src/brands/logos.js`.
+
 ## Business details
 
-Everything is in `src/config.js`. Entries left as `null` are not shown anywhere (no label, no link):
+Everything is in `src/brands/fastwheels.js`. Entries left as `null` are not shown anywhere (no label, no link):
 
 | Entry | State |
 | --- | --- |
@@ -51,7 +88,7 @@ tool, CRM). To connect:
 BOOKING_ORIGIN=https://<site> BOOKING_WEBHOOK_URL=https://<your hook> node server/booking-server.mjs
 ```
 
-then set `booking.endpoint` in `src/config.js` to `https://<host>/api/appointments` and rebuild, or set it at
+then set `booking.endpoint` in the brand file (`src/brands/<key>.js`) to `https://<host>/api/appointments` and rebuild, or set it at
 deploy time without rebuilding: `<script>window.FW_CONFIG = { bookingEndpoint: '…' }</script>` before `app.js`.
 Any service that accepts a JSON POST and answers 2xx works the same way. The claude.ai preview cannot reach
 outside hosts, so the form always stays in its "not connected" state there.
@@ -92,7 +129,8 @@ the measured trim but are an illustration of an installation, not BMW's factory 
 ## How the page is put together
 
 ```
-src/config.js      business details, booking endpoint, model credits
+src/config.js      picks the brand for this build, model credits
+src/brands/        one file per business: details, booking endpoint, wording, colours (+ logos.js, <key>.css)
 src/i18n.js        every interface string, one row per key: [fr, en, pt, it, de]
 src/colors.js      36 wrap colours in 5 families, with the effects each one comes in
 src/page.js        the markup (rendered at build time in French; data-i18n drives language changes)

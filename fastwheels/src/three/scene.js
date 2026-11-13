@@ -5,12 +5,12 @@ import { createStage } from './stage.js';
 import { createPost } from './post.js';
 import { createPaint, applyPaint } from './materials.js';
 import { loadPack, canInflate } from './loader.js';
-import { setupCar, setupBike } from './vehicles.js';
+import { setupCar, setupBike, TINT } from './vehicles.js';
 import { createCabin } from './cabin.js';
 import cabinData from './cabin-data.js';
-import { poseAt, PHASES, AMBIENT_READY, STILLS } from './experience.js';
+import { poseAt, PHASES, AMBIENT_READY, STILLS, SEQUENCES } from './experience.js';
 
-export { PHASES, AMBIENT_READY, STILLS };
+export { PHASES, AMBIENT_READY, STILLS, SEQUENCES };
 
 /**
  * 'high'  desktop: multisampling, ambient occlusion, bloom, mirror floor, shadow map
@@ -40,7 +40,7 @@ const TAU = Math.PI * 2;
 /**
  * @param {{ tier?: string, reducedMotion?: boolean, instant?: boolean, modelBase?: string, onState?: (e: object) => void, pixelRatio?: number }} options
  */
-export function createScene({ tier = detectTier(), reducedMotion = false, instant = false, modelBase = 'models/', onState = () => {}, pixelRatio } = {}) {
+export function createScene({ tier = detectTier(), reducedMotion = false, instant = false, modelBase = 'models/', onState = () => {}, pixelRatio, accent = null, sequence = 'lights' } = {}) {
   const canvas = document.createElement('canvas');
   canvas.className = 'gl';
   canvas.setAttribute('aria-hidden', 'true');
@@ -55,7 +55,7 @@ export function createScene({ tier = detectTier(), reducedMotion = false, instan
   renderer.shadowMap.autoUpdate = false;
   const anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
 
-  const stage = createStage(renderer, { tier });
+  const stage = createStage(renderer, { tier, accent });
   const scene = stage.scene;
   const camera = new THREE.PerspectiveCamera(32, 1, 0.05, 70);
   const look = new THREE.Vector3();
@@ -75,7 +75,7 @@ export function createScene({ tier = detectTier(), reducedMotion = false, instan
   let width = 1, height = 1, scale = 1, slowFrames = 0, mirrorOn = stage.mirror;
 
   const orbit = { az: DEFAULT_AZ, goal: null, vel: 0, auto: !reducedMotion && !instant, dragging: false, lastX: 0, lastT: 0, dist: 7, distGoal: 7, targetY: 0.62, targetYGoal: 0.62, fov: 30 };
-  const seq = { p: 0, goal: 0, color: '#3d6bff', brightness: 0.85 };
+  const seq = { p: 0, goal: 0, color: '#3d6bff', brightness: 0.85, tint: TINT.medium };
   const pose = { pos: [0, 0, 0], look: [0, 0, 0] };
   const clock = { time: 0 };
 
@@ -113,6 +113,7 @@ export function createScene({ tier = detectTier(), reducedMotion = false, instan
     stage.contactShadow.visible = !!(showCar ? vehicles.car : vehicles.bike);
     if (mode === 'config') {
       vehicles.car?.setDoorOpen(0);
+      vehicles.car?.setTint(seq.tint);
       cabin?.setAmbient({ level: 0, reveal: 0 });
       cabin?.setStars(0);
       cabin?.setFill(0);
@@ -207,7 +208,7 @@ export function createScene({ tier = detectTier(), reducedMotion = false, instan
         seq.p += (seq.goal - seq.p) * (reducedMotion || instant ? 1 : 1 - Math.exp(-dt * 6.5));
         animating = true;
       } else seq.p = seq.goal;
-      poseAt(seq.p, camera.aspect, pose);
+      poseAt(seq.p, camera.aspect, pose, sequence);
       camera.fov = pose.fov;
       camera.position.fromArray(pose.pos);
       camera.lookAt(look.fromArray(pose.look));
@@ -215,6 +216,7 @@ export function createScene({ tier = detectTier(), reducedMotion = false, instan
         const before = vehicles.car.doorLeft.rotation.y;
         vehicles.car.setDoorOpen(pose.door);
         if (before !== vehicles.car.doorLeft.rotation.y) shadowsDirty();
+        if (sequence === 'tint') vehicles.car.setTint(TINT.clear + (seq.tint - TINT.clear) * pose.tint);
         cabin.setFill(pose.fill);
         cabin.setAmbient({ level: pose.ambient > 0 ? 1 : 0, reveal: pose.ambient });
         cabin.setStars(pose.stars);
@@ -334,8 +336,10 @@ export function createScene({ tier = detectTier(), reducedMotion = false, instan
     setProgress(p, immediate) { seq.goal = THREE.MathUtils.clamp(p, 0, 1); if (immediate) seq.p = seq.goal; invalidate(); },
     getProgress() { return seq.p; },
     /** For tests: door opening 0..1 and lighting levels as currently drawn. */
-    getState() { return { mode, vehicle, progress: seq.p, door: vehicles.car ? -vehicles.car.doorLeft.rotation.y / THREE.MathUtils.degToRad(62) : 0, ambient: pose.ambient || 0, stars: pose.stars || 0, angle: api.getAngle(), paint: '#' + paints.car.color.getHexString(), finish: paintSpec.finish, effect: paintSpec.effect, tier, post: !!post, mirror: mirrorOn, scale }; },
+    getState() { return { mode, vehicle, progress: seq.p, door: vehicles.car ? -vehicles.car.doorLeft.rotation.y / THREE.MathUtils.degToRad(62) : 0, ambient: pose.ambient || 0, stars: pose.stars || 0, tint: pose.tint ?? 1, tintOpacity: seq.tint, sequence, angle: api.getAngle(), paint: '#' + paints.car.color.getHexString(), finish: paintSpec.finish, effect: paintSpec.effect, tier, post: !!post, mirror: mirrorOn, scale }; },
     setAmbientColor(hex) { seq.color = hex; cabin?.setAmbient({ color: hex }); invalidate(); },
+    /** Window film shade: 'light' | 'medium' | 'dark'. */
+    setTintLevel(level) { seq.tint = TINT[level] ?? TINT.medium; if (mode === 'config') vehicles.car?.setTint(seq.tint); invalidate(); },
     setAmbientBrightness(b) { seq.brightness = b; cabin?.setAmbient({ brightness: b }); invalidate(); },
 
     renderNow() { dirty = true; frame(performance.now()); },

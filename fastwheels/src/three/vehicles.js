@@ -4,6 +4,8 @@ import * as THREE from 'three';
 import { createGlass } from './materials.js';
 
 const CAR_PAINT = ['Material_692'];
+/** Glass opacity for untinted glass and for three film shades. */
+export const TINT = { clear: 0.13, light: 0.36, medium: 0.52, dark: 0.8 };
 const BIKE_PAINT = ['vehicle_generic_smallspecmap_PRIMARY', 'carbonfiber_001'];
 
 /**
@@ -33,11 +35,12 @@ export function setupCar(scene, meta, { paint, environment }) {
   group.add(scene);
   const lights = [];
   const screens = [];
+  let windowGlass = null;
   const replaced = new Set();
   eachMaterial(scene, (m) => {
     if (CAR_PAINT.includes(m.name)) { replaced.add(m); return paint; }
     switch (m.name) {
-      case 'Material_699': return createGlass(0x05070a, 0.52, 0.3, environment);  // window glass
+      case 'Material_699': windowGlass = createGlass(0x05070a, TINT.medium, 0.3, environment); return windowGlass;  // window glass
       case 'Material_775': return createGlass(0x12151a, 0.26, 0.26, environment); // lamp lenses
       case 'Material_849':                                   // light leather → black, as in the reference interior
         m.color.set(0x17171a); m.roughness = 0.62; m.metalness = 0; m.envMapIntensity = 0.6; break;
@@ -86,6 +89,8 @@ export function setupCar(scene, meta, { paint, environment }) {
     setDoorOpen(t) { doorLeft.rotation.y = -maxDoor * THREE.MathUtils.clamp(t, 0, 1); },
     setLights(k) { for (const l of lights) l.m.emissiveIntensity = l.base * k; },
     setScreens(k) { for (const s of screens) s.m.emissiveIntensity = s.base * k; },
+    /** Window film darkness as glass opacity: TINT.clear … TINT.dark. */
+    setTint(opacity) { if (windowGlass) windowGlass.opacity = opacity; },
   };
 }
 

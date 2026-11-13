@@ -23,13 +23,15 @@ await page.waitForTimeout(1200);
 const stops = [
   ['01-hero', 'window.scrollTo(0, 0)', 900],
   ['02-foam', "document.querySelector('#detailing').scrollIntoView()", 1400],
-  ['03-ceramic', "document.querySelector('#ceramic').scrollIntoView()", 1400],
+  ['03-step3', "document.querySelectorAll('.story-steps .step')[3].scrollIntoView()", 1400],
   ['04-config', "window.scrollTo(0, document.querySelector('#wrap').getBoundingClientRect().top + scrollY - 60)", 25000],
   ['05-config-panel', "window.scrollBy(0, innerHeight * 0.8)", 1500],
   ['06-booking', "window.scrollTo(0, document.querySelector('#booking').getBoundingClientRect().top + scrollY - 60)", 1200],
   ['07-booking-form', "window.scrollBy(0, innerHeight * 0.9)", 800],
   ['08-interior-head', "window.scrollTo(0, document.querySelector('#interior').getBoundingClientRect().top + scrollY - 60)", 1500],
   ...[0.02, 0.22, 0.47, 0.72, 0.8, 0.99].map((p, i) => [`09-cine-${i}-p${p}`, `(() => { const c = document.querySelector('#cine'); window.scrollTo(0, c.getBoundingClientRect().top + scrollY + (c.offsetHeight - innerHeight) * ${p}); })()`, i === 0 ? 6000 : 1500]),
+  ['09z-services', "(() => { const el = document.querySelector('#services'); if (el) window.scrollTo(0, el.getBoundingClientRect().top + scrollY - 60); })()", 1200],
+  ['09z-services-2', "(() => { const el = document.querySelector('.extras-row'); if (el) window.scrollTo(0, el.getBoundingClientRect().top + scrollY - 120); })()", 800],
   ['10-finale', "window.scrollTo(0, document.querySelector('#finale').getBoundingClientRect().top + scrollY - 60)", 1200],
   ['11-footer', 'window.scrollTo(0, document.documentElement.scrollHeight)', 900],
 ];

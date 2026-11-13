@@ -26,7 +26,7 @@ function softBox(w, h, color, strength, { edge = 0.22, vertical = false } = {}) 
 }
 
 /** What the paint reflects. Only used to build the environment map. */
-function buildEnvScene() {
+function buildEnvScene(accent) {
   const env = new THREE.Scene();
   const room = new THREE.Mesh(new THREE.BoxGeometry(34, 14, 28), new THREE.MeshBasicMaterial({ color: 0x030304, side: THREE.BackSide }));
   room.position.y = 5;
@@ -38,8 +38,8 @@ function buildEnvScene() {
   add(softBox(10, 0.9, 0xf4f7ff, 7.5, { edge: 0.12 }), [0, 4.9, -3.3], [Math.PI / 2 + 0.5, 0, 0]);
   add(softBox(10, 0.9, 0xf4f7ff, 7.5, { edge: 0.12 }), [0, 4.9, 3.3], [Math.PI / 2 - 0.5, 0, 0]);
   // Side fill walls, low and dim, so the flanks are never a black hole.
-  add(softBox(16, 3.2, 0xb4c2ff, 2.3, { vertical: true, edge: 0.3 }), [0, 1.7, -10.5], [0, 0, 0]);
-  add(softBox(16, 3.2, 0xc4b4ff, 2.1, { vertical: true, edge: 0.3 }), [0, 1.7, 10.5], [0, Math.PI, 0]);
+  add(softBox(16, 3.2, accent.fillA, 2.3, { vertical: true, edge: 0.3 }), [0, 1.7, -10.5], [0, 0, 0]);
+  add(softBox(16, 3.2, accent.fillB, 2.1, { vertical: true, edge: 0.3 }), [0, 1.7, 10.5], [0, Math.PI, 0]);
   add(softBox(10, 3, 0xe4eaff, 2.4, { vertical: true, edge: 0.3 }), [13, 1.9, 0], [0, -Math.PI / 2, 0]);
   add(softBox(10, 3, 0xd6dcff, 1.7, { vertical: true, edge: 0.3 }), [-13, 1.9, 0], [0, Math.PI / 2, 0]);
   // Low kickers at wheel height, front corners: they put a highlight in the rims and along the sills.
@@ -48,8 +48,8 @@ function buildEnvScene() {
   add(softBox(5, 1.1, 0xf0f2ff, 2.2, { vertical: true, edge: 0.3 }), [-8, 0.7, -6.5], [0, 0.9, 0]);
   add(softBox(5, 1.1, 0xf0f2ff, 2.2, { vertical: true, edge: 0.3 }), [-8, 0.7, 6.5], [0, 2.25, 0]);
   // The LED strips, as thin accents.
-  add(softBox(20, 0.2, 0x2f6bff, 16, { edge: 0.05 }), [0, 2.35, -10.4], [0, 0, 0]);
-  add(softBox(20, 0.2, 0x8a5cff, 16, { edge: 0.05 }), [0, 2.35, 10.4], [0, Math.PI, 0]);
+  add(softBox(20, 0.2, accent.a, 16, { edge: 0.05 }), [0, 2.35, -10.4], [0, 0, 0]);
+  add(softBox(20, 0.2, accent.b, 16, { edge: 0.05 }), [0, 2.35, 10.4], [0, Math.PI, 0]);
   return env;
 }
 
@@ -129,18 +129,22 @@ void main() {
   gl_FragColor = sum;
 }`;
 
+/** LED strip colours (left wall, right wall), the soft fill they throw on the flanks, and the end-wall strips. */
+export const DEFAULT_ACCENT = { a: 0x2f6bff, b: 0x8a5cff, fillA: 0xb4c2ff, fillB: 0xc4b4ff, endA: 0x6f8cff, endB: 0x7a6cff };
+
 /**
  * @param {THREE.WebGLRenderer} renderer
- * @param {{ tier?: 'low'|'mid'|'high' }} options
+ * @param {{ tier?: 'low'|'mid'|'high', accent?: typeof DEFAULT_ACCENT }} options
  */
-export function createStage(renderer, { tier = 'high' } = {}) {
+export function createStage(renderer, { tier = 'high', accent: accentOption } = {}) {
+  const accent = { ...DEFAULT_ACCENT, ...(accentOption || {}) };
   const scene = new THREE.Scene();
   const bg = new THREE.Color(0x050608);
   scene.background = bg;
   scene.fog = new THREE.FogExp2(bg.getHex(), 0.028);
 
   const pmrem = new THREE.PMREMGenerator(renderer);
-  const envScene = buildEnvScene();
+  const envScene = buildEnvScene(accent);
   const envTarget = pmrem.fromScene(envScene, 0.035);
   scene.environment = envTarget.texture;
   scene.environmentIntensity = 1;
@@ -198,7 +202,7 @@ export function createStage(renderer, { tier = 'high' } = {}) {
   }
 
   // LED strips: blue on the left wall (z < 0), violet on the right, a cooler pair on the end walls.
-  const BLUE = 0x2f6bff, VIOLET = 0x8a5cff;
+  const BLUE = accent.a, VIOLET = accent.b;
   const halo = haloTexture();
   const led = (len, pos, ry, hex, k = 2.4, thick = 0.04) => {
     const g = new THREE.Group();
@@ -215,8 +219,8 @@ export function createStage(renderer, { tier = 'high' } = {}) {
   led(W * 2 - 1.2, [0, 0.42, -D + 0.13], 0, BLUE, 1.8, 0.022);
   led(W * 2 - 1.2, [0, 2.35, D - 0.13], Math.PI, VIOLET);
   led(W * 2 - 1.2, [0, 0.42, D - 0.13], Math.PI, VIOLET, 1.8, 0.022);
-  led(D * 2 - 1.2, [W - 0.13, 2.35, 0], -Math.PI / 2, 0x6f8cff, 2.2);
-  led(D * 2 - 1.2, [-W + 0.13, 2.35, 0], Math.PI / 2, 0x7a6cff, 2.2);
+  led(D * 2 - 1.2, [W - 0.13, 2.35, 0], -Math.PI / 2, accent.endA, 2.2);
+  led(D * 2 - 1.2, [-W + 0.13, 2.35, 0], Math.PI / 2, accent.endB, 2.2);
 
   // Direct light: a soft key from above, gentle coloured rims. Most of the lighting is image-based.
   const hemi = new THREE.HemisphereLight(0x93a2c4, 0x08080b, 0.28);

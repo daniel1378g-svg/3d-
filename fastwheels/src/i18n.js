@@ -1,6 +1,8 @@
 // All interface text, one row per key: [fr, en, pt, it, de].
 // French is the default for the Ardon location. German follows Swiss spelling (ss, no ß).
 // The brand name is never translated. {curly} parts are filled in by the app.
+import { CONFIG } from "./config.js";
+
 export const LANGS = ["fr", "en", "pt", "it", "de"];
 export const LANG_NAMES = { fr: "Français", en: "English", pt: "Português", it: "Italiano", de: "Deutsch" };
 export const LOCALES = { fr: "fr-CH", en: "en-GB", pt: "pt-PT", it: "it-CH", de: "de-CH" };
@@ -246,6 +248,7 @@ export const STRINGS = {
   "off.copied": ["Copié", "Copied", "Copiado", "Copiato", "Kopiert"],
   "off.select": ["Sélectionnez le texte ci-dessous et copiez-le.", "Select the text below and copy it.", "Selecione o texto abaixo e copie-o.", "Seleziona il testo qui sotto e copialo.", "Markieren Sie den Text unten und kopieren Sie ihn."],
   "off.instagram": ["Ouvrir Instagram", "Open Instagram", "Abrir o Instagram", "Apri Instagram", "Instagram öffnen"],
+  "off.whatsapp": ["Envoyer par WhatsApp", "Send on WhatsApp", "Enviar por WhatsApp", "Invia su WhatsApp", "Per WhatsApp senden"],
   "req.title": ["Demande de rendez-vous", "Appointment request", "Pedido de marcação", "Richiesta di appuntamento", "Terminanfrage"],
 
   "contact.title": ["Le garage", "The garage", "A garagem", "Il garage", "Die Garage"],
@@ -343,8 +346,9 @@ export const STRINGS = {
 };
 
 /** Text for `key` in `lang`, with {placeholders} filled from `vars`. Falls back to French, then to the key. */
+export const hasString = (key) => !!(CONFIG.strings?.[key] || STRINGS[key]);
 export function translate(lang, key, vars) {
-  const row = STRINGS[key];
+  const row = CONFIG.strings?.[key] || STRINGS[key];      // the active brand's own wording comes first
   let text = row ? row[LANGS.indexOf(lang)] ?? row[0] : key;
   if (vars) for (const [k, v] of Object.entries(vars)) text = text.replaceAll(`{${k}}`, String(v));
   return text;
