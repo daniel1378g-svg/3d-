@@ -159,7 +159,8 @@ if (want('config')) {
   const b1 = (await sceneState(page)).angle;
   check('car: dragging rotates the vehicle', b1 !== b0, `${b0}° → ${b1}°`);
   await page.focus('#viewer-stage');
-  await page.keyboard.press('ArrowRight'); await page.waitForTimeout(300);
+  await page.keyboard.press('ArrowRight');
+  await page.waitForFunction((a) => window.FW.scene.getState().angle !== a, b1, { timeout: 15000 }).catch(() => {});
   const b2 = (await sceneState(page)).angle;
   await page.keyboard.press('Home');
   await page.waitForFunction(() => window.FW.scene.getState().angle === 319, null, { timeout: 15000 }).catch(() => {});
