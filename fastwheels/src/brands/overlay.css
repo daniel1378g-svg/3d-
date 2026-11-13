@@ -1,11 +1,11 @@
-/* Overlay: black and gold. Dark bands carry a warm tint and a gold glow; the quote band and the closing band are solid gold. */
+/* Overlay: black and gold. Dark bands carry a warm tint and a gold glow; the quote band and the closing band are solid gold.
+   The gold is for the interface only: photographs and the 3D vehicles keep their original colours. */
 :root {
-  --gold: #e1b45b;          /* Overlay's yellow, as text and as key colour on dark */
-  --gold-hi: #f2cb78;
-  --gold-deep: #bf8f2e;     /* Overlay's button gold */
+  --gold: #c69238;          /* the interface gold: buttons, selected options, section labels, bands */
+  --gold-hi: #d8a751;       /* the same gold, one step lighter, for hover */
   --on-gold: #140f05;
-  --on-gold-dim: rgba(20, 15, 5, 0.8);
-  --gold-band: linear-gradient(135deg, #ecc468 0%, #dcab45 48%, #c4932f 100%);
+  --on-gold-dim: rgba(20, 15, 5, 0.88);
+  --gold-band: linear-gradient(135deg, #cf9c42 0%, #c69238 50%, #b98630 100%);
 
   --bg: #0f0c06;
   --bg-rgb: 15, 12, 6;
@@ -16,8 +16,8 @@
   --ink: #f7f1e3;
   --dim: rgba(247, 241, 227, 0.76);
   --faint: rgba(247, 241, 227, 0.56);
-  --line: rgba(225, 180, 91, 0.2);
-  --line-2: rgba(225, 180, 91, 0.4);
+  --line: rgba(198, 146, 56, 0.24);
+  --line-2: rgba(198, 146, 56, 0.46);
   --accent: var(--gold);
   --key: var(--gold);
   --key-hover: var(--gold-hi);
@@ -41,15 +41,13 @@ body { background: var(--bg); }
 .meter i { background: var(--gold); }
 h1 em, h2 em { font-style: normal; color: var(--gold); }
 
-/* Pictures: the same warm grade as the animated hero */
-.story-poster, .step-still img { filter: sepia(0.72) saturate(2.1) hue-rotate(-8deg) brightness(0.95) contrast(1.05); }
-.story-pic::after { background: linear-gradient(90deg, rgba(var(--deep-rgb), 0.78), rgba(var(--deep-rgb), 0.2) 46%, rgba(var(--deep-rgb), 0) 70%), linear-gradient(0deg, rgba(var(--deep-rgb), 0.6), rgba(var(--deep-rgb), 0) 30%), radial-gradient(90% 70% at 88% 8%, rgba(225, 180, 91, 0.22), rgba(225, 180, 91, 0) 60%); }
+/* Pictures and 3D vehicles are left in their own colours: no tint over them. */
 .hero-copy h1 { text-shadow: 0 2px 30px rgba(0, 0, 0, 0.55); }
 
 /* Dark bands: black with a gold glow */
-.config { background: radial-gradient(120% 60% at 100% 0%, rgba(225, 180, 91, 0.2), rgba(225, 180, 91, 0) 58%), linear-gradient(180deg, var(--deep), var(--bg) 220px); }
-.interior { background: radial-gradient(90% 420px at 0% 0%, rgba(225, 180, 91, 0.17), rgba(225, 180, 91, 0) 70%), var(--deep); }
-.extras { background: radial-gradient(110% 520px at 100% 0%, rgba(225, 180, 91, 0.18), rgba(225, 180, 91, 0) 62%), var(--bg); }
+.config { background: radial-gradient(120% 60% at 100% 0%, rgba(198, 146, 56, 0.2), rgba(198, 146, 56, 0) 58%), linear-gradient(180deg, var(--deep), var(--bg) 220px); }
+.interior { background: radial-gradient(90% 420px at 0% 0%, rgba(198, 146, 56, 0.17), rgba(198, 146, 56, 0) 70%), var(--deep); }
+.extras { background: radial-gradient(110% 520px at 100% 0%, rgba(198, 146, 56, 0.18), rgba(198, 146, 56, 0) 62%), var(--bg); }
 .site-footer { background: linear-gradient(180deg, #151006, var(--bg) 60%); border-top-color: var(--line-2); }
 .viewer-stage, .cine-stage { background: var(--deep); }
 .svc { border-color: var(--line-2); background: linear-gradient(160deg, #1f180b, var(--bg-2) 62%); }

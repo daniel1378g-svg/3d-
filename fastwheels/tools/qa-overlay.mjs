@@ -48,8 +48,8 @@ if (want('brand')) {
     hours: !!document.querySelector('#hours'),
   }));
   check('title, default language and logo are Overlay\'s', b.title === 'Overlay · The Wrap Specialists' && b.lang === 'pt-PT' && b.select === 'pt' && b.logo === 'Overlay' && b.viewBox === '0 0 330 248', JSON.stringify([b.title, b.lang, b.logo, b.viewBox]));
-  check('the "design proposal" strip is shown, in gold', /Proposta de design · não é o site oficial/.test(b.strip) && b.stripBg === 'rgb(225, 180, 91)', `${b.strip} ${b.stripBg}`);
-  check('gold key colour, gold bands and a warm dark background', b.primary === 'rgb(225, 180, 91)' && /gradient/.test(b.bookingBg) && /gradient/.test(b.finaleBg) && b.bodyBg === 'rgb(15, 12, 6)', `${b.primary} ${b.bodyBg}`);
+  check('the "design proposal" strip is shown, in gold', /Proposta de design · não é o site oficial/.test(b.strip) && b.stripBg === 'rgb(198, 146, 56)', `${b.strip} ${b.stripBg}`);
+  check('gold key colour, gold bands and a warm dark background', b.primary === 'rgb(198, 146, 56)' && /gradient/.test(b.bookingBg) && /gradient/.test(b.finaleBg) && b.bodyBg === 'rgb(15, 12, 6)', `${b.primary} ${b.bodyBg}`);
   check('address, phone and e-mail are Overlay\'s; no opening hours are shown', /Rua Luciano Cordeiro 4A\s*1150-215 Lisboa, Portugal/.test(b.address) && b.phone && b.email && !b.hours, b.address);
   const need = ['https://www.instagram.com/overlaypt/', 'https://www.facebook.com/overlaypt', 'https://www.youtube.com/overlay', 'https://wa.me/351914681157', 'https://overlay.pt/politica-de-privacidade-e-dados/', 'https://www.livroreclamacoes.pt/Pedido/Reclamacao'];
   check('social, WhatsApp, privacy and complaints links point to Overlay', need.every((h) => b.links.includes(h)), need.filter((h) => !b.links.includes(h)).join(' '));
@@ -61,6 +61,8 @@ if (want('brand')) {
     if (m) leak.push(`${l}: ${m[0]}`);
   }
   check('no FASTWHEELS details and no services Overlay does not list, in any language', !leak.length, leak.join(' | '));
+  const pics = await page.evaluate(() => ({ poster: getComputedStyle(document.querySelector('.story-poster')).filter, still: getComputedStyle(document.querySelector('.step-still img')).filter }));
+  check('photographs carry no colour tint', pics.poster === 'none' && pics.still === 'none', JSON.stringify(pics));
   check('no script errors and no missing files', !page.errors.length, page.errors.slice(0, 4).join(' | '));
   await page.context().close();
 }
@@ -116,11 +118,11 @@ if (want('form')) {
   check('the form offers the services of Overlay\'s own quote form', services.join(',') === 'carwrap,ppf,tint,detail,parts,motowrap,buildingtint,boatwrap', services.join(','));
   await jump(page, 'wrap');
   const start = await page.evaluate(() => ({ color: document.querySelector('input[name="wrap-color"]:checked').value, name: document.querySelector('#readout-name').textContent }));
-  check('the configurator starts in yellow', start.color === 'signal-yellow' && start.name === 'Amarelo sinal', JSON.stringify(start));
+  check('the configurator starts in the original colour, not a brand colour', start.color === 'midnight-blue' && start.name === 'Azul meia-noite', JSON.stringify(start));
   await page.click('#config-request');
   await page.waitForTimeout(400);
   const car = await page.evaluate(() => ({ carwrap: document.querySelector('#f-service-carwrap').checked, moto: document.querySelector('#f-service-motowrap').checked, text: document.querySelector('#wrap-choice-text').textContent }));
-  check('"request this configuration" for the car ticks Car Wrapping and carries the colour', car.carwrap && !car.moto && /BMW M4 Competition · Amarelo sinal/.test(car.text), JSON.stringify(car));
+  check('"request this configuration" for the car ticks Car Wrapping and carries the colour', car.carwrap && !car.moto && /BMW M4 Competition · Azul meia-noite/.test(car.text), JSON.stringify(car));
   await page.click('#f-submit');
   const errs = await page.evaluate(() => ({ shown: [...document.querySelectorAll('.error:not([hidden])')].map((e) => e.id), kind: document.querySelector('#form-status').dataset.kind }));
   check('empty fields are reported; nothing is sent', ['e-make', 'e-model', 'e-name', 'e-phone', 'e-email'].every((id) => errs.shown.includes(id)) && errs.kind === 'invalid', JSON.stringify(errs));
@@ -129,7 +131,7 @@ if (want('form')) {
   await page.click('#f-submit');
   const off = await page.evaluate(() => ({ kind: document.querySelector('#form-status').dataset.kind, title: document.querySelector('#form-status h3')?.textContent, done: !document.querySelector('#form-done').hidden, wa: document.querySelector('#wa-request')?.href || '', label: document.querySelector('#wa-request')?.textContent.trim() }));
   const waText = decodeURIComponent((off.wa.split('?text=')[1] || ''));
-  check('no booking service connected: the form says so and offers WhatsApp with the request written out', off.kind === 'offline' && !off.done && off.wa.startsWith('https://wa.me/351914681157?text=') && /Pedido de orçamento · Overlay/.test(waText) && /Car Wrapping \(vinil\)/.test(waText) && /BMW · M4 Competition · 2023/.test(waText) && /Amarelo sinal/.test(waText) && /Marta Lopes/.test(waText), `${off.kind} ${off.label} ${waText.split('\n').slice(0, 3).join(' / ')}`);
+  check('no booking service connected: the form says so and offers WhatsApp with the request written out', off.kind === 'offline' && !off.done && off.wa.startsWith('https://wa.me/351914681157?text=') && /Pedido de orçamento · Overlay/.test(waText) && /Car Wrapping \(vinil\)/.test(waText) && /BMW · M4 Competition · 2023/.test(waText) && /Azul meia-noite/.test(waText) && /Marta Lopes/.test(waText), `${off.kind} ${off.label} ${waText.split('\n').slice(0, 3).join(' / ')}`);
   await page.fill('#f-message', 'Wrapping completo, cor amarela.');
   const waText2 = decodeURIComponent((await page.evaluate(() => document.querySelector('#wa-request').href)).split('?text=')[1]);
   check('the WhatsApp text follows later edits to the form', /cor amarela/.test(waText2));

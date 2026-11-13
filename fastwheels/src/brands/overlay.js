@@ -21,12 +21,14 @@ export default {
   booking: { endpoint: null, timeoutMs: 12000 },
 
   nav: [['detailing', 'nav.detailing'], ['ppf', 'nav.ppf'], ['wrap', 'nav.wrap'], ['tint', 'nav.tint'], ['services', 'nav.services']],
-  story: { grade: [1.34, 0.99, 0.44, 0.62], steps: [[1, 'detailing', 'b_foam'], [2, '', 'c_clean'], [3, 'ppf', 'e_macro'], [4, '', 'd_bike']] },
+  story: { grade: null, steps: [[1, 'detailing', 'b_foam'], [2, '', 'c_clean'], [3, 'ppf', 'e_macro'], [4, '', 'd_bike']] },
   services: ['carwrap', 'ppf', 'tint', 'detail', 'parts', 'motowrap', 'buildingtint', 'boatwrap'],   // the list in Overlay's own quote form
   wrapService: { car: 'carwrap', bike: 'motowrap' },
   interior: 'tint',                    // the interior sequence shows window tint films (a service Overlay offers)
-  defaultSelection: { vehicle: 'car', color: 'signal-yellow', finish: 'gloss', effect: 'solid' },
-  scene: { accent: { a: 0xf2b632, b: 0xe08a1c, fillA: 0xffe2b0, fillB: 0xffd49a, endA: 0xf6c75a, endB: 0xe8a23a } },
+  // Pictures and vehicles keep their original colours (no gold grade, the shared starting colour and room light):
+  // the gold belongs to the interface, not to the cars.
+  defaultSelection: null,
+  scene: { accent: null },
   extras: {
     services: [
       { id: 'carwrap', warranty: 'svc.warranty3' }, { id: 'ppf', warranty: 'svc.warranty10' }, { id: 'tint' }, { id: 'detail' },

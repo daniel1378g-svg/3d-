@@ -42,8 +42,9 @@ own pictures in `public/brands/<key>/img/` replace the shared ones. Only the cho
 
 **Overlay** (everything taken from overlay.pt, nothing invented):
 
-- Logo, black and gold colours (gold key colour, gold quote and closing bands, warm dark backgrounds, gold room
-  lighting in 3D, a yellow car to start with), Portuguese by default.
+- Logo, black and gold colours for the interface (gold key colour, gold quote and closing bands, warm dark
+  backgrounds), Portuguese by default. Photographs and the 3D vehicles keep their original colours: no tint on
+  the pictures, the shared starting colour and room light in 3D.
 - Address, phone, WhatsApp, e-mail, Instagram, Facebook, YouTube, privacy policy and complaints book links.
   Opening hours are not on overlay.pt, so none are shown.
 - Services as on Overlay's own quote form; warranties (3 years wrapping, 10 years PPF), film brands and the

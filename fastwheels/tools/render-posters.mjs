@@ -33,9 +33,10 @@ if (!brand) {
     ? { 'tint-off': [0.0, 'medium'], 'tint-on': [0.26, 'medium'], door: [0.6, 'medium'], inside: [1, 'medium'] }
     : { exterior: [0.02], door: [0.3], 'cabin-off': [0.5], 'cabin-on': [0.72], 'roof-off': [0.865], 'roof-on': [1] };
   for (const name of new Set([SEQUENCES[CONFIG.interior].poster, ...Object.values(SEQUENCES[CONFIG.interior].still)])) if (!P[name]) throw new Error(`no camera position for still "${name}"`);
+  // The configurator posters are only rendered again when the brand changes how the vehicles look.
+  const ownLook = CONFIG.defaultSelection || CONFIG.scene.accent;
   shots = [
-    ['poster-car', `mode=config&vehicle=car&az=-41.25&${paint}`, 1280, 800],
-    ['poster-bike', `mode=config&vehicle=bike&az=-41.25&${paint}`, 1280, 800],
+    ...(ownLook ? [['poster-car', `mode=config&vehicle=car&az=-41.25&${paint}`, 1280, 800], ['poster-bike', `mode=config&vehicle=bike&az=-41.25&${paint}`, 1280, 800]] : []),
     ...Object.entries(P).map(([name, [p, tint]]) => [`still-${name}`, `mode=interior&p=${p}${tint ? `&tint=${tint}` : ''}&${paint}`, 1280, 720]),
   ];
 }
