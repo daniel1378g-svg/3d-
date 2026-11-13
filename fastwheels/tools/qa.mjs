@@ -1,7 +1,7 @@
 // End-to-end checks of the built page (headless Chromium, software WebGL; desktop and phone emulation).
 //
 //   node tools/build.mjs --artifact && node tools/serve.mjs 5174 dist-artifact &
-//   node tools/qa.mjs [http://127.0.0.1:5174/preview.html] [group …]      groups: layout lang nav config form interior reduced fallback
+//   node tools/qa.mjs [http://127.0.0.1:5174/preview.html] [group …]      groups: layout lang nav config form interior render reduced fallback
 //
 // Not covered here: real Mobile Safari (no WebKit build in this environment) and real GPUs.
 import { createRequire } from 'node:module';
@@ -268,6 +268,57 @@ if (want('interior')) {
   await page.waitForTimeout(600);
   check('header link "Starlight" lands on the lit headliner', (await sceneState(page)).stars > 0.95 || (await page.evaluate(() => { const c = document.querySelector('#cine'); return -c.getBoundingClientRect().top / (c.offsetHeight - innerHeight); })) > 0.98);
   check('interior: no script errors', !page.errors.length, page.errors.slice(0, 3).join(' | '));
+  await page.context().close();
+}
+
+// ---------------------------------------------------------------------------------------------------- render stability
+if (want('render')) {
+  // With bloom on, one invalid pixel (infinite or NaN) used to ruin the whole viewer on phone GPUs.
+  const page = await open({ width: 900, height: 700, config: { tier: 'mid', instant: true } });
+  await jump(page, 'wrap');
+  await waitScene(page, 'config');
+  const look = async () => {
+    const png = await page.locator('#viewer-stage').screenshot({ timeout: 120000 });
+    return page.evaluate(async (b64) => {
+      const img = new Image(); img.src = 'data:image/png;base64,' + b64; await img.decode();
+      const c = document.createElement('canvas'); c.width = img.width; c.height = img.height;
+      const g = c.getContext('2d'); g.drawImage(img, 0, 0);
+      const d = g.getImageData(0, 0, c.width, c.height).data; let dark = 0, sum = 0;
+      for (let i = 0; i < d.length; i += 4) { const v = d[i] + d[i + 1] + d[i + 2]; sum += v; if (v < 12) dark++; }
+      return { dark: +(dark / (d.length / 4)).toFixed(3), mean: +(sum / (d.length / 4) / 3).toFixed(1) };
+    }, png.toString('base64'));
+  };
+  const state = await sceneState(page);
+  const frames = [];
+  for (let i = 0; i < 12; i++) {
+    const before = (await sceneState(page)).angle;
+    await page.click('#rot-right');
+    await page.waitForFunction((a) => window.FW.scene.getState().angle !== a, before, { timeout: 20000 }).catch(() => {});
+    await page.waitForTimeout(250);
+    frames.push(await look());
+  }
+  check('effects on: the car is drawn at every angle of a full turn (no black or blown-out frames)', state.post && state.mirror && frames.every((f) => f.dark < 0.6 && f.mean > 6 && f.mean < 120), frames.map((f) => f.mean).join(' '));
+  const clean = await look();
+  const inject = (expr) => page.evaluate((expr) => {
+    // A 6 cm quad with an invalid colour, built from classes already in the scene.
+    const { scene } = window.FW.scene.debug;
+    scene.getObjectByName('bad-pixel')?.removeFromParent();
+    const floor = scene.getObjectByName('floor');
+    const probe = floor.clone();
+    probe.material = new floor.material.constructor({ uniforms: { z: { value: 0 } }, side: 2, vertexShader: 'void main() { gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }', fragmentShader: `uniform float z; void main() { gl_FragColor = vec4(vec3(${expr}), 1.0); }` });
+    probe.name = 'bad-pixel'; probe.scale.setScalar(0.001); probe.rotation.set(0, Math.PI / 4, 0); probe.position.set(1.2, 1.6, -1.2); probe.frustumCulled = false;
+    scene.add(probe);
+    window.FW.scene.renderNow();
+  }, expr);
+  const results = [];
+  for (const [name, expr] of [['infinite', '1.0 / z'], ['NaN', 'sqrt(z - 1.0)']]) {
+    await inject(expr);
+    await page.waitForTimeout(400);
+    const f = await look();
+    results.push(`${name}: mean ${f.mean} (clean ${clean.mean})`);
+    check(`effects on: an ${name} pixel in the scene does not spread over the frame`, Math.abs(f.mean - clean.mean) < 6 && f.dark < 0.6, results[results.length - 1]);
+  }
+  check('render: no script errors', !page.errors.length, page.errors.slice(0, 3).join(' | '));
   await page.context().close();
 }
 

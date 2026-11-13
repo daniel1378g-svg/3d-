@@ -143,7 +143,9 @@ export function createScene({ tier = detectTier(), reducedMotion = false, instan
     post?.setSize(width, height, dpr);
     camera.aspect = width / height;
     fitOrbit(false);
-    invalidate();
+    // Resizing clears the canvas: draw again at once, so a size change never shows an empty frame.
+    if (running) { if (raf) { cancelAnimationFrame(raf); raf = 0; } dirty = true; frame(performance.now()); }
+    else invalidate();
   }
   const observer = typeof ResizeObserver === 'function' ? new ResizeObserver(resize) : null;
 
@@ -278,7 +280,7 @@ export function createScene({ tier = detectTier(), reducedMotion = false, instan
   canvas.addEventListener('webglcontextlost', (e) => { e.preventDefault(); setRunning(false); onState({ type: 'contextlost' }); });
 
   const api = {
-    canvas, tier, renderer,
+    canvas, tier, renderer, debug: { scene, camera, get post() { return post; } },
     /** Show the scene inside `element` as the configurator ('config') or the interior sequence ('interior'). */
     attach(element, nextMode) {
       if (host === element && mode === nextMode) return;

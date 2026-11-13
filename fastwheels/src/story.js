@@ -53,12 +53,14 @@ void main() {
       float g = (uv.x * 0.55 + uv.y * 0.85) / 1.4 + (fbm(uv * vec2(6.0, 4.0) + vec2(0.0, uSeed)) - 0.5) * 0.42;
       float edge = 1.22 - m * 1.5;
       k = smoothstep(edge - 0.05, edge + 0.05, g);
-      rim = vec3(0.92, 0.9, 1.0) * exp(-pow((g - edge) / 0.06, 2.0)) * 0.5 * smoothstep(0.0, 0.08, m) * smoothstep(1.0, 0.9, m);
+      float rd = (g - edge) / 0.06;
+      rim = vec3(0.92, 0.9, 1.0) * exp(-rd * rd) * 0.5 * smoothstep(0.0, 0.08, m) * smoothstep(1.0, 0.9, m);
     } else if (uMode > 1.5) {                                            // rinse: a sheet of water running down
       float g = uv.y + fbm(vec2(uv.x * 9.0, 3.0)) * 0.3 + (fbm(uv * vec2(7.0, 1.6)) - 0.5) * 0.16;
       float edge = 1.3 - m * 1.65;
       k = smoothstep(edge - 0.035, edge + 0.035, g);
-      rim = vec3(0.7, 0.82, 1.0) * exp(-pow((g - edge) / 0.03, 2.0)) * 0.35 * smoothstep(0.0, 0.08, m) * smoothstep(1.0, 0.9, m);
+      float rd = (g - edge) / 0.03;
+      rim = vec3(0.7, 0.82, 1.0) * exp(-rd * rd) * 0.35 * smoothstep(0.0, 0.08, m) * smoothstep(1.0, 0.9, m);
     }
   }
   rim *= clamp(length(a - b) * 2.5, 0.0, 1.0);

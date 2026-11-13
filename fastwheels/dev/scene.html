@@ -7,7 +7,9 @@
 // /dev/scene.html?mode=config&vehicle=car|bike&az=-41&paint=1b2f8f&finish=gloss&effect=solid
 // /dev/scene.html?mode=interior&p=0.5&ambient=3d6bff&bright=0.85
 //   &tier=low|mid|high   &dpr=1   &live=1 (keep animating: auto-rotate, twinkle)
+import * as THREE from 'three';
 import { createScene } from '/src/three/scene.js';
+window.THREE = THREE;
 const q = new URLSearchParams(location.search);
 const mode = q.get('mode') || 'config';
 const s = createScene({ tier: q.get('tier') || 'high', reducedMotion: !q.has('live'), modelBase: '/public/models/', pixelRatio: q.has('dpr') ? Number(q.get('dpr')) : undefined,

@@ -112,6 +112,10 @@ Behaviour worth knowing:
   through multisampling, ambient occlusion and a restrained bloom before tone mapping. The wrap material has a
   clear coat and, for metallic and pearl, flakes under it. Both models ship at full detail with their authored
   normals (16-bit; coarser normals show up as dents in glossy paint).
+- **Invalid pixels.** With bloom on, a single infinite or NaN pixel is blurred over the whole frame (seen on an
+  iPhone as the car flashing to black while turning: chrome highlights overflowed the half-float buffer). Three
+  guards: every material keeps a minimum roughness, the custom shaders clamp what they feed to `pow()`, and a
+  pass before the bloom removes invalid values and caps the brightness (`src/three/post.js`).
 - **Performance.** `app.js` is about 66 KB. The 3D bundle and the models (about 5 MB car, 7 MB motorcycle)
   load only when the configurator or the interior comes near; a poster shows until the first frame. Rendering
   stops when the canvas is off screen or the tab is hidden, and only redraws when something changes. Three
@@ -131,7 +135,8 @@ Behaviour worth knowing:
 44 px or more, headings clear of the header), the five languages, phone menu and keyboard order, car /
 motorcycle switching with a full 360° turn, colour and finish persistence, the full-screen configurator's Back
 control, the appointment form (validation, not-connected state, loading, success and error against a mocked
-endpoint), forward and reverse scroll through the interior sequence, reduced motion and the no-3D fallback.
+endpoint), forward and reverse scroll through the interior sequence, a full turn with the effects on and injected
+invalid pixels (render stability), reduced motion and the no-3D fallback.
 
 Not verified here: real Mobile Safari and real phone GPUs (the checks run in headless Chromium with phone
 emulation and software WebGL).

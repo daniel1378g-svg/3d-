@@ -17,9 +17,11 @@ varying float vT;
 varying float vSide;
 void main() {
   float on = smoothstep(vT - 0.035, vT + 0.015, uReveal * 1.05) * uLevel;
-  float across = 1.0 - abs(vSide);
+  // Clamped: an interpolated value a hair outside 0..1 must never reach a pow(), which is undefined for a
+  // negative base and returns NaN on some phone GPUs. One NaN pixel is enough to black out a bloomed frame.
+  float across = clamp(1.0 - abs(vSide), 0.0, 1.0);
   if (uGlow > 0.5) {
-    float a = pow(across, 2.2) * on * 0.3;                       // soft spill on the trim next to the line
+    float a = across * across * on * 0.3;                        // soft spill on the trim next to the line
     gl_FragColor = vec4(uColor * a, a);
   } else {
     vec3 guide = vec3(0.035, 0.037, 0.042);                      // an unlit light guide: a thin dark-grey line

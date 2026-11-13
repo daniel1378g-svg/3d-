@@ -6,7 +6,7 @@ export const FINISHES = ['gloss', 'satin', 'matte'];
 export const EFFECTS = ['solid', 'metallic', 'pearl'];
 
 const FINISH = {
-  gloss: { roughness: 0.22, clearcoat: 1, clearcoatRoughness: 0.03, env: 1.0 },
+  gloss: { roughness: 0.22, clearcoat: 1, clearcoatRoughness: 0.08, env: 1.0 },
   satin: { roughness: 0.42, clearcoat: 0.55, clearcoatRoughness: 0.34, env: 0.95 },
   matte: { roughness: 0.78, clearcoat: 0.08, clearcoatRoughness: 0.7, env: 0.8 },
 };
@@ -17,7 +17,7 @@ const EFFECT = {
 };
 
 export function createPaint() {
-  const m = new THREE.MeshPhysicalMaterial({ color: 0x14246e, roughness: 0.22, metalness: 0, clearcoat: 1, clearcoatRoughness: 0.03 });
+  const m = new THREE.MeshPhysicalMaterial({ color: 0x14246e, roughness: 0.22, metalness: 0, clearcoat: 1, clearcoatRoughness: 0.08 });
   m.iridescenceIOR = 1.45;
   m.iridescenceThicknessRange = [180, 520];
   m.name = 'paint';
@@ -75,13 +75,15 @@ export function createGlass(hex, opacity, reflectivity, environment) {
 #ifdef USE_ENVMAP
   vec3 gN = inverseTransformDirection(transformedNormal, viewMatrix);
   vec3 gV = normalize(worldPosition.xyz - cameraPosition);
-  vFresnel = pow(1.0 - abs(dot(normalize(gN), gV)), 3.0);
+  gN = dot(gN, gN) > 1e-10 ? normalize(gN) : -gV;                 // a zero normal must not turn into NaN
+  float gF = clamp(1.0 - abs(dot(gN, gV)), 0.0, 1.0);
+  vFresnel = gF * gF * gF;
 #endif`);
     shader.fragmentShader = shader.fragmentShader
       .replace('#include <common>', '#include <common>\nvarying float vFresnel;')
-      .replace('#include <envmap_fragment>', `specularStrength = min(1.0 / max(reflectivity, 0.001), 0.55 + 2.6 * vFresnel);
+      .replace('#include <envmap_fragment>', `specularStrength = min(1.0 / max(reflectivity, 0.001), 0.55 + 2.6 * clamp(vFresnel, 0.0, 1.0));
 #include <envmap_fragment>
-diffuseColor.a = mix(diffuseColor.a, 0.96, vFresnel);`);
+diffuseColor.a = mix(diffuseColor.a, 0.96, clamp(vFresnel, 0.0, 1.0));`);
   };
   return m;
 }

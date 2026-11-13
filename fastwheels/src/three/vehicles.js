@@ -6,13 +6,20 @@ import { createGlass } from './materials.js';
 const CAR_PAINT = ['Material_692'];
 const BIKE_PAINT = ['vehicle_generic_smallspecmap_PRIMARY', 'carbonfiber_001'];
 
+/**
+ * Mirror-smooth metals and clear coats turn a direct light into a highlight brighter than a half-float colour
+ * buffer can hold. On phone GPUs that pixel becomes infinite and the bloom then ruins the whole frame, so every
+ * material keeps a little roughness. (The paint's own finish values in materials.js follow the same floor.)
+ */
+function tame(m) { if (typeof m.roughness === 'number' && m.roughness < 0.12) m.roughness = 0.12; if (typeof m.clearcoatRoughness === 'number' && m.clearcoat > 0 && m.clearcoatRoughness < 0.08) m.clearcoatRoughness = 0.08; return m; }
+
 function eachMaterial(root, fn) {
   const seen = new Map();
   root.traverse((o) => {
     if (!o.isMesh) return;
     const list = Array.isArray(o.material) ? o.material : [o.material];
     list.forEach((m, i) => {
-      if (!seen.has(m)) seen.set(m, fn(m, o) || m);
+      if (!seen.has(m)) seen.set(m, tame(fn(m, o) || m));
       const next = seen.get(m);
       if (next !== m) { if (Array.isArray(o.material)) o.material[i] = next; else o.material = next; if (next.userData.isPaint) o.userData.paint = true; }
     });

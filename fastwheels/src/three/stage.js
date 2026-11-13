@@ -92,7 +92,7 @@ float noise(vec2 p) { vec2 i = floor(p), f = fract(p); f = f * f * (3.0 - 2.0 * 
 void main() {
   vec3 view = normalize(cameraPosition - vWorld);
   float facing = clamp(view.y, 0.0, 1.0);
-  float fresnel = 0.05 + 0.95 * pow(1.0 - facing, 3.2);
+  float fresnel = 0.05 + 0.95 * pow(max(1.0 - facing, 0.0), 3.2);
   // Polished concrete: mostly smooth, with slow variation in how glossy it is.
   float patchy = noise(vWorld.xz * 0.55) * 0.6 + noise(vWorld.xz * 2.3) * 0.4;
   vec3 col = uBase * (0.75 + 0.5 * patchy) * (1.0 + 2.4 * exp(-dot(vWorld.xz, vWorld.xz) * 0.03));   // a pool of light under the soft-boxes
@@ -247,7 +247,7 @@ export function createStage(renderer, { tier = 'high' } = {}) {
   shadowCam.lookAt(0, 1, 0);
   const depthMat = new THREE.MeshDepthMaterial({ side: THREE.DoubleSide });
   depthMat.onBeforeCompile = (shader) => {
-    shader.fragmentShader = shader.fragmentShader.replace('gl_FragColor = vec4( vec3( 1.0 - fragCoordZ ), opacity );', 'gl_FragColor = vec4( vec3( 0.0 ), pow( 1.0 - fragCoordZ, 1.6 ) );');
+    shader.fragmentShader = shader.fragmentShader.replace('gl_FragColor = vec4( vec3( 1.0 - fragCoordZ ), opacity );', 'gl_FragColor = vec4( vec3( 0.0 ), pow( clamp( 1.0 - fragCoordZ, 0.0, 1.0 ), 1.6 ) );');
   };
   const blurMat = new THREE.ShaderMaterial({ uniforms: { tDiffuse: { value: null }, uStep: { value: new THREE.Vector2() } }, vertexShader: 'varying vec2 vUv; void main() { vUv = uv; gl_Position = vec4(position.xy, 0.0, 1.0); }', fragmentShader: BLUR_FRAG, depthTest: false, depthWrite: false });
   const blurQuad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), blurMat);
