@@ -31,11 +31,19 @@ function applyTexts(scope = document) {
   for (const el of $$('[data-color]', scope)) { const name = colorName(colorById(el.dataset.color)); el.textContent = name; el.closest('.sw')?.setAttribute('title', name); }
 }
 
-/** The element under the header and how far it is from the top, so the same content stays put after a change. */
+/** The first piece of content below the header and where it sits, so the same content stays put after a change. */
 function scrollAnchor() {
-  const line = headerHeight() + 4;
-  for (const el of $$('main > section, .step, .site-footer')) { const r = el.getBoundingClientRect(); if (r.top <= line && r.bottom > line) return { el, top: r.top }; }
-  return null;
+  // Whatever sits in the middle of the screen is what the visitor is looking at: hold that still.
+  const top = headerHeight(), middle = top + (window.innerHeight - top) / 2;
+  let best = null, bestGap = Infinity;
+  for (const el of $$('main h1, main h2, main h3, main p, main legend, main label, main li, main figure, main input, main textarea, .site-footer h3, .site-footer p, .site-footer li')) {
+    if (!el.offsetParent) continue;
+    const r = el.getBoundingClientRect();
+    if (!r.height || r.bottom < top || r.top > window.innerHeight) continue;
+    const gap = Math.abs((r.top + r.bottom) / 2 - middle);
+    if (gap < bestGap) { bestGap = gap; best = { el, top: r.top }; }
+  }
+  return best;
 }
 
 function setLanguage(next, { silent = false } = {}) {
@@ -257,7 +265,6 @@ function ensureScene() {
     if (!supports3d()) { disable3d(); return Promise.resolve(null); }
     scenePromise = loadSceneBundle().then(() => {
       scene = window.FWScene.createScene({ reducedMotion: reduced(), modelBase: 'models/', onState: onSceneState, tier: window.FW_CONFIG?.tier, instant: !!window.FW_CONFIG?.instant });
-      window.FW = { scene, get stage() { return activeStage; } };
       scene.setPaint(paintSpec(), true);
       scene.setVehicle(selection.vehicle);
       scene.setAmbientColor(light.color);
@@ -563,6 +570,7 @@ function onScroll() {
 
 // ---------------------------------------------------------------------------------------------- start
 function start() {
+  window.FW = { go, get scene() { return scene; }, get stage() { return activeStage; } };   // small handle for tests and debugging
   if ($('.proposal')) root.classList.add('has-banner');
   $('#year').textContent = String(new Date().getFullYear());
   $('#fab').hidden = false;

@@ -45,7 +45,14 @@ export async function loadPack(url, onProgress) {
   text = null;
   const glb = await gunzip(base64ToBytes(pack.data));
   pack.data = null;
-  const gltf = await new GLTFLoader().parseAsync(glb, '');
+  // GLTFLoader would decode the embedded textures with fetch(blob:) + createImageBitmap. A strict content
+  // security policy (the hosted preview has one) can refuse that fetch, while <img src="blob:…"> is allowed,
+  // so hide createImageBitmap while the parser is set up: it then falls back to plain image elements.
+  const scope = typeof self !== 'undefined' ? self : window;
+  const bitmap = scope.createImageBitmap;
+  let parsing;
+  try { scope.createImageBitmap = undefined; parsing = new GLTFLoader().parseAsync(glb, ''); } finally { scope.createImageBitmap = bitmap; }
+  const gltf = await parsing;
   onProgress?.(1);
   return { scene: gltf.scene, meta: pack.meta };
 }
