@@ -3,6 +3,8 @@
 //   node tools/build.mjs              → dist/            the deployable static site
 //   node tools/build.mjs --artifact   → dist-artifact/   the claude.ai Artifact preview (page content without a
 //                                       document skeleton, a permanent "design proposal" strip, files.json)
+//   node tools/build.mjs --pages      → dist-pages/      the public preview on GitHub Pages (complete page, with the
+//                                       "design proposal" strip and noindex until the garage adopts the site)
 //
 // Two script bundles: app.js (page behaviour, small, loads at once) and scene.js (three.js + the 3D scene,
 // loaded only when the configurator or the interior sequence comes near).
@@ -12,7 +14,9 @@ import { join } from 'node:path';
 
 const root = new URL('..', import.meta.url).pathname;
 const artifact = process.argv.includes('--artifact');
-const out = join(root, artifact ? 'dist-artifact' : 'dist');
+const pages = process.argv.includes('--pages');      // public preview on GitHub Pages: full document, proposal strip, noindex
+const proposal = artifact || pages;
+const out = join(root, artifact ? 'dist-artifact' : pages ? 'dist-pages' : 'dist');
 rmSync(out, { recursive: true, force: true });
 mkdirSync(out, { recursive: true });
 
@@ -27,7 +31,7 @@ const css = readFileSync(join(root, 'src/styles.css'), 'utf8').replace(/\/\*[\s\
 const lang = CONFIG.defaultLanguage;
 const description = translate(lang, 'meta.description').replace(/"/g, '&quot;');
 const fonts = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&family=IBM+Plex+Mono:wght@400;500&display=swap">';
-const body = renderPage({ lang, artifact });
+const body = renderPage({ lang, artifact: proposal });
 
 // Supporting files
 const files = { 'app.js': 'app.js', 'scene.js': 'scene.js' };
@@ -67,7 +71,7 @@ if (artifact) {
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>${CONFIG.brand.name}</title>
 <meta name="description" content="${description}">
-<meta name="theme-color" content="#0d0e11">
+<meta name="theme-color" content="#0d0e11">${pages ? '\n<meta name="robots" content="noindex">' : ''}
 <meta property="og:title" content="${CONFIG.brand.name}">
 <meta property="og:description" content="${description}">
 <meta property="og:type" content="website">
@@ -84,4 +88,4 @@ ${body}
 }
 const size = (f) => `${(statSync(join(out, f)).size / 1024).toFixed(0)} KB`;
 const total = Object.keys(files).reduce((n, f) => n + statSync(join(out, f)).size, 0);
-console.log(`${artifact ? 'dist-artifact' : 'dist'}: index.html ${size('index.html')} · app.js ${size('app.js')} · scene.js ${size('scene.js')} · ${Object.keys(files).length} files, ${(total / 1e6).toFixed(1)} MB`);
+console.log(`${artifact ? 'dist-artifact' : pages ? 'dist-pages' : 'dist'}: index.html ${size('index.html')} · app.js ${size('app.js')} · scene.js ${size('scene.js')} · ${Object.keys(files).length} files, ${(total / 1e6).toFixed(1)} MB`);

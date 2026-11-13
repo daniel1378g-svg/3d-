@@ -7,6 +7,7 @@
     "dev": "node tools/serve.mjs",
     "build": "node tools/build.mjs",
     "build:artifact": "node tools/build.mjs --artifact",
+    "build:pages": "node tools/build.mjs --pages",
     "posters": "node tools/render-posters.mjs",
     "test": "node tools/qa.mjs"
   },

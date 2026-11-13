@@ -20,6 +20,11 @@ node tools/qa.mjs                  # end-to-end checks against that address
 
 `dist/` is plain static files: any static host works.
 
+**Public preview:** https://daniel1378g-svg.github.io/3d-/fastwheels/ (GitHub Pages, from the `gh-pages` branch,
+folder `fastwheels/`). It is the `node tools/build.mjs --pages` build: the same site with the "design proposal"
+strip and `noindex`, because it shows the garage's name and logo before the garage has adopted it. To update it,
+rebuild and replace that folder on `gh-pages`. Once the garage takes the site over, publish `dist/` instead.
+
 ## Business details
 
 Everything is in `src/config.js`. Entries left as `null` are not shown anywhere (no label, no link):
