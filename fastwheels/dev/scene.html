@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>FASTWHEELS · scene test</title>
+<style>html,body{margin:0;height:100%;background:#06070a;overflow:hidden}#host{position:fixed;inset:0}#host canvas{display:block;width:100%;height:100%}</style>
+<script type="importmap">{"imports":{"three":"/node_modules/three/build/three.module.js","three/addons/":"/node_modules/three/examples/jsm/"}}</script>
+</head><body><div id="host"></div>
+<script type="module">
+// /dev/scene.html?mode=config&vehicle=car|bike&az=-41&paint=1b2f8f&finish=gloss&effect=solid
+// /dev/scene.html?mode=interior&p=0.5&ambient=3d6bff&bright=0.85
+//   &tier=low|mid|high   &dpr=1   &live=1 (keep animating: auto-rotate, twinkle)
+import { createScene } from '/src/three/scene.js';
+const q = new URLSearchParams(location.search);
+const mode = q.get('mode') || 'config';
+const s = createScene({ tier: q.get('tier') || 'high', reducedMotion: !q.has('live'), modelBase: '/public/models/', pixelRatio: q.has('dpr') ? Number(q.get('dpr')) : undefined,
+  onState: (e) => { if (e.type === 'ready') requestAnimationFrame(() => requestAnimationFrame(() => { window.__ready = true; })); if (e.type === 'error') console.error(e.error); } });
+window.__scene = s;
+if (q.has('paint')) s.setPaint({ hex: '#' + q.get('paint'), finish: q.get('finish') || 'gloss', effect: q.get('effect') || 'solid' }, true);
+if (mode === 'config') { s.setVehicle(q.get('vehicle') || 'car'); s.setAutoRotate(q.has('live')); if (q.has('az')) s.setAngle(Number(q.get('az'))); }
+else { if (q.has('ambient')) s.setAmbientColor('#' + q.get('ambient')); if (q.has('bright')) s.setAmbientBrightness(Number(q.get('bright'))); s.setProgress(Number(q.get('p') || 0), true); }
+s.attach(document.getElementById('host'), mode);
+</script></body></html>
