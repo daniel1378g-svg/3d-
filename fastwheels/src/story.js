@@ -84,10 +84,16 @@ const ease = (v) => v * v * (3 - 2 * v);
 
 /**
  * @param {HTMLCanvasElement} canvas
- * @param {{ small: boolean, onReady: () => void }} options  small = load the 1152 px stills
+ * @param {{ small: boolean, onReady: () => void, grade?: number[], shots?: { name: string, focus: number[], tallX: number, mode?: number }[] }} options
+ *   small = load the 1152 px stills; shots = a business's own stills instead of the shared ones (mode = the transition
+ *   into that still: 1 foam, 2 rinse, 3 cross-zoom)
  * @returns {{ setProgress(u: number): void, resize(): void, setVisible(on: boolean): void } | null}  null without WebGL
  */
-export function createStory(canvas, { small, onReady, grade = null }) {
+export function createStory(canvas, { small, onReady, grade = null, shots = null }) {
+  const NAMES = shots ? shots.map((s) => s.name) : SHOTS;
+  const modes = shots ? shots.slice(1).map((s) => s.mode ?? 3) : MODES;
+  const focus = shots ? Object.fromEntries(shots.map((s) => [s.name, s.focus])) : FOCUS;
+  const focusTallX = shots ? Object.fromEntries(shots.map((s) => [s.name, s.tallX])) : FOCUS_TALL_X;
   let gl;
   try { gl = canvas.getContext('webgl', { antialias: false, alpha: false, depth: false, stencil: false }); } catch { gl = null; }
   if (!gl) return null;
@@ -146,15 +152,15 @@ export function createStory(canvas, { small, onReady, grade = null }) {
     invalidate();
   }
   function bind(unit, key) { gl.activeTexture(gl.TEXTURE0 + unit); gl.bindTexture(gl.TEXTURE_2D, textures.get(key)); }
-  function focusOf(name) { const f = FOCUS[name]; return canvas.width / canvas.height < 1 ? [FOCUS_TALL_X[name], f[1]] : f; }
+  function focusOf(name) { const f = focus[name]; return canvas.width / canvas.height < 1 ? [focusTallX[name], f[1]] : f; }
 
   function draw() {
-    const i = Math.min(SHOTS.length - 2, Math.floor(current));
-    const a = SHOTS[i], b = has(SHOTS[i + 1]) ? SHOTS[i + 1] : a;
+    const i = Math.min(NAMES.length - 2, Math.floor(current));
+    const a = NAMES[i], b = has(NAMES[i + 1]) ? NAMES[i + 1] : a;
     if (!has(a)) return;
     const local = current - i;
     const m = b === a ? 0 : clamp01((local - 0.22) / 0.56);
-    const mode = MODES[i];
+    const mode = modes[i];
     bind(0, a); bind(1, b); bind(2, a + ':d'); bind(3, b + ':d');
     gl.uniform2f(U.uRes, canvas.width, canvas.height);
     gl.uniform2f(U.uFocusA, ...focusOf(a));
@@ -189,13 +195,13 @@ export function createStory(canvas, { small, onReady, grade = null }) {
   canvas.addEventListener('webglcontextlost', (e) => { e.preventDefault(); lost = true; canvas.style.display = 'none'; });
 
   // The first still shows at once; the others load in order while the visitor reads.
-  loadShot(SHOTS[0]).then(async () => {
+  loadShot(NAMES[0]).then(async () => {
     resize();
-    for (const name of SHOTS.slice(1)) { await loadShot(name); invalidate(); }
+    for (const name of NAMES.slice(1)) { await loadShot(name); invalidate(); }
   });
 
   return {
-    setProgress(u) { target = Math.max(0, Math.min(SHOTS.length - 1, u)); invalidate(); },
+    setProgress(u) { target = Math.max(0, Math.min(NAMES.length - 1, u)); invalidate(); },
     resize,
     setVisible(on) { visible = on; if (on) invalidate(); },
   };

@@ -9,13 +9,19 @@ import { LOGOS } from './brands/logos.js';
 
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
-export function renderPage({ lang = CONFIG.defaultLanguage, artifact = false } = {}) {
+/**
+ * @param {{ lang?: string, artifact?: boolean, content?: { gallery?: object[], reviews?: object } | null }} options
+ *   content = a business's own photographs and customer reviews (see tools/overlay-content.mjs), when it has them
+ */
+export function renderPage({ lang = CONFIG.defaultLanguage, artifact = false, content = null } = {}) {
   const L = LANGS.indexOf(lang);
   const t = (key, vars) => esc(translate(lang, key, vars));
   /** <tag attrs data-i18n="key">text</tag> */
   const i = (tag, key, attrs = '') => `<${tag}${attrs ? ' ' + attrs : ''} data-i18n="${key}">${t(key)}</${tag}>`;
   /** attribute(s) that follow the language: at({ 'aria-label': 'nav.label' }) */
-  const at = (map) => `data-i18n-attr="${Object.entries(map).map(([a, k]) => `${a}:${k}`).join(';')}" ${Object.entries(map).map(([a, k]) => `${a}="${t(k)}"`).join(' ')}`;
+  const at = (map, vars) => `data-i18n-attr="${Object.entries(map).map(([a, k]) => `${a}:${k}`).join(';')}" ${Object.entries(map).map(([a, k]) => `${a}="${t(k, vars)}"`).join(' ')}${vars ? ` data-i18n-vars="${esc(JSON.stringify(vars))}"` : ''}`;
+  /** Like i(), for a text with {placeholders}. */
+  const iv = (tag, key, vars, attrs = '') => `<${tag}${attrs ? ' ' + attrs : ''} data-i18n="${key}" data-i18n-vars="${esc(JSON.stringify(vars))}">${t(key, vars)}</${tag}>`;
   const LOGO = LOGOS[CONFIG.key];
   const [lx, ly, lw, lh] = LOGO.viewBox.split(/\s+/).map(Number);
   const logoTransform = LOGO.transform ? ` transform="${LOGO.transform}"` : '';
@@ -30,7 +36,10 @@ export function renderPage({ lang = CONFIG.defaultLanguage, artifact = false } =
     back: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 6 4 12l6 6M4 12h16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     out: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 16 16 8M9 8h7v7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     check: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    fwd: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 6 6 6-6 6M20 12H4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    close: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   };
+  const firstShot = CONFIG.story.shots ? CONFIG.story.shots[0].name : 'a_dirty';
   const navItems = CONFIG.nav;
   const navLinks = (cls) => navItems.map(([id, key]) => `<a class="${cls}" href="#${id}" data-nav="${id}" data-i18n="${key}">${t(key)}</a>`).join('');
   const newTab = `<span class="sr-only" data-i18n="contact.newtab">${t('contact.newtab')}</span>`;
@@ -142,6 +151,70 @@ export function renderPage({ lang = CONFIG.defaultLanguage, artifact = false } =
 </section>
 `;
 
+  // The business's own photographs, by service. "All" mixes the services so the first rows show a bit of each.
+  const G = content?.gallery && CONFIG.gallery ? content.gallery : null;
+  let gallery = '';
+  if (G) {
+    const byGroup = CONFIG.gallery.map((id) => G.filter((p) => p.group === id));
+    const mixed = [];
+    for (let n = 0; byGroup.some((list) => list[n]); n++) for (const list of byGroup) if (list[n]) mixed.push({ ...list[n], n: n + 1 });
+    gallery = `
+<section class="work band" id="work" aria-labelledby="work-title">
+  <div class="section-head">
+    ${i('p', 'nav.work', 'class="kicker"')}
+    ${i('h2', 'gal.title', 'id="work-title" tabindex="-1"')}
+    ${i('p', 'gal.text', 'class="lead"')}
+  </div>
+  <fieldset class="gal-filter">
+    ${i('legend', 'gal.filter', 'class="sr-only"')}
+    <div class="families">
+      <label class="family"><input type="radio" name="gal-group" id="gal-group-all" value="all" checked>${i('span', 'gal.all')}</label>
+      ${CONFIG.gallery.map((id) => `<label class="family"><input type="radio" name="gal-group" id="gal-group-${id}" value="${id}">${i('span', `svc.${id}.name`)}</label>`).join('')}
+    </div>
+  </fieldset>
+  <ul class="gal-grid" id="gal-grid">
+    ${mixed.map((p) => `<li class="gal-item" data-group="${p.group}"><button type="button" class="gal-open" data-full="img/${p.file}.webp" data-w="${p.w}" data-h="${p.h}"><img src="img/${p.file}_t.webp" width="${p.tw}" height="${p.th}" loading="lazy" decoding="async" ${at({ alt: 'gal.alt' }, { service: `@svc.${p.group}.name`, n: p.n })}></button></li>`).join('\n    ')}
+  </ul>
+  <p class="gal-more-row"><button type="button" class="btn btn-ghost" id="gal-more" data-i18n="gal.more">${t('gal.more')}</button></p>
+  <dialog class="lightbox" id="lightbox" ${at({ 'aria-label': 'gal.viewer' })}>
+    ${artifact ? '<p class="proposal" role="note" lang="pt">Proposta de design · não é o site oficial</p>' : ''}
+    <figure><img id="lightbox-img" alt=""><figcaption id="lightbox-caption"></figcaption></figure>
+    <button type="button" class="tool lightbox-prev" id="lightbox-prev" ${at({ 'aria-label': 'gal.prev' })}>${icon.back}</button>
+    <button type="button" class="tool lightbox-next" id="lightbox-next" ${at({ 'aria-label': 'gal.next' })}>${icon.fwd}</button>
+    <button type="button" class="tool lightbox-close" id="lightbox-close" ${at({ 'aria-label': 'gal.close' })}>${icon.close}</button>
+  </dialog>
+</section>
+`;
+  }
+  // Customer reviews, word for word and in the language they were written in.
+  const R = content?.reviews?.items?.length ? content.reviews : null;
+  const stars = (n, attrs) => `<span class="stars" style="--fill:${Math.round((n / 5) * 100)}%" ${attrs}>★★★★★</span>`;
+  const reviews = !R ? '' : `
+<section class="reviews band" id="reviews" aria-labelledby="rev-title">
+  <div class="section-head">
+    ${i('p', 'nav.reviews', 'class="kicker"')}
+    ${i('h2', 'rev.title', 'id="rev-title" tabindex="-1"')}
+    <p class="rev-score">${stars(R.rating, 'aria-hidden="true"')}${iv('strong', 'rev.score', { rating: String(R.rating), ratingComma: String(R.rating).replace('.', ',') })}${iv('span', 'rev.count', { count: R.count })}</p>
+  </div>
+  <div class="rev-row" id="rev-row" tabindex="0" role="region" ${at({ 'aria-label': 'rev.region' })}>
+    ${R.items.map((r, n) => `<article class="rev">
+      ${stars(r.rating, `role="img" ${at({ 'aria-label': 'rev.stars' }, { n: r.rating })}`)}
+      <blockquote class="rev-text" id="rev-text-${n}" lang="${esc(r.lang)}" translate="no">${esc(r.text)}</blockquote>
+      <button type="button" class="rev-more" aria-expanded="false" aria-controls="rev-text-${n}" data-i18n="rev.more" hidden>${t('rev.more')}</button>
+      <p class="rev-by"><strong translate="no">${esc(r.name)}</strong> ${i('span', 'rev.on')}</p>
+    </article>`).join('\n    ')}
+  </div>
+  <div class="rev-foot">
+    <div class="tool-buttons">
+      <button type="button" class="tool" id="rev-prev" ${at({ 'aria-label': 'rev.prev' })}>${icon.back}</button>
+      <button type="button" class="tool" id="rev-next" ${at({ 'aria-label': 'rev.next' })}>${icon.fwd}</button>
+    </div>
+    ${R.placeId ? `<a class="link" href="https://www.google.com/maps/search/?api=1&amp;query=${encodeURIComponent(CONFIG.brand.name)}&amp;query_place_id=${esc(R.placeId)}" target="_blank" rel="noopener">${i('span', 'rev.all')}${icon.out}${newTab}</a>` : ''}
+  </div>
+  ${i('p', 'rev.note', 'class="note"')}
+</section>
+`;
+
   return `
 <svg class="sprite" width="0" height="0" aria-hidden="true" focusable="false">
   <defs>
@@ -179,7 +252,7 @@ export function renderPage({ lang = CONFIG.defaultLanguage, artifact = false } =
 <section class="story" id="top">
   <div class="story-stage" aria-hidden="true">
     <div class="story-pic">
-      <img class="story-poster" src="img/a_dirty_m.webp" srcset="img/a_dirty_m.webp 1152w, img/a_dirty.webp 2048w" sizes="100vw" width="1152" height="651" alt="" fetchpriority="high" decoding="async">
+      <img class="story-poster" src="img/${firstShot}_m.webp" srcset="img/${firstShot}_m.webp 1152w, img/${firstShot}.webp 2048w" sizes="100vw" width="1152" height="651" alt="" fetchpriority="high" decoding="async">
       <canvas id="story-canvas"></canvas>
     </div>
   </div>
@@ -371,7 +444,7 @@ ${stillsBlock}
     ${i('p', 'still.note', 'class="note"')}
   </div>
 </section>
-${extras}
+${extras}${gallery}${reviews}
 <section class="finale band" id="finale" aria-labelledby="fin-title">
   ${i('h2', 'fin.title', 'id="fin-title" tabindex="-1"')}
   ${i('p', 'fin.text', 'class="lead"')}

@@ -7,7 +7,8 @@ import { createStory, SHOTS } from './story.js';
 import { SEQUENCES } from './three/experience.js';
 
 const SEQ = SEQUENCES[CONFIG.interior];                       // what the interior sequence shows for this business
-const NS = CONFIG.key === 'fastwheels' ? 'fw' : CONFIG.key;   // prefix for what is remembered in the browser
+const NS = CONFIG.key === 'fastwheels' ? 'fw' : CONFIG.key;
+const STORY_SHOTS = (CONFIG.story.shots || SHOTS).length;       // stills in the opening story   // prefix for what is remembered in the browser
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
@@ -30,7 +31,7 @@ const colorName = (c) => c.name[LANGS.indexOf(lang)] ?? c.name[0];
 
 function applyTexts(scope = document) {
   for (const el of $$('[data-i18n]', scope)) el.textContent = t(el.dataset.i18n, el.dataset.i18nVars ? JSON.parse(el.dataset.i18nVars) : undefined);
-  for (const el of $$('[data-i18n-attr]', scope)) for (const pair of el.dataset.i18nAttr.split(';')) { const [attr, key] = pair.split(':'); el.setAttribute(attr, t(key)); }
+  for (const el of $$('[data-i18n-attr]', scope)) for (const pair of el.dataset.i18nAttr.split(';')) { const [attr, key] = pair.split(':'); el.setAttribute(attr, t(key, el.dataset.i18nVars ? JSON.parse(el.dataset.i18nVars) : undefined)); }
   for (const el of $$('[data-color]', scope)) { const name = colorName(colorById(el.dataset.color)); el.textContent = name; el.closest('.sw')?.setAttribute('title', name); }
 }
 
@@ -57,7 +58,7 @@ function setLanguage(next, { silent = false } = {}) {
   document.title = CONFIG.brand.title;
   $('meta[name="description"]')?.setAttribute('content', t('meta.description'));
   applyTexts();
-  renderReadout(); renderWrapChoice(); renderOfflineText(); renderHours(); updateViewerLabel();
+  renderReadout(); renderWrapChoice(); renderOfflineText(); renderHours(); updateViewerLabel(); renderLightboxCaption(); measureReviews();
   $('#lang-select').value = lang;
   store.set(`${NS}.lang`, lang);
   if (anchor) { const drift = anchor.el.getBoundingClientRect().top - anchor.top; if (Math.abs(drift) > 1) window.scrollBy(0, drift); }
@@ -132,15 +133,15 @@ function initStory() {
   const canvas = $('#story-canvas');
   if (reduced()) { root.classList.add('static-story'); return; }
   const small = Math.min(window.innerWidth, window.innerHeight) < 760 || (navigator.connection && navigator.connection.saveData);
-  story = createStory(canvas, { small, grade: CONFIG.story.grade, onReady: () => $('.story').classList.add('story-live') });
+  story = createStory(canvas, { small, grade: CONFIG.story.grade, shots: CONFIG.story.shots || null, onReady: () => $('.story').classList.add('story-live') });
   if (!story) { root.classList.add('static-story'); return; }
   new IntersectionObserver(([e]) => story.setVisible(e.isIntersecting), { rootMargin: '10% 0px' }).observe($('.story'));
 }
 function updateStory() {
   if (!story) return;
   const el = $('.story'), r = el.getBoundingClientRect();
-  const stepHeight = el.offsetHeight / SHOTS.length;
-  story.setProgress(clamp(-r.top / stepHeight, 0, SHOTS.length - 1));
+  const stepHeight = el.offsetHeight / STORY_SHOTS;
+  story.setProgress(clamp(-r.top / stepHeight, 0, STORY_SHOTS - 1));
 }
 
 // ---------------------------------------------------------------------------------------------- configurator
@@ -552,6 +553,118 @@ function renderHours() {
   for (const row of CONFIG.hours) { const li = document.createElement('li'); li.textContent = `${row.days.split('-').map(dayName).join(' – ')}: ${row.open} – ${row.close}`; list.appendChild(li); }
 }
 
+// ---------------------------------------------------------------------------------------------- photo gallery
+const GALLERY_FIRST = 12;                            // photographs shown before "show all"
+let galleryAll = false, lightboxAt = -1;
+const galleryItems = () => $$('#gal-grid .gal-item').filter((li) => !li.hidden);
+function filterGallery() {
+  const group = $('input[name="gal-group"]:checked').value;
+  let shown = 0;
+  for (const li of $$('#gal-grid .gal-item')) {
+    const match = group === 'all' || li.dataset.group === group;
+    li.hidden = !match || (!galleryAll && shown >= GALLERY_FIRST);
+    if (match) shown++;
+  }
+  $('#gal-more').parentElement.hidden = galleryAll || shown <= GALLERY_FIRST;
+}
+function showPhoto(n) {
+  const items = galleryItems();
+  if (!items.length) return;
+  lightboxAt = (n + items.length) % items.length;
+  const button = $('.gal-open', items[lightboxAt]), thumb = $('img', button), img = $('#lightbox-img');
+  img.src = thumb.currentSrc || thumb.src;                     // the small picture at once, the large one when it has loaded
+  img.width = Number(button.dataset.w); img.height = Number(button.dataset.h);
+  img.alt = thumb.alt;
+  const full = new Image();
+  full.onload = () => { if ($('.gal-open', galleryItems()[lightboxAt]) === button) img.src = full.src; };
+  full.src = button.dataset.full;
+  $('#lightbox-caption').textContent = `${thumb.alt} · ${lightboxAt + 1} / ${items.length}`;
+}
+function closeLightbox() {
+  const box = $('#lightbox');
+  if (!box.open) return;
+  const back = galleryItems()[lightboxAt];
+  box.close();
+  root.classList.remove('is-locked');
+  if (back) $('.gal-open', back).focus({ preventScroll: true });
+  lightboxAt = -1;
+}
+function initGallery() {
+  if (!$('#gal-grid')) return;
+  for (const input of $$('input[name="gal-group"]')) input.addEventListener('change', () => { galleryAll = false; filterGallery(); });
+  $('#gal-more').addEventListener('click', () => {
+    const first = galleryItems().length;
+    galleryAll = true; filterGallery();
+    const next = galleryItems()[first];
+    if (next) $('.gal-open', next).focus({ preventScroll: true });
+  });
+  $('#gal-grid').addEventListener('click', (e) => {
+    const button = e.target.closest('.gal-open');
+    if (!button) return;
+    const box = $('#lightbox');
+    if (typeof box.showModal !== 'function') { window.open(button.dataset.full, '_blank', 'noopener'); return; }
+    showPhoto(galleryItems().indexOf(button.closest('.gal-item')));
+    box.showModal();
+    root.classList.add('is-locked');
+  });
+  const box = $('#lightbox');
+  $('#lightbox-prev').addEventListener('click', () => showPhoto(lightboxAt - 1));
+  $('#lightbox-next').addEventListener('click', () => showPhoto(lightboxAt + 1));
+  $('#lightbox-close').addEventListener('click', closeLightbox);
+  box.addEventListener('click', (e) => { if (e.target === box) closeLightbox(); });          // a click on the backdrop
+  box.addEventListener('cancel', (e) => { e.preventDefault(); closeLightbox(); });            // Escape
+  box.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') { showPhoto(lightboxAt - 1); e.preventDefault(); }
+    else if (e.key === 'ArrowRight') { showPhoto(lightboxAt + 1); e.preventDefault(); }
+  });
+  let startX = null;                                           // swipe sideways on touch screens
+  box.addEventListener('touchstart', (e) => { startX = e.touches.length === 1 ? e.touches[0].clientX : null; }, { passive: true });
+  box.addEventListener('touchend', (e) => {
+    if (startX === null) return;
+    const dx = e.changedTouches[0].clientX - startX; startX = null;
+    if (Math.abs(dx) > 48) showPhoto(lightboxAt + (dx < 0 ? 1 : -1));
+  }, { passive: true });
+  filterGallery();
+}
+function renderLightboxCaption() { if (lightboxAt >= 0) showPhoto(lightboxAt); }
+
+// ---------------------------------------------------------------------------------------------- customer reviews
+function measureReviews() {
+  // "Read more" only where the text is really cut off.
+  for (const card of $$('.rev')) {
+    const text = $('.rev-text', card), more = $('.rev-more', card);
+    if (card.classList.contains('is-open')) continue;
+    more.hidden = text.scrollHeight <= text.clientHeight + 2;
+  }
+}
+function updateReviewButtons() {
+  const row = $('#rev-row');
+  if (!row) return;
+  $('#rev-prev').disabled = row.scrollLeft <= 4;
+  $('#rev-next').disabled = row.scrollLeft >= row.scrollWidth - row.clientWidth - 4;
+}
+function initReviews() {
+  const row = $('#rev-row');
+  if (!row) return;
+  for (const card of $$('.rev', row)) $('.rev-more', card).addEventListener('click', (e) => {
+    const open = card.classList.toggle('is-open');
+    const button = e.currentTarget;
+    button.setAttribute('aria-expanded', String(open));
+    button.dataset.i18n = open ? 'rev.less' : 'rev.more';
+    button.textContent = t(button.dataset.i18n);
+  });
+  const step = (dir) => {
+    const card = $('.rev', row);
+    const width = card.getBoundingClientRect().width + parseFloat(getComputedStyle(row).columnGap || '0');
+    row.scrollBy({ left: dir * Math.max(width, Math.floor(row.clientWidth / width) * width), behavior: reduced() ? 'auto' : 'smooth' });
+  };
+  $('#rev-prev').addEventListener('click', () => step(-1));
+  $('#rev-next').addEventListener('click', () => step(1));
+  row.addEventListener('scroll', () => requestAnimationFrame(updateReviewButtons), { passive: true });
+  if (document.fonts?.ready) document.fonts.ready.then(measureReviews);
+  measureReviews(); updateReviewButtons();
+}
+
 // ---------------------------------------------------------------------------------------------- scroll bookkeeping
 function updateFab() {
   // The compact button only rides along the detailing story, where every step keeps a free band for it.
@@ -611,9 +724,9 @@ function start() {
       else if (!e.shiftKey && at === items.length - 1) { items[0].focus(); e.preventDefault(); }
     }
   });
-  initStory(); initInterior(); initConfigurator(); initForm(); initScene();
+  initStory(); initInterior(); initConfigurator(); initForm(); initScene(); initGallery(); initReviews();
   window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', () => { story?.resize(); if (window.innerWidth >= 1100) closeMenu(); onScroll(); });
+  window.addEventListener('resize', () => { story?.resize(); if (window.innerWidth >= 1100) closeMenu(); measureReviews(); updateReviewButtons(); onScroll(); });
   reducedQuery.addEventListener?.('change', () => window.location.reload());
   onScroll();
 }

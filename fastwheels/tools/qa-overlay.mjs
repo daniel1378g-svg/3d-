@@ -2,7 +2,7 @@
 // behaviour: layout, configurator, rendering, fallbacks).
 //
 //   node tools/build.mjs --artifact --brand overlay && node tools/serve.mjs 5175 dist-artifact-overlay &
-//   node tools/qa-overlay.mjs [http://127.0.0.1:5175/preview.html] [group …]      groups: brand lang nav form tint reduced layout
+//   node tools/qa-overlay.mjs [http://127.0.0.1:5175/preview.html] [group …]      groups: brand lang nav content form tint reduced layout
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 let pw; try { pw = require('playwright'); } catch { pw = require('/opt/node-tools/node_modules/playwright'); }
@@ -91,14 +91,14 @@ if (want('lang')) {
 if (want('nav')) {
   const page = await open();
   const ids = await page.evaluate(() => [...document.querySelectorAll('.nav-desktop .nav-link')].map((a) => a.dataset.nav));
-  check('menu: wash and detail, PPF, car wrapping, window tint, services', ids.join(',') === 'detailing,ppf,wrap,tint,services', ids.join(','));
+  check('menu: PPF, car wrapping, window tint, services, work, reviews', ids.join(',') === 'ppf,wrap,tint,services,work,reviews', ids.join(','));
   const marks = [];
   for (const id of [...ids, 'booking', 'finale']) {
     await jump(page, id);
     await page.waitForTimeout(450);
     marks.push(`${id}:${await page.evaluate(() => document.querySelector('.nav-link.is-current')?.dataset.nav || '-')}`);
   }
-  check('each menu item lands on its section and is marked as current; none is marked on the quote form or the closing band', marks.join(' ') === 'detailing:detailing ppf:ppf wrap:wrap tint:tint services:services booking:- finale:-', marks.join(' '));
+  check('each menu item lands on its section and is marked as current; none is marked on the quote form or the closing band', marks.join(' ') === 'ppf:ppf wrap:wrap tint:tint services:services work:work reviews:reviews booking:- finale:-', marks.join(' '));
   await jump(page, 'tint');
   await page.waitForTimeout(300);
   const skip = await page.evaluate(() => { const a = document.querySelector('.cine-skip'); const r = a.getBoundingClientRect(); return { to: a.dataset.nav, visible: r.top >= 0 && r.bottom <= innerHeight }; });
@@ -108,6 +108,68 @@ if (want('nav')) {
   check('the sequence can be skipped: the skip link goes to the services section', skip.to === 'services' && skip.visible && Math.abs(landed) <= 4, JSON.stringify({ skip, landed }));
   const svc = await page.evaluate(() => ({ cards: [...document.querySelectorAll('.svc h3')].map((h) => h.textContent), badges: [...document.querySelectorAll('.badge')].map((b) => b.textContent), tags: [...document.querySelectorAll('.tags li')].map((b) => b.textContent), films: document.querySelector('.films').textContent.replace(/\s+/g, ' '), about: document.querySelectorAll('.timeline li').length }));
   check('services section: five described services, warranties, other services, film brands and the company history', svc.cards.length === 5 && svc.badges.join('|') === 'Garantia de 3 anos|Garantia de 10 anos|Garantia de 3 anos' && svc.tags.length === 4 && /Inozetek/.test(svc.films) && /LLumar/.test(svc.films) && svc.about === 3, JSON.stringify(svc));
+  await page.context().close();
+}
+
+// ---------------------------------------------------------------------------------------------------- photographs and reviews
+if (want('content')) {
+  const page = await open();
+  const requested = [];
+  page.on('request', (r) => { if (/\/img\//.test(r.url())) requested.push(r.url().split('/img/')[1]); });
+  const story = await page.evaluate(() => ({ poster: document.querySelector('.story-poster').getAttribute('src'), stills: [...document.querySelectorAll('.step-still img')].map((i) => i.getAttribute('src')) }));
+  check('the opening story uses Overlay\'s photographs', story.poster === 'img/ov_hero_m.webp' && story.stills.join(',') === 'img/ov_detail_m.webp,img/ov_wrap_m.webp,img/ov_ppf_m.webp,img/ov_moto_m.webp', JSON.stringify(story));
+  await jump(page, 'work');
+  await page.waitForTimeout(600);
+  const visible = () => page.evaluate(() => [...document.querySelectorAll('#gal-grid .gal-item')].filter((li) => !li.hidden).map((li) => li.dataset.group));
+  const first = await visible();
+  const total = await page.evaluate(() => document.querySelectorAll('#gal-grid .gal-item').length);
+  check('gallery: 39 photographs, the first twelve shown, a bit of every service', total === 39 && first.length === 12 && new Set(first).size === 7, `${total} ${first.join(',')}`);
+  await page.click('#gal-more');
+  const all = await visible();
+  check('"show all photographs" shows the rest and then goes away', all.length === 39 && (await page.evaluate(() => document.querySelector('#gal-more').parentElement.hidden)));
+  await page.check('#gal-group-ppf', { force: true });
+  const ppf = await visible();
+  check('filter by service: only that service\'s photographs', ppf.length === 6 && ppf.every((g) => g === 'ppf'), ppf.join(','));
+  await page.check('#gal-group-carwrap', { force: true });
+  const loaded = await page.evaluate(async () => { const imgs = [...document.querySelectorAll('#gal-grid .gal-item:not([hidden]) img')]; imgs.forEach((i) => { i.loading = 'eager'; }); await Promise.all(imgs.map((i) => (i.complete ? null : new Promise((res) => { i.onload = i.onerror = res; })))); return imgs.map((i) => i.naturalWidth > 0); });
+  check('the photographs load', loaded.length === 10 && loaded.every(Boolean), loaded.join(','));
+  await page.locator('#gal-grid .gal-item:not([hidden]) .gal-open').nth(1).click();
+  await page.waitForFunction(() => /g-carwrap-02\.webp$/.test(document.querySelector('#lightbox-img').getAttribute('src')), null, { timeout: 20000 }).catch(() => {});
+  const box = await page.evaluate(() => ({ open: document.querySelector('#lightbox').open, src: document.querySelector('#lightbox-img').getAttribute('src'), alt: document.querySelector('#lightbox-img').alt, caption: document.querySelector('#lightbox-caption').textContent, strip: document.querySelector('#lightbox .proposal')?.textContent || '', locked: document.documentElement.classList.contains('is-locked') }));
+  check('a photograph opens enlarged, with its description and the "design proposal" strip', box.open && /g-carwrap-02\.webp$/.test(box.src) && box.alt === 'Car Wrapping: trabalho da Overlay, fotografia 2' && / · 2 \/ 10$/.test(box.caption) && /não é o site oficial/.test(box.strip) && box.locked, JSON.stringify(box));
+  await page.keyboard.press('ArrowRight');
+  await page.click('#lightbox-next');
+  await page.keyboard.press('ArrowLeft');
+  const moved = await page.evaluate(() => document.querySelector('#lightbox-caption').textContent);
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(200);
+  const closed = await page.evaluate(() => ({ open: document.querySelector('#lightbox').open, focus: document.activeElement.className, back: document.activeElement.closest('.gal-item') === [...document.querySelectorAll('#gal-grid .gal-item')].filter((li) => !li.hidden)[2], locked: document.documentElement.classList.contains('is-locked') }));
+  check('arrow keys and buttons move through the photographs; Escape closes and returns to the photograph', / · 3 \/ 10$/.test(moved) && !closed.open && closed.back && !closed.locked, `${moved} ${JSON.stringify(closed)}`);
+
+  await jump(page, 'reviews');
+  await page.waitForTimeout(500);
+  const rev = await page.evaluate(() => ({
+    score: document.querySelector('.rev-score strong').textContent, count: document.querySelector('.rev-score span:last-child').textContent, cards: document.querySelectorAll('.rev').length,
+    empty: [...document.querySelectorAll('.rev-text')].filter((b) => b.textContent.trim().length < 80).length, langs: [...new Set([...document.querySelectorAll('.rev-text')].map((b) => b.lang))].sort().join(','),
+    names: [...document.querySelectorAll('.rev-by strong')].every((s) => s.textContent.trim().length > 2 && s.getAttribute('translate') === 'no'), stars: document.querySelector('.rev .stars').getAttribute('aria-label'),
+    link: document.querySelector('.rev-foot a').href, more: [...document.querySelectorAll('.rev-more')].filter((b) => !b.hidden).length, prevOff: document.querySelector('#rev-prev').disabled,
+    first: document.querySelector('.rev-text').textContent,
+  }));
+  check('reviews: the rating and count shown on overlay.pt, twelve reviews with their author', rev.score === '4,7 em 5' && rev.count === '168 avaliações no Google' && rev.cards === 12 && !rev.empty && rev.names && rev.stars === '5 em 5 estrelas', JSON.stringify({ ...rev, first: undefined }));
+  check('reviews keep their original language and link to Google', rev.langs === 'en,pt' && /google\.com\/maps\/search\/\?api=1&query=Overlay&query_place_id=ChIJ/.test(rev.link), `${rev.langs} ${rev.link}`);
+  const card = page.locator('.rev').filter({ has: page.locator('.rev-more:not([hidden])') }).first();
+  const before = await card.locator('.rev-text').evaluate((b) => b.clientHeight);
+  await card.locator('.rev-more').click();
+  const opened = await card.evaluate((c) => ({ h: c.querySelector('.rev-text').clientHeight, full: c.querySelector('.rev-text').scrollHeight <= c.querySelector('.rev-text').clientHeight + 2, label: c.querySelector('.rev-more').textContent, expanded: c.querySelector('.rev-more').getAttribute('aria-expanded') }));
+  check('"read more" only on long reviews, and it opens the whole text', rev.more > 0 && rev.more < 12 && opened.h > before && opened.full && opened.label === 'Ler menos' && opened.expanded === 'true', `${rev.more} ${before}→${JSON.stringify(opened)}`);
+  await page.click('#rev-next');
+  await page.waitForFunction(() => document.querySelector('#rev-row').scrollLeft > 100, null, { timeout: 5000 }).catch(() => {});
+  check('the arrows move through the reviews', rev.prevOff && (await page.evaluate(() => document.querySelector('#rev-row').scrollLeft > 100 && !document.querySelector('#rev-prev').disabled)));
+  await page.selectOption('#lang-select', 'en');
+  const en = await page.evaluate(() => ({ score: document.querySelector('.rev-score strong').textContent, first: document.querySelector('.rev-text').textContent, on: document.querySelector('.rev-by span').textContent, alt: document.querySelector('#gal-grid img').alt, stars: document.querySelector('.rev .stars').getAttribute('aria-label') }));
+  check('in another language the interface changes, the reviews do not', en.score === '4.7 out of 5' && en.first === rev.first && en.on === 'on Google' && en.alt === "Car Wrapping: Overlay's work, photograph 1" && en.stars === '5 out of 5 stars', JSON.stringify({ ...en, first: en.first.slice(0, 30) }));
+  check('the shared illustrative pictures are not used', !requested.some((f) => /^(a_dirty|b_foam|c_clean|d_bike|e_macro)/.test(f)), requested.filter((f) => /^(a_|b_|c_|d_|e_)/.test(f)).join(','));
+  check('no script errors and no missing files', !page.errors.length, page.errors.slice(0, 4).join(' | '));
   await page.context().close();
 }
 
@@ -211,7 +273,7 @@ if (want('reduced')) {
 if (want('layout')) for (const [w, h] of [[360, 740], [390, 844], [430, 932], [768, 1024], [1440, 900]]) {
   const page = await open({ width: w, height: h, mobile: w < 800 });
   const bad = [];
-  for (const id of ['top', 'detailing', 'ppf', 'wrap', 'booking', 'interior', 'services', 'finale']) {
+  for (const id of ['top', 'detailing', 'ppf', 'wrap', 'booking', 'interior', 'services', 'work', 'reviews', 'finale']) {
     await jump(page, id);
     await page.waitForTimeout(300);
     const r = await page.evaluate(() => {
@@ -221,7 +283,7 @@ if (want('layout')) for (const [w, h] of [[360, 740], [390, 844], [430, 932], [7
         if (!b.width || b.bottom < 0 || b.top > innerHeight || el.closest('[hidden]')) continue;
         if (el.matches('.tags li')) { if (b.right > innerWidth + 1) out.push(el.textContent); continue; }
         if (b.height < 43.5 && !el.matches('.nav-link')) small.push(`${el.className || el.tagName}:${Math.round(b.height)}`);
-        if (b.right > innerWidth + 1 || b.left < -1) out.push(el.className || el.tagName);
+        if ((b.right > innerWidth + 1 || b.left < -1) && !el.closest('.rev-row')) out.push(el.className || el.tagName);   // the reviews scroll sideways on purpose
       }
       return { sw: d.scrollWidth, cw: d.clientWidth, small, out };
     });

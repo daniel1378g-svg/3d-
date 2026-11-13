@@ -32,6 +32,9 @@ const stops = [
   ...[0.02, 0.22, 0.47, 0.72, 0.8, 0.99].map((p, i) => [`09-cine-${i}-p${p}`, `(() => { const c = document.querySelector('#cine'); window.scrollTo(0, c.getBoundingClientRect().top + scrollY + (c.offsetHeight - innerHeight) * ${p}); })()`, i === 0 ? 6000 : 1500]),
   ['09z-services', "(() => { const el = document.querySelector('#services'); if (el) window.scrollTo(0, el.getBoundingClientRect().top + scrollY - 60); })()", 1200],
   ['09z-services-2', "(() => { const el = document.querySelector('.extras-row'); if (el) window.scrollTo(0, el.getBoundingClientRect().top + scrollY - 120); })()", 800],
+  ['09z-work', "(() => { const el = document.querySelector('#work'); if (el) window.scrollTo(0, el.getBoundingClientRect().top + scrollY - 60); })()", 2500],
+  ['09z-work-2', "(() => { const el = document.querySelector('#gal-grid'); if (el) window.scrollTo(0, el.getBoundingClientRect().top + scrollY - 140); })()", 2500],
+  ['09z-reviews', "(() => { const el = document.querySelector('#reviews'); if (el) window.scrollTo(0, el.getBoundingClientRect().top + scrollY - 60); })()", 1500],
   ['10-finale', "window.scrollTo(0, document.querySelector('#finale').getBoundingClientRect().top + scrollY - 60)", 1200],
   ['11-footer', 'window.scrollTo(0, document.documentElement.scrollHeight)', 900],
 ];

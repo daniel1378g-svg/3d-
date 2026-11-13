@@ -18,7 +18,8 @@ export default {
   booking: { endpoint: null, timeoutMs: 12000 },
 
   nav: [['detailing', 'nav.detailing'], ['ceramic', 'nav.ceramic'], ['wrap', 'nav.wrap'], ['ambient', 'nav.ambient'], ['starlight', 'nav.starlight']],
-  story: { grade: null, steps: [[1, 'detailing', 'b_foam'], [2, '', 'c_clean'], [3, 'ceramic', 'e_macro'], [4, '', 'd_bike']] },
+  content: false,
+  story: { grade: null, shots: null, steps: [[1, 'detailing', 'b_foam'], [2, '', 'c_clean'], [3, 'ceramic', 'e_macro'], [4, '', 'd_bike']] },
   services: ['detailing', 'ceramic', 'wrap', 'ambient', 'starlight'],
   wrapService: { car: 'wrap', bike: 'wrap' },
   interior: 'lights',                  // the interior sequence shows ambient lighting and the starlight headliner
@@ -26,5 +27,6 @@ export default {
   scene: { accent: null },
   strings: {},
   extras: null,
+  gallery: null,
   css: null,
 };

@@ -350,6 +350,7 @@ export const hasString = (key) => !!(CONFIG.strings?.[key] || STRINGS[key]);
 export function translate(lang, key, vars) {
   const row = CONFIG.strings?.[key] || STRINGS[key];      // the active brand's own wording comes first
   let text = row ? row[LANGS.indexOf(lang)] ?? row[0] : key;
-  if (vars) for (const [k, v] of Object.entries(vars)) text = text.replaceAll(`{${k}}`, String(v));
+  // A value that starts with '@' is itself a key: { service: '@svc.ppf.name' } puts the translated service name in.
+  if (vars) for (const [k, v] of Object.entries(vars)) text = text.replaceAll(`{${k}}`, typeof v === 'string' && v[0] === '@' ? translate(lang, v.slice(1)) : String(v));
   return text;
 }

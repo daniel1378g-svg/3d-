@@ -11,7 +11,7 @@
 // Two script bundles: app.js (page behaviour, small, loads at once) and scene.js (three.js + the 3D scene,
 // loaded only when the configurator or the interior sequence comes near).
 import { build } from 'esbuild';
-import { cpSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from 'node:fs';
+import { cpSync, existsSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 const root = new URL('..', import.meta.url).pathname;
@@ -41,10 +41,23 @@ const css = (readFileSync(join(root, 'src/styles.css'), 'utf8') + (CONFIG.css ? 
 const lang = CONFIG.defaultLanguage;
 const description = translate(lang, 'meta.description').replace(/"/g, '&quot;');
 const fonts = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&family=IBM+Plex+Mono:wght@400;500&display=swap">';
-const body = renderPage({ lang, artifact: proposal });
+// A business's own photographs and customer reviews are prepared outside the repository (they are not ours to
+// publish there): content/<brand>/content.json and content/<brand>/img/.
+let content = null;
+if (CONFIG.content) {
+  const file = join(root, 'content', brand, 'content.json');
+  if (!existsSync(file)) {
+    console.error(`\nThe "${brand}" site needs that business's photographs and reviews, and they are not in the repository.\nPrepare them first:  node tools/${brand}-content.mjs\n`);
+    process.exit(1);
+  }
+  content = JSON.parse(readFileSync(file, 'utf8'));
+}
+const body = renderPage({ lang, artifact: proposal, content });
 
 // Supporting files
 const files = { 'app.js': 'app.js', 'scene.js': 'scene.js' };
+const { SHOTS } = await import(join(root, 'src/story.js'));
+const ownStory = !!CONFIG.story.shots;
 const sequence = SEQUENCES[CONFIG.interior];
 const stills = new Set([sequence.poster, ...Object.values(sequence.still)].map((name) => `still-${name}.webp`));
 const copy = (from, dir) => {
@@ -53,6 +66,7 @@ const copy = (from, dir) => {
   for (const name of names) {
     if (!statSync(join(from, name)).isFile()) continue;
     if (name.startsWith('still-') && !stills.has(name)) continue;   // stills of a sequence this business does not show
+    if (ownStory && SHOTS.some((shot) => name.startsWith(shot))) continue;   // the shared story pictures, when the business has its own
     mkdirSync(join(out, dir), { recursive: true });
     cpSync(join(from, name), join(out, dir, name));
     files[`${dir}/${name}`] = `${dir}/${name}`;
@@ -60,6 +74,7 @@ const copy = (from, dir) => {
 };
 copy(join(root, 'public/img'), 'img');
 copy(join(root, 'public/brands', brand, 'img'), 'img');             // the business's own pictures replace the shared ones
+if (content) copy(join(root, 'content', brand, 'img'), 'img');      // its photographs (story stills, gallery)
 copy(join(root, 'public/models'), 'models');
 const themeColor = (css.match(/--bg:\s*(#[0-9a-f]{6})/gi) || ['--bg: #0d0e11']).pop().replace(/.*(#[0-9a-f]{6})/i, '$1');
 

@@ -53,8 +53,19 @@ own pictures in `public/brands/<key>/img/` replace the shared ones. Only the cho
   tint** instead (`interior: 'tint'`): the glass darkens, the door opens, the camera gets in; the visitor picks a
   light, medium or dark film. The story step on ceramic coating becomes paint protection film.
 - With no booking service connected, the form offers "send on WhatsApp" with the request written out.
+- **Overlay's photographs and its customers' reviews.** The opening story, a gallery by service ("Trabalhos",
+  39 photographs, enlarge on tap) and a reviews section (the Google rating and count shown on overlay.pt and
+  twelve reviews, word for word, in their original language) come from overlay.pt.
+
+  They are **not in this repository**: the photographs are Overlay's and the reviews carry their authors' names,
+  and this repository is public. `node tools/overlay-content.mjs` fetches and prepares them into
+  `content/overlay/` (ignored by git), and the Overlay build stops with a message when that folder is missing.
+  The tool lists exactly which pictures are used; left out on purpose are stock pictures, pictures with a readable
+  number plate and pictures where a member of staff can be recognised. It downloads slowly because overlay.pt
+  limits requests. Before any of this goes public, Overlay has to agree to the use of its pictures and reviews.
 
 ```bash
+node tools/overlay-content.mjs                     # content/overlay/  Overlay's photographs and reviews (once)
 node tools/build.mjs --artifact --brand overlay    # dist-artifact-overlay/
 node tools/serve.mjs 5175 dist-artifact-overlay &
 node tools/qa-overlay.mjs                          # checks what differs from the FASTWHEELS site

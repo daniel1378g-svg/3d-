@@ -20,8 +20,24 @@ export default {
   defaultLanguage: 'pt',
   booking: { endpoint: null, timeoutMs: 12000 },
 
-  nav: [['detailing', 'nav.detailing'], ['ppf', 'nav.ppf'], ['wrap', 'nav.wrap'], ['tint', 'nav.tint'], ['services', 'nav.services']],
-  story: { grade: null, steps: [[1, 'detailing', 'b_foam'], [2, '', 'c_clean'], [3, 'ppf', 'e_macro'], [4, '', 'd_bike']] },
+  nav: [['ppf', 'nav.ppf'], ['wrap', 'nav.wrap'], ['tint', 'nav.tint'], ['services', 'nav.services'], ['work', 'nav.work'], ['reviews', 'nav.reviews']],
+  // Overlay's own photographs and its customers' reviews are prepared by tools/overlay-content.mjs into
+  // content/overlay/ (kept out of the repository). The build needs them.
+  content: true,
+  story: {
+    grade: null,
+    // The opening story in Overlay's photographs. focus = where the subject is in the still, tallX = the same for
+    // upright screens, mode = the transition into the still (1 foam, 3 cross-zoom).
+    shots: [
+      { name: 'ov_hero', focus: [0.42, 0.5], tallX: 0.5 },
+      { name: 'ov_detail', focus: [0.55, 0.5], tallX: 0.55, mode: 1 },
+      { name: 'ov_wrap', focus: [0.55, 0.5], tallX: 0.6, mode: 3 },
+      { name: 'ov_ppf', focus: [0.45, 0.5], tallX: 0.36, mode: 3 },
+      { name: 'ov_moto', focus: [0.5, 0.5], tallX: 0.5, mode: 3 },
+    ],
+    steps: [[1, 'detailing', 'ov_detail'], [2, '', 'ov_wrap'], [3, 'ppf', 'ov_ppf'], [4, '', 'ov_moto']],
+  },
+  gallery: ['carwrap', 'ppf', 'tint', 'detail', 'motowrap', 'boatwrap', 'fleet'],   // the filters of the photo gallery, in order
   services: ['carwrap', 'ppf', 'tint', 'detail', 'parts', 'motowrap', 'buildingtint', 'boatwrap'],   // the list in Overlay's own quote form
   wrapService: { car: 'carwrap', bike: 'motowrap' },
   interior: 'tint',                    // the interior sequence shows window tint films (a service Overlay offers)
@@ -50,6 +66,8 @@ export default {
     'nav.detailing': ["Lavage et detailing", "Wash and detail", "Lavagem e detalhe", "Lavaggio e detailing", "Wäsche und Detailing"],
     'nav.ppf': ["PPF", "PPF", "PPF", "PPF", "PPF"],
     'nav.wrap': ["Car Wrapping", "Car Wrapping", "Car Wrapping", "Car Wrapping", "Car Wrapping"],
+    'nav.work': ["Réalisations", "Our work", "Trabalhos", "Lavori", "Arbeiten"],
+    'nav.reviews': ["Avis", "Reviews", "Avaliações", "Recensioni", "Bewertungen"],
     'nav.tint': ["Films solaires", "Window tint", "Películas solares", "Pellicole oscuranti", "Scheibentönung"],
     'cta.request': ["Demander un devis", "Request a quote", "Pedir orçamento", "Richiedi un preventivo", "Offerte anfragen"],
     'cta.short': ["Devis", "Quote", "Orçamento", "Preventivo", "Offerte"],
@@ -64,6 +82,10 @@ export default {
       "Seit 2012 foliert und schützt Overlay Autos in Lissabon: Car Wrapping, Lackschutzfolie (PPF), Scheibentönung, Wäsche und Detailing. Auch Motorräder und Boote.",
     ],
 
+    'care.alt.1': ["Carrosserie couverte de mousse pendant le lavage chez Overlay", "Bodywork covered in snow foam during a wash at Overlay", "Carroçaria coberta de espuma durante a lavagem na Overlay", "Carrozzeria coperta di schiuma durante il lavaggio da Overlay", "Karosserie voller Schaum bei der Wäsche bei Overlay"],
+    'care.alt.2': ["Sportive avec covering jaune et noir dans le studio d'Overlay", "Sports car wrapped in yellow and black in Overlay's studio", "Desportivo com wrapping amarelo e preto no estúdio da Overlay", "Sportiva con wrapping giallo e nero nello studio di Overlay", "Sportwagen mit gelb-schwarzer Folierung im Studio von Overlay"],
+    'care.alt.3': ["Sportive grise devant le logo Overlay", "Grey sports car in front of the Overlay logo", "Desportivo cinzento em frente ao logótipo da Overlay", "Sportiva grigia davanti al logo Overlay", "Grauer Sportwagen vor dem Overlay-Logo"],
+    'care.alt.4': ["Moto noire et or devant le logo Overlay", "Black and gold motorcycle in front of the Overlay logo", "Mota preta e dourada em frente ao logótipo da Overlay", "Moto nera e oro davanti al logo Overlay", "Schwarz-goldenes Motorrad vor dem Overlay-Logo"],
     'care.1.kicker': ["Lavage et detailing", "Wash and detail", "Lavagem e detalhe", "Lavaggio e detailing", "Wäsche und Detailing"],
     'care.1.title': ["D'abord, une surface propre.", "First, a clean surface.", "Primeiro, uma superfície limpa.", "Prima, una superficie pulita.", "Zuerst eine saubere Oberfläche."],
     'care.1.text': [
@@ -249,6 +271,49 @@ export default {
     ],
     'about.3': ["Août 2018. Overlay arrive à Lisbonne.", "August 2018. Overlay arrives in Lisbon.", "Agosto de 2018. A Overlay chega a Lisboa.", "Agosto 2018. Overlay arriva a Lisbona.", "August 2018. Overlay kommt nach Lissabon."],
 
+    'gal.title': ["Fait chez Overlay.", "Made at Overlay.", "Feito na Overlay.", "Fatto da Overlay.", "Gemacht bei Overlay."],
+    'gal.text': [
+      "Des photographies d'Overlay, tirées des galeries d'overlay.pt. Touchez une photo pour l'agrandir.",
+      "Overlay's own photographs, from the galleries on overlay.pt. Tap a photograph to enlarge it.",
+      "Fotografias da Overlay, das galerias de overlay.pt. Toque numa fotografia para a ampliar.",
+      "Fotografie di Overlay, dalle gallerie di overlay.pt. Tocca una foto per ingrandirla.",
+      "Fotos von Overlay, aus den Galerien auf overlay.pt. Tippen Sie auf ein Foto, um es zu vergrössern.",
+    ],
+    'gal.filter': ["Filtrer par service", "Filter by service", "Filtrar por serviço", "Filtra per servizio", "Nach Leistung filtern"],
+    'gal.all': ["Tout", "All", "Todos", "Tutti", "Alle"],
+    'gal.alt': ["{service} : réalisation Overlay, photo {n}", "{service}: Overlay's work, photograph {n}", "{service}: trabalho da Overlay, fotografia {n}", "{service}: lavoro di Overlay, foto {n}", "{service}: Arbeit von Overlay, Foto {n}"],
+    'gal.more': ["Afficher toutes les photos", "Show all photographs", "Mostrar todas as fotografias", "Mostra tutte le foto", "Alle Fotos anzeigen"],
+    'gal.viewer': ["Photo agrandie", "Enlarged photograph", "Fotografia ampliada", "Foto ingrandita", "Vergrössertes Foto"],
+    'gal.prev': ["Photo précédente", "Previous photograph", "Fotografia anterior", "Foto precedente", "Vorheriges Foto"],
+    'gal.next': ["Photo suivante", "Next photograph", "Fotografia seguinte", "Foto successiva", "Nächstes Foto"],
+    'gal.close': ["Fermer", "Close", "Fechar", "Chiudi", "Schliessen"],
+
+    'rev.title': ["Ce que disent nos clients.", "What our customers say.", "O que dizem os nossos clientes.", "Cosa dicono i nostri clienti.", "Das sagen unsere Kunden."],
+    'rev.score': ["{ratingComma} sur 5", "{rating} out of 5", "{ratingComma} em 5", "{ratingComma} su 5", "{ratingComma} von 5"],
+    'rev.count': ["{count} avis Google", "{count} Google reviews", "{count} avaliações no Google", "{count} recensioni Google", "{count} Google-Bewertungen"],
+    'rev.note': [
+      "Avis Google tels qu'ils apparaissent sur overlay.pt, mot pour mot et dans leur langue d'origine.",
+      "Google reviews as they appear on overlay.pt, word for word and in their original language.",
+      "Avaliações do Google tal como aparecem em overlay.pt, palavra por palavra e na língua original.",
+      "Recensioni Google come appaiono su overlay.pt, parola per parola e in lingua originale.",
+      "Google-Bewertungen, wie sie auf overlay.pt erscheinen, Wort für Wort und in der Originalsprache.",
+    ],
+    'rev.stars': ["{n} étoiles sur 5", "{n} out of 5 stars", "{n} em 5 estrelas", "{n} stelle su 5", "{n} von 5 Sternen"],
+    'rev.on': ["sur Google", "on Google", "no Google", "su Google", "auf Google"],
+    'rev.more': ["Lire la suite", "Read more", "Ler mais", "Leggi tutto", "Mehr lesen"],
+    'rev.less': ["Réduire", "Show less", "Ler menos", "Mostra meno", "Weniger anzeigen"],
+    'rev.all': ["Voir tous les avis sur Google", "See all reviews on Google", "Ver todas as avaliações no Google", "Vedi tutte le recensioni su Google", "Alle Bewertungen auf Google ansehen"],
+    'rev.prev': ["Avis précédents", "Previous reviews", "Avaliações anteriores", "Recensioni precedenti", "Vorherige Bewertungen"],
+    'rev.next': ["Avis suivants", "Next reviews", "Avaliações seguintes", "Recensioni successive", "Nächste Bewertungen"],
+    'rev.region': ["Avis de clients", "Customer reviews", "Avaliações de clientes", "Recensioni dei clienti", "Kundenbewertungen"],
+
+    'foot.note': [
+      "Photographies : Overlay (overlay.pt). Avis : clients d'Overlay sur Google. Les scènes 3D sont illustratives.",
+      "Photographs: Overlay (overlay.pt). Reviews: Overlay's customers on Google. The 3D scenes are illustrative.",
+      "Fotografias: Overlay (overlay.pt). Avaliações: clientes da Overlay no Google. As cenas 3D são ilustrativas.",
+      "Fotografie: Overlay (overlay.pt). Recensioni: clienti di Overlay su Google. Le scene 3D sono illustrative.",
+      "Fotos: Overlay (overlay.pt). Bewertungen: Kunden von Overlay auf Google. Die 3D-Szenen sind illustrativ.",
+    ],
     'fin.text': [
       "Amenez la voiture, la moto ou le bateau chez Overlay, à Lisbonne. Commencez par une demande de devis.",
       "Bring the car, the motorcycle or the boat to Overlay in Lisbon. Start with a quote request.",
