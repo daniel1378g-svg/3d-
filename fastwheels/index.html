@@ -1,0 +1,701 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>FASTWHEELS GARAGE</title>
+<meta name="description" content="FASTWHEELS GARAGE à Ardon (Valais) : detailing, protection céramique, covering, éclairage d'ambiance et ciel étoilé pour voitures et motos.">
+<meta name="theme-color" content="#0d0e11">
+<meta name="robots" content="noindex">
+<meta property="og:title" content="FASTWHEELS GARAGE">
+<meta property="og:description" content="FASTWHEELS GARAGE à Ardon (Valais) : detailing, protection céramique, covering, éclairage d'ambiance et ciel étoilé pour voitures et motos.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}
+/* Layout: a dark workshop page. Pictures stay pinned behind opaque text cards; controls sit on charcoal panels. */
+:root {
+  --bg: #0d0e11;            /* charcoal */
+  --bg-2: #14161a;
+  --bg-3: #1c1f25;
+  --ink: #f1efe9;           
+  --dim: rgba(241, 239, 233, 0.74);
+  --faint: rgba(241, 239, 233, 0.52);
+  --line: rgba(241, 239, 233, 0.14);
+  --line-2: rgba(241, 239, 233, 0.28);
+  --blue: #5c88ff;          
+  --violet: #9274ff;
+  --warn: #ffb3a4;
+  --ok: #9be2b9;
+  --card: rgba(13, 14, 17, 0.88);
+  --display: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+  --text: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  --gl: max(20px, env(safe-area-inset-left, 0px));
+  --gr: max(20px, env(safe-area-inset-right, 0px));
+  --banner-h: 0px;
+  --bar-h: 60px;
+  --header-h: calc(var(--banner-h) + var(--bar-h) + env(safe-area-inset-top, 0px));
+  --maxw: 1240px;
+  color-scheme: dark;
+}
+html.has-banner { --banner-h: 26px; }
+@media (min-width: 900px) { :root { --bar-h: 68px; --gl: max(40px, env(safe-area-inset-left, 0px)); --gr: max(40px, env(safe-area-inset-right, 0px)); } }
+html { background: var(--bg); scroll-padding-top: calc(var(--header-h) + 12px); -webkit-text-size-adjust: 100%; }
+html.is-locked { overflow: hidden; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 400 16px/1.55 var(--text); -webkit-font-smoothing: antialiased; overflow-x: clip; }
+*, *::before, *::after { box-sizing: border-box; }
+h1, h2, h3, p, ul, ol, figure, fieldset { margin: 0; padding: 0; }
+fieldset { border: 0; min-width: 0; }
+ul, ol { list-style: none; }
+img, canvas, svg { display: block; }
+a { color: inherit; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; background: none; border: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+a, label { -webkit-tap-highlight-color: transparent; }
+:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; border-radius: 4px; }
+[tabindex="-1"]:focus { outline: none; }
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+.sprite { position: absolute; }
+.skip { position: fixed; left: var(--gl); top: 0; z-index: 80; padding: 12px 18px; border-radius: 8px; background: var(--ink); color: #0b0c0e; font-weight: 600; transform: translateY(-200%); }
+.skip:focus { top: calc(var(--header-h) + 8px); transform: none; }
+h1, h2, .finale h2 { font-family: var(--display); font-weight: 800; font-stretch: 116%; letter-spacing: -0.02em; line-height: 1; text-wrap: balance; }
+h1 { font-size: clamp(2.35rem, 6.2vw, 5.1rem); }
+h2 { font-size: clamp(1.9rem, 4.2vw, 3.5rem); }
+h3 { font: 700 1.02rem/1.25 var(--display); font-stretch: 108%; }
+.lead { color: var(--dim); font-size: clamp(1rem, 1.15vw, 1.14rem); max-width: 58ch; }
+.kicker { font: 500 0.74rem/1.2 var(--mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); }
+.note, .hint-line { color: var(--faint); font-size: 0.88rem; line-height: 1.45; }
+small { font-size: 0.8em; color: var(--faint); font-weight: 400; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 48px; padding: 0 24px; border-radius: 999px; font-weight: 650; font-size: 0.95rem; letter-spacing: 0.005em; text-decoration: none; text-align: center; border: 1px solid transparent; transition: background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease, transform 0.18s ease; }
+.btn svg { width: 20px; height: 20px; }
+.btn-primary { background: var(--ink); color: #0b0c0e; }
+.btn-ghost { border-color: var(--line-2); color: var(--ink); background: rgba(13, 14, 17, 0.35); }
+.btn-solid { background: rgba(13, 14, 17, 0.82); border-color: var(--line-2); color: var(--ink); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+.btn-wide { width: 100%; border-radius: 12px; min-height: 52px; }
+@media (hover: hover) {
+  .btn-primary:hover { background: #fff; transform: translateY(-1px); }
+  .btn-ghost:hover, .btn-solid:hover { border-color: var(--ink); }
+}
+.btn:active { transform: scale(0.985); }
+.btn[disabled] { opacity: 0.7; cursor: progress; }
+.link { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; font-weight: 600; text-decoration: underline; text-decoration-color: var(--line-2); text-underline-offset: 5px; }
+.link svg { width: 18px; height: 18px; flex: none; }
+@media (hover: hover) { .link:hover { text-decoration-color: var(--ink); } }
+.tool { display: inline-grid; place-items: center; width: 44px; height: 44px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg-2); color: var(--ink); flex: none; }
+.tool svg { width: 22px; height: 22px; }
+@media (hover: hover) { .tool:hover { border-color: var(--line-2); background: var(--bg-3); } }
+.site-header { position: fixed; inset: 0 0 auto; z-index: 50; padding-top: env(safe-area-inset-top, 0px); background: rgba(13, 14, 17, 0.62); backdrop-filter: blur(14px) saturate(1.2); -webkit-backdrop-filter: blur(14px) saturate(1.2); border-bottom: 1px solid transparent; transition: background-color 0.25s ease, border-color 0.25s ease; }
+.is-scrolled .site-header, .menu-open .site-header { background: rgba(13, 14, 17, 0.92); border-bottom-color: var(--line); }
+.proposal { height: var(--banner-h); display: flex; align-items: center; justify-content: center; padding-inline: var(--gl) var(--gr); background: #23262d; color: var(--ink); font: 500 0.7rem/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; overflow: hidden; }
+.bar { height: var(--bar-h); display: flex; align-items: center; gap: 14px; padding-inline: var(--gl) var(--gr); max-width: calc(var(--maxw) + 80px); margin-inline: auto; }
+.logo { display: inline-flex; align-items: center; min-height: 44px; color: var(--ink); flex: none; }
+.logo-svg { height: 26px; width: auto; aspect-ratio: 828 / 161; overflow: hidden; }
+@media (min-width: 900px) { .logo-svg { height: 30px; } }
+.logo-sweep { opacity: 0; }
+.is-sweeping .logo-sweep { animation: logo-sweep 440ms cubic-bezier(0.3, 0.1, 0.3, 1) both; }
+@keyframes logo-sweep { 0% { transform: translateX(0); opacity: 1; } 100% { transform: translateX(1480px); opacity: 1; } }
+.nav-desktop { display: none; margin-left: auto; align-items: center; gap: clamp(12px, 1.6vw, 26px); }
+.nav-link { display: inline-flex; align-items: center; min-height: 44px; font-size: 0.86rem; font-weight: 500; text-decoration: none; color: var(--dim); white-space: nowrap; }
+@media (hover: hover) { .nav-link:hover { color: var(--ink); } }
+.nav-link.is-current { color: var(--ink); box-shadow: inset 0 -2px 0 var(--blue); }
+.bar-end { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+.lang select { appearance: none; -webkit-appearance: none; height: 44px; padding: 0 34px 0 14px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg-2) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5l5-5' fill='none' stroke='%23f1efe9' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 12px center / 11px; font-size: 0.9rem; font-weight: 500; max-width: 132px; }
+.lang select option { background: #14161a; color: #f1efe9; }
+.bar-cta { display: none; min-height: 44px; padding: 0 20px; font-size: 0.88rem; }
+.burger { width: 44px; height: 44px; display: grid; place-content: center; gap: 5px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg-2); }
+.burger span { width: 18px; height: 2px; border-radius: 2px; background: var(--ink); transition: transform 0.2s ease, opacity 0.2s ease; }
+.menu-open .burger span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.menu-open .burger span:nth-child(2) { opacity: 0; }
+.menu-open .burger span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+@media (min-width: 1100px) { .nav-desktop { display: flex; } .bar-end { margin-left: 8px; } .bar-cta { display: inline-flex; } .burger { display: none; } }
+.menu { position: fixed; inset: var(--header-h) 0 0; z-index: 49; background: rgba(13, 14, 17, 0.98); overflow-y: auto; overscroll-behavior: contain; padding: 22px var(--gr) calc(28px + env(safe-area-inset-bottom, 0px)) var(--gl); }
+.menu-inner { display: grid; gap: 2px; max-width: 520px; margin-inline: auto; }
+.menu-inner .kicker { margin-bottom: 8px; }
+.menu-link { display: flex; align-items: center; min-height: 54px; font: 700 1.28rem/1.2 var(--display); font-stretch: 110%; text-decoration: none; border-bottom: 1px solid var(--line); }
+.menu-cta { margin-top: 22px; }
+@media (min-width: 1100px) { .menu { display: none; } }
+.band { padding-inline: var(--gl) var(--gr); }
+.section-head { display: grid; gap: 14px; justify-items: start; max-width: var(--maxw); margin-inline: auto; }
+.config, .booking, .finale { padding-block: clamp(64px, 9vw, 120px); }
+.config-grid, .booking-grid { max-width: var(--maxw); margin: clamp(26px, 4vw, 48px) auto 0; }
+.story { position: relative; background: #07080a; }
+.story-stage { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; }
+.story-pic { position: absolute; inset: 0; }
+.story-pic::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(7, 8, 10, 0.72), rgba(7, 8, 10, 0.18) 46%, rgba(7, 8, 10, 0) 70%), linear-gradient(0deg, rgba(7, 8, 10, 0.55), rgba(7, 8, 10, 0) 30%); pointer-events: none; }
+.story-poster, #story-canvas { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 62% 50%; }
+#story-canvas { opacity: 0; transition: opacity 0.5s ease; }
+.story-live #story-canvas { opacity: 1; }
+.story-steps { position: relative; margin-top: -100vh; margin-top: -100svh; }
+.step { min-height: 100vh; min-height: 100svh; display: flex; align-items: center; padding: calc(var(--header-h) + 24px) var(--gr) 48px var(--gl); max-width: calc(var(--maxw) + 80px); margin-inline: auto; }
+.hero-copy { display: grid; gap: 18px; max-width: 640px; justify-items: start; }
+.hero-copy .lead { color: var(--ink); opacity: 0.9; text-shadow: 0 1px 18px rgba(0, 0, 0, 0.6); }
+.hero-copy h1 { text-shadow: 0 2px 30px rgba(0, 0, 0, 0.45); }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 6px; }
+.card { display: grid; gap: 14px; width: min(460px, 100%); padding: clamp(22px, 2.4vw, 32px); background: var(--card); border: 1px solid var(--line); border-radius: 16px; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+.card h2 { font-size: clamp(1.55rem, 2.5vw, 2.3rem); line-height: 1.04; }
+.card p:not(.kicker) { color: var(--dim); }
+.step-still { display: none; }
+@media (max-width: 899px), (max-aspect-ratio: 1/1) {
+  .story-pic { inset: 0 0 auto; height: 62vh; height: 62svh; }
+  .story-pic::after { background: linear-gradient(0deg, #07080a 2%, rgba(7, 8, 10, 0) 38%), linear-gradient(180deg, rgba(7, 8, 10, 0.5), rgba(7, 8, 10, 0) 26%); }
+  .step { align-items: flex-end; padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px)); }   
+  .step-hero { padding-bottom: calc(34px + env(safe-area-inset-bottom, 0px)); }
+  .card { width: 100%; background: rgba(13, 14, 17, 0.96); }
+}
+.static-story .story-stage { position: relative; height: auto; }
+.static-story .story-pic { position: relative; inset: auto; height: auto; aspect-ratio: 16 / 9; max-height: 78vh; width: 100%; }
+.static-story #story-canvas { display: none; }
+.static-story .story-steps { margin-top: 0; display: grid; gap: 28px; padding-block: 28px 64px; }
+.static-story .step { min-height: 0; display: grid; gap: 16px; padding-block: 0; align-items: start; }
+.static-story .step-hero { padding-top: 12px; }
+.static-story .step-still { display: block; border-radius: 16px; overflow: hidden; border: 1px solid var(--line); }
+.static-story .step-still img { width: 100%; height: auto; }
+.static-story .card { width: 100%; max-width: 720px; }
+@media (min-width: 900px) { .static-story .step:not(.step-hero) { grid-template-columns: 1.2fr 1fr; align-items: center; } }
+.field { display: grid; gap: 10px; }
+.field > legend, .control > label { font: 500 0.74rem/1.3 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); padding: 0; margin-bottom: 10px; }
+.control { display: grid; gap: 0; min-width: 0; }
+.control > label small, .field > legend small { text-transform: none; letter-spacing: 0.02em; }
+.seg { display: grid; gap: 6px; padding: 5px; border-radius: 14px; background: var(--bg-2); border: 1px solid var(--line); }
+.seg-2 { grid-template-columns: 1fr 1fr; }
+.seg-3 { grid-template-columns: repeat(3, 1fr); }
+.seg-item { position: relative; display: block; min-width: 0; }
+.seg-item input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+.seg-item > span, .seg-btn { display: grid; place-content: center; justify-items: center; min-height: 46px; padding: 6px 8px; border-radius: 10px; font-weight: 600; font-size: 0.93rem; text-align: center; color: var(--dim); transition: background-color 0.16s ease, color 0.16s ease; overflow-wrap: anywhere; }
+.seg-item > span small { display: block; font-size: 0.72rem; font-family: var(--mono); letter-spacing: 0.03em; margin-top: 2px; }
+.seg-item input:checked + span, .seg-btn.is-on { background: var(--ink); color: #0b0c0e; }
+.seg-item input:checked + span small { color: rgba(11, 12, 14, 0.66); }
+.seg-item input:focus-visible + span { outline: 2px solid var(--blue); outline-offset: 2px; }
+.seg-item input:disabled + span { opacity: 0.36; text-decoration: line-through; }
+.seg-item input:disabled { cursor: not-allowed; }
+.seg-compact { max-width: 340px; }
+.field-row { display: grid; gap: 22px; }
+@media (min-width: 620px) and (max-width: 899px) { .field-row { grid-template-columns: 1fr 1fr; } }
+.config { background: linear-gradient(180deg, #07080a, var(--bg) 220px); }
+.config-grid { display: grid; gap: 22px; }
+.viewer { position: relative; display: grid; gap: 10px; min-width: 0; }
+.viewer-bar { display: flex; align-items: center; gap: 12px; min-height: 44px; }
+.readout { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.chip { width: 30px; height: 30px; border-radius: 8px; border: 1px solid var(--line-2); background: var(--chip, #14246e); flex: none; }
+.readout-text { display: grid; min-width: 0; line-height: 1.2; }
+.readout-text strong { font: 700 1.05rem/1.2 var(--display); font-stretch: 108%; overflow-wrap: anywhere; }
+.readout-text span { font: 500 0.74rem/1.3 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--dim); }
+.viewer-stage { position: relative; aspect-ratio: 4 / 3; border-radius: 18px; overflow: hidden; background: #06070a; border: 1px solid var(--line); }
+.viewer-stage canvas.gl, .cine-pic canvas.gl { position: absolute; inset: 0; width: 100%; height: 100%; cursor: grab; }
+.viewer-stage canvas.gl.dragging { cursor: grabbing; }
+.poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity 0.45s ease; z-index: 1; pointer-events: none; }
+.is-live > .poster { opacity: 0; }
+.viewer-loading { position: absolute; left: 14px; bottom: 14px; z-index: 2; display: grid; gap: 8px; padding: 10px 14px; border-radius: 10px; background: rgba(13, 14, 17, 0.84); font: 500 0.74rem/1.2 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; }
+.meter { display: block; width: 160px; height: 2px; background: var(--line); overflow: hidden; }
+.meter i { display: block; height: 100%; width: 100%; background: var(--ink); transform-origin: left; transform: scaleX(0.04); transition: transform 0.2s ease; }
+.viewer-msg { position: absolute; inset: auto 14px 14px; z-index: 2; padding: 12px 14px; border-radius: 10px; background: rgba(13, 14, 17, 0.9); border: 1px solid var(--line); font-size: 0.9rem; color: var(--dim); }
+.viewer-tools { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.hint { font: 500 0.74rem/1.3 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--faint); }
+.tool-buttons { display: flex; gap: 8px; }
+.panel { display: grid; gap: 24px; align-content: start; min-width: 0; }
+.families { display: flex; gap: 8px; overflow-x: auto; padding: 2px 2px 8px; margin-inline: -2px; scrollbar-width: thin; }
+.family { position: relative; flex: none; }
+.family input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; margin: 0; cursor: pointer; }
+.family span { display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; border-radius: 999px; border: 1px solid var(--line); background: var(--bg-2); font-size: 0.88rem; font-weight: 500; color: var(--dim); white-space: nowrap; }
+.family input:checked + span { border-color: var(--ink); color: var(--ink); background: var(--bg-3); }
+.family input:focus-visible + span { outline: 2px solid var(--blue); outline-offset: 2px; }
+.swatches, .light-swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(48px, 1fr)); gap: 10px; }
+.sw { position: relative; display: block; aspect-ratio: 1; min-width: 44px; min-height: 44px; }
+.sw[hidden] { display: none; }
+.sw input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; margin: 0; cursor: pointer; }
+.sw-dot { position: absolute; inset: 0; border-radius: 12px; background: linear-gradient(135deg, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0) 42%), var(--c); border: 1px solid var(--line-2); display: grid; place-items: center; transition: transform 0.16s ease; }
+.sw-dot svg { width: 22px; height: 22px; color: #fff; opacity: 0; filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.9)) drop-shadow(0 0 1px rgba(0, 0, 0, 0.9)); }
+.sw input:checked + .sw-dot { box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--ink); }
+.sw input:checked + .sw-dot svg { opacity: 1; }
+.sw input:focus-visible + .sw-dot { outline: 2px solid var(--blue); outline-offset: 5px; }
+@media (hover: hover) { .sw:hover .sw-dot { transform: scale(1.06); } }
+@media (min-width: 900px) {
+  .config-grid { grid-template-columns: minmax(0, 1.5fr) minmax(340px, 1fr); gap: 40px; align-items: start; }
+  .viewer { position: sticky; top: calc(var(--header-h) + 18px); }
+  .viewer-stage { aspect-ratio: 16 / 10; }
+}
+@media (max-width: 899px) {
+  .viewer { position: sticky; top: var(--header-h); z-index: 5; background: var(--bg); padding-block: 8px 10px; margin-inline: calc(-1 * var(--gl)) calc(-1 * var(--gr)); padding-inline: var(--gl) var(--gr); border-bottom: 1px solid var(--line); }
+  .viewer-stage { aspect-ratio: 16 / 10; max-height: 40svh; width: 100%; }
+  .viewer-tools .hint { font-size: 0.68rem; }
+}
+.config-grid.is-full { position: fixed; inset: 0; z-index: 70; margin: 0; max-width: none; background: var(--bg); display: flex; flex-direction: column; gap: 0; padding: calc(env(safe-area-inset-top, 0px) + var(--banner-h)) 0 0; }
+.is-full .viewer { position: relative; top: auto; flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; margin: 0; padding: 10px var(--gr) 10px var(--gl); border-bottom: 1px solid var(--line); }
+.is-full .viewer-stage { flex: 1 1 auto; aspect-ratio: auto; max-height: none; min-height: 0; }
+.is-full .panel { flex: 0 1 auto; max-height: 46vh; max-height: 46svh; overflow-y: auto; overscroll-behavior: contain; padding: 16px var(--gr) calc(18px + env(safe-area-inset-bottom, 0px)) var(--gl); gap: 18px; }
+@media (min-width: 900px) and (min-aspect-ratio: 1/1) {
+  .config-grid.is-full { flex-direction: row; }
+  .is-full .viewer { border-bottom: 0; border-right: 1px solid var(--line); }
+  .is-full .panel { flex: 0 0 400px; max-height: none; padding-top: 22px; }
+}
+.booking { background: var(--bg); border-top: 1px solid var(--line); }
+.booking-grid { display: grid; gap: 28px; }
+.form-wrap { min-width: 0; }
+.form, .done { display: grid; gap: 26px; padding: clamp(20px, 3vw, 36px); border-radius: 18px; background: var(--bg-2); border: 1px solid var(--line); }
+.form .field { gap: 14px; }
+.form .field > legend { margin-bottom: 0; }
+.grid-3, .grid-2 { display: grid; gap: 14px; }
+@media (min-width: 620px) { .grid-3 { grid-template-columns: 1.2fr 1.2fr 0.8fr; } .grid-2 { grid-template-columns: 1fr 1fr; } }
+input[type='text'], input[type='tel'], input[type='email'], input[type='date'], textarea { width: 100%; min-height: 52px; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line-2); background: var(--bg); font-size: 16px; line-height: 1.4; color: var(--ink); }
+textarea { resize: vertical; min-height: 120px; }
+input::placeholder, textarea::placeholder { color: var(--faint); }
+input:focus-visible, textarea:focus-visible, select:focus-visible { outline: 2px solid var(--blue); outline-offset: 1px; border-color: var(--blue); }
+[aria-invalid='true'] { border-color: var(--warn) !important; }
+.error { color: var(--warn); font-size: 0.9rem; margin-top: 8px; }
+.control .hint-line { margin-top: 8px; }
+.checks { display: flex; flex-wrap: wrap; gap: 8px; }
+.check { position: relative; display: block; }
+.check input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; margin: 0; cursor: pointer; }
+.check > span { display: inline-flex; align-items: center; gap: 8px; min-height: 46px; padding: 0 16px 0 12px; border-radius: 12px; border: 1px solid var(--line-2); background: var(--bg); font-weight: 550; font-size: 0.94rem; }
+.check > span svg { width: 18px; height: 18px; padding: 2px; border-radius: 5px; border: 1px solid var(--line-2); color: transparent; flex: none; }
+.check input:checked + span { border-color: var(--ink); background: var(--bg-3); }
+.check input:checked + span svg { background: var(--ink); color: #0b0c0e; border-color: var(--ink); }
+.check input:focus-visible + span { outline: 2px solid var(--blue); outline-offset: 2px; }
+.wrap-choice { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 12px; background: var(--bg); border: 1px solid var(--line-2); }
+.wrap-choice p { display: grid; gap: 2px; flex: 1; min-width: 0; }
+.wrap-choice .label { font: 500 0.7rem/1.3 var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--dim); }
+.wrap-choice strong { font-weight: 600; overflow-wrap: anywhere; }
+.submit-row { display: grid; gap: 12px; }
+.spinner { display: none; width: 18px; height: 18px; border-radius: 50%; border: 2px solid rgba(11, 12, 14, 0.25); border-top-color: #0b0c0e; animation: spin 0.8s linear infinite; }
+.is-sending .spinner { display: block; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.status { display: grid; gap: 10px; padding: 16px 18px; border-radius: 12px; border: 1px solid var(--warn); background: rgba(255, 179, 164, 0.07); }
+.status h3 { color: var(--ink); }
+.status p { color: var(--dim); }
+.status.is-info { border-color: var(--line-2); background: var(--bg); }
+.status .actions { margin-top: 4px; }
+.status textarea { font: 400 0.85rem/1.5 var(--mono); min-height: 190px; }
+.done { justify-items: start; gap: 14px; }
+.done-mark { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; background: rgba(155, 226, 185, 0.14); color: var(--ok); }
+.done-mark svg { width: 26px; height: 26px; }
+.done p { color: var(--dim); max-width: 52ch; }
+.contact { display: grid; gap: 18px; align-content: start; }
+.aside-title { font: 500 0.74rem/1.3 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); }
+.infos { display: grid; gap: 12px; }
+.info, .how { padding: 20px; border-radius: 16px; border: 1px solid var(--line); background: var(--bg-2); display: grid; gap: 6px; justify-items: start; }
+.info h3, .how h3 { font: 500 0.72rem/1.3 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--faint); }
+.addr { font-size: 1.06rem; line-height: 1.45; }
+.how ol { display: grid; gap: 12px; margin-top: 8px; counter-reset: how; }
+.how li { counter-increment: how; display: grid; grid-template-columns: 28px 1fr; gap: 10px; color: var(--dim); font-size: 0.95rem; }
+.how li::before { content: counter(how); font: 500 0.78rem/1.6 var(--mono); width: 26px; height: 26px; border-radius: 50%; border: 1px solid var(--line-2); display: grid; place-items: center; color: var(--ink); }
+@media (min-width: 980px) { .booking-grid { grid-template-columns: minmax(0, 1.55fr) minmax(300px, 1fr); gap: 36px; align-items: start; } .contact { position: sticky; top: calc(var(--header-h) + 18px); } }
+.interior { background: #07080a; border-top: 1px solid var(--line); }
+.interior > .section-head { padding-block: clamp(56px, 8vw, 104px) clamp(28px, 4vw, 48px); max-width: calc(var(--maxw) + 80px); }
+.cine { position: relative; height: 660vh; height: 660svh; }
+.anchor { position: absolute; left: 0; width: 1px; height: 1px; }
+#ambient { top: 70%; } #starlight { top: 98%; }
+.cine-stage { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; background: #06070a; }
+.cine-pic { position: absolute; inset: 0; }
+.cine-pic::after { content: ''; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(6, 7, 10, 0.72), rgba(6, 7, 10, 0) 34%), linear-gradient(180deg, rgba(6, 7, 10, 0.55), rgba(6, 7, 10, 0) 22%); pointer-events: none; z-index: 2; }
+.cine-ui { position: absolute; inset: 0; z-index: 3; display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: auto 1fr auto; gap: 16px; padding: calc(var(--header-h) + 16px) var(--gr) calc(22px + env(safe-area-inset-bottom, 0px)) var(--gl); pointer-events: none; }
+.cine-ui > * { pointer-events: auto; }
+.cine-skip { grid-column: 2; grid-row: 1; justify-self: end; min-height: 44px; padding: 0 18px; font-size: 0.86rem; }
+.rail { grid-column: 1; grid-row: 1; display: flex; gap: 6px; align-self: center; flex-wrap: wrap; }
+.rail li { display: flex; align-items: center; min-height: 30px; padding: 0 12px; border-radius: 999px; border: 1px solid var(--line); background: rgba(13, 14, 17, 0.6); font: 500 0.68rem/1 var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--faint); transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease; }
+.rail li.is-done { color: var(--dim); }
+.rail li.is-current { color: #0b0c0e; background: var(--ink); border-color: var(--ink); }
+.caption { grid-column: 1; grid-row: 3; align-self: end; display: grid; gap: 8px; width: min(440px, 100%); padding: 20px 22px; border-radius: 16px; background: var(--card); border: 1px solid var(--line); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+.caption h3 { font: 800 clamp(1.3rem, 2.2vw, 1.9rem)/1.05 var(--display); font-stretch: 114%; letter-spacing: -0.015em; }
+.caption p { color: var(--dim); }
+.caption.is-swapping > * { animation: cap-in 0.28s ease both; }
+@keyframes cap-in { from { opacity: 0.2; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.lights { grid-column: 2; grid-row: 3; align-self: end; display: grid; gap: 14px; width: min(300px, 100%); padding: 16px 18px; border-radius: 16px; background: var(--card); border: 1px solid var(--line); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+.lights .field > legend, .lights .control > label { margin-bottom: 8px; }
+.light-swatches { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 6px; }
+.sw-light { min-width: 0; min-height: 44px; }
+.sw-light .sw-dot { border-radius: 50%; inset: 2px; }
+input[type='range'] { width: 100%; height: 44px; margin: 0; background: transparent; accent-color: var(--ink); }
+@media (max-width: 899px), (max-aspect-ratio: 1/1) {
+  .cine-pic { inset: var(--header-h) 0 auto; height: 50vh; height: 50svh; }
+  .cine-pic::after { background: linear-gradient(0deg, #06070a, rgba(6, 7, 10, 0) 18%); }
+  .cine-ui { grid-template-columns: minmax(0, 1fr); grid-template-rows: calc(50vh - 44px) auto auto 1fr; grid-template-rows: calc(50svh - 44px) auto auto 1fr; gap: 10px; padding-top: calc(var(--header-h) + 10px); padding-bottom: calc(14px + env(safe-area-inset-bottom, 0px)); }
+  .cine-skip { grid-column: 1; grid-row: 1; align-self: start; justify-self: end; }
+  .rail { grid-row: 2; gap: 4px; }
+  .rail li { padding: 0 7px; font-size: 0.6rem; letter-spacing: 0.05em; min-height: 26px; }
+  .caption { grid-row: 3; align-self: start; width: 100%; padding: 14px 16px; background: var(--bg-2); }
+  .caption p { font-size: 0.94rem; line-height: 1.45; }
+  .lights { grid-column: 1; grid-row: 4; align-self: start; width: 100%; padding: 12px 16px; gap: 6px; background: var(--bg-2); }
+  .lights .field { gap: 4px; }
+  .lights .control.range { grid-template-columns: auto 1fr; align-items: center; gap: 12px; }
+  .lights .control.range > label { margin: 0; }
+}
+@media (max-width: 899px) and (max-height: 740px) {
+  .cine-pic { height: 38vh; height: 38svh; }
+  .cine-ui { grid-template-rows: calc(38vh - 44px) auto auto 1fr; grid-template-rows: calc(38svh - 44px) auto auto 1fr; }
+  .caption { padding: 12px 14px; gap: 4px; }
+  .caption p { font-size: 0.9rem; }
+}
+.stills { display: grid; gap: 36px; max-width: calc(var(--maxw) + 80px); margin-inline: auto; padding-block: 8px clamp(56px, 8vw, 96px); }
+.stills figure { border-radius: 16px; overflow: hidden; border: 1px solid var(--line); background: #06070a; }
+.stills img { width: 100%; height: auto; }
+.compare { display: grid; gap: 14px; }
+.compare-head { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
+.compare-head .seg { min-width: 220px; }
+.compare > p { color: var(--dim); max-width: 60ch; }
+.static-interior .cine { display: none; }
+.static-interior #int-skip-top { display: none; }
+@media (min-width: 900px) { .stills { grid-template-columns: 1fr 1fr; } .still-single, .stills > .note { grid-column: 1 / -1; } .still-single { max-width: 900px; } }
+.finale { display: grid; gap: 18px; justify-items: start; background: linear-gradient(180deg, #07080a, var(--bg)); }
+.finale > * { max-width: var(--maxw); margin-inline: auto; width: 100%; }
+.finale h2 { font-size: clamp(2.6rem, 9vw, 7rem); }
+.site-footer { padding-block: 48px calc(40px + env(safe-area-inset-bottom, 0px)); border-top: 1px solid var(--line); display: grid; gap: 36px; color: var(--dim); font-size: 0.94rem; }
+.site-footer > * { max-width: var(--maxw); margin-inline: auto; width: 100%; }
+.foot-brand { display: grid; gap: 8px; justify-items: start; }
+.logo-lg .logo-svg { height: clamp(34px, 6vw, 52px); }
+.tagline { font: 500 0.7rem/1 var(--mono); letter-spacing: 0.34em; color: var(--faint); }
+.foot-cols { display: grid; gap: 28px; }
+@media (min-width: 760px) { .foot-cols { grid-template-columns: 1.1fr 1fr 1.3fr; } }
+.site-footer h3 { font: 500 0.72rem/1.3 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--faint); margin-bottom: 10px; }
+.site-footer nav a, .credits a { display: inline-flex; align-items: center; min-height: 40px; text-decoration: none; color: var(--dim); }
+@media (hover: hover) { .site-footer nav a:hover, .credits a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 4px; } }
+.credits li { line-height: 1.5; margin-bottom: 6px; font-size: 0.88rem; }
+.credits a { display: inline; text-decoration: underline; text-decoration-color: var(--line-2); text-underline-offset: 3px; }
+.foot-base { display: grid; gap: 8px; padding-top: 24px; border-top: 1px solid var(--line); font-size: 0.85rem; color: var(--faint); }
+@media (min-width: 760px) { .foot-base { grid-template-columns: auto 1fr auto; gap: 28px; align-items: center; } }
+.fab { position: fixed; right: max(14px, env(safe-area-inset-right, 0px)); bottom: calc(14px + env(safe-area-inset-bottom, 0px)); z-index: 40; display: inline-flex; align-items: center; min-height: 48px; padding: 0 20px; border-radius: 999px; background: var(--ink); color: #0b0c0e; font-weight: 700; font-size: 0.92rem; text-decoration: none; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); transition: opacity 0.2s ease, transform 0.2s ease; }
+.fab.is-away { opacity: 0; transform: translateY(12px); pointer-events: none; }
+@media (min-width: 1100px) { .fab { display: none; } }
+.jump-in { animation: jump-in 0.32s ease both; }
+@keyframes jump-in { from { opacity: 0.35; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
+  .is-sweeping .logo-sweep { animation: none; }
+  .is-sweeping .logo-svg { animation: logo-fade 0.3s ease both; }
+  @keyframes logo-fade { from { opacity: 0.55; } to { opacity: 1; } }
+}
+</style>
+</head>
+<body>
+
+<svg class="sprite" width="0" height="0" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="fw-logo" viewBox="12 11 828 161"><path fill="currentColor" fill-rule="evenodd" d="M232.6 170.7C225.6 170.2 218.3 166.0 214.0 159.9C208.5 152.0 208.4 140.4 213.9 132.4C217.4 127.4 223.0 123.6 229.3 122.0L230.8 121.6L251.0 121.5L271.2 121.5L271.7 122.0L272.2 122.5L272.2 126.2C272.2 130.4 272.1 130.9 271.2 131.2C271.0 131.3 263.9 131.3 252.8 131.3C241.1 131.3 234.2 131.4 233.3 131.5C225.2 132.5 219.8 141.2 222.0 149.7C223.4 155.4 226.5 158.5 232.1 160.1L233.8 160.6L249.1 160.5L264.5 160.5L265.2 160.2C268.0 159.0 268.1 154.4 265.4 153.0L264.6 152.6L254.4 152.5L244.2 152.4L243.8 152.0L243.4 151.7L243.4 148.1C243.3 144.1 243.4 143.6 243.9 143.1L244.3 142.7L255.1 142.7L265.9 142.7L267.6 143.0C274.6 144.5 279.0 149.7 279.0 156.5C279.0 163.4 275.0 168.6 268.5 170.3L267.1 170.7L250.8 170.8C241.8 170.8 233.6 170.7 232.6 170.7ZM281.8 170.6C281.0 170.2 281.0 169.7 282.2 167.1C282.8 165.8 283.7 163.7 284.3 162.5C287.4 155.0 289.3 152.9 294.0 151.3L294.8 151.0L312.1 151.0L329.3 151.0L329.7 150.7L330.0 150.5L330.0 149.7C329.9 149.3 329.4 147.9 328.6 146.4C326.9 142.8 325.9 140.6 324.5 137.2C322.7 133.1 322.3 132.3 321.1 131.7L320.6 131.4L315.4 131.4L310.2 131.4L309.7 131.7C308.9 132.2 308.2 133.2 307.1 135.8C304.7 141.0 303.7 143.1 303.3 143.4L302.8 143.8L298.3 143.8L293.9 143.8L293.5 143.4C292.9 142.9 293.0 142.6 294.9 138.7C295.4 137.6 295.9 136.5 296.0 136.2C296.9 133.7 300.4 126.5 301.2 125.6C302.7 123.9 305.2 122.3 307.3 121.7L308.3 121.5L315.9 121.5L323.4 121.6L324.4 122.0C329.0 123.8 330.3 125.4 333.8 133.9C334.2 134.7 334.8 136.2 335.2 137.1C336.1 139.2 337.8 142.8 338.9 145.3C339.3 146.4 340.1 148.1 340.5 149.1C341.0 150.1 341.7 151.7 342.1 152.6C342.5 153.5 343.6 156.0 344.6 158.2C345.5 160.4 346.3 162.2 346.3 162.3C346.3 162.4 346.7 163.2 347.1 164.1C349.6 169.1 349.8 169.8 349.1 170.4L348.8 170.8L344.6 170.8L340.4 170.8L339.8 170.5C339.0 170.1 338.8 169.7 337.6 166.8C336.1 163.2 335.4 161.8 334.9 161.3L334.5 160.9L315.6 160.9L296.8 160.8L296.2 161.1C295.8 161.3 295.5 161.6 295.0 162.8C294.2 164.4 292.3 168.6 291.9 169.5C291.8 169.9 291.5 170.3 291.2 170.4L290.8 170.8L286.5 170.8C283.3 170.8 282.1 170.8 281.8 170.6ZM358.3 170.7L356.4 170.7L356.0 170.2L355.6 169.8L355.5 164.7L355.5 159.5L355.8 158.1C356.7 153.9 359.0 151.2 362.6 149.8C363.4 149.5 364.2 149.1 364.4 149.1C364.6 149.0 374.0 148.9 385.2 148.8L405.8 148.7L406.5 148.5C409.8 147.3 412.2 143.9 412.2 140.3C412.2 135.9 409.3 132.1 405.5 131.5C404.8 131.4 396.6 131.3 381.2 131.3C366.9 131.3 357.9 131.3 357.6 131.2C356.8 130.9 356.7 130.4 356.7 126.2L356.7 122.4L357.0 122.0C357.5 121.5 357.2 121.5 383.2 121.5L407.9 121.6L409.6 122.0C417.5 124.2 422.8 130.2 423.5 138.0C423.8 141.7 423.5 144.2 422.2 147.5C421.2 149.8 420.9 150.3 418.8 152.8C417.6 154.3 414.2 156.6 412.1 157.3C409.6 158.3 409.7 158.5 414.8 163.0C418.3 166.0 421.8 169.2 421.9 169.4C422.4 170.8 422.1 170.9 414.0 170.8L407.2 170.8L406.6 170.4C406.2 170.2 405.4 169.6 404.8 169.0C404.1 168.4 403.2 167.6 402.8 167.3C402.3 166.9 401.5 166.2 400.9 165.7C400.4 165.1 399.5 164.3 398.9 163.9C398.3 163.4 397.3 162.5 396.5 161.9C395.0 160.6 394.2 160.0 392.7 159.5L391.8 159.1L379.7 159.0L367.7 159.0L367.2 159.5L366.7 160.0L366.7 164.4C366.7 169.3 366.6 170.0 365.9 170.5C365.4 170.8 363.4 170.8 358.3 170.7ZM428.1 170.7C427.6 170.6 427.2 170.2 427.2 169.7C427.2 169.3 428.5 166.1 429.0 165.2C429.2 164.9 429.6 164.1 429.8 163.4C431.4 159.6 433.1 156.2 434.1 155.0C435.3 153.6 438.1 151.8 439.9 151.3L440.8 151.0L457.6 151.0C475.7 150.9 475.4 151.0 475.6 150.1C475.7 149.5 475.5 148.9 473.6 144.9C472.8 143.2 472.0 141.3 471.8 140.8C471.5 140.2 471.1 139.1 470.7 138.3C470.3 137.6 469.7 136.1 469.3 135.1C468.3 132.8 467.8 132.1 467.1 131.7L466.6 131.4L462.2 131.4C457.1 131.3 455.8 131.4 455.1 132.1C454.5 132.7 452.3 137.2 451.0 140.3C449.6 143.8 449.6 143.8 444.1 143.8C438.2 143.8 438.3 144.1 441.1 138.1C441.8 136.6 442.6 134.9 442.8 134.3C443.0 133.7 443.3 133.2 443.4 133.1C443.4 133.0 443.9 132.1 444.3 131.1C446.7 125.5 448.6 123.4 452.4 122.0L453.4 121.6L460.4 121.5C468.9 121.5 469.4 121.5 471.6 122.6C472.8 123.2 473.4 123.7 474.6 124.9L476.1 126.4L477.2 128.6C477.8 129.8 478.6 131.6 479.1 132.6C479.9 134.6 480.8 136.6 482.4 140.2C483.0 141.5 484.0 143.8 484.7 145.2C485.3 146.7 486.2 148.7 486.7 149.8C487.1 150.8 488.2 153.2 489.0 155.1C489.9 157.0 490.8 159.1 491.1 159.7C491.4 160.3 492.0 161.7 492.5 162.8C493.0 164.0 493.8 165.8 494.3 166.9C495.4 169.2 495.5 169.9 495.0 170.4L494.6 170.8L491.0 170.8C485.6 170.9 485.0 170.7 484.4 168.9C484.0 168.0 481.5 162.5 481.1 161.9C481.0 161.6 480.6 161.2 480.3 161.1L479.7 160.8L461.0 160.9L442.3 160.9L441.8 161.4C441.4 161.9 439.2 166.3 438.2 168.8C438.0 169.4 437.6 170.1 437.4 170.3L437.0 170.8L432.7 170.8C430.3 170.8 428.3 170.8 428.1 170.7ZM518.9 170.7C514.9 170.4 510.8 168.9 506.8 166.3C496.9 159.8 493.3 145.9 498.7 135.2C502.1 128.3 509.2 123.0 516.6 121.8L518.6 121.5L537.9 121.5C557.8 121.5 558.0 121.5 558.3 122.2C558.4 122.3 558.5 124.2 558.5 126.5L558.5 130.4L558.2 130.8C557.7 131.3 558.3 131.3 538.1 131.4L519.1 131.4L518.1 131.7C510.9 133.8 506.4 141.8 508.2 149.3C509.8 156.0 514.3 160.0 521.0 160.5C523.2 160.7 540.8 160.7 547.0 160.6L551.2 160.5L552.0 159.9C554.6 158.4 554.3 154.4 551.5 152.9L550.9 152.6L540.8 152.5L530.7 152.4L530.3 152.0L529.8 151.6L529.9 147.5L529.9 143.5L530.4 143.1L530.9 142.6L542.1 142.7L553.4 142.8L555.0 143.2C563.1 145.6 567.2 153.2 564.7 161.2C562.9 166.9 558.2 170.4 551.8 170.7C548.5 170.8 521.5 170.8 518.9 170.7ZM594.0 170.7C592.6 170.6 591.4 170.4 590.1 170.0C577.3 166.4 569.7 154.8 571.7 142.1C573.4 131.7 582.9 122.6 593.1 121.7C594.4 121.5 602.7 121.5 617.7 121.5L640.4 121.6L640.7 122.0L641.0 122.4L641.0 126.3L641.0 130.3L640.6 130.8L640.2 131.2L617.3 131.3L594.4 131.4L593.4 131.7C591.6 132.3 589.2 133.6 587.9 134.9C585.2 137.5 583.3 141.3 584.4 142.3L584.7 142.6L602.8 142.7L621.0 142.8L621.3 143.0L621.6 143.3L621.6 147.5L621.7 151.6L621.4 152.0L621.0 152.4L603.3 152.5C584.1 152.6 585.0 152.5 585.0 153.5C585.0 154.1 586.3 155.8 587.8 157.3C589.2 158.6 591.3 159.8 593.4 160.4L594.4 160.7L617.2 160.8C629.7 160.9 640.1 161.0 640.2 161.1C640.9 161.4 641.0 162.0 641.0 165.9C641.0 170.0 641.0 170.2 640.1 170.6C639.4 170.9 597.8 170.9 594.0 170.7ZM13.5 99.2L13.0 98.7L13.0 56.6C12.9 33.5 12.9 14.3 13.0 14.0C13.0 13.2 13.3 12.5 13.7 12.3C14.2 12.1 80.4 12.1 80.9 12.4C81.7 12.7 81.7 12.8 81.7 19.7C81.7 23.2 81.7 26.3 81.7 26.6C81.7 27.0 81.5 27.3 81.2 27.7L80.7 28.2L55.7 28.2C28.2 28.2 29.7 28.1 29.4 29.2C29.1 29.9 29.1 46.3 29.3 46.9C29.4 47.2 29.7 47.4 30.1 47.6L30.7 47.8L55.6 47.8C74.2 47.8 80.6 47.9 80.9 48.0C81.7 48.4 81.7 48.4 81.7 55.8L81.7 62.9L81.4 63.3C80.9 64.0 80.9 64.0 55.1 64.0C39.4 64.0 30.2 64.1 30.0 64.2C29.2 64.6 29.3 63.8 29.2 81.9L29.1 98.9L28.6 99.3L28.1 99.7L21.1 99.7L14.0 99.7L13.5 99.2ZM78.0 99.4C77.4 99.0 77.6 98.3 78.8 96.0C80.3 93.4 87.6 79.1 87.9 78.2C88.1 77.9 88.3 77.4 88.5 77.1C88.7 76.9 89.9 74.5 91.3 71.8C95.5 63.5 98.5 57.5 100.1 54.6C100.9 53.0 102.4 50.1 103.4 48.1C104.5 46.1 105.6 43.8 106.0 43.1C106.7 41.8 109.0 37.4 112.6 30.2C113.6 28.2 115.3 24.9 116.4 22.8C117.5 20.6 119.0 17.7 119.8 16.1C121.3 13.1 121.6 12.7 122.4 13.2C122.8 13.5 124.2 16.1 129.0 25.7C130.3 28.2 131.4 30.3 131.5 30.4C131.6 30.5 133.3 33.8 135.2 37.8C137.2 41.7 138.9 45.0 139.0 45.1C139.1 45.2 140.2 47.4 141.5 50.0C142.9 52.6 144.1 55.0 144.3 55.3C144.5 55.7 144.8 56.3 145.0 56.8C145.2 57.2 146.1 59.1 147.1 61.0C148.1 62.9 149.5 65.4 150.1 66.7C151.2 68.9 156.0 78.2 158.8 83.6C159.6 85.1 161.4 88.7 162.8 91.4C164.2 94.2 165.5 96.8 165.7 97.2C166.3 98.1 166.3 99.0 165.8 99.4L165.4 99.7L156.7 99.7L147.9 99.7L147.4 99.4C146.9 99.0 146.4 98.2 144.2 93.8C143.2 91.9 142.4 90.3 142.3 90.2C142.3 90.2 141.8 89.3 141.4 88.3C141.0 87.4 140.2 85.8 139.6 84.8C139.1 83.7 136.1 77.9 133.0 71.8C122.6 51.0 122.6 51.2 121.9 51.2C121.3 51.2 120.7 52.2 115.7 61.9C115.2 63.0 114.2 64.9 113.6 66.1C113.0 67.3 111.2 70.6 109.7 73.6C108.2 76.5 106.5 79.7 106.0 80.7C105.4 81.7 105.0 82.5 105.0 82.6C105.0 82.6 104.8 83.0 104.6 83.3C104.4 83.7 103.3 85.7 102.2 87.8C101.2 89.9 99.8 92.5 99.2 93.6C98.6 94.6 98.2 95.6 98.2 95.7C98.2 95.7 97.9 96.2 97.6 96.7C97.2 97.2 96.8 97.8 96.7 98.2C96.5 98.5 96.2 98.9 95.9 99.2L95.5 99.6L86.9 99.6L78.4 99.7L78.0 99.4ZM178.2 99.5C177.9 99.4 177.6 99.2 177.4 99.0L177.2 98.6L177.2 91.6C177.2 84.6 177.2 84.2 177.8 83.9C177.9 83.8 187.6 83.7 199.2 83.7L220.2 83.6L221.2 83.3C223.6 82.6 226.1 80.5 227.2 78.3C230.0 73.1 227.5 66.7 221.9 64.5L220.8 64.1L208.8 64.0L196.9 63.9L194.8 63.6C189.2 62.8 184.7 60.4 180.2 55.8C178.1 53.6 175.6 49.8 175.1 48.0C175.0 47.8 174.7 46.9 174.4 46.0C173.3 43.0 172.8 37.8 173.4 34.1C174.3 28.2 176.5 23.9 180.7 19.7C185.3 15.2 189.5 13.1 195.5 12.3C197.4 12.1 239.4 12.1 239.9 12.4C240.7 12.8 240.7 12.7 240.7 20.1L240.7 27.2L240.2 27.7C239.8 28.1 239.6 28.2 238.9 28.2C238.4 28.2 229.0 28.2 217.8 28.2L197.6 28.3L196.7 28.6C191.7 30.2 189.2 33.6 189.4 38.6L189.4 40.5L190.2 42.1C191.5 44.7 193.4 46.4 196.0 47.4L197.1 47.7L209.8 47.8L222.6 47.9L223.9 48.3C224.7 48.5 225.7 48.8 226.2 48.9C226.7 49.1 228.2 49.6 229.5 50.2C237.1 53.7 242.7 60.9 244.2 69.2C244.5 70.7 244.5 77.1 244.2 78.7C243.0 85.0 239.3 90.8 233.5 95.1C231.9 96.3 231.4 96.5 228.5 97.6C226.5 98.4 225.3 98.7 222.8 99.2L220.9 99.6L199.8 99.6C186.9 99.6 178.5 99.6 178.2 99.5ZM284.3 99.3L283.9 99.0L283.8 64.0C283.8 34.9 283.7 29.0 283.5 28.8C283.0 28.2 282.2 28.2 266.8 28.2L251.5 28.2L251.1 27.8L250.6 27.4L250.6 20.2L250.6 13.0L251.1 12.6L251.5 12.2L291.8 12.2L332.1 12.2L332.6 12.6L333.1 13.0L333.1 20.1L333.1 27.3L332.7 27.7L332.3 28.1L316.7 28.2C299.9 28.3 300.5 28.2 300.2 29.1C300.1 29.4 300.0 42.5 300.0 63.8L300.0 98.2L299.8 98.8C299.4 99.7 299.3 99.7 291.7 99.7L284.7 99.7L284.3 99.3ZM468.3 99.3L467.9 98.9L467.8 89.5C467.7 78.6 467.8 13.4 467.9 12.9C468.1 12.2 468.3 12.1 475.7 12.1L482.7 12.2L483.1 12.4C483.8 12.9 483.8 12.9 483.8 30.0L483.8 46.5L484.1 47.0C484.5 47.8 484.2 47.8 502.9 47.8C521.7 47.8 521.4 47.8 521.8 47.0C521.9 46.8 522.0 41.7 522.0 30.1C522.0 12.9 522.0 12.9 522.7 12.4L523.1 12.1L529.6 12.2C533.2 12.2 536.4 12.2 536.7 12.2C537.2 12.2 537.5 12.3 537.8 12.6L538.2 13.0L538.2 55.8L538.2 98.7L537.7 99.2L537.2 99.7L530.1 99.6L523.0 99.6L522.5 99.1L522.1 98.7L522.0 81.6L521.9 64.6L521.5 64.3L521.1 64.0L503.1 64.0C484.5 64.0 484.4 64.0 484.1 64.6C484.0 64.8 483.9 72.5 483.8 81.8C483.7 99.9 483.8 99.1 482.9 99.5C482.6 99.6 480.1 99.7 475.6 99.7L468.7 99.7L468.3 99.3ZM544.8 99.2L544.2 98.7L544.2 55.9L544.2 13.1L544.7 12.7L545.1 12.2L578.3 12.2L611.5 12.2L612.0 12.4C612.2 12.5 612.5 12.8 612.6 12.9C612.8 13.4 612.7 27.0 612.5 27.4C612.1 28.2 613.0 28.2 586.5 28.2C559.0 28.3 560.8 28.2 560.5 29.3C560.2 30.3 560.3 46.6 560.7 47.1C561.1 47.8 560.9 47.8 586.8 47.8L611.7 47.8L612.2 48.3L612.7 48.8L612.7 55.8L612.7 62.8L612.2 63.4L611.7 63.9L586.6 64.0C560.0 64.0 560.9 64.0 560.5 64.8C560.3 65.3 560.3 82.1 560.5 82.8C560.9 83.7 559.3 83.7 586.1 83.7C611.9 83.7 611.9 83.7 612.4 84.4L612.7 84.7L612.7 91.7L612.7 98.7L612.2 99.2L611.7 99.7L578.5 99.7L545.3 99.7L544.8 99.2ZM619.6 99.5C619.4 99.4 619.1 99.1 619.0 98.9L618.8 98.6L618.7 56.1C618.7 11.7 618.7 12.7 619.4 12.3C619.7 12.2 628.2 12.1 653.1 12.2L686.4 12.2L686.8 12.4C687.0 12.6 687.2 12.8 687.3 13.0C687.5 13.2 687.6 23.3 687.5 26.7C687.5 27.0 687.3 27.4 687.0 27.7L686.5 28.2L661.8 28.2C636.5 28.2 635.8 28.2 635.3 28.8L635.0 29.2L635.0 37.8C635.0 46.8 635.0 47.0 635.7 47.5L636.1 47.8L661.4 47.8L686.7 47.9L687.1 48.4L687.5 48.9L687.5 55.9L687.5 62.9L687.2 63.3C686.7 64.0 686.7 64.0 660.8 64.0L636.0 64.0L635.6 64.2C635.0 64.6 635.0 64.8 635.0 74.3L635.1 83.0L635.5 83.3L635.9 83.7L660.8 83.7C686.7 83.7 686.7 83.7 687.2 84.4L687.5 84.7L687.5 91.8L687.5 98.8L687.1 99.2L686.6 99.6L653.3 99.6C631.3 99.6 619.8 99.6 619.6 99.5ZM693.7 99.3L693.2 98.9L693.2 56.3C693.2 32.9 693.2 13.5 693.3 13.2C693.3 12.9 693.5 12.6 693.8 12.4L694.2 12.1L701.3 12.1L708.3 12.1L708.8 12.4C709.0 12.6 709.3 13.0 709.4 13.2C709.4 13.4 709.5 29.1 709.5 48.0C709.5 72.9 709.6 82.6 709.7 82.9C710.0 83.7 709.3 83.7 735.5 83.7C762.6 83.7 761.2 83.6 761.6 84.6C761.8 85.0 761.8 86.8 761.8 91.9L761.8 98.7L761.2 99.2L760.7 99.7L727.4 99.7L694.2 99.7L693.7 99.3ZM773.2 99.6C771.8 99.2 771.8 99.2 771.8 91.4C771.8 84.1 771.8 84.3 772.5 83.9L773.0 83.7L793.4 83.7L813.8 83.7L815.3 83.4C821.1 82.4 824.6 76.3 822.7 70.3C821.9 67.8 819.5 65.6 816.5 64.4L815.6 64.1L803.4 64.0L791.2 63.9L789.6 63.6C785.2 62.8 782.5 61.7 778.4 58.9C776.8 57.8 772.9 53.6 771.9 52.0C770.2 49.0 768.6 45.0 768.2 42.2C768.0 40.8 767.9 35.0 768.2 33.7C769.7 25.3 775.6 17.7 783.5 14.2C788.0 12.1 787.2 12.2 812.8 12.2L834.4 12.2L834.8 12.4C835.4 12.9 835.5 13.6 835.5 20.3C835.5 27.1 835.4 27.6 834.7 28.0C834.4 28.1 829.0 28.2 814.5 28.2C803.0 28.2 794.0 28.2 793.2 28.3C785.9 29.2 782.0 36.2 785.3 42.8C786.2 44.6 789.0 46.8 791.1 47.4L792.1 47.7L804.7 47.8L817.2 47.9L819.4 48.5C824.5 49.8 828.2 51.8 831.9 55.6C835.7 59.4 838.2 63.9 839.0 68.7C839.4 71.4 839.4 76.8 838.9 79.3C837.8 84.9 834.1 90.8 829.2 94.4C826.6 96.4 826.0 96.7 821.4 98.3C820.3 98.7 817.2 99.3 815.2 99.5C813.5 99.7 774.0 99.7 773.2 99.6ZM426.5 98.0C426.3 97.9 425.9 97.1 425.6 96.2C425.2 95.4 424.8 94.3 424.5 93.8C424.1 92.9 422.2 88.0 421.2 85.4C420.9 84.6 420.3 83.0 419.8 81.8C419.4 80.7 418.7 79.0 418.3 78.0C417.9 77.0 417.1 75.0 416.5 73.6C416.0 72.1 415.2 70.2 414.8 69.3C414.5 68.5 413.9 67.0 413.5 66.1C412.0 62.3 410.9 59.5 409.4 55.7C407.9 51.7 407.4 50.6 406.1 47.5C405.7 46.7 405.3 45.5 405.0 44.8C404.8 44.0 404.1 42.3 403.5 40.9C400.9 34.4 401.0 34.7 400.5 34.7C400.0 34.7 399.6 35.4 399.2 36.6C399.0 37.2 398.7 37.9 398.6 38.1C398.5 38.3 397.9 39.7 397.3 41.3C396.7 42.9 395.7 45.2 395.3 46.4C393.8 49.8 391.3 56.1 390.5 58.2C390.3 58.7 389.8 60.1 389.2 61.3C388.7 62.6 388.0 64.4 387.7 65.4C387.3 66.3 386.8 67.6 386.6 68.1C386.4 68.6 386.0 69.6 385.8 70.2C385.4 71.3 384.9 72.5 382.0 79.6C381.1 82.0 380.2 84.3 380.0 84.8C379.8 85.3 379.4 86.4 379.0 87.2C378.0 89.6 376.5 93.3 375.9 94.9C374.2 99.9 373.5 99.4 370.4 91.1C370.0 90.0 369.4 88.4 369.0 87.5C368.6 86.6 367.7 84.2 366.8 82.1C366.0 80.0 364.9 77.0 364.2 75.6C363.6 74.1 362.8 72.1 362.5 71.2C362.1 70.2 361.4 68.4 360.9 67.2C360.4 66.0 359.7 64.2 359.3 63.2C358.7 61.5 357.5 58.6 353.3 47.9C352.2 45.3 351.0 42.1 350.5 40.9C350.1 39.7 349.1 37.4 348.4 35.7C347.7 34.0 346.6 31.3 346.0 29.7C345.4 28.1 344.6 26.0 344.2 25.1C343.8 24.2 343.1 22.4 342.6 21.2C342.2 20.1 341.3 17.8 340.6 16.2C339.4 13.2 339.4 12.7 340.0 12.4C340.1 12.3 343.5 12.2 348.0 12.2L355.6 12.1L356.1 12.4C356.7 12.8 357.1 13.8 359.1 19.2C359.3 19.9 360.0 21.8 360.6 23.4C361.2 25.1 362.2 27.8 362.8 29.6C363.4 31.3 364.1 33.0 364.2 33.4C364.4 33.8 364.8 34.8 365.1 35.6C365.4 36.4 365.9 37.9 366.3 39.0C366.7 40.1 367.6 42.4 368.3 44.2C369.0 46.1 369.8 48.2 370.0 48.9C373.3 58.1 373.3 58.2 373.9 58.2C374.5 58.2 374.8 57.6 376.0 54.0C376.2 53.2 376.7 52.0 377.0 51.2C377.3 50.5 377.7 49.3 378.0 48.6C378.3 47.9 378.7 46.8 379.0 46.2C379.2 45.6 379.6 44.6 379.7 44.1C380.0 43.1 381.9 38.0 382.4 36.8C382.6 36.4 383.2 34.7 383.8 33.1C384.3 31.4 385.2 29.2 385.6 28.1C386.0 27.0 386.8 24.7 387.4 23.1C388.0 21.4 388.6 19.7 388.8 19.2C389.5 17.6 390.5 14.9 390.7 14.1C391.4 12.0 391.4 12.0 400.9 12.0L408.6 12.1L409.1 12.4C409.7 12.8 410.1 13.9 412.4 20.2C413.0 21.8 413.7 23.6 413.9 24.2C414.2 24.9 414.6 26.0 414.8 26.7C415.1 27.4 415.7 28.8 416.1 29.9C416.5 31.0 417.3 33.3 417.9 34.9C418.5 36.6 419.1 38.3 419.3 38.7C419.5 39.1 419.8 39.9 419.9 40.4C420.1 41.0 420.3 41.7 420.5 42.0C420.7 42.3 421.1 43.4 421.4 44.5C421.8 45.6 422.6 47.8 423.3 49.6C423.9 51.3 424.6 53.2 424.8 53.7C424.9 54.2 425.2 54.8 425.3 55.2C425.5 55.5 425.8 56.2 425.9 56.7C426.5 59.0 427.3 58.9 428.2 56.3C428.5 55.5 429.2 53.7 429.7 52.4C430.1 51.1 430.7 49.5 431.0 48.8C431.3 48.0 431.8 46.5 432.3 45.3C432.7 44.2 433.5 41.9 434.1 40.3C435.1 37.6 435.5 36.5 437.2 31.8C437.6 30.8 438.0 29.7 438.1 29.3C438.2 28.9 438.6 27.9 439.0 27.0C439.4 26.1 439.9 24.7 440.2 23.8C440.5 23.0 441.0 21.6 441.3 20.8C441.7 19.9 442.4 18.0 442.9 16.5C444.1 13.1 444.3 12.8 444.8 12.4L445.2 12.1L452.7 12.1C457.1 12.1 460.4 12.1 460.7 12.2C461.6 12.6 461.6 13.1 460.3 16.0C459.8 17.2 459.2 18.7 459.0 19.3C458.9 19.8 458.6 20.6 458.4 21.0C458.2 21.4 457.5 23.2 456.8 24.9C454.0 32.0 453.5 33.3 452.7 35.1C451.7 37.6 451.2 38.9 450.9 39.9C450.8 40.3 450.4 41.1 450.2 41.7C449.9 42.3 449.1 44.4 448.3 46.4C446.8 50.2 445.7 52.9 444.0 57.2C443.4 58.5 443.0 59.6 443.0 59.7C443.0 59.8 442.4 61.3 441.7 63.0C440.2 66.6 439.4 68.5 437.8 72.5C436.2 76.7 435.7 77.9 435.1 79.2C434.9 79.9 434.4 81.2 434.0 82.2C433.6 83.1 433.0 84.9 432.5 86.1C432.0 87.3 431.4 88.9 431.1 89.7C430.8 90.5 430.4 91.3 430.3 91.6C430.1 91.9 429.8 92.7 429.6 93.4C429.4 94.2 428.8 95.5 428.3 96.5C427.4 98.3 427.0 98.7 426.5 98.0Z"/></symbol>
+    <clipPath id="fw-logo-clip"><path fill-rule="evenodd" clip-rule="evenodd" d="M232.6 170.7C225.6 170.2 218.3 166.0 214.0 159.9C208.5 152.0 208.4 140.4 213.9 132.4C217.4 127.4 223.0 123.6 229.3 122.0L230.8 121.6L251.0 121.5L271.2 121.5L271.7 122.0L272.2 122.5L272.2 126.2C272.2 130.4 272.1 130.9 271.2 131.2C271.0 131.3 263.9 131.3 252.8 131.3C241.1 131.3 234.2 131.4 233.3 131.5C225.2 132.5 219.8 141.2 222.0 149.7C223.4 155.4 226.5 158.5 232.1 160.1L233.8 160.6L249.1 160.5L264.5 160.5L265.2 160.2C268.0 159.0 268.1 154.4 265.4 153.0L264.6 152.6L254.4 152.5L244.2 152.4L243.8 152.0L243.4 151.7L243.4 148.1C243.3 144.1 243.4 143.6 243.9 143.1L244.3 142.7L255.1 142.7L265.9 142.7L267.6 143.0C274.6 144.5 279.0 149.7 279.0 156.5C279.0 163.4 275.0 168.6 268.5 170.3L267.1 170.7L250.8 170.8C241.8 170.8 233.6 170.7 232.6 170.7ZM281.8 170.6C281.0 170.2 281.0 169.7 282.2 167.1C282.8 165.8 283.7 163.7 284.3 162.5C287.4 155.0 289.3 152.9 294.0 151.3L294.8 151.0L312.1 151.0L329.3 151.0L329.7 150.7L330.0 150.5L330.0 149.7C329.9 149.3 329.4 147.9 328.6 146.4C326.9 142.8 325.9 140.6 324.5 137.2C322.7 133.1 322.3 132.3 321.1 131.7L320.6 131.4L315.4 131.4L310.2 131.4L309.7 131.7C308.9 132.2 308.2 133.2 307.1 135.8C304.7 141.0 303.7 143.1 303.3 143.4L302.8 143.8L298.3 143.8L293.9 143.8L293.5 143.4C292.9 142.9 293.0 142.6 294.9 138.7C295.4 137.6 295.9 136.5 296.0 136.2C296.9 133.7 300.4 126.5 301.2 125.6C302.7 123.9 305.2 122.3 307.3 121.7L308.3 121.5L315.9 121.5L323.4 121.6L324.4 122.0C329.0 123.8 330.3 125.4 333.8 133.9C334.2 134.7 334.8 136.2 335.2 137.1C336.1 139.2 337.8 142.8 338.9 145.3C339.3 146.4 340.1 148.1 340.5 149.1C341.0 150.1 341.7 151.7 342.1 152.6C342.5 153.5 343.6 156.0 344.6 158.2C345.5 160.4 346.3 162.2 346.3 162.3C346.3 162.4 346.7 163.2 347.1 164.1C349.6 169.1 349.8 169.8 349.1 170.4L348.8 170.8L344.6 170.8L340.4 170.8L339.8 170.5C339.0 170.1 338.8 169.7 337.6 166.8C336.1 163.2 335.4 161.8 334.9 161.3L334.5 160.9L315.6 160.9L296.8 160.8L296.2 161.1C295.8 161.3 295.5 161.6 295.0 162.8C294.2 164.4 292.3 168.6 291.9 169.5C291.8 169.9 291.5 170.3 291.2 170.4L290.8 170.8L286.5 170.8C283.3 170.8 282.1 170.8 281.8 170.6ZM358.3 170.7L356.4 170.7L356.0 170.2L355.6 169.8L355.5 164.7L355.5 159.5L355.8 158.1C356.7 153.9 359.0 151.2 362.6 149.8C363.4 149.5 364.2 149.1 364.4 149.1C364.6 149.0 374.0 148.9 385.2 148.8L405.8 148.7L406.5 148.5C409.8 147.3 412.2 143.9 412.2 140.3C412.2 135.9 409.3 132.1 405.5 131.5C404.8 131.4 396.6 131.3 381.2 131.3C366.9 131.3 357.9 131.3 357.6 131.2C356.8 130.9 356.7 130.4 356.7 126.2L356.7 122.4L357.0 122.0C357.5 121.5 357.2 121.5 383.2 121.5L407.9 121.6L409.6 122.0C417.5 124.2 422.8 130.2 423.5 138.0C423.8 141.7 423.5 144.2 422.2 147.5C421.2 149.8 420.9 150.3 418.8 152.8C417.6 154.3 414.2 156.6 412.1 157.3C409.6 158.3 409.7 158.5 414.8 163.0C418.3 166.0 421.8 169.2 421.9 169.4C422.4 170.8 422.1 170.9 414.0 170.8L407.2 170.8L406.6 170.4C406.2 170.2 405.4 169.6 404.8 169.0C404.1 168.4 403.2 167.6 402.8 167.3C402.3 166.9 401.5 166.2 400.9 165.7C400.4 165.1 399.5 164.3 398.9 163.9C398.3 163.4 397.3 162.5 396.5 161.9C395.0 160.6 394.2 160.0 392.7 159.5L391.8 159.1L379.7 159.0L367.7 159.0L367.2 159.5L366.7 160.0L366.7 164.4C366.7 169.3 366.6 170.0 365.9 170.5C365.4 170.8 363.4 170.8 358.3 170.7ZM428.1 170.7C427.6 170.6 427.2 170.2 427.2 169.7C427.2 169.3 428.5 166.1 429.0 165.2C429.2 164.9 429.6 164.1 429.8 163.4C431.4 159.6 433.1 156.2 434.1 155.0C435.3 153.6 438.1 151.8 439.9 151.3L440.8 151.0L457.6 151.0C475.7 150.9 475.4 151.0 475.6 150.1C475.7 149.5 475.5 148.9 473.6 144.9C472.8 143.2 472.0 141.3 471.8 140.8C471.5 140.2 471.1 139.1 470.7 138.3C470.3 137.6 469.7 136.1 469.3 135.1C468.3 132.8 467.8 132.1 467.1 131.7L466.6 131.4L462.2 131.4C457.1 131.3 455.8 131.4 455.1 132.1C454.5 132.7 452.3 137.2 451.0 140.3C449.6 143.8 449.6 143.8 444.1 143.8C438.2 143.8 438.3 144.1 441.1 138.1C441.8 136.6 442.6 134.9 442.8 134.3C443.0 133.7 443.3 133.2 443.4 133.1C443.4 133.0 443.9 132.1 444.3 131.1C446.7 125.5 448.6 123.4 452.4 122.0L453.4 121.6L460.4 121.5C468.9 121.5 469.4 121.5 471.6 122.6C472.8 123.2 473.4 123.7 474.6 124.9L476.1 126.4L477.2 128.6C477.8 129.8 478.6 131.6 479.1 132.6C479.9 134.6 480.8 136.6 482.4 140.2C483.0 141.5 484.0 143.8 484.7 145.2C485.3 146.7 486.2 148.7 486.7 149.8C487.1 150.8 488.2 153.2 489.0 155.1C489.9 157.0 490.8 159.1 491.1 159.7C491.4 160.3 492.0 161.7 492.5 162.8C493.0 164.0 493.8 165.8 494.3 166.9C495.4 169.2 495.5 169.9 495.0 170.4L494.6 170.8L491.0 170.8C485.6 170.9 485.0 170.7 484.4 168.9C484.0 168.0 481.5 162.5 481.1 161.9C481.0 161.6 480.6 161.2 480.3 161.1L479.7 160.8L461.0 160.9L442.3 160.9L441.8 161.4C441.4 161.9 439.2 166.3 438.2 168.8C438.0 169.4 437.6 170.1 437.4 170.3L437.0 170.8L432.7 170.8C430.3 170.8 428.3 170.8 428.1 170.7ZM518.9 170.7C514.9 170.4 510.8 168.9 506.8 166.3C496.9 159.8 493.3 145.9 498.7 135.2C502.1 128.3 509.2 123.0 516.6 121.8L518.6 121.5L537.9 121.5C557.8 121.5 558.0 121.5 558.3 122.2C558.4 122.3 558.5 124.2 558.5 126.5L558.5 130.4L558.2 130.8C557.7 131.3 558.3 131.3 538.1 131.4L519.1 131.4L518.1 131.7C510.9 133.8 506.4 141.8 508.2 149.3C509.8 156.0 514.3 160.0 521.0 160.5C523.2 160.7 540.8 160.7 547.0 160.6L551.2 160.5L552.0 159.9C554.6 158.4 554.3 154.4 551.5 152.9L550.9 152.6L540.8 152.5L530.7 152.4L530.3 152.0L529.8 151.6L529.9 147.5L529.9 143.5L530.4 143.1L530.9 142.6L542.1 142.7L553.4 142.8L555.0 143.2C563.1 145.6 567.2 153.2 564.7 161.2C562.9 166.9 558.2 170.4 551.8 170.7C548.5 170.8 521.5 170.8 518.9 170.7ZM594.0 170.7C592.6 170.6 591.4 170.4 590.1 170.0C577.3 166.4 569.7 154.8 571.7 142.1C573.4 131.7 582.9 122.6 593.1 121.7C594.4 121.5 602.7 121.5 617.7 121.5L640.4 121.6L640.7 122.0L641.0 122.4L641.0 126.3L641.0 130.3L640.6 130.8L640.2 131.2L617.3 131.3L594.4 131.4L593.4 131.7C591.6 132.3 589.2 133.6 587.9 134.9C585.2 137.5 583.3 141.3 584.4 142.3L584.7 142.6L602.8 142.7L621.0 142.8L621.3 143.0L621.6 143.3L621.6 147.5L621.7 151.6L621.4 152.0L621.0 152.4L603.3 152.5C584.1 152.6 585.0 152.5 585.0 153.5C585.0 154.1 586.3 155.8 587.8 157.3C589.2 158.6 591.3 159.8 593.4 160.4L594.4 160.7L617.2 160.8C629.7 160.9 640.1 161.0 640.2 161.1C640.9 161.4 641.0 162.0 641.0 165.9C641.0 170.0 641.0 170.2 640.1 170.6C639.4 170.9 597.8 170.9 594.0 170.7ZM13.5 99.2L13.0 98.7L13.0 56.6C12.9 33.5 12.9 14.3 13.0 14.0C13.0 13.2 13.3 12.5 13.7 12.3C14.2 12.1 80.4 12.1 80.9 12.4C81.7 12.7 81.7 12.8 81.7 19.7C81.7 23.2 81.7 26.3 81.7 26.6C81.7 27.0 81.5 27.3 81.2 27.7L80.7 28.2L55.7 28.2C28.2 28.2 29.7 28.1 29.4 29.2C29.1 29.9 29.1 46.3 29.3 46.9C29.4 47.2 29.7 47.4 30.1 47.6L30.7 47.8L55.6 47.8C74.2 47.8 80.6 47.9 80.9 48.0C81.7 48.4 81.7 48.4 81.7 55.8L81.7 62.9L81.4 63.3C80.9 64.0 80.9 64.0 55.1 64.0C39.4 64.0 30.2 64.1 30.0 64.2C29.2 64.6 29.3 63.8 29.2 81.9L29.1 98.9L28.6 99.3L28.1 99.7L21.1 99.7L14.0 99.7L13.5 99.2ZM78.0 99.4C77.4 99.0 77.6 98.3 78.8 96.0C80.3 93.4 87.6 79.1 87.9 78.2C88.1 77.9 88.3 77.4 88.5 77.1C88.7 76.9 89.9 74.5 91.3 71.8C95.5 63.5 98.5 57.5 100.1 54.6C100.9 53.0 102.4 50.1 103.4 48.1C104.5 46.1 105.6 43.8 106.0 43.1C106.7 41.8 109.0 37.4 112.6 30.2C113.6 28.2 115.3 24.9 116.4 22.8C117.5 20.6 119.0 17.7 119.8 16.1C121.3 13.1 121.6 12.7 122.4 13.2C122.8 13.5 124.2 16.1 129.0 25.7C130.3 28.2 131.4 30.3 131.5 30.4C131.6 30.5 133.3 33.8 135.2 37.8C137.2 41.7 138.9 45.0 139.0 45.1C139.1 45.2 140.2 47.4 141.5 50.0C142.9 52.6 144.1 55.0 144.3 55.3C144.5 55.7 144.8 56.3 145.0 56.8C145.2 57.2 146.1 59.1 147.1 61.0C148.1 62.9 149.5 65.4 150.1 66.7C151.2 68.9 156.0 78.2 158.8 83.6C159.6 85.1 161.4 88.7 162.8 91.4C164.2 94.2 165.5 96.8 165.7 97.2C166.3 98.1 166.3 99.0 165.8 99.4L165.4 99.7L156.7 99.7L147.9 99.7L147.4 99.4C146.9 99.0 146.4 98.2 144.2 93.8C143.2 91.9 142.4 90.3 142.3 90.2C142.3 90.2 141.8 89.3 141.4 88.3C141.0 87.4 140.2 85.8 139.6 84.8C139.1 83.7 136.1 77.9 133.0 71.8C122.6 51.0 122.6 51.2 121.9 51.2C121.3 51.2 120.7 52.2 115.7 61.9C115.2 63.0 114.2 64.9 113.6 66.1C113.0 67.3 111.2 70.6 109.7 73.6C108.2 76.5 106.5 79.7 106.0 80.7C105.4 81.7 105.0 82.5 105.0 82.6C105.0 82.6 104.8 83.0 104.6 83.3C104.4 83.7 103.3 85.7 102.2 87.8C101.2 89.9 99.8 92.5 99.2 93.6C98.6 94.6 98.2 95.6 98.2 95.7C98.2 95.7 97.9 96.2 97.6 96.7C97.2 97.2 96.8 97.8 96.7 98.2C96.5 98.5 96.2 98.9 95.9 99.2L95.5 99.6L86.9 99.6L78.4 99.7L78.0 99.4ZM178.2 99.5C177.9 99.4 177.6 99.2 177.4 99.0L177.2 98.6L177.2 91.6C177.2 84.6 177.2 84.2 177.8 83.9C177.9 83.8 187.6 83.7 199.2 83.7L220.2 83.6L221.2 83.3C223.6 82.6 226.1 80.5 227.2 78.3C230.0 73.1 227.5 66.7 221.9 64.5L220.8 64.1L208.8 64.0L196.9 63.9L194.8 63.6C189.2 62.8 184.7 60.4 180.2 55.8C178.1 53.6 175.6 49.8 175.1 48.0C175.0 47.8 174.7 46.9 174.4 46.0C173.3 43.0 172.8 37.8 173.4 34.1C174.3 28.2 176.5 23.9 180.7 19.7C185.3 15.2 189.5 13.1 195.5 12.3C197.4 12.1 239.4 12.1 239.9 12.4C240.7 12.8 240.7 12.7 240.7 20.1L240.7 27.2L240.2 27.7C239.8 28.1 239.6 28.2 238.9 28.2C238.4 28.2 229.0 28.2 217.8 28.2L197.6 28.3L196.7 28.6C191.7 30.2 189.2 33.6 189.4 38.6L189.4 40.5L190.2 42.1C191.5 44.7 193.4 46.4 196.0 47.4L197.1 47.7L209.8 47.8L222.6 47.9L223.9 48.3C224.7 48.5 225.7 48.8 226.2 48.9C226.7 49.1 228.2 49.6 229.5 50.2C237.1 53.7 242.7 60.9 244.2 69.2C244.5 70.7 244.5 77.1 244.2 78.7C243.0 85.0 239.3 90.8 233.5 95.1C231.9 96.3 231.4 96.5 228.5 97.6C226.5 98.4 225.3 98.7 222.8 99.2L220.9 99.6L199.8 99.6C186.9 99.6 178.5 99.6 178.2 99.5ZM284.3 99.3L283.9 99.0L283.8 64.0C283.8 34.9 283.7 29.0 283.5 28.8C283.0 28.2 282.2 28.2 266.8 28.2L251.5 28.2L251.1 27.8L250.6 27.4L250.6 20.2L250.6 13.0L251.1 12.6L251.5 12.2L291.8 12.2L332.1 12.2L332.6 12.6L333.1 13.0L333.1 20.1L333.1 27.3L332.7 27.7L332.3 28.1L316.7 28.2C299.9 28.3 300.5 28.2 300.2 29.1C300.1 29.4 300.0 42.5 300.0 63.8L300.0 98.2L299.8 98.8C299.4 99.7 299.3 99.7 291.7 99.7L284.7 99.7L284.3 99.3ZM468.3 99.3L467.9 98.9L467.8 89.5C467.7 78.6 467.8 13.4 467.9 12.9C468.1 12.2 468.3 12.1 475.7 12.1L482.7 12.2L483.1 12.4C483.8 12.9 483.8 12.9 483.8 30.0L483.8 46.5L484.1 47.0C484.5 47.8 484.2 47.8 502.9 47.8C521.7 47.8 521.4 47.8 521.8 47.0C521.9 46.8 522.0 41.7 522.0 30.1C522.0 12.9 522.0 12.9 522.7 12.4L523.1 12.1L529.6 12.2C533.2 12.2 536.4 12.2 536.7 12.2C537.2 12.2 537.5 12.3 537.8 12.6L538.2 13.0L538.2 55.8L538.2 98.7L537.7 99.2L537.2 99.7L530.1 99.6L523.0 99.6L522.5 99.1L522.1 98.7L522.0 81.6L521.9 64.6L521.5 64.3L521.1 64.0L503.1 64.0C484.5 64.0 484.4 64.0 484.1 64.6C484.0 64.8 483.9 72.5 483.8 81.8C483.7 99.9 483.8 99.1 482.9 99.5C482.6 99.6 480.1 99.7 475.6 99.7L468.7 99.7L468.3 99.3ZM544.8 99.2L544.2 98.7L544.2 55.9L544.2 13.1L544.7 12.7L545.1 12.2L578.3 12.2L611.5 12.2L612.0 12.4C612.2 12.5 612.5 12.8 612.6 12.9C612.8 13.4 612.7 27.0 612.5 27.4C612.1 28.2 613.0 28.2 586.5 28.2C559.0 28.3 560.8 28.2 560.5 29.3C560.2 30.3 560.3 46.6 560.7 47.1C561.1 47.8 560.9 47.8 586.8 47.8L611.7 47.8L612.2 48.3L612.7 48.8L612.7 55.8L612.7 62.8L612.2 63.4L611.7 63.9L586.6 64.0C560.0 64.0 560.9 64.0 560.5 64.8C560.3 65.3 560.3 82.1 560.5 82.8C560.9 83.7 559.3 83.7 586.1 83.7C611.9 83.7 611.9 83.7 612.4 84.4L612.7 84.7L612.7 91.7L612.7 98.7L612.2 99.2L611.7 99.7L578.5 99.7L545.3 99.7L544.8 99.2ZM619.6 99.5C619.4 99.4 619.1 99.1 619.0 98.9L618.8 98.6L618.7 56.1C618.7 11.7 618.7 12.7 619.4 12.3C619.7 12.2 628.2 12.1 653.1 12.2L686.4 12.2L686.8 12.4C687.0 12.6 687.2 12.8 687.3 13.0C687.5 13.2 687.6 23.3 687.5 26.7C687.5 27.0 687.3 27.4 687.0 27.7L686.5 28.2L661.8 28.2C636.5 28.2 635.8 28.2 635.3 28.8L635.0 29.2L635.0 37.8C635.0 46.8 635.0 47.0 635.7 47.5L636.1 47.8L661.4 47.8L686.7 47.9L687.1 48.4L687.5 48.9L687.5 55.9L687.5 62.9L687.2 63.3C686.7 64.0 686.7 64.0 660.8 64.0L636.0 64.0L635.6 64.2C635.0 64.6 635.0 64.8 635.0 74.3L635.1 83.0L635.5 83.3L635.9 83.7L660.8 83.7C686.7 83.7 686.7 83.7 687.2 84.4L687.5 84.7L687.5 91.8L687.5 98.8L687.1 99.2L686.6 99.6L653.3 99.6C631.3 99.6 619.8 99.6 619.6 99.5ZM693.7 99.3L693.2 98.9L693.2 56.3C693.2 32.9 693.2 13.5 693.3 13.2C693.3 12.9 693.5 12.6 693.8 12.4L694.2 12.1L701.3 12.1L708.3 12.1L708.8 12.4C709.0 12.6 709.3 13.0 709.4 13.2C709.4 13.4 709.5 29.1 709.5 48.0C709.5 72.9 709.6 82.6 709.7 82.9C710.0 83.7 709.3 83.7 735.5 83.7C762.6 83.7 761.2 83.6 761.6 84.6C761.8 85.0 761.8 86.8 761.8 91.9L761.8 98.7L761.2 99.2L760.7 99.7L727.4 99.7L694.2 99.7L693.7 99.3ZM773.2 99.6C771.8 99.2 771.8 99.2 771.8 91.4C771.8 84.1 771.8 84.3 772.5 83.9L773.0 83.7L793.4 83.7L813.8 83.7L815.3 83.4C821.1 82.4 824.6 76.3 822.7 70.3C821.9 67.8 819.5 65.6 816.5 64.4L815.6 64.1L803.4 64.0L791.2 63.9L789.6 63.6C785.2 62.8 782.5 61.7 778.4 58.9C776.8 57.8 772.9 53.6 771.9 52.0C770.2 49.0 768.6 45.0 768.2 42.2C768.0 40.8 767.9 35.0 768.2 33.7C769.7 25.3 775.6 17.7 783.5 14.2C788.0 12.1 787.2 12.2 812.8 12.2L834.4 12.2L834.8 12.4C835.4 12.9 835.5 13.6 835.5 20.3C835.5 27.1 835.4 27.6 834.7 28.0C834.4 28.1 829.0 28.2 814.5 28.2C803.0 28.2 794.0 28.2 793.2 28.3C785.9 29.2 782.0 36.2 785.3 42.8C786.2 44.6 789.0 46.8 791.1 47.4L792.1 47.7L804.7 47.8L817.2 47.9L819.4 48.5C824.5 49.8 828.2 51.8 831.9 55.6C835.7 59.4 838.2 63.9 839.0 68.7C839.4 71.4 839.4 76.8 838.9 79.3C837.8 84.9 834.1 90.8 829.2 94.4C826.6 96.4 826.0 96.7 821.4 98.3C820.3 98.7 817.2 99.3 815.2 99.5C813.5 99.7 774.0 99.7 773.2 99.6ZM426.5 98.0C426.3 97.9 425.9 97.1 425.6 96.2C425.2 95.4 424.8 94.3 424.5 93.8C424.1 92.9 422.2 88.0 421.2 85.4C420.9 84.6 420.3 83.0 419.8 81.8C419.4 80.7 418.7 79.0 418.3 78.0C417.9 77.0 417.1 75.0 416.5 73.6C416.0 72.1 415.2 70.2 414.8 69.3C414.5 68.5 413.9 67.0 413.5 66.1C412.0 62.3 410.9 59.5 409.4 55.7C407.9 51.7 407.4 50.6 406.1 47.5C405.7 46.7 405.3 45.5 405.0 44.8C404.8 44.0 404.1 42.3 403.5 40.9C400.9 34.4 401.0 34.7 400.5 34.7C400.0 34.7 399.6 35.4 399.2 36.6C399.0 37.2 398.7 37.9 398.6 38.1C398.5 38.3 397.9 39.7 397.3 41.3C396.7 42.9 395.7 45.2 395.3 46.4C393.8 49.8 391.3 56.1 390.5 58.2C390.3 58.7 389.8 60.1 389.2 61.3C388.7 62.6 388.0 64.4 387.7 65.4C387.3 66.3 386.8 67.6 386.6 68.1C386.4 68.6 386.0 69.6 385.8 70.2C385.4 71.3 384.9 72.5 382.0 79.6C381.1 82.0 380.2 84.3 380.0 84.8C379.8 85.3 379.4 86.4 379.0 87.2C378.0 89.6 376.5 93.3 375.9 94.9C374.2 99.9 373.5 99.4 370.4 91.1C370.0 90.0 369.4 88.4 369.0 87.5C368.6 86.6 367.7 84.2 366.8 82.1C366.0 80.0 364.9 77.0 364.2 75.6C363.6 74.1 362.8 72.1 362.5 71.2C362.1 70.2 361.4 68.4 360.9 67.2C360.4 66.0 359.7 64.2 359.3 63.2C358.7 61.5 357.5 58.6 353.3 47.9C352.2 45.3 351.0 42.1 350.5 40.9C350.1 39.7 349.1 37.4 348.4 35.7C347.7 34.0 346.6 31.3 346.0 29.7C345.4 28.1 344.6 26.0 344.2 25.1C343.8 24.2 343.1 22.4 342.6 21.2C342.2 20.1 341.3 17.8 340.6 16.2C339.4 13.2 339.4 12.7 340.0 12.4C340.1 12.3 343.5 12.2 348.0 12.2L355.6 12.1L356.1 12.4C356.7 12.8 357.1 13.8 359.1 19.2C359.3 19.9 360.0 21.8 360.6 23.4C361.2 25.1 362.2 27.8 362.8 29.6C363.4 31.3 364.1 33.0 364.2 33.4C364.4 33.8 364.8 34.8 365.1 35.6C365.4 36.4 365.9 37.9 366.3 39.0C366.7 40.1 367.6 42.4 368.3 44.2C369.0 46.1 369.8 48.2 370.0 48.9C373.3 58.1 373.3 58.2 373.9 58.2C374.5 58.2 374.8 57.6 376.0 54.0C376.2 53.2 376.7 52.0 377.0 51.2C377.3 50.5 377.7 49.3 378.0 48.6C378.3 47.9 378.7 46.8 379.0 46.2C379.2 45.6 379.6 44.6 379.7 44.1C380.0 43.1 381.9 38.0 382.4 36.8C382.6 36.4 383.2 34.7 383.8 33.1C384.3 31.4 385.2 29.2 385.6 28.1C386.0 27.0 386.8 24.7 387.4 23.1C388.0 21.4 388.6 19.7 388.8 19.2C389.5 17.6 390.5 14.9 390.7 14.1C391.4 12.0 391.4 12.0 400.9 12.0L408.6 12.1L409.1 12.4C409.7 12.8 410.1 13.9 412.4 20.2C413.0 21.8 413.7 23.6 413.9 24.2C414.2 24.9 414.6 26.0 414.8 26.7C415.1 27.4 415.7 28.8 416.1 29.9C416.5 31.0 417.3 33.3 417.9 34.9C418.5 36.6 419.1 38.3 419.3 38.7C419.5 39.1 419.8 39.9 419.9 40.4C420.1 41.0 420.3 41.7 420.5 42.0C420.7 42.3 421.1 43.4 421.4 44.5C421.8 45.6 422.6 47.8 423.3 49.6C423.9 51.3 424.6 53.2 424.8 53.7C424.9 54.2 425.2 54.8 425.3 55.2C425.5 55.5 425.8 56.2 425.9 56.7C426.5 59.0 427.3 58.9 428.2 56.3C428.5 55.5 429.2 53.7 429.7 52.4C430.1 51.1 430.7 49.5 431.0 48.8C431.3 48.0 431.8 46.5 432.3 45.3C432.7 44.2 433.5 41.9 434.1 40.3C435.1 37.6 435.5 36.5 437.2 31.8C437.6 30.8 438.0 29.7 438.1 29.3C438.2 28.9 438.6 27.9 439.0 27.0C439.4 26.1 439.9 24.7 440.2 23.8C440.5 23.0 441.0 21.6 441.3 20.8C441.7 19.9 442.4 18.0 442.9 16.5C444.1 13.1 444.3 12.8 444.8 12.4L445.2 12.1L452.7 12.1C457.1 12.1 460.4 12.1 460.7 12.2C461.6 12.6 461.6 13.1 460.3 16.0C459.8 17.2 459.2 18.7 459.0 19.3C458.9 19.8 458.6 20.6 458.4 21.0C458.2 21.4 457.5 23.2 456.8 24.9C454.0 32.0 453.5 33.3 452.7 35.1C451.7 37.6 451.2 38.9 450.9 39.9C450.8 40.3 450.4 41.1 450.2 41.7C449.9 42.3 449.1 44.4 448.3 46.4C446.8 50.2 445.7 52.9 444.0 57.2C443.4 58.5 443.0 59.6 443.0 59.7C443.0 59.8 442.4 61.3 441.7 63.0C440.2 66.6 439.4 68.5 437.8 72.5C436.2 76.7 435.7 77.9 435.1 79.2C434.9 79.9 434.4 81.2 434.0 82.2C433.6 83.1 433.0 84.9 432.5 86.1C432.0 87.3 431.4 88.9 431.1 89.7C430.8 90.5 430.4 91.3 430.3 91.6C430.1 91.9 429.8 92.7 429.6 93.4C429.4 94.2 428.8 95.5 428.3 96.5C427.4 98.3 427.0 98.7 426.5 98.0Z"/></clipPath>
+    <linearGradient id="fw-logo-shine" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#8f6bff" stop-opacity="0"/><stop offset="0.45" stop-color="#9db6ff" stop-opacity="0.95"/><stop offset="0.6" stop-color="#ffffff" stop-opacity="1"/><stop offset="1" stop-color="#4d7dff" stop-opacity="0"/></linearGradient>
+  </defs>
+</svg>
+<a class="skip" href="#main" data-i18n="skip.content">Aller au contenu</a>
+<header class="site-header" id="header">
+  <p class="proposal" role="note" lang="pt">Proposta de design · não é o site oficial</p>
+  <div class="bar">
+    <a class="logo" href="#top" data-nav="top" data-i18n-attr="aria-label:nav.home" aria-label="Accueil FASTWHEELS GARAGE"><svg class="logo-svg " viewBox="12 11 828 161" role="img" aria-label="FASTWHEELS GARAGE" focusable="false"><use href="#fw-logo"/><g clip-path="url(#fw-logo-clip)"><rect class="logo-sweep" x="-320" y="0" width="300" height="190" fill="url(#fw-logo-shine)"/></g></svg></a>
+    <nav class="nav-desktop" data-i18n-attr="aria-label:nav.label" aria-label="Navigation principale"><a class="nav-link" href="#detailing" data-nav="detailing" data-i18n="nav.detailing">Detailing</a><a class="nav-link" href="#ceramic" data-nav="ceramic" data-i18n="nav.ceramic">Protection céramique</a><a class="nav-link" href="#wrap" data-nav="wrap" data-i18n="nav.wrap">Covering</a><a class="nav-link" href="#ambient" data-nav="ambient" data-i18n="nav.ambient">Éclairage d'ambiance</a><a class="nav-link" href="#starlight" data-nav="starlight" data-i18n="nav.starlight">Ciel étoilé</a></nav>
+    <div class="bar-end">
+      <label class="lang">
+        <span class="sr-only" data-i18n="lang.label">Langue</span>
+        <select id="lang-select" autocomplete="off"><option value="fr" lang="fr" selected>Français</option><option value="en" lang="en">English</option><option value="pt" lang="pt">Português</option><option value="it" lang="it">Italiano</option><option value="de" lang="de">Deutsch</option></select>
+      </label>
+      <a class="btn btn-primary bar-cta" href="#booking" data-nav="booking" data-i18n="cta.request">Demander un rendez-vous</a>
+      <button class="burger" id="menu-toggle" type="button" aria-expanded="false" aria-controls="menu" data-i18n-attr="aria-label:nav.menu" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+<div class="menu" id="menu" hidden>
+  <nav class="menu-inner" data-i18n-attr="aria-label:nav.label" aria-label="Navigation principale">
+    <p class="kicker" data-i18n="nav.services">Prestations</p>
+    <a class="menu-link" href="#detailing" data-nav="detailing" data-i18n="nav.detailing">Detailing</a><a class="menu-link" href="#ceramic" data-nav="ceramic" data-i18n="nav.ceramic">Protection céramique</a><a class="menu-link" href="#wrap" data-nav="wrap" data-i18n="nav.wrap">Covering</a><a class="menu-link" href="#ambient" data-nav="ambient" data-i18n="nav.ambient">Éclairage d'ambiance</a><a class="menu-link" href="#starlight" data-nav="starlight" data-i18n="nav.starlight">Ciel étoilé</a>
+    <a class="btn btn-primary menu-cta" href="#booking" data-nav="booking" data-i18n="cta.request">Demander un rendez-vous</a>
+  </nav>
+</div>
+
+<main id="main">
+<section class="story" id="top">
+  <div class="story-stage" aria-hidden="true">
+    <div class="story-pic">
+      <img class="story-poster" src="img/a_dirty_m.webp" srcset="img/a_dirty_m.webp 1152w, img/a_dirty.webp 2048w" sizes="100vw" width="1152" height="651" alt="" fetchpriority="high" decoding="async">
+      <canvas id="story-canvas"></canvas>
+    </div>
+  </div>
+  <div class="story-steps">
+    <div class="step step-hero" data-step="0">
+      <div class="hero-copy">
+        <p class="kicker" data-i18n="hero.eyebrow">Ardon · Valais</p>
+        <h1 data-i18n="hero.title">Mieux qu'au premier jour.</h1>
+        <p class="lead" data-i18n="hero.text">FASTWHEELS GARAGE prépare voitures et motos à Ardon : detailing, protection céramique, covering complet, éclairage d'ambiance et ciel étoilé.</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="#booking" data-nav="booking" data-i18n="cta.request">Demander un rendez-vous</a>
+          <a class="btn btn-ghost" href="#wrap" data-nav="wrap" data-i18n="hero.cta2">Configurer un covering</a>
+        </div>
+      </div>
+    </div>
+    
+    <article class="step" data-step="1" id="detailing">
+      <figure class="step-still"><img src="img/b_foam_m.webp" srcset="img/b_foam_m.webp 1152w, img/b_foam.webp 2048w" sizes="(min-width: 900px) 60vw, 100vw" width="1152" height="651" loading="lazy" decoding="async" data-i18n-attr="alt:care.alt.1" alt="Les mêmes véhicules couverts de mousse active"></figure>
+      <div class="card">
+        <p class="kicker" data-i18n="care.kicker">Detailing et céramique</p>
+        <h2 data-i18n="care.1.title">Mousse, puis lavage. Gants doux uniquement.</h2>
+        <p data-i18n="care.1.text">La mousse active décolle la saleté avant tout contact avec la peinture. Ensuite, deux seaux ; jantes, passages de roue et entrées de porte ont chacun le leur.</p>
+      </div>
+    </article>
+    
+    <article class="step" data-step="2">
+      <figure class="step-still"><img src="img/c_clean_m.webp" srcset="img/c_clean_m.webp 1152w, img/c_clean.webp 2048w" sizes="(min-width: 900px) 60vw, 100vw" width="1152" height="651" loading="lazy" decoding="async" data-i18n-attr="alt:care.alt.2" alt="Les véhicules propres et polis"></figure>
+      <div class="card">
+        <p class="kicker" data-i18n="care.kicker">Detailing et céramique</p>
+        <h2 data-i18n="care.2.title">Poli, panneau par panneau.</h2>
+        <p data-i18n="care.2.text">Le polissage machine retire micro-rayures et voile du vernis. Le résultat est contrôlé sous les lampes avant de continuer.</p>
+      </div>
+    </article>
+    
+    <article class="step" data-step="3" id="ceramic">
+      <figure class="step-still"><img src="img/e_macro_m.webp" srcset="img/e_macro_m.webp 1152w, img/e_macro.webp 2048w" sizes="(min-width: 900px) 60vw, 100vw" width="1152" height="651" loading="lazy" decoding="async" data-i18n-attr="alt:care.alt.3" alt="Gros plan d'un phare, l'eau perle sur la peinture protégée"></figure>
+      <div class="card">
+        <p class="kicker" data-i18n="care.kicker">Detailing et céramique</p>
+        <h2 data-i18n="care.3.title">Protection céramique.</h2>
+        <p data-i18n="care.3.text">Le revêtement se lie à la peinture. L'eau perle et s'évacue, la saleté accroche moins et le lavage suivant est plus simple.</p>
+      </div>
+    </article>
+    
+    <article class="step" data-step="4">
+      <figure class="step-still"><img src="img/d_bike_m.webp" srcset="img/d_bike_m.webp 1152w, img/d_bike.webp 2048w" sizes="(min-width: 900px) 60vw, 100vw" width="1152" height="651" loading="lazy" decoding="async" data-i18n-attr="alt:care.alt.4" alt="Moto sportive devant la voiture"></figure>
+      <div class="card">
+        <p class="kicker" data-i18n="care.kicker">Detailing et céramique</p>
+        <h2 data-i18n="care.4.title">Les motos passent sur le même établi.</h2>
+        <p data-i18n="care.4.text">Carénages, réservoir, roues, côté chaîne. Même méthode, pinceaux plus petits.</p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="config band" id="wrap" aria-labelledby="config-title">
+  <div class="section-head">
+    <p class="kicker" data-i18n="config.kicker">Covering</p>
+    <h2 id="config-title" tabindex="-1" data-i18n="config.title">Essayez une couleur.</h2>
+    <p class="lead" data-i18n="config.text">Choisissez voiture ou moto, une couleur et une finition. Faites glisser le véhicule pour le tourner à 360°.</p>
+  </div>
+  <div class="config-grid" id="config">
+    <div class="viewer" id="viewer">
+      <div class="viewer-bar">
+        <button class="btn btn-solid viewer-back" id="viewer-back" type="button" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 6 4 12l6 6M4 12h16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="viewer.back">Retour</span></button>
+        <p class="readout" id="readout" aria-live="polite"><span class="chip" id="readout-chip"></span><span class="readout-text"><strong id="readout-name"></strong><span id="readout-finish"></span></span></p>
+      </div>
+      <div class="viewer-stage" id="viewer-stage" tabindex="0" role="group" aria-describedby="viewer-keys">
+        <img class="poster" id="viewer-poster" src="img/poster-car.webp" width="1280" height="800" alt="" decoding="async">
+        <div class="viewer-loading" id="viewer-loading" hidden><span data-i18n="viewer.loading">Chargement du modèle 3D</span><span class="meter"><i id="viewer-meter"></i></span></div>
+        <p class="viewer-msg" id="viewer-msg" hidden data-i18n="viewer.unavailable">La 3D interactive n'est pas disponible sur cet appareil. Vous pouvez tout de même choisir couleur et finition et envoyer la demande.</p>
+      </div>
+      <div class="viewer-tools">
+        <p class="hint"><span data-i18n="viewer.hint">Glissez pour tourner · 360°</span><span class="sr-only" id="viewer-keys" data-i18n="viewer.keys">Au clavier : flèches pour tourner, Origine pour réinitialiser.</span></p>
+        <div class="tool-buttons">
+          <button class="tool" id="rot-left" type="button" data-i18n-attr="aria-label:viewer.left;title:viewer.left" aria-label="Tourner vers la gauche" title="Tourner vers la gauche"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6 4 11l5 5M4 11h9a6 6 0 0 1 6 6v1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="tool" id="rot-reset" type="button" data-i18n-attr="aria-label:viewer.reset;title:viewer.reset" aria-label="Réinitialiser la vue" title="Réinitialiser la vue"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.6-5.9M4 4v4.5h4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="tool" id="rot-right" type="button" data-i18n-attr="aria-label:viewer.right;title:viewer.right" aria-label="Tourner vers la droite" title="Tourner vers la droite"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 6 5 5-5 5m5-5h-9a6 6 0 0 0-6 6v1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="tool" id="viewer-full" type="button" data-i18n-attr="aria-label:viewer.full;title:viewer.full" aria-label="Plein écran" title="Plein écran"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </div>
+      </div>
+    </div>
+    <div class="panel" id="config-panel">
+      <fieldset class="field seg-field">
+        <legend data-i18n="config.vehicle">Véhicule</legend>
+        <div class="seg seg-2">
+          <label class="seg-item"><input type="radio" name="wrap-vehicle" id="wrap-vehicle-car" value="car" checked><span><b data-i18n="vehicle.car">Voiture</b><small translate="no">BMW M4 Competition</small></span></label><label class="seg-item"><input type="radio" name="wrap-vehicle" id="wrap-vehicle-bike" value="bike"><span><b data-i18n="vehicle.bike">Moto</b><small translate="no">BMW S 1000 RR</small></span></label>
+        </div>
+      </fieldset>
+      <fieldset class="field">
+        <legend data-i18n="config.color">Couleur</legend>
+        <div class="families" role="radiogroup" data-i18n-attr="aria-label:config.family" aria-label="Famille de couleurs">
+          <label class="family"><input type="radio" name="wrap-family" id="wrap-family-neutral" value="neutral"><span data-i18n="family.neutral">Blancs, noirs, gris</span></label><label class="family"><input type="radio" name="wrap-family" id="wrap-family-warm" value="warm"><span data-i18n="family.warm">Rouges, oranges, jaunes</span></label><label class="family"><input type="radio" name="wrap-family" id="wrap-family-green" value="green"><span data-i18n="family.green">Verts et turquoises</span></label><label class="family"><input type="radio" name="wrap-family" id="wrap-family-blue" value="blue"><span data-i18n="family.blue">Bleus et violets</span></label><label class="family"><input type="radio" name="wrap-family" id="wrap-family-special" value="special"><span data-i18n="family.special">Roses, bronze, champagne</span></label>
+        </div>
+        <div class="swatches" id="swatches">
+          <label class="sw" data-family="neutral" style="--c:#eef0ee" title="Blanc glacier"><input type="radio" name="wrap-color" id="wrap-color-glacier-white" value="glacier-white"><span class="sw-dot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="sr-only" data-color="glacier-white">Blanc glacier</span></label><label class="sw" data-family="neutral" style="--c:#e9e2d2" title="Ivoire nacré"><input type="radio" name="wrap-color" id="wrap-color-ivory-pearl" value="ivory-pearl"><span class="sw-dot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="sr-only" data-color="ivory-pearl">Ivoire nacré</span></label><label class="sw" data-family="neutral" style="--c:#b9bdc2" title="Argent liquide"><input type="radio" name="wrap-color" id="wrap-color-liquid-silver" value="liquid-silver"><span class="sw-dot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="sr-only" data-color="liquid-silver">Argent liquide</span></label><label class="sw" data-family="neutral" style="--c:#8a8f93" title="Gris ciment"><input type="radio" name="wrap-color" id="wrap-color-cement-grey" value="cement-grey"><span class="sw-dot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="sr-only" data-color="cement-grey">Gris ciment</span></label><label class="sw" data-family="neutral" style="--c:#5b6168" title="Gris orage"><input type="radio" name="wrap-color" id="wrap-color-storm-grey" value="storm-grey"><span class="sw-dot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="sr-only" data-color="storm-grey">Gris orage</span></label><label class="sw" data-family="neutral" style="--c:#34383e" title="Graphite"><input type="radio" name="wrap-color" id="wrap-color-graphite" value="graphite"><span class="sw-dot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="sr-only" data-color="graphite">Graphite</span></label><label class="sw" data-family="neutral" style="--c:#17191d" title="Noir carbone"><input type="radio" name="wrap-color" id="wrap-color-carbon-black" value="carbon-black"><span class="sw-dot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="sr-only" data-color="carbon-black">Noir carbone</span></label><label class="sw" data-family="neutral" style="--c:#08090b" title="Noir profond"><input type="radio" name="wrap-color" id="wrap-color-jet-black" value="jet-black"><span class="sw-dot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="sr-only" data-color="jet-black">Noir profond</span></label><label class="sw" data-family="warm" style="--c:#c1121c" title="Rouge course"><input type="radio" name="wrap-color" id="wrap-color-racing-red" value="racing-red"><span class="sw-dot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="sr-only" data-color="racing-red">Rouge course</span></label><label class="sw" data-family="warm" style="--c:#9d0b1e" title="Rouge candy"><input type="radio" name="wrap-color" id="wrap-color-candy-red" value="candy-red"><span class="sw-dot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="sr-only" data-color="candy-red">Rouge candy</span></label><label class="sw" data-family="warm" style="--c:#5a0f1c" title="Bordeaux"><input type="radio" name="wrap-color" id="wrap-color-burgundy" value="burgundy"><span class="sw-dot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="sr-only" data-color="burgundy">Bordeaux</span></label><label class="sw" data-family="warm" style="--c:#e2571e" title="Orange couchant"><input type="radio" name="wrap-color" id="wrap-color-sunset-orange" value="sunset-orange"><span class="sw-dot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="sr-only" data-color="sunset-orange">Orange couchant</span></label><label class="sw" data-family="warm" style="--c:#f08a1c" title="Papaye"><input type="radio" name="wrap-color" id="wrap-color-papaya" value="papaya"><span class="sw-dot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="sr-only" data-color="papaya">Papaye</span></label><label class="sw" data-family="warm" style="--c:#f2c417" title="Jaune signal"><input type="radio" name="wrap-color" id="wrap-color-signal-yellow" value="signal-yellow"><span class="sw-dot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="sr-only" data-color="signal-yellow">Jaune signal</span></label><label class="sw" data-family="warm" style="--c:#d7e21f" title="Jaune acide"><input type="radio" name="wrap-color" id="wrap-color-acid-yellow" value="acid-yellow"><span class="sw-dot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="sr-only" data-color="acid-yellow">Jaune acide</span></label><label class="sw" data-family="green" style="--c:#0f4a2c" title="Vert course"><input type="radio" name="wrap-color" id="wrap-color-racing-green" value="racing-green"><span class="sw-dot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="sr-only" data-color="racing-green">Vert course</span></label><label class="sw" data-family="green" style="--c:#0c7a4b" title="Émeraude"><input type="radio" name="wrap-color" id="wrap-color-emerald" value="emerald"><span class="sw-dot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="sr-only" data-color="emerald">Émeraude</span></label><label class="sw" data-family="green" style="--c:#5d6139" title="Olive"><input type="radio" name="wrap-color" id="wrap-color-olive" value="olive"><span class="sw-dot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="sr-only" data-color="olive">Olive</span></label><label class="sw" data-family="green" style="--c:#8a9a83" title="Sauge"><input type="radio" name="wrap-color" id="wrap-color-sage" value="sage"><span class="sw-dot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="sr-only" data-color="sage">Sauge</span></label><label class="sw" data-family="green" style="--c:#9fd9c0" title="Menthe"><input type="radio" name="wrap-color" id="wrap-color-mint" value="mint"><span class="sw-dot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="sr-only" data-color="mint">Menthe</span></label><label class="sw" data-family="green" style="--c:#0e5560" title="Bleu pétrole"><input type="radio" name="wrap-color" id="wrap-color-petrol" value="petrol"><span class="sw-dot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="sr-only" data-color="petrol">Bleu pétrole</span></label><label class="sw" data-family="green" style="--c:#18a7a7" title="Turquoise"><input type="radio" name="wrap-color" id="wrap-color-turquoise" value="turquoise"><span class="sw-dot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="sr-only" data-color="turquoise">Turquoise</span></label><label class="sw" data-family="blue" style="--c:#14246e" title="Bleu nuit"><input type="radio" name="wrap-color" id="wrap-color-midnight-blue" value="midnight-blue" checked><span class="sw-dot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="sr-only" data-color="midnight-blue">Bleu nuit</span></label><label class="sw" data-family="blue" style="--c:#0f1b3d" title="Bleu marine"><input type="radio" name="wrap-color" id="wrap-color-navy" value="navy"><span class="sw-dot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="sr-only" data-color="navy">Bleu marine</span></label><label class="sw" data-family="blue" style="--c:#1f57d6" title="Bleu électrique"><input type="radio" name="wrap-color" id="wrap-color-electric-blue" value="electric-blue"><span class="sw-dot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="sr-only" data-color="electric-blue">Bleu électrique</span></label><label class="sw" data-family="blue" style="--c:#6fb1e6" title="Bleu ciel"><input type="radio" name="wrap-color" id="wrap-color-sky-blue" value="sky-blue"><span class="sw-dot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="sr-only" data-color="sky-blue">Bleu ciel</span></label><label class="sw" data-family="blue" style="--c:#5b2ba8" title="Ultraviolet"><input type="radio" name="wrap-color" id="wrap-color-ultraviolet" value="ultraviolet"><span class="sw-dot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="sr-only" data-color="ultraviolet">Ultraviolet</span></label><label class="sw" data-family="blue" style="--c:#3a1657" title="Aubergine"><input type="radio" name="wrap-color" id="wrap-color-aubergine" value="aubergine"><span class="sw-dot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="sr-only" data-color="aubergine">Aubergine</span></label><label class="sw" data-family="blue" style="--c:#a998dd" title="Lavande"><input type="radio" name="wrap-color" id="wrap-color-lavender" value="lavender"><span class="sw-dot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="sr-only" data-color="lavender">Lavande</span></label><label class="sw" data-family="special" style="--c:#e88fb0" title="Rose poudré"><input type="radio" name="wrap-color" id="wrap-color-rose-pink" value="rose-pink"><span class="sw-dot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="sr-only" data-color="rose-pink">Rose poudré</span></label><label class="sw" data-family="special" style="--c:#c2187c" title="Magenta"><input type="radio" name="wrap-color" id="wrap-color-magenta" value="magenta"><span class="sw-dot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="sr-only" data-color="magenta">Magenta</span></label><label class="sw" data-family="special" style="--c:#c98f7d" title="Or rose"><input type="radio" name="wrap-color" id="wrap-color-rose-gold" value="rose-gold"><span class="sw-dot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="sr-only" data-color="rose-gold">Or rose</span></label><label class="sw" data-family="special" style="--c:#cdbb95" title="Champagne"><input type="radio" name="wrap-color" id="wrap-color-champagne" value="champagne"><span class="sw-dot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="sr-only" data-color="champagne">Champagne</span></label><label class="sw" data-family="special" style="--c:#c7b08a" title="Sable du désert"><input type="radio" name="wrap-color" id="wrap-color-desert-sand" value="desert-sand"><span class="sw-dot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="sr-only" data-color="desert-sand">Sable du désert</span></label><label class="sw" data-family="special" style="--c:#b3622e" title="Cuivre"><input type="radio" name="wrap-color" id="wrap-color-copper" value="copper"><span class="sw-dot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="sr-only" data-color="copper">Cuivre</span></label><label class="sw" data-family="special" style="--c:#7a5a3a" title="Bronze"><input type="radio" name="wrap-color" id="wrap-color-bronze" value="bronze"><span class="sw-dot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="sr-only" data-color="bronze">Bronze</span></label>
+        </div>
+      </fieldset>
+      <div class="field-row">
+        <fieldset class="field seg-field">
+          <legend data-i18n="config.finish">Finition</legend>
+          <div class="seg seg-3">
+            <label class="seg-item"><input type="radio" name="wrap-finish" id="wrap-finish-gloss" value="gloss" checked><span data-i18n="finish.gloss">Brillant</span></label><label class="seg-item"><input type="radio" name="wrap-finish" id="wrap-finish-satin" value="satin"><span data-i18n="finish.satin">Satiné</span></label><label class="seg-item"><input type="radio" name="wrap-finish" id="wrap-finish-matte" value="matte"><span data-i18n="finish.matte">Mat</span></label>
+          </div>
+        </fieldset>
+        <fieldset class="field seg-field">
+          <legend data-i18n="config.effect">Effet</legend>
+          <div class="seg seg-3">
+            <label class="seg-item"><input type="radio" name="wrap-effect" id="wrap-effect-solid" value="solid" checked><span data-i18n="effect.solid">Uni</span></label><label class="seg-item"><input type="radio" name="wrap-effect" id="wrap-effect-metallic" value="metallic"><span data-i18n="effect.metallic">Métallisé</span></label><label class="seg-item"><input type="radio" name="wrap-effect" id="wrap-effect-pearl" value="pearl"><span data-i18n="effect.pearl">Nacré</span></label>
+          </div>
+          <p class="hint-line" id="effect-note" hidden data-i18n="config.effect.note">Les effets grisés ne sont pas proposés dans cette couleur.</p>
+        </fieldset>
+      </div>
+      <a class="btn btn-primary btn-wide" id="config-request" href="#booking" data-i18n="config.request">Demander cette configuration</a>
+      <p class="note" data-i18n="config.note">L'aperçu est indicatif. Des échantillons physiques au garage confirment la teinte et la finition finales.</p>
+    </div>
+  </div>
+</section>
+
+<section class="booking band" id="booking" aria-labelledby="book-title">
+  <div class="section-head">
+    <p class="kicker" data-i18n="book.kicker">Rendez-vous et contact</p>
+    <h2 id="book-title" tabindex="-1" data-i18n="book.title">Demandez un rendez-vous.</h2>
+    <p class="lead" data-i18n="book.text">Parlez-nous du véhicule et du travail souhaité. Le garage vous contacte pour confirmer les disponibilités ; la date souhaitée est un souhait, pas une réservation.</p>
+  </div>
+  <div class="booking-grid">
+    <div class="form-wrap">
+      <form class="form" id="booking-form" novalidate>
+        <div class="status" id="form-status" role="alert" tabindex="-1" hidden></div>
+        <fieldset class="field" id="f-services-group" aria-describedby="e-services">
+          <legend><span data-i18n="form.services">Prestations</span> <small data-i18n="form.services.hint">Une ou plusieurs</small></legend>
+          <div class="checks">
+            <label class="check"><input type="checkbox" name="services" id="f-service-detailing" value="detailing"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="service.detailing">Detailing</span></span></label><label class="check"><input type="checkbox" name="services" id="f-service-ceramic" value="ceramic"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="service.ceramic">Protection céramique</span></span></label><label class="check"><input type="checkbox" name="services" id="f-service-wrap" value="wrap"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="service.wrap">Covering</span></span></label><label class="check"><input type="checkbox" name="services" id="f-service-ambient" value="ambient"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="service.ambient">Pose d'éclairage d'ambiance</span></span></label><label class="check"><input type="checkbox" name="services" id="f-service-starlight" value="starlight"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="service.starlight">Pose de ciel étoilé</span></span></label>
+          </div>
+          <p class="error" id="e-services" hidden></p>
+        </fieldset>
+        <fieldset class="field">
+          <legend data-i18n="form.vehicle">Votre véhicule</legend>
+          <div class="seg seg-2 seg-compact" role="radiogroup" data-i18n-attr="aria-label:form.vehicleType" aria-label="Type de véhicule">
+            <label class="seg-item"><input type="radio" name="vehicleType" id="f-type-car" value="car" checked><span data-i18n="vehicle.car">Voiture</span></label><label class="seg-item"><input type="radio" name="vehicleType" id="f-type-bike" value="bike"><span data-i18n="vehicle.bike">Moto</span></label>
+          </div>
+          <div class="grid-3">
+            <div class="control"><label for="f-make" data-i18n="form.make">Marque</label><input id="f-make" name="make" type="text" autocomplete="off" maxlength="60" aria-describedby="e-make" required><p class="error" id="e-make" hidden></p></div>
+            <div class="control"><label for="f-model" data-i18n="form.model">Modèle</label><input id="f-model" name="model" type="text" autocomplete="off" maxlength="60" aria-describedby="e-model" required><p class="error" id="e-model" hidden></p></div>
+            <div class="control"><label for="f-year"><span data-i18n="form.year">Année</span> <small data-i18n="form.optional">facultatif</small></label><input id="f-year" name="year" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off" aria-describedby="e-year"><p class="error" id="e-year" hidden></p></div>
+          </div>
+          <div class="wrap-choice" id="wrap-choice" hidden>
+            <span class="chip" id="wrap-choice-chip"></span>
+            <p><span class="label" data-i18n="form.wrap">Configuration de covering</span><strong id="wrap-choice-text"></strong></p>
+            <button class="tool" id="wrap-choice-remove" type="button" data-i18n-attr="aria-label:form.wrap.remove;title:form.wrap.remove" aria-label="Retirer la configuration" title="Retirer la configuration"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+          </div>
+        </fieldset>
+        <div class="control">
+          <label for="f-date"><span data-i18n="form.date">Date souhaitée</span> <small data-i18n="form.optional">facultatif</small></label>
+          <input id="f-date" name="date" type="date" aria-describedby="h-date e-date">
+          <p class="hint-line" id="h-date" data-i18n="form.date.hint">Simple préférence. Rien n'est réservé avant la confirmation du garage.</p>
+          <p class="error" id="e-date" hidden></p>
+        </div>
+        <fieldset class="field">
+          <legend data-i18n="form.you">Vos coordonnées</legend>
+          <div class="control"><label for="f-name" data-i18n="form.name">Nom</label><input id="f-name" name="name" type="text" autocomplete="name" maxlength="80" aria-describedby="e-name" required><p class="error" id="e-name" hidden></p></div>
+          <div class="grid-2">
+            <div class="control"><label for="f-phone" data-i18n="form.phone">Téléphone</label><input id="f-phone" name="phone" type="tel" autocomplete="tel" maxlength="30" aria-describedby="h-contact e-phone"><p class="error" id="e-phone" hidden></p></div>
+            <div class="control"><label for="f-email" data-i18n="form.email">E-mail</label><input id="f-email" name="email" type="email" autocomplete="email" maxlength="120" aria-describedby="h-contact e-email"><p class="error" id="e-email" hidden></p></div>
+          </div>
+          <p class="hint-line" id="h-contact" data-i18n="form.contact.hint">Téléphone ou e-mail, au moins l'un des deux.</p>
+        </fieldset>
+        <div class="control">
+          <label for="f-message"><span data-i18n="form.message">Message</span> <small data-i18n="form.optional">facultatif</small></label>
+          <textarea id="f-message" name="message" rows="4" maxlength="1500" data-i18n-attr="placeholder:form.message.ph" placeholder="Ce que nous devons savoir : état, délais, idées."></textarea>
+        </div>
+        <div class="submit-row">
+          <button class="btn btn-primary btn-wide" id="f-submit" type="submit"><span class="spinner" aria-hidden="true"></span><span id="f-submit-label" data-i18n="cta.request">Demander un rendez-vous</span></button>
+          <p class="note" data-i18n="form.after">Le garage vous contactera pour confirmer les disponibilités.</p>
+        </div>
+      </form>
+      <div class="done" id="form-done" tabindex="-1" hidden>
+        <span class="done-mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <h3 data-i18n="sent.title">Demande envoyée.</h3>
+        <p data-i18n="sent.text">Le garage vous contactera pour confirmer les disponibilités. La date souhaitée n'est pas réservée d'ici là.</p>
+        <button class="btn btn-ghost" id="form-again" type="button" data-i18n="sent.again">Nouvelle demande</button>
+      </div>
+    </div>
+    <aside class="contact" aria-labelledby="contact-title">
+      <h3 id="contact-title" class="aside-title" data-i18n="contact.title">Le garage</h3>
+      <div class="infos"><div class="info">
+      <h3 data-i18n="contact.address">Adresse</h3>
+      <p class="addr"><span translate="no">Rue de la Greneye 11</span><br><span translate="no">1957 Ardon</span>, <span data-i18n="contact.country">Suisse</span></p>
+      <a class="link" href="https://www.google.com/maps/dir/?api=1&amp;destination=Rue+de+la+Greneye+11%2C+1957+Ardon%2C+Switzerland" target="_blank" rel="noopener"><span data-i18n="contact.directions">Itinéraire</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 16 16 8M9 8h7v7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="sr-only" data-i18n="contact.newtab">(nouvel onglet)</span></a>
+    </div><div class="info">
+      <h3>Instagram</h3>
+      <a class="link" href="https://www.instagram.com/fastwheels1957/" target="_blank" rel="noopener"><span translate="no">@fastwheels1957</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 16 16 8M9 8h7v7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="sr-only" data-i18n="contact.newtab">(nouvel onglet)</span></a>
+    </div></div>
+      <div class="how">
+        <h3 data-i18n="how.title">Comment ça se passe</h3>
+        <ol>
+          <li data-i18n="how.1">Vous envoyez la demande avec le véhicule et le travail souhaité.</li>
+          <li data-i18n="how.2">Le garage vous contacte pour confirmer les disponibilités et les détails.</li>
+          <li data-i18n="how.3">Vous amenez le véhicule à Ardon le jour convenu.</li>
+        </ol>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<section class="interior" id="interior" aria-labelledby="int-title">
+  <div class="section-head band">
+    <p class="kicker" data-i18n="int.kicker">Intérieur</p>
+    <h2 id="int-title" tabindex="-1" data-i18n="int.title">Montez à bord.</h2>
+    <p class="lead" data-i18n="int.text">Faites défiler pour ouvrir la porte conducteur, voir l'éclairage d'ambiance s'allumer et lever les yeux vers le ciel étoilé.</p>
+    <a class="btn btn-ghost" id="int-skip-top" href="#finale" data-nav="finale" data-i18n="int.skip">Passer la séquence</a>
+  </div>
+  <div class="cine" id="cine">
+    <span class="anchor" id="ambient"></span><span class="anchor" id="starlight"></span>
+    <div class="cine-stage" id="cine-stage">
+      <div class="cine-pic" id="cine-pic"><img class="poster" id="cine-poster" src="img/still-exterior.webp" width="1280" height="720" alt="" loading="lazy" decoding="async"></div>
+      <div class="cine-ui">
+        <a class="btn btn-solid cine-skip" href="#finale" data-nav="finale" data-i18n="int.skip">Passer la séquence</a>
+        <ol class="rail" id="rail" data-i18n-attr="aria-label:int.progress" aria-label="Étapes de la séquence">
+          <li data-phase="door"><span data-i18n="rail.door">Porte</span></li><li data-phase="cabin"><span data-i18n="rail.cabin">Habitacle</span></li><li data-phase="ambient"><span data-i18n="rail.ambient">Ambiance</span></li><li data-phase="tilt"><span data-i18n="rail.tilt">Pavillon</span></li><li data-phase="stars"><span data-i18n="rail.stars">Étoiles</span></li>
+        </ol>
+        <div class="caption" id="caption" aria-live="polite">
+          <h3 id="caption-title" data-i18n="cap.door.title">La porte s'ouvre.</h3>
+          <p id="caption-text" data-i18n="cap.door.text">Continuez à défiler : on s'approche du côté conducteur et on monte à bord.</p>
+        </div>
+        <div class="lights" id="lights" hidden>
+          <fieldset class="field">
+            <legend data-i18n="light.title">Couleur de l'éclairage</legend>
+            <div class="light-swatches">
+              <label class="sw sw-light" style="--c:#dfe9ff" data-i18n-attr="title:light.ice" title="Blanc glacé"><input type="radio" name="light-color" id="light-color-ice" value="#dfe9ff"><span class="sw-dot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="sr-only" data-i18n="light.ice">Blanc glacé</span></label><label class="sw sw-light" style="--c:#3d6bff" data-i18n-attr="title:light.blue" title="Bleu"><input type="radio" name="light-color" id="light-color-blue" value="#3d6bff" checked><span class="sw-dot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="sr-only" data-i18n="light.blue">Bleu</span></label><label class="sw sw-light" style="--c:#8f4dff" data-i18n-attr="title:light.violet" title="Violet"><input type="radio" name="light-color" id="light-color-violet" value="#8f4dff"><span class="sw-dot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="sr-only" data-i18n="light.violet">Violet</span></label><label class="sw sw-light" style="--c:#ff2a3c" data-i18n-attr="title:light.red" title="Rouge"><input type="radio" name="light-color" id="light-color-red" value="#ff2a3c"><span class="sw-dot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="sr-only" data-i18n="light.red">Rouge</span></label><label class="sw sw-light" style="--c:#ff9a2e" data-i18n-attr="title:light.amber" title="Ambre"><input type="radio" name="light-color" id="light-color-amber" value="#ff9a2e"><span class="sw-dot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="sr-only" data-i18n="light.amber">Ambre</span></label><label class="sw sw-light" style="--c:#2be38a" data-i18n-attr="title:light.green" title="Vert"><input type="radio" name="light-color" id="light-color-green" value="#2be38a"><span class="sw-dot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="sr-only" data-i18n="light.green">Vert</span></label>
+            </div>
+          </fieldset>
+          <div class="control range"><label for="light-brightness" data-i18n="light.brightness">Luminosité</label><input id="light-brightness" type="range" min="20" max="100" step="5" value="85"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="stills band" id="stills" hidden>
+    <figure class="still-single"><img src="img/still-door.webp" width="1280" height="720" loading="lazy" decoding="async" data-i18n-attr="alt:still.door" alt="La porte conducteur ouverte"></figure>
+    <div class="compare" data-compare>
+      <div class="compare-head"><h3 data-i18n="cap.ambient.title">Éclairage d'ambiance, posé.</h3><div class="seg seg-2 seg-compact"><button type="button" class="seg-btn is-on" data-show="before" aria-pressed="true" data-i18n="still.before">Avant</button><button type="button" class="seg-btn" data-show="after" aria-pressed="false" data-i18n="still.after">Après</button></div></div>
+      <figure><span data-side="before"><img src="img/still-cabin-off.webp" width="1280" height="720" loading="lazy" decoding="async" data-i18n-attr="alt:still.cabinOff" alt="L'habitacle sans éclairage d'ambiance : volant, planche de bord et garniture de porte"></span><span data-side="after" hidden><img src="img/still-cabin-on.webp" width="1280" height="720" loading="lazy" decoding="async" data-i18n-attr="alt:still.cabinOn" alt="Le même habitacle avec les lignes de lumière allumées"></span></figure>
+      <p data-i18n="cap.ambient.text">Des lignes de lumière le long de la planche de bord, des portes et de la console centrale. Couleur et intensité à votre goût.</p>
+    </div>
+    <div class="compare" data-compare>
+      <div class="compare-head"><h3 data-i18n="cap.stars.title">Ciel étoilé.</h3><div class="seg seg-2 seg-compact"><button type="button" class="seg-btn is-on" data-show="before" aria-pressed="true" data-i18n="still.before">Avant</button><button type="button" class="seg-btn" data-show="after" aria-pressed="false" data-i18n="still.after">Après</button></div></div>
+      <figure><span data-side="before"><img src="img/still-roof-off.webp" width="1280" height="720" loading="lazy" decoding="async" data-i18n-attr="alt:still.roofOff" alt="Le pavillon avant la transformation"></span><span data-side="after" hidden><img src="img/still-roof-on.webp" width="1280" height="720" loading="lazy" decoding="async" data-i18n-attr="alt:still.roofOn" alt="Le pavillon avec les étoiles en fibre optique allumées"></span></figure>
+      <p data-i18n="cap.stars.text">Des points de fibre optique posés dans le pavillon, de tailles différentes, avec un léger scintillement.</p>
+    </div>
+    <p class="note" data-i18n="still.note">Présenté en images fixes, car les animations sont réduites ou la 3D n'est pas disponible sur cet appareil.</p>
+  </div>
+</section>
+
+<section class="finale band" id="finale" aria-labelledby="fin-title">
+  <h2 id="fin-title" tabindex="-1" data-i18n="fin.title">À vous.</h2>
+  <p class="lead" data-i18n="fin.text">Amenez la voiture ou la moto à Ardon. Commencez par une demande, le garage s'occupe de la suite.</p>
+  <div class="actions">
+    <a class="btn btn-primary" href="#booking" data-nav="booking" data-i18n="cta.request">Demander un rendez-vous</a>
+    <a class="btn btn-ghost" href="#wrap" data-nav="wrap" data-i18n="hero.cta2">Configurer un covering</a>
+  </div>
+</section>
+</main>
+
+<footer class="site-footer band">
+  <div class="foot-brand">
+    <a class="logo logo-lg" href="#top" data-nav="top" data-i18n-attr="aria-label:nav.home" aria-label="Accueil FASTWHEELS GARAGE"><svg class="logo-svg " viewBox="12 11 828 161" role="img" aria-label="FASTWHEELS GARAGE" focusable="false"><use href="#fw-logo"/><g clip-path="url(#fw-logo-clip)"><rect class="logo-sweep" x="-320" y="0" width="300" height="190" fill="url(#fw-logo-shine)"/></g></svg></a>
+    <p class="tagline" translate="no">ARDON. VALAIS 1957</p>
+  </div>
+  <div class="foot-cols">
+    <div>
+      <h3 data-i18n="contact.address">Adresse</h3>
+      <p><span translate="no">Rue de la Greneye 11<br>1957 Ardon</span>, <span data-i18n="contact.country">Suisse</span></p>
+      <p><a class="link" href="https://www.google.com/maps/dir/?api=1&amp;destination=Rue+de+la+Greneye+11%2C+1957+Ardon%2C+Switzerland" target="_blank" rel="noopener"><span data-i18n="contact.directions">Itinéraire</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 16 16 8M9 8h7v7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="sr-only" data-i18n="contact.newtab">(nouvel onglet)</span></a></p>
+      <p><a class="link" href="https://www.instagram.com/fastwheels1957/" target="_blank" rel="noopener"><span translate="no">Instagram @fastwheels1957</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 16 16 8M9 8h7v7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="sr-only" data-i18n="contact.newtab">(nouvel onglet)</span></a></p>
+    </div>
+    <nav data-i18n-attr="aria-label:nav.services" aria-label="Prestations">
+      <h3 data-i18n="nav.services">Prestations</h3>
+      <ul><li><a href="#detailing" data-nav="detailing" data-i18n="nav.detailing">Detailing</a></li><li><a href="#ceramic" data-nav="ceramic" data-i18n="nav.ceramic">Protection céramique</a></li><li><a href="#wrap" data-nav="wrap" data-i18n="nav.wrap">Covering</a></li><li><a href="#ambient" data-nav="ambient" data-i18n="nav.ambient">Éclairage d'ambiance</a></li><li><a href="#starlight" data-nav="starlight" data-i18n="nav.starlight">Ciel étoilé</a></li><li><a href="#booking" data-nav="booking" data-i18n="cta.request">Demander un rendez-vous</a></li></ul>
+    </nav>
+    <div>
+      <h3 data-i18n="foot.credits">Modèles 3D</h3>
+      <ul class="credits"><li><a href="https://sketchfab.com/3d-models/2021-bmw-m4-competition-d3f07b471d9f4a2c9a2acf79d88a3645" target="_blank" rel="noopener"><span translate="no">2021 BMW M4 Competition</span></a> <span data-i18n="foot.by">par</span> <span translate="no">Ricy</span>, <span translate="no">CC BY-NC 4.0</span></li><li><a href="https://sketchfab.com/3d-models/bmw-s1000-rr-1873aed292d6465694119bd81860a0c2" target="_blank" rel="noopener"><span translate="no">BMW S1000 RR</span></a> <span data-i18n="foot.by">par</span> <span translate="no">VTX</span>, <span translate="no">CC BY-NC-SA 4.0</span></li></ul>
+    </div>
+  </div>
+  <div class="foot-base">
+    <p translate="no">© <span id="year">2026</span> FASTWHEELS GARAGE</p>
+    <p data-i18n="foot.note">Les images de l'atelier et les scènes 3D sont des illustrations, pas des photos de véhicules de clients.</p>
+    <a class="link" href="#top" data-nav="top" data-i18n="foot.top">Haut de page</a>
+  </div>
+</footer>
+
+<a class="fab" id="fab" href="#booking" data-nav="booking" hidden><span data-i18n="cta.short">Rendez-vous</span></a>
+<div class="sr-only" id="live" aria-live="polite"></div>
+
+<script src="app.js" defer></script>
+</body>
+</html>
