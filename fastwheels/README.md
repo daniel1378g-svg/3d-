@@ -70,7 +70,7 @@ The converted packs in `public/models/` are derivatives under the same licences.
 committed. To rebuild the packs, put them at `dev/raw/m4.glb` and `dev/raw/s1000.glb` and run:
 
 ```bash
-node tools/prepare-models.mjs      # GLB → public/models/*.json (real-size, merged meshes, WebP textures, gzip)
+node tools/prepare-models.mjs      # GLB → public/models/*.json (real size, full detail, merged meshes, WebP textures, gzip)
 node tools/serve.mjs 5173 &
 node tools/bake-cabin.mjs          # measures light-line paths and star positions on the M4 cabin → src/three/cabin-data.js
 node tools/render-posters.mjs      # poster and before/after stills → public/img/
@@ -106,10 +106,18 @@ src/three/         the 3D scene bundle, loaded on demand:
 
 Behaviour worth knowing:
 
-- **Performance.** `app.js` is about 66 KB. The 3D bundle (760 KB) and the models (3 MB car, 5.5 MB motorcycle)
+- **Rendering.** The garage is lit like a car studio: large soft-boxes in the reflection environment for clean
+  highlights on the paint, LED strips for the blue and violet accents. The floor is a real mirror image of the
+  scene (blurred, stronger at grazing angles), the vehicle sits on a blurred depth shadow, and the picture goes
+  through multisampling, ambient occlusion and a restrained bloom before tone mapping. The wrap material has a
+  clear coat and, for metallic and pearl, flakes under it. Both models ship at full detail with their authored
+  normals (16-bit; coarser normals show up as dents in glossy paint).
+- **Performance.** `app.js` is about 66 KB. The 3D bundle and the models (about 5 MB car, 7 MB motorcycle)
   load only when the configurator or the interior comes near; a poster shows until the first frame. Rendering
-  stops when the canvas is off screen or the tab is hidden, and only redraws when something changes. Phones get
-  a lower pixel ratio, no shadow map and fewer lights; a slow GPU sheds resolution automatically.
+  stops when the canvas is off screen or the tab is hidden, and only redraws when something changes. Three
+  quality tiers (`src/three/scene.js`): desktop gets everything; recent phones and tablets get multisampling,
+  bloom and the mirror floor at up to 2× pixel ratio; older phones get a direct render with the contact shadow.
+  A device that cannot hold the frame rate sheds resolution first, then the effects, then the mirror.
 - **Reduced motion or no WebGL 2.** The detailing story becomes still images, the interior sequence becomes
   still images with Before / After switches, and nothing is pinned. The form and the colour choice work without 3D.
 - **Navigation.** Long jumps (for example a booking button) go straight to the target instead of scrolling
@@ -136,3 +144,5 @@ emulation and software WebGL).
 - The logo as a vector file from the garage would be better than the trace from a screenshot (the small
   "ARDON. VALAIS 1957" line is re-set as text because it was too small to trace).
 - Real photographs of the workshop and of finished work, to replace the illustrative hero images.
+- For a still more realistic car, a higher-detail source model: the M4 file is a mid-detail model (116,000
+  triangles, simple cabin). The pipeline takes any GLB with separate door nodes.

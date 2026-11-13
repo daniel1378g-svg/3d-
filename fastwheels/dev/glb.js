@@ -20,7 +20,7 @@ renderer.setPixelRatio(1);
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = num('exposure', 1);
-const stage = createStage(THREE, renderer, { tier: 'mid' });
+const stage = createStage(renderer, { tier: 'low' });
 const scene = stage.scene;
 if (q.get('env') !== 'garage') {
   scene.background = new THREE.Color(0x8d9299); scene.fog = null; stage.room.visible = false; stage.contactShadow.visible = false;

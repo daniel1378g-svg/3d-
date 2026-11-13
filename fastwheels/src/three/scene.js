@@ -2,6 +2,7 @@
 // sequence, one garage, the two vehicles. Renders only when something changes, pauses when it is not shown.
 import * as THREE from 'three';
 import { createStage } from './stage.js';
+import { createPost } from './post.js';
 import { createPaint, applyPaint } from './materials.js';
 import { loadPack, canInflate } from './loader.js';
 import { setupCar, setupBike } from './vehicles.js';
@@ -11,11 +12,18 @@ import { poseAt, PHASES, AMBIENT_READY, STILLS } from './experience.js';
 
 export { PHASES, AMBIENT_READY, STILLS };
 
+/**
+ * 'high'  desktop: multisampling, ambient occlusion, bloom, mirror floor, shadow map
+ * 'mid'   recent phones and tablets: multisampling, bloom, mirror floor
+ * 'low'   everything else: direct render, contact shadow only
+ */
 export function detectTier() {
   const ua = navigator.userAgent || '';
-  const mobile = /Android|iPhone|iPad|iPod|Mobile/i.test(ua) || (navigator.maxTouchPoints > 1 && Math.min(screen.width, screen.height) < 900);
+  const apple = /iPhone|iPad|iPod/i.test(ua) || (/Macintosh/i.test(ua) && navigator.maxTouchPoints > 1);
+  const mobile = apple || /Android|Mobile/i.test(ua) || (navigator.maxTouchPoints > 1 && Math.min(screen.width, screen.height) < 900);
   const cores = navigator.hardwareConcurrency || 4, memory = navigator.deviceMemory || 4;
-  if (mobile) return cores <= 4 || memory <= 3 ? 'low' : 'mid';
+  if (apple) return 'mid';                                    // every iPhone / iPad that runs WebGL 2 has the GPU for it
+  if (mobile) return cores >= 8 && memory >= 6 ? 'mid' : 'low';
   return cores <= 2 ? 'mid' : 'high';
 }
 
@@ -24,32 +32,37 @@ export function isSupported() {
   try { const c = document.createElement('canvas'); return !!(c.getContext('webgl2')); } catch { return false; }
 }
 
-const DPR_CAP = { low: 1.25, mid: 1.6, high: 2 };
+const DPR_CAP = { low: 1.5, mid: 2, high: 2 };
+const MIRROR_SCALE = { low: 0, mid: 0.5, high: 0.6 };
 const DEFAULT_AZ = -0.72;
 const TAU = Math.PI * 2;
 
 /**
- * @param {{ tier?: string, reducedMotion?: boolean, modelBase?: string, onState?: (e: object) => void, pixelRatio?: number }} options
+ * @param {{ tier?: string, reducedMotion?: boolean, instant?: boolean, modelBase?: string, onState?: (e: object) => void, pixelRatio?: number }} options
  */
 export function createScene({ tier = detectTier(), reducedMotion = false, instant = false, modelBase = 'models/', onState = () => {}, pixelRatio } = {}) {
   const canvas = document.createElement('canvas');
   canvas.className = 'gl';
   canvas.setAttribute('aria-hidden', 'true');
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance', alpha: false, stencil: false });
+  // The mirror floor and the effects need float render targets; without them fall back to the plain render.
+  if (tier !== 'low' && !(renderer.extensions.has('EXT_color_buffer_float') || renderer.extensions.has('EXT_color_buffer_half_float'))) tier = 'low';
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.12;
+  renderer.toneMappingExposure = 1.32;
   renderer.shadowMap.enabled = tier === 'high';
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   renderer.shadowMap.autoUpdate = false;
+  const anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
 
-  const stage = createStage(THREE, renderer, { tier });
+  const stage = createStage(renderer, { tier });
   const scene = stage.scene;
   const camera = new THREE.PerspectiveCamera(32, 1, 0.05, 70);
   const look = new THREE.Vector3();
+  let post = tier === 'low' ? null : createPost(renderer, scene, camera, { tier });
 
-  const paints = { car: createPaint(THREE), bike: createPaint(THREE) };
-  const paintSpec = { hex: '#1b2f8f', finish: 'gloss', effect: 'solid' };
+  const paints = { car: createPaint(), bike: createPaint() };
+  const paintSpec = { hex: '#14246e', finish: 'gloss', effect: 'solid' };
   const paintGoal = new THREE.Color(paintSpec.hex);
   for (const p of Object.values(paints)) applyPaint(p, paintSpec);
 
@@ -57,30 +70,34 @@ export function createScene({ tier = detectTier(), reducedMotion = false, instan
   const pending = {};
   let cabin = null;
   let mode = null, host = null, vehicle = 'car';
-  let running = false, raf = 0, dirty = true, lastTime = 0, shown = { config: false, interior: false };
-  let width = 1, height = 1, scale = 1, slowFrames = 0, fastFrames = 0;
-  const clock = { time: 0 };
+  let running = false, raf = 0, dirty = true, lastTime = 0, contactDirty = true;
+  const shown = { config: false, interior: false };
+  let width = 1, height = 1, scale = 1, slowFrames = 0, mirrorOn = stage.mirror;
 
-  // Configurator orbit
-  const orbit = { az: DEFAULT_AZ, goal: null, vel: 0, auto: !reducedMotion && !instant, dragging: false, lastX: 0, lastT: 0, dist: 7, distGoal: 7, targetY: 0.62, targetYGoal: 0.62 };
-  // Interior sequence
+  const orbit = { az: DEFAULT_AZ, goal: null, vel: 0, auto: !reducedMotion && !instant, dragging: false, lastX: 0, lastT: 0, dist: 7, distGoal: 7, targetY: 0.62, targetYGoal: 0.62, fov: 30 };
   const seq = { p: 0, goal: 0, color: '#3d6bff', brightness: 0.85 };
   const pose = { pos: [0, 0, 0], look: [0, 0, 0] };
+  const clock = { time: 0 };
 
   const invalidate = () => { dirty = true; if (running && !raf) raf = requestAnimationFrame(frame); };
-  const shadowsDirty = () => { if (renderer.shadowMap.enabled) renderer.shadowMap.needsUpdate = true; };
+  const shadowsDirty = () => { contactDirty = true; if (renderer.shadowMap.enabled) renderer.shadowMap.needsUpdate = true; };
 
   function load(kind) {
     if (pending[kind]) return pending[kind];
     const file = kind === 'car' ? 'm4.json' : 's1000.json';
     pending[kind] = loadPack(modelBase + file, (f) => onState({ type: 'progress', what: kind, value: f })).then(({ scene: model, meta }) => {
       const v = kind === 'car' ? setupCar(model, meta, { paint: paints.car, environment: scene.environment }) : setupBike(model, meta, { paint: paints.bike, environment: scene.environment });
-      v.group.traverse((o) => { if (o.isMesh) { o.castShadow = !o.material.transparent; o.frustumCulled = true; } });
+      v.group.traverse((o) => {
+        if (!o.isMesh) return;
+        o.castShadow = !o.material.transparent;
+        o.receiveShadow = !o.material.transparent && tier === 'high';
+        for (const key of ['map', 'normalMap', 'roughnessMap', 'metalnessMap', 'emissiveMap']) if (o.material[key]) o.material[key].anisotropy = anisotropy;
+      });
+      v.setLights(1);
       v.group.visible = false;
       scene.add(v.group);
       vehicles[kind] = v;
       if (kind === 'car') { cabin = createCabin(v, cabinData, { tier, reducedMotion }); cabin.setAmbient({ color: seq.color, level: 0, reveal: 0, brightness: seq.brightness }); }
-      renderer.compile(scene, camera);
       syncVisibility();
       onState({ type: 'loaded', what: kind, meta });
       invalidate();
@@ -93,9 +110,7 @@ export function createScene({ tier = detectTier(), reducedMotion = false, instan
     const showCar = mode === 'interior' || vehicle === 'car';
     if (vehicles.car) vehicles.car.group.visible = showCar;
     if (vehicles.bike) vehicles.bike.group.visible = !showCar && mode === 'config';
-    const active = showCar ? vehicles.car : vehicles.bike;
-    stage.contactShadow.visible = !!active;
-    if (active) stage.setFootprint(...active.footprint);
+    stage.contactShadow.visible = !!(showCar ? vehicles.car : vehicles.bike);
     if (mode === 'config') {
       vehicles.car?.setDoorOpen(0);
       cabin?.setAmbient({ level: 0, reveal: 0 });
@@ -117,29 +132,48 @@ export function createScene({ tier = detectTier(), reducedMotion = false, instan
     if (snap) { orbit.dist = orbit.distGoal; orbit.targetY = orbit.targetYGoal; }
   }
 
+  const currentRatio = () => pixelRatio || Math.min(window.devicePixelRatio || 1, DPR_CAP[tier]) * scale;
   function resize() {
     if (!host) return;
     const r = host.getBoundingClientRect();
     width = Math.max(1, Math.round(r.width)); height = Math.max(1, Math.round(r.height));
-    const dpr = pixelRatio || Math.min(window.devicePixelRatio || 1, DPR_CAP[tier]) * scale;
+    const dpr = currentRatio();
     renderer.setPixelRatio(dpr);
     renderer.setSize(width, height, false);
+    post?.setSize(width, height, dpr);
     camera.aspect = width / height;
     fitOrbit(false);
     invalidate();
   }
   const observer = typeof ResizeObserver === 'function' ? new ResizeObserver(resize) : null;
 
+  /** A slow GPU sheds work in steps: resolution first, then the effects. */
+  function shedLoad() {
+    if (scale > 0.76) scale = Math.max(0.75, scale - 0.125);
+    else if (post) { post.dispose(); post = null; }
+    else if (mirrorOn) { mirrorOn = false; stage.setMirror(0); }
+    else return;
+    resize();
+  }
+
+  function draw() {
+    if (contactDirty) { stage.updateContactShadow(); contactDirty = false; }
+    const inside = mode === 'interior' && pose.inside;
+    if (mirrorOn && !inside) { stage.setMirror(1); stage.updateReflection(camera, width * currentRatio(), height * currentRatio(), MIRROR_SCALE[tier]); }
+    else stage.setMirror(0);
+    if (post) post.render(); else renderer.render(scene, camera);
+  }
+
   function frame(now) {
     raf = 0;
     if (!running) return;
     const dt = Math.min(0.05, lastTime ? (now - lastTime) / 1000 : 0.016);
+    const real = lastTime ? (now - lastTime) / 1000 : 0.016;
     lastTime = now;
     clock.time += dt;
     let animating = false;
 
-    // Wrap colour eases to its target.
-    for (const p of Object.values(paints)) {
+    for (const p of Object.values(paints)) {                 // the wrap colour eases to its target
       if (!p.color.equals(paintGoal)) {
         p.color.lerp(paintGoal, 1 - Math.exp(-dt * 14));
         if (Math.abs(p.color.r - paintGoal.r) + Math.abs(p.color.g - paintGoal.g) + Math.abs(p.color.b - paintGoal.b) < 0.004) p.color.copy(paintGoal);
@@ -165,6 +199,7 @@ export function createScene({ tier = detectTier(), reducedMotion = false, instan
       camera.fov = orbit.fov;
       camera.position.set(orbit.dist * Math.cos(el) * Math.cos(orbit.az), orbit.targetY + orbit.dist * Math.sin(el), orbit.dist * Math.cos(el) * Math.sin(orbit.az));
       camera.lookAt(look.set(0, orbit.targetY, 0));
+      pose.inside = false;
     } else if (mode === 'interior') {
       if (Math.abs(seq.goal - seq.p) > 0.00015) {
         seq.p += (seq.goal - seq.p) * (reducedMotion || instant ? 1 : 1 - Math.exp(-dt * 6.5));
@@ -189,16 +224,13 @@ export function createScene({ tier = detectTier(), reducedMotion = false, instan
     camera.updateProjectionMatrix();
 
     if (dirty || animating) {
-      const t0 = performance.now();
-      renderer.render(scene, camera);
+      draw();
       dirty = false;
       const ready = mode && !shown[mode] && (mode === 'interior' ? vehicles.car : vehicles[vehicle]);
       if (ready) { shown[mode] = true; onState({ type: 'ready', mode }); }
-      // Keep the frame rate up on slow GPUs by shedding resolution.
-      if (animating && !pixelRatio) {
-        const cost = performance.now() - t0 + dt * 1000;
-        if (dt > 0.034) { slowFrames++; fastFrames = 0; } else { fastFrames++; slowFrames = Math.max(0, slowFrames - 1); }
-        if (slowFrames > 24 && scale > 0.6) { scale = Math.max(0.6, scale - 0.15); slowFrames = 0; resize(); void cost; }
+      if (animating && !pixelRatio && !instant) {
+        if (real > 0.04) slowFrames++; else slowFrames = Math.max(0, slowFrames - 1);
+        if (slowFrames > 20) { slowFrames = 0; shedLoad(); }
       }
     }
     if (animating || dirty) raf = requestAnimationFrame(frame);
@@ -300,7 +332,7 @@ export function createScene({ tier = detectTier(), reducedMotion = false, instan
     setProgress(p, immediate) { seq.goal = THREE.MathUtils.clamp(p, 0, 1); if (immediate) seq.p = seq.goal; invalidate(); },
     getProgress() { return seq.p; },
     /** For tests: door opening 0..1 and lighting levels as currently drawn. */
-    getState() { return { mode, vehicle, progress: seq.p, door: vehicles.car ? -vehicles.car.doorLeft.rotation.y / THREE.MathUtils.degToRad(62) : 0, ambient: pose.ambient || 0, stars: pose.stars || 0, angle: api.getAngle(), paint: '#' + paints.car.color.getHexString(), finish: paintSpec.finish, effect: paintSpec.effect, tier }; },
+    getState() { return { mode, vehicle, progress: seq.p, door: vehicles.car ? -vehicles.car.doorLeft.rotation.y / THREE.MathUtils.degToRad(62) : 0, ambient: pose.ambient || 0, stars: pose.stars || 0, angle: api.getAngle(), paint: '#' + paints.car.color.getHexString(), finish: paintSpec.finish, effect: paintSpec.effect, tier, post: !!post, mirror: mirrorOn, scale }; },
     setAmbientColor(hex) { seq.color = hex; cabin?.setAmbient({ color: hex }); invalidate(); },
     setAmbientBrightness(b) { seq.brightness = b; cabin?.setAmbient({ brightness: b }); invalidate(); },
 
@@ -309,6 +341,7 @@ export function createScene({ tier = detectTier(), reducedMotion = false, instan
       setRunning(false);
       document.removeEventListener('visibilitychange', onVisibility);
       observer?.disconnect();
+      post?.dispose();
       stage.dispose();
       renderer.dispose();
       canvas.remove();

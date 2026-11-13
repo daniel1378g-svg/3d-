@@ -135,23 +135,89 @@ function bakeSkins(doc) {
   return baked;
 }
 
-async function finish(doc, name, meta, { simplifyRatio = 1, simplifyError = 0.0006, textureSize = 1024 } = {}) {
+/**
+ * Optional (crease > 0; both models ship with good authored normals, so it is off): recomputes the normals of the
+ * wrappable panels: angle-weighted, smooth across faces that meet at less than
+ * `angle` degrees and sharp across real creases. Game-ready source meshes carry coarse normals that show up as
+ * dents in glossy paint; this gives the clear coat a clean surface to reflect in.
+ */
+function creaseNormals(doc, materialNames, angle) {
+  const limit = Math.cos((angle * Math.PI) / 180);
+  let done = 0;
+  const seen = new Set();
+  for (const mesh of doc.getRoot().listMeshes()) for (const prim of mesh.listPrimitives()) {
+    if (seen.has(prim) || !materialNames.includes(prim.getMaterial()?.getName())) continue;
+    seen.add(prim);
+    const pos = prim.getAttribute('POSITION'), idx = prim.getIndices();
+    const count = idx ? idx.getCount() : pos.getCount();
+    const at = (i) => (idx ? idx.getScalar(i) : i);
+    const v = [0, 0, 0];
+    const P = new Float32Array(count * 3);
+    for (let c = 0; c < count; c++) P.set(pos.getElement(at(c), v), c * 3);
+    const tris = count / 3;
+    const FN = new Float32Array(tris * 3), ANG = new Float32Array(count);
+    const sub = (a, b) => [P[a * 3] - P[b * 3], P[a * 3 + 1] - P[b * 3 + 1], P[a * 3 + 2] - P[b * 3 + 2]];
+    const cross = (a, b) => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
+    const norm = (a) => { const l = Math.hypot(a[0], a[1], a[2]) || 1; return [a[0] / l, a[1] / l, a[2] / l]; };
+    for (let t = 0; t < tris; t++) {
+      const a = t * 3, b = a + 1, c = a + 2;
+      FN.set(norm(cross(sub(b, a), sub(c, a))), t * 3);
+      for (const [o, p1, p2] of [[a, b, c], [b, c, a], [c, a, b]]) {
+        const e1 = norm(sub(p1, o)), e2 = norm(sub(p2, o));
+        ANG[o] = Math.acos(Math.max(-1, Math.min(1, e1[0] * e2[0] + e1[1] * e2[1] + e1[2] * e2[2])));
+      }
+    }
+    const buckets = new Map();
+    for (let c = 0; c < count; c++) {
+      const key = `${Math.round(P[c * 3] * 20000)},${Math.round(P[c * 3 + 1] * 20000)},${Math.round(P[c * 3 + 2] * 20000)}`;
+      if (!buckets.has(key)) buckets.set(key, []);
+      buckets.get(key).push(c);
+    }
+    const N = new Float32Array(count * 3);
+    for (const corners of buckets.values()) for (const c of corners) {
+      const t = Math.floor(c / 3);
+      let x = 0, y = 0, z = 0;
+      for (const o of corners) {
+        const u = Math.floor(o / 3);
+        if (FN[t * 3] * FN[u * 3] + FN[t * 3 + 1] * FN[u * 3 + 1] + FN[t * 3 + 2] * FN[u * 3 + 2] < limit) continue;
+        x += FN[u * 3] * ANG[o]; y += FN[u * 3 + 1] * ANG[o]; z += FN[u * 3 + 2] * ANG[o];
+      }
+      N.set(norm([x, y, z]), c * 3);
+    }
+    // Un-index every attribute to match the per-corner normals; weld() re-indexes afterwards.
+    for (const semantic of prim.listSemantics()) {
+      if (semantic === 'POSITION' || semantic === 'NORMAL') continue;
+      const src = prim.getAttribute(semantic), size = src.getElementSize(), el = new Array(size);
+      const out = new Float32Array(count * size);
+      for (let c = 0; c < count; c++) out.set(src.getElement(at(c), el), c * size);
+      prim.setAttribute(semantic, src.clone().setArray(out).setNormalized(false));
+    }
+    prim.setAttribute('POSITION', pos.clone().setArray(P).setNormalized(false));
+    prim.setAttribute('NORMAL', (prim.getAttribute('NORMAL') || pos).clone().setArray(N).setNormalized(false));
+    prim.setIndices(null);
+    done += tris;
+  }
+  return done;
+}
+
+async function finish(doc, name, meta, { paint = [], crease = 40, simplifyRatio = 1, simplifyError = 0.0006, textureSize = 1024 } = {}) {
   for (const a of doc.getRoot().listAnimations()) a.dispose();
+  if (process.env.CREASE) crease = Number(process.env.CREASE);
+  meta.resmoothedTriangles = crease > 0 ? creaseNormals(doc, paint, crease) : 0;
   await doc.transform(dedup(), prune(), weld());
   if (simplifyRatio < 1) await doc.transform(simplify({ simplifier: MeshoptSimplifier, ratio: simplifyRatio, error: simplifyError }));
   await doc.transform(
     join({ keepNamed: false }),
-    textureCompress({ encoder: sharp, targetFormat: 'webp', resize: [textureSize, textureSize], quality: 82 }),
+    textureCompress({ encoder: sharp, targetFormat: 'webp', resize: [textureSize, textureSize], quality: 88 }),
     prune(),
-    quantize({ quantizePosition: 14, quantizeNormal: 10, quantizeTexcoord: 12 }),
+    quantize({ quantizePosition: 14, quantizeNormal: 16, quantizeTexcoord: 12 }),
   );
   meta.triangles = triangles(doc);
   meta.materials = doc.getRoot().listMaterials().map((m) => m.getName());
   const glb = Buffer.from(await io.writeBinary(doc));
   const gz = gzipSync(glb, { level: 9 });
   writeFileSync(pathJoin(outDir, `${name}.json`), JSON.stringify({ meta, data: gz.toString('base64') }));
-  console.log(`${name}: ${meta.triangles} triangles, ${doc.getRoot().listMeshes().length} meshes, ${meta.materials.length} materials, ${doc.getRoot().listTextures().length} textures · GLB ${(glb.length / 1e6).toFixed(2)} MB → gzip ${(gz.length / 1e6).toFixed(2)} MB → pack ${(gz.length * 4 / 3 / 1e6).toFixed(2)} MB`);
-  console.log('  meta', JSON.stringify(meta));
+  console.log(`${name}: ${meta.triangles} triangles (${meta.resmoothedTriangles} re-smoothed), ${doc.getRoot().listMeshes().length} meshes, ${meta.materials.length} materials, ${doc.getRoot().listTextures().length} textures · GLB ${(glb.length / 1e6).toFixed(2)} MB → gzip ${(gz.length / 1e6).toFixed(2)} MB → pack ${(gz.length * 4 / 3 / 1e6).toFixed(2)} MB`);
 }
 
 // ---- BMW M4 Competition (G82) --------------------------------------------------------------------------------
@@ -199,7 +265,7 @@ async function m4() {
   meta.size = b1.max.map((v, i) => +(v - b1.min[i]).toFixed(3));
   meta.min = b1.min.map((v) => +v.toFixed(3));
   meta.max = b1.max.map((v) => +v.toFixed(3));
-  await finish(doc, 'm4', meta, { textureSize: 1024 });
+  await finish(doc, 'm4', meta, { paint: ['Material_692'], crease: 0, textureSize: 2048 });
 }
 
 // ---- BMW S 1000 RR -------------------------------------------------------------------------------------------
@@ -231,7 +297,7 @@ async function s1000() {
   meta.size = b1.max.map((v, i) => +(v - b1.min[i]).toFixed(3));
   meta.min = b1.min.map((v) => +v.toFixed(3));
   meta.max = b1.max.map((v) => +v.toFixed(3));
-  await finish(doc, 's1000', meta, { simplifyRatio: 0.62, simplifyError: 0.0004, textureSize: 512 });
+  await finish(doc, 's1000', meta, { paint: ['vehicle_generic_smallspecmap_PRIMARY', 'carbonfiber_001'], crease: 0, textureSize: 1024 });
 }
 
 const which = process.argv.slice(2);

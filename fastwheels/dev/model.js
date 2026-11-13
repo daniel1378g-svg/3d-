@@ -36,7 +36,7 @@ renderer.toneMappingExposure = num('exposure', 1);
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
-const stage = createStage(THREE, renderer, { tier: 'high' });
+const stage = createStage(renderer, { tier: 'low' });
 const scene = stage.scene;
 if (q.get('env') === 'studio') {
   scene.background = new THREE.Color(0x8d9299);
@@ -56,21 +56,19 @@ const paintSpec = { hex: '#' + (q.get('paint') || '1b2f8f'), finish: q.get('fini
 const models = {};
 const t0 = performance.now();
 if (which.includes('car')) {
-  const paint = createPaint(THREE); applyPaint(paint, paintSpec);
+  const paint = createPaint(); applyPaint(paint, paintSpec);
   const pack = await loadPack('/public/models/m4.json');
   models.car = setupCar(pack.scene, pack.meta, { paint, environment: scene.environment });
   scene.add(models.car.group);
   models.car.setDoorOpen(num('door', 0));
   models.car.setLights(num('lights', 1));
-  stage.setFootprint(...models.car.footprint);
 }
 if (which.includes('bike')) {
-  const paint = createPaint(THREE); applyPaint(paint, paintSpec);
+  const paint = createPaint(); applyPaint(paint, paintSpec);
   const pack = await loadPack('/public/models/s1000.json');
   models.bike = setupBike(pack.scene, pack.meta, { paint, environment: scene.environment });
   scene.add(models.bike.group);
   models.bike.setLights(num('lights', 1));
-  if (!models.car) stage.setFootprint(...models.bike.footprint);
 }
 if (models.car && q.get('cabin') !== '0') {
   const { createCabin } = await import('/src/three/cabin.js');

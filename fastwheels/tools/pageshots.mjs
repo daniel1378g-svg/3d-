@@ -8,9 +8,11 @@ const mobile = rest.includes('--mobile'), reduced = rest.includes('--reduced');
 const langAt = rest.indexOf('--lang'); const lang = langAt >= 0 ? rest[langAt + 1] : null;
 const only = rest.includes('--only') ? rest[rest.indexOf('--only') + 1].split(',') : null;
 const browser = await pw.chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
-const ctx = await browser.newContext({ viewport: { width: +w, height: +h }, deviceScaleFactor: 1, isMobile: mobile, hasTouch: mobile, reducedMotion: reduced ? 'reduce' : 'no-preference' });
+const dprAt = rest.indexOf('--dpr');
+const ctx = await browser.newContext({ viewport: { width: +w, height: +h }, deviceScaleFactor: dprAt >= 0 ? +rest[dprAt + 1] : 1, isMobile: mobile, hasTouch: mobile, reducedMotion: reduced ? 'reduce' : 'no-preference' });
 const page = await ctx.newPage();
-await page.addInitScript(() => { window.FW_CONFIG = { tier: 'mid', instant: true }; });
+const tierAt = rest.indexOf('--tier');
+await page.addInitScript((tier) => { window.FW_CONFIG = { tier, instant: true }; }, tierAt >= 0 ? rest[tierAt + 1] : 'mid');
 const errors = [];
 page.on('pageerror', (e) => errors.push('pageerror: ' + e.message));
 page.on('console', (m) => { if (m.type() === 'error') errors.push('console: ' + m.text()); });
@@ -22,7 +24,7 @@ const stops = [
   ['01-hero', 'window.scrollTo(0, 0)', 900],
   ['02-foam', "document.querySelector('#detailing').scrollIntoView()", 1400],
   ['03-ceramic', "document.querySelector('#ceramic').scrollIntoView()", 1400],
-  ['04-config', "window.scrollTo(0, document.querySelector('#wrap').getBoundingClientRect().top + scrollY - 60)", 9000],
+  ['04-config', "window.scrollTo(0, document.querySelector('#wrap').getBoundingClientRect().top + scrollY - 60)", 25000],
   ['05-config-panel', "window.scrollBy(0, innerHeight * 0.8)", 1500],
   ['06-booking', "window.scrollTo(0, document.querySelector('#booking').getBoundingClientRect().top + scrollY - 60)", 1200],
   ['07-booking-form', "window.scrollBy(0, innerHeight * 0.9)", 800],

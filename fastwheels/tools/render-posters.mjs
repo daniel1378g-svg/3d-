@@ -18,10 +18,10 @@ const browser = await chromium.launch({ args: ['--use-angle=swiftshader', '--ena
 for (const [name, query, w, h] of shots) {
   const page = await browser.newPage({ viewport: { width: w, height: h }, deviceScaleFactor: 1 });
   page.on('pageerror', (e) => console.log(name, 'pageerror', e.message));
-  await page.goto(`${base}/dev/scene.html?${query}&dpr=1.5`);
-  await page.waitForFunction('window.__ready === true', null, { timeout: 120000 });
-  await page.waitForTimeout(400);
-  const png = await page.screenshot({ type: 'png' });
+  await page.goto(`${base}/dev/scene.html?${query}&dpr=1&tier=high`);
+  await page.waitForFunction('window.__ready === true', null, { timeout: 240000 });
+  await page.waitForTimeout(600);
+  const png = await page.screenshot({ type: 'png', timeout: 240000 });
   await sharp(png).webp({ quality: 80 }).toFile(join(out, `${name}.webp`));
   await page.close();
   console.log('rendered', name);
